@@ -20,6 +20,22 @@ The next owner must inspect the actual repository head and record its SHA before
 starting work. The initial commit above is the bootstrap's parent, not the starter
 revision. The import commit message is "Initialize NBA-first multisport starter and Codex roadmap".
 
+## Launch-readiness clarification
+
+The bounded handoff review observed `main` at bootstrap commit
+`042bedaa73e36033eb30885af06c79bea0bd4f6b`. All 29 remote file blob hashes matched
+the reviewed local starter. This documentation revision makes single-sport,
+selected-multiple-sport and all-supported-sport scopes explicit in Props and Paper
+Builder, permits the first parser fixture to come from any observed supported
+full-game category, and clarifies that the proposed first NHL experiment does not
+limit its comprehensive category scope.
+
+The checksum manifest was refreshed and checked. No Python behavior, scientific
+protocol or previous software-test result changed in this documentation review;
+it establishes no new row-data, model-performance or deployment evidence. The
+bootstrap SHA is a provenance reference, not an instruction to reset newer work.
+The new implementation owner must use and verify the current repository revision.
+
 ## What exists and what has been demonstrated
 
 | Area | Evidence and current limit |

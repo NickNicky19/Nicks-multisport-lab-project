@@ -260,7 +260,8 @@ Support:
 - 2, 3, 4, 5 or 6 legs;
 - a six-leg preference only when the full entry qualifies;
 - OVER_ONLY, UNDER_ONLY and MIXED;
-- sport/category filters and separate venue comparisons;
+- one sport, a selected group of sports, or all supported sports;
+- category filters and separate venue comparisons;
 - NO_ACTION and clear reasons for fewer eligible candidates.
 
 An "all venues" comparison may compare separate venue-valid tickets. Do not
@@ -296,6 +297,12 @@ Build the following views:
 - Performance / grades;
 - Source Health;
 - Specials for separately supported DD/TD markets.
+
+Both Props and Paper Builder must support single-sport, selected-multiple-sport
+and all-supported-sport scopes. Apply the chosen scope to displayed opportunities
+and the builder's candidate universe. A selected group must not expand silently
+to fill a ticket. Implement the selection contract during the early website work;
+available choices follow actual admitted coverage, beginning with NBA.
 
 Show player, opponent, event start, stat/period, exact offer and venue, forecast
 distribution/interval, probability source, current evidence status, quote age and

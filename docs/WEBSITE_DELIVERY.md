@@ -38,9 +38,9 @@ Provide these views:
 
 | View | Required behavior |
 |---|---|
-| Props | Sport/league, event window, category, period, side, venue and evidence filters; distributions and probabilities when supported; explicit age and missingness. |
+| Props | One sport, selected multiple sports or all supported sports; league, event window, category, period, side, venue and evidence filters; distributions and probabilities when supported; explicit age and missingness. |
 | Compare / Value Research | Compare exact matching contracts; show supported prices, reference method and economic calculation when eligible. |
-| Paper Builder | Request 2–6 legs, prefer six when the complete ticket qualifies, support OVER_ONLY / UNDER_ONLY / MIXED, and allow fewer legs or NO_ACTION. |
+| Paper Builder | Use one sport, selected multiple sports or all supported sports; request 2–6 legs, prefer six when the complete ticket qualifies, support OVER_ONLY / UNDER_ONLY / MIXED, and allow fewer legs or NO_ACTION. |
 | Performance | Separate forecast accuracy, selected-leg outcomes and complete ticket settlement; retain methodology, horizon, model version and sample counts. |
 | Source Health | Show source/category coverage, freshness, failures, unmapped observations and concrete reasons capabilities are unavailable. |
 
@@ -50,6 +50,12 @@ experiment does not reduce this interface or research scope. WNBA, NHL, soccer,
 tennis and CFB enter independently; MLB later imports versioned external outputs;
 NFL remains external and disabled initially. "All sports" includes admitted data
 only. Registry membership never implies model validation.
+
+Define these three sport-selection scopes in the early export/UI contract. Apply
+the chosen scope to both displayed opportunities and the builder's candidate
+universe; a selected group must not expand silently to fill a ticket. Available
+choices follow actual coverage, beginning with NBA. Unsupported sports retain
+their true availability status as later integrations are developed.
 
 ## Export and display contract
 

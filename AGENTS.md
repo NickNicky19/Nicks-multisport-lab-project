@@ -21,6 +21,10 @@ system for 2–6 legs. Six is a preferred ticket size when supported; never fill
 by relaxing evidence, data freshness, identity, or payout requirements. Support
 OVER_ONLY, UNDER_ONLY and MIXED as separate evaluated policies. NO_ACTION is valid.
 
+Props and Paper Builder both support one sport, a selected group of sports, or all
+supported sports. Keep display and candidate selection within that scope. Actual
+coverage determines the available choices, beginning with NBA.
+
 NBA is the first sport, with ALL 13 requested markets in config/nba_markets.json:
 PTS, PRA, REB, 3PM, AST, RA, PR, TOV, TD, DD, BLK, STL and BLK+STL. PA is an optional
 additional derived market. Build common historical inputs and a coherent reference

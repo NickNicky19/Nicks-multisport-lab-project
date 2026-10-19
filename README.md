@@ -78,7 +78,7 @@ The demo uses fictional probabilities and payout terms. It makes no network call
 | --- | --- |
 | NBA | Full requested 13-market scope; REB is the first controlled improvement experiment. |
 | WNBA | Later independent basketball model, with shared software only. |
-| NHL | Candidate next admission, initially skater shots on goal. |
+| NHL | Comprehensive category goal; skater shots on goal is a candidate first improvement experiment. |
 | Soccer | Competition-specific historical research until current coverage passes. |
 | Tennis | Separate serve/return and match-format research; data access unresolved. |
 | CFB | Separate college model; public archives assessed independently of keyed APIs. |

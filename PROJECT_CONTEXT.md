@@ -33,6 +33,11 @@ ticket qualifies; fewer legs and `NO_ACTION` remain valid. Keep `OVER_ONLY`,
 `UNDER_ONLY` and `MIXED` as separately evaluated policies. Report complete ticket
 results and settlement, not only individual leg hit rates.
 
+Both Props and Paper Builder require single-sport, selected-multiple-sport and
+all-supported-sport scopes. Define that contract in the initial NBA interface;
+available choices follow actual sport coverage. Keep the displayed opportunities
+and ticket candidate universe within the chosen scope.
+
 ## Full category scope
 
 NBA includes all 13 requested categories:

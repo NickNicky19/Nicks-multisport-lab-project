@@ -107,7 +107,8 @@ modeling and authorized file imports moving when live collection remains unresol
 Do not build a bypass or remove data checks to make a board look populated.
 
 The planned ESPN inventory must assess all requested NBA categories. Prove the adapter
-path first with a retained full-game rebounds response, then add representative
+path first with a retained response from any observed supported full-game category,
+then add representative
 fixtures and mappings for each observed family. Each check must inspect:
 request/response identity, all pages, bookmaker metadata, side and price fields,
 period and settlement. If both sides' actual prices cannot be verified, classify it
@@ -244,7 +245,10 @@ descriptive; a new optimized policy needs a new evaluation.
 
 ## 9. Website design
 
-The website can eventually show one, selected or all admitted sports. Provide
+Both Props and Paper Builder must support one sport, a selected group of sports,
+and all supported sports. Define the selection contract in the initial NBA website
+work and expose choices according to actual coverage. Keep the displayed rows and
+ticket candidate universe within the selected scope. Provide
 Events, Props, Value Research, Paper Builder, Performance and Source Health views.
 On phone-sized screens, each card should make the player, stat/period, line/price,
 forecast interval, probability source, observation age and evidence status readable.
