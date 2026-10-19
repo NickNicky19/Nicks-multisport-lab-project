@@ -1,0 +1,378 @@
+NICK'S MULTISPORT LAB — IMPLEMENTATION ROADMAP AND CODEX KICKOFF
+Updated October 19, 2026
+
+CANONICAL DESTINATION
+Repository: https://github.com/NickNicky19/Nicks-multisport-lab-project
+Repository identifier: NickNicky19/Nicks-multisport-lab-project
+Default branch: main
+Project title: Nick's Multisport Lab
+Expected Pages URL after successful deployment:
+https://nicknicky19.github.io/Nicks-multisport-lab-project/
+
+Work in this exact repository. The starter's Python package remains multisport_lab;
+its old ZIP wrapper directory was nicks-multisport-lab. Those names do not authorize
+creating another repository. Use the current repository files as the starting point.
+If the starter is already present, do not unpack an older ZIP over newer work.
+If only the ZIP is available, import the CONTENTS of its nicks-multisport-lab
+directory at the repository root, preserving any newer work and resolving differences.
+
+MISSION AND OPERATING SCOPE
+Implement an NBA-first multisport player-prop research platform, a mobile-friendly
+GitHub Pages website, and a prospective paper-ticket system supporting 2–6 legs.
+Prefer six when the complete entry qualifies. Allow smaller tickets and NO_ACTION.
+The aim is strong, scientifically evaluated distributions and correct decision
+economics. No promised hit rate, profitability, or "Astra-level" label substitutes
+for results. Treat that phrase as the required standard of careful work.
+
+This new Codex task is the implementation owner for this repository. The existing
+NFL project and its active session are separate. Do not modify, contact or trigger
+workflows in NickNicky19/nicks-expert-nfl-picks. Do not modify the existing MLB
+model or earlier NBA projects. Inspect earlier NBA code or artifacts Nick supplies
+read-only before duplicating useful work; do not import old accuracy claims as
+verified results. MLB is a later versioned-model import. NFL is disabled in this
+project's initial runtime. WNBA, NHL, soccer, tennis and CFB are staged additions.
+
+All 13 requested NBA categories are initial development scope:
+1. Points (PTS)
+2. Points + rebounds + assists (PRA)
+3. Rebounds (REB)
+4. Three-point field goals made (3PM)
+5. Assists (AST)
+6. Rebounds + assists (RA)
+7. Points + rebounds (PR)
+8. Turnovers (TOV)
+9. Triple-double (TD)
+10. Double-double (DD)
+11. Blocks (BLK)
+12. Steals (STL)
+13. Blocks + steals (BLK+STL)
+
+Points + assists (PA) is an optional additional market. DD and TD are included in
+research and may receive a separately qualified Specials view. Comprehensive
+category coverage is also the goal for each future sport. One initial experiment
+must not become a permanent one-category limit.
+
+Use no new paid services, trials, subscriptions, data-source accounts, API keys,
+GPU rentals or wagering credentials. Use suitable public no-signup sources,
+existing authorized access or user-supplied files. This is paper research; do not
+place wagers. Do not create competing workbooks, replacement repositories,
+recurring audit agents or self-dispatching implementation loops.
+
+READ AND PRESERVE
+Read these files before implementation:
+- AGENTS.md
+- README.md
+- PROJECT_CONTEXT.md
+- HANDOFF_STATUS.md
+- docs/PROJECT_BLUEPRINT.md
+- docs/NBA_FULL_SCOPE.md
+- config/nba_markets.json
+- config/capabilities.json
+- docs/NBA_REBOUNDS_EXPERIMENT.md
+- docs/SOURCE_CAPABILITY_MATRIX.md
+- docs/REUSE_PROVENANCE.md
+- docs/KERNEL_API.md
+- docs/VERIFICATION.md
+- docs/WEBSITE_DELIVERY.md
+
+This roadmap adds concrete repository, website and handoff requirements to the
+starter. It does not silently change a scientific experiment after its results
+have been inspected. Record methodological amendments before evaluation.
+When instructions conflict with actual repository state, inspect and explain the
+difference; preserve newer user instructions and valid work.
+
+BOOTSTRAP — ESTABLISH THE REAL STARTING STATE
+1. Confirm the exact remote, branch, HEAD, working tree and existing workflows.
+   Identify any concurrent implementation owner before starting a second writer.
+2. Run:
+   python3 -m unittest discover -s tests -v
+   python3 -m multisport_lab.demo
+   The imported starter previously passed 28 synthetic tests. Report your actual
+   result; synthetic correctness is not statistical validation.
+3. Inspect the actual modules. They provide contracts, arithmetic, deterministic
+   basketball derivations and evidence helpers. They do not yet contain live
+   collectors, a trained model, a selector or a website.
+4. Preserve project context and status in PROJECT_CONTEXT.md and HANDOFF_STATUS.md.
+   Record decisions with date, rationale, evidence and superseded choices in
+   docs/DECISIONS.md when substantive decisions arise. Avoid duplicate status files.
+5. Create an isolated implementation branch/worktree when appropriate. One owner
+   integrates shared changes; agents receive bounded files or separate branches.
+   Respect repository protections and required reviews.
+
+Do not end after restating this plan. Begin source feasibility and the export/UI
+contract, then continue through unblocked implementation work.
+
+MILESTONE 0 — REAL DATA FEASIBILITY AND COMPLETE MARKET INVENTORY
+Statistical sources:
+- Assess nba_api, pbpstats and the SportsDataverse NBA player-boxscore release
+  routes recorded in SOURCE_CAPABILITY_MATRIX.md.
+- Verify the chosen route from the actual runtime with a small retained sample.
+- Audit ALL primitive fields needed for the 13 categories: participation, minutes,
+  points, field goals/attempts, threes/attempts, free throws/attempts, offensive and
+  defensive rebounds, total rebounds, assists, turnovers, blocks and steals.
+- Establish stable game/player/team/opponent IDs, season conventions, minutes units,
+  DNP versus zero versus missing, duplicates, corrections, final status and coverage.
+- Reconcile selected rows against primary boxscores. Record source, version,
+  retrieval time, source update time when available and content hashes.
+- Verify final game period count or duration if running the proposed rebound
+  duration/share experiment. Its absence blocks that formulation only.
+- Inspect historical pregame roster/injury/role information separately. An archive
+  update timestamp is not proof that a feature existed at the historical cutoff.
+- Select a bounded CPU/storage budget from actual sample measurements before a
+  large backfill. Keep large raw and Parquet data out of normal Git history.
+
+Prop sources:
+- Inventory ESPN's DraftKings-labelled offers and Sleeper offers for ALL requested
+  NBA categories. Reuse only the documented generic NFL components.
+- Establish the first parser path with one retained full-game example, then add
+  representative fixtures for every observed category and variant.
+- Verify the source route and permitted operations, all pages, event/player/market
+  IDs, actual venue, statistic meaning, units, period, overtime, line, side, price,
+  price type, capture clock, source update clock or unknown, status and rules.
+- ESPN line thresholds do not prove the presence of two-sided prices. Inspect the
+  actual fields. Do not assume a provider ID has a universal meaning across sports.
+- Sleeper side multipliers are not automatically standalone decimal odds. Preserve
+  complete entry terms when needed to value or grade the product.
+- Keep unknown/unmapped offers visible in diagnostics. Distinguish a valid empty
+  board from an upstream error, blocked access or a parser failure.
+- If live access is unresolved, implement an authorized CSV/JSON capture-import
+  route with explicit provenance. Continue price-independent forecasting work.
+  Do not bypass access restrictions or fabricate absent prices.
+
+Deliver DATA_FEASIBILITY.md with actual PASS / FAIL / UNKNOWN findings, commands,
+sample counts, checked fields, missingness, permitted-use scope, evidence files,
+runtime measurements and the next resolvable requirement.
+
+EARLY WEBSITE TRACK — BUILD ALONGSIDE THE DATA CONTRACT
+Start the static export schema and a small usable interface during Milestone 0/1.
+It need not wait for live odds or completed model validation. Show an honest empty
+state or clearly separated fictional demo. Never display synthetic rows as current
+players, real offers, validated forecasts or qualified entries.
+
+The website is required product scope. Build it in this repository for GitHub Pages.
+Use the repository prefix /Nicks-multisport-lab-project/ and Pages-compatible
+navigation such as #/props. Prefer a simple static frontend; add a build framework
+only when it earns its maintenance cost. Python runs before publication, while
+the browser reads validated static JSON. A website refresh retrieves a published
+snapshot; it must not trigger a historical model rebuild or source scrape.
+
+MILESTONE 1 — FULL NBA REFERENCE BASELINE AND CONTROLLED IMPROVEMENTS
+Build one causal historical panel and common forecast interface for all categories.
+Use a shared participation/minutes/role/pace foundation and an explicit dependence
+construction. Save conditional/unconditional semantics, trained-through time,
+forecast cutoff, issued time, model version, feature/data versions and samples.
+
+Planned joint primitive outputs:
+FG2M, FG3M, FTM, REB, AST, TOV, BLK, STL
+
+Derive within each SAME outcome sample:
+PTS = 2*FG2M + 3*FG3M + FTM
+3PM = FG3M
+PR = PTS + REB
+RA = REB + AST
+PRA = PTS + REB + AST
+BLK+STL = BLK + STL
+PA = PTS + AST, if included
+
+For DD/TD, count how many of PTS, REB, AST, STL and BLK are at least ten:
+DD = 1 if at least two qualify, else 0
+TD = 1 if at least three qualify, else 0
+Do not count threes or turnovers. Preserve TD <= DD.
+
+Specify a reproducible coherent reference baseline, including pooling, cold-start,
+conditioning and tail treatment. Evaluate improvements against that reference.
+Independently sampling every marginal and aligning array indexes is not evidence
+of correct joint dependence. Direct sum challengers cannot silently replace the
+joint outputs with inconsistent distributions.
+
+Use agents for related work packages after common inputs and interfaces are fixed:
+- foundation and data;
+- scoring;
+- rebounds/assists/combinations;
+- turnovers and defensive events;
+- DD/TD threshold diagnostics;
+- independent verification.
+Schedule these within actual available agent capacity. One owner integrates.
+
+The first bounded REB opportunity comparison is proposed in
+docs/NBA_REBOUNDS_EXPERIMENT.md: B0 reference, B1 deterministic-minutes control,
+C1 minutes-mixture candidate. Resolve and freeze the remaining source and protocol
+fields before confirmatory use. B1/C1 deliberately have equal expected minutes and
+rebounds; their mean-based MAE/RMSE must agree. Assess distributional changes.
+Actual future minutes belong only in labeled retrospective diagnostics.
+Do not splice a successful marginal challenger into a joint model without an
+explicit construction and renewed evaluation of affected sums/DD/TD/tickets.
+
+Evaluation:
+- Chronological development, validation and unexamined confirmation periods.
+- No random player-row train/test splits or post-result exclusions.
+- Common populations, declared missingness and coverage.
+- Declared feature cutoff and available-input clocks; reconstruct lagged features.
+- A fixed, recorded tuning budget; all trials preserved.
+- Per-category RPS/CRPS for counts/sums; probability scores and calibration for
+  actual thresholds; Brier/log diagnostics for DD/TD; appropriate joint diagnostics.
+- Minutes error, zeros, tails, interval coverage and rare-event precision.
+- Cluster-aware uncertainty and separate population/selected-row calibration.
+- No unscaled pooling of different targets' scores as an equal-target result.
+- Promotion, rejection or inconclusive decisions under the frozen protocol.
+
+Preserve reconstructed history as RECONSTRUCTED_RESEARCH unless historical
+availability is independently proven. If earlier NBA work has already used a
+candidate holdout, report that exposure and use future captured data for confirmation.
+Do not report synthetic tests, sampled demonstrations or backfilled clocks as
+forecast performance or a genuinely prospective experiment.
+
+MILESTONE 2 — FUTURE FORECASTS, EXACT QUOTES AND SINGLE-CONTRACT PAPER RESEARCH
+Create immutable pregame forecasts and quote receipts with real issuance clocks.
+Separate event discovery, forecast refresh, quote capture, grading and publication.
+Capture useful future evidence as soon as the relevant source path is supported,
+including all observed requested categories; do not wait for every model to qualify.
+
+Publish forecast/quote/model/settlement statuses separately. A sound forecast may
+have no current price. DNP is not zero production; zero on an appearance is real.
+Map postponed, suspended, corrected and incomplete events explicitly.
+
+Implement a singles grader and settlement rules from actual venue terms. Preserve
+original forecasts and append revisions/corrections to the evidence history.
+
+Value estimates must declare their probability source:
+- independently evaluated sport model;
+- market-derived reference from matching contemporaneous two-sided contracts;
+- separately evaluated hybrid.
+
+For market references, specify margin removal, reference inclusion, exclusion of
+the offered venue where the study requires it, aggregation, freshness and skew.
+Probabilities conditional on no push are not unconditional win probabilities.
+For ordinary stake-refunding singles:
+EV = p_win*(decimal_odds-1) - p_loss.
+Unsupported payouts or probabilities make value unavailable; no invented defaults.
+
+Deliver genuine future paper evidence when games occur. Implement and verify the
+capture/grade path now, but never manufacture elapsed future results to finish a
+milestone in one coding session.
+
+MILESTONE 3 — 2–6-LEG PAPER BUILDER AND PROSPECTIVE POLICY
+Implement exact manual ticket assembly and grading before automatic suggestions.
+Store one eligible venue/product, frozen leg identities, actual entry terms,
+common ticket issue time, model/quote versions and complete settlement states.
+
+Support:
+- 2, 3, 4, 5 or 6 legs;
+- a six-leg preference only when the full entry qualifies;
+- OVER_ONLY, UNDER_ONLY and MIXED;
+- sport/category filters and separate venue comparisons;
+- NO_ACTION and clear reasons for fewer eligible candidates.
+
+An "all venues" comparison may compare separate venue-valid tickets. Do not
+combine the best lines from different products and call the mixture executable.
+
+Use an explicit joint outcome model and the applicable payout function:
+EV = sum_over_states P(state)*gross_payout(state) - 1.
+Treat guaranteed, pool-based, flex, push, void and reduced-entry terms correctly.
+An independent-hit calculation must be labeled as an assumption. Do not call a
+generic supplied payout table provider-certified.
+
+Initial suggested tickets use distinct players and games unless a supported
+eligibility/dependence route justifies more. All legs use information available
+at ONE decision time before the earliest game. A model validated at T-90 does not
+automatically validate a much earlier forecast for a later leg.
+
+Freeze and evaluate the selection policy prospectively. Compare the six-first
+policy with smaller-ticket and NO_ACTION references. Track offered candidates,
+chosen tickets, shared legs, counts by ticket size, leg wins/losses, all-win rate,
+partial/refund outcomes and returns in paper units by venue and category.
+Descriptive subgroups must not become optimized rules without a new evaluation.
+
+Browser-local ticket drafts need export/import and explicit labeling. Browser
+local storage is not an authoritative cross-device or prospective timestamp ledger.
+Keep evaluation evidence in a durable permitted store with real issuance records.
+
+MILESTONE 4 — COMPLETE WEBSITE AND GITHUB PAGES DELIVERY
+Build the following views:
+- Overview / events and project coverage;
+- Props across all 13 NBA categories;
+- Comparison / Value Research;
+- Paper Builder;
+- Performance / grades;
+- Source Health;
+- Specials for separately supported DD/TD markets.
+
+Show player, opponent, event start, stat/period, exact offer and venue, forecast
+distribution/interval, probability source, current evidence status, quote age and
+grade where relevant. Separate research, unavailable, stale and qualified states.
+Exclude started/finished events from current actionable suggestions; retain them
+in history. Use actual captured clocks and timezone-aware display.
+
+Make the interface usable on a phone: clear filters, readable cards/tables,
+accessible contrast, visible loading/error/empty states and understandable labels.
+Research remains discoverable without presenting it as qualified betting action.
+
+Implement a publication exporter that validates schemas and references, writes
+bounded per-sport assets and a versioned manifest, and publishes a coherent
+snapshot. A failure in one sport must not erase valid output for other sports.
+Retain previous valid snapshots with their real age instead of refreshing timestamps
+on stale data. Keep private data, credentials and restricted raw source material
+outside public Pages assets.
+
+Use a GitHub Actions build/check job and a dependent GitHub Pages deployment job.
+Deploy only the chosen static site directory, with index.html at its root.
+Use current reviewed action versions and the required Pages/OIDC permissions.
+Verify the production build under /Nicks-multisport-lab-project/, including
+#/props and direct refresh/navigation. Avoid root-relative data/asset URLs that
+escape the repository prefix. Document the selected source/build/artifact paths.
+
+If repository administration access cannot set Pages, finish and test the site
+and workflow first, then identify the exact remaining setting:
+Repository Settings > Pages > Build and deployment > Source: GitHub Actions.
+Do not claim deployment until the actual job succeeds and the live site is checked.
+An honest research/empty-state site may be published before predictions qualify;
+its status must remain clear.
+
+Begin with bounded manual and commit-driven checks/publication. Add justified
+scheduled data/forecast/quote/grading jobs after verifying access, measured load,
+freshness and durable retention. No inherited NFL ticker loops, overlapping writers
+or guaranteed cron precision. Schedule timestamps must reflect real execution.
+Document retry/backoff, idempotency, stale preservation and recovery behavior.
+Do not alter stat or settlement meaning automatically to make failed rows pass.
+
+MILESTONE 5 — COMPREHENSIVE MULTISPORT EXPANSION
+Admit WNBA, NHL, soccer, tennis and CFB through separate source/model/settlement
+evidence. Choose the order from actual coverage and feasibility.
+For each sport, inventory its full offered-category universe and group the
+underlying mechanisms, including distinct player/goalie/pitcher roles as needed.
+Do not transfer NBA calibration to WNBA, NFL parameters to CFB, or one league's
+settlement rules to another. Add period markets only with period-specific evidence.
+
+Inspect and import Nick's existing MLB model through a versioned output contract:
+model ID, data provenance, trained-through/cutoff/issued times, event/player IDs,
+target definition, distribution, evidence lane and grade rules. Do not rebuild
+MLB by default. Preserve external ownership. NFL stays external and disabled unless
+Nick later requests an explicit integration.
+
+The All Sports view shows supported opportunities with comparable economics and
+uncertainty. Raw projection-gap scores from different sports are not a common
+value scale. Evaluate any cross-sport selection policy on genuine future evidence.
+
+CONTINUITY AND COMPLETION
+The ChatGPT coordination session handles strategy, interpretation and review.
+Sport-specific research chats may propose bounded changes. They are not additional
+uncoordinated implementation owners. Use current repository files and exact commits
+for handoffs; do not assume another chat's transcript or a ZIP is automatically
+available in this task.
+
+At every completed or genuinely blocked checkpoint:
+1. Update HANDOFF_STATUS.md and project context where decisions changed.
+2. Report exact commit/branch, changed files, commands, actual results and evidence.
+3. Distinguish implemented, tested, row-data-verified, statistically evaluated,
+   prospectively captured, product-qualified and deployed.
+4. State unknowns and their effect on the next step; continue unrelated useful work.
+5. Leave a concrete next command/task and ownership status for resumption.
+
+Commit coherent implementation changes and open a reviewable PR when appropriate.
+Respect required checks and approvals. Do not force-push, bypass protections or
+claim a merge/deployment you did not verify. Do not buy access or ask for credentials
+to resolve an ordinary repository/environment selection issue.
+
+Begin now with BOOTSTRAP and MILESTONE 0, plus the early export/UI contract.
+Continue into the full NBA baseline and other unblocked work. A longer roadmap
+does not require pretending every future-evidence milestone can finish today.

@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "sport": "basketball",
+  "league": "NBA",
+  "registry_status": "ALL_REQUESTED_MARKETS_PLANNED_NOT_ADMITTED",
+  "requested_market_codes": [
+    "PTS", "PRA", "REB", "3PM", "AST", "RA", "PR", "TOV", "TD", "DD", "BLK", "STL", "BLK+STL"
+  ],
+  "optional_additional_market_codes": ["PA"],
+  "experiment_namespace": "NBA-ALL13-JOINT-001",
+  "feature_protocol_version": "nba_pregame_features_v1",
+  "cutoff_protocol_version": "nba_cutoff_90m_v1",
+  "evaluation_manifest_version": "nba_chronological_panel_v1",
+  "first_controlled_mechanism_experiment": "NBA-REB-OPPORTUNITY-001",
+  "scope_note": "All 13 requested categories are mandatory project scope. REB is the first controlled mechanism change within the planned full-category baseline, not a restriction of the platform. PA is an optional additional category.",
+  "shared_forecast_contract": {
+    "period": "full_game",
+    "statistic_scope": "official individual player statistics",
+    "model_extra_time_policy": "includes_overtime",
+    "venue_extra_time_mapping": "unverified_per_contract",
+    "initial_distribution_conditioning": "conditional_on_appearance",
+    "participation_probability": "separate_planned_output_not_implemented",
+    "zero_production_on_appearance": "real_observation",
+    "dnp": "separate_state_not_zero_production",
+    "cutoff_minutes_before_scheduled_tip_as_known": 90,
+    "other_capture_horizons": "planned_observations_not_additional_optimization_targets",
+    "shared_latents": ["participation", "minutes", "role", "pace_or_possessions"],
+    "joint_primitive_outputs": ["FG2M", "FG3M", "FTM", "REB", "AST", "TOV", "BLK", "STL"],
+    "derived_from_same_joint_draw": true,
+    "independent_sum_marginals": false
+  },
+  "global_admission": {
+    "live_collection_enabled": false,
+    "live_source_coverage_verified": false,
+    "forecast_trained": false,
+    "forecast_validated": false,
+    "settlement_verified": false,
+    "priced_paper_selection_enabled": false,
+    "registry_membership_confers_admission": false
+  },
+  "development_groups": {
+    "shared_foundation": {
+      "responsibility": "One shared candidate universe, source panel, feature/cutoff protocol, minutes/role/pace process, joint sample interface and result manifest.",
+      "markets": []
+    },
+    "scoring": {
+      "responsibility": "Scoring opportunities and conversion, coherent FG2M/FG3M/FTM and PTS/3PM.",
+      "markets": ["PTS", "3PM"]
+    },
+    "rebounds_assists_combinations": {
+      "responsibility": "REB and AST opportunity/rate components; joint-draw derivation of sums using scoring output.",
+      "markets": ["REB", "AST", "RA", "PR", "PRA", "PA"]
+    },
+    "turnovers": {
+      "responsibility": "TOV opportunities and rates conditional on shared exposure and role.",
+      "markets": ["TOV"]
+    },
+    "defensive_events": {
+      "responsibility": "BLK/STL count and zero/tail behavior, with their joint BLK+STL derivation.",
+      "markets": ["BLK", "STL", "BLK+STL"]
+    },
+    "double_triple_doubles": {
+      "responsibility": "DD/TD indicators derived from joint PTS/REB/AST/STL/BLK; threshold and event-frequency diagnostics.",
+      "markets": ["DD", "TD"]
+    },
+    "independent_verification": {
+      "responsibility": "Read-only independent checks of source timing, joint coherence, shared cohorts, tuning isolation, category evidence and reported results.",
+      "markets": ["PTS", "PRA", "REB", "3PM", "AST", "RA", "PR", "TOV", "TD", "DD", "BLK", "STL", "BLK+STL"]
+    }
+  },
+  "capture_plan": {
+    "status": "PLAN_FROM_PROJECT_START_NO_LIVE_CAPTURE_ENABLED",
+    "required_market_codes": ["PTS", "PRA", "REB", "3PM", "AST", "RA", "PR", "TOV", "TD", "DD", "BLK", "STL", "BLK+STL"],
+    "candidate_offer_sources": ["espn_draftkings_player_props", "sleeper_picks"],
+    "source_feed_claim": "None; candidate sources need permitted-use, row/schema, timing and exact-contract verification per market.",
+    "audit_fields": [
+      "source_and_actual_venue", "provider_event_player_market_selection_ids",
+      "canonical_league_event_player_stat", "raw_stat_label_and_definition",
+      "period_and_overtime_policy", "line_side_variant", "line_and_price_same_observation",
+      "price_type_and_both_side_presence", "complete_entry_payout_when_applicable",
+      "captured_at_utc", "source_updated_at_utc_or_unknown", "event_start_as_known_at_capture",
+      "market_status", "source_receipt_hash_and_version", "parser_version",
+      "permission_and_redistribution_scope", "historical_availability_evidence",
+      "outcome_source_and_revision", "participation_and_void_rules", "settlement_rule_version",
+      "coverage_missingness_and_unmapped_contract_counts"
+    ],
+    "required_stat_panel_fields": [
+      "event_id", "player_id", "team_id", "opponent_id", "scheduled_tip_as_known",
+      "game_date", "season", "competition_stage", "appearance_status", "minutes",
+      "PTS", "FGM", "FGA", "FG2M", "FG3M", "FG3A", "FTM", "FTA",
+      "OREB", "DREB", "REB", "AST", "TOV", "BLK", "STL",
+      "source_version", "captured_at", "source_updated_at_or_unknown"
+    ],
+    "additional_candidate_features": [
+      "timestamped_availability", "pregame_role_or_starter_status", "teammate_availability",
+      "lagged_minutes_and_rates", "lagged_team_opponent_pace", "rest_days",
+      "timestamped_shot_rebound_assist_opportunity_data_when_available"
+    ]
+  },
+  "markets": [
+    {
+      "code": "PTS", "name": "Points", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "scoring", "value_type": "nonnegative_integer_count", "units": "points",
+      "base_components": ["FG2M", "FG3M", "FTM"],
+      "derivation": {"operation": "weighted_sum", "terms": {"FG2M": 2, "FG3M": 3, "FTM": 1}},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "PRA", "name": "Points + rebounds + assists", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "rebounds_assists_combinations", "value_type": "nonnegative_integer_sum", "units": "stat_sum",
+      "base_components": ["PTS", "REB", "AST"],
+      "derivation": {"operation": "same_draw_sum", "terms": ["PTS", "REB", "AST"]},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "REB", "name": "Rebounds", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "rebounds_assists_combinations", "value_type": "nonnegative_integer_count", "units": "rebounds",
+      "base_components": ["REB"], "derivation": {"operation": "identity", "field": "REB"},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "3PM", "name": "Three-point field goals made", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "scoring", "value_type": "nonnegative_integer_count", "units": "made_three_point_field_goals",
+      "base_components": ["FG3M"], "derivation": {"operation": "identity", "field": "FG3M"},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "AST", "name": "Assists", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "rebounds_assists_combinations", "value_type": "nonnegative_integer_count", "units": "assists",
+      "base_components": ["AST"], "derivation": {"operation": "identity", "field": "AST"},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "RA", "name": "Rebounds + assists", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "rebounds_assists_combinations", "value_type": "nonnegative_integer_sum", "units": "stat_sum",
+      "base_components": ["REB", "AST"],
+      "derivation": {"operation": "same_draw_sum", "terms": ["REB", "AST"]},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "PR", "name": "Points + rebounds", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "rebounds_assists_combinations", "value_type": "nonnegative_integer_sum", "units": "stat_sum",
+      "base_components": ["PTS", "REB"],
+      "derivation": {"operation": "same_draw_sum", "terms": ["PTS", "REB"]},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "TOV", "name": "Turnovers", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "turnovers", "value_type": "nonnegative_integer_count", "units": "turnovers",
+      "base_components": ["TOV"], "derivation": {"operation": "identity", "field": "TOV"},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "TD", "name": "Triple-double indicator", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "double_triple_doubles", "value_type": "binary_indicator", "units": "indicator_0_or_1",
+      "base_components": ["PTS", "REB", "AST", "STL", "BLK"],
+      "derivation": {"operation": "at_least_k_components_at_threshold", "fields": ["PTS", "REB", "AST", "STL", "BLK"], "threshold": 10, "minimum_components": 3},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "DD", "name": "Double-double indicator", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "double_triple_doubles", "value_type": "binary_indicator", "units": "indicator_0_or_1",
+      "base_components": ["PTS", "REB", "AST", "STL", "BLK"],
+      "derivation": {"operation": "at_least_k_components_at_threshold", "fields": ["PTS", "REB", "AST", "STL", "BLK"], "threshold": 10, "minimum_components": 2},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "BLK", "name": "Blocks", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "defensive_events", "value_type": "nonnegative_integer_count", "units": "blocks",
+      "base_components": ["BLK"], "derivation": {"operation": "identity", "field": "BLK"},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "STL", "name": "Steals", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "defensive_events", "value_type": "nonnegative_integer_count", "units": "steals",
+      "base_components": ["STL"], "derivation": {"operation": "identity", "field": "STL"},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "BLK+STL", "name": "Blocks + steals", "requested": true, "scope_label": "mandatory_planned",
+      "development_group": "defensive_events", "value_type": "nonnegative_integer_sum", "units": "stat_sum",
+      "base_components": ["BLK", "STL"],
+      "derivation": {"operation": "same_draw_sum", "terms": ["BLK", "STL"]},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    },
+    {
+      "code": "PA", "name": "Points + assists", "requested": false, "scope_label": "optional_additional",
+      "development_group": "rebounds_assists_combinations", "value_type": "nonnegative_integer_sum", "units": "stat_sum",
+      "base_components": ["PTS", "AST"],
+      "derivation": {"operation": "same_draw_sum", "terms": ["PTS", "AST"]},
+      "admission": {"live_source_verified": false, "forecast_validated": false, "settlement_verified": false}
+    }
+  ],
+  "definition_sources": [
+    "https://official.nba.com/rule-no-5-scoring-and-timing/",
+    "https://jr.nba.com/double-double-and-triple-double/"
+  ]
+}

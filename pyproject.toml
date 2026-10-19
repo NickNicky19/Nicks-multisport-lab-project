@@ -1,0 +1,9 @@
+[project]
+name = "nicks-multisport-lab"
+version = "0.1.0"
+description = "Offline evidence, contract, and paper-ticket research foundations"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.unittest]
+start-directory = "tests"

@@ -1,0 +1,657 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-10-19T21:14:44Z",
+  "status": "RESEARCH_SCAFFOLD_NO_LIVE_FEEDS_NO_TRAINED_MODEL",
+  "scope": {
+    "project": "nicks-multisport-lab",
+    "initial_sport": "NBA",
+    "initial_target": "REB",
+    "initial_target_semantics": "full-game player rebounds; overtime and venue settlement require exact contract mapping",
+    "selection_rationale": "REB bounds the first isolated opportunity-improvement experiment while all 13 requested NBA categories remain in the planned baseline/market/grading scope. No category is activated or claimed validated by scope inclusion.",
+    "nfl": "external-disabled",
+    "mlb": "external-model-import",
+    "wnba_nhl_order": "conditional-on-source-and-quote-admission-evidence",
+    "default_access_constraints": [
+      "no-paid-data-or-services",
+      "no-new-data-source-accounts",
+      "no-automated-wagering"
+    ],
+    "planned_nba_categories": [
+      {
+        "code": "PTS",
+        "name": "Points"
+      },
+      {
+        "code": "REB",
+        "name": "Rebounds"
+      },
+      {
+        "code": "AST",
+        "name": "Assists"
+      },
+      {
+        "code": "PRA",
+        "name": "Points + rebounds + assists"
+      },
+      {
+        "code": "PR",
+        "name": "Points + rebounds"
+      },
+      {
+        "code": "RA",
+        "name": "Rebounds + assists"
+      },
+      {
+        "code": "3PM",
+        "name": "Three-pointers made"
+      },
+      {
+        "code": "BLK",
+        "name": "Blocked shots"
+      },
+      {
+        "code": "STL",
+        "name": "Steals"
+      },
+      {
+        "code": "BLK+STL",
+        "name": "Blocks + steals"
+      },
+      {
+        "code": "TOV",
+        "name": "Turnovers"
+      },
+      {
+        "code": "DD",
+        "name": "Double-doubles"
+      },
+      {
+        "code": "TD",
+        "name": "Triple-doubles"
+      }
+    ],
+    "optional_nba_categories": [
+      {
+        "code": "PA",
+        "name": "Points + assists"
+      }
+    ],
+    "initial_target_scope": "first-isolated-improvement-experiment-only; not the full NBA baseline or market scope",
+    "nba_baseline_and_market_scope": "all-13-requested-categories; per-category source, forecast and settlement gates remain required"
+  },
+  "global_guards": {
+    "live_collection_enabled": false,
+    "live_player_prop_feeds_verified": false,
+    "live_two_sided_odds_feeds_verified": false,
+    "any_local_model_trained": false,
+    "any_local_model_validated": false,
+    "production_forecasting_enabled": false,
+    "priced_candidate_generation_enabled": false,
+    "six_legs_preferred_only_when_qualified": true,
+    "force_fill_ticket": false,
+    "independent_ticket_pricing_assumed": false,
+    "status_labels_are_planning_decisions_not_data_licenses": true,
+    "metadata_presence_is_not_row_validation": true,
+    "archive_revision_time_is_not_original_first_seen_time": true,
+    "final_actual_workload_allowed_as_pregame_feature": false
+  },
+  "live_feed_candidates": {
+    "espn_draftkings_player_props": {
+      "status": "unverified",
+      "enabled": false,
+      "sport_contracts_verified": [],
+      "both_prices_verified": false
+    },
+    "sleeper_picks": {
+      "status": "unverified",
+      "enabled": false,
+      "sport_contracts_verified": [],
+      "full_entry_payouts_verified": false
+    }
+  },
+  "sources": {
+    "nba_api": {
+      "name": "nba_api",
+      "url": "https://github.com/swar/nba_api",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "software_license": "MIT",
+      "data_rights_note": "The package explicitly distinguishes its MIT software license from NBA.com terms.",
+      "capabilities_documented": [
+        "NBA stats endpoint client",
+        "live scoreboard client",
+        "game-log endpoint documentation"
+      ],
+      "operating_runner_access": "not-tested"
+    },
+    "pbpstats": {
+      "name": "pbpstats",
+      "url": "https://github.com/dblackrun/pbpstats",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "capabilities_documented": [
+        "NBA/WNBA/G-League play-by-play parsing",
+        "lineups on events",
+        "possession details",
+        "some event-order repairs"
+      ],
+      "data_rights_note": "Parser availability does not establish every upstream data-use permission."
+    },
+    "sdv_nba_player_box": {
+      "name": "SportsDataverse ESPN NBA player boxscores",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_nba_player_boxscores",
+      "enabled": false,
+      "evidence_level": "documentation-and-release-metadata-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "software_license": "Repository MIT software license inspected",
+      "access": "Direct public release files documented as no-auth/no-key; separate data API requires bearer token.",
+      "assets": [
+        {
+          "name": "player_box_2026.parquet",
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_player_boxscores/player_box_2026.parquet",
+          "metadata_url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/espn_nba_player_boxscores",
+          "size_bytes": 606444,
+          "asset_updated_at": "2026-09-09T05:17:36Z",
+          "sha256": "29a29dc9efd055a93e069a0382ac830d98a13274bee655beba69d95cff099713",
+          "season": 2026,
+          "season_semantics": "ending-year: 2025-26",
+          "inspected": "GitHub release metadata only; binary rows not audited"
+        }
+      ],
+      "data_rights_note": "Repository software license is not treated as a blanket upstream-data redistribution grant."
+    },
+    "nba_official_injury_example": {
+      "name": "NBA official injury reports",
+      "url": "https://official.nba.com/nba-injury-report-2025-26-season/",
+      "enabled": false,
+      "evidence_level": "official-report-policy-and-one-historical-PDF-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "example_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-04-12_01_00PM.pdf",
+      "example_report_clock": "2026-04-12 13:00 (report clock; do not substitute retrieval time)",
+      "historical_asof_note": "A timestamped report example exists; complete cutoff-level archive coverage and revision provenance have not been established."
+    },
+    "sdv_wnba_player_box": {
+      "name": "SportsDataverse ESPN WNBA player boxscores",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_wnba_player_boxscores",
+      "enabled": false,
+      "evidence_level": "documentation-and-release-metadata-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "access": "Direct public release files documented as no-auth/no-key; separate data API requires bearer token.",
+      "assets": [
+        {
+          "name": "player_box_2026.parquet",
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_wnba_player_boxscores/player_box_2026.parquet",
+          "metadata_url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/espn_wnba_player_boxscores",
+          "size_bytes": 155809,
+          "asset_updated_at": "2026-10-18T10:52:28Z",
+          "sha256": "7a8e4d3fce9a78ebfe2771bb1cc8bed665a6bb47b5c4472c804fb53b910a81a6",
+          "season": 2026,
+          "season_semantics": "calendar-year: 2026",
+          "inspected": "GitHub release metadata only; binary rows not audited"
+        }
+      ],
+      "data_rights_note": "Underlying upstream rights require intended-use review independent of the software license."
+    },
+    "wehoop": {
+      "name": "wehoop / WNBA Stats producer",
+      "url": "https://github.com/sportsdataverse/wehoop",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "producer_url": "https://github.com/sportsdataverse/wehoop-wnba-stats-data",
+      "software_license": "MIT",
+      "capabilities_documented": [
+        "WNBA player/game boxscores",
+        "play-by-play",
+        "shots",
+        "possessions",
+        "lineups"
+      ],
+      "current_asset_health_url": "https://www.sportsdataverse.org/status"
+    },
+    "moneypuck": {
+      "name": "MoneyPuck listed data downloads",
+      "url": "https://moneypuck.com/data.htm",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "listed-download-route-documented; other scraping requires approval",
+      "public_raw_redistribution_rights": "scope-not-established; retain attribution and confirm intended raw redistribution",
+      "data_use_terms_documented": "Noncommercial use and journalist ad-hoc use with credit; other purposes require inquiry.",
+      "capabilities_documented": [
+        "game-level skater/goalie/line data",
+        "historical shot events"
+      ],
+      "shot_archive_semantics": "saved shots, missed shots and goals included; blocked shots excluded",
+      "derived_model_feature_warning": "Historical xG/model-score version and training-time provenance not established."
+    },
+    "fasthockey": {
+      "name": "fastRhockey",
+      "url": "https://github.com/sportsdataverse/fastRhockey",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "capabilities_documented": [
+        "hockey data client and release loaders"
+      ],
+      "admission_note": "Supplemental candidate; no rows or live endpoint path audited."
+    },
+    "statsbomb_open": {
+      "name": "StatsBomb Open Data / Hudl",
+      "url": "https://github.com/hudl/open-data",
+      "enabled": false,
+      "evidence_level": "README-and-competition-index-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "competition_index_url": "https://github.com/hudl/open-data/blob/master/data/competitions.json",
+      "competition_season_entries_inspected": 80,
+      "capabilities_documented": [
+        "selected competition-season match events",
+        "lineups",
+        "360 data for selected matches"
+      ],
+      "publication_terms_note": "README requests StatsBomb attribution/logo for published research; included license needs intended-use review.",
+      "historical_asof_note": "Old seasons carry newer update clocks; current archive revisions do not establish pre-match availability."
+    },
+    "kloppy": {
+      "name": "kloppy",
+      "url": "https://github.com/PySport/kloppy",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "software_license": "BSD-3-Clause",
+      "capabilities_documented": [
+        "soccer event/tracking format standardization"
+      ],
+      "data_rights_note": "Supported-provider list is not a grant of provider data access."
+    },
+    "socceraction": {
+      "name": "socceraction",
+      "url": "https://github.com/ML-KULeuven/socceraction",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "software_license": "MIT",
+      "capabilities_documented": [
+        "SPADL conversion",
+        "xT",
+        "VAEP"
+      ],
+      "maintenance_note": "README says primary use is research reproducibility and it is not actively developed.",
+      "data_rights_note": "Software clients do not grant access to every provider."
+    },
+    "sackmann_charting": {
+      "name": "Tennis Abstract Match Charting Project",
+      "url": "https://github.com/JeffSackmann/tennis_MatchChartingProject",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "license-conditional: attribution, noncommercial and share-alike requirements",
+      "data_license": "CC-BY-NC-SA-4.0",
+      "capabilities_documented": [
+        "selected user-charted shot/point-level historical matches",
+        "aggregate charting stats"
+      ],
+      "current_feed_status": "not-a-comprehensive-upcoming-match-feed",
+      "data_rights_note": "Confirm intended use fits the stated license before activation."
+    },
+    "sackmann_atp": {
+      "name": "JeffSackmann tennis_atp (unavailable at check)",
+      "url": "https://github.com/JeffSackmann/tennis_atp",
+      "enabled": false,
+      "evidence_level": "web-and-GitHub-connector-GET-returned-404",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "availability": "unavailable-at-check",
+      "admission_note": "Do not assume a working current feed or silently replace with a mirror."
+    },
+    "sackmann_wta": {
+      "name": "JeffSackmann tennis_wta (unavailable at check)",
+      "url": "https://github.com/JeffSackmann/tennis_wta",
+      "enabled": false,
+      "evidence_level": "web-and-GitHub-connector-GET-returned-404",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "availability": "unavailable-at-check",
+      "admission_note": "Do not assume a working current feed or silently replace with a mirror."
+    },
+    "cfbfastr": {
+      "name": "cfbfastR",
+      "url": "https://github.com/sportsdataverse/cfbfastR",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "capabilities_documented": [
+        "public historical-data loaders",
+        "separate CFBD API wrappers"
+      ],
+      "access_note": "Public release loaders and authenticated cfbd_* functions are distinct routes; no loader rows audited."
+    },
+    "cfbd_api": {
+      "name": "CollegeFootballData API",
+      "url": "https://api.collegefootballdata.com/getting-started",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "authenticated-API-use-subject-to-published-terms-and-quotas",
+      "public_raw_redistribution_rights": "raw-bulk-redistribution-prohibited-by-reviewed-API-terms",
+      "coverage_url": "https://api.collegefootballdata.com/data-availability",
+      "terms_url": "https://collegefootballdata.com/terms",
+      "access": "API key required; no-new-signup default excludes this API route",
+      "derived_output_terms": "Reviewed terms permit model training and derived predictions.",
+      "historical_asof_note": "Provider documents historical corrections and differing feature/model version boundaries.",
+      "coverage_note": "Enriched passing/rushing begins in 2025; older raw play-by-play has different player/feature coverage."
+    },
+    "pybaseball": {
+      "name": "pybaseball",
+      "url": "https://github.com/jldbc/pybaseball",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "capabilities_documented": [
+        "Statcast and other baseball-statistics retrieval"
+      ],
+      "admission_note": "Existing MLB project's sources/outputs take precedence after its own contract audit."
+    },
+    "savant_csv": {
+      "name": "Baseball Savant CSV documentation",
+      "url": "https://baseballsavant.mlb.com/csv-docs",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "capabilities_documented": [
+        "pitch/plate-appearance field definitions"
+      ],
+      "measurement_note": "Documentation distinguishes 2026 pitch-location geometry from prior seasons; preserve era/version semantics."
+    },
+    "hf_nba_mirror": {
+      "name": "Vladislav NBA/WNBA dataset (optional historical mirror)",
+      "url": "https://huggingface.co/datasets/Vladislav/nba_dataset",
+      "enabled": false,
+      "evidence_level": "documentation-inspected",
+      "row_data_audited": false,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "packaging_license_claim": "Apache-2.0 in dataset card",
+      "owner_stated_lineage": [
+        "NBA/WNBA APIs",
+        "pbpstats"
+      ],
+      "admission_note": "Mirror only, pending primary lineage, underlying rights, duplicate-event, row-quality and revision checks.",
+      "data_rights_note": "Dataset-card packaging license is not treated as an independent grant from upstream providers.",
+      "production_source": false
+    }
+  },
+  "sports": {
+    "NBA": {
+      "status": "research-planned-pending-row-audit",
+      "enabled": false,
+      "selected_targets": [
+        "PTS",
+        "REB",
+        "AST",
+        "PRA",
+        "PR",
+        "RA",
+        "3PM",
+        "BLK",
+        "STL",
+        "BLK+STL",
+        "TOV",
+        "DD",
+        "TD"
+      ],
+      "source_ids": [
+        "nba_api",
+        "pbpstats",
+        "sdv_nba_player_box",
+        "nba_official_injury_example"
+      ],
+      "row_audit": "not-completed",
+      "asof_audit": "not-completed",
+      "local_model": {
+        "status": "untrained-unvalidated",
+        "trained": false,
+        "validated": false
+      },
+      "current_props": "unverified",
+      "current_two_sided_odds": "unverified",
+      "current_ticket_payouts": "unverified",
+      "settlement_mapping": "unverified",
+      "automation_rights": "unresolved-for-intended-adapters",
+      "public_raw_redistribution_rights": "unresolved-for-intended-data",
+      "admission_note": "Research planning candidate only; row/as-of/rights gates still apply.",
+      "optional_additional_targets": [
+        "PA"
+      ],
+      "first_improvement_experiment": {
+        "id": "NBA-REB-OPPORTUNITY-001",
+        "targets": [
+          "REB"
+        ],
+        "status": "proposed-not-run",
+        "specific_unverified_requirement": "completed-prior-game final period count or valid game duration for the matched duration/share candidate"
+      },
+      "joint_model_research_plan": "coherent FG2M/FG3M/FTM/REB/AST/TOV/BLK/STL draws, scoring identities, all requested sums and DD/TD; separate from the first REB uncertainty ablation",
+      "scope_note": "All 13 requested categories are planned for baseline/market/grading coverage; REB-only describes the first isolated improvement experiment, not a user-scope restriction."
+    },
+    "WNBA": {
+      "status": "queued",
+      "enabled": false,
+      "selected_targets": [],
+      "source_ids": [
+        "sdv_wnba_player_box",
+        "wehoop",
+        "pbpstats"
+      ],
+      "row_audit": "not-completed",
+      "asof_audit": "not-completed",
+      "local_model": {
+        "status": "untrained-unvalidated",
+        "trained": false,
+        "validated": false
+      },
+      "current_props": "unverified",
+      "current_two_sided_odds": "unverified",
+      "current_ticket_payouts": "unverified",
+      "settlement_mapping": "unverified",
+      "automation_rights": "unresolved-for-intended-adapters",
+      "public_raw_redistribution_rights": "unresolved-for-intended-data"
+    },
+    "NHL": {
+      "status": "queued",
+      "enabled": false,
+      "selected_targets": [],
+      "source_ids": [
+        "moneypuck",
+        "fasthockey"
+      ],
+      "row_audit": "not-completed",
+      "asof_audit": "not-completed",
+      "local_model": {
+        "status": "untrained-unvalidated",
+        "trained": false,
+        "validated": false
+      },
+      "current_props": "unverified",
+      "current_two_sided_odds": "unverified",
+      "current_ticket_payouts": "unverified",
+      "settlement_mapping": "unverified",
+      "automation_rights": "unresolved-for-intended-adapters",
+      "public_raw_redistribution_rights": "unresolved-for-intended-data",
+      "candidate_targets": [
+        "shots_on_goal"
+      ]
+    },
+    "SOCCER": {
+      "status": "research-only",
+      "enabled": false,
+      "selected_targets": [],
+      "source_ids": [
+        "statsbomb_open",
+        "kloppy",
+        "socceraction"
+      ],
+      "row_audit": "not-completed",
+      "asof_audit": "not-completed",
+      "local_model": {
+        "status": "untrained-unvalidated",
+        "trained": false,
+        "validated": false
+      },
+      "current_props": "unverified",
+      "current_two_sided_odds": "unverified",
+      "current_ticket_payouts": "unverified",
+      "settlement_mapping": "unverified",
+      "automation_rights": "unresolved-for-intended-adapters",
+      "public_raw_redistribution_rights": "unresolved-for-intended-data"
+    },
+    "TENNIS": {
+      "status": "research-only",
+      "enabled": false,
+      "selected_targets": [],
+      "source_ids": [
+        "sackmann_charting",
+        "sackmann_atp",
+        "sackmann_wta"
+      ],
+      "row_audit": "not-completed",
+      "asof_audit": "not-completed",
+      "local_model": {
+        "status": "untrained-unvalidated",
+        "trained": false,
+        "validated": false
+      },
+      "current_props": "unverified",
+      "current_two_sided_odds": "unverified",
+      "current_ticket_payouts": "unverified",
+      "settlement_mapping": "unverified",
+      "automation_rights": "unresolved-for-intended-adapters",
+      "public_raw_redistribution_rights": "unresolved-for-intended-data"
+    },
+    "CFB": {
+      "status": "research-only",
+      "enabled": false,
+      "selected_targets": [],
+      "source_ids": [
+        "cfbfastr",
+        "cfbd_api"
+      ],
+      "row_audit": "not-completed",
+      "asof_audit": "not-completed",
+      "local_model": {
+        "status": "untrained-unvalidated",
+        "trained": false,
+        "validated": false
+      },
+      "current_props": "unverified",
+      "current_two_sided_odds": "unverified",
+      "current_ticket_payouts": "unverified",
+      "settlement_mapping": "unverified",
+      "automation_rights": "unresolved-for-intended-adapters",
+      "public_raw_redistribution_rights": "unresolved-for-intended-data"
+    },
+    "MLB": {
+      "status": "external-model-import",
+      "enabled": false,
+      "selected_targets": [],
+      "source_ids": [
+        "pybaseball",
+        "savant_csv"
+      ],
+      "row_audit": "not-completed",
+      "asof_audit": "not-completed",
+      "local_model": {
+        "status": "untrained-unvalidated",
+        "trained": false,
+        "validated": false
+      },
+      "current_props": "unverified",
+      "current_two_sided_odds": "unverified",
+      "current_ticket_payouts": "unverified",
+      "settlement_mapping": "unverified",
+      "automation_rights": "unresolved-for-intended-adapters",
+      "public_raw_redistribution_rights": "unresolved-for-intended-data",
+      "external_model_status": "not-assessed-in-this-scaffold",
+      "external_model_import_enabled": false,
+      "admission_note": "Import existing Nick MLB model outputs only after version/cutoff/forecast-contract validation."
+    },
+    "NFL": {
+      "status": "external-disabled",
+      "enabled": false,
+      "selected_targets": [],
+      "source_ids": [],
+      "row_audit": "not-completed",
+      "asof_audit": "not-completed",
+      "local_model": {
+        "status": "untrained-unvalidated",
+        "trained": false,
+        "validated": false
+      },
+      "current_props": "unverified",
+      "current_two_sided_odds": "unverified",
+      "current_ticket_payouts": "unverified",
+      "settlement_mapping": "unverified",
+      "automation_rights": "unresolved-for-intended-adapters",
+      "public_raw_redistribution_rights": "unresolved-for-intended-data",
+      "external_model_status": "owned-by-existing-NFL-project; not-assessed-here",
+      "external_model_import_enabled": false,
+      "admission_note": "No local NFL collector, model retraining or writes to the existing NFL project."
+    }
+  },
+  "evidence_limitations": [
+    "Source documentation and selected metadata were reviewed, not a full row-level data audit.",
+    "Direct shell network reads were blocked in the assessment environment; GitHub connector and web retrievals succeeded.",
+    "Release asset timestamps describe archive revisions, not original pregame observation times.",
+    "No automatic live source, forecast, pricing, selection, ticket or settlement operation is enabled by this file."
+  ]
+}
