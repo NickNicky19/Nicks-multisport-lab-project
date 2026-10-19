@@ -7,8 +7,32 @@ remain valid results.
 
 Prepared October 19, 2026 for a **new repository and new Codex session**.
 Canonical repository: [NickNicky19/Nicks-multisport-lab-project](https://github.com/NickNicky19/Nicks-multisport-lab-project).
-Nick created this repository; this bootstrap imports the starter and its tailored
-implementation roadmap. A new Codex implementation task must be started separately.
+Nick created this repository; the bootstrap imported the starter and its tailored
+implementation roadmap. The implementation owner is now working from that handoff.
+
+**Implementation is now underway.** The current checkpoint and exact evidence are
+in [HANDOFF_STATUS.md](HANDOFF_STATUS.md). The initial work adds audited NBA source
+normalization, a coherent all-category empirical research reference, authorized
+offline offer import, conservative paper-draft contracts, and a mobile static
+research interface. These do not establish a validated model, qualified ticket or
+live deployment. The original starter description below is retained as history.
+
+Build the research website locally (Python 3.11+, Node 24 for frontend checks):
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test web/tests/*.test.mjs
+python3 -m multisport_lab.publication --build-commit "$(git rev-parse HEAD)"
+node web/tests/site-smoke.mjs output
+```
+
+Only `output/` is the Pages artifact. It contains research coverage and honest
+empty states; forecasts and offers are deliberately not public export v1 rows.
+See [publication contract](docs/PUBLICATION_SCHEMA.md),
+[baseline protocol](docs/BASELINE_REFERENCE.md),
+[data feasibility](DATA_FEASIBILITY.md), and
+[actual offer inventory](docs/OFFER_INVENTORY.md).
 
 ## Start the new Codex task
 

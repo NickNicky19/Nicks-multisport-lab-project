@@ -1,0 +1,59 @@
+{
+  "row_count": 27,
+  "event_count": 1,
+  "player_count": 27,
+  "team_count": 2,
+  "participation": {
+    "APPEARED": 20,
+    "DNP": 7
+  },
+  "seasons": {
+    "2026:2": 27
+  },
+  "duplicate_event_player_rows": 0,
+  "appearance_missing_fields": {
+    "minutes": 0,
+    "points": 0,
+    "fgm": 0,
+    "fga": 0,
+    "fg2m": 0,
+    "fg3m": 0,
+    "fg3a": 0,
+    "ftm": 0,
+    "fta": 0,
+    "oreb": 0,
+    "dreb": 0,
+    "rebounds": 0,
+    "assists": 0,
+    "turnovers": 0,
+    "blocks": 0,
+    "steals": 0
+  },
+  "appearance_zero_fields": {
+    "minutes": 0,
+    "points": 2,
+    "fgm": 2,
+    "fga": 2,
+    "fg2m": 4,
+    "fg3m": 9,
+    "fg3a": 4,
+    "ftm": 7,
+    "fta": 7,
+    "oreb": 9,
+    "dreb": 4,
+    "rebounds": 4,
+    "assists": 5,
+    "turnovers": 7,
+    "blocks": 12,
+    "steals": 9
+  },
+  "identity_failures": {},
+  "rows_with_verified_final_status": 27,
+  "rows_with_verified_duration": 27,
+  "claims": {
+    "historical_asof_verified": false,
+    "pregame_roster_verified": false,
+    "model_evaluated": false,
+    "source_permission_established": false
+  }
+}

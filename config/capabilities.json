@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "checked_at_utc": "2026-10-19T21:14:44Z",
-  "status": "RESEARCH_SCAFFOLD_NO_LIVE_FEEDS_NO_TRAINED_MODEL",
+  "checked_at_utc": "2026-10-19T23:05:39.507678+00:00",
+  "status": "NBA_DEVELOPMENT_FOUNDATION_NO_ADMITTED_LIVE_FEEDS_OR_QUALIFIED_MODEL",
   "scope": {
     "project": "nicks-multisport-lab",
     "initial_sport": "NBA",
@@ -83,7 +83,7 @@
     "live_collection_enabled": false,
     "live_player_prop_feeds_verified": false,
     "live_two_sided_odds_feeds_verified": false,
-    "any_local_model_trained": false,
+    "any_local_model_trained": true,
     "any_local_model_validated": false,
     "production_forecasting_enabled": false,
     "priced_candidate_generation_enabled": false,
@@ -97,16 +97,29 @@
   },
   "live_feed_candidates": {
     "espn_draftkings_player_props": {
-      "status": "unverified",
+      "status": "provider-label-observed;player-route-404;ongoing-automation-rights-unestablished",
       "enabled": false,
       "sport_contracts_verified": [],
-      "both_prices_verified": false
+      "both_prices_verified": false,
+      "evidence_report": "docs/OFFER_INVENTORY.md"
     },
     "sleeper_picks": {
-      "status": "unverified",
+      "status": "nine-NBA-labels-observed;incomplete-contract-semantics;automation-rights-unestablished",
       "enabled": false,
       "sport_contracts_verified": [],
-      "full_entry_payouts_verified": false
+      "full_entry_payouts_verified": false,
+      "evidence_report": "docs/OFFER_INVENTORY.md",
+      "observed_category_codes": [
+        "PTS",
+        "PRA",
+        "REB",
+        "3PM",
+        "AST",
+        "TOV",
+        "DD",
+        "BLK",
+        "STL"
+      ]
     }
   },
   "sources": {
@@ -126,14 +139,14 @@
         "live scoreboard client",
         "game-log endpoint documentation"
       ],
-      "operating_runner_access": "not-tested"
+      "operating_runner_access": "NBA-Stats-boxscoretraditionalv3-timeout-18s;not-admitted"
     },
     "pbpstats": {
       "name": "pbpstats",
       "url": "https://github.com/dblackrun/pbpstats",
       "enabled": false,
-      "evidence_level": "documentation-inspected",
-      "row_data_audited": false,
+      "evidence_level": "one-real-game-20-appearance-rows-reconciled-to-primary",
+      "row_data_audited": true,
       "historical_asof_proven": false,
       "automation_rights": "unresolved-for-intended-use",
       "public_raw_redistribution_rights": "unresolved-for-intended-use",
@@ -143,14 +156,16 @@
         "possession details",
         "some event-order repairs"
       ],
-      "data_rights_note": "Parser availability does not establish every upstream data-use permission."
+      "data_rights_note": "Parser availability does not establish every upstream data-use permission.",
+      "operating_runner_access": "get-game-stats-public-route-200",
+      "audit_report": "DATA_FEASIBILITY.md"
     },
     "sdv_nba_player_box": {
       "name": "SportsDataverse ESPN NBA player boxscores",
       "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_nba_player_boxscores",
       "enabled": false,
-      "evidence_level": "documentation-and-release-metadata-inspected",
-      "row_data_audited": false,
+      "evidence_level": "bounded-real-player-and-schedule-row-audit-primary-reconciliation",
+      "row_data_audited": true,
       "historical_asof_proven": false,
       "automation_rights": "unresolved-for-intended-use",
       "public_raw_redistribution_rights": "unresolved-for-intended-use",
@@ -169,7 +184,10 @@
           "inspected": "GitHub release metadata only; binary rows not audited"
         }
       ],
-      "data_rights_note": "Repository software license is not treated as a blanket upstream-data redistribution grant."
+      "data_rights_note": "Repository software license is not treated as a blanket upstream-data redistribution grant.",
+      "row_audit_scope": "2026 asset:34883 source roster rows;33 anonymous quarantined;one game reconciled20 appearances+7DNP",
+      "operating_runner_access": "direct-release-download-succeeded",
+      "audit_report": "DATA_FEASIBILITY.md"
     },
     "nba_official_injury_example": {
       "name": "NBA official injury reports",
@@ -429,11 +447,33 @@
       "admission_note": "Mirror only, pending primary lineage, underlying rights, duplicate-event, row-quality and revision checks.",
       "data_rights_note": "Dataset-card packaging license is not treated as an independent grant from upstream providers.",
       "production_source": false
+    },
+    "sdv_nba_schedule": {
+      "name": "SportsDataverse ESPN NBA schedule",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/tag/espn_nba_schedules",
+      "enabled": false,
+      "evidence_level": "bounded-real-row-audit",
+      "row_data_audited": true,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "audit_report": "DATA_FEASIBILITY.md"
+    },
+    "nba_primary_boxscore": {
+      "name": "Official NBA public game HTML and gamebook",
+      "url": "https://www.nba.com/game/hou-vs-okc-0022500001/box-score",
+      "enabled": false,
+      "evidence_level": "bounded-real-row-audit",
+      "row_data_audited": true,
+      "historical_asof_proven": false,
+      "automation_rights": "unresolved-for-intended-use",
+      "public_raw_redistribution_rights": "unresolved-for-intended-use",
+      "audit_report": "DATA_FEASIBILITY.md"
     }
   },
   "sports": {
     "NBA": {
-      "status": "research-planned-pending-row-audit",
+      "status": "development-research-foundation-partial-row-audit",
       "enabled": false,
       "selected_targets": [
         "PTS",
@@ -454,14 +494,19 @@
         "nba_api",
         "pbpstats",
         "sdv_nba_player_box",
-        "nba_official_injury_example"
+        "nba_official_injury_example",
+        "sdv_nba_schedule",
+        "nba_primary_boxscore"
       ],
-      "row_audit": "not-completed",
+      "row_audit": "2026-asset-and-one-primary-game;see-DATA_FEASIBILITY.md",
       "asof_audit": "not-completed",
       "local_model": {
-        "status": "untrained-unvalidated",
-        "trained": false,
-        "validated": false
+        "status": "empirical-reference-fitted-in-bounded-historical-development-only;unvalidated",
+        "trained": true,
+        "validated": false,
+        "development_evaluation": "evidence/research/r0-pilot.json",
+        "conditioning": "conditional-on-eventual-appearance",
+        "production_admitted": false
       },
       "current_props": "unverified",
       "current_two_sided_odds": "unverified",
@@ -469,7 +514,7 @@
       "settlement_mapping": "unverified",
       "automation_rights": "unresolved-for-intended-adapters",
       "public_raw_redistribution_rights": "unresolved-for-intended-data",
-      "admission_note": "Research planning candidate only; row/as-of/rights gates still apply.",
+      "admission_note": "NBA research UI coverage only; production source, historical-asof, model and settlement gates remain unadmitted.",
       "optional_additional_targets": [
         "PA"
       ],
@@ -479,7 +524,7 @@
           "REB"
         ],
         "status": "proposed-not-run",
-        "specific_unverified_requirement": "completed-prior-game final period count or valid game duration for the matched duration/share candidate"
+        "specific_unverified_requirement": "source rounded whole minutes and contradictory archived final clocks prevent exact exposure shares on affected rows;full-protocol-fields-unfrozen"
       },
       "joint_model_research_plan": "coherent FG2M/FG3M/FTM/REB/AST/TOV/BLK/STL draws, scoring identities, all requested sums and DD/TD; separate from the first REB uncertainty ablation",
       "scope_note": "All 13 requested categories are planned for baseline/market/grading coverage; REB-only describes the first isolated improvement experiment, not a user-scope restriction."
@@ -652,6 +697,7 @@
     "Source documentation and selected metadata were reviewed, not a full row-level data audit.",
     "Direct shell network reads were blocked in the assessment environment; GitHub connector and web retrievals succeeded.",
     "Release asset timestamps describe archive revisions, not original pregame observation times.",
-    "No automatic live source, forecast, pricing, selection, ticket or settlement operation is enabled by this file."
+    "No automatic live source, forecast, pricing, selection, ticket or settlement operation is enabled by this file.",
+    "2026-10-19 implementation runtime obtained real bounded rows; historical as-of and intended ongoing access/raw redistribution remain unproven. See current handoff and detailed audit reports; original checks above are historical."
   ]
 }

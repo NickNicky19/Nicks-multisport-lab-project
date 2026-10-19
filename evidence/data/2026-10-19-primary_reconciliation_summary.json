@@ -1,0 +1,364 @@
+{
+  "comparison_game": {
+    "espn_event_id": "401809243",
+    "nba_event_id": "0022500001",
+    "match_basis": "manually checked same HOU-OKC matchup, date, scheduled time and final125-124 score; player full names and team verified one-to-one only in this audit, not a reusable identity resolver",
+    "nba_status": "Final/OT2",
+    "nba_periods": 6,
+    "nba_playing_duration_minutes": 58,
+    "wall_clock_duration_warning": "NBA page duration3:16 and gamebook Game Duration3:15 are wall-clock, not playing duration"
+  },
+  "sportsdataverse_vs_primary": {
+    "roster_rows": 27,
+    "appeared": 20,
+    "dnp": 7,
+    "count_field_comparisons": 300,
+    "count_mismatch_count": 0,
+    "participation_mismatch_count": 0,
+    "minute_max_abs_difference": 0.5,
+    "all_20_reported_minutes_within_rounding_interval": true,
+    "comparison_rows": [
+      {
+        "espn_player_id": "3202",
+        "nba_player_id": "201142",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.04999999999999716,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4432639",
+        "nba_player_id": "1631095",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.25,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "2991235",
+        "nba_player_id": "203500",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.5,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4871144",
+        "nba_player_id": "1630578",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.11666666666666714,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4684740",
+        "nba_player_id": "1641708",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.3999999999999986,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4433192",
+        "nba_player_id": "1631106",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.3999999999999986,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "3102529",
+        "nba_player_id": "203991",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.13333333333333286,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4065663",
+        "nba_player_id": "1629006",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.03333333333333499,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4711272",
+        "nba_player_id": "1642263",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.216666666666665,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "3209",
+        "nba_player_id": "201145",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": null,
+        "rounded_minutes_interval_contains_primary": null
+      },
+      {
+        "espn_player_id": "2578185",
+        "nba_player_id": "1627827",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": null,
+        "rounded_minutes_interval_contains_primary": null
+      },
+      {
+        "espn_player_id": "3136777",
+        "nba_player_id": "1630256",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": null,
+        "rounded_minutes_interval_contains_primary": null
+      },
+      {
+        "espn_player_id": "3922230",
+        "nba_player_id": "1628988",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": null,
+        "rounded_minutes_interval_contains_primary": null
+      },
+      {
+        "espn_player_id": "4067858",
+        "nba_player_id": "1630284",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": null,
+        "rounded_minutes_interval_contains_primary": null
+      },
+      {
+        "espn_player_id": "4576085",
+        "nba_player_id": "1631120",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": null,
+        "rounded_minutes_interval_contains_primary": null
+      },
+      {
+        "espn_player_id": "4222252",
+        "nba_player_id": "1628392",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.14999999999999858,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4433255",
+        "nba_player_id": "1631096",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.5,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4278073",
+        "nba_player_id": "1628983",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.21666666666666856,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4397020",
+        "nba_player_id": "1629652",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.25,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4683692",
+        "nba_player_id": "1641717",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.3500000000000014,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4432823",
+        "nba_player_id": "1631119",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.11666666666666714,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4684208",
+        "nba_player_id": "1642964",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.25,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "2991350",
+        "nba_player_id": "1627936",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.18333333333333357,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4397183",
+        "nba_player_id": "1630598",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.466666666666665,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4706557",
+        "nba_player_id": "1642959",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.1,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4900671",
+        "nba_player_id": "1642349",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": 0.40000000000000036,
+        "rounded_minutes_interval_contains_primary": true
+      },
+      {
+        "espn_player_id": "4997526",
+        "nba_player_id": "1631172",
+        "participation_matches": true,
+        "count_field_mismatches": [],
+        "minutes_abs_difference": null,
+        "rounded_minutes_interval_contains_primary": null
+      }
+    ]
+  },
+  "pbpstats_vs_primary": {
+    "appeared_rows": 20,
+    "count_field_comparisons": 300,
+    "sparse_missing_fields_interpreted_as_zero_for_this_comparison_only": {
+      "FG2M": 4,
+      "Turnovers": 7,
+      "Steals": 9,
+      "FtPoints": 7,
+      "FTA": 7,
+      "Assists": 5,
+      "Blocks": 12,
+      "OffRebounds": 9,
+      "FG3M": 9,
+      "FG3A": 4,
+      "DefRebounds": 4,
+      "Rebounds": 4,
+      "Points": 2
+    },
+    "stat_mismatch_count": 0,
+    "minute_rows_differing": 9,
+    "minute_max_abs_difference_seconds": 1.0,
+    "comparison_rows": [
+      {
+        "nba_player_id": "1629006",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": -1.0
+      },
+      {
+        "nba_player_id": "1630578",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": 0.0
+      },
+      {
+        "nba_player_id": "1631095",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": 0.0
+      },
+      {
+        "nba_player_id": "1631106",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": -1.0
+      },
+      {
+        "nba_player_id": "1641708",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": 0.0
+      },
+      {
+        "nba_player_id": "1642263",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": -1.0
+      },
+      {
+        "nba_player_id": "201142",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": 0.0
+      },
+      {
+        "nba_player_id": "203500",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": 0.0
+      },
+      {
+        "nba_player_id": "203991",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": -1.0
+      },
+      {
+        "nba_player_id": "1627936",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": -1.0
+      },
+      {
+        "nba_player_id": "1628392",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": -1.0
+      },
+      {
+        "nba_player_id": "1628983",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": 0.0
+      },
+      {
+        "nba_player_id": "1629652",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": 0.0
+      },
+      {
+        "nba_player_id": "1630598",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": 0.0
+      },
+      {
+        "nba_player_id": "1631096",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": -1.0
+      },
+      {
+        "nba_player_id": "1631119",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": 0.0
+      },
+      {
+        "nba_player_id": "1641717",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": 0.0
+      },
+      {
+        "nba_player_id": "1642349",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": -1.0
+      },
+      {
+        "nba_player_id": "1642959",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": -1.0
+      },
+      {
+        "nba_player_id": "1642964",
+        "stat_mismatches": [],
+        "minutes_difference_seconds": 0.0
+      }
+    ]
+  },
+  "scope": "one2025-10-21 game only; no general coverage, final roster availability, revised history or future skill claim"
+}

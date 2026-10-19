@@ -10,3 +10,7 @@ artifacts/
 *.parquet
 *.duckdb
 *.sqlite*
+.local-data/
+output/
+.pytest_cache/
+node_modules/

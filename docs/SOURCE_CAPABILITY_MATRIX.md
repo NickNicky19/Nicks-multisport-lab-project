@@ -2,6 +2,14 @@
 
 Checked: **2026-10-19 21:14 UTC**. This is a source assessment for a new, separate multisport research project. It is not an assertion that a collector, model, current quote feed or profitable selection policy is operating.
 
+Implementation follow-up: actual runtime row/route checks now supplement the
+original assessment below in [`DATA_FEASIBILITY.md`](../DATA_FEASIBILITY.md) and
+[`OFFER_INVENTORY.md`](OFFER_INVENTORY.md). These reports retain source clocks,
+hashes, sample counts and failures. NBA statistical row evidence does not admit
+production operation, historical as-of availability, source rights or settlement;
+offer inventory does not establish a complete full-game priced contract. The
+dated original observations below remain provenance, not the current handoff.
+
 The NBA project scope is **all 13 requested categories**: points (PTS), rebounds (REB), assists (AST), points + rebounds + assists (PRA), points + rebounds (PR), rebounds + assists (RA), three-pointers made (3PM), blocked shots (BLK), steals (STL), blocks + steals (BLK+STL), turnovers (TOV), double-doubles (DD) and triple-doubles (TD). Points + assists (PA) is optional additional coverage in the market registry.
 
 The first isolated improvement experiment is **NBA full-game rebounds (REB)**. This bounds one scientific comparison; it does **not** limit the planned NBA baseline, market-discovery or grading coverage. Inclusion in full scope does not establish that a source/forecast/settlement path is already working. The experiment protocol is maintained separately.
