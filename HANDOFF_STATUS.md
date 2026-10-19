@@ -13,6 +13,14 @@ open. This is a development checkpoint, not a completed validated model.**
 - Implementation commit: **`243bc9e495f25906216f1a438cb060ec64de3f7c`**.
 - Branch: **`implementation/nba-foundation`**. This status revision follows that
   implementation commit; `git rev-parse HEAD` identifies its exact documentation head.
+- Review: [PR #1](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/1),
+  open and mergeable when checked. No merge or auto-merge was requested.
+- Verified CI revision: `70b74ed49c458fbcc61715df0d26a3f95c983b15`.
+  Both [branch run](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39339596935)
+  and [PR run](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39339634821)
+  completed successfully, including checks, build and artifact upload. Deploy was
+  **skipped** by the non-main guard. This documentation-only update records those
+  observed results; newer checks may be inspected from the PR without implying deployment.
 - Workspace originally had no project checkout. Cloned the existing remote into
   `/workspace/Nicks-multisport-lab-project`; initial tree clean, no workflows.
   Re-fetched before integration: remote main remained at the starting SHA.
@@ -51,7 +59,7 @@ open. This is a development checkpoint, not a completed validated model.**
 | Layer | Observed result | Limits |
 | --- | --- | --- |
 | Original software baseline | 28 tests passed; synthetic demo exit 0 | No statistical evidence |
-| Final local software | **94 Python tests**, **14 named Node tests**, demo, checksum and whitespace checks passed | Synthetic checks establish specified behavior only |
+| Final local software and CI | **94 Python tests**, **14 named Node tests**, demo, checksum and whitespace checks passed; branch and PR check/build jobs succeeded | Synthetic checks establish specified behavior only |
 | Real statistical data | 34,883 roster rows audited; 33 invalid identities quarantined; strict schedule joins; one primary game reconciled on 300 count comparisons and 27 participation states | One ending-year archive; primary reconciliation covers one game; no verified historical feature clocks or ongoing-use rights |
 | Reproducible panel | 26,645 source-stage-2 standard-team complete appearances; offline replay reproduces **14,720,351 bytes** and SHA `489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c` | DNP/unknowns not zeros; 104 rounded-zero appearances retained; source stage2 can include Cup final |
 | R0 development evaluation | Frozen before scoring; 200 appearances/200 players/nine games, actual date 2025-10-28, 16 cold starts, two rounded-zero appearances; 22.776781 s / 77,204 KiB | Registered Oct28/29 had 411 candidates; 211 omitted by fixed upfront cap; no post-score exclusions. Historical appearance-conditioned development only, no holdout/promotion |
