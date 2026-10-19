@@ -12,6 +12,16 @@ dashboard, Pages workflow or verified live deployment.** Importing the starter
 does not publish a website. The public URL must remain described as expected until
 a deployment and HTTP/browser readback establish it.
 
+Implementation update, 2026-10-19: `web/` now provides the initial research
+interface; `multisport_lab.publication` assembles validated catalogs into `output/`.
+`.github/workflows/pages.yml` checks/builds on the implementation branch and PRs;
+its dependent Pages job runs only from `main`, never unreviewed PR code. Action
+major tags were resolved to full upstream SHAs and their action metadata inspected
+on this date (checkout/setup-python/setup-node v7, configure-pages v6,
+upload-pages-artifact/deploy-pages v5). No source polling or scheduled jobs are
+enabled. See `PUBLICATION_SCHEMA.md` and the current handoff for actual check,
+configuration and deployment results; this specification alone proves none.
+
 ## Hosting architecture
 
 Use the same basic hosting pattern as Nick's NFL project: Python produces validated

@@ -1,4 +1,38 @@
-# Starter verification and delivery status
+# Verification history and delivery status
+
+## Implementation checkpoint — 2026-10-19
+
+The integration owner ran the current required checks: **94 Python tests passed**,
+the synthetic offline demo exited 0, and **14 named Node tests passed**. Build and
+artifact schema/hash/path smoke checks passed. Chromium 154 passed all seven hash
+routes/direct reloads beneath `/Nicks-multisport-lab-project/`, desktop and mobile
+390px/320px, scope/builder controls, failure/retention states and no page overflow.
+See `UI_NOTES.md` for actual browser commands and limitations.
+
+These software results are separate from the bounded real-source audit in
+[`DATA_FEASIBILITY.md`](../DATA_FEASIBILITY.md) and the source offer findings in
+[`OFFER_INVENTORY.md`](OFFER_INVENTORY.md). No raw source material is in the Pages
+artifact. Independent review reproduced the normalized-to-schedule join and
+checked actual offer-import counts, hashes, scope semantics and artifact boundaries.
+
+One frozen R0 development pilot scored 200 appearances / nine games from
+2025-10-28, under the pre-recorded protocol in `evidence/research/r0-protocol.json`.
+Its 22.776781-second aggregate receipt is `evidence/research/r0-pilot.json`;
+`BASELINE_REFERENCE.md` reports every category and explicit infinite-log losses.
+All executed source hashes matched at integration. This is reconstructed,
+appearance-conditioned development evidence; no confirmatory comparison,
+participation validation, REB B0/B1/C1 result, selected-policy validation or
+qualified probability is established.
+
+No future paper ticket/outcome exists. Source automation and complete venue
+semantics/payouts remain unadmitted. The Pages workflow is implemented, but
+attempting `gh api -X POST repos/NickNicky19/Nicks-multisport-lab-project/pages
+-f build_type=workflow` returned **403 Resource not accessible by integration**.
+Repository Settings → Pages → Build and deployment → Source: **GitHub Actions**
+remains an owner action. No deployment or live-site claim follows from local
+browser checks. Current commit/CI/PR details belong in `HANDOFF_STATUS.md`.
+
+## Original starter report
 
 Prepared October 19, 2026. This report describes the local starter package, not a
 trained forecasting system or an operating player-prop service.

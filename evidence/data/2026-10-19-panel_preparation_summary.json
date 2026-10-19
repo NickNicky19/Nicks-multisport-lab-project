@@ -1,0 +1,67 @@
+{
+  "schema_version": "nba-panel-preparation-v1",
+  "purpose": "RECONSTRUCTED_RESEARCH_PREPARATION_NO_EVALUATION",
+  "population": "identified complete APPEARED, archived FINAL, source stage2, reviewed standard teams1..30; stage2 may include NBA Cup final",
+  "raw_player_rows": 34883,
+  "schedule_rows": 1330,
+  "normalized_player_rows": 34850,
+  "schedule_joined_rows": 34850,
+  "upstream_exclusions": {
+    "normalization_rejected": 33,
+    "normalization_rejection_reasons": {
+      "athlete_id needs a nonempty source ID": 33
+    },
+    "schedule_join_rejected": 0,
+    "schedule_join_rejection_reasons": {},
+    "cohort_exclusion_precedence": [
+      "unsupported_identity_namespace",
+      "nonstandard_nba_teams_including_all_star",
+      "outside_source_stage2",
+      "not_explicitly_final",
+      "dnp_or_unknown_participation",
+      "incomplete_primitive_or_minutes",
+      "unknown_minutes_precision"
+    ],
+    "cohort_exclusion_counts": {
+      "dnp": 5530,
+      "incomplete_primitive_or_minutes": 13,
+      "nonstandard_nba_teams_including_all_star": 73,
+      "outside_source_stage2": 2589
+    },
+    "total_excluded_rows": 8238
+  },
+  "output_rows": 26645,
+  "output_events": 1231,
+  "claims": {
+    "historical_asof_verified": false,
+    "pregame_roster_verified": false,
+    "model_evaluated": false,
+    "source_permission_established": false
+  },
+  "input_assets": {
+    "players": {
+      "path": "/tmp/nml-nba-audit/sdv_player_box_2026.parquet",
+      "sha256": "29a29dc9efd055a93e069a0382ac830d98a13274bee655beba69d95cff099713",
+      "bytes": 606444,
+      "rows": 34883,
+      "columns": 57,
+      "arrow_decoded_bytes": 23209406,
+      "pyarrow_version": "23.0.1"
+    },
+    "schedule": {
+      "path": "/tmp/nml-nba-audit/sdv_schedule_2026.parquet",
+      "sha256": "b3884aa4aa276d1fcafc71b69394675904a968902068bff634932e5d7afacae4",
+      "bytes": 525802,
+      "rows": 1330,
+      "columns": 77,
+      "arrow_decoded_bytes": 9398676,
+      "pyarrow_version": "23.0.1"
+    }
+  },
+  "output": {
+    "path": "/tmp/nml-nba-audit/reproduced_normalized.jsonl",
+    "sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c",
+    "bytes": 14720351,
+    "publication": "local_create_only; not a durable prospective ledger"
+  }
+}

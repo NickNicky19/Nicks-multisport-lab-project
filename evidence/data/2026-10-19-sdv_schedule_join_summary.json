@@ -1,0 +1,205 @@
+{
+  "schedule_rows": 1330,
+  "schedule_unique_event_ids": 1330,
+  "schedule_status_counts": {
+    "('STATUS_FINAL', True)": 1326,
+    "('STATUS_POSTPONED', False)": 4
+  },
+  "schedule_clock_counts": {
+    "0.0": 484,
+    "720.0": 808,
+    "300.0": 38
+  },
+  "player_rows_joined": 34850,
+  "join_failure_count": 0,
+  "join_failure_reasons": {},
+  "schedule_final_games_without_player_rows": 0,
+  "standard_nba_team_ids": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30"
+  ],
+  "exhibition_team_ids": [
+    "111386",
+    "132374",
+    "132375"
+  ],
+  "nonstandard_format_events": [
+    {
+      "game_id": 401838143,
+      "home_display_name": "Team Stripes",
+      "away_display_name": "Team Stars",
+      "format_regulation_periods": 1.0,
+      "status_period": 1.0,
+      "season_type": 2
+    },
+    {
+      "game_id": 401838142,
+      "home_display_name": "Team Stripes",
+      "away_display_name": "World",
+      "format_regulation_periods": 1.0,
+      "status_period": 1.0,
+      "season_type": 2
+    },
+    {
+      "game_id": 401838141,
+      "home_display_name": "Team Stripes",
+      "away_display_name": "Team Stars",
+      "format_regulation_periods": 1.0,
+      "status_period": 1.0,
+      "season_type": 2
+    },
+    {
+      "game_id": 401838140,
+      "home_display_name": "Team Stars",
+      "away_display_name": "World",
+      "format_regulation_periods": 1.0,
+      "status_period": 2.0,
+      "season_type": 2
+    }
+  ],
+  "joined_audit": {
+    "row_count": 34850,
+    "event_count": 1326,
+    "player_count": 591,
+    "team_count": 33,
+    "participation": {
+      "APPEARED": 28779,
+      "DNP": 6071
+    },
+    "seasons": {
+      "2026:3": 2419,
+      "2026:5": 170,
+      "2026:2": 32261
+    },
+    "duplicate_event_player_rows": 0,
+    "appearance_missing_fields": {
+      "minutes": 24,
+      "points": 0,
+      "fgm": 0,
+      "fga": 0,
+      "fg2m": 0,
+      "fg3m": 0,
+      "fg3a": 0,
+      "ftm": 0,
+      "fta": 0,
+      "oreb": 0,
+      "dreb": 0,
+      "rebounds": 0,
+      "assists": 0,
+      "turnovers": 0,
+      "blocks": 0,
+      "steals": 0
+    },
+    "appearance_zero_fields": {
+      "minutes": 104,
+      "points": 3322,
+      "fgm": 3990,
+      "fga": 1526,
+      "fg2m": 6742,
+      "fg3m": 12484,
+      "fg3a": 5795,
+      "ftm": 13628,
+      "fta": 12741,
+      "oreb": 13374,
+      "dreb": 4637,
+      "rebounds": 3329,
+      "assists": 7103,
+      "turnovers": 10709,
+      "blocks": 19917,
+      "steals": 14704
+    },
+    "identity_failures": {},
+    "rows_with_verified_final_status": 34850,
+    "rows_with_verified_duration": 12639,
+    "claims": {
+      "historical_asof_verified": false,
+      "pregame_roster_verified": false,
+      "model_evaluated": false,
+      "source_permission_established": false
+    }
+  },
+  "pilot_preparation": {
+    "definition": "identified APPEARED; source season_type2; both teams in reviewed2026 standard NBA inventory; archived FINAL; all counts and minutes present. Not a pregame candidate universe.",
+    "row_count": 26645,
+    "event_count": 1231,
+    "earliest_12_utc_dates": [
+      {
+        "date": "2025-10-21",
+        "appearance_rows": 20
+      },
+      {
+        "date": "2025-10-22",
+        "appearance_rows": 125
+      },
+      {
+        "date": "2025-10-23",
+        "appearance_rows": 188
+      },
+      {
+        "date": "2025-10-24",
+        "appearance_rows": 105
+      },
+      {
+        "date": "2025-10-25",
+        "appearance_rows": 253
+      },
+      {
+        "date": "2025-10-26",
+        "appearance_rows": 208
+      },
+      {
+        "date": "2025-10-27",
+        "appearance_rows": 88
+      },
+      {
+        "date": "2025-10-28",
+        "appearance_rows": 254
+      },
+      {
+        "date": "2025-10-29",
+        "appearance_rows": 157
+      },
+      {
+        "date": "2025-10-30",
+        "appearance_rows": 155
+      },
+      {
+        "date": "2025-10-31",
+        "appearance_rows": 132
+      },
+      {
+        "date": "2025-11-01",
+        "appearance_rows": 200
+      }
+    ],
+    "normalized_jsonl_sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c"
+  }
+}

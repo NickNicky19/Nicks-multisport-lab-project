@@ -1,0 +1,554 @@
+{
+  "schema_version": "nba-offer-audit-summary-v1",
+  "audit_date_utc": "2026-10-19",
+  "public_retention": "Structural summaries, counts and hashes only; raw responses and actual individual offer rows excluded.",
+  "scope": "One-time user-requested NBA feasibility inspection; no live adapter or schedule enabled.",
+  "source_routes": [
+    {
+      "key": "espn_scoreboard",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261020",
+      "retrieval_started_at": "2026-10-19T22:53:26.348138+00:00",
+      "status": 200,
+      "bytes": 40495,
+      "sha256": "6c2315b8cbf5ac7ee81746a144a0bb879c12691aa94d6d3bd6dd286414bd07aa",
+      "content_type": "application/json;charset=UTF-8",
+      "date": "Mon, 19 Oct 2026 22:53:26 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "dict",
+        "keys": [
+          "leagues",
+          "events",
+          "provider"
+        ],
+        "length": 3
+      },
+      "elapsed_seconds": 0.281,
+      "retrieval_finished_at": "2026-10-19T22:53:26.629259+00:00"
+    },
+    {
+      "key": "sleeper_lines",
+      "url": "https://api.sleeper.com/lines/available",
+      "retrieval_started_at": "2026-10-19T22:53:26.629319+00:00",
+      "status": 200,
+      "bytes": 3266652,
+      "sha256": "da5999dac2dc9070aebf5fc6c358d8b0804892f6a6beb0bc1ab2491c13c3b44e",
+      "content_type": "application/json; charset=utf-8",
+      "date": "Mon, 19 Oct 2026 22:53:26 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "list",
+        "keys": null,
+        "length": 1916
+      },
+      "elapsed_seconds": 0.511,
+      "retrieval_finished_at": "2026-10-19T22:53:27.139910+00:00"
+    },
+    {
+      "key": "sleeper_lines_nba",
+      "url": "https://api.sleeper.com/lines/available?sport=nba",
+      "retrieval_started_at": "2026-10-19T22:53:27.139961+00:00",
+      "status": 200,
+      "bytes": 3317594,
+      "sha256": "a26c267d7d33e34312736bda2e03cc829d1f03f2d9b7c0d1ea643a6a9882c406",
+      "content_type": "application/json; charset=utf-8",
+      "date": "Mon, 19 Oct 2026 22:53:31 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "list",
+        "keys": null,
+        "length": 1953
+      },
+      "elapsed_seconds": 4.708,
+      "retrieval_finished_at": "2026-10-19T22:53:31.848035+00:00"
+    },
+    {
+      "key": "sleeper_props",
+      "url": "https://api.sleeper.com/picks/available",
+      "retrieval_started_at": "2026-10-19T22:53:31.848087+00:00",
+      "status": 200,
+      "bytes": 298623,
+      "sha256": "896f7b6739bca3b07f2b5808d9fd4f8f2f53fd0c309f67c4f955cf8672cf4dd4",
+      "content_type": "text/html; charset=utf-8",
+      "date": "Mon, 19 Oct 2026 22:53:32 GMT",
+      "last_modified": null,
+      "elapsed_seconds": 0.759,
+      "retrieval_finished_at": "2026-10-19T22:53:32.607280+00:00"
+    },
+    {
+      "key": "sleeper_rules",
+      "url": "https://support.sleeper.com/en/articles/8508362-sleeper-picks-rules",
+      "retrieval_started_at": "2026-10-19T22:53:32.607329+00:00",
+      "error": "HTTPError",
+      "message": "HTTP Error 404: Not Found",
+      "elapsed_seconds": 0.538,
+      "retrieval_finished_at": "2026-10-19T22:53:33.145683+00:00"
+    },
+    {
+      "key": "espn_odds",
+      "url": "https://sports.core.api.espn.com/v2/sports/basketball/nba/events/401909088/competitions/401909088/odds?limit=100",
+      "retrieval_started_at": "2026-10-19T22:54:02.858621+00:00",
+      "status": 404,
+      "bytes": 52,
+      "sha256": "59b8d1943a7fc40e3e044d0cea94f61a0e35be976af0e83c623114966c7109f9",
+      "content_type": null,
+      "date": "Mon, 19 Oct 2026 22:54:03 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "dict",
+        "keys": [
+          "error"
+        ],
+        "length": 1
+      },
+      "pagination": {},
+      "elapsed_seconds": 0.422,
+      "retrieval_finished_at": "2026-10-19T22:54:03.280254+00:00"
+    },
+    {
+      "key": "espn_propbets",
+      "url": "https://sports.core.api.espn.com/v2/sports/basketball/nba/events/401909088/competitions/401909088/odds/100/propbets?limit=100",
+      "retrieval_started_at": "2026-10-19T22:54:02.859418+00:00",
+      "status": 404,
+      "bytes": 52,
+      "sha256": "59b8d1943a7fc40e3e044d0cea94f61a0e35be976af0e83c623114966c7109f9",
+      "content_type": null,
+      "date": "Mon, 19 Oct 2026 22:54:03 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "dict",
+        "keys": [
+          "error"
+        ],
+        "length": 1
+      },
+      "pagination": {},
+      "elapsed_seconds": 0.403,
+      "retrieval_finished_at": "2026-10-19T22:54:03.262359+00:00"
+    },
+    {
+      "key": "espn_playerprops",
+      "url": "https://sports.core.api.espn.com/v2/sports/basketball/nba/events/401909088/competitions/401909088/odds/100/playerprops?limit=100",
+      "retrieval_started_at": "2026-10-19T22:54:02.860157+00:00",
+      "status": 404,
+      "bytes": 52,
+      "sha256": "59b8d1943a7fc40e3e044d0cea94f61a0e35be976af0e83c623114966c7109f9",
+      "content_type": null,
+      "date": "Mon, 19 Oct 2026 22:54:03 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "dict",
+        "keys": [
+          "error"
+        ],
+        "length": 1
+      },
+      "pagination": {},
+      "elapsed_seconds": 0.37,
+      "retrieval_finished_at": "2026-10-19T22:54:03.230445+00:00"
+    },
+    {
+      "key": "espn_summary",
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909088",
+      "retrieval_started_at": "2026-10-19T22:54:03.230479+00:00",
+      "status": 200,
+      "bytes": 102094,
+      "sha256": "48bde3f5583f1c18df1c18b2a4cfcf42f147ed244a10c99e450758cd723f19c9",
+      "content_type": "application/json;charset=UTF-8",
+      "date": "Mon, 19 Oct 2026 22:54:03 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "dict",
+        "keys": [
+          "boxscore",
+          "format",
+          "gameInfo",
+          "lastFiveGames",
+          "leaders",
+          "seasonseries",
+          "injuries",
+          "broadcasts",
+          "pickcenter",
+          "odds",
+          "againstTheSpread",
+          "news",
+          "predictor",
+          "winprobability",
+          "header",
+          "ticketsInfo",
+          "article",
+          "videos",
+          "wallclockAvailable",
+          "meta",
+          "standings"
+        ],
+        "length": 21
+      },
+      "pagination": {},
+      "elapsed_seconds": 0.459,
+      "retrieval_finished_at": "2026-10-19T22:54:03.689336+00:00"
+    },
+    {
+      "key": "sleeper_schedule",
+      "url": "https://api.sleeper.com/schedule/nba/2026/regular",
+      "retrieval_started_at": "2026-10-19T22:54:03.262386+00:00",
+      "status": 200,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "content_type": "application/json; charset=utf-8",
+      "date": "Mon, 19 Oct 2026 22:54:03 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "list",
+        "keys": null,
+        "length": 0
+      },
+      "elapsed_seconds": 0.343,
+      "retrieval_finished_at": "2026-10-19T22:54:03.605727+00:00"
+    },
+    {
+      "key": "sleeper_players",
+      "url": "https://api.sleeper.com/players/nba",
+      "retrieval_started_at": "2026-10-19T22:54:03.280295+00:00",
+      "status": 200,
+      "bytes": 736929,
+      "sha256": "bbc35f94f640e04e4fc21a2cf8bbcff545d87d3b4f9712d9be0a954a19dda278",
+      "content_type": "application/json; charset=utf-8",
+      "date": "Mon, 19 Oct 2026 22:54:03 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "dict",
+        "keys": [
+          "1875",
+          "1408",
+          "2091",
+          "2508",
+          "2199",
+          "2064",
+          "1284",
+          "2801",
+          "1073",
+          "1982",
+          "2474",
+          "1907",
+          "1684",
+          "1195",
+          "2023",
+          "1461",
+          "4907",
+          "2481",
+          "2125",
+          "4992",
+          "1590",
+          "4804",
+          "1510",
+          "4925",
+          "1995",
+          "4828",
+          "1914",
+          "1711",
+          "1148",
+          "1649"
+        ],
+        "length": 2146
+      },
+      "pagination": {},
+      "elapsed_seconds": 0.516,
+      "retrieval_finished_at": "2026-10-19T22:54:03.795920+00:00"
+    },
+    {
+      "key": "sleeper_pick_rules",
+      "url": "https://sleeper.com/picks/rules",
+      "retrieval_started_at": "2026-10-19T22:54:03.605757+00:00",
+      "status": 200,
+      "bytes": 298624,
+      "sha256": "6474acc60083fdf565f62225b9baf73830a94498b5ee25ec8d516ebec2dcceca",
+      "content_type": "text/html; charset=utf-8",
+      "date": "Mon, 19 Oct 2026 22:54:04 GMT",
+      "last_modified": null,
+      "elapsed_seconds": 0.538,
+      "retrieval_finished_at": "2026-10-19T22:54:04.143752+00:00"
+    },
+    {
+      "key": "sleeper_support",
+      "url": "https://support.sleeper.com/en/collections/4104929-sleeper-picks",
+      "retrieval_started_at": "2026-10-19T22:54:03.689798+00:00",
+      "status": 404,
+      "bytes": 65914,
+      "sha256": "997b795ab3bf1f7e0bfa159959103c4dcb149d841ddc02a38eeeb50da42b0b4e",
+      "content_type": "text/html; charset=utf-8",
+      "date": "Mon, 19 Oct 2026 22:54:04 GMT",
+      "last_modified": null,
+      "elapsed_seconds": 0.56,
+      "retrieval_finished_at": "2026-10-19T22:54:04.249411+00:00"
+    },
+    {
+      "key": "espn_terms",
+      "url": "https://disneytermsofuse.com/english/",
+      "retrieval_started_at": "2026-10-19T22:54:03.796315+00:00",
+      "status": 200,
+      "bytes": 111074,
+      "sha256": "7a1d01137ec90530784a3f6f92742eb7b42ea2fb4514ccdbabbd9d688cfc05af",
+      "content_type": "text/html; charset=UTF-8",
+      "date": "Mon, 19 Oct 2026 22:54:04 GMT",
+      "last_modified": null,
+      "elapsed_seconds": 0.563,
+      "retrieval_finished_at": "2026-10-19T22:54:04.359006+00:00"
+    },
+    {
+      "key": "sleeper_docs",
+      "url": "https://docs.sleeper.com/",
+      "retrieval_started_at": "2026-10-19T22:54:04.143807+00:00",
+      "status": 200,
+      "bytes": 83830,
+      "sha256": "73eaf749b2bc90fb4e722b61e698ac96abaabce0f1e74c7bc13a5ee39b7aa03f",
+      "content_type": "text/html; charset=utf-8",
+      "date": "Mon, 19 Oct 2026 22:54:04 GMT",
+      "last_modified": "Tue, 11 Aug 2026 20:05:56 GMT",
+      "elapsed_seconds": 0.359,
+      "retrieval_finished_at": "2026-10-19T22:54:04.502781+00:00"
+    },
+    {
+      "key": "espn_propBets",
+      "url": "https://sports.core.api.espn.com/v2/sports/basketball/nba/events/401909088/competitions/401909088/odds/100/propBets?limit=100",
+      "retrieval_started_at": "2026-10-19T22:54:24.076543+00:00",
+      "status": 404,
+      "bytes": 52,
+      "sha256": "59b8d1943a7fc40e3e044d0cea94f61a0e35be976af0e83c623114966c7109f9",
+      "content_type": null,
+      "date": "Mon, 19 Oct 2026 22:54:24 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "dict",
+        "keys": [
+          "error"
+        ],
+        "length": 1
+      },
+      "pagination": {},
+      "elapsed_seconds": 0.346,
+      "retrieval_finished_at": "2026-10-19T22:54:24.422360+00:00"
+    },
+    {
+      "key": "espn_athletes",
+      "url": "https://sports.core.api.espn.com/v2/sports/basketball/nba/events/401909088/competitions/401909088/odds/100/athletes?limit=100",
+      "retrieval_started_at": "2026-10-19T22:54:24.077540+00:00",
+      "status": 404,
+      "bytes": 52,
+      "sha256": "59b8d1943a7fc40e3e044d0cea94f61a0e35be976af0e83c623114966c7109f9",
+      "content_type": null,
+      "date": "Mon, 19 Oct 2026 22:54:24 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "dict",
+        "keys": [
+          "error"
+        ],
+        "length": 1
+      },
+      "pagination": {},
+      "elapsed_seconds": 0.379,
+      "retrieval_finished_at": "2026-10-19T22:54:24.456222+00:00"
+    },
+    {
+      "key": "espn_webodds",
+      "url": "https://site.web.api.espn.com/apis/fittwo/v3/sports/basketball/nba/odds?region=us&lang=en&contentorigin=espn&limit=100",
+      "retrieval_started_at": "2026-10-19T22:54:24.078259+00:00",
+      "status": 404,
+      "bytes": 12,
+      "sha256": "46a9b43e5bc3f0f96b229541dd7988adbdbe5b3077d18f31c11d3d3aa9e0df01",
+      "content_type": null,
+      "date": "Mon, 19 Oct 2026 22:54:24 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "dict",
+        "keys": [
+          "code"
+        ],
+        "length": 1
+      },
+      "pagination": {},
+      "elapsed_seconds": 0.333,
+      "retrieval_finished_at": "2026-10-19T22:54:24.411508+00:00"
+    },
+    {
+      "key": "sleeper_schedule2025",
+      "url": "https://api.sleeper.com/schedule/nba/2025/regular",
+      "retrieval_started_at": "2026-10-19T22:54:24.411541+00:00",
+      "status": 200,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "content_type": "application/json; charset=utf-8",
+      "date": "Mon, 19 Oct 2026 22:54:24 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "list",
+        "keys": null,
+        "length": 0
+      },
+      "elapsed_seconds": 0.319,
+      "retrieval_finished_at": "2026-10-19T22:54:24.730983+00:00"
+    },
+    {
+      "key": "sleeper_support_home",
+      "url": "https://support.sleeper.com/en/",
+      "retrieval_started_at": "2026-10-19T22:54:24.422398+00:00",
+      "status": 200,
+      "bytes": 112771,
+      "sha256": "641e1cb903af5df80259c81653c4e93ea76a14477ae933a9a80411bbe3de4475",
+      "content_type": "text/html; charset=utf-8",
+      "date": "Mon, 19 Oct 2026 22:54:25 GMT",
+      "last_modified": null,
+      "elapsed_seconds": 0.63,
+      "retrieval_finished_at": "2026-10-19T22:54:25.052833+00:00"
+    },
+    {
+      "key": "sleeper_terms",
+      "url": "https://sleeper.com/terms",
+      "retrieval_started_at": "2026-10-19T22:54:24.456258+00:00",
+      "status": 200,
+      "bytes": 503004,
+      "sha256": "8c99cca7851bd7009149e87e869f4fbfbcec13600f1ac03f49b44b761421efa1",
+      "content_type": "text/html; charset=utf-8",
+      "date": "Mon, 19 Oct 2026 22:54:25 GMT",
+      "last_modified": null,
+      "elapsed_seconds": 1.49,
+      "retrieval_finished_at": "2026-10-19T22:54:25.946611+00:00"
+    },
+    {
+      "key": "espn_correct_propbets",
+      "url": "https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/events/401909088/competitions/401909088/odds/100/propbets?limit=1000",
+      "retrieval_started_at": "2026-10-19T22:55:04.372976+00:00",
+      "status": 404,
+      "bytes": 52,
+      "sha256": "59b8d1943a7fc40e3e044d0cea94f61a0e35be976af0e83c623114966c7109f9",
+      "content_type": null,
+      "date": "Mon, 19 Oct 2026 22:55:04 GMT",
+      "last_modified": null,
+      "structure": {
+        "type": "dict",
+        "keys": [
+          "error"
+        ],
+        "length": 1
+      },
+      "pagination": {},
+      "elapsed_seconds": 0.318,
+      "retrieval_finished_at": "2026-10-19T22:55:04.691449+00:00"
+    }
+  ],
+  "sleeper": {
+    "source_response_rows": 1916,
+    "nba_rows": 657,
+    "nba_options": 1314,
+    "nba_subject_ids": 157,
+    "nba_game_ids": 14,
+    "raw_response_sha256": "da5999dac2dc9070aebf5fc6c358d8b0804892f6a6beb0bc1ab2491c13c3b44e",
+    "decoded_payload_sha256": "ad0d474abf1cb5613215fccd955a82ddaff42e494a45d570c4fea84c78ec4aab",
+    "row_keys": [
+      "game_id",
+      "game_status",
+      "line_type",
+      "market_type",
+      "options",
+      "outcome_type",
+      "pick_stats",
+      "recent_performance",
+      "season",
+      "season_type",
+      "sport",
+      "status",
+      "subject_id",
+      "subject_type",
+      "updated_at",
+      "wager_type"
+    ],
+    "option_keys": [
+      "game_id",
+      "game_status",
+      "line_id",
+      "line_type",
+      "market_type",
+      "metadata",
+      "outcome",
+      "outcome_type",
+      "outcome_value",
+      "payout_multiplier",
+      "season",
+      "season_type",
+      "sport",
+      "status",
+      "subject_id",
+      "subject_pos_rank",
+      "subject_position",
+      "subject_team",
+      "subject_type",
+      "wager_type"
+    ],
+    "wager_type_counts": {
+      "assists": 110,
+      "points": 125,
+      "rebounds": 146,
+      "steals": 33,
+      "threes_made": 118,
+      "pts_reb_ast": 95,
+      "blocks": 9,
+      "double_double": 17,
+      "turnovers": 4
+    },
+    "requested_category_option_counts": {
+      "PTS": 250,
+      "PRA": 190,
+      "REB": 292,
+      "3PM": 236,
+      "AST": 220,
+      "RA": 0,
+      "PR": 0,
+      "TOV": 8,
+      "TD": 0,
+      "DD": 34,
+      "BLK": 18,
+      "STL": 66,
+      "BLK+STL": 0
+    },
+    "line_type_counts": {
+      "normal": 657
+    },
+    "option_price_type": "pickem_multiplier",
+    "nba_options_with_price": 1314,
+    "duplicate_option_ids": 0,
+    "upstream_pagination_complete": "UNKNOWN: bare array exposes no count or next-page metadata; sport query did not isolate NBA.",
+    "import_status": "partial",
+    "parser_diagnostics": [],
+    "kernel_contract_count": 0,
+    "kernel_quote_count": 0,
+    "qualified_count": 0,
+    "raw_period_field": "ABSENT",
+    "raw_overtime_field": "ABSENT",
+    "raw_event_start_field": "ABSENT",
+    "raw_settlement_version_field": "ABSENT",
+    "raw_complete_entry_terms": "ABSENT",
+    "raw_source_update_field": "updated_at: Unix milliseconds (clock semantics beyond field label not independently proved)",
+    "source_updated_range_utc": [
+      "2026-10-19T15:16:01.258000+00:00",
+      "2026-10-19T22:53:10.134000+00:00"
+    ]
+  },
+  "espn": {
+    "verified_provider_at_scoreboard": {
+      "id": "100",
+      "name": "Draft Kings"
+    },
+    "provider_scope": "Observed provider label in the NBA scoreboard/summary only; not assumed universal.",
+    "summary_has_game_team_prices": true,
+    "verified_player_offer_count": 0,
+    "player_offer_inventory_status": "UNKNOWN: bounded candidate propbets route returned 404; no valid empty board was observed.",
+    "retained_player_offer_fixture_count": 0
+  },
+  "permission_status": {
+    "sleeper_picks_automation": "NOT_ESTABLISHED; reviewed general terms restrict automated queries/scraping absent written consent. Fantasy API documentation is not a Picks grant.",
+    "espn_automation": "NOT_ESTABLISHED; reviewed Disney terms restrict automated access/extraction, including datasets/AI uses.",
+    "public_raw_redistribution": "NOT_ESTABLISHED for either source.",
+    "production_collector": "DISABLED"
+  }
+}

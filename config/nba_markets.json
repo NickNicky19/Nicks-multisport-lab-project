@@ -2,7 +2,7 @@
   "schema_version": 1,
   "sport": "basketball",
   "league": "NBA",
-  "registry_status": "ALL_REQUESTED_MARKETS_PLANNED_NOT_ADMITTED",
+  "registry_status": "ALL_REQUESTED_MARKETS_REFERENCE_IMPLEMENTED_RESEARCH_NOT_ADMITTED",
   "requested_market_codes": [
     "PTS", "PRA", "REB", "3PM", "AST", "RA", "PR", "TOV", "TD", "DD", "BLK", "STL", "BLK+STL"
   ],
@@ -32,7 +32,8 @@
   "global_admission": {
     "live_collection_enabled": false,
     "live_source_coverage_verified": false,
-    "forecast_trained": false,
+    "forecast_trained": true,
+    "training_scope": "fixed-empirical-reference-fitted-on-bounded-reconstructed-development-only;no-production-admission",
     "forecast_validated": false,
     "settlement_verified": false,
     "priced_paper_selection_enabled": false,

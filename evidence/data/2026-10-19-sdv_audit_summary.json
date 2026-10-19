@@ -1,0 +1,89 @@
+{
+  "row_count": 34850,
+  "event_count": 1326,
+  "player_count": 591,
+  "team_count": 33,
+  "participation": {
+    "APPEARED": 28779,
+    "DNP": 6071
+  },
+  "seasons": {
+    "2026:3": 2419,
+    "2026:5": 170,
+    "2026:2": 32261
+  },
+  "duplicate_event_player_rows": 0,
+  "appearance_missing_fields": {
+    "minutes": 24,
+    "points": 0,
+    "fgm": 0,
+    "fga": 0,
+    "fg2m": 0,
+    "fg3m": 0,
+    "fg3a": 0,
+    "ftm": 0,
+    "fta": 0,
+    "oreb": 0,
+    "dreb": 0,
+    "rebounds": 0,
+    "assists": 0,
+    "turnovers": 0,
+    "blocks": 0,
+    "steals": 0
+  },
+  "appearance_zero_fields": {
+    "minutes": 104,
+    "points": 3322,
+    "fgm": 3990,
+    "fga": 1526,
+    "fg2m": 6742,
+    "fg3m": 12484,
+    "fg3a": 5795,
+    "ftm": 13628,
+    "fta": 12741,
+    "oreb": 13374,
+    "dreb": 4637,
+    "rebounds": 3329,
+    "assists": 7103,
+    "turnovers": 10709,
+    "blocks": 19917,
+    "steals": 14704
+  },
+  "identity_failures": {},
+  "rows_with_verified_final_status": 0,
+  "rows_with_verified_duration": 0,
+  "claims": {
+    "historical_asof_verified": false,
+    "pregame_roster_verified": false,
+    "model_evaluated": false,
+    "source_permission_established": false
+  },
+  "measurements": {
+    "parquet_bytes": 606444,
+    "decoded_arrow_bytes": 23209406,
+    "parquet_read_seconds": 0.326591312000005,
+    "arrow_to_python_seconds": 1.6383698639999693,
+    "normalize_seconds": 0.6073388849999901,
+    "audit_seconds": 0.34227904299996226,
+    "peak_rss_kib": 285324,
+    "pyarrow_version": "23.0.1"
+  },
+  "raw_row_count": 34883,
+  "rejected_source_row_count": 33,
+  "rejection_reasons": {
+    "athlete_id needs a nonempty source ID": 33
+  },
+  "raw_participation": {
+    "APPEARED": 28801,
+    "DNP": 6082
+  },
+  "date_range": [
+    "2025-10-21",
+    "2026-06-13"
+  ],
+  "observed_game_counts_by_season_type": {
+    "2": 1235,
+    "3": 85,
+    "5": 6
+  }
+}
