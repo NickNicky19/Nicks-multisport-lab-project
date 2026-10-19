@@ -1,102 +1,127 @@
 # Implementation handoff status
 
-Updated: October 19, 2026.
+Updated: October 19, 2026 (UTC).
 
-**Current checkpoint: starter bootstrap included in this revision; new Codex
-implementation task not launched by this handoff.**
+**Checkpoint: BOOTSTRAP complete; bounded Milestone 0 audit and full-category
+reference/early website implemented. Source/product and confirmation gates remain
+open. This is a development checkpoint, not a completed validated model.**
 
-## Repository observation
+## Repository and ownership
 
-| Item | Observed state |
-| --- | --- |
-| Canonical repository | `NickNicky19/Nicks-multisport-lab-project` |
-| Remote visibility and branch | Public; `main` |
-| Commit observed before import | `c82225cf893b16de70ebbbcd476774f043360d24` |
-| Contents observed before import | Initial README only |
-| Starter import | Starter code and the tailored roadmap are included at the repository root in this bootstrap revision |
-| New Codex implementation task | Not launched by this handoff |
+- Exact repository: `NickNicky19/Nicks-multisport-lab-project`.
+- Observed starting `main` / `origin/main`: `de86e92352f0fb5a76831275f6de6b256ce05434`.
+- Implementation commit: **`243bc9e495f25906216f1a438cb060ec64de3f7c`**.
+- Branch: **`implementation/nba-foundation`**. This status revision follows that
+  implementation commit; `git rev-parse HEAD` identifies its exact documentation head.
+- Workspace originally had no project checkout. Cloned the existing remote into
+  `/workspace/Nicks-multisport-lab-project`; initial tree clean, no workflows.
+  Re-fetched before integration: remote main remained at the starting SHA.
+- No reset, older ZIP import, replacement remote, force-push or external NFL/MLB
+  writes/session contact/workflow triggers occurred. Original bootstrap
+  `042bedaa73e36033eb30885af06c79bea0bd4f6b` remains ancestry/provenance only.
+- One root integration owner. Bounded data, offers, baseline, frontend, paper and
+  independent-review agents completed their packages; no recurring agents/jobs.
 
-The next owner must inspect the actual repository head and record its SHA before
-starting work. The initial commit above is the bootstrap's parent, not the starter
-revision. The import commit message is "Initialize NBA-first multisport starter and Codex roadmap".
+## What changed
 
-## Launch-readiness clarification
+`git show --stat 243bc9e495f25906216f1a438cb060ec64de3f7c` is the exact file list
+(50 files). Main implementation groups:
 
-The bounded handoff review observed `main` at bootstrap commit
-`042bedaa73e36033eb30885af06c79bea0bd4f6b`. All 29 remote file blob hashes matched
-the reviewed local starter. This documentation revision makes single-sport,
-selected-multiple-sport and all-supported-sport scopes explicit in Props and Paper
-Builder, permits the first parser fixture to come from any observed supported
-full-game category, and clarifies that the proposed first NHL experiment does not
-limit its comprehensive category scope.
+- `multisport_lab/nba_data.py`, `scripts/prepare_nba_panel.py`: namespaced data,
+  DNP/zero/missing distinctions, schedule joins, field audits and offline panel replay.
+- `multisport_lab/baseline.py`, `research_pilot.py`: complete-line empirical R0,
+  same-outcome scoring/sums/DD/TD, all 13 requested categories plus PA, timing and
+  per-category development diagnostics. No independent marginal splicing.
+- `multisport_lab/offer_import.py`: bounded authorized local JSON imports,
+  observed Sleeper shape, exact decimal/provenance checks and explicit diagnostics.
+- `multisport_lab/paper.py`: 2–6-leg manual research contracts, common clock,
+  scope/direction/eligibility/horizon gates, supplied terms/joint-state arithmetic,
+  six-first complete-ticket assessment with smaller sizes/NO_ACTION.
+- `multisport_lab/publication.py`, `web/`, `.github/workflows/pages.yml`:
+  bounded content-addressed research catalog export, responsive seven-view UI,
+  shared SINGLE/SELECTED/ALL scope, artifact checks and dependent Pages workflow.
+- `tests/`: concrete integrity/timing/identity/payout/coherence/export risks.
+- `DATA_FEASIBILITY.md`, `docs/{DECISIONS,BASELINE_REFERENCE,OFFER_INVENTORY,
+  PAPER_CONTRACT,PUBLICATION_SCHEMA,UI_NOTES}.md`, `evidence/`: decisions and
+  real aggregate evidence. Configs, README, verification/source/website docs and
+  checksums updated. Raw source responses are excluded from Git and site output.
 
-The checksum manifest was refreshed and checked. No Python behavior, scientific
-protocol or previous software-test result changed in this documentation review;
-it establishes no new row-data, model-performance or deployment evidence. The
-bootstrap SHA is a provenance reference, not an instruction to reset newer work.
-The new implementation owner must use and verify the current repository revision.
+## Evidence lanes and actual results
 
-## What exists and what has been demonstrated
+| Layer | Observed result | Limits |
+| --- | --- | --- |
+| Original software baseline | 28 tests passed; synthetic demo exit 0 | No statistical evidence |
+| Final local software | **94 Python tests**, **14 named Node tests**, demo, checksum and whitespace checks passed | Synthetic checks establish specified behavior only |
+| Real statistical data | 34,883 roster rows audited; 33 invalid identities quarantined; strict schedule joins; one primary game reconciled on 300 count comparisons and 27 participation states | One ending-year archive; primary reconciliation covers one game; no verified historical feature clocks or ongoing-use rights |
+| Reproducible panel | 26,645 source-stage-2 standard-team complete appearances; offline replay reproduces **14,720,351 bytes** and SHA `489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c` | DNP/unknowns not zeros; 104 rounded-zero appearances retained; source stage2 can include Cup final |
+| R0 development evaluation | Frozen before scoring; 200 appearances/200 players/nine games, actual date 2025-10-28, 16 cold starts, two rounded-zero appearances; 22.776781 s / 77,204 KiB | Registered Oct28/29 had 411 candidates; 211 omitted by fixed upfront cap; no post-score exclusions. Historical appearance-conditioned development only, no holdout/promotion |
+| Per-category results | All 13 + PA scored separately; PTS RPS 4.267494, REB 1.661492, DD Brier 0.070140, TD Brier 0.002640; complete table/interval/zero/log diagnostics retained | Unseen-support infinite log losses retained. DD 18 positives, TD one positive: no rare-event qualification or aggregate accuracy claim |
+| Actual offers | Sleeper: 657 NBA rows / 1,314 options / nine observed families. ESPN current Draft Kings label and game/team prices observed; attempted player route 404 | Four requested families absent only in this snapshot; complete paging, period/OT/start/crosswalk/entry rules unverified. Zero complete actual contracts/quotes/qualified candidates |
+| Website local | Built under repository prefix; Chromium 154 desktop/390px/320px, seven routes/direct reloads, scopes/builder, errors/hash/retention checked | Research inventory and empty collections only; no public forecasts/picks or qualified tickets |
+| Future paper evidence | No issued paper ticket, completed future grade or return | Real offer capture is not a frozen model/ticket/settlement record |
+| Product qualification | **Unavailable**; production/live/priced-selection gates disabled | Generic supplied terms and independence assumptions do not certify providers |
+| Deployment | Workflow implemented; Pages not deployed | Pages creation API returned **403 Resource not accessible by integration**; live URL unverified |
 
-| Area | Evidence and current limit |
-| --- | --- |
-| Offline Python foundation | Contract identities, quote observations, probability/payout arithmetic, basketball identities and immutable evidence helpers are implemented in the starter. |
-| Software checks | The import preparation re-ran the documented suite: **28 tests passed**, and the offline demo succeeded with synthetic labels. These are software checks, not model or source validation. Establish the same baseline against the actual Codex checkout. |
-| NBA scope | All 13 requested categories are registered, with PA optional. Deterministic derived values are implemented; forecast generation is not. |
-| Historical statistical data | Source/release metadata has been investigated. NBA/WNBA binary row data has not been downloaded and reconciled in this project. No audited training panel exists yet. |
-| Forecast models | Untrained; no baseline comparison, challenger result, calibrated production probabilities or achieved accuracy claim. |
-| ESPN/Sleeper live quotes | Candidate routes only. New-project category coverage, complete prices, operational access and settlement mappings are unverified. No live adapter is admitted. |
-| Ticket calculations | Generic arithmetic works for supplied probability states and payout terms. Provider-specific rules, eligibility, joint probabilities and actual current entry economics remain unverified. |
-| Website | Not built or deployed. No GitHub Pages deployment or working public URL has been demonstrated. |
-| Future paper evidence | None captured by this starter; no current picks or qualified tickets. |
-| Existing NFL and MLB projects | External and unchanged by this work. |
+Exact source routes/clocks/hash/missingness/budgets: [data report](DATA_FEASIBILITY.md)
+and [offer inventory](docs/OFFER_INVENTORY.md). Full results and protocol:
+[reference report](docs/BASELINE_REFERENCE.md),
+[pre-scoring receipt](evidence/research/r0-protocol.json),
+[aggregate pilot receipt](evidence/research/r0-pilot.json).
+The run occurred on a dirty implementation tree based on the handoff SHA; the
+receipt preserves exact executed source hashes, which match the committed files.
+No score/evaluator code changed after results. It does not backdate issuance.
+Independent review reproduced schedule joins, actual offer import counts, receipt
+integrity, code hashes and all category sample counts without rerunning scores.
 
-See [`docs/VERIFICATION.md`](docs/VERIFICATION.md) for the prior starter checks and
-[`docs/SOURCE_CAPABILITY_MATRIX.md`](docs/SOURCE_CAPABILITY_MATRIX.md) for source
-findings. Do not convert metadata inspection into a claim of audited data rows.
+## Commands actually run
 
-## First concrete implementation tasks
+From this repository root (raw-file paths are local, not durable storage):
 
-1. **Establish the checkout.** Verify the imported root files, current commit,
-   `AGENTS.md` and working-tree state. Run the existing tests and offline demo.
-   Inspect existing NBA artifacts read-only if available before duplicating work.
-2. **Audit a bounded real NBA data sample.** Obtain an appropriate permitted
-   statistical asset; reconcile player/game identity, minutes, participation,
-   base scoring fields and all requested outcomes. Record gaps, timestamp
-   semantics, hashes and whether the panel is conditional on appearance.
-3. **Implement the complete NBA reference baseline.** Freeze a common input
-   schema, forecast cutoff, player-game population, chronological evaluation
-   protocol and coherent joint sample interface. Produce per-category reports.
-4. **Audit offer fixtures alongside model work.** Map actual available NBA
-   category families from supported source examples, preserving exact contracts,
-   line/price clocks and price meaning. Retain unknowns. Continue price-independent
-   forecasting research when a live quote requirement remains unresolved.
-5. **Build the website and publication path described in the kickoff.** Use
-   clearly labelled development or research data until validated assets exist.
-   Record local checks, the deployment commit and an observed Pages URL when a
-   deployment actually succeeds.
-6. **Run bounded model improvements and future paper observation.** Follow the
-   proposed research plan after its unresolved fields are frozen, then add actual settlement and ticket selection
-   only with the required inputs. Prefer six qualifying legs without filling
-   unsupported tickets; preserve smaller tickets and `NO_ACTION`.
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.publication --build-commit "$(git rev-parse HEAD)"
+node web/tests/site-smoke.mjs output
+python3 web/tests/browser_smoke.py output --screenshots /tmp/nml-final-ui
+sha256sum --check MANIFEST.sha256
+git diff --check
+```
 
-These tasks can share independent agents where useful. One integration owner
-coordinates common files, source admission, data versions and evaluation windows.
-The detailed order and completion criteria are in `CODEX_START_HERE.txt`; this
-file is a status record, not an alternative implementation plan.
+The exact one-time pilot invocation is retained in `r0-pilot.json` and copied in
+`docs/BASELINE_REFERENCE.md`; do not re-run it to select a better result or replace
+its create-only receipt. Inventory-only validates inputs without scoring. The
+preparation command and exact byte-for-byte replay appear in `DATA_FEASIBILITY.md`.
+Actual local offer import returned `partial: 1314 observations, 0 diagnostics`;
+zero qualification. The audit used ordinary bounded public GETs with no new key,
+account, paid service or access bypass. No collector/scheduler was enabled.
 
-## Next checkpoint record
+## Remaining uncertainty and next concrete tasks
 
-Replace this section with observed results as work progresses:
+1. **Review this implementation branch.** Remote PR/CI state is reported alongside
+   this checkpoint; no main merge or deployment is inferred from local checks.
+2. **Pages owner action:** Repository Settings → Pages → Build and deployment →
+   Source: **GitHub Actions**. The connection reported repository admin metadata
+   but its actual create-Pages request was forbidden. After review/merge, require
+   a successful deploy job and HTTP/browser readback of manifest commit and routes
+   before calling the expected URL live:
+   `https://nicknicky19.github.io/Nicks-multisport-lab-project/`.
+3. **Next local implementation package:** version typed event/forecast records
+   for research-only static export, retaining exact identities, real issuance,
+   input hashes, conditioning and independent gates. Current v1 deliberately
+   rejects all nonempty observations. A browser draft is not an evidence ledger.
+4. **Source/product blockers:** permitted complete full-game captures, identity
+   crosswalks, paging/period/OT, actual payout/settlement/eligibility and durable
+   authorized future capture retention. Reviewed source terms do not establish
+   ongoing automated access; use authorized local capture import meanwhile.
+5. **Scientific blockers:** REB duration/share protocol remains proposed: rounded
+   minutes, incomplete precise duration coverage and unfrozen confirmation guards
+   prevent B0/B1/C1 execution. R0 has finite tails, no role/pace adjustment or
+   participation/cross-player model. Establish new frozen development/challenger
+   and genuinely unexamined/future confirmation protocol before accuracy claims.
 
-- Repository and exact commit:
-- Checkpoint completed, blocked or inconclusive:
-- Files and behavior changed:
-- Commands run and outcomes:
-- Data and source evidence actually inspected:
-- Model/evaluation evidence actually produced:
-- Website publication status and observed URL, if any:
-- Remaining uncertainty and concrete next task:
-
-Keep one current handoff record. Link retained detailed reports instead of
-creating competing implementation, audit or collection schedules.
+Keep current raw/normalized files under `/tmp` or ignored `.local-data`; they may
+vanish with this environment. Public summaries and immutable hashes survive in
+Git, but they are not a signed source or a durable raw-capture store. Preserve all
+13-category and future-sport goals, and leave the independent NFL/MLB projects
+untouched. Future outcomes must be appended when events actually occur.

@@ -7,7 +7,8 @@ Updated: October 19, 2026.
 - Repository: [NickNicky19/Nicks-multisport-lab-project](https://github.com/NickNicky19/Nicks-multisport-lab-project).
 - Default branch observed before starter import: `main`.
 - Initial remote commit observed: `c82225cf893b16de70ebbbcd476774f043360d24`.
-- Current checkpoint: **starter bootstrap included in this revision; new Codex implementation task not launched by this handoff**.
+- Current checkpoint: **implementation underway on `implementation/nba-foundation`; BOOTSTRAP complete, bounded real-data/offer audit, all-category empirical development reference and early website implemented**.
+- First implementation commit: `243bc9e495f25906216f1a438cb060ec64de3f7c`, based on reviewed handoff `de86e92352f0fb5a76831275f6de6b256ce05434`; no branch reset or older ZIP import.
 - Status authority for the next session: [`HANDOFF_STATUS.md`](HANDOFF_STATUS.md), supplemented by the actual checked-out commit and observed repository state.
 
 Nick created this independent repository after reviewing the starter package.
@@ -105,9 +106,10 @@ continues.
 ## Start and report
 
 Read `AGENTS.md`, `HANDOFF_STATUS.md`, `CODEX_START_HERE.txt`, and the linked
-research documents before implementation. The current project is an offline
-foundation: no trained model, admitted live quote feed, live website or current
-picks are established.
+research documents before implementation. The current project includes a fitted
+empirical development reference and an early static interface. No confirmatory
+model validation, admitted live quote feed, live website or current picks are
+established. See `HANDOFF_STATUS.md` for the actual checks and evidence.
 
 At a completed or blocked checkpoint, update `HANDOFF_STATUS.md` with the exact
 commit, files, commands, observed outcomes, remaining uncertainty and next task.

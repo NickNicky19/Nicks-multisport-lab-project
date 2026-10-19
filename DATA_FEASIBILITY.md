@@ -231,9 +231,12 @@ an explicit pre-evaluation preparation rule. Its SHA-256 is
 The full identified roster join remains separately available as
 `normalized_sdv_2026_with_schedule.jsonl`; source rejections are retained locally.
 
-Next concrete task: the integration owner freezes the exact cohort, chronological
-development dates, availability reconstruction and reference settings in
-`docs/DECISIONS.md` before scoring. The source worker performs no evaluation.
+The integration owner subsequently froze the exact cohort, chronological
+development dates, availability reconstruction and reference settings before the
+one development run; its separate record is `docs/BASELINE_REFERENCE.md` and
+`evidence/research/`. The source worker performed no evaluation. Next local work
+is typed research export and durable permitted capture design; this audit alone
+does not admit a future operational source or prospective claim.
 Confirmatory evaluation, participation modeling, complete precision/duration
 resolution, future issuance/settlement evidence and source-operation permission
 remain separate unresolved tasks.
