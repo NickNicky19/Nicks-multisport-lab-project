@@ -22,6 +22,14 @@ upload-pages-artifact/deploy-pages v5). No source polling or scheduled jobs are
 enabled. See `PUBLICATION_SCHEMA.md` and the current handoff for actual check,
 configuration and deployment results; this specification alone proves none.
 
+Deployment update, 2026-10-19: PR #1 is merged and the research site is **deployed**
+at https://nicknicky19.github.io/Nicks-multisport-lab-project/ . The main build/deploy
+run 39341268746 succeeded for `5d19fa344de5ceaa6e7cc550f0ac8ac832458202`;
+public HTTP/hash/manifest and desktop/mobile browser checks passed. Source is
+GitHub Actions. Exact evidence and remaining model/source/product limits are in
+`HANDOFF_STATUS.md` and `evidence/deployment/2026-10-19-pages.json`. The starter
+status above is historical; no model or ticket qualification is implied.
+
 ## Hosting architecture
 
 Use the same basic hosting pattern as Nick's NFL project: Python produces validated

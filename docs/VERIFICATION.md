@@ -25,12 +25,24 @@ participation validation, REB B0/B1/C1 result, selected-policy validation or
 qualified probability is established.
 
 No future paper ticket/outcome exists. Source automation and complete venue
-semantics/payouts remain unadmitted. The Pages workflow is implemented, but
-attempting `gh api -X POST repos/NickNicky19/Nicks-multisport-lab-project/pages
--f build_type=workflow` returned **403 Resource not accessible by integration**.
-Repository Settings → Pages → Build and deployment → Source: **GitHub Actions**
-remains an owner action. No deployment or live-site claim follows from local
-browser checks. Current commit/CI/PR details belong in `HANDOFF_STATUS.md`.
+semantics/payouts remain unadmitted.
+
+### Deployment verification — 2026-10-19
+
+PR #1 merged its authorized head `6c6647108a7e807046aecc5ce93e28dda7b95618`
+as main commit `5d19fa344de5ceaa6e7cc550f0ac8ac832458202`. Main workflow
+[39341268746](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39341268746)
+passed 94 Python tests, 14 Node tests, demo, artifact checks, build and deployment.
+The owner selected GitHub Actions for Pages, resolving the earlier 403 setup
+blocker. The live root, manifest and sport asset returned system-verified HTTPS
+200; manifest build commit and hashes matched. Public Chromium rendering checks
+passed all seven routes/direct reloads, desktop/390px/320px, scopes and all ticket
+size/direction requests with NO_ACTION. Browser rendering used only a temporary
+process-specific exception pinned to the configured proxy CA; urllib independently
+verified HTTPS. No persistent trust modification or HOME change occurred.
+Full evidence: `evidence/deployment/2026-10-19-pages.json` and current handoff.
+Site: https://nicknicky19.github.io/Nicks-multisport-lab-project/ .
+Deployment establishes research-site delivery, not forecast/product qualification.
 
 ## Original starter report
 
