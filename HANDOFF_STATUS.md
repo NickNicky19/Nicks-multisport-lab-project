@@ -14,6 +14,25 @@ PR #2 was reviewed and merged through the guarded workflow at authorized head
 `e9bfa4ce7ec07b57dc5688bd592fd2e61d45f7ba`. New work is on
 `implementation/typed-research-ledger` with one integration owner.
 
+Implementation package committed/pushed as **900a7df5ed5270ec6e32054cfa7e6bb2bf29dec7**
+(58 files; exact inventory: `git show --stat 900a7df`).
+[PR #3](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/3) is open.
+[GitHub build39347811263](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39347811263)
+passed for that exact head; deploy was skipped by the non-main guard. Guarded
+watcher reported ready, clean/mergeable, zero unresolved review threads, no
+auto-merge configured. A documentation-only follow-up records this checkpoint.
+
+**Remote durability verified:** independent fresh HTTPS checkout of this same
+repository at900a7df matched all18 original record files /175,190 bytes. An
+isolated fresh Python process loaded the checkout's modules, blocked reads of the
+integration/raw-data directories and recovered every schema/hash/reference/grade
+and original clock with a missing raw input path. No forecasts were regenerated.
+Exact commands, per-file hashes and readback clocks are in
+`evidence/research/2026-10-20-remote-ledger.json`; verification completed
+2026-10-20 00:29:44.860776 UTC. Persisted local-receipt labels remain honest;
+this separately observed remote Git checkpoint establishes retention. It is not
+source authenticity, historical as-of evidence or genuine future issuance.
+
 Current published main is **e9bfa4ce7ec07b57dc5688bd592fd2e61d45f7ba**:
 [workflow39345735154](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39345735154)
 build/deploy succeeded, deployment completed 2026-10-20 00:07:45 UTC. Public
@@ -43,7 +62,7 @@ deterministically selected **historical reconstructions** were actually generate
 already exposed outcomes make these engineering examples, not a new holdout.
 Eighteen create-only ledger receipts total 175,190 bytes. Restart/readback and
 idempotent recovery preserve every original clock/hash; commit/push/fresh remote
-readback is a separate durability checkpoint below. No actual future issuance,
+readback is verified separately above. No actual future issuance,
 paper-ticket outcome or financial settlement exists.
 
 The static build reads saved records without running a model or fetching sources.
@@ -73,7 +92,7 @@ Sleeper returned 675 NBA rows /1,350 options with matching player subject types,
 nine families; absent families are snapshot-specific. Zero complete usable
 quotes, qualified contracts/tickets or source-automation permission are claimed.
 
-Exact package file inventory is the Git diff from `cde1850`: new typed forecast,
+Exact package file inventory is `git diff --name-status cde1850 900a7df`: new typed forecast,
 ledger, fixed-publication command, DEV002 modules/tests; `records/`; publication
 and web validators/renderers/tests; capability/inventory and research docs; new
 offer/development/publication receipts. See `docs/FORECAST_CONTRACT.md`,
@@ -83,8 +102,9 @@ source/execution hashes. Original R0 receipt bytes remain unchanged.
 
 Current package verification: 142 Python tests, synthetic demo, 25 frontend tests,
 artifact checks and actual-history Chromium at 1440/390/320px passed. Actual
-artifact was 150,915 bytes before the later source-description refresh, below
-512 KiB. All seven routes/reloads, all 84 PMFs, category filtering, exact
+artifact was 151,222 bytes after the source-description refresh, below512 KiB.
+Final committed900a7df artifact/Chromium checks passed; all seven routes/reloads,
+all84 PMFs, category filtering, exact
 event/cutoff/issue IDs, grades/NOT_EVALUATED, empty future and builder scopes were
 checked. An independent read-only review checked actual source rows, cutoff
 input hashes, model code, ledger recovery and bootstrap arithmetic without
@@ -101,10 +121,18 @@ node --test --test-isolation=none web/tests/*.test.mjs
 python3 -m multisport_lab.publication --build-commit cde185088f032db587e1fb10845cd84541ef0a8b
 node web/tests/site-smoke.mjs output
 python3 web/tests/browser_smoke.py output --screenshots /tmp/nicks-multisport-real-research-002
+python3 -m multisport_lab.publication --build-commit 900a7df5ed5270ec6e32054cfa7e6bb2bf29dec7
+python3 web/tests/browser_smoke.py output --screenshots /tmp/nml-final-typed-900a
 ```
 
-Remaining: independently verify Git remote retention; publish this feature only
-after its PR/checks/authorized landing and main Pages verification. Current live
+The final browser command initially lacked sandbox localhost socket access;
+rerunning with network-enabled execution passed. No application fix or trust
+store change was required. Remote readback used `git clone --depth 1
+--single-branch --branch implementation/typed-research-ledger <existing-origin>`
+and the isolated verification program retained in its evidence JSON.
+
+Remaining: publish this feature only after its PR/checks/authorized landing and
+main Pages verification. Current live
 site and deployment PR #2 are separate from local typed v2. Next research task is
 a new frozen challenger protocol with broader/sparser-category guards and an
 independently unexamined confirmation window; next future-input task is a permitted
@@ -113,6 +141,11 @@ provider semantics/identity/rules and ongoing permission remain admission blocke
 Ledger limits are 512 receipt files /32 MiB total /4 MiB per file, checked before
 new writes and before recovery decoding. Identical retries work at capacity;
 expansion needs a versioned retention decision rather than deleting originals.
+
+Next concrete integration task: obtain the new PR's exact-head landing approval,
+use the guarded helper, observe merge, then verify main build/deploy and public
+typed manifest/asset hashes. PR #2 authorization was used only for PR #2. Until
+then the live v1 site and locally/GitHub-tested typed v2 branch are distinct.
 
 ## Prior implementation and deployment history
 

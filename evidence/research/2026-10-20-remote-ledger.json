@@ -1,0 +1,366 @@
+{
+  "schema_version": "remote-ledger-verification-v1",
+  "verification_started_at": "2026-10-20T00:29:44.143103Z",
+  "verification_finished_at": "2026-10-20T00:29:44.860776Z",
+  "repository": "https://github.com/NickNicky19/Nicks-multisport-lab-project.git",
+  "branch": "implementation/typed-research-ledger",
+  "verified_commit": "900a7df5ed5270ec6e32054cfa7e6bb2bf29dec7",
+  "clone": {
+    "clone_path": "/tmp/nml-remote-ledger-review-vuyb63bx/checkout",
+    "clone_started_at": "2026-10-20T00:28:33.732770+00:00",
+    "clone_finished_at": "2026-10-20T00:28:35.290480+00:00",
+    "command": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "--single-branch",
+      "--branch",
+      "implementation/typed-research-ledger",
+      "https://github.com/NickNicky19/Nicks-multisport-lab-project.git",
+      "/tmp/nml-remote-ledger-review-vuyb63bx/checkout"
+    ],
+    "head": "900a7df5ed5270ec6e32054cfa7e6bb2bf29dec7",
+    "origin": "https://github.com/NickNicky19/Nicks-multisport-lab-project.git",
+    "working_tree_clean": true
+  },
+  "remote_working_tree_clean_after_verification": true,
+  "record_file_count": 18,
+  "record_bytes_total": 175190,
+  "record_hashes": [
+    {
+      "path": "records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json",
+      "bytes": 22838,
+      "sha256": "499b358129adde25134d5ba6243b372b1937915f7a0f2245750a057d40c4b8c6",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json",
+      "bytes": 22747,
+      "sha256": "507344a333f5218039e39b1201e1f203f6045bf8e04375a7a19740ddea337967",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json",
+      "bytes": 22813,
+      "sha256": "e35af6116e8151aacb23d21465c2744324501a92d0f83cf7e780066677df74fa",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json",
+      "bytes": 22815,
+      "sha256": "1748dce54d24cc583deb3e102d08680142307c3c784ddfc728abc02f78e82f0f",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json",
+      "bytes": 22826,
+      "sha256": "d74070a12aa144b4bc917de930e6527f4bd5bdeb84db693a215bec1513562f7b",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json",
+      "bytes": 22830,
+      "sha256": "bf3aa0b6fab62f64a03070fc6775db1bec8b0654e89ae93b3c42133e94649894",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json",
+      "bytes": 4375,
+      "sha256": "cf519c4238f641724d81040f8cdee82b693aa3f98e4ae8db772fbadc480fd6a0",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json",
+      "bytes": 4357,
+      "sha256": "73b72a5ed145708157052c269d25c0dd72467a002e26efac41e1136839fa0f60",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json",
+      "bytes": 4365,
+      "sha256": "c691398d641af291bcd3c2a9d7427ff59ab953606ee9388bc2c202642d80947c",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json",
+      "bytes": 4370,
+      "sha256": "41e3453b89b97c160d56e932f1389ac90b451142dcda3cff27629b1448bc77dd",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json",
+      "bytes": 4369,
+      "sha256": "1297f91dc9154d2b6111e60a1505f4a08e911dd3c99b919431833df76dbe40b5",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json",
+      "bytes": 4368,
+      "sha256": "2a343e191af2f809baf91ab4d6f9de8d09f593c9f6b088d9740238982107237b",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json",
+      "bytes": 2023,
+      "sha256": "a9474a89403e3aa87f44adb014eee6e10b09761002e5a4deabc198022ea88ce3",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json",
+      "bytes": 2018,
+      "sha256": "c9938334da0fbfb3032558df23d5e69588fdf6ca7f0b9eb562fb271c090ef93e",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json",
+      "bytes": 2019,
+      "sha256": "e94d071bf65e5f4815400a0e334b81529d6fd71147fb467584fc0aa1bb7e4f9c",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json",
+      "bytes": 2018,
+      "sha256": "74bd3778ce79875bb6f238cabda878ab88789df928b3b7804494c3e94f346b54",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json",
+      "bytes": 2018,
+      "sha256": "f4787faceff42cc52a2c446b03fc6ee7b8b2103643dff937b411193c75994bc5",
+      "matches_integration_bytes": true
+    },
+    {
+      "path": "records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json",
+      "bytes": 2021,
+      "sha256": "1332e892946d072d1500bdd693a877cbefb1ee54b51c3eb657e3c7af6393ee63",
+      "matches_integration_bytes": true
+    }
+  ],
+  "recovery": {
+    "all18_file_bytes_unchanged": true,
+    "external_integration_and_raw_data_reads_guarded": true,
+    "fresh_process_record_counts": {
+      "corrections": 0,
+      "forecasts": 6,
+      "grades": 6,
+      "input_captures": 0,
+      "outcomes": 6
+    },
+    "local_data_directory_present": false,
+    "module_loaded_from_clone": "/tmp/nml-remote-ledger-review-vuyb63bx/checkout/multisport_lab/ledger.py",
+    "original_clocks": [
+      {
+        "issued_at": "2026-10-20T00:21:42.792328Z",
+        "kind": "forecast",
+        "payload_sha256": "33f4f39ee9cc0ad05288ba71a9833cfd86bb91d6a7f29e0bd22ed22f475b7c19",
+        "received_at": "2026-10-20T00:21:43.878898Z",
+        "record_id": "c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef"
+      },
+      {
+        "kind": "outcome",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "payload_sha256": "7d4e9c6e96e22675827398fb76e919e05b71fda03c265f661af44dd7c2ac3e85",
+        "received_at": "2026-10-20T00:21:43.886371Z",
+        "record_id": "31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60"
+      },
+      {
+        "graded_at": "2026-10-20T00:21:43.894039Z",
+        "kind": "grade",
+        "payload_sha256": "94727510dcd680dfbf120f1c02cda0b1f2a31b1ae61c81247c0f0e914ab0872b",
+        "received_at": "2026-10-20T00:21:43.907710Z",
+        "record_id": "636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7"
+      },
+      {
+        "issued_at": "2026-10-20T00:21:43.935231Z",
+        "kind": "forecast",
+        "payload_sha256": "401c82668111c154566267b872cf64fb449bd581afc7e57dd3b285f8a9fbebee",
+        "received_at": "2026-10-20T00:21:45.073255Z",
+        "record_id": "ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9"
+      },
+      {
+        "kind": "outcome",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "payload_sha256": "725ff7c1a61e5c2aa10841156baf79bed210a98de78894f7f8978f2694ed2ebf",
+        "received_at": "2026-10-20T00:21:45.078970Z",
+        "record_id": "635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5"
+      },
+      {
+        "graded_at": "2026-10-20T00:21:45.084938Z",
+        "kind": "grade",
+        "payload_sha256": "29b265202f0fc90375be210ab5e40e435023c435cb8b8b2a37270a455bb9cc11",
+        "received_at": "2026-10-20T00:21:45.098717Z",
+        "record_id": "f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907"
+      },
+      {
+        "issued_at": "2026-10-20T00:21:45.129342Z",
+        "kind": "forecast",
+        "payload_sha256": "ed6410a8e3ac21625878add89c83e6eeed64566762b2b391b34a416b07363d12",
+        "received_at": "2026-10-20T00:21:46.211934Z",
+        "record_id": "8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88"
+      },
+      {
+        "kind": "outcome",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "payload_sha256": "697bd29ac6e6f422a97882a0f6b9385fa14750888aeee5ceb738057641458eb8",
+        "received_at": "2026-10-20T00:21:46.219274Z",
+        "record_id": "3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363"
+      },
+      {
+        "graded_at": "2026-10-20T00:21:46.226264Z",
+        "kind": "grade",
+        "payload_sha256": "e298c128c2ef3ad1b58f3c4522d711f106a0cc64f265769c48245fa206dc2098",
+        "received_at": "2026-10-20T00:21:46.264475Z",
+        "record_id": "7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae"
+      },
+      {
+        "issued_at": "2026-10-20T00:21:46.411304Z",
+        "kind": "forecast",
+        "payload_sha256": "757d5957636727858626cdd75b023ac0c49ddd062a8ccd169c331edcc599868f",
+        "received_at": "2026-10-20T00:21:47.582605Z",
+        "record_id": "33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118"
+      },
+      {
+        "kind": "outcome",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "payload_sha256": "b9e7b5a0162f255622ad7c29aad906bbb25067ed954b5145053938da6f417040",
+        "received_at": "2026-10-20T00:21:47.592018Z",
+        "record_id": "ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f"
+      },
+      {
+        "graded_at": "2026-10-20T00:21:47.600717Z",
+        "kind": "grade",
+        "payload_sha256": "a1db8c87b7fa20f9635be1ba36f7382fe086261465ea8b3486ae4f6213d11fb6",
+        "received_at": "2026-10-20T00:21:47.615384Z",
+        "record_id": "a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3"
+      },
+      {
+        "issued_at": "2026-10-20T00:21:47.650558Z",
+        "kind": "forecast",
+        "payload_sha256": "baa723d7ce3cf89c5f31b636816095adc65b584035c21beaf30c52bc34cb16e0",
+        "received_at": "2026-10-20T00:21:48.697024Z",
+        "record_id": "3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b"
+      },
+      {
+        "kind": "outcome",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "payload_sha256": "c2c5fc6bc691ffc3ac04decb14d5a5b40e131fdcd671d271d9126a8ab78f0489",
+        "received_at": "2026-10-20T00:21:48.704528Z",
+        "record_id": "6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4"
+      },
+      {
+        "graded_at": "2026-10-20T00:21:48.712058Z",
+        "kind": "grade",
+        "payload_sha256": "a88351e23696eb3a157bc26e920bc24c0af75e5c43c0a1032129621abd25596c",
+        "received_at": "2026-10-20T00:21:48.726183Z",
+        "record_id": "6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4"
+      },
+      {
+        "issued_at": "2026-10-20T00:21:48.758578Z",
+        "kind": "forecast",
+        "payload_sha256": "59e69117be23f4d4fb24bb65ba3c91b8b05c0cadc78eb46c09da87746d2bb825",
+        "received_at": "2026-10-20T00:21:49.685650Z",
+        "record_id": "905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8"
+      },
+      {
+        "kind": "outcome",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "payload_sha256": "75afce0bcee696d551d4524bb87ffad7d08bef5b27a7de0f40a63d4f04a0d60e",
+        "received_at": "2026-10-20T00:21:49.692829Z",
+        "record_id": "90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a"
+      },
+      {
+        "graded_at": "2026-10-20T00:21:49.700328Z",
+        "kind": "grade",
+        "payload_sha256": "1f795e15a87d0665b67b949696357dda7a01e488c935cd98cdb0992ff169c61f",
+        "received_at": "2026-10-20T00:21:49.716054Z",
+        "record_id": "c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370"
+      }
+    ],
+    "raw_panel_present": false,
+    "summary_payload_sha256": "636c55b78894bffdafbc787ff23747804bb5f71321eb0c47494275377337e14e",
+    "summary_recovered_with_missing_input": true
+  },
+  "original_r0_receipts": [
+    {
+      "path": "evidence/research/r0-protocol.json",
+      "sha256": "12f9c2ace25c9975748e519fec13d878484756b0257261ddacb7274cf767d939",
+      "original_bytes_preserved": true
+    },
+    {
+      "path": "evidence/research/r0-pilot.json",
+      "sha256": "8594245a6f7a9369c1c211567477229ceb83579ad60f29e1533003021b6b9aaa",
+      "original_bytes_preserved": true
+    }
+  ],
+  "checks": {
+    "exact_remote_head": true,
+    "all_remote_record_bytes_equal_integration": true,
+    "fresh_process_schema_hash_references_and_grade_recomputation": true,
+    "recovery_without_raw_panel": true,
+    "original_issue_observation_grade_and_receipt_clocks_preserved": true,
+    "no_model_or_pilot_rerun": true,
+    "no_remote_mutation": true
+  },
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "clone",
+        "--depth",
+        "1",
+        "--single-branch",
+        "--branch",
+        "implementation/typed-research-ledger",
+        "https://github.com/NickNicky19/Nicks-multisport-lab-project.git",
+        "/tmp/nml-remote-ledger-review-vuyb63bx/checkout"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/tmp/nml-remote-ledger-review-vuyb63bx/checkout",
+      "exit_code": 0,
+      "result": "900a7df5ed5270ec6e32054cfa7e6bb2bf29dec7"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-c",
+        "<fresh recovery verifier; embedded source in verification_program>"
+      ],
+      "cwd": "/tmp/nml-remote-ledger-review-vuyb63bx/checkout",
+      "exit_code": 0,
+      "result": "6 forecasts, 6 outcomes, 6 grades recovered and unchanged; external integration/raw-data reads guarded"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "cwd": "/tmp/nml-remote-ledger-review-vuyb63bx/checkout",
+      "exit_code": 0,
+      "result": "clean"
+    }
+  ],
+  "verification_program": "from pathlib import Path\nimport hashlib,json,sys\nroot=Path.cwd().resolve()\nsys.path.insert(0,str(root))\ndef guard(event,args):\n if event == \"open\" and args and isinstance(args[0], (str,bytes)):\n  text=args[0].decode() if isinstance(args[0],bytes) else args[0]\n  if text.startswith(\"/tmp/nml-nba-audit/\") or text.startswith(\"/workspace/Nicks-multisport-lab-project/\"):\n   raise RuntimeError(\"Recovery attempted to read external integration/raw-data path\")\nsys.addaudithook(guard)\nfrom multisport_lab import ledger\nfrom multisport_lab.record_reference import recover_summary,record_examples\nfrom multisport_lab.integrity import digest\nassert Path(ledger.__file__).resolve().is_relative_to(root)\nassert not (root/\".local-data\").exists()\nmissing=root/\"no-retained-raw-panel.jsonl\"\nassert not missing.exists()\nfiles=sorted((root/\"records\").glob(\"*/*.json\"))\nbefore={p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files}\nsummary=recover_summary(root,root/\"evidence/research/reference-publication-002.json\")\nstore=ledger.Ledger(root);index=store.scan()\nrecovered=record_examples(root,missing,\"900a7df5ed5270ec6e32054cfa7e6bb2bf29dec7\")\nassert recovered == summary\nclocks=[]\nfor example in summary[\"examples\"]:\n for name in (\"forecast\",\"outcome\",\"grade\"):\n  ref=ledger.LedgerRef.from_record(example[name+\"_ref\"]);payload=store.read(ref)\n  body=payload[\"data\"][{\"forecast\":\"bundle\",\"outcome\":\"outcome\",\"grade\":\"grade\"}[name]]\n  clock={\"forecast\":\"issued_at\",\"outcome\":\"observed_at\",\"grade\":\"graded_at\"}[name]\n  clocks.append({\"kind\":name,\"record_id\":ref.record_id,\"payload_sha256\":ref.payload_sha256,\"received_at\":payload[\"received_at\"],clock:body[clock]})\nassert before == {p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files}\nprint(json.dumps({\"module_loaded_from_clone\":str(Path(ledger.__file__).resolve()),\"raw_panel_present\":False,\"local_data_directory_present\":False,\"external_integration_and_raw_data_reads_guarded\":True,\"fresh_process_record_counts\":{k:len(v) for k,v in index.items()},\"summary_recovered_with_missing_input\":True,\"summary_payload_sha256\":digest(summary),\"all18_file_bytes_unchanged\":True,\"original_clocks\":clocks},sort_keys=True))\n",
+  "evidence_distinctions": {
+    "persisted_receipt_status": "LOCAL_RECEIPT_ONLY",
+    "remote_git_retention": "VERIFIED_AT_EXACT_FEATURE_COMMIT",
+    "future_forecast_issuance": "NONE",
+    "financial_settlement": "NOT_EVALUATED",
+    "product_qualification": "UNAVAILABLE",
+    "website_deployment": "NOT_ESTABLISHED_FOR_THIS_FEATURE_COMMIT"
+  },
+  "limits": [
+    "Git readback proves retention and identical committed bytes; it does not prove upstream authenticity, permission, historical as-of availability or model accuracy.",
+    "The six examples are historical reconstructions with actual October20 issuance clocks, not pregame paper evidence.",
+    "No sport-source HTTP requests, original R0/DEV002 forecasts or new statistical evaluations were run by this verifier."
+  ]
+}
