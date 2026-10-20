@@ -106,3 +106,11 @@ durable ledger recovery. Silent truncation or dropping inconvenient grades is
 not an admissible fix. The single operational pilot, six old plus four new
 forecasts when genuinely issued, fits today's public cap. No public-schema or
 ledger-limit increase is made by this document or the rights evidence.
+
+Independent integration review also corrected the reservation's pilot record
+allowance: preparation input + fresh input + four forecasts + four later outcomes
++ four later grades is **14**, rather than six. The complete planned ceiling is
+442 comparison records +18 original records +14 pilot records =**474**, leaving
+**38** of512 slots for corrections/failures. This correction does not alter the
+immutable inactive reservation. Activation must measure actual bytes against the
+unchanged32MiB cap and preserve the full pilot/outcome history.

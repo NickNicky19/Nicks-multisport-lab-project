@@ -81,16 +81,63 @@ read, but board variant, exact complete side/period/economics remain unresolved.
 Complete contracts/usable quotes/qualified tickets remain0. Authoritative pilot
 receipt payload SHA269b3f74d2176ed39ce96c62c15f781711a4b98957cc67c2d7f0d1be9883d4fd.
 
-Next concrete task: finish independent remote/raw-absent readback of this new
-input record and PR checks, then perform the exact **unscheduled** manual capture
+**Independent remote retention is verified.** Input checkpoint
+`a3934f5b7773999e2aa30c07c1ce85e0f5d9907f` was pushed and independently cloned.
+At02:13:42.628019UTC, all19 ledger files matched exact remote bytes. A fresh
+process with raw sources absent and network/model generation forbidden recovered
+the exact26,645 rows/panel SHA, original source clocks, import and actual input
+receipt02:10:44.260387UTC. All34 original frozen evidence/source/record hashes
+matched; no old record was changed. A real early issuance CLI attempt exited2
+before generation. The full independent source/test/recovery/public-state and
+browser proofs are retained in
+`evidence/research/2026-10-20-pregame-cycle-checkpoint.json`.
+
+Final local artifact build a3934f5 passed all seven routes at1440/390/320px,
+exact3 Upcoming reasons,45 scope×size×direction NO_ACTION cases, and unchanged
+six historical bundles/84 PMFs/six grades. All9 allowed artifact files were
+checked; no raw/full-history/research_inputs bytes were exported. NBA asset
+151,194bytes SHA930771e60caabf40063b8bae628f31ffa3f9b54df0123d53f1e33bc212c04cbe.
+A system-verified public manifest read at02:14:53UTC still served deployed main
+eca2a06 and its original snapshot76da4612...; this PR is not deployed.
+
+[PR #5](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/5) contains
+the carried29253a3 deployment status and this package. Initial a3934f5 checks
+passed; final exact-head checks/landing status come from the guarded watcher.
+No PR #5 merge or deployment has been performed. Current branch head is
+`git rev-parse HEAD`; source/retention commits are exact above. Exact package
+files: `git diff --name-status eca2a0679bd99eaff77c1c0785df13840fb99762 HEAD`.
+No source/model code changed after the5554760 implementation freeze; subsequent
+commits add the actual input and documentation/verification evidence only.
+
+Commands actually run, in addition to the source/offer commands retained in the
+linked evidence:
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.prospective persist --pack .local-data/pregame-cycle/preparation-sourcepack-v3.json
+python3 -m multisport_lab.prospective issue --input-record-id dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc --model-commit 55547606e4fad6907f8fc06577976a83b3ed40a8
+python3 -m multisport_lab.prospective_outcomes --event 401909088 --input-record-id dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc
+python3 -m multisport_lab.publication --build-commit a3934f5b7773999e2aa30c07c1ce85e0f5d9907f --output /tmp/nml-pregame-final-artifact
+node web/tests/site-smoke.mjs /tmp/nml-pregame-final-artifact
+python3 web/tests/browser_smoke.py /tmp/nml-pregame-final-artifact --screenshots /tmp/nml-pregame-final-screenshots
+sha256sum --check --quiet MANIFEST.sha256
+git diff --check
+```
+
+Next concrete task: land/deploy this exact reviewed PR only under its own
+head-specific confirmation, then perform the exact **unscheduled** manual capture
 and issuance commands in `docs/PREGAME_RESEARCH_CYCLE.md` at the eligible Central
-times above. That command now recovers history from the Git input record, not
-lost `/tmp` files. Later verified outcomes require a new manual grading capture;
-financial settlement stays separate. PROS004 still needs paired prospective
-versions, deduplicated history retention, freshness rules, remote activation freeze
-and a bounded export plan beyond today's32forecast/64grade caps. No new scoring
-or K0 promotion is authorized merely by its reservation. The original R0 pilot,
-DEV002, DEV003 and18 historical ledger bytes remain unchanged.
+times above. The capture command recovers history from Git, not lost `/tmp`
+files. Do not issue from the early preparation pack or backdate a missed window.
+Later verified outcomes need a new manual grading capture; financial settlement
+stays separate. PROS004 still needs paired prospective versions, deduplicated
+history retention, freshness rules, remote activation freeze and a bounded export
+plan beyond today's32forecast/64grade caps. Independent review corrected its
+future total to474record slots/38reserved; the inactive reservation stays unchanged.
+No new scoring or K0 promotion follows. The original R0 pilot, DEV002, DEV003 and
+18 historical ledger bytes remain unchanged.
 
 ## Prior deployment checkpoint — 2026-10-20 01:32 UTC
 
