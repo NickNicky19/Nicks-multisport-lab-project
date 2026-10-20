@@ -2,6 +2,61 @@
 
 Updated: October 20, 2026 (UTC).
 
+## October 20, 19:29–19:40 UTC — expired pilot audit and PR #10 corrections
+
+This is a new checkpoint; earlier operating observations below remain unchanged.
+Review starting point and remote PR #10 head are
+`c305a6360c175413b5871170bcb23a1b7f7820ee` on
+`implementation/pros004-paired-readiness`. Initial tree was clean; local/remote
+branch matched and main remains `735a464e9e8718303ef481abf711a8969de56694`.
+PR #10 remains draft. The current package authorizes fixes and inactive operating
+preparation, not PROS004 activation, scheduling, genuine issuance, merge or deploy.
+
+**Expired pilot: MISSED_OR_UNOBSERVED_EXECUTION; cause NOT_ESTABLISHED.** Fresh
+read-only observations through **19:35:30 UTC** found 72 repository runs and
+18 runs for workflow 390126745, with zero schedule-event runs in both inventories.
+All 18 workflow runs were earlier PR setup activity; metadata/jobs and six actual
+job-log archives were inspected. No execution log establishes a reason for the
+unobserved scheduled run. Workflow metadata is still active, with its original
+default-branch YAML; that state does not prove execution.
+
+An independent records-branch clone remains clean at
+`df446eee302fd6662ef82184e2c733f5d6e2d2dd`; PR #8 is still draft at that exact
+head. All **19 original ledger records / 1,817,800 bytes** match the frozen plan.
+No execution claim, capture/generation intent, fresh binding or execution report
+was observed. The documented read-only `manual_cycle recover` returned closed
+window / NOT_READY, no bound input, zero retained selected forecasts and all four
+subjects missing. It made zero provider requests and generated zero forecasts.
+The native task was observed disabled with no next run at 19:34:17–18 UTC and was
+not changed. No dispatch, rerun, workflow-state write, capture, issue or rebind was
+performed. Original pilot deadlines/identities and all earlier evidence survive.
+
+Exact queries, response hashes, clocks, inventories and recovery output are in
+`evidence/cycles/2026-10-20-pilot-operational-recovery.json` and
+`docs/PILOT_OPERATIONAL_DIAGNOSIS.md`. The evidence receipt raw SHA-256 is
+`1f0b6a609c3ad057e275c5ada6ffb43a90b134d2818bda7d77fb646925d4a760`.
+
+Separately authorized current metadata inspection made exactly three bounded
+ESPN scoreboard requests at **19:32:07.895099–19:32:08.968371 UTC**, receiving
+HTTP 200 / 204,880 bytes, with 3/11/2 events in the adjacent routes. Six observed
+events start on UTC October 21. All responses lack the registered pagination/count
+proof; `UNKNOWN_SCHEDULE_COMPLETENESS` remains a blocker. The actual first T90 is
+**unknown**. Candidate 401909090 would have T90 October 21 00:00 UTC if first and
+unchanged, which is conditional rather than deadline proof. The theoretical
+earliest October 20 22:30 UTC / 17:30 CDT is distinct. No selected-player capture,
+model run or forecast followed. Safe evidence is in
+`evidence/data/2026-10-20-pros004-current-schedule.json` and
+`docs/PROS004_SCHEDULE_AUDIT.md`; raw response bodies remain outside Git/Pages.
+
+Persistence completion and all-type semantic recovery corrections are in progress
+on this same branch under one integration owner. Frozen `ledger.py`, pilot code,
+R0/K0 laws, PR #9/DEV005 and original records are unchanged. The new completion
+design retains originals even when late/unacknowledged and requires durable
+post-operation clocks before admitting timing. A bounded shared journal uses one
+already reserved metadata slot; no per-forecast ledger record is assumed to fit.
+Final tests, revised source pins, measured capacity/timing and independent recovery
+will be recorded as a separate completed implementation checkpoint.
+
 ## PROS004 paired readiness — isolated review package
 
 Current integration owner works in `/workspace/nml-pros004-readiness`, branch

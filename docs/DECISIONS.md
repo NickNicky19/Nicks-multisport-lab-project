@@ -1,5 +1,45 @@
 # Implementation decisions
 
+## October 20, 2026, after 19:29 UTC — completion evidence and inactive operation
+
+The expired October 20 pilot is inspected read-only. No replacement capture,
+issuance, binding, dispatch or workflow-state change is authorized. New dated
+evidence preserves the prior observations. An absent scheduled run/log establishes
+an unobserved execution, not a particular scheduler or code failure cause.
+
+Pre-write `received_at` remains an original ledger clock, not proof of persistence
+completion. The new PROS004 wrapper records actual post-write/readback completion
+and required remote acknowledgment completion separately. Missing, late or
+interrupted proof retains the original receipt but does not admit it as timely on
+restart. Event-input completion must satisfy selection close by the same logic.
+No frozen ledger or operational pilot file is modified.
+
+Use one bounded append-only hash-chained completion journal, counted as one of the
+three already reserved future metadata slots. Its own ceiling is **2 MiB**, with
+at most **1,024 lines of 2,048 bytes including newline**. Existing ledger limits
+remain 512 records / 32 MiB and all original per-kind envelope ceilings remain.
+Replacing that slot's previous 8-KiB allowance gives **24,576,000 planned bytes**,
+leaving 8,978,432 bytes. The 499 planned slots plus 13 correction/failure slots
+remain unchanged. No extra per-forecast record or silent limit increase is used.
+The journal retains post-operation observations; it does not recursively certify
+its own write clock. Interrupted or ambiguous journal state fails closed.
+
+Version the operational producers/binding to v2 while keeping both mathematical
+laws unchanged. Old v1 originals remain readable evidence; absent completion
+proof never becomes timely issuance. Synthetic timing-complete states remain
+distinct from genuine comparison eligibility. This package keeps the genuine
+operation guard disabled, including caller-supplied activation flags.
+
+The user permits three bounded current schedule/metadata reads separately from
+the expired pilot. Missing source pagination/count evidence remains explicit;
+there is no selection or issuance from an opportunistic incomplete inventory.
+Implement read-only activation proposal validation, real checkpoint/readback code,
+strict bounded failure metadata, private raw-retention interfaces and paginated
+typed public support behind inactive guards. A synthetic remote diagnostic may
+use a dedicated branch in this same repository after local verification; it must
+not touch the original records branch. Actual source raw bodies remain barred
+from public Git/Pages unless a separately reviewed retention basis is established.
+
 ## October 20, 2026 — PROS004 paired producer readiness only
 
 The user's next package retains PR #9/DEV005 as frozen evidence and S0 inactive.
