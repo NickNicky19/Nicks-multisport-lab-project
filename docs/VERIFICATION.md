@@ -1,6 +1,49 @@
 # Verification history and delivery status
 
-## Bounded pregame preparation branch — October 19 evening Central / October 20 UTC
+## Manual pinned-cycle preparation — October 19 evening Central / October 20 UTC
+
+Producer `58530309cf384425e15f02fd9fa980899a4dc0bc` remains byte-identical across
+all nine checked files. The independent synthetic changed-commit recovery defect
+was reproduced, and the separate operating guard rejects it before generation.
+All 234 Python tests (13 guard regressions), 35 frontend tests, demo, local
+artifact smoke and ten Bash block syntax checks pass. Independent read-only
+preflight, early phase/preparation-input rejection and full 26,645-row / 1,231-game /
+14,720,351-byte panel readback pass. All 19 real records and 34 frozen/source
+files remain unchanged. Phase is `CAPTURE_NOT_YET_OPEN`, no fresh binding or
+actual issuance exists. No provider capture, new model evaluation, prospective
+grade, settlement or deployment occurred. Proof:
+`evidence/cycles/2026-10-20-manual-pilot-preflight.json`. The fixed plan and complete
+manual operating/recovery/publication/grading commands are in
+`docs/PREGAME_RESEARCH_CYCLE.md`. The existing CI fetches the two exact Git
+provenance commits for shallow source-byte tests; it adds no collector/schedule.
+
+The implementation is committed as `f28911f74cb36fec3c6ae03dd0883177606d00d0`
+and submitted in PR #6. GitHub workflow 39363160886 passed the full suite/artifact;
+deploy was skipped. Independent full and shallow GitHub clones recovered exact
+committed bytes and passed all 13 guard tests. Original model SHA remains
+58530309 despite the new records/documentation HEAD. Delivery proof:
+`evidence/cycles/2026-10-20-manual-pilot-preparation-delivery.json`.
+No PR #6 merge, Pages update or actual issuance is claimed by this preparation.
+
+## Current public deployment: PR #5 — October 19 evening Central / October 20 UTC
+
+Approved head 713716a17465c93d32795aabba9e0a8c9c3a5e8c merged unchanged as main
+58530309cf384425e15f02fd9fa980899a4dc0bc at 02:30:40Z.
+[Workflow 39359308833](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39359308833)
+build/deploy passed, completed 02:31:22Z. Required 221 Python/35 frontend tests, demo
+and artifact checks passed. Ten public HTTPS resources returned 200; manifest,
+NBA hash and seven static assets matched exact main. Public Chromium 154 passed
+seven routes/reloads at 1440/390/320px, six unchanged historical bundles/84 PMFs/
+six grades/all 14 filters, one R0 reconstruction group, accurate pending/Upcoming
+states and all 45 scoped 2–6/direction NO_ACTION cases. No browser/HTTP/prefix errors.
+All 19 records/clocks and frozen research files stayed unchanged; full normalized
+input/raw sources are excluded from Pages. Proof:
+`evidence/deployment/2026-10-20-pr5-pages.json`. This verifies publication, not
+model evaluation, genuine future issuance, new grading or financial settlement.
+The next eligible manual capture/issuance windows remain Tuesday October 20,
+12:20–12:30 p.m./12:30–12:35 p.m. Central; no collector or scheduler is enabled.
+
+## Prior bounded pregame preparation branch — October 19 evening Central / October 20 UTC
 
 Code55547606e4fad6907f8fc06577976a83b3ed40a8 and input checkpoint
 a3934f5b7773999e2aa30c07c1ce85e0f5d9907f passed221Python/35frontend tests, demo,
@@ -18,7 +61,7 @@ builder combinations retain NO_ACTION. Public Pages still serves main eca2a06.
 Proof: `evidence/research/2026-10-20-pregame-cycle-checkpoint.json`. See current
 handoff for exact source, retention basis, commands, PR checks and next timed action.
 
-## Current public deployment: PR #4 — 2026-10-20
+## Prior public deployment: PR #4 — 2026-10-20
 
 The exact approved head `1f80112ed54a8c2eaa20024e806054739b815c98` merged through
 the guarded workflow as main `eca2a0679bd99eaff77c1c0785df13840fb99762` at 01:27:21Z.

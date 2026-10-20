@@ -1,5 +1,38 @@
 # Implementation decisions
 
+## October 19, 2026 Central / October 20 UTC — pin the manual cycle producer
+
+Preserve deployed/reviewed producer `58530309cf384425e15f02fd9fa980899a4dc0bc`
+and post-deployment documentation `c19bcd67d4fefe7f818fed569c683db9cc5ab9fc`.
+A records or documentation commit changes HEAD while leaving the nine reviewed
+producer dependency bytes unchanged. The legacy `issue_cohort` indexes originals
+by requested model commit as well as input. An isolated synthetic regression
+reproduced a duplicate original after changing only that commit identity; this
+is a software recovery finding, not evidence of duplicated real issuance.
+
+Freeze the exact producer SHA once in a create-only cycle plan, including its
+source hashes, fixed event/version/cohort/windows and original record fingerprints.
+Bind a single freshly captured/persisted input LedgerRef with its actual clock.
+Retries and readback always reuse that input and producer, never dynamic HEAD or
+the early history-only preparation pack. Keep the producer's checked source files
+unchanged so the explicit reviewed SHA remains truthful. A small separately
+versioned operating guard outside `MODEL_FILES` verifies source bytes, plan/input
+binding and all original cycle subjects across model revisions/inputs before
+calling the reviewed producer. Reject ambiguous recovery before any generation.
+
+Regression coverage must include documentation/record HEAD drift, an existing
+partial cohort retried under a different model commit, attempted fresh-input
+replacement, duplicate originals, late partial recovery and preservation of
+original content/clocks. Harden the underlying direct API in a later bounded,
+versioned producer change; do not silently introduce that revision into this
+reviewed cycle. Explicit distinct-model experiments require their own declared
+cycle and are not recovery. A read-only preflight phase gate prevents the
+runbook's capture block from making requests early.
+
+Preparation adds no scheduler, provider capture, model evaluation, genuine
+issuance, future outcome, statistical grade, financial settlement or qualification.
+K0 and R0/DEV002/DEV003 remain frozen; PROS004 activation remains separate.
+
 ## 2026-10-20 — bounded actual-clock pregame cycle
 
 Continue from deployed main eca2a0679bd99eaff77c1c0785df13840fb99762 and carry

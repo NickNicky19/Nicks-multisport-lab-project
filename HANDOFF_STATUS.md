@@ -7,7 +7,237 @@ reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
-## Current implementation checkpoint — pregame preparation, October 19 evening Central / October 20 UTC
+## Current preparation checkpoint — October 19, 2026 Central (October 20 UTC)
+
+**Manual pilot preparation is verified; no timely input or genuine forecast has
+been issued.** Current branch `preparation/pinned-pregame-cycle` preserves
+post-deployment documentation commit `c19bcd67d4fefe7f818fed569c683db9cc5ab9fc`.
+Fresh remote fetch confirmed deployed main remains
+`58530309cf384425e15f02fd9fa980899a4dc0bc`; no reset or newer-work overwrite.
+The reviewed producer is frozen to that **exact** 58530309 SHA for every operation
+and retry, regardless of later documentation/records commits. Main/Pages has not
+been changed by this preparation checkpoint.
+
+The former `--model-commit "$(git rev-parse HEAD)"` was unsafe for recovery.
+Independent isolated synthetic reproduction showed that a documentation-only
+revision can pass the same source-byte checks yet cause legacy `issue_cohort` to
+miss its original subject and create a second original. No real records were
+corrupted or duplicated. The new bounded `multisport_lab.manual_cycle` guard is
+outside `MODEL_FILES`, preserving all nine reviewed source bytes. It scans original
+cycle subjects across all model/input revisions before generation, requires the
+fixed producer, binds exactly one timely fresh input reference, rejects drift or
+duplicate originals, and recovers partial/complete originals without regeneration.
+Direct legacy API hardening remains a separately versioned follow-up; use the
+guarded commands in `docs/PREGAME_RESEARCH_CYCLE.md` for this fixed cycle.
+
+Create-only plan `evidence/cycles/2026-10-20-nba-401909088-plan.json`, payload SHA
+`22ae8db607374486ebee6eb569d236a3d27aedc8535c3085a6b6858226921908`, freezes producer,
+source hashes, event 401909088/version, the same four selected IDs, window bounds,
+history-only preparation ID and all 19 original record hashes. The future binding
+`evidence/cycles/nba-20261020-401909088-t90-r1-binding.json` **does not yet exist**.
+It will retain the exact fresh LedgerRef and actual bound clock. The early
+`dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc` record
+is only a history recovery source, never the issuance input.
+
+Actual local preflight/recovery at 03:08 UTC passed integrity checks and reported
+`NOT_READY` / `CAPTURE_NOT_YET_OPEN`, null input binding, zero selected forecasts
+and all four subjects missing. The capture-window gate and preparation-as-fresh
+binding attempts each exited 2 with the expected explicit diagnostic and no write.
+Independent verification forbade provider HTTP, producer generation/issue_cohort,
+ledger append and cycle writes. It reproduced the full 26,645-row / 1,231-event /
+14,720,351-byte history, SHA
+`489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c`.
+All 19 actual ledger records, 34 frozen/source files and nine producer files are
+unchanged. No source requests, fresh input capture/binding, genuine issuance,
+outcome append, new grade, model evaluation or financial settlement occurred.
+K0/R0/DEV002/DEV003 remain frozen; PROS004 remains a separate inactive task.
+
+Software checks: **234 Python tests / 35 frontend tests PASS**, including 13 new
+synthetic guard regressions; demo, local artifact smoke, all ten runbook Bash
+blocks' syntax and whitespace checks passed. Tests cover revision/input drift,
+duplicate originals, interruption, late partial/complete readback, immutable
+clocks/content, early preparation rejection and active corrected/DNP/unresolved
+grade status. These are software checks, not forecasting accuracy or future
+paper evidence. `.github/workflows/pages.yml` explicitly fetches only the two
+frozen provenance commits for source-byte tests in shallow CI checkouts. It adds
+no scheduled execution or provider collection.
+
+Durable preparation evidence:
+`evidence/cycles/2026-10-20-manual-pilot-preflight.json`, payload SHA
+`5b05be9df05fc34426b8dd0b0d250e6af137e60f46f29130492abd6ed545ae55`.
+It retains exact readback, independent synthetic defect/guard proof and software
+log hashes. Changed files are that receipt and cycle plan, the new guard and its
+tests, runbook, decisions, workflow, this handoff, context, verification log and
+manifest. Carried PR #5 deployment documentation/receipt remains preserved.
+Resolve this checkpoint's delivery revision with
+`git log -1 --format=%H preparation/pinned-pregame-cycle`; it is never the model SHA.
+
+Implementation and runbook commit **`f28911f74cb36fec3c6ae03dd0883177606d00d0`**
+is pushed on `preparation/pinned-pregame-cycle` and opened as
+[PR #6](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/6).
+[Workflow 39363160886](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39363160886)
+passed all 234 Python/35 frontend tests, the exact-pin fetch, demo and artifact
+checks; deploy was correctly skipped on the PR. The guarded watcher at
+03:14:11.137670 UTC found this head ready/CLEAN/MERGEABLE, build passed, zero
+pending/failed/unknown checks and zero unresolved review threads. No new PR
+landing is authorized by the completed PR #5 approval.
+
+A fresh independent GitHub clone recovered exact implementation bytes, all
+original records/frozen sources, the plan and preflight receipt. Read-only
+preflight/recovery again passed, and 13 guard tests passed. A separate depth-1
+clone initially lacked both provenance commits; the exact two-SHA CI fetch
+restored them without changing HEAD and all 13 guard tests passed. Full history
+recovery again retained 26,645 rows / 1,231 events / 14,720,351 bytes. The actual
+source model identity stayed 58530309 despite the committed preparation HEAD.
+Remote/shallow/CI/committed-head proofs are retained in
+`evidence/cycles/2026-10-20-manual-pilot-preparation-delivery.json`.
+A following documentation-only commit records this readback; its branch HEAD
+is deliberately distinct from the frozen producer SHA and does not add issuance.
+Main/Pages remains the deployed 58530309 checkpoint until a separately approved
+PR lands. Final refreshed PR check state is reported with the exact delivery head.
+
+Commands actually run (all preparation only):
+
+```bash
+git fetch origin
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.manual_cycle preflight --plan evidence/cycles/2026-10-20-nba-401909088-plan.json
+python3 -m multisport_lab.manual_cycle recover --plan evidence/cycles/2026-10-20-nba-401909088-plan.json
+python3 -m multisport_lab.manual_cycle preflight --plan evidence/cycles/2026-10-20-nba-401909088-plan.json --require-capture-window
+python3 -m multisport_lab.manual_cycle bind --plan evidence/cycles/2026-10-20-nba-401909088-plan.json --input-record-id dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc
+python3 -m multisport_lab.publication --build-commit 58530309cf384425e15f02fd9fa980899a4dc0bc --output .local-data/pinned-cycle-preflight-site
+node web/tests/site-smoke.mjs .local-data/pinned-cycle-preflight-site
+git diff --check
+git push -u origin preparation/pinned-pregame-cycle
+gh pr create --repo NickNicky19/Nicks-multisport-lab-project --base main --head preparation/pinned-pregame-cycle --title 'Pin manual NBA pilot producer and guard recovery' --body-file /tmp/nml-pinned-cycle-pr-body.md
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=6 --mode until-actionable --interval 15 --timeout 180 --cursor /tmp/nml-pr-completion/pr6-cursor.json --observations-file /tmp/nml-pr-completion/pr6-observations.ndjson --pretty
+```
+
+The two explicitly negative commands above returned 2, as intended; the remaining
+checks passed. Local artifact construction reads retained historical records and
+is not a new deployment. NFL/MLB remained untouched; no new service/signup/key,
+collector, scheduler, wager or qualification was introduced.
+
+Next concrete operation is manual, Tuesday **October 20, 12:20–12:30 p.m. CDT**
+(17:20–17:30 UTC): phase-gated current event/cohort capture, normalization,
+persistence and create-only fresh binding. At **12:30–12:35 p.m. CDT** use the
+same fresh ID and explicit `--model-commit 58530309cf384425e15f02fd9fa980899a4dc0bc`
+for guarded issuance/retries. Exact capture/persist/issue, lost-stdout recovery,
+commit/push, independent remote recovery, publication and later grading commands
+are in the runbook. Fresh changed event/cohort facts or missed windows cause the
+actual cycle failure/partial state, not replacement or backdating. Later verified
+final evidence is required for statistical grades; missing/nonfinal stays pending,
+explicit DNP is not zero production, and corrections append traceable links.
+History staleness, finite support, DD/TD/BLK and workload limitations remain.
+
+## Current deployment checkpoint — October 19, 2026 Central (October 20 UTC)
+
+**PR #5 is merged and publicly deployed.** The user explicitly approved only
+head `713716a17465c93d32795aabba9e0a8c9c3a5e8c`. Fresh guarded checks confirmed
+that exact head ready, CLEAN/MERGEABLE, build passed, no pending/failed/unknown
+checks, no missing required reviewers and zero unresolved review threads.
+The canonical helper used the same policy digest
+`70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df`,
+normal merge method and exact-head guard; no admin, bypass or force-push.
+Main merged **`58530309cf384425e15f02fd9fa980899a4dc0bc`** at
+**2026-10-20T02:30:40Z** (October 19, 9:30:40 p.m. Central). Its tree exactly equals
+the approved head; parents are prior main eca2a06 and that approved revision.
+The requestedAt helper receipt 02:30:41.100803Z and merged watcher observation
+02:30:54.412624Z remain separate clocks, not rewritten to match GitHub mergedAt.
+Local main was fast-forwarded; newer legitimate work was preserved.
+
+Live site: https://nicknicky19.github.io/Nicks-multisport-lab-project/ .
+[Workflow 39359308833](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39359308833)
+passed build and deploy on exact main: build completed 02:31:00Z and deploy
+completed 02:31:22Z. Required 221 Python/35 frontend tests, synthetic demo and artifact
+checks passed. System-verified HTTPS returned 200 for root, manifest, NBA data
+and seven static assets. Served build commit is the exact 58530309 merge above.
+Snapshot SHA256:
+`db50ba5ab1ced15e694fe9ded143384f74ddbf3503d04aed168089f12fd424fe`.
+Manifest raw SHA256:
+`86e40c82b3b4ba9b491e693440704eef83ff6349f5978bbcadf4284cb46d24ff`.
+NBA asset SHA256:
+`8f7cc6766bab9c676362171377cfbdc42068c6d7c4aa603f2eb08aecec280112`.
+All seven static assets matched exact main Git bytes. The complete normalized
+history/preparation record is excluded from Pages, including an actual 404 check
+of its exact record path; no raw sources were exported.
+
+Public Chromium 154 verification ran 02:31:56.023463–02:32:27.219269 UTC, at 1440px
+desktop and 390/320px mobile. All seven routes/direct reloads, fourteen category
+filters, six original historical bundles/84 PMFs and six original statistical
+grades passed with exact identities/clocks. Performance has one actual R0
+reconstruction group; all six grades are scored and no pending forecast is falsely
+claimed. History preserves its neutral past-event meaning. Upcoming has the three
+accurate missing-timely-capture/issuance reasons. All 45 SINGLE/SELECTED/ALL × 2–6
+size × OVER_ONLY/UNDER_ONLY/MIXED builder combinations stayed NO_ACTION, zero
+candidates and Not issued. Nine browser assets stayed within the repository
+prefix, with no page/HTTP errors or synthetic injection. Chromium used only the
+process-local configured-proxy CA SPKI pin; urllib independently verified system
+TLS. No persistent trust or HOME settings changed.
+
+The approved implementation is now published, including forecast-v2 validation,
+pending-grade rendering, source normalization, durable-input and future grading
+code. **Publication is not genuine issuance.** All 19 ledger records are unchanged:
+18 historical forecast/outcome/grade records and one early preparation input.
+Original source clocks 01:51:42.675230–01:51:55.889290Z, normalization import
+02:10:36.352647Z and input receipt 02:10:44.260387Z remain distinct. The six
+forecasts are still historical reconstructions, actually issued October 20 for
+November 24, 2025 events. R0/DEV002/DEV003 receipts/results remain frozen; K0 is
+unpromoted and PROS004 is an inactive reservation. This deployment performed no
+source collection, model evaluation, input refresh, forecast generation, outcome
+append or grading. **Genuine future forecasts 0; new prospective grades 0; financial
+settlements 0; qualified tickets 0.** NFL/MLB remained untouched; no paid service,
+signup, API key or scheduler was introduced.
+
+Independent offline replay at 02:34:33.690297 UTC rebuilt exact main at the
+served publication clock 02:30:53.994845Z and reproduced the manifest, snapshot,
+151,194-byte NBA asset and all seven static bytes. It validated the four guarded
+helper and three browser artifact hashes, exact records and clock chronology;
+no model generation or source request was used. No blocking finding remains.
+
+Combined verification evidence:
+`evidence/deployment/2026-10-20-pr5-pages.json`, payload SHA256
+`dff05f5aa71460340b78c9ca7bdac101b5b61a9a833c690d83a6630f01a0bcb2`.
+Independent replay proof is `/tmp/nml-independent-pr5-deployment-review.json`,
+raw SHA256 e6d0c0a052c25df87e68bde15a7d82c2f7e109dda21ae827751c12c22081c28a.
+This post-deployment checkpoint
+is retained on `docs/pr5-deployment`, based on 58530309. It changes only this
+handoff, PROJECT_CONTEXT.md, docs/VERIFICATION.md, docs/UI_NOTES.md,
+MANIFEST.sha256 and that new receipt. Resolve the exact documentation commit
+with `git log -1 --format=%H docs/pr5-deployment`; it is separate from the
+approved application merge. Earlier branch-only/open-PR/deployed-eca2 statements
+below describe prior checkpoints and are superseded here.
+
+Commands actually run (full public/hash/browser proof is in the receipt):
+
+```bash
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=5 --mode until-actionable --interval 15 --timeout 180 --cursor /tmp/nml-pr-completion/pr5-cursor.json --observations-file /tmp/nml-pr-completion/pr5-observations.ndjson --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_land.py --repo /workspace/Nicks-multisport-lab-project --pr 5 --head 713716a17465c93d32795aabba9e0a8c9c3a5e8c --mode auto --method merge --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_land.py --repo /workspace/Nicks-multisport-lab-project --pr 5 --head 713716a17465c93d32795aabba9e0a8c9c3a5e8c --mode auto --method merge --policy-digest 70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df --confirm --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=5 --await-merge 713716a17465c93d32795aabba9e0a8c9c3a5e8c --await-merge-mode auto --await-merge-since 2026-10-20T02:30:41.100803Z --interval 15 --timeout 180 --cursor /tmp/nml-pr-completion/pr5-cursor.json --observations-file /tmp/nml-pr-completion/pr5-observations.ndjson --pretty
+gh run list --repo NickNicky19/Nicks-multisport-lab-project --commit 58530309cf384425e15f02fd9fa980899a4dc0bc --json databaseId,headSha,status,conclusion,name,url
+python3 /tmp/nml-public-pr5-qa.py 58530309cf384425e15f02fd9fa980899a4dc0bc > /tmp/nml-public-pr5-qa.log 2>&1
+sha256sum --check --quiet MANIFEST.sha256
+git diff --check
+```
+
+Next concrete task is the existing **unscheduled** pilot: Tuesday October 20
+capture **12:20–12:30 p.m. Central**, then generation/receipt **12:30–12:35 p.m.**
+(17:20–17:30Z and 17:30–17:35Z). Use the exact capture/persist/issue commands in
+`docs/PREGAME_RESEARCH_CYCLE.md` with retained history record
+dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc.
+Fresh exact-event/cohort status and source observations remain required; the
+current early preparation input cannot be relabeled as timely. Changed event
+version, team, selected-player status or missed timing blocks the cycle. Do not
+backdate a record, refresh its old clocks or schedule a collector. Append actual
+outcomes/statistical grades only after independently verified final source data;
+keep later financial settlement separate. Current history staleness, finite
+support, DD/TD/BLK uncertainty and PROS004 activation/export/retention dependencies
+remain the documented limitations.
+
+## Prior implementation checkpoint — pregame preparation, October 19 evening Central / October 20 UTC
 
 Working branch: `implementation/pregame-research-cycle`, based on
 `29253a3e3cdb3827a4cab905c2ff36bb772d9e92`, which carries the post-deployment
