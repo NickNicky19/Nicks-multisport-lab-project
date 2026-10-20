@@ -1,5 +1,30 @@
 # Implementation decisions
 
+## October 20 — completion policy and inactive operating preparation
+
+Per-original admission uses observed post-write local completion and exact remote
+checkpoint/readback completion, never frozen ledger pre-write received_at.
+Generation through original remote acknowledgment is limited to 120 seconds;
+input completion closes at T90−10 minutes and forecast completion at T90+300.
+Final proof-prefix publication has its own observed clock and does not renew an
+original acknowledgment. Late publication cannot yield a successful cycle report.
+Missing-peer generation requires the original strict input-finalization receipt;
+its durable genuine operating-state admission remains an activation dependency.
+
+The two remaining future metadata slots hold one combined inactive proposal /
+independent review / earlier-proposal readback package and one eventual evaluation
+artifact. The original proposal must not consume a separate ledger slot. All
+current genuine paths remain disabled. Private raw evidence requires an admitted
+private primary backend with reviewed indefinite retention and outcome linkage;
+public Git/Pages and synthetic transports do not establish that dependency.
+
+Manifest v3 keeps PROS004 originals and individual grades in a separate paginated
+contract, with all 14 categories, explicit unadmitted states and no reserved
+comparative aggregate before the registered gate. Generic 24-MiB transport timing,
+full-history paired-law timing and actual GitHub diagnostic timing are distinct
+measurements; none establishes genuine capture, issuance, predictive quality or
+activation.
+
 ## October 20, 2026, after 19:29 UTC — completion evidence and inactive operation
 
 The expired October 20 pilot is inspected read-only. No replacement capture,

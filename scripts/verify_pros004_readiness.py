@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Independent PROS004 readiness verification; no capture, issuance or scoring.
 
-This checker imports no producer or records implementation. Integrity failures
-raise explicit exceptions under ordinary and optimized Python alike. It verifies
-retained receipts, source pins, capacity arithmetic and diagnostic round trips;
+An independent first pass checks bytes, envelopes, hashes and references. A
+second, read-only pass reuses the versioned strict typed validators; individual
+grade arithmetic is checked without fitting models or aggregating study results.
+Integrity failures raise explicit exceptions under ordinary and optimized Python
+alike. It verifies retained receipts, source pins, capacity arithmetic and round trips;
 it does not authorize activation or prove historical/source authenticity.
 """
 from __future__ import annotations
 
 import argparse
+from contextlib import ExitStack
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
@@ -16,8 +19,10 @@ import math
 from pathlib import Path
 import re
 import stat
+import sys
 
-SCHEMA = 'nba-pros004-readiness-report-v1'
+SCHEMA = 'nba-pros004-readiness-report-v2'
+LEGACY_SCHEMA = 'nba-pros004-readiness-report-v1'
 HISTORY_SHA256 = '489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c'
 HISTORY_ROWS, HISTORY_EVENTS, HISTORY_BYTES = 26645, 1231, 14720351
 MAX_RECORDS, MAX_BYTES = 512, 32*1024*1024
@@ -38,8 +43,20 @@ PINNED_SOURCE_HASHES = {
     'evidence/research/prospective004-protocol.json':'8302bf5455d48c9c0f6ccd40296b971955822ee09edaa9d9af94ad205d06e752',
     '.github/workflows/nba-20261020-pilot.yml':'900783602710fd82761c071a143ad7e9c7d5d491461ca4c8d650427638583dab',
 }
-NEW_PRODUCER_FILES = ('multisport_lab/pros004_inputs.py', 'multisport_lab/pros004_producer.py',
-                      'multisport_lab/pros004_records.py')
+LEGACY_PRODUCER_FILES = ('multisport_lab/pros004_inputs.py', 'multisport_lab/pros004_producer.py',
+                         'multisport_lab/pros004_records.py')
+# Keep this inventory independent of the mutable producer's own declaration.
+# A v2 diagnostic must bind every admitted dependency and its actual execution,
+# persistence, typed recovery and independent verification path.
+NEW_PRODUCER_FILES = LEGACY_PRODUCER_FILES + (
+    'multisport_lab/baseline.py','multisport_lab/development_003.py',
+    'multisport_lab/development_002.py','multisport_lab/research_pilot.py',
+    'multisport_lab/nba_data.py','multisport_lab/basketball.py','multisport_lab/integrity.py',
+    'multisport_lab/ledger.py','multisport_lab/forecast_contract.py','multisport_lab/pregame_sources.py',
+    'multisport_lab/pros004_completion.py','multisport_lab/pros004_activation.py',
+    'multisport_lab/pros004_remote.py','multisport_lab/pros004_raw.py',
+    'multisport_lab/pros004_readiness.py','multisport_lab/pros004_snapshot.py',
+    'scripts/verify_pros004_readiness.py')
 DIAGNOSTIC_MODES = {'SYNTHETIC_TEST','READINESS_DIAGNOSTIC','READINESS_DIAGNOSTIC_NON_ISSUANCE',
                     'SYNTHETIC_NON_ISSUANCE','SYNTHETIC_DIAGNOSTIC'}
 MARKETS = {'PTS','PRA','REB','3PM','AST','RA','PR','TOV','TD','DD','BLK','STL','BLK+STL','PA'}
@@ -182,7 +199,7 @@ def _verify_forecast(body,payload,records):
     model=body.get('model_key')
     require(model in MODEL_VERSIONS and body.get('model_version')==MODEL_VERSIONS[model],
             'forecast model law/version is not unchanged R0/K0')
-    require(body.get('producer_version')=='pros004-'+model.lower()+'-producer-v1',
+    require(body.get('producer_version') in {'pros004-'+model.lower()+'-producer-v1','pros004-'+model.lower()+'-producer-v2'},
             'forecast prospective wrapper identity changed')
     require(body.get('conditioning')=='CONDITIONAL_ON_APPEARANCE' and body.get('qualification')=='UNAVAILABLE',
             'research conditioning/qualification changed')
@@ -246,6 +263,133 @@ def _verify_forecast(body,payload,records):
     _sha(recipe.get('joint_sha256'),'full joint hash')
     _sha(recipe.get('input_sha256'),'full input hash')
     _pmf_mean(body.get('reported_minutes',{}).get('pmf'),count=False)
+
+
+def _verify_corrections(records):
+    """Check the complete supersession graph and original subject links."""
+    mapping = {}
+    for (kind,record_id), payload in records.items():
+        if kind != 'corrections':
+            require(payload['supersedes'] is None,'only correction records may supersede originals')
+            continue
+        data=payload['data']
+        require(type(data) is dict and set(data)=={'reason','replacement'},'invalid correction contract')
+        require(type(data['reason']) is str and 0<len(data['reason'].strip())<=2048,
+                'correction requires a bounded explicit reason')
+        old=payload['supersedes'];new=data['replacement']
+        old_payload=_reference_target(old,records);new_payload=_reference_target(new,records)
+        require(old['kind']==new['kind'] and old!=new,'correction must link distinct records of the same kind')
+        require(payload['references']==[old,new],'correction must retain exact original/replacement references')
+        require(payload['logical_id']=='supersedes:'+old['kind']+':'+old['record_id'],
+                'correction logical identity differs from its original')
+        require('identity' in old_payload['data'] and
+                old_payload['data']['identity']==new_payload['data'].get('identity'),
+                'correction changes original subject identity')
+        left=old_payload['data'].get('pros004');right=new_payload['data'].get('pros004')
+        if left is not None or right is not None:
+            require(type(left) is dict and type(right) is dict and old['kind'] in {'outcomes','grades'},
+                    'PROS004 original forecasts/inputs cannot be replaced by corrections')
+            protected=('schema_version','event_id','event_version','event_starts_at','player_id','team_id','opponent_id','mode')
+            require(all(left.get(k)==right.get(k) for k in protected),'correction changes original event/player meaning')
+            if old['kind']=='grades':
+                require(left.get('forecast_id')==right.get('forecast_id') and
+                        old_payload['references'][0]==new_payload['references'][0],
+                        'grade correction changes the original forecast')
+        key=(old['kind'],old['record_id'])
+        require(key not in mapping,'conflicting correction branches')
+        mapping[key]=(new['kind'],new['record_id'])
+    for start in mapping:
+        seen=set();cursor=start
+        while cursor in mapping:
+            require(cursor not in seen,'correction cycle')
+            seen.add(cursor);cursor=mapping[cursor]
+    # A regrade must follow the traceable corrected outcome, rather than merely
+    # substituting another same-subject observation or reversing its lineage.
+    for old,new in mapping.items():
+        if old[0]!='grades' or 'pros004' not in records[old]['data']:
+            continue
+        old_out=records[old]['references'][1];new_out=records[new]['references'][1]
+        cursor=(old_out['kind'],old_out['record_id']);target=(new_out['kind'],new_out['record_id'])
+        require(cursor!=target,'grade correction needs a changed traceable outcome')
+        while cursor in mapping and cursor!=target:
+            cursor=mapping[cursor]
+        require(cursor==target,'grade correction is not linked to the corrected original outcome')
+    return len(mapping)
+
+
+def _strict_semantics(root,records):
+    """Read every typed body through the shared strict validation boundary.
+
+    Explicitly simulated diagnostic clocks are interpreted only after the outer
+    pass has rejected every new REAL_TIME_CAPTURED record and every future-clock
+    unrelated original. The clock context is local to this read-only check and
+    cannot confer capture/issuance eligibility, write records or call a producer.
+    """
+    markers=[p for p in records.values() if 'pros004' in p['data']]
+    if not markers:
+        return {'typed_records':0,'semantic_clock_mode':'ACTUAL_READ_ONLY','comparison_eligibility':'NOT_ESTABLISHED_BY_RECOVERY'}
+    from unittest.mock import patch
+    package_root=str(Path(__file__).resolve().parents[1])
+    if package_root not in sys.path:sys.path.insert(0,package_root)
+    from multisport_lab import ledger, pros004_inputs, pros004_producer, pros004_records
+    from multisport_lab.integrity import IntegrityError
+    from multisport_lab.ledger import LedgerRef
+    simulated=max(_time(p['received_at']) for p in records.values())
+    actual=datetime.now(timezone.utc)
+    validation_clock=max(simulated,actual)
+    try:
+        with ExitStack() as stack:
+            # There is no live writer in this context. Every mutation entrypoint
+            # is forbidden explicitly, so validators cannot repair the snapshot.
+            for module in (ledger,pros004_inputs,pros004_producer,pros004_records):
+                stack.enter_context(patch.object(module,'_now',return_value=validation_clock))
+            store=pros004_records.Pros004Store(root,diagnostic=False)
+            def forbidden(*args,**kwargs):
+                raise VerificationError('read-only semantic recovery attempted a write or model generation')
+            stack.enter_context(patch.object(store.ledger,'append',side_effect=forbidden))
+            for name in ('generate_forecast','_fit_laws','verify_replay','forecast_reference'):
+                stack.enter_context(patch.object(pros004_producer,name,side_effect=forbidden))
+            for payload in markers:
+                reference=LedgerRef(payload['kind'],payload['record_id'],fingerprint(payload))
+                require(store.read(reference)==payload,'strict typed readback changed original bytes')
+            # Also validates old graph conventions while the independent graph
+            # pass above checks the additional PROS004 relationships.
+            index={kind:{} for kind in KINDS}
+            for (kind,record_id),payload in records.items():index[kind][record_id]=payload
+            store.ledger._correction_map(index)
+    except (IntegrityError,ValueError,KeyError,TypeError,AttributeError) as error:
+        raise VerificationError('strict typed recovery semantics rejected: '+str(error)) from error
+    return {'typed_records':len(markers),'semantic_clock_mode':'EXPLICIT_DIAGNOSTIC_READ_ONLY',
+            'comparison_eligibility':'NOT_ESTABLISHED_BY_RECOVERY'}
+
+
+def _verify_completion_journal(root,records,encoded):
+    """Retain and cross-check the bounded completion evidence without issuing."""
+    package_root=str(Path(__file__).resolve().parents[1])
+    if package_root not in sys.path:sys.path.insert(0,package_root)
+    from multisport_lab.pros004_completion import journal_inventory,load_journal
+    from multisport_lab.integrity import IntegrityError
+    try:
+        inventory=journal_inventory(root);entries=load_journal(root)
+    except (IntegrityError,ValueError,KeyError,TypeError,OSError) as error:
+        raise VerificationError('completion journal recovery rejected: '+str(error)) from error
+    local={}
+    for entry in entries:
+        reference=entry['reference'];target=_reference_target(reference,records)
+        key=(reference['kind'],reference['record_id'])
+        require(encoded[key]==entry['record_raw_sha256'],'completion journal original raw bytes changed')
+        body=target['data'].get('pros004',{})
+        if body.get('mode') is not None:
+            require(body['mode']==entry['mode'],'completion journal changed original evidence lane')
+        require(entry['mode'] in DIAGNOSTIC_MODES,'readiness journal contains live completion evidence')
+        completed=_time(entry['completed_at']);received=_time(target['received_at'])
+        require(received<=completed,'completion precedes original receipt start')
+        if entry['kind']=='LOCAL_PERSISTENCE_COMPLETED':
+            local[key]=entry
+        elif key in local:
+            require(_time(local[key]['completed_at'])<=_time(entry['operation_started_at'])<=completed,
+                    'remote completion precedes original local persistence')
+    return inventory
 
 
 def verify_store(root):
@@ -316,13 +460,31 @@ def verify_store(root):
             require(_time(records[target]['received_at'])<=_time(payload['received_at']), 'reference clock follows record')
             refs.append(target)
         require(len(refs)==len(set(refs)),'duplicate references')
+    for (kind,record_id),payload in records.items():
+        if 'pros004' in payload['data']:
+            continue
+        diagnostic_correction=False
+        if kind=='corrections':
+            left=_reference_target(payload['supersedes'],records)
+            right=_reference_target(payload['data'].get('replacement'),records)
+            diagnostic_correction=all(p['data'].get('pros004',{}).get('mode') in DIAGNOSTIC_MODES for p in (left,right))
+        if not diagnostic_correction:
+            require(_time(payload['received_at'])<=datetime.now(timezone.utc),
+                    'unrelated original receipt clock is in the future')
+    correction_count=_verify_corrections(records)
     forecast_count=0
     for payload in records.values():
         body=payload['data'].get('pros004',{})
         if body.get('schema_version')=='nba-pros004-forecast-v1':
             _verify_forecast(body,payload,records)
             forecast_count+=1
-    return {'status':'PASS_INDEPENDENT_STORE_CHECK','records':count,'encoded_bytes':total,
+    journal=_verify_completion_journal(root,records,encoded)
+    require(count+journal['files']<=MAX_RECORDS and total+journal['bytes']<=MAX_BYTES,
+            'ledger plus completion journal exceeds unchanged global capacity')
+    semantics=_strict_semantics(root,records)
+    return {'status':'PASS_INDEPENDENT_STORE_CHECK','records':count+journal['files'],'encoded_bytes':total+journal['bytes'],
+            'ledger_record_count':count,'completion_journal':journal,
+            'strict_typed_semantics':semantics,'checked_correction_links':correction_count,
             'global_record_limit':MAX_RECORDS,'global_byte_limit':MAX_BYTES,
             'new_record_maxima':maxima,'record_file_sha256':{kind+':'+record:sha for (kind,record),sha in encoded.items()},
             'independently_checked_forecast_contracts':forecast_count,
@@ -330,7 +492,8 @@ def verify_store(root):
 
 
 def verify_readiness(report, root):
-    require(type(report) is dict and report.get('schema_version')==SCHEMA, 'invalid readiness report schema')
+    require(type(report) is dict and report.get('schema_version') in {SCHEMA,LEGACY_SCHEMA}, 'invalid readiness report schema')
+    version2=report['schema_version']==SCHEMA
     require(report.get('mode')=='READINESS_DIAGNOSTIC_NON_ISSUANCE','report is not a non-issuance diagnostic')
     evidence=report.get('evidence')
     require(type(evidence) is dict,'missing evidence lane declarations')
@@ -339,13 +502,30 @@ def verify_readiness(report, root):
     require(evidence.get('activation') is False,'PROS004 activation is not authorized by readiness')
     pins=source_pins(root)
     sources=report.get('source_sha256')
-    require(type(sources) is dict and all(name in sources for name in NEW_PRODUCER_FILES),'new producer source references missing')
+    required_sources=NEW_PRODUCER_FILES if version2 else LEGACY_PRODUCER_FILES
+    require(type(sources) is dict and all(name in sources for name in required_sources),'new producer source references missing')
     base=Path(root).resolve()
     for name,expected in sources.items():
         _sha(expected,'source hash')
         path=(base/name).resolve()
         require(path.is_relative_to(base) and path.is_file() and not (base/name).is_symlink(),'invalid source reference path')
         require(hashlib.sha256(path.read_bytes()).hexdigest()==expected,'executed source fingerprint changed: '+name)
+    if version2:
+        package_root=str(Path(__file__).resolve().parents[1])
+        if package_root not in sys.path:sys.path.insert(0,package_root)
+        from multisport_lab.pros004_producer import validate_source_binding
+        from multisport_lab.integrity import IntegrityError
+        binding=report.get('producer_binding')
+        require(type(binding) is dict and binding.get('schema_version')=='nba-pros004-source-binding-v2',
+                'completion-aware producer binding is absent')
+        try:
+            validate_source_binding(binding)
+        except (IntegrityError,ValueError,KeyError,TypeError) as error:
+            raise VerificationError('report producer binding is invalid: '+str(error)) from error
+        dependencies=set(NEW_PRODUCER_FILES)-{'multisport_lab/pros004_readiness.py'}
+        require(set(binding['source_sha256'])==dependencies and
+                all(binding['source_sha256'][name]==sources[name] for name in dependencies),
+                'report producer binding source pins disagree with executed source hashes')
     history=report.get('history')
     require(type(history) is dict,'missing complete-history measurement')
     for key,value in {'rows':HISTORY_ROWS,'events':HISTORY_EVENTS,'normalized_bytes':HISTORY_BYTES,'sha256':HISTORY_SHA256}.items():
@@ -368,6 +548,28 @@ def verify_readiness(report, root):
                 'invalid metadata byte allowance')
         require(retention['projected_bytes']==base_bytes+retention['metadata_encoded_ceiling_bytes'],
                 'full planned byte arithmetic is inconsistent')
+    if version2:
+        # One prior 8-KiB metadata slot now retains a 2-MiB completion journal.
+        # Neither the global 512-file/32-MiB limits nor full forecast atoms move.
+        metadata_bytes=24*8*1024+2*1024*1024+13*64*1024
+        require(retention.get('metadata_encoded_ceiling_bytes')==metadata_bytes and
+                retention['projected_bytes']==base_bytes+metadata_bytes==24576000,
+                'completion-aware capacity metadata is absent or inconsistent')
+        recovery=report.get('recovery')
+        require(report.get('diagnostic_status')=='PASS' and report.get('operation_failure') is None and
+                type(recovery) is dict,'readiness diagnostic is partial or failed timing')
+        for key,value in {'retained_models':8,'timing_complete_models':8,'eligible_models':0}.items():
+            require(type(recovery.get(key)) is int and recovery[key]==value,
+                    'complete diagnostic recovery count differs: '+key)
+        require(recovery.get('remote_recovery') is True and recovery.get('github_recovery') is False and
+                recovery.get('transport')=='ISOLATED_LOCAL_BARE_GIT' and
+                recovery.get('original_probabilities_and_clocks_preserved') is True,
+                'independent diagnostic Git recovery is absent or mislabeled')
+        final_checkpoint=recovery.get('final_checkpoint')
+        input_checkpoint=report.get('event_input',{}).get('final_checkpoint')
+        require(type(final_checkpoint) is dict and final_checkpoint.get('timely') is True and
+                type(input_checkpoint) is dict and input_checkpoint.get('timely') is True,
+                'required final input/forecast checkpoint completion was not timely')
     diagnostics=report.get('diagnostics')
     require(type(diagnostics) is dict and set(diagnostics)=={'R0','K0'},'comparison requires exactly R0 and K0')
     for model,value in diagnostics.items():
@@ -379,6 +581,10 @@ def verify_readiness(report, root):
         require(value.get('category_count')==14,'all 13 categories plus PA required: '+model)
         require(_sha(value.get('joint_sha256'),'joint hash')==_sha(value.get('restored_joint_sha256'),'restored joint hash'),
                 'recovered joint law changed: '+model)
+        if version2:
+            require(value.get('model_version')==MODEL_VERSIONS[model] and
+                    value.get('producer_version')=='pros004-'+model.lower()+'-producer-v2',
+                    'measured producer model or completion-aware wrapper changed: '+model)
     return {'status':'PASS_INDEPENDENT_READINESS_CHECK','frozen_source_files':len(pins),
             'executed_source_files':len(sources),'full_history_rows':HISTORY_ROWS,'categories_per_model':14,
             'planned_records':retention['projected_records'],'planned_bytes':retention['projected_bytes'],

@@ -6,7 +6,52 @@ activation, merge or deployment. The mathematical reservation remains unchanged 
 `docs/NBA_PROSPECTIVE_004.md` and its immutable protocol receipt.
 Genuine writes explicitly fail `READINESS_ONLY`, including caller-supplied
 activation flags. The proposed operational wrappers are
-`pros004-r0-producer-v1` and `pros004-k0-producer-v1`.
+`pros004-r0-producer-v2` and `pros004-k0-producer-v2`.
+The v2 completion policy is [PROS004_COMPLETION.md](PROS004_COMPLETION.md).
+
+## October 20 completion/recovery correction checkpoint
+
+PR #10 remains draft and PROS004 remains inactive. The expired operating pilot is
+**MISSED_OR_UNOBSERVED_EXECUTION**, with cause **NOT_ESTABLISHED**; see
+[PILOT_OPERATIONAL_DIAGNOSIS.md](PILOT_OPERATIONAL_DIAGNOSIS.md). PR #8 and its
+original 19 records are unchanged. No retry, capture, rebind or issuance occurred.
+
+The reviewed c305 revision's two late-write defects were reproduced normally and
+under optimized Python. New post-write local completion and strict remote
+checkpoint/readback observations preserve originals while refusing late or
+unacknowledged admission after restart. Final prefix publication makes the last
+original acknowledgment independently recoverable without renewing its clock.
+Strict typed recovery now checks all supported contracts, grade arithmetic,
+causal clocks and correction relationships after independent byte/hash checks.
+Exact reproduction evidence is in
+`evidence/verification/2026-10-20-pros004-completion-reproduction.json`.
+
+The revised full-study reservation is **499 planned files + 13 reserve slots =
+512**, **24,576,000 bytes**, including the 2-MiB bounded journal. No per-forecast
+record was added; original encoded-envelope caps are unchanged. The remaining
+metadata slots are one combined inactive activation/review/readback package and
+one eventual evaluation artifact. The earlier proposal must not become an extra
+ledger record outside that allocation. An operational packaging/admission step
+remains reviewed activation work.
+
+Implemented inactive preparation includes read-only activation review validation,
+Git checkpoint/push/fresh-fetch adapter, strict bounded failure/date metadata,
+private raw-retention and exact outcome/hash/clock-link contracts, and paginated
+public manifest v3 plus Python/JavaScript validation/rendering. The actual raw
+private primary backend, permitted source completeness/operational admission,
+genuine activation artifact, and operational destination admission remain blocked.
+Synthetic raw readback and public Git cannot satisfy private primary durability.
+
+Three permitted current metadata requests observed six UTC-October-21 events but
+none supplied registered pagination/count proof. Actual first T90 remains
+**unknown**, including after this revalidation; see
+[PROS004_SCHEDULE_AUDIT.md](PROS004_SCHEDULE_AUDIT.md). The candidate midnight T90
+and theoretical 22:30 UTC earliest bound remain conditional and distinct. This
+reservation will not move, backfill or activate automatically.
+
+New fixed-source timing, capacity and remote-readback evidence is recorded in the
+completed checkpoint below after execution. All older measurements/receipts below
+are retained as **v1 diagnostic evidence**, not post-write/remote completion proof.
 
 ## Preservation and versions
 
@@ -61,7 +106,7 @@ alone proves no actual capture/issuance timing. Recovery pins original inputs an
 producer identity even after documentation/records change HEAD. The original
 forecast's probabilities and clocks survive; missing/late peers remain explicit.
 
-## Bounded persistence
+## Earlier v1 persistence accounting (frozen; superseded above)
 
 Existing ledger limits remain 512 records / 32 MiB. Complete encoded-envelope ceilings:
 history 2 MiB, event 32 KiB, forecast 64 KiB, outcome 8 KiB, grade 16 KiB. Metadata has its
@@ -118,7 +163,7 @@ period. Code/test correctness and full-history size/runtime diagnostics establis
 no predictive result or future evidence. New verification rejects malformed data
 with explicit exceptions under normal and optimized Python; DEV005 stays frozen.
 
-## Activation checklist
+## Earlier v1 activation checklist (historical checkpoint)
 
 | Requirement | Current state |
 | --- | --- |
@@ -147,7 +192,7 @@ with current versions is required before declaring the first selected cutoff.
 The reservation alone permits a first T90 as early as October 20 22:30 UTC (17:30 CDT).
 Do not assume midnight is safe, move the reservation, backfill or replace misses.
 
-## Measured review checkpoint
+## Earlier v1 measured review checkpoint (frozen)
 
 Implementation source is frozen at
 `6e08b405d79d0fe7fde7299b3407504b35ef128f`; later evidence/documentation commits do

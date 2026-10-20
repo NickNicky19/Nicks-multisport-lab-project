@@ -27,20 +27,24 @@ from .ledger import LedgerRef
 
 STUDY_ID = "NBA-ALL13-JOINT-PROS-004"
 SCHEMA = "nba-pros004-forecast-v1"
-BINDING_SCHEMA = "nba-pros004-source-binding-v1"
+BINDING_SCHEMA = "nba-pros004-source-binding-v2"
 JOINT_SCHEMA = "nba-pros004-complete-joint-replay-v1"
 MODEL_VERSIONS = {"R0": R0_VERSION, "K0": KERNEL_VERSION}
-PRODUCER_VERSIONS = {"R0": "pros004-r0-producer-v1", "K0": "pros004-k0-producer-v1"}
+PRODUCER_VERSIONS = {"R0": "pros004-r0-producer-v2", "K0": "pros004-k0-producer-v2"}
+LEGACY_PRODUCER_VERSIONS = {"R0": "pros004-r0-producer-v1", "K0": "pros004-k0-producer-v1"}
 DIAGNOSTIC_MODES = {"READINESS_DIAGNOSTIC", "SYNTHETIC_DIAGNOSTIC"}
 LAW_SHA256 = {"R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
               "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"}
-SOURCE_FILES = ("multisport_lab/pros004_producer.py", "multisport_lab/pros004_inputs.py",
+LEGACY_SOURCE_FILES = ("multisport_lab/pros004_producer.py", "multisport_lab/pros004_inputs.py",
     "multisport_lab/pros004_records.py", "multisport_lab/baseline.py",
     "multisport_lab/development_003.py", "multisport_lab/development_002.py",
     "multisport_lab/research_pilot.py", "multisport_lab/nba_data.py",
     "multisport_lab/basketball.py", "multisport_lab/integrity.py",
     "multisport_lab/ledger.py", "multisport_lab/forecast_contract.py",
     "multisport_lab/pregame_sources.py")
+SOURCE_FILES = LEGACY_SOURCE_FILES + ("multisport_lab/pros004_completion.py", "multisport_lab/pros004_activation.py",
+    "multisport_lab/pros004_remote.py", "multisport_lab/pros004_raw.py",
+    "multisport_lab/pros004_snapshot.py", "scripts/verify_pros004_readiness.py")
 MAX_FORECAST_BODY_BYTES = 62*1024  # Complete ledger envelope independently <=64KiB.
 MAX_GENERATION_SECONDS = 120
 GENERATION_WINDOW_SECONDS = 300
@@ -103,9 +107,10 @@ def make_source_binding(model_commit=None, *, diagnostic=False, root=None):
 
 def validate_source_binding(binding, *, check_current=False):
     _exact(binding, {"schema_version", "model_commit", "verification", "source_sha256", "law_sha256", "runtime"}, "producer source binding")
-    if binding["schema_version"] != BINDING_SCHEMA or binding["law_sha256"] != LAW_SHA256:
+    legacy=binding["schema_version"]=="nba-pros004-source-binding-v1"
+    if binding["schema_version"] not in {BINDING_SCHEMA,"nba-pros004-source-binding-v1"} or binding["law_sha256"] != LAW_SHA256:
         raise IntegrityError("producer mathematical law/source identity changed")
-    if type(binding["source_sha256"]) is not dict or set(binding["source_sha256"]) != set(SOURCE_FILES):
+    if type(binding["source_sha256"]) is not dict or set(binding["source_sha256"]) != set(LEGACY_SOURCE_FILES if legacy else SOURCE_FILES):
         raise IntegrityError("producer dependency fingerprint inventory changed")
     for name, value in binding["source_sha256"].items():
         _sha(value, name)
@@ -127,6 +132,8 @@ def validate_source_binding(binding, *, check_current=False):
             or type(runtime["float_mantissa_bits"]) is not int or runtime["float_mantissa_bits"] < 1):
         raise IntegrityError("producer runtime fingerprint is malformed")
     if check_current:
+        if legacy:
+            raise IntegrityError("legacy producer cannot be reused as the new completion-aware producer")
         expected = make_source_binding(binding["model_commit"], diagnostic=binding["verification"] == "LOCAL_DIAGNOSTIC_SOURCE")
         if expected != binding:
             raise IntegrityError("source/runtime changed; original forecast must not be regenerated or replaced")
@@ -351,8 +358,10 @@ def validate_forecast_record(body, event_body, history_body):
             or body["qualification"] != "UNAVAILABLE"):
         raise IntegrityError("unsupported PROS004 forecast/model meaning")
     model = body["model_key"]
-    if body["model_version"] != MODEL_VERSIONS[model] or body["producer_version"] != PRODUCER_VERSIONS[model]:
+    if body["model_version"] != MODEL_VERSIONS[model] or body["producer_version"] not in {PRODUCER_VERSIONS[model],LEGACY_PRODUCER_VERSIONS[model]}:
         raise IntegrityError("mathematical model and operational producer identities disagree")
+    if (body["producer_version"]==LEGACY_PRODUCER_VERSIONS[model]) != (body["producer_binding"].get("schema_version")=="nba-pros004-source-binding-v1"):
+        raise IntegrityError("operational producer version conflicts with its source binding")
     validate_source_binding(body["producer_binding"])
     target = _input_gate(event_body, history_body)
     target, candidate = _event_target(event_body, body["player_id"])
@@ -463,7 +472,8 @@ def verify_replay(body, event_body, history_body):
     return verify_reference_record(body, law)
 
 
-def issue_pair(store, event_ref, producer_binding, *, player_id=None, checkpoint=None):
+def issue_pair(store, event_ref, producer_binding, *, player_id=None, checkpoint=None,
+               input_final_checkpoint=None):
     """Exercise paired controls in a diagnostic store; recover originals first.
 
     A checkpoint exception stops subsequent generation and preserves every
@@ -484,7 +494,13 @@ def issue_pair(store, event_ref, producer_binding, *, player_id=None, checkpoint
             subjects = [s for s in subjects if s["player_id"] == player_id]
             if not subjects:
                 raise IntegrityError("requested paired subject is outside frozen selection")
-        if not any(s["missing_models"] for s in subjects):
+        if not any(s["missing_models"] for s in subjects) and all(
+                status is None or status["timing_complete"] for subject in subjects for status in subject["admission"].values()):
+            if checkpoint is not None:
+                refs=tuple(LedgerRef.from_record(ref) for subject in subjects for ref in subject["forecasts"].values() if ref)
+                finalized=store.finalize_checkpoint(refs,checkpoint)
+                return {**recovery,"final_checkpoint":finalized,
+                    "metadata_publication_status":finalized["metadata_publication_status"]}
             return recovery
         target, _ = _event_target(event, subjects[0]["player_id"])
         actual = _now()
@@ -492,11 +508,28 @@ def issue_pair(store, event_ref, producer_binding, *, player_id=None, checkpoint
             return {**recovery, "status":"ISSUANCE_NOT_YET_OPEN", "generation_attempted":False}
         if actual > target.cutoff+timedelta(seconds=GENERATION_WINDOW_SECONDS):
             # Readback is permitted after the window; no missing peer is created.
-            status = "PARTIAL_WINDOW_CLOSED" if recovery["issued_models"] else "NOT_ISSUED_WINDOW_CLOSED"
+            status = "PARTIAL_WINDOW_CLOSED" if recovery["retained_models"] else "NOT_ISSUED_WINDOW_CLOSED"
             return {**recovery, "status":status, "generation_attempted":False}
+        if checkpoint is None:
+            return {**recovery,"status":"REMOTE_CHECKPOINT_REQUIRED","generation_attempted":False}
+        if input_final_checkpoint is None:
+            return {**recovery,"status":"INPUT_FINAL_CHECKPOINT_REQUIRED","generation_attempted":False}
+        store.validate_input_checkpoint(event_ref,input_final_checkpoint)
+        if not store.admission_status(event_ref)["timing_complete"]:
+            raise IntegrityError("event input lacks timely local/remote completion before selection closed")
+        # Recover and acknowledge retained originals before any new generation.
+        # A missing proof is never repaired by replacing probabilities or clocks.
+        for subject in subjects:
+            for model_key,original in subject["forecasts"].items():
+                if original is None:continue
+                record=LedgerRef.from_record(original)
+                status=store.admission_status(record)
+                if not status["local_timely"]:
+                    raise IntegrityError("retained original lacks timely local completion; no replacement generation is permitted")
+                if not status["remote_timely"]:
+                    store.complete_checkpoint(record,checkpoint)
         claim_ref, created = store.claim_event(event_ref, producer_binding)
-        if checkpoint is not None and checkpoint(claim_ref) is not True:
-            raise IntegrityError("event checkpoint did not acknowledge retained state; stop generation")
+        store.complete_checkpoint(claim_ref,checkpoint)
         for subject in subjects:
             for model_key in ("R0", "K0"):
                 if model_key not in subject["missing_models"]:
@@ -508,6 +541,12 @@ def issue_pair(store, event_ref, producer_binding, *, player_id=None, checkpoint
                 verify_reference_record(body, reference)
                 _window(target, _now(), started=utc(body["generation_started_at"]))
                 record = store.persist_forecast(body,event_ref=event_ref,history_ref=history_ref,intent_ref=claim_ref)
-                if checkpoint is not None and checkpoint(record) is not True:
-                    raise IntegrityError("forecast checkpoint did not acknowledge the original; preserve partial state")
-        return store.recover_event(event_ref,producer_binding)
+                store.complete_checkpoint(record,checkpoint)
+        recovery=store.recover_event(event_ref,producer_binding)
+        # The final original's acknowledgment was appended after its own push.
+        # Publish that complete metadata prefix once without renewing originals.
+        refs=tuple(store.lookup_forecast(event_ref,subject["player_id"],model)
+            for subject in subjects for model in ("R0","K0"))
+        finalized=store.finalize_checkpoint(refs,checkpoint)
+        return {**recovery,"final_checkpoint":finalized,
+            "metadata_publication_status":finalized["metadata_publication_status"]}

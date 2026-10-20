@@ -10,6 +10,7 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal, localcontext
 import fcntl
+import hashlib
 import math
 from pathlib import Path
 import re
@@ -18,6 +19,7 @@ import subprocess
 from .integrity import (HASH_FORMAT, RECEIPT_SCHEMA, IntegrityError, canonical,
                         digest, stamp, utc)
 from . import ledger as frozen_ledger
+from . import pros004_completion as completion
 from .ledger import (Ledger, LedgerRef, SCHEMA as LEDGER_SCHEMA, KINDS,
                      MAX_LEDGER_RECORDS, MAX_LEDGER_BYTES, _outcome_categories,
                      _score_categories, _number_text)
@@ -79,6 +81,9 @@ def _identity(body):
     schema = body.get("schema_version")
     event = _event(body)
     identity = {"study_id": STUDY_ID, "id_namespace": "espn", "league": "NBA"}
+    if schema == "nba-pros004-failure-v1":
+        identity["event_input_record_id"]=LedgerRef.from_record(body["event_ref"]).record_id
+        if body["subject_id"] is not None:identity["player_id"]=body["subject_id"]
     if schema == "nba-pros004-history-v1":
         identity["history"] = "FIXED_FULL_26645_ROW_HISTORY"
     elif "event_id" in event:
@@ -104,17 +109,19 @@ def encoded_envelope_size(kind, logical_id, data, *, references=(), received_at=
                           "payload_sha256": digest(payload), "payload": payload}))
 
 
-def full_study_capacity():
+def _study_capacity(*, completion_journal):
     """Frozen ceilings, corrected pilot allowance, and explicit metadata reserve."""
     counts = {"forecasts": 168, "outcomes": 84, "grades": 168,
               "event_inputs": 21, "shared_history": 1,
               "old_historical_records": 18, "full_pilot_allowance": 14,
               "study_manifest": 1, "event_admission_claims": 21,
-              "future_activation_readback_evaluation_metadata": 3,
+              "future_activation_readback_evaluation_metadata": 2 if completion_journal else 3,
               "correction_or_failure_reserve": RESERVE_RECORDS}
+    if completion_journal:
+        counts["completion_journal_files"]=1
     comparison = 168*64*1024+84*8*1024+168*16*1024+21*32*1024+2*1024*1024
     baseline = 4*1024*1024
-    metadata = 25*8*1024
+    metadata = (24*8*1024+completion.MAX_JOURNAL_BYTES) if completion_journal else 25*8*1024
     # The largest possible new record is64KiB; this deliberately over-reserves
     # the correction/failure allowance instead of counting only a small link.
     reserve = RESERVE_RECORDS*64*1024
@@ -124,7 +131,7 @@ def full_study_capacity():
         raise IntegrityError("shared ledger limits changed; capacity needs renewed review")
     if records > MAX_LEDGER_RECORDS or total > MAX_LEDGER_BYTES:
         raise IntegrityError("full planned PROS004 comparison exceeds shared ledger limits")
-    return {"schema_version": "nba-pros004-capacity-v1", "counts": counts,
+    return {"schema_version": "nba-pros004-capacity-v2" if completion_journal else "nba-pros004-capacity-v1", "counts": counts,
             "comparison_records": 442, "full_study_records_before_reserve": records-RESERVE_RECORDS,
             "maximum_records_including_reserve": records,
             "remaining_record_slots_after_reserve": MAX_LEDGER_RECORDS-records,
@@ -138,6 +145,11 @@ def full_study_capacity():
             "qualification": "UNAVAILABLE", "activation": "INACTIVE"}
 
 
+def full_study_capacity():
+    """Reserve one bounded completion journal within the original metadata slots."""
+    return _study_capacity(completion_journal=True)
+
+
 def _logical(body):
     schema = body["schema_version"]
     if schema == "nba-pros004-history-v1":
@@ -146,6 +158,8 @@ def _logical(body):
         return "pros004:manifest"
     if schema == "nba-pros004-date-status-v1":
         return f"pros004:event:{body['event_date']}"
+    if schema == "nba-pros004-failure-v1":
+        return "pros004:failure:"+digest(body)
     event = _event(body)
     day = utc(event["event_starts_at"]).date().isoformat()
     if schema == "nba-pros004-event-v1":
@@ -160,8 +174,6 @@ def _logical(body):
         suffix = "outcome" if schema.endswith("outcome-v1") else "grade"
         content = digest({k: v for k, v in body.items() if k not in {"outcome_id", "grade_id"}})
         return f"pros004:{suffix}:{content}"
-    if schema == "nba-pros004-failure-v1":
-        return "pros004:failure:"+digest(body)
     raise IntegrityError("unknown PROS004 record schema")
 
 
@@ -377,8 +389,9 @@ class Pros004Store:
                 raise IntegrityError("event admission differs from immutable cohort/input")
             from .pros004_producer import validate_source_binding
             validate_source_binding(body['producer_identity'])
-            if _time(body["claimed_at"],"claimed_at") > _now():
-                raise IntegrityError("event admission clock is in future")
+            claimed=_time(body["claimed_at"],"claimed_at")
+            if not utc(self.read(event_ref)["received_at"])<=claimed<=_now():
+                raise IntegrityError("event admission clock precedes its retained input or is in future")
         elif schema == "nba-pros004-outcome-v1":
             validate_outcome_body(body)
             if not refs or any(r.kind != "forecasts" for r in refs) or len(refs) > 2:
@@ -398,19 +411,41 @@ class Pros004Store:
             if len(refs) != 2 or refs[0].kind != "forecasts" or refs[1].kind != "outcomes":
                 raise IntegrityError("statistical grade needs exact forecast/shared outcome")
             forecast, outcome = self.body(refs[0]), self.body(refs[1])
+            if refs[0].to_record() not in self.read(refs[1])["references"]:
+                raise IntegrityError("statistical grade forecast is not linked by its shared outcome")
             expected = self._grade(forecast,outcome,body["graded_at"])
             if body != expected:
                 raise IntegrityError("statistical grade conflicts with immutable probabilities/outcome")
         elif schema == "nba-pros004-study-manifest-v1":
             if (set(body)!={"schema_version","study_id","status","recorded_at","capacity"}
                     or _time(body['recorded_at'],'recorded_at')>_now()
-                    or body.get("status") != "INACTIVE_READINESS_ONLY" or body.get("capacity") != full_study_capacity() or refs):
+                    or body.get("status") != "INACTIVE_READINESS_ONLY" or body.get("capacity") not in
+                    (full_study_capacity(),_study_capacity(completion_journal=False)) or refs):
                 raise IntegrityError("readiness manifest cannot activate the study")
         elif schema == "nba-pros004-failure-v1":
-            _text(body.get("reason"),"failure reason")
-            _time(body.get("recorded_at"),"recorded_at")
-            if body.get("status") not in {"SOURCE_FAILURE","VALID_EMPTY","PARTIAL","MISSING_PEER","BUDGET_FAILURE"}:
+            fields={"schema_version","study_id","mode","status","reason","recorded_at",
+                    "event_ref","subject_id","operation","original_reference"}
+            if set(body)!=fields or body.get("status") not in {"SOURCE_FAILURE","PARTIAL","MISSING_PEER","BUDGET_FAILURE","UNACKNOWLEDGED","LATE_COMPLETION"}:
                 raise IntegrityError("invalid retained failure/coverage state")
+            reason=_text(body["reason"],"failure reason")
+            if len(reason)>2048 or _time(body["recorded_at"],"recorded_at")>_now():
+                raise IntegrityError("failure reason or observation clock is invalid")
+            if body["operation"] not in {"CAPTURE","INPUT_PERSISTENCE","GENERATION","FORECAST_PERSISTENCE","REMOTE_CHECKPOINT","RECOVERY","BUDGET"}:
+                raise IntegrityError("unknown operational failure phase")
+            event_ref=LedgerRef.from_record(body["event_ref"])
+            event=self.body(event_ref)
+            if event["schema_version"]!="nba-pros004-event-v1" or event["mode"]!=body["mode"]:
+                raise IntegrityError("failure changes the frozen event or evidence lane")
+            if body["subject_id"] is not None and body["subject_id"] not in {p["player_id"] for p in event["candidates"]}:
+                raise IntegrityError("failure subject is outside the frozen cohort")
+            expected=[event_ref]
+            if body["original_reference"] is not None:
+                original=LedgerRef.from_record(body["original_reference"]);original_body=self.body(original)
+                if original_body.get("event_ref")!=event_ref.to_record() or (body["subject_id"] is not None and original_body.get("player_id")!=body["subject_id"]):
+                    raise IntegrityError("failure original changes the admitted event/subject")
+                expected.append(original)
+            if refs!=tuple(expected):
+                raise IntegrityError("failure requires exact event/original references")
 
     def read(self, reference):
         payload = self.ledger.read(reference)
@@ -426,6 +461,10 @@ class Pros004Store:
         if self.ledger._path(reference.kind,reference.record_id).stat().st_size > CEILINGS[body["schema_version"]]:
             raise IntegrityError("PROS004 record exceeds its individual encoded-envelope ceiling")
         self._validate_receipt_clocks(payload,body)
+        for item in payload["references"]:
+            parent=self.ledger.read(LedgerRef.from_record(item))
+            if utc(parent["received_at"])>utc(payload["received_at"]):
+                raise IntegrityError("PROS004 reference receipt occurs after its child receipt")
         if reference in self._validating:
             raise IntegrityError("cyclic PROS004 reference graph")
         if reference not in self._validated:
@@ -455,6 +494,14 @@ class Pros004Store:
             raise IntegrityError("outcome normalization occurs after its receipt")
         elif schema=="nba-pros004-grade-v1" and utc(body["graded_at"])>received:
             raise IntegrityError("statistical grading occurs after its receipt")
+        elif schema=="nba-pros004-history-v1" and utc(body["imported_at"])>received:
+            raise IntegrityError("history import occurs after its receipt")
+        elif schema=="nba-pros004-event-claim-v1" and utc(body["claimed_at"])>received:
+            raise IntegrityError("event admission observation occurs after its receipt")
+        elif schema in {"nba-pros004-date-status-v1","nba-pros004-study-manifest-v1"} and utc(body["recorded_at"])>received:
+            raise IntegrityError("operational metadata observation occurs after its receipt")
+        elif schema=="nba-pros004-failure-v1" and utc(body["recorded_at"])>received:
+            raise IntegrityError("operational failure observation occurs after its receipt")
 
     def body(self, reference):
         return self.read(reference)["data"]["pros004"]
@@ -473,8 +520,11 @@ class Pros004Store:
     def capacity_report(self):
         plan = full_study_capacity()
         index,typed = self._inventory()
-        all_count = sum(len(values) for values in index.values())
-        actual = sum(path.stat().st_size for kind in KINDS for path in (self.root/"records"/kind).glob("*.json"))
+        journal=completion.journal_inventory(self.root)
+        all_count = sum(len(values) for values in index.values())+journal["files"]
+        actual = sum(path.stat().st_size for kind in KINDS for path in (self.root/"records"/kind).glob("*.json"))+journal["bytes"]
+        if all_count>MAX_LEDGER_RECORDS or actual>MAX_LEDGER_BYTES:
+            raise IntegrityError("ledger plus completion journal exceeds unchanged shared limits")
         def is_study_correction(payload):
             if payload["kind"]!="corrections":return False
             original=LedgerRef.from_record(payload["supersedes"])
@@ -510,6 +560,7 @@ class Pros004Store:
         if extras > RESERVE_RECORDS:
             raise IntegrityError("correction/failure metadata exhausts the full-study reserve")
         return {**plan,"actual_records":all_count,"actual_bytes":actual,
+                "completion_journal":journal,
                 "existing_or_pilot_records":len(external),"existing_or_pilot_bytes":external_bytes,
                 "pros004_schema_counts":counts,"maximum_measured_envelope_bytes":maxima,
                 "used_correction_failure_reserve":extras,
@@ -545,16 +596,254 @@ class Pros004Store:
             or digest(data["identity"]) in report["original_subject_identity_sha256"].get(schema,[]))
         if report["used_correction_failure_reserve"]+new_reserve > RESERVE_RECORDS:
             raise IntegrityError("append would consume reserved capacity for the complete comparison")
+        if report["actual_records"]+1+int(report["completion_journal"]["files"]==0)>MAX_LEDGER_RECORDS:
+            raise IntegrityError("original plus completion journal would exceed shared record limit")
         self._validate_receipt_clocks({"received_at":stamp(_now())},body)
         reference = self.ledger.append(kind,logical,data,references=refs)
         self.read(reference)
+        raw_sha=self._raw_sha256(reference)
+        completed=_now()  # AFTER actual write/fsync and verified original readback.
+        completion.append_completion(self.root,reference,mode=body.get("mode","READINESS_DIAGNOSTIC"),
+            raw_sha256=raw_sha,completed_at=completed,recorded_at=_now())
         return reference
 
     def store_history(self, body):
         return self._append(body)
 
+    def _raw_sha256(self,reference):
+        path=self.ledger._path(reference.kind,reference.record_id)
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+
+    def admission_status(self,reference):
+        """Read original completion evidence without issuing, repairing or fitting.
+
+        received_at is an immutable pre-write clock. Only separately retained
+        post-operation observations can establish local/remote completion.
+        """
+        payload=self.read(reference);body=payload["data"]["pros004"]
+        entries=completion.load_journal(self.root)
+        observed=[entry for entry in entries if entry["reference"]==reference.to_record()]
+        raw_sha=self._raw_sha256(reference);reasons=[]
+        for entry in observed:
+            if entry["record_raw_sha256"]!=raw_sha or entry["mode"]!=body.get("mode","READINESS_DIAGNOSTIC"):
+                raise IntegrityError("completion evidence changes original bytes or evidence lane")
+            if utc(entry["recorded_at"])>_now():
+                raise IntegrityError("completion evidence observation clock is in the future")
+        local=next((entry for entry in observed if entry["kind"]=="LOCAL_PERSISTENCE_COMPLETED"),None)
+        remote=next((entry for entry in observed if entry["kind"]=="REMOTE_CHECKPOINT_COMPLETED"),None)
+        local_clock=utc(local["completed_at"]) if local else None
+        remote_clock=utc(remote["completed_at"]) if remote else None
+        schema=body["schema_version"];deadline=None;start=None
+        if schema=="nba-pros004-event-v1":
+            deadline=utc(body["event"]["event_starts_at"])-timedelta(minutes=100)
+            start=utc(body["imported_at"])
+        elif schema=="nba-pros004-forecast-v1":
+            deadline=utc(body["cutoff_at"])+timedelta(minutes=5)
+            start=utc(body["generation_started_at"])
+        elif schema=="nba-pros004-event-claim-v1":
+            deadline=utc(body["event_starts_at"])-timedelta(minutes=85)
+            start=utc(body["claimed_at"])
+        local_timely=bool(local_clock is not None and utc(payload["received_at"])<=local_clock
+            and (start is None or start<=local_clock) and (deadline is None or local_clock<=deadline))
+        if schema=="nba-pros004-forecast-v1" and local_clock is not None:
+            local_timely=local_timely and (local_clock-start).total_seconds()<=120
+        remote_timely=bool(local_timely and remote_clock is not None and local_clock<=utc(remote["operation_started_at"])<=remote_clock
+            and (deadline is None or remote_clock<=deadline))
+        if schema=="nba-pros004-forecast-v1" and remote_clock is not None:
+            remote_timely=remote_timely and (remote_clock-start).total_seconds()<=120
+        if local is None:reasons.append("LOCAL_COMPLETION_UNOBSERVED")
+        elif not local_timely:reasons.append("LOCAL_COMPLETION_LATE_OR_INVALID")
+        if remote is None:reasons.append("REMOTE_CHECKPOINT_UNACKNOWLEDGED")
+        elif not remote_timely:reasons.append("REMOTE_COMPLETION_LATE_OR_INVALID")
+        input_status=None
+        timing_complete=bool(local_timely and remote_timely)
+        if schema=="nba-pros004-forecast-v1":
+            input_status=self.admission_status(LedgerRef.from_record(body["event_ref"]))
+            if not input_status["timing_complete"]:
+                reasons.append("EVENT_INPUT_COMPLETION_NOT_ADMITTED")
+            timing_complete=timing_complete and input_status["timing_complete"]
+            if body["producer_version"].endswith("-v1"):
+                reasons.append("LEGACY_PRODUCER_WITHOUT_COMPLETION_POLICY")
+                timing_complete=False
+        eligible=False
+        if body.get("mode")!="REAL_TIME_CAPTURED":reasons.append("DIAGNOSTIC_NON_ISSUANCE")
+        elif timing_complete:
+            # The reviewed activation path remains separately disabled. A caller
+            # flag or a completion journal cannot activate this reservation.
+            from .pros004_producer import validate_activation_binding
+            try:
+                validate_activation_binding(self.activation,producer_binding=body.get("producer_binding",{}),
+                    event_body=self.body(LedgerRef.from_record(body["event_ref"])) if schema=="nba-pros004-forecast-v1" else body)
+            except IntegrityError:
+                reasons.append("STUDY_NOT_ACTIVATED")
+            else:eligible=True
+        return {"schema_version":"nba-pros004-admission-status-v2","reference":reference.to_record(),
+            "retained":True,"received_at_prewrite":payload["received_at"],
+            "generation_completed_at":body.get("generation_completed_at"),"verified_at":body.get("verified_at"),
+            "local_persistence_completed_at":local["completed_at"] if local else None,
+            "remote_checkpoint_completed_at":remote["completed_at"] if remote else None,
+            "local_timely":bool(local_timely),"remote_timely":bool(remote_timely),
+            "timing_complete":bool(timing_complete),"eligible_for_comparison":bool(eligible),
+            "status":"ELIGIBLE_RESEARCH_ONLY" if eligible else "RETAINED_UNADMITTED",
+            "metadata_publication_status":"NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+            "reasons":reasons,"event_input_status":input_status,"qualification":"UNAVAILABLE"}
+
+    def complete_checkpoint(self,reference,checkpoint):
+        """Observe structured remote readback completion after the actual call."""
+        status=self.admission_status(reference)
+        if status["remote_checkpoint_completed_at"] is not None:
+            if not status["remote_timely"]:
+                raise IntegrityError("retained remote checkpoint completed late; original remains unadmitted")
+            return status
+        if not status["local_timely"]:
+            raise IntegrityError("original lacks timely local persistence completion; retain it unadmitted")
+        from .pros004_snapshot import snapshot_manifest
+        expected_snapshot=digest(snapshot_manifest(self.root))
+        started=_now()
+        acknowledgment=checkpoint(reference)
+        # The callback must publish the actual current prefix, and cannot mutate
+        # the original retained state while claiming an unrelated snapshot.
+        if digest(snapshot_manifest(self.root))!=expected_snapshot:
+            raise IntegrityError("checkpoint mutated the retained local snapshot")
+        completed=_now()  # callback and local verification have completed.
+        raw_sha=self._raw_sha256(reference)
+        completion.validate_acknowledgment(acknowledgment,reference,started_at=stamp(started),
+            completed_at=stamp(completed),raw_sha256=raw_sha)
+        if acknowledgment["snapshot_sha256"]!=expected_snapshot:
+            raise IntegrityError("checkpoint acknowledgment differs from the exact retained snapshot prefix")
+        body=self.body(reference)
+        completion.append_completion(self.root,reference,mode=body.get("mode","READINESS_DIAGNOSTIC"),
+            raw_sha256=raw_sha,completed_at=completed,recorded_at=_now(),started_at=started,acknowledgment=acknowledgment)
+        status=self.admission_status(reference)
+        if not status["remote_timely"]:
+            raise IntegrityError("remote checkpoint completed late; immutable original retained unadmitted")
+        return status
+
+    def finalize_checkpoint(self,references,checkpoint):
+        """Publish the final original-acknowledgment prefix without recursion.
+
+        Original remote observations remain unchanged. This operation copies
+        their already-retained journal evidence; it creates no renewed issuance
+        clock or new journal acknowledgment. A fresh remote snapshot contains
+        the full prefix, which can independently be recovered. Publication must
+        finish by selection close for inputs or T90+5 for forecast cohorts.
+        The original per-forecast 120-second limit remains on each original ACK.
+        """
+        refs=tuple(references)
+        if not refs or len(set(refs))!=len(refs):
+            raise IntegrityError("final evidence publication needs unique original references")
+        statuses=[self.admission_status(reference) for reference in refs]
+        if not all(status["timing_complete"] for status in statuses):
+            raise IntegrityError("cannot finalize evidence for unacknowledged or late originals")
+        from .pros004_snapshot import snapshot_manifest
+        expected=digest(snapshot_manifest(self.root))
+        prefix=completion.journal_inventory(self.root)["raw_sha256"]
+        started=_now();acknowledgment=checkpoint(refs[-1])
+        if digest(snapshot_manifest(self.root))!=expected:
+            raise IntegrityError("final checkpoint mutated the retained local snapshot")
+        completed=_now()
+        completion.validate_acknowledgment(acknowledgment,refs[-1],started_at=stamp(started),
+            completed_at=stamp(completed),raw_sha256=self._raw_sha256(refs[-1]))
+        if acknowledgment["snapshot_sha256"]!=expected:
+            raise IntegrityError("final checkpoint differs from the exact completion-journal prefix")
+        deadlines=[]
+        for reference in refs:
+            body=self.body(reference);schema=body["schema_version"]
+            if schema=="nba-pros004-event-v1":
+                deadlines.append(utc(body["event"]["event_starts_at"])-timedelta(minutes=100))
+            elif schema=="nba-pros004-forecast-v1":
+                deadlines.append(utc(body["cutoff_at"])+timedelta(minutes=5))
+            else:
+                raise IntegrityError("final publication supports only event inputs and original forecasts")
+        timely=all(completed<=deadline for deadline in deadlines)
+        return {"schema_version":"nba-pros004-final-checkpoint-v1",
+            "references":[reference.to_record() for reference in refs],
+            "operation_started_at":stamp(started),"completed_at":stamp(completed),
+            "snapshot_sha256":expected,"journal_raw_sha256":prefix,
+            "acknowledgment":acknowledgment,"timely":timely,
+            "metadata_publication_status":"INDEPENDENTLY_RECOVERED_CURRENT_PREFIX" if timely else "LATE_METADATA_PUBLICATION",
+            "original_acknowledgments_unchanged":True,"qualification":"UNAVAILABLE"}
+
+    def validate_input_checkpoint(self,event_ref,report):
+        """Validate the original phase receipt before any missing generation.
+
+        The receipt is not a caller permission flag: its exact input, retained
+        journal prefix, immutable record subset, snapshot and operation clocks
+        must agree. A caller must independently recover the original receipt on
+        restart. This readiness package does not install that future operating
+        state retention; absent or ambiguous evidence fails closed.
+        """
+        fields={"schema_version","references","operation_started_at","completed_at",
+            "snapshot_sha256","journal_raw_sha256","acknowledgment","timely",
+            "metadata_publication_status","original_acknowledgments_unchanged","qualification"}
+        if type(report) is not dict or set(report)!=fields or report["schema_version"]!="nba-pros004-final-checkpoint-v1":
+            raise IntegrityError("input phase needs its exact typed final checkpoint receipt")
+        event=self.body(event_ref)
+        if event["schema_version"]!="nba-pros004-event-v1" or report["references"]!=[event_ref.to_record()]:
+            raise IntegrityError("input final checkpoint changes the original event/input identity")
+        started=_time(report["operation_started_at"],"input checkpoint start")
+        completed=_time(report["completed_at"],"input checkpoint completion")
+        close=utc(event["event"]["event_starts_at"])-timedelta(minutes=100)
+        if not started<=completed<=min(close,_now()) or report["timely"] is not True:
+            raise IntegrityError("input final checkpoint did not complete before selection closed")
+        if (report["metadata_publication_status"]!="INDEPENDENTLY_RECOVERED_CURRENT_PREFIX"
+                or report["original_acknowledgments_unchanged"] is not True or report["qualification"]!="UNAVAILABLE"):
+            raise IntegrityError("input final checkpoint cannot change original admission meaning")
+        _hash(report["snapshot_sha256"],"input checkpoint snapshot")
+        _hash(report["journal_raw_sha256"],"input checkpoint journal prefix")
+        completion.validate_acknowledgment(report["acknowledgment"],event_ref,
+            started_at=report["operation_started_at"],completed_at=report["completed_at"],
+            raw_sha256=self._raw_sha256(event_ref))
+        if report["acknowledgment"]["snapshot_sha256"]!=report["snapshot_sha256"]:
+            raise IntegrityError("input checkpoint snapshot contradicts its actual acknowledgment")
+        journal=completion.load_journal(self.root)
+        prefix=bytearray();prefix_entries=[];matched=False
+        for entry in journal:
+            prefix.extend(canonical(entry)+b"\n");prefix_entries.append(entry)
+            if hashlib.sha256(prefix).hexdigest()==report["journal_raw_sha256"]:
+                matched=True;break
+        if not matched or any(utc(entry["recorded_at"])>started for entry in prefix_entries):
+            raise IntegrityError("input checkpoint journal is not its exact previously retained prefix")
+        observed={entry["kind"] for entry in prefix_entries if entry["reference"]==event_ref.to_record()}
+        if observed!={"LOCAL_PERSISTENCE_COMPLETED","REMOTE_CHECKPOINT_COMPLETED"}:
+            raise IntegrityError("input checkpoint prefix lacks original local/remote completion evidence")
+        if not self.admission_status(event_ref)["timing_complete"]:
+            raise IntegrityError("input checkpoint original local/remote completion is unadmitted")
+        # Reconstruct exactly the snapshot that existed when this operation
+        # began. A later receipt with a tied clock is deliberately included;
+        # if that makes the original hash ambiguous, reject instead of guessing.
+        from .pros004_snapshot import snapshot_manifest
+        full=snapshot_manifest(self.root);entries=[];ledger_count=0
+        for entry in full["entries"]:
+            if entry["entry_type"]=="COMPLETION_JOURNAL":
+                entries.append({**entry,"encoded_bytes":len(prefix),
+                    "raw_sha256":report["journal_raw_sha256"],"payload_sha256":digest(prefix_entries)})
+                continue
+            path=Path(entry["path"]);kind=path.parts[1];record_id=path.stem
+            payload=self.ledger.read(LedgerRef(kind,record_id,entry["payload_sha256"]))
+            if utc(payload["received_at"])<=started:
+                entries.append(entry);ledger_count+=1
+        body={key:value for key,value in full.items() if key!="manifest_id"}
+        body.update(entries=entries,record_count=len(entries),ledger_record_count=ledger_count,
+            encoded_bytes=sum(entry["encoded_bytes"] for entry in entries))
+        expected={**body,"manifest_id":digest(body)}
+        if digest(expected)!=report["snapshot_sha256"]:
+            raise IntegrityError("input checkpoint exact record subset/prefix cannot be recovered unambiguously")
+        return report
+
     def store_event(self, body, history_ref):
-        return self._append(body,references=(history_ref,))
+        ref=self._append(body,references=(history_ref,))
+        if not self.admission_status(ref)["local_timely"]:
+            raise IntegrityError("event input local persistence did not complete before selection closed; original retained unadmitted")
+        return ref
+
+    def store_failure(self,event_ref,*,status,reason,operation,subject_id=None,original_reference=None):
+        event=self.body(event_ref)
+        refs=(event_ref,)+( (original_reference,) if original_reference is not None else () )
+        return self._append({"schema_version":"nba-pros004-failure-v1","study_id":STUDY_ID,
+            "mode":event["mode"],"status":status,"reason":reason,"operation":operation,
+            "recorded_at":stamp(_now()),"event_ref":event_ref.to_record(),"subject_id":subject_id,
+            "original_reference":original_reference.to_record() if original_reference else None},references=refs)
 
     def store_date_status(self,event_date,*,status,reason,schedule=None,mode="READINESS_DIAGNOSTIC"):
         return self._append({"schema_version":"nba-pros004-date-status-v1","study_id":STUDY_ID,
@@ -609,14 +898,22 @@ class Pros004Store:
         subjects=[]
         for player in event["selection"]["players"]:
             peers={model:self.lookup_forecast(event_ref,player["player_id"],model) for model in MODEL_KEYS}
+            admission={model:self.admission_status(ref) if ref else None for model,ref in peers.items()}
             subjects.append({"player_id":player["player_id"],
                 "forecasts":{m:r.to_record() if r else None for m,r in peers.items()},
-                "missing_models":[m for m,r in peers.items() if r is None]})
-        issued=sum(r is not None for subject in subjects for r in subject["forecasts"].values())
+                "missing_models":[m for m,r in peers.items() if r is None],"admission":admission})
+        retained=sum(r is not None for subject in subjects for r in subject["forecasts"].values())
+        statuses=[status for subject in subjects for status in subject["admission"].values() if status is not None]
+        issued=sum(status["eligible_for_comparison"] for status in statuses)
+        local=sum(status["local_timely"] for status in statuses)
+        remote=sum(status["remote_timely"] for status in statuses)
+        timing=sum(status["timing_complete"] for status in statuses)
         return {"schema_version":"nba-pros004-recovery-v1","event_ref":event_ref.to_record(),
             "claim_ref":claim_ref.to_record() if claim_ref else None,
-            "subjects":subjects,"issued_models":issued,
-            "status":"COMPLETE" if issued==8 else "PARTIAL_MISSING_PEERS" if issued else "NOT_ISSUED",
+            "subjects":subjects,"issued_models":issued,"eligible_models":issued,"retained_models":retained,
+            "local_timely_models":local,"remote_timely_models":remote,"timing_complete_models":timing,
+            "status":"COMPLETE" if issued==8 else "RETAINED_UNADMITTED" if retained and not issued else "PARTIAL_MISSING_PEERS" if issued else "NOT_ISSUED",
+            "metadata_publication_status":"NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
             "recovered_at":stamp(_now()),"original_content_and_clocks_preserved":True,
             "financial_settlement":"NOT_EVALUATED","qualification":"UNAVAILABLE"}
 
@@ -645,7 +942,10 @@ class Pros004Store:
             raise IntegrityError("forecast receipt exceeds original generation latency")
         if body["event_ref"]!=event_ref.to_record() or body["history_ref"]!=history_ref.to_record():
             raise IntegrityError("forecast input references disagree")
-        return self._append(body,references=(event_ref,history_ref,intent_ref))
+        ref=self._append(body,references=(event_ref,history_ref,intent_ref))
+        if not self.admission_status(ref)["local_timely"]:
+            raise IntegrityError("forecast local persistence completed late; immutable original retained unadmitted")
+        return ref
 
     def append_outcome(self,body,forecast_refs,*,correction_reason=None):
         validate_outcome_body(body)

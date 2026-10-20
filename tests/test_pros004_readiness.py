@@ -1,16 +1,100 @@
 """Diagnostic orchestration safeguards; no full-law execution or source access."""
-from datetime import datetime, timezone
+from contextlib import ExitStack
+from dataclasses import replace
+from datetime import datetime, timedelta, timezone
+import hashlib
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from multisport_lab import pros004_inputs as inputs
 from multisport_lab import pros004_readiness as readiness
+from multisport_lab import pregame_sources
 from multisport_lab.integrity import IntegrityError
 from multisport_lab.ledger import Ledger, LedgerRef
+from test_pregame_sources import tiny_history, provenance
 
 
 class Pros004ReadinessDriverTests(unittest.TestCase):
+    def test_advancing_clock_preserves_actual_delayed_completion_and_restores_modules(self):
+        elapsed=[100.0]
+        clock=readiness.AdvancingDiagnosticClock(readiness.GENERATION_CLOCK,monotonic=lambda:elapsed[0])
+        original=inputs._now
+        with readiness._advancing_clock(clock):
+            self.assertEqual(inputs._now(),readiness.GENERATION_CLOCK)
+            elapsed[0]+=121
+            self.assertEqual(inputs._now(),readiness.GENERATION_CLOCK+timedelta(seconds=121))
+            elapsed[0]-=122
+            with self.assertRaisesRegex(IntegrityError,'moved backwards'):
+                inputs._now()
+        self.assertIs(inputs._now,original)
+
+    def test_restart_comparison_ignores_only_observation_and_transport_metadata(self):
+        original={'retained_models':2,'recovered_at':'first','final_checkpoint':{'clock':'first'}}
+        recovered={'retained_models':2,'recovered_at':'later'}
+        self.assertEqual(readiness._recovery_content(original),readiness._recovery_content(recovered))
+        recovered['retained_models']=1
+        self.assertNotEqual(readiness._recovery_content(original),readiness._recovery_content(recovered))
+
+    def test_late_event_proof_publication_retains_input_and_never_starts_generation(self):
+        baseline_forecasts=readiness._existing_inventory(Path(__file__).resolve().parents[1])['records_by_kind']['forecasts']
+        base=tiny_history()[0]
+        rows=[replace(base,event_id=str(1000+i),player_id=str(10*(i+1))) for i in range(4)]
+        raw=pregame_sources._panel_bytes(rows);source=provenance(rows)
+        with tempfile.TemporaryDirectory() as folder, ExitStack() as stack:
+            root=Path(folder)
+            for name,value in [('PANEL_ROWS',4),('PANEL_BYTES',len(raw)),
+                    ('PANEL_SHA256',hashlib.sha256(raw).hexdigest())]:
+                stack.enter_context(patch.object(inputs,name,value))
+            stack.enter_context(patch.object(inputs,'_original_provenance',return_value=source))
+            stack.enter_context(patch.object(pregame_sources,'history_from_input_record',
+                return_value=(pregame_sources.compact_history(rows),source)))
+            stack.enter_context(patch.object(readiness.records.Pros004Store,'finalize_checkpoint',
+                return_value={'timely':False,'metadata_publication_status':'LATE_METADATA_PUBLICATION'}))
+            generation=stack.enter_context(patch.object(readiness.producer,'generate_forecast',
+                side_effect=AssertionError('late input proof must not permit generation')))
+            with self.assertRaisesRegex(IntegrityError,'missed selection close'):
+                readiness.run_diagnostic(output=root/'report.json',store_root=root/'retained')
+            generation.assert_not_called()
+            self.assertTrue(list((root/'retained/records/research_inputs').glob('*.json')))
+            self.assertEqual(len(list((root/'retained/records/forecasts').glob('*.json'))),baseline_forecasts)
+            self.assertFalse((root/'report.json').exists())
+
+    def test_tiny_joint_driver_uses_actual_git_push_fetch_and_completion_journal(self):
+        # Four invented retained rows exercise orchestration and original-byte
+        # recovery; this is not the full-history resource diagnostic.
+        base=tiny_history()[0]
+        rows=[replace(base,event_id=str(1000+i),player_id=str(10*(i+1))) for i in range(4)]
+        raw=pregame_sources._panel_bytes(rows);source=provenance(rows)
+        with tempfile.TemporaryDirectory() as folder, ExitStack() as stack:
+            root=Path(folder)
+            for name,value in [('PANEL_ROWS',4),('PANEL_BYTES',len(raw)),
+                    ('PANEL_SHA256',hashlib.sha256(raw).hexdigest())]:
+                stack.enter_context(patch.object(inputs,name,value))
+            stack.enter_context(patch.object(inputs,'_original_provenance',return_value=source))
+            stack.enter_context(patch.object(pregame_sources,'history_from_input_record',
+                return_value=(pregame_sources.compact_history(rows),source)))
+            report=readiness.run_diagnostic(output=root/'report.json',store_root=root/'retained')
+            self.assertEqual(report['schema_version'],'nba-pros004-readiness-report-v2')
+            self.assertEqual(report['diagnostic_status'],'PASS')
+            self.assertEqual(report['history']['rows'],4)
+            self.assertEqual(report['recovery']['retained_models'],8)
+            self.assertEqual(report['recovery']['timing_complete_models'],8)
+            self.assertEqual(report['recovery']['eligible_models'],0)
+            self.assertTrue(report['recovery']['remote_recovery'])
+            self.assertFalse(report['recovery']['github_recovery'])
+            self.assertEqual(report['recovery']['transport']['transport'],'ISOLATED_LOCAL_BARE_GIT')
+            self.assertGreater(len(report['performance']['git_checkpoint_actual_seconds']),8)
+            self.assertTrue(report['recovery']['final_checkpoint']['timely'])
+            self.assertTrue(report['event_input']['final_checkpoint']['timely'])
+            self.assertEqual(report['event_input']['final_checkpoint']['references'],
+                [report['event_input']['event_ref']])
+            self.assertEqual(report['maximum_study_timing']['status'],'NOT_MEASURED_AT_MAXIMUM_LEDGER_LOAD')
+            self.assertEqual(report['evidence']['genuine_issuance'],0)
+            self.assertGreater(report['performance']['cohort_generate_verify_persist_actual_seconds'],0)
+            self.assertTrue((root/'retained/evidence/pros004/completion-journal.jsonl').is_file())
+
     def test_invented_source_pack_is_explicit_diagnostic_and_restores_actual_clock(self):
         actual_clock = inputs._now
         body = readiness.synthetic_event_pack(LedgerRef('research_inputs','a'*64,'b'*64),['10','20','30','40'])

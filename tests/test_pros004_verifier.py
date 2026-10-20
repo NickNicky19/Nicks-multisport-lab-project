@@ -1,6 +1,6 @@
 """Synthetic independent verification risks; no source capture or model scoring."""
 from copy import deepcopy
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import hashlib
 import importlib.util
 import json
@@ -8,6 +8,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import shutil
 import unittest
 from unittest.mock import patch
 
@@ -26,20 +27,30 @@ def receipt(path,payload):
 
 
 def report(root):
+    from multisport_lab.pros004_producer import make_source_binding
     sources={}
     for name in verifier.NEW_PRODUCER_FILES:
-        path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('synthetic source\n')
+        path=root/name;path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_bytes((SCRIPT.parents[1]/name).read_bytes())
         sources[name]=hashlib.sha256(path.read_bytes()).hexdigest()
     return {'schema_version':verifier.SCHEMA,'mode':'READINESS_DIAGNOSTIC_NON_ISSUANCE',
         'evidence':{'live_source_captures':0,'genuine_issuance':0,'statistical_grades':0,
             'aggregate_comparison_executions':0,'activation':False},'source_sha256':sources,
+        'producer_binding':make_source_binding(diagnostic=True),
         'history':{'rows':26645,'events':1231,'normalized_bytes':14720351,
             'sha256':verifier.HISTORY_SHA256,'encoded_envelope_bytes':1800000},
         'retention':{'max_records':512,'max_bytes':33554432,'comparison_records':442,
             'baseline_and_pilot_records':32,'metadata_records':38,'projected_records':512,
-            'projected_bytes':22487040},
+            'projected_bytes':24576000,'metadata_encoded_ceiling_bytes':3145728},
+        'diagnostic_status':'PASS','operation_failure':None,
+        'event_input':{'final_checkpoint':{'timely':True}},
+        'recovery':{'retained_models':8,'timing_complete_models':8,'eligible_models':0,
+            'remote_recovery':True,'github_recovery':False,'transport':'ISOLATED_LOCAL_BARE_GIT',
+            'original_probabilities_and_clocks_preserved':True,'final_checkpoint':{'timely':True}},
         'diagnostics':{model:{'forecast_envelope_bytes':40000,'support_count':26645,
             'restored_support_count':26645,'category_count':14,
+            'model_version':verifier.MODEL_VERSIONS[model],
+            'producer_version':'pros004-'+model.lower()+'-producer-v2',
             'joint_sha256':'a'*64,'restored_joint_sha256':'a'*64} for model in ('R0','K0')}}
 
 
@@ -54,45 +65,52 @@ def save(root,value):
     receipt(root/'records'/value['kind']/(value['record_id']+'.json'),value)
 
 
-def complete_forecast_store(root):
-    """Independent invented envelopes, without calling a producer or scoring."""
-    def reference(value):
-        return {'kind':value['kind'],'record_id':value['record_id'],
-                'payload_sha256':verifier.fingerprint(value)}
-    mode='SYNTHETIC_TEST'
-    history=payload('research_inputs','history',{'identity':{},'pros004':{
-        'schema_version':'nba-pros004-history-v1','mode':mode,'history':{}}})
-    save(root,history);history_ref=reference(history)
-    facts={'event_id':'700','event_version':'e'*64,'event_starts_at':'2026-10-21T02:00:00.000000Z'}
-    candidate={'player_id':'10','team_id':'1','opponent_id':'2','player_label':'Synthetic athlete'}
-    event=payload('research_inputs','event',{'identity':{},'pros004':{
-        'schema_version':'nba-pros004-event-v1','mode':mode,'event':facts,'history_ref':history_ref,
-        'candidates':[candidate]}},[history_ref])
-    save(root,event);event_ref=reference(event)
-    binding={'source':'invented unchanged source reference'}
-    claim=payload('input_captures','claim',{'identity':{},'pros004':{
-        'schema_version':'nba-pros004-event-claim-v1','mode':mode,'event_ref':event_ref,
-        'history_ref':history_ref,'producer_identity':binding}},[event_ref])
-    save(root,claim);claim_ref=reference(claim)
-    pmf=[{'value':0,'probability':'1'}]
-    body={'schema_version':'nba-pros004-forecast-v1','mode':mode,'model_key':'R0',
-        'model_version':verifier.MODEL_VERSIONS['R0'],'producer_version':'pros004-r0-producer-v1',
-        'conditioning':'CONDITIONAL_ON_APPEARANCE','qualification':'UNAVAILABLE',
-        'event_ref':event_ref,'history_ref':history_ref,'producer_binding':binding,
-        **facts,**candidate,'cutoff_at':'2026-10-21T00:30:00.000000Z',
-        'history_freeze':'2026-10-21T00:00:00.000000Z','trained_through':'2026-04-13T00:00:00.000000Z',
-        'generation_started_at':'2026-10-21T00:30:01.000000Z',
-        'generation_completed_at':'2026-10-21T00:30:02.000000Z',
-        'verified_at':'2026-10-21T00:30:03.000000Z','issued_at':'2026-10-21T00:30:03.000000Z',
-        'categories':[{'code':code,'pmf':deepcopy(pmf),'mean':'0'} for code in sorted(verifier.MARKETS)],
-        'reported_minutes':{'pmf':[{'value':20,'probability':'1'}]},
-        'joint_recipe':{'history_ref':history_ref,'event_ref':event_ref,'omitted_atoms':0,
-            'support_atom_count':1,'pool_history_count':1,'joint_sha256':'a'*64,'input_sha256':'b'*64}}
-    body['forecast_id']=verifier.fingerprint(body)
-    forecast=payload('forecasts','original',{'identity':{},'pros004':body},[event_ref,history_ref,claim_ref],
-        clock='2026-10-21T00:30:04.000000Z')
-    save(root,forecast)
-    return forecast
+def complete_forecast_store(root, case):
+    """Valid synthetic typed records; successful recovery never uses a fake schema."""
+    from test_pros004_producer import ProducerFixture
+    from multisport_lab import pros004_producer as producer
+    from multisport_lab.integrity import read_receipt
+    f=ProducerFixture(case)
+    claim,_=f.store.claim_event(f.event_ref,f.binding)
+    refs=[]
+    for model in ('R0','K0'):
+        body,_=f.generate(model)
+        refs.append(f.store.persist_forecast(body,f.event_ref,f.history_ref,claim))
+    shutil.copytree(Path(f.tmp)/'records',root/'records',dirs_exist_ok=True)
+    # A journal is retained when the revised store supplies it. Missing legacy
+    # proof is valid evidence recovery, never timely issuance admission.
+    journal=Path(f.tmp)/'evidence/pros004/completion-journal.jsonl'
+    if journal.exists():
+        target=root/'evidence/pros004/completion-journal.jsonl'
+        target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(journal,target)
+    return read_receipt(f.store.ledger._path(refs[0].kind,refs[0].record_id))
+
+
+def typed_fixture(case):
+    from test_pros004_producer import ProducerFixture
+    f=ProducerFixture(case)
+    claim,_=f.store.claim_event(f.event_ref,f.binding)
+    refs=[]
+    for model in ('R0','K0'):
+        body,_=f.generate(model)
+        refs.append(f.store.persist_forecast(body,f.event_ref,f.history_ref,claim))
+    return f,refs
+
+
+def replace_typed_receipt(root,original,body,refs=None):
+    """Re-seal all relevant identities, so meaning—not a broken checksum—fails."""
+    from multisport_lab import pros004_records as rec
+    root=Path(root);value=deepcopy(original)
+    id_key={'nba-pros004-outcome-v1':'outcome_id','nba-pros004-grade-v1':'grade_id',
+            'nba-pros004-event-v1':'sourcepack_id','nba-pros004-history-v1':'history_id'}.get(body['schema_version'])
+    if id_key:body[id_key]=verifier.fingerprint({k:v for k,v in body.items() if k!=id_key})
+    value['data']={'identity':rec._identity(body),'pros004':body}
+    value['logical_id']=rec._logical(body)
+    value['record_id']=verifier.fingerprint({'kind':value['kind'],'logical_id':value['logical_id']})
+    if refs is not None:value['references']=refs
+    oldpath=root/'records'/original['kind']/(original['record_id']+'.json')
+    oldpath.unlink();save(root,value)
+    return value
 
 
 class Pros004VerifierTests(unittest.TestCase):
@@ -127,6 +145,58 @@ class Pros004VerifierTests(unittest.TestCase):
                 with self.assertRaisesRegex(verifier.VerificationError,'frozen source changed'):
                     verifier.verify_readiness(base,root)
 
+    def test_v2_requires_completion_execution_and_recovery_pins_and_legacy_stays_readable(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);base=report(root)
+            with patch.object(verifier,'PINNED_SOURCE_HASHES',{}):
+                for source in ('multisport_lab/pros004_completion.py','multisport_lab/pros004_activation.py',
+                        'multisport_lab/pros004_remote.py','multisport_lab/pros004_raw.py',
+                        'multisport_lab/pros004_readiness.py','multisport_lab/pros004_snapshot.py',
+                        'scripts/verify_pros004_readiness.py'):
+                    bad=deepcopy(base);del bad['source_sha256'][source]
+                    with self.subTest(source=source),self.assertRaisesRegex(verifier.VerificationError,'source references missing'):
+                        verifier.verify_readiness(bad,root)
+                bad=deepcopy(base);bad['retention']['projected_bytes']=22487040
+                bad['retention']['metadata_encoded_ceiling_bytes']=1056768
+                with self.assertRaisesRegex(verifier.VerificationError,'completion-aware capacity'):
+                    verifier.verify_readiness(bad,root)
+                legacy=deepcopy(bad);legacy['schema_version']=verifier.LEGACY_SCHEMA
+                legacy['source_sha256']={name:legacy['source_sha256'][name] for name in verifier.LEGACY_PRODUCER_FILES}
+                self.assertEqual(verifier.verify_readiness(legacy,root)['planned_bytes'],22487040)
+
+    def test_v2_producer_binding_cannot_disagree_with_executed_source_map(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);base=report(root)
+            with patch.object(verifier,'PINNED_SOURCE_HASHES',{}):
+                for change in ('missing','legacy','different-map','wrong-law','false-revision'):
+                    bad=deepcopy(base)
+                    if change=='missing':del bad['producer_binding']
+                    if change=='legacy':bad['producer_binding']['schema_version']='nba-pros004-source-binding-v1'
+                    if change=='different-map':bad['producer_binding']['source_sha256']['multisport_lab/pros004_completion.py']='f'*64
+                    if change=='wrong-law':bad['producer_binding']['law_sha256']['R0']='f'*64
+                    if change=='false-revision':bad['producer_binding']['model_commit']='a'*40
+                    with self.subTest(change=change),self.assertRaisesRegex(verifier.VerificationError,'producer binding'):
+                        verifier.verify_readiness(bad,root)
+
+    def test_v2_requires_complete_timely_recovery_without_prospective_eligibility(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);base=report(root)
+            with patch.object(verifier,'PINNED_SOURCE_HASHES',{}):
+                for change in ('partial','retained','timing','eligible','no-remote','github-claim',
+                        'forecast-finalization','input-finalization','producer-version'):
+                    bad=deepcopy(base)
+                    if change=='partial':bad['diagnostic_status']='PARTIAL_OR_FAILED_TIMING'
+                    if change=='retained':bad['recovery']['retained_models']=7
+                    if change=='timing':bad['recovery']['timing_complete_models']=7
+                    if change=='eligible':bad['recovery']['eligible_models']=8
+                    if change=='no-remote':bad['recovery']['remote_recovery']=False
+                    if change=='github-claim':bad['recovery']['github_recovery']=True
+                    if change=='forecast-finalization':bad['recovery']['final_checkpoint']['timely']=False
+                    if change=='input-finalization':bad['event_input']['final_checkpoint']['timely']=False
+                    if change=='producer-version':bad['diagnostics']['K0']['producer_version']='pros004-k0-producer-v1'
+                    with self.subTest(change=change),self.assertRaises(verifier.VerificationError):
+                        verifier.verify_readiness(bad,root)
+
     def test_receipt_hash_duplicate_keys_and_nonfinite_json_are_rejected(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);path=root/'receipt.json';receipt(path,{'value':1})
@@ -141,19 +211,22 @@ class Pros004VerifierTests(unittest.TestCase):
     def test_store_references_and_encoded_forecast_ceiling_are_independent(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder)
-            source=payload('research_inputs','history',{'identity':{},'pros004':{
-                'schema_version':'nba-pros004-history-v1','mode':'SYNTHETIC_TEST','history':{}}})
+            source=payload('input_captures','source',{'note':'explicit synthetic generic receipt'})
             save(root,source)
-            ref={'kind':'research_inputs','record_id':source['record_id'],
+            ref={'kind':'input_captures','record_id':source['record_id'],
                  'payload_sha256':verifier.fingerprint(source)}
-            forecast=payload('input_captures','original',{'identity':{},'pros004':{
-                'schema_version':'nba-pros004-failure-v1','mode':'SYNTHETIC_TEST'}},[ref])
-            save(root,forecast)
-            checked=verifier.verify_store(root);self.assertEqual(checked['records'],2)
-            bad=deepcopy(forecast);bad['references'][0]['payload_sha256']='f'*64;save(root,bad)
+            marker={'schema_version':'nba-pros004-failure-v1','study_id':'NBA-ALL13-JOINT-PROS-004',
+                'mode':'SYNTHETIC_DIAGNOSTIC','status':'SOURCE_FAILURE',
+                'reason':'Explicit synthetic diagnostic fixture','recorded_at':'2026-10-20T00:00:00.000000Z'}
+            item=payload('input_captures','source-failure',{'identity':{},'pros004':marker},[ref])
+            # A checksum-consistent, incomplete typed body now fails semantics.
+            save(root,item)
+            with self.assertRaisesRegex(verifier.VerificationError,'strict typed'):
+                verifier.verify_store(root)
+            bad=deepcopy(item);bad['references'][0]['payload_sha256']='f'*64;save(root,bad)
             with self.assertRaisesRegex(verifier.VerificationError,'referenced content'):
                 verifier.verify_store(root)
-            bad=deepcopy(forecast);bad['data']['pros004']['padding']='x'*(8*1024);save(root,bad)
+            bad=deepcopy(item);bad['data']['pros004']['padding']='x'*(8*1024);save(root,bad)
             with self.assertRaisesRegex(verifier.VerificationError,'envelope ceiling'):
                 verifier.verify_store(root)
 
@@ -185,14 +258,14 @@ class Pros004VerifierTests(unittest.TestCase):
 
     def test_independent_forecast_clocks_identity_coherence_and_complete_inputs(self):
         with tempfile.TemporaryDirectory() as folder:
-            root=Path(folder);base=complete_forecast_store(root)
-            self.assertEqual(verifier.verify_store(root)['independently_checked_forecast_contracts'],1)
+            root=Path(folder);base=complete_forecast_store(root,self)
+            self.assertEqual(verifier.verify_store(root)['independently_checked_forecast_contracts'],2)
             for change in ('late','latency','identity','cutoff','categories','mean','atoms','binding'):
                 bad=deepcopy(base);body=bad['data']['pros004']
-                if change=='late':bad['received_at']='2026-10-21T00:35:00.000001Z'
-                if change=='latency':bad['received_at']='2026-10-21T00:32:02.000000Z'
+                if change=='late':bad['received_at']='2026-10-21T23:05:00.000001Z'
+                if change=='latency':bad['received_at']='2026-10-21T23:02:06.000000Z'
                 if change=='identity':body['team_id']='3'
-                if change=='cutoff':body['cutoff_at']='2026-10-21T00:31:00.000000Z'
+                if change=='cutoff':body['cutoff_at']='2026-10-21T23:01:00.000000Z'
                 if change=='categories':body['categories'].pop()
                 if change=='mean':body['categories'][0]['mean']='1'
                 if change=='atoms':body['joint_recipe']['omitted_atoms']=1
@@ -202,10 +275,236 @@ class Pros004VerifierTests(unittest.TestCase):
                 with self.subTest(change=change),self.assertRaises(verifier.VerificationError):
                     verifier.verify_store(root)
             save(root,base)
-            bad=deepcopy(base);bad['received_at']='2026-10-21T00:35:00.000001Z';save(root,bad)
+            bad=deepcopy(base);bad['received_at']='2026-10-21T23:05:00.000001Z';save(root,bad)
             run=subprocess.run([sys.executable,'-O',str(SCRIPT),'--store-root',str(root)],capture_output=True,text=True)
             self.assertNotEqual(run.returncode,0)
             self.assertIn('clocks violate T90 window',run.stderr)
+            self.assertNotIn('AssertionError',run.stderr)
+
+
+    def test_checksum_consistent_outcomes_fail_invalid_meaning_and_preserve_bytes(self):
+        from test_pros004_records import at_outcomes,synthetic_outcome
+        from multisport_lab.integrity import read_receipt
+        f,refs=typed_fixture(self);at_outcomes(f)
+        out=f.store.append_outcome(synthetic_outcome(f),refs)
+        original=read_receipt(f.store.ledger._path(out.kind,out.record_id))
+        self.assertGreater(verifier.verify_store(f.tmp)['strict_typed_semantics']['typed_records'],0)
+        for change in ('status','identity','arithmetic','observation_clock','normalization_clock','mode'):
+            with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
+                root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+                body=deepcopy(original['data']['pros004'])
+                if change=='status':body['status']='IMPOSSIBLE_STATUS'
+                if change=='identity':body['player_id']='999'
+                if change=='arithmetic':body['primitives']['PTS']+=1
+                if change=='observation_clock':body['source_observed_at']='2026-10-23T00:00:00.000000Z'
+                if change=='normalization_clock':body['normalized_at']='2026-10-23T00:00:00.000000Z'
+                if change=='mode':body['mode']='READINESS_DIAGNOSTIC'
+                replace_typed_receipt(root,original,body)
+                before={p:p.read_bytes() for p in root.glob('records/*/*.json')}
+                with self.assertRaisesRegex(verifier.VerificationError,'strict typed'):
+                    verifier.verify_store(root)
+                self.assertTrue(all(p.read_bytes()==raw for p,raw in before.items()))
+
+    def test_checksum_consistent_grades_validate_original_distribution_outcome_and_clocks(self):
+        from test_pros004_records import at_outcomes,synthetic_outcome
+        from multisport_lab.integrity import read_receipt
+        f,refs=typed_fixture(self);at_outcomes(f)
+        out=f.store.append_outcome(synthetic_outcome(f),refs)
+        grade=f.store.grade_forecast(refs[0],out)
+        original=read_receipt(f.store.ledger._path(grade.kind,grade.record_id))
+        verifier.verify_store(f.tmp)
+        for change in ('status','score','forecast_id','grade_clock','reference'):
+            with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
+                root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+                body=deepcopy(original['data']['pros004']);changed_refs=deepcopy(original['references'])
+                if change=='status':body['status']='DNP_NOT_SCORED'
+                if change=='score':body['categories'][0]['crps']='999'
+                if change=='forecast_id':body['forecast_id']='f'*64
+                if change=='grade_clock':body['graded_at']='2026-10-21T23:00:06.000000Z'
+                if change=='reference':changed_refs[0]=refs[1].to_record()
+                replace_typed_receipt(root,original,body,changed_refs)
+                with self.assertRaisesRegex(verifier.VerificationError,'strict typed'):
+                    verifier.verify_store(root)
+
+    def test_grade_cannot_borrow_outcome_not_linked_to_original_forecast(self):
+        from test_pros004_records import at_outcomes,synthetic_outcome
+        from multisport_lab.integrity import read_receipt,stamp
+        f,refs=typed_fixture(self);at_outcomes(f)
+        # A partial peer remains valid evidence, but does not confer an outcome
+        # link on a different original merely because event/player IDs match.
+        peer_path=f.store.ledger._path(refs[1].kind,refs[1].record_id)
+        peer_raw=peer_path.read_bytes();peer_path.unlink()
+        out=f.store.append_outcome(synthetic_outcome(f),[refs[0]])
+        grade=f.store.grade_forecast(refs[0],out)
+        peer_path.write_bytes(peer_raw)
+        original=read_receipt(f.store.ledger._path(grade.kind,grade.record_id))
+        body=f.store._grade(f.store.body(refs[1]),f.store.body(out),stamp(f.record_clock.return_value))
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+            replace_typed_receipt(root,original,body,[refs[1].to_record(),out.to_record()])
+            with self.assertRaisesRegex(verifier.VerificationError,'not linked by its shared outcome'):
+                verifier.verify_store(root)
+
+    def test_checksum_consistent_event_and_admission_meaning_is_validated(self):
+        from multisport_lab.integrity import read_receipt
+        from multisport_lab import pros004_records as rec
+        f,_=typed_fixture(self)
+        claim_path=next((Path(f.tmp)/'records/input_captures').glob('*.json'))
+        claim=read_receipt(claim_path)
+        self.assertEqual(claim['data']['pros004']['schema_version'],'nba-pros004-event-claim-v1')
+        for change in ('cohort','event','clock','identity'):
+            with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
+                root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+                # Remove dependents so a broken content reference cannot mask a
+                # checksum-consistent admission-body semantic failure.
+                shutil.rmtree(root/'records/forecasts')
+                original=deepcopy(claim);body=original['data']['pros004']
+                if change=='cohort':body['players'][0]['player_id']='999'
+                if change=='event':body['event_id']='401999999'
+                if change=='clock':body['claimed_at']='2099-01-01T00:00:00.000000Z'
+                if change=='identity':original['data']['identity']['event_id']='401999999'
+                if change!='identity':original['data']['identity']=rec._identity(body)
+                save(root,original)
+                with self.assertRaisesRegex(verifier.VerificationError,'strict typed'):
+                    verifier.verify_store(root)
+
+    def test_checksum_consistent_shared_history_cannot_change_retained_limitations(self):
+        from test_pros004_producer import ProducerFixture
+        from multisport_lab.integrity import read_receipt
+        f=ProducerFixture(self)
+        original=read_receipt(f.store.ledger._path(f.history_ref.kind,f.history_ref.record_id))
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);save(root,original)
+            body=deepcopy(original['data']['pros004'])
+            body['history_provenance']['availability_semantics']='Proved original upstream availability'
+            replace_typed_receipt(root,original,body)
+            with self.assertRaisesRegex(verifier.VerificationError,'limitations must remain unchanged'):
+                verifier.verify_store(root)
+
+    def test_typed_body_clock_cannot_borrow_a_later_diagnostic_receipt_clock(self):
+        from test_pros004_producer import ProducerFixture
+        from multisport_lab import pros004_records as rec
+        from multisport_lab.integrity import read_receipt,stamp
+        f=ProducerFixture(self)
+        claim,_=f.store.claim_event(f.event_ref,f.binding)
+        date=f.store.store_date_status('2026-10-23',status='SOURCE_FAILURE',
+            reason='Explicit synthetic unavailable date',mode='SYNTHETIC_DIAGNOSTIC')
+        manifest=f.store.store_manifest()
+        latest_clock=f.record_clock.return_value+timedelta(seconds=50)
+        latest_body={'schema_version':'nba-pros004-date-status-v1','study_id':rec.STUDY_ID,
+            'mode':'SYNTHETIC_DIAGNOSTIC','event_date':'2026-11-10','status':'SOURCE_FAILURE',
+            'reason':'Explicit later synthetic metadata, never admission','recorded_at':stamp(latest_clock),
+            'schedule':None}
+        latest=payload('research_inputs',rec._logical(latest_body),
+            {'identity':rec._identity(latest_body),'pros004':latest_body},clock=stamp(latest_clock))
+        for target,key,ancestors in ((f.history_ref,'imported_at',()),
+                (claim,'claimed_at',(f.history_ref,f.event_ref)),
+                (date,'recorded_at',()),(manifest,'recorded_at',())):
+            with self.subTest(schema=f.store.body(target)['schema_version']),tempfile.TemporaryDirectory() as folder:
+                root=Path(folder);original=read_receipt(f.store.ledger._path(target.kind,target.record_id))
+                save(root,original);save(root,latest)
+                for ancestor in ancestors:
+                    save(root,read_receipt(f.store.ledger._path(ancestor.kind,ancestor.record_id)))
+                body=deepcopy(original['data']['pros004'])
+                body[key]=stamp(verifier._time(original['received_at'])+timedelta(seconds=1))
+                replace_typed_receipt(root,original,body)
+                with self.assertRaisesRegex(verifier.VerificationError,'after its receipt'):
+                    verifier.verify_store(root)
+
+    def test_checksum_consistent_date_state_contract_is_validated(self):
+        from multisport_lab.integrity import read_receipt
+        f,_=typed_fixture(self)
+        date_ref=f.store.store_date_status('2026-10-23',status='SOURCE_FAILURE',
+            reason='Explicit synthetic source-completeness failure')
+        original=read_receipt(f.store.ledger._path(date_ref.kind,date_ref.record_id))
+        for change in ('status','outside-reservation','clock','false-completeness'):
+            with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
+                root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+                body=deepcopy(original['data']['pros004'])
+                if change=='status':body['status']='COMPLETE'
+                if change=='outside-reservation':body['event_date']='2026-11-11'
+                if change=='clock':body['recorded_at']='2099-01-01T00:00:00.000000Z'
+                if change=='false-completeness':body['schedule']={}
+                replace_typed_receipt(root,original,body)
+                with self.assertRaisesRegex(verifier.VerificationError,'strict typed'):
+                    verifier.verify_store(root)
+
+    def test_checksum_consistent_failure_contract_and_subject_links_are_validated(self):
+        from multisport_lab.integrity import read_receipt
+        f,refs=typed_fixture(self)
+        failure=f.store.store_failure(f.event_ref,status='UNACKNOWLEDGED',reason='Explicit synthetic failure',
+            operation='REMOTE_CHECKPOINT',subject_id='10',original_reference=refs[0])
+        original=read_receipt(f.store.ledger._path(failure.kind,failure.record_id))
+        verifier.verify_store(f.tmp)
+        for change in ('status','operation','subject','original','clock'):
+            with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
+                root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+                body=deepcopy(original['data']['pros004'])
+                if change=='status':body['status']='SUCCESS'
+                if change=='operation':body['operation']='BET_PLACEMENT'
+                if change=='subject':body['subject_id']='999'
+                if change=='original':body['original_reference']=f.history_ref.to_record()
+                if change=='clock':body['recorded_at']='2099-01-01T00:00:00.000000Z'
+                replace_typed_receipt(root,original,body)
+                with self.assertRaisesRegex(verifier.VerificationError,'strict typed'):
+                    verifier.verify_store(root)
+
+    def test_correction_graph_requires_same_subject_and_traceable_outcome_regrade(self):
+        from test_pros004_records import at_outcomes,synthetic_outcome
+        from multisport_lab.integrity import read_receipt,digest
+        f,refs=typed_fixture(self);at_outcomes(f)
+        first=f.store.append_outcome(synthetic_outcome(f),refs)
+        second=f.store.append_outcome(synthetic_outcome(f,extra_points=1),refs,correction_reason='Synthetic correction')
+        verifier.verify_store(f.tmp)
+        correction=next((Path(f.tmp)/'records/corrections').glob('*.json'))
+        original=read_receipt(correction)
+        # A reverse link uses valid target hashes and equal clocks, but creates
+        # a cycle; correct checksums cannot turn it into valid correction history.
+        reverse=payload('corrections','supersedes:outcomes:'+second.record_id,
+            {'reason':'Synthetic invalid reverse link','replacement':first.to_record()},
+            [second.to_record(),first.to_record()],clock=original['received_at'])
+        reverse['supersedes']=second.to_record();save(Path(f.tmp),reverse)
+        with self.assertRaisesRegex(verifier.VerificationError,'correction cycle'):
+            verifier.verify_store(f.tmp)
+
+    def test_correction_cannot_link_two_valid_different_player_outcomes(self):
+        from test_pros004_records import at_outcomes,synthetic_outcome
+        f,refs=typed_fixture(self)
+        claim,_=f.store.claim_event(f.event_ref,f.binding)
+        peer_body,_=f.generate('R0','20')
+        other=f.store.persist_forecast(peer_body,f.event_ref,f.history_ref,claim)
+        at_outcomes(f)
+        first=f.store.append_outcome(synthetic_outcome(f),refs)
+        body=synthetic_outcome(f);body['player_id']='20'
+        body['outcome_id']=verifier.fingerprint({k:v for k,v in body.items() if k!='outcome_id'})
+        second=f.store.append_outcome(body,[other])
+        verifier.verify_store(f.tmp)
+        bad=payload('corrections','supersedes:outcomes:'+first.record_id,
+            {'reason':'Invalid cross-player correction','replacement':second.to_record()},
+            [first.to_record(),second.to_record()],clock=f.store.read(first)['received_at'])
+        bad['supersedes']=first.to_record();save(Path(f.tmp),bad)
+        with self.assertRaisesRegex(verifier.VerificationError,'changes original subject identity'):
+            verifier.verify_store(f.tmp)
+
+    def test_unrelated_future_receipts_cannot_borrow_diagnostic_clock_context(self):
+        f,_=typed_fixture(self)
+        future=payload('input_captures','unrelated-future',{'note':'This is not diagnostic PROS004'},
+            clock='2099-01-01T00:00:00.000000Z')
+        save(Path(f.tmp),future)
+        with self.assertRaisesRegex(verifier.VerificationError,'unrelated original receipt clock'):
+            verifier.verify_store(f.tmp)
+
+    def test_optimized_python_rejects_checksum_consistent_invalid_outcome_status(self):
+        # A self-contained malformed typed outcome has no missing hash/reference;
+        # it is semantically invalid even before its relation to a forecast.
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            body={'schema_version':'nba-pros004-outcome-v1','mode':'SYNTHETIC_DIAGNOSTIC','status':'ALIEN'}
+            item=payload('outcomes','invalid-outcome',{'identity':{},'pros004':body})
+            save(root,item)
+            run=subprocess.run([sys.executable,'-O',str(SCRIPT),'--store-root',str(root)],capture_output=True,text=True)
+            self.assertNotEqual(run.returncode,0)
+            self.assertIn('strict typed',run.stderr)
             self.assertNotIn('AssertionError',run.stderr)
 
 

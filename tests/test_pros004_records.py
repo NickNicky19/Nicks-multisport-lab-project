@@ -44,7 +44,7 @@ def synthetic_outcome(f,*,extra_points=0,dnp=False):
 
 
 def issue_both(f):
-    prod.issue_pair(f.store,f.event_ref,f.binding,player_id='10')
+    f.issue(player_id='10')
     return [f.store.lookup_forecast(f.event_ref,'10',key) for key in ('R0','K0')]
 
 
@@ -74,8 +74,8 @@ class Pros004RecordsTests(unittest.TestCase):
         self.assertEqual(plan['full_study_records_before_reserve'],499)
         self.assertEqual(plan['maximum_records_including_reserve'],512)
         self.assertEqual(plan['counts']['correction_or_failure_reserve'],13)
-        self.assertEqual(plan['maximum_planned_bytes'],22487040)
-        self.assertEqual(plan['remaining_bytes_after_reserve'],11067392)
+        self.assertEqual(plan['maximum_planned_bytes'],24576000)
+        self.assertEqual(plan['remaining_bytes_after_reserve'],8978432)
         self.assertEqual(plan['global_byte_limit'],32*1024*1024)
 
     def test_typed_input_extension_restart_and_independent_copy_preserve_originals(self):
@@ -111,7 +111,7 @@ class Pros004RecordsTests(unittest.TestCase):
             other.store_history(live)
         with self.assertRaisesRegex(IntegrityError,'readiness-only'):
             other.store_manifest()
-        self.assertEqual(f.store.capacity_report()['actual_records'],2)
+        self.assertEqual(f.store.capacity_report()['actual_records'],3)
 
     def test_event_cannot_bind_history_from_another_evidence_lane(self):
         f=ProducerFixture(self)
@@ -119,7 +119,7 @@ class Pros004RecordsTests(unittest.TestCase):
         changed['sourcepack_id']=digest({k:v for k,v in changed.items() if k!='sourcepack_id'})
         with self.assertRaisesRegex(IntegrityError,'evidence lanes differ'):
             f.store.store_event(changed,f.history_ref)
-        self.assertEqual(f.store.capacity_report()['actual_records'],2)
+        self.assertEqual(f.store.capacity_report()['actual_records'],3)
 
     def test_complete_snapshot_and_single_writer_are_required_for_recovery(self):
         f=ProducerFixture(self)
@@ -151,7 +151,7 @@ class Pros004RecordsTests(unittest.TestCase):
         changed_event['sourcepack_id']=digest({k:v for k,v in changed_event.items() if k!='sourcepack_id'})
         with self.assertRaises(IntegrityError):
             f.store.store_event(changed_event,f.history_ref)
-        self.assertEqual(f.store.capacity_report()['actual_records'],3)
+        self.assertEqual(f.store.capacity_report()['actual_records'],4)
 
     def test_one_missing_peer_is_preserved_on_restart_and_late_completion_rejected(self):
         f=ProducerFixture(self);claim,_=f.store.claim_event(f.event_ref,f.binding)
@@ -162,8 +162,9 @@ class Pros004RecordsTests(unittest.TestCase):
         f.ledger_clock.return_value=CUTOFF+timedelta(minutes=6)
         recovered=rec.Pros004Store(f.tmp,diagnostic=True)
         report=recovered.recover_event(f.event_ref,f.binding)
-        self.assertEqual(report['status'],'PARTIAL_MISSING_PEERS')
-        self.assertEqual(report['issued_models'],1)
+        self.assertEqual(report['status'],'RETAINED_UNADMITTED')
+        self.assertEqual(report['retained_models'],1)
+        self.assertEqual(report['issued_models'],0)
         subject=next(row for row in report['subjects'] if row['player_id']=='10')
         self.assertEqual(subject['missing_models'],['K0'])
         self.assertEqual(recovered.persist_forecast(first,f.event_ref,f.history_ref,claim),ref)
@@ -306,7 +307,7 @@ class Pros004RecordsTests(unittest.TestCase):
         self.assertEqual(f.store.read(outcome)['references'],[forecast.to_record()])
         self.assertEqual(f.store.body(grade)['model_key'],'R0')
         self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','K0'))
-        self.assertEqual(f.store.recover_event(f.event_ref,f.binding)['issued_models'],1)
+        self.assertEqual(f.store.recover_event(f.event_ref,f.binding)['retained_models'],1)
 
     def test_event_actual_receipt_cannot_be_late_even_with_timely_import_metadata(self):
         f=ProducerFixture(self)
@@ -358,6 +359,188 @@ class Pros004RecordsTests(unittest.TestCase):
         self.assertNotEqual(process.returncode,0)
         self.assertIn('IntegrityError',process.stderr)
         self.assertIn('unavailable before',process.stderr)
+
+
+    def test_actual_write_completion_after_deadline_or_latency_is_unadmitted_on_restart(self):
+        for prewrite,complete in ((299,301),(5,126)):
+            with self.subTest(prewrite=prewrite,actual_complete=complete):
+                f=ProducerFixture(self)
+                for clock in (f.record_clock,f.ledger_clock,f.producer_clock):
+                    clock.return_value=CUTOFF+timedelta(seconds=prewrite)
+                claim,_=f.store.claim_event(f.event_ref,f.binding)
+                body,_=f.generate('R0')
+                original_write=rec.frozen_ledger.write_receipt
+                def delayed(path,payload,**kwargs):
+                    result=original_write(path,payload,**kwargs)
+                    if payload.get('kind')=='forecasts':
+                        f.record_clock.return_value=CUTOFF+timedelta(seconds=complete)
+                        f.ledger_clock.return_value=CUTOFF+timedelta(seconds=complete)
+                    return result
+                with patch.object(rec.frozen_ledger,'write_receipt',side_effect=delayed):
+                    with self.assertRaisesRegex(IntegrityError,'local persistence completed late'):
+                        f.store.persist_forecast(body,f.event_ref,f.history_ref,claim)
+                ref=f.store.lookup_forecast(f.event_ref,'10','R0')
+                self.assertIsNotNone(ref)
+                original=f.store.ledger._path(ref.kind,ref.record_id).read_bytes()
+                fresh=rec.Pros004Store(f.tmp,diagnostic=True)
+                status=fresh.admission_status(ref)
+                self.assertEqual(status['received_at_prewrite'],stamp(CUTOFF+timedelta(seconds=prewrite)))
+                self.assertEqual(status['local_persistence_completed_at'],stamp(CUTOFF+timedelta(seconds=complete)))
+                self.assertFalse(status['local_timely']);self.assertFalse(status['eligible_for_comparison'])
+                recovery=fresh.recover_event(f.event_ref,f.binding)
+                self.assertEqual(recovery['retained_models'],1);self.assertEqual(recovery['issued_models'],0)
+                with self.assertRaisesRegex(IntegrityError,'lacks timely local'):
+                    fresh.complete_checkpoint(ref,f.ack)
+                self.assertEqual(original,fresh.ledger._path(ref.kind,ref.record_id).read_bytes())
+
+    def test_event_input_actual_persistence_must_finish_before_selection_close(self):
+        f=ProducerFixture(self)
+        temporary=self.enterContext(tempfile.TemporaryDirectory())
+        for clock in (f.record_clock,f.ledger_clock):clock.return_value=f.input_clock.return_value
+        fresh=rec.Pros004Store(temporary,diagnostic=True)
+        history=fresh.store_history(f.history)
+        self.assertEqual(history,f.history_ref)
+        close=CUTOFF-timedelta(minutes=10)
+        for clock in (f.record_clock,f.ledger_clock):clock.return_value=close-timedelta(seconds=1)
+        original_write=rec.frozen_ledger.write_receipt
+        def delayed(path,payload,**kwargs):
+            result=original_write(path,payload,**kwargs)
+            if payload.get('data',{}).get('pros004',{}).get('schema_version')=='nba-pros004-event-v1':
+                for clock in (f.record_clock,f.ledger_clock):clock.return_value=close+timedelta(seconds=1)
+            return result
+        with patch.object(rec.frozen_ledger,'write_receipt',side_effect=delayed):
+            with self.assertRaisesRegex(IntegrityError,'before selection closed'):
+                fresh.store_event(f.event,history)
+        ref=fresh.ledger._existing('research_inputs',rec._logical(f.event))
+        self.assertIsNotNone(ref)
+        status=rec.Pros004Store(temporary,diagnostic=True).admission_status(ref)
+        self.assertFalse(status['local_timely']);self.assertFalse(status['timing_complete'])
+        self.assertEqual(status['local_persistence_completed_at'],stamp(close+timedelta(seconds=1)))
+
+    def test_interruption_before_completion_journal_cannot_be_repaired_as_timely(self):
+        f=ProducerFixture(self);claim,_=f.store.claim_event(f.event_ref,f.binding)
+        body,_=f.generate('R0')
+        append=rec.completion.append_completion
+        def fail_original(root,reference,**kwargs):
+            if reference.kind=='forecasts':raise OSError('crash before completion evidence')
+            return append(root,reference,**kwargs)
+        with patch.object(rec.completion,'append_completion',side_effect=fail_original):
+            with self.assertRaisesRegex(OSError,'before completion evidence'):
+                f.store.persist_forecast(body,f.event_ref,f.history_ref,claim)
+        ref=f.store.lookup_forecast(f.event_ref,'10','R0')
+        fresh=rec.Pros004Store(f.tmp,diagnostic=True)
+        self.assertIsNone(fresh.admission_status(ref)['local_persistence_completed_at'])
+        with patch.object(prod,'generate_forecast',side_effect=AssertionError('must not regenerate retained original')):
+            with self.assertRaisesRegex(IntegrityError,'no replacement generation'):
+                f.issue(store=fresh,player_id='10')
+        self.assertEqual(fresh.recover_event(f.event_ref,f.binding)['issued_models'],0)
+
+    def test_remote_completion_latency_is_durable_and_bool_is_not_an_ack(self):
+        f=ProducerFixture(self);claim,_=f.store.claim_event(f.event_ref,f.binding)
+        body,_=f.generate('R0');ref=f.store.persist_forecast(body,f.event_ref,f.history_ref,claim)
+        with self.assertRaisesRegex(IntegrityError,'structured independent'):
+            f.store.complete_checkpoint(ref,lambda value:True)
+        self.assertIsNone(f.store.admission_status(ref)['remote_checkpoint_completed_at'])
+        def delayed(value):
+            for clock in (f.record_clock,f.ledger_clock):clock.return_value=CUTOFF+timedelta(seconds=126)
+            return f.ack(value)
+        with self.assertRaisesRegex(IntegrityError,'remote checkpoint completed late'):
+            f.store.complete_checkpoint(ref,delayed)
+        status=rec.Pros004Store(f.tmp,diagnostic=True).admission_status(ref)
+        self.assertTrue(status['local_timely']);self.assertFalse(status['remote_timely'])
+        self.assertEqual(status['remote_checkpoint_completed_at'],stamp(CUTOFF+timedelta(seconds=126)))
+        self.assertFalse(status['timing_complete']);self.assertFalse(status['eligible_for_comparison'])
+        # A durable but late acknowledgment cannot be renewed on restart or
+        # silently let the missing peer proceed within the wider five minutes.
+        f.producer_clock.return_value=CUTOFF+timedelta(seconds=126)
+        original=f.store.ledger._path(ref.kind,ref.record_id).read_bytes()
+        with patch.object(prod,'generate_forecast',side_effect=AssertionError('late original cannot be repaired by a peer')):
+            with self.assertRaisesRegex(IntegrityError,'retained remote checkpoint completed late'):
+                f.issue(store=rec.Pros004Store(f.tmp,diagnostic=True),player_id='10')
+        self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','K0'))
+        self.assertEqual(f.store.ledger._path(ref.kind,ref.record_id).read_bytes(),original)
+
+    def test_event_remote_readback_must_also_finish_before_selection_close(self):
+        f=ProducerFixture(self)
+        # Retain an independent local-only diagnostic pack, with no original
+        # remote acknowledgment that could be mistaken for this operation.
+        temporary=self.enterContext(tempfile.TemporaryDirectory())
+        store=rec.Pros004Store(temporary,diagnostic=True)
+        close=START-timedelta(minutes=100)
+        for clock in (f.record_clock,f.ledger_clock):clock.return_value=f.input_clock.return_value
+        history=store.store_history(f.history)
+        for clock in (f.record_clock,f.ledger_clock):clock.return_value=close-timedelta(seconds=1)
+        event=store.store_event(f.event,history)
+        def delayed(reference):
+            for clock in (f.record_clock,f.ledger_clock):clock.return_value=close+timedelta(seconds=1)
+            value=f.ack(reference);value['readback_raw_sha256']=store._raw_sha256(reference)
+            from multisport_lab.pros004_snapshot import snapshot_manifest
+            value['snapshot_sha256']=digest(snapshot_manifest(store.root))
+            return value
+        with self.assertRaisesRegex(IntegrityError,'remote checkpoint completed late'):
+            store.complete_checkpoint(event,delayed)
+        status=rec.Pros004Store(temporary,diagnostic=True).admission_status(event)
+        self.assertTrue(status['local_timely']);self.assertFalse(status['remote_timely'])
+        self.assertFalse(status['timing_complete'])
+        self.assertEqual(status['remote_checkpoint_completed_at'],stamp(close+timedelta(seconds=1)))
+
+    def test_bounded_operational_failure_is_event_bound_and_never_future_dated(self):
+        f=ProducerFixture(self)
+        ref=f.store.store_failure(f.event_ref,status='MISSING_PEER',reason='Synthetic blocked peer',
+            operation='REMOTE_CHECKPOINT',subject_id='10')
+        self.assertEqual(f.store.body(ref)['event_ref'],f.event_ref.to_record())
+        bad=deepcopy(f.store.body(ref));bad['recorded_at']=stamp(ISSUE+timedelta(seconds=1))
+        with self.assertRaisesRegex(IntegrityError,'observation clock'):
+            f.store._append(bad,references=(f.event_ref,))
+        with self.assertRaisesRegex(IntegrityError,'outside the frozen cohort'):
+            f.store.store_failure(f.event_ref,status='PARTIAL',reason='Synthetic',operation='GENERATION',subject_id='999')
+
+    def test_all_operational_source_clocks_precede_the_immutable_receipt(self):
+        f=ProducerFixture(self)
+        claim,_=f.store.claim_event(f.event_ref,f.binding)
+        schemas=[(f.store.body(claim),'claimed_at'),
+            ({'schema_version':'nba-pros004-date-status-v1','recorded_at':stamp(ISSUE)},'recorded_at'),
+            ({'schema_version':'nba-pros004-study-manifest-v1','recorded_at':stamp(ISSUE)},'recorded_at'),
+            (f.history,'imported_at')]
+        for body,clock in schemas:
+            with self.subTest(schema=body['schema_version']):
+                changed=deepcopy(body);changed[clock]=stamp(ISSUE+timedelta(seconds=1))
+                with self.assertRaisesRegex(IntegrityError,'after its receipt'):
+                    rec.Pros004Store._validate_receipt_clocks({'received_at':stamp(ISSUE)},changed)
+        early=deepcopy(f.store.body(claim))
+        early['claimed_at']=stamp(f.input_clock.return_value-timedelta(microseconds=1))
+        with self.assertRaisesRegex(IntegrityError,'precedes its retained input'):
+            f.store._validate(early,(f.event_ref,))
+
+    def test_exact_snapshot_ack_and_final_journal_prefix_are_required(self):
+        f=ProducerFixture(self)
+        claim,_=f.store.claim_event(f.event_ref,f.binding)
+        body,_=f.generate('R0');ref=f.store.persist_forecast(body,f.event_ref,f.history_ref,claim)
+        def unrelated(reference):
+            value=f.ack(reference);value['snapshot_sha256']='f'*64;return value
+        with self.assertRaisesRegex(IntegrityError,'exact retained snapshot prefix'):
+            f.store.complete_checkpoint(ref,unrelated)
+        self.assertIsNone(f.store.admission_status(ref)['remote_checkpoint_completed_at'])
+        f.store.complete_checkpoint(ref,f.ack)
+        original=rec.completion.journal_path(f.tmp).read_bytes()
+        result=f.store.finalize_checkpoint((ref,),f.ack)
+        self.assertTrue(result['timely'])
+        self.assertEqual(result['metadata_publication_status'],'INDEPENDENTLY_RECOVERED_CURRENT_PREFIX')
+        self.assertEqual(rec.completion.journal_path(f.tmp).read_bytes(),original)
+        with self.assertRaisesRegex(IntegrityError,'exact completion-journal prefix'):
+            f.store.finalize_checkpoint((ref,),unrelated)
+        def late(reference):
+            for clock in (f.record_clock,f.ledger_clock):clock.return_value=CUTOFF+timedelta(seconds=301)
+            return f.ack(reference)
+        report=f.store.finalize_checkpoint((ref,),late)
+        self.assertFalse(report['timely'])
+        self.assertEqual(report['metadata_publication_status'],'LATE_METADATA_PUBLICATION')
+        restarted=rec.Pros004Store(f.tmp,diagnostic=True)
+        status=restarted.admission_status(ref)
+        self.assertTrue(status['timing_complete'])  # Original ACK is unchanged.
+        self.assertFalse(status['eligible_for_comparison'])
+        self.assertEqual(status['metadata_publication_status'],'NOT_ESTABLISHED_BY_LOCAL_JOURNAL')
+        self.assertEqual(rec.completion.journal_path(f.tmp).read_bytes(),original)
 
 
 if __name__=='__main__':

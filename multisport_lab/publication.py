@@ -207,11 +207,14 @@ def empty_nba(root: Path, *, now: datetime) -> dict:
 
 def research_nba(root: Path, *, now: datetime) -> dict:
     """Read the durable repository ledger; build never regenerates forecasts."""
-    from .ledger import Ledger
+    from .pros004_records import Pros004Store
     from .forecast_contract import EVENT_SCHEMA
     result = empty_nba(root, now=now)
     result["schema_version"] = 2
-    ledger = Ledger(root)
+    # The versioned facade validates the new shared-input kinds while inherited
+    # legacy iterators continue to expose only unchanged historical/R1 bundles.
+    # New PROS004 records have a separate paginated public contract below.
+    ledger = Pros004Store(root).ledger
     # Recovery checks every checksum and reference before anything is published.
     ledger.scan()
     result["forecasts"] = list(ledger.iter_active_forecasts())
@@ -258,8 +261,10 @@ def _write_atomic(path: Path, raw: bytes):
 def read_manifest(data_dir: Path, *, now: datetime) -> dict:
     manifest = load_json(data_dir / "manifest.json", max_bytes=MAX_ASSET_BYTES)
     fields = {"schema_version", "snapshot_id", "build_commit", "published_at", "publication_status", "supported_sports", "sports", "errors"}
+    if type(manifest) is dict and manifest.get("schema_version") == 3:
+        fields |= {"pros004", "pros004_error"}
     if (type(manifest) is not dict or set(manifest) != fields
-            or type(manifest["schema_version"]) is not int or manifest["schema_version"] not in {1, 2}
+            or type(manifest["schema_version"]) is not int or manifest["schema_version"] not in {1, 2, 3}
             or manifest["publication_status"] != "RESEARCH_ONLY"
             or not re.fullmatch(r"[a-f0-9]{40}", manifest["build_commit"])
             or utc(manifest["published_at"]) > utc(now)):
@@ -286,6 +291,16 @@ def read_manifest(data_dir: Path, *, now: datetime) -> dict:
             raise IntegrityError("Generation clock mismatch")
     if sorted(seen) != manifest["supported_sports"]:
         raise IntegrityError("Sport references do not match supported scope")
+    if manifest["schema_version"] == 3:
+        from .pros004_publication import read_publication
+        error = manifest["pros004_error"]
+        if error is not None:
+            _text(error, "PROS004 publication error")
+        if manifest["pros004"] is None:
+            if error is None:
+                raise IntegrityError("A missing PROS004 collection needs an explicit error")
+        else:
+            read_publication(data_dir, manifest["pros004"], now=utc(manifest["published_at"]))
     return manifest
 
 
@@ -333,12 +348,17 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
     output.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix=".site-build-", dir=output.parent))
     backup = None
+    old = None
     try:
         if (output / "data/manifest.json").exists():
             old = read_manifest(output / "data", now=now)
             (staging / "data").mkdir()
             for name in ("manifest.json", *(item["path"] for item in old["sports"])):
                 shutil.copyfile(output / "data" / name, staging / "data" / name)
+            if old.get("pros004") is not None:
+                from .pros004_publication import publication_asset_paths
+                for name in publication_asset_paths(output / "data", old["pros004"], now=now):
+                    shutil.copyfile(output / "data" / name, staging / "data" / name)
         for source in (root / "web").iterdir():
             if source.is_file() and not source.is_symlink() and source.suffix in {".html", ".css", ".js", ".mjs", ".svg", ".webmanifest"}:
                 shutil.copyfile(source, staging / source.name)
@@ -349,6 +369,21 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
         except (ValueError, KeyError, TypeError, OSError) as error:
             nba_snapshot = error
         result = publish(staging / "data", {"NBA": nba_snapshot}, build_commit=build_commit, now=now)
+        from .pros004_publication import emit_publication
+        try:
+            descriptor = emit_publication(staging / "data", root, now=now)
+            collection_error = None
+        except (ValueError, KeyError, TypeError, OSError) as error:
+            # Preserve a validated prior collection without refreshing its clocks.
+            # Never replace failed semantic recovery with an apparently empty run.
+            descriptor = old.get("pros004") if old else None
+            collection_error = f"{type(error).__name__}: PROS004 update rejected"
+            if descriptor is not None:
+                descriptor = {**descriptor, "retained": True, "error": collection_error}
+        result.update(schema_version=3, pros004=descriptor, pros004_error=collection_error)
+        result["snapshot_id"] = digest({k: v for k, v in result.items() if k != "snapshot_id"})
+        _write_atomic(staging / "data/manifest.json", canonical(result))
+        read_manifest(staging / "data", now=now)
         if output.exists():
             backup = Path(tempfile.mkdtemp(prefix=".site-old-", dir=output.parent))
             backup.rmdir()

@@ -16,7 +16,7 @@ from multisport_lab import pros004_producer as prod
 from multisport_lab import pros004_records as rec
 from multisport_lab.baseline import ForecastTarget, forecast_reference
 from multisport_lab.development_003 import WorkloadPrior
-from multisport_lab.integrity import IntegrityError, digest
+from multisport_lab.integrity import IntegrityError, digest, stamp
 from multisport_lab.ledger import LedgerRef
 from multisport_lab.pregame_sources import compact_history, _panel_bytes
 from test_pregame_sources import tiny_history, provenance
@@ -49,8 +49,24 @@ class ProducerFixture:
         self.history_ref=self.store.store_history(self.history)
         self.event=input_fixture();self.event['history_ref']=self.history_ref.to_record();reseal(self.event,'sourcepack_id')
         self.event_ref=self.store.store_event(self.event,self.history_ref)
+        self.store.complete_checkpoint(self.event_ref,self.ack)
+        self.input_final_checkpoint=self.store.finalize_checkpoint((self.event_ref,),self.ack)
         self.record_clock.return_value=ISSUE;self.ledger_clock.return_value=ISSUE
         self.binding=prod.make_source_binding(diagnostic=True)
+
+    def ack(self, reference):
+        # Explicitly fictitious remote metadata for timing/control tests only.
+        from multisport_lab.pros004_snapshot import snapshot_manifest
+        return {'schema_version':'nba-pros004-remote-checkpoint-v1','reference':reference.to_record(),
+            'remote_repository':'NickNicky19/Nicks-multisport-lab-project','remote_branch':'records/SYNTHETIC_ONLY',
+            'remote_commit':'a'*40,'snapshot_sha256':digest(snapshot_manifest(self.tmp)),
+            'readback_raw_sha256':self.store._raw_sha256(reference),
+            'remote_completed_at':stamp(self.record_clock.return_value)}
+
+    def issue(self, store=None, **kwargs):
+        kwargs.setdefault('checkpoint',self.ack)
+        kwargs.setdefault('input_final_checkpoint',self.input_final_checkpoint)
+        return prod.issue_pair(store or self.store,self.event_ref,self.binding,**kwargs)
 
     def generate(self, model='R0', player='10'):
         return prod.generate_forecast(self.event,self.history,event_ref=self.event_ref,
@@ -121,9 +137,9 @@ class Pros004ProducerTests(unittest.TestCase):
         def fail_after_original(ref):
             if ref.kind=='forecasts':
                 raise OSError('unacknowledged remote checkpoint')
-            return True
+            return f.ack(ref)
         with self.assertRaisesRegex(OSError,'unacknowledged'):
-            prod.issue_pair(f.store,f.event_ref,f.binding,player_id='10',checkpoint=fail_after_original)
+            f.issue(player_id='10',checkpoint=fail_after_original)
         first=f.store.lookup_forecast(f.event_ref,'10','R0')
         original=f.store.ledger._path(first.kind,first.record_id).read_bytes()
         self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','K0'))
@@ -131,9 +147,10 @@ class Pros004ProducerTests(unittest.TestCase):
         f.record_clock.return_value=CUTOFF+timedelta(minutes=6)
         f.ledger_clock.return_value=CUTOFF+timedelta(minutes=6)
         with patch.object(prod,'generate_forecast',side_effect=AssertionError('late recovery cannot generate')):
-            report=prod.issue_pair(rec.Pros004Store(f.tmp,diagnostic=True),f.event_ref,f.binding,player_id='10')
+            report=f.issue(store=rec.Pros004Store(f.tmp,diagnostic=True),player_id='10')
         self.assertEqual(report['status'],'PARTIAL_WINDOW_CLOSED')
-        self.assertEqual(report['issued_models'],1)
+        self.assertEqual(report['retained_models'],1)
+        self.assertEqual(report['issued_models'],0)
         self.assertEqual(original,f.store.ledger._path(first.kind,first.record_id).read_bytes())
 
     def test_timely_resume_only_generates_missing_peer_and_preserves_clocks(self):
@@ -141,31 +158,101 @@ class Pros004ProducerTests(unittest.TestCase):
         calls=[]
         def fail_once(ref):
             calls.append(ref.kind)
-            return ref.kind!='forecasts'
-        with self.assertRaisesRegex(IntegrityError,'did not acknowledge'):
-            prod.issue_pair(f.store,f.event_ref,f.binding,player_id='10',checkpoint=fail_once)
+            return f.ack(ref) if ref.kind!='forecasts' else False
+        with self.assertRaisesRegex(IntegrityError,'structured independent'):
+            f.issue(player_id='10',checkpoint=fail_once)
         original=f.store.lookup_forecast(f.event_ref,'10','R0')
         raw=f.store.ledger._path(original.kind,original.record_id).read_bytes()
         generation=prod.generate_forecast;models=[]
         def track(*args,**kwargs):
             models.append(kwargs['model_key']);return generation(*args,**kwargs)
         with patch.object(prod,'generate_forecast',side_effect=track):
-            report=prod.issue_pair(rec.Pros004Store(f.tmp,diagnostic=True),f.event_ref,f.binding,player_id='10',checkpoint=lambda ref:True)
+            report=f.issue(store=rec.Pros004Store(f.tmp,diagnostic=True),player_id='10',checkpoint=f.ack)
         self.assertEqual(models,['K0'])
-        self.assertEqual(report['issued_models'],2)
+        self.assertEqual(report['retained_models'],2)
+        self.assertEqual(report['timing_complete_models'],2)
+        self.assertEqual(report['issued_models'],0)
         self.assertEqual(raw,f.store.ledger._path(original.kind,original.record_id).read_bytes())
         with patch.object(prod,'generate_forecast',side_effect=AssertionError('duplicate attempt')):
-            prod.issue_pair(f.store,f.event_ref,f.binding,player_id='10')
+            f.issue(player_id='10')
+
+    def test_interrupted_final_prefix_flush_retries_originals_without_generation(self):
+        f=ProducerFixture(self)
+        real=f.store.finalize_checkpoint
+        with patch.object(f.store,'finalize_checkpoint',side_effect=OSError('interrupted final proof publication')):
+            with self.assertRaisesRegex(OSError,'final proof publication'):
+                f.issue(player_id='10')
+        refs=[f.store.lookup_forecast(f.event_ref,'10',model) for model in ('R0','K0')]
+        before=[f.store.ledger._path(ref.kind,ref.record_id).read_bytes() for ref in refs]
+        journal_before=rec.completion.journal_path(f.tmp).read_bytes()
+        with patch.object(prod,'generate_forecast',side_effect=AssertionError('final flush must not regenerate')):
+            report=f.issue(store=rec.Pros004Store(f.tmp,diagnostic=True),player_id='10')
+        self.assertTrue(report['final_checkpoint']['timely'])
+        self.assertEqual(report['metadata_publication_status'],'INDEPENDENTLY_RECOVERED_CURRENT_PREFIX')
+        self.assertEqual(before,[f.store.ledger._path(ref.kind,ref.record_id).read_bytes() for ref in refs])
+        self.assertEqual(journal_before,rec.completion.journal_path(f.tmp).read_bytes())
+        for clock in (f.producer_clock,f.record_clock,f.ledger_clock):
+            clock.return_value=CUTOFF+timedelta(seconds=301)
+        with patch.object(prod,'generate_forecast',side_effect=AssertionError('late recovery cannot regenerate')):
+            late=f.issue(store=rec.Pros004Store(f.tmp,diagnostic=True),player_id='10')
+        self.assertFalse(late['final_checkpoint']['timely'])
+        self.assertEqual(late['metadata_publication_status'],'LATE_METADATA_PUBLICATION')
+
+    def test_missing_or_invalid_original_input_phase_receipt_prevents_generation(self):
+        f=ProducerFixture(self)
+        with patch.object(prod,'generate_forecast',side_effect=AssertionError('unproved phase cannot generate')):
+            missing=f.issue(player_id='10',input_final_checkpoint=None)
+            self.assertEqual(missing['status'],'INPUT_FINAL_CHECKPOINT_REQUIRED')
+            self.assertFalse(missing['generation_attempted'])
+            for field,value in [('references',[f.history_ref.to_record()]),
+                    ('snapshot_sha256','e'*64),('journal_raw_sha256','e'*64),
+                    ('completed_at',stamp(CUTOFF-timedelta(minutes=10)+timedelta(microseconds=1)))]:
+                with self.subTest(field=field):
+                    changed=deepcopy(f.input_final_checkpoint);changed[field]=value
+                    with self.assertRaises(IntegrityError):
+                        f.issue(player_id='10',input_final_checkpoint=changed)
+        self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','R0'))
+        self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','K0'))
+        # A missing phase receipt on recovery never permits replacement of an
+        # existing original, even though a valid fresh receipt would allow its
+        # genuinely missing peer to proceed while timely.
+        def partial(reference):
+            if reference.kind=='forecasts':raise OSError('synthetic partial original')
+            return f.ack(reference)
+        with self.assertRaisesRegex(OSError,'partial original'):
+            f.issue(player_id='10',checkpoint=partial)
+        ref=f.store.lookup_forecast(f.event_ref,'10','R0')
+        original=f.store.ledger._path(ref.kind,ref.record_id).read_bytes()
+        with patch.object(prod,'generate_forecast',side_effect=AssertionError('missing receipt recovery cannot generate')):
+            recovery=f.issue(store=rec.Pros004Store(f.tmp,diagnostic=True),player_id='10',input_final_checkpoint=None)
+        self.assertEqual(recovery['status'],'INPUT_FINAL_CHECKPOINT_REQUIRED')
+        self.assertEqual(recovery['retained_models'],1)
+        self.assertEqual(f.store.ledger._path(ref.kind,ref.record_id).read_bytes(),original)
+
+    def test_input_phase_snapshot_reconstruction_rejects_ambiguous_tied_receipts(self):
+        f=ProducerFixture(self)
+        # This new receipt was absent from the original remote input snapshot.
+        # A forged/tied pre-write clock cannot silently choose a convenient
+        # subset when reconstructing that snapshot on restart.
+        f.record_clock.return_value=f.input_clock.return_value
+        f.ledger_clock.return_value=f.input_clock.return_value
+        f.store.store_manifest()
+        f.record_clock.return_value=ISSUE;f.ledger_clock.return_value=ISSUE
+        with patch.object(prod,'generate_forecast',side_effect=AssertionError('ambiguous input cannot generate')):
+            with self.assertRaisesRegex(IntegrityError,'cannot be recovered unambiguously'):
+                f.issue(player_id='10')
 
     def test_before_persistence_interruption_has_no_original_and_can_retry_timely(self):
         f=ProducerFixture(self)
         real=f.store.persist_forecast
         with patch.object(f.store,'persist_forecast',side_effect=OSError('before atomic link')):
             with self.assertRaisesRegex(OSError,'before atomic'):
-                prod.issue_pair(f.store,f.event_ref,f.binding,player_id='10')
+                f.issue(player_id='10')
         self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','R0'))
-        report=prod.issue_pair(f.store,f.event_ref,f.binding,player_id='10')
-        self.assertEqual(report['issued_models'],2)
+        report=f.issue(player_id='10')
+        self.assertEqual(report['retained_models'],2)
+        self.assertEqual(report['timing_complete_models'],2)
+        self.assertEqual(report['issued_models'],0)
 
     def test_interruption_immediately_after_atomic_persistence_recovers_original(self):
         f=ProducerFixture(self)
@@ -175,7 +262,7 @@ class Pros004ProducerTests(unittest.TestCase):
             raise OSError('interrupted after atomic link')
         with patch.object(f.store,'persist_forecast',side_effect=linked_then_interrupted):
             with self.assertRaisesRegex(OSError,'after atomic link'):
-                prod.issue_pair(f.store,f.event_ref,f.binding,player_id='10')
+                f.issue(player_id='10')
         original=f.store.lookup_forecast(f.event_ref,'10','R0')
         self.assertIsNotNone(original)
         raw=f.store.ledger._path(original.kind,original.record_id).read_bytes()
@@ -183,29 +270,31 @@ class Pros004ProducerTests(unittest.TestCase):
         def track(*args,**kwargs):
             models.append(kwargs['model_key']);return generation(*args,**kwargs)
         with patch.object(prod,'generate_forecast',side_effect=track):
-            report=prod.issue_pair(rec.Pros004Store(f.tmp,diagnostic=True),f.event_ref,f.binding,player_id='10')
+            report=f.issue(store=rec.Pros004Store(f.tmp,diagnostic=True),player_id='10')
         self.assertEqual(models,['K0'])
-        self.assertEqual(report['issued_models'],2)
+        self.assertEqual(report['retained_models'],2)
+        self.assertEqual(report['timing_complete_models'],2)
+        self.assertEqual(report['issued_models'],0)
         self.assertEqual(raw,f.store.ledger._path(original.kind,original.record_id).read_bytes())
 
     def test_pair_before_window_and_failed_admission_ack_never_start_generation(self):
         f=ProducerFixture(self)
         f.producer_clock.return_value=CUTOFF-timedelta(seconds=1)
         with patch.object(prod,'generate_forecast',side_effect=AssertionError('early generation')):
-            report=prod.issue_pair(f.store,f.event_ref,f.binding,player_id='10')
+            report=f.issue(player_id='10')
         self.assertEqual(report['status'],'ISSUANCE_NOT_YET_OPEN')
         self.assertFalse(report['generation_attempted'])
         self.assertIsNone(report['claim_ref'])
         f.producer_clock.return_value=ISSUE
         with patch.object(prod,'generate_forecast',side_effect=AssertionError('unacknowledged admission')):
-            with self.assertRaisesRegex(IntegrityError,'event checkpoint'):
-                prod.issue_pair(f.store,f.event_ref,f.binding,player_id='10',checkpoint=lambda ref:False)
+            with self.assertRaisesRegex(IntegrityError,'structured independent'):
+                f.issue(player_id='10',checkpoint=lambda ref:False)
         self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','R0'))
         self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','K0'))
 
     def test_changed_binding_or_event_cannot_create_another_original(self):
         f=ProducerFixture(self)
-        prod.issue_pair(f.store,f.event_ref,f.binding,player_id='10')
+        f.issue(player_id='10')
         changed=deepcopy(f.binding);changed['runtime']['python']+='changed'
         with self.assertRaisesRegex(IntegrityError,'source/runtime changed'):
             prod.issue_pair(f.store,f.event_ref,changed,player_id='10')

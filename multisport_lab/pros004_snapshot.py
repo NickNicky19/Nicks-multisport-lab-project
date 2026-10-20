@@ -20,11 +20,14 @@ import stat
 import subprocess
 
 from .integrity import IntegrityError, canonical, digest, read_receipt, write_receipt
+from .pros004_completion import (JOURNAL_RELATIVE_PATH, MAX_JOURNAL_BYTES,
+    journal_inventory, load_journal)
 from scripts.verify_pros004_readiness import (
     KINDS, MAX_BYTES, MAX_RECORDS, VerificationError, load_receipt, verify_store,
 )
 
-SCHEMA = "nba-pros004-diagnostic-snapshot-v1"
+SCHEMA = "nba-pros004-diagnostic-snapshot-v2"
+LEGACY_SCHEMA = "nba-pros004-diagnostic-snapshot-v1"
 MODE = "READINESS_DIAGNOSTIC_NON_ISSUANCE"
 MANIFEST = "pros004-snapshot.json"
 MAX_MANIFEST_BYTES = 256*1024
@@ -88,61 +91,98 @@ def _strict_layout(root):
     return sorted(files)
 
 
-def snapshot_manifest(source_root):
-    """Independently validate every receipt, reference, clock and new forecast.
-
-    No clocks are rewritten, and a missing model peer is preserved as missing.
-    The independent checker admits only diagnostic new PROS004 records and
-    counts unrelated original records without relabeling them.
-    """
+def _manifest_for_schema(source_root, schema=SCHEMA):
+    """Validate full meanings before constructing a deterministic byte inventory."""
     root = _path_root(source_root)
     files = _strict_layout(root)
     try:
         verified = verify_store(root)
+        journal=journal_inventory(root)
+        _require(journal==verified['completion_journal'],
+                 "completion journal changed after its semantic verification")
+        _require(schema!=LEGACY_SCHEMA or journal['files']==0,
+                 "legacy snapshot cannot omit a completion journal")
         entries = []
         for path in files:
             payload, raw_sha, size = load_receipt(path, maximum=4*1024*1024)
-            entries.append({"path":path.relative_to(root).as_posix(),
-                            "encoded_bytes":size,"raw_sha256":raw_sha,
-                            "payload_sha256":digest(payload)})
-    except (VerificationError, OSError, KeyError, TypeError) as error:
+            key=path.parent.name+':'+path.stem
+            _require(verified['record_file_sha256'].get(key)==raw_sha,
+                     "original receipt bytes changed after semantic verification")
+            entry={"path":path.relative_to(root).as_posix(),"encoded_bytes":size,
+                   "raw_sha256":raw_sha,"payload_sha256":digest(payload)}
+            if schema==SCHEMA:entry['entry_type']='LEDGER_RECEIPT'
+            entries.append(entry)
+        if journal['files']:
+            entries.append({'entry_type':'COMPLETION_JOURNAL','path':JOURNAL_RELATIVE_PATH,
+                'encoded_bytes':journal['bytes'],'raw_sha256':journal['raw_sha256'],
+                'payload_sha256':digest(load_journal(root))})
+            _require(journal_inventory(root)==journal,
+                     "completion journal changed during snapshot inventory")
+        entries.sort(key=lambda item:item['path'])
+    except (VerificationError, IntegrityError, OSError, KeyError, TypeError) as error:
+        if isinstance(error,SnapshotError):raise
         raise SnapshotError("independent diagnostic snapshot verification failed: "+str(error)) from error
     _require(verified["records"] == len(entries) and
              verified["encoded_bytes"] == sum(item["encoded_bytes"] for item in entries),
              "source inventory changed during snapshot validation")
-    body = {"schema_version":SCHEMA,"mode":MODE,"record_count":len(entries),
+    _require(len(entries)<=MAX_RECORDS and sum(item['encoded_bytes'] for item in entries)<=MAX_BYTES,
+             "ledger plus completion journal exceeds unchanged snapshot capacity")
+    body = {"schema_version":schema,"mode":MODE,"record_count":len(entries),
             "encoded_bytes":sum(item["encoded_bytes"] for item in entries),
             "global_record_limit":MAX_RECORDS,"global_byte_limit":MAX_BYTES,
             "entries":entries,"activation":False,"genuine_issuance":0,
             "remote_durability_established":False}
+    if schema==SCHEMA:
+        body.update(ledger_record_count=len(files),completion_journal_count=journal['files'],
+                    typed_semantics_validated=True)
     return {**body,"manifest_id":digest(body)}
 
 
+def snapshot_manifest(source_root):
+    """Verify bytes and every typed relationship, without granting eligibility.
+
+    The exact bounded completion journal is part of the snapshot when present.
+    A missing legacy journal remains missing; recovery never manufactures proof.
+    """
+    return _manifest_for_schema(source_root)
+
+
 def _validate_manifest(body):
-    fields = {"schema_version","mode","record_count","encoded_bytes","global_record_limit",
+    common = {"schema_version","mode","record_count","encoded_bytes","global_record_limit",
               "global_byte_limit","entries","activation","genuine_issuance",
               "remote_durability_established","manifest_id"}
-    _require(type(body) is dict and set(body) == fields, "invalid diagnostic snapshot manifest")
-    _require(body["schema_version"] == SCHEMA and body["mode"] == MODE and
-             body["activation"] is False and type(body["genuine_issuance"]) is int and
+    _require(type(body) is dict and body.get('schema_version') in {SCHEMA,LEGACY_SCHEMA},
+             "invalid diagnostic snapshot manifest")
+    version2=body['schema_version']==SCHEMA
+    fields=common|({'ledger_record_count','completion_journal_count','typed_semantics_validated'} if version2 else set())
+    _require(set(body)==fields,"invalid diagnostic snapshot manifest fields")
+    _require(body["mode"] == MODE and body["activation"] is False and type(body["genuine_issuance"]) is int and
              body["genuine_issuance"] == 0 and body["remote_durability_established"] is False,
              "snapshot cannot claim genuine issuance, activation or remote durability")
     _require(body["global_record_limit"] == MAX_RECORDS and body["global_byte_limit"] == MAX_BYTES,
              "snapshot ledger limits changed")
     entries = body["entries"]
     _require(type(entries) is list and len(entries) <= MAX_RECORDS, "invalid snapshot entry budget")
-    previous = ""
-    total = 0
+    previous = "";total = ledger_count = journal_count = 0
     for entry in entries:
-        _require(type(entry) is dict and set(entry) == {"path","encoded_bytes","raw_sha256","payload_sha256"},
-                 "invalid snapshot entry")
+        entry_fields={'path','encoded_bytes','raw_sha256','payload_sha256'}|({'entry_type'} if version2 else set())
+        _require(type(entry) is dict and set(entry)==entry_fields,"invalid snapshot entry")
         path = entry["path"]
-        _require(type(path) is str and re.fullmatch(
-            r"records/(?:"+"|".join(KINDS)+r")/[a-f0-9]{64}\.json", path) is not None and path > previous,
-            "snapshot entries must have unique sorted safe ledger paths")
+        _require(type(path) is str and path>previous,"snapshot entries must have unique sorted safe paths")
+        is_journal=version2 and entry['entry_type']=='COMPLETION_JOURNAL'
+        if is_journal:
+            _require(path==JOURNAL_RELATIVE_PATH,"invalid completion journal snapshot path")
+            journal_count+=1
+            _require(journal_count==1,"snapshot duplicates its completion journal")
+            cap=MAX_JOURNAL_BYTES
+        else:
+            _require(not version2 or entry['entry_type']=='LEDGER_RECEIPT',"unknown snapshot entry type")
+            _require(re.fullmatch(r"records/(?:"+"|".join(KINDS)+r")/[a-f0-9]{64}\.json",path) is not None,
+                     "invalid safe ledger snapshot path")
+            ledger_count+=1;cap=4*1024*1024
         previous = path
-        _require(type(entry["encoded_bytes"]) is int and 0 < entry["encoded_bytes"] <= 4*1024*1024,
-                 "invalid snapshot record size")
+        _require(type(entry["encoded_bytes"]) is int and 0<=entry["encoded_bytes"]<=cap and
+                 (is_journal or entry['encoded_bytes']>0),"invalid snapshot record size")
         for key in ("raw_sha256","payload_sha256"):
             _require(type(entry[key]) is str and re.fullmatch(r"[a-f0-9]{64}",entry[key]) is not None,
                      "invalid snapshot hash")
@@ -150,6 +190,10 @@ def _validate_manifest(body):
     _require(type(body["record_count"]) is int and body["record_count"] == len(entries) and
              type(body["encoded_bytes"]) is int and body["encoded_bytes"] == total <= MAX_BYTES,
              "snapshot count/byte totals conflict")
+    if version2:
+        _require(type(body['ledger_record_count']) is int and body['ledger_record_count']==ledger_count and
+                 type(body['completion_journal_count']) is int and body['completion_journal_count']==journal_count and
+                 body['typed_semantics_validated'] is True,"snapshot semantic/journal counts conflict")
     _require(body["manifest_id"] == digest({k:v for k,v in body.items() if k != "manifest_id"}),
              "snapshot manifest identity changed")
     return body
@@ -199,25 +243,32 @@ def recover_snapshot(snapshot_root, destination_root):
     """
     source = _path_root(snapshot_root)
     _require(source.is_dir(), "snapshot directory is missing")
-    _require({p.name for p in source.iterdir()} == {"records",MANIFEST},
-             "snapshot is interrupted or has unrecognized entries")
     try:
         manifest = _validate_manifest(read_receipt(source/MANIFEST,max_bytes=MAX_MANIFEST_BYTES))
     except (IntegrityError, OSError, KeyError, TypeError) as error:
         raise SnapshotError("invalid or incomplete diagnostic snapshot: "+str(error)) from error
-    _require(snapshot_manifest(source) == manifest, "snapshot bytes or retained inventory changed")
+    expected_top={'records',MANIFEST}|({'evidence'} if manifest.get('completion_journal_count',0) else set())
+    _require({p.name for p in source.iterdir()}==expected_top,"snapshot is interrupted or has unrecognized entries")
+    if 'evidence' in expected_top:
+        _require({p.relative_to(source).as_posix() for p in (source/'evidence').rglob('*')}==
+                 {'evidence/pros004',JOURNAL_RELATIVE_PATH},"snapshot contains unrecognized evidence files")
+    _require(_manifest_for_schema(source,manifest['schema_version']) == manifest,
+             "snapshot bytes or retained inventory changed")
     target = _path_root(destination_root)
     _require(not target.is_relative_to(source), "readback destination must not be inside snapshot")
     target = _new_root(target)
     (target/"records").mkdir(exist_ok=True)
     for entry in manifest["entries"]:
         _copy_record(source/entry["path"], target/entry["path"], entry)
-    _require(snapshot_manifest(target) == manifest and snapshot_manifest(source) == manifest,
+    _require(_manifest_for_schema(target,manifest['schema_version']) == manifest and
+             _manifest_for_schema(source,manifest['schema_version']) == manifest,
              "readback bytes or retained inventory changed")
-    ack = {"schema_version":"nba-pros004-diagnostic-readback-v1",
+    ack = {"schema_version":"nba-pros004-diagnostic-readback-v2",
            "status":"PASS_VERIFIED_DIAGNOSTIC_READBACK","manifest_id":manifest["manifest_id"],
            "record_count":manifest["record_count"],"encoded_bytes":manifest["encoded_bytes"],
            "all_original_bytes_preserved":True,"activation":False,"genuine_issuance":0,
-           "remote_durability_established":False,"missing_peers_repaired":False}
+           "remote_durability_established":False,"missing_peers_repaired":False,
+           "typed_semantics_validated":True,"prospective_eligibility":"NOT_ESTABLISHED_BY_SNAPSHOT",
+           "completion_journal_copied":bool(manifest.get("completion_journal_count",0))}
     write_receipt(target/"pros004-readback.json",ack,max_bytes=8192)
     return ack
