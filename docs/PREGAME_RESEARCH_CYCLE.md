@@ -84,20 +84,19 @@ a material forecast limitation, not silently filled using future information.
 
 ## Manual commands and recovery
 
-Run from this repository with the existing optional PyArrow directory for the
-source normalization command. The commands make no paid-service/API-key request.
-Use a new create-only output filename for every capture attempt.
+The committed preparation input record is
+`dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc`.
+The refreshed capture recovers all original history from it, without `/tmp`
+Parquets or PyArrow. It still performs four actual current event/roster requests.
+Use a new create-only output filename for every attempt.
 
 During the capture window:
 
 ```bash
-PYTHONPATH=/tmp/nml-nba-audit/deps python3 -m multisport_lab.pregame_sources capture \
+python3 -m multisport_lab.pregame_sources capture \
   --event 401909088 --date 20261020 \
   --selection evidence/data/2026-10-20-pregame-cycle-cohort.json \
-  --history-panel /tmp/nml-nba-audit/normalized.jsonl \
-  --players /tmp/nml-nba-audit/sdv_player_box_2026.parquet \
-  --schedule /tmp/nml-nba-audit/sdv_schedule_2026.parquet \
-  --source-receipts evidence/data/2026-10-19-source-receipts.json \
+  --history-input-record-id dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc \
   --raw-directory .local-data/pregame-cycle/t90 \
   --output .local-data/pregame-cycle/t90-sourcepack.json
 python3 -m multisport_lab.prospective persist --pack .local-data/pregame-cycle/t90-sourcepack.json

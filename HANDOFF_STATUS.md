@@ -43,15 +43,54 @@ The selected event/version/cohort change guards can block that cycle. Existing
 six reconstructed bundles/six historical grades and18 original records remain.
 Public main remains the verified eca2a06 site; branch changes are not deployed.
 
-Initial integrated verification:203 Python tests,35 frontend tests, synthetic demo,
-local artifact and Chromium desktop/mobile checks passed. Separate verification
-reproduced source normalization and full compact roundtrip without model runs.
-Final suite/counts, durable compact-input Git readback and future grading command
-will be recorded after the remaining integrated checkpoint. Next concrete task:
-commit the reviewed producer/normalizer source, retain a new preparation input
-record and independently recover its original clocks/full history from Git with
-raw files absent; then complete the PR checks/review workflow. This preparation
-checkpoint does not claim future issuance, accuracy, qualified tickets or deployment.
+Source/producer implementation committed as
+**`55547606e4fad6907f8fc06577976a83b3ed40a8`** before creating the final
+preparation input. Final code then re-normalized the same four original response
+bodies without network/model calls. New v3 import clock:02:10:36.352647UTC;
+sourcepack SHAe89f19cca65d3a26e57038a54888baab5a734e61f42989fc901381f3ae61bd12.
+The separately persisted preparation input reference is
+**research_inputs/dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc**,
+payload SHAbe1cf24531a241f1d2752cde3429414b9c6fc64491e99a8bffaf4695d8fa3659.
+Its source observations remain01:51:42.675230–01:51:55.889290UTC, not the import
+or receipt time. This early input cannot support the late T90 issuance window.
+
+The full compact normalized statistics are retained in public Git under the
+bounded publisher-asserted CC BY4.0 release-store basis documented with actual
+quotes, attribution, modification notice and upstream uncertainty in
+`docs/HISTORY_RETENTION.md`. No blanket ESPN rights or recurring collection grant
+is inferred. Raw provider bodies/large Parquets remain excluded; the full input
+record is excluded from Pages. Rights receipt payload SHA604fec4c1b2ecc884543d9a9a3d997e640e09a2d44bf9bb0bcd7c1a8098ee92f.
+
+Final integrated software verification: **220 Python tests**, **35 frontend
+tests**, synthetic demo and artifact checks passed. Local Chromium desktop1440px
+and mobile390/320px checks passed, including a clearly synthetic prospective-v2
+fixture, pending grades, all14categories and scoped2–6/direction NO_ACTION.
+Separate verification reproduced actual source normalization and compact recovery
+without model evaluation. The new manual `prospective_outcomes` path checks actual
+issued-input context/final boxscore identity, strict counts/DNP/missing semantics,
+original source-clock recovery and explicit corrections. Fifteen synthetic grading
+checks pass; **actual final ESPN shape remains unverified until the event**.
+The real preparation grading-status command returned PENDING/NO_ISSUED_FORECASTS,
+zero source requests/outcomes/grades; no future result was fabricated.
+
+The bounded actual offer continuation made nine requests/4,782,230bytes: ESPN
+1,132items with73future-update anomalies; Sleeper1,360rows/2,720side options,
+2,472mapped partial options plus248unmapped quarter options. RA/PR/BLK+STL/PA
+were actually observed and added as aliases. Actual generic Sleeper rules were
+read, but board variant, exact complete side/period/economics remain unresolved.
+Complete contracts/usable quotes/qualified tickets remain0. Authoritative pilot
+receipt payload SHA269b3f74d2176ed39ce96c62c15f781711a4b98957cc67c2d7f0d1be9883d4fd.
+
+Next concrete task: finish independent remote/raw-absent readback of this new
+input record and PR checks, then perform the exact **unscheduled** manual capture
+and issuance commands in `docs/PREGAME_RESEARCH_CYCLE.md` at the eligible Central
+times above. That command now recovers history from the Git input record, not
+lost `/tmp` files. Later verified outcomes require a new manual grading capture;
+financial settlement stays separate. PROS004 still needs paired prospective
+versions, deduplicated history retention, freshness rules, remote activation freeze
+and a bounded export plan beyond today's32forecast/64grade caps. No new scoring
+or K0 promotion is authorized merely by its reservation. The original R0 pilot,
+DEV002, DEV003 and18 historical ledger bytes remain unchanged.
 
 ## Prior deployment checkpoint — 2026-10-20 01:32 UTC
 

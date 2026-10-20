@@ -107,7 +107,7 @@ The record ID is an original ledger identity, not a source-pack content hash:
 python3 -m multisport_lab.pregame_sources capture \
   --event 401909088 --date 20261020 \
   --selection evidence/data/2026-10-20-pregame-cycle-cohort.json \
-  --history-input-record-id RESEARCH_INPUT_RECORD_ID_FROM_HANDOFF \
+  --history-input-record-id dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc \
   --raw-directory .local-data/pregame-cycle/t90 \
   --output .local-data/pregame-cycle/t90-sourcepack.json
 ```
