@@ -515,8 +515,10 @@ class GitHubPilot:
                 if pr['head']['ref'] != BRANCH or pr['base']['ref'] != 'main' or pr['head']['repo']['full_name'] != REPOSITORY:
                     raise PilotError('existing publication PR identity differs')
                 pr = self.api(f'pulls/{pr["number"]}', 'PATCH', {'title': title, 'body': body})
+                operation = 'UPDATED_EXISTING'
             else:
                 pr = self.api('pulls', 'POST', {'title': title, 'head': BRANCH, 'base': 'main', 'body': body, 'draft': keep_draft})
+                operation = 'CREATED'
             if not keep_draft and pr.get('draft'):
                 self.command(['gh', 'pr', 'ready', pr['html_url']])
             result = {'status': 'DRAFT_PR_OPEN' if keep_draft else 'PR_OPEN', 'url': pr['html_url']}
@@ -527,11 +529,13 @@ class GitHubPilot:
                 'body_path': body_path, 'compare_url': compare,
                 'owner_prerequisite': 'Settings → Actions → General → Allow GitHub Actions to create and approve pull requests.' if '403' in detail else None})
             self.persist([blocked], 'PREFLIGHT_PR_CREATION_BLOCKED' if draft else 'PR_CREATION_BLOCKED')
-            return {'status': 'PR_CREATION_BLOCKED', 'compare_url': compare, 'error': self.redact(str(error))}
-        proof = self.receipt(f'publication-result-{self.run_id}-{self.attempt}', {
-            'run_id': self.run_id, 'checked_at': stamp(_now()), 'status': result['status'],
-            'pull_request_creation': 'VERIFIED', 'url': result['url'], 'plan_sha256': PLAN_SHA})
-        self.persist([proof], 'PREFLIGHT_PUBLICATION_VERIFIED' if draft else 'PUBLICATION_VERIFIED')
+            result = {'status': 'PR_CREATION_BLOCKED', 'exit_code': 1,
+                      'compare_url': compare, 'error': self.redact(str(error))}
+        if result['status'] != 'PR_CREATION_BLOCKED':
+            proof = self.receipt(f'publication-result-{self.run_id}-{self.attempt}', {
+                'run_id': self.run_id, 'checked_at': stamp(_now()), 'status': result['status'],
+                'pull_request_write': 'VERIFIED', 'operation': operation, 'url': result['url'], 'plan_sha256': PLAN_SHA})
+            self.persist([proof], 'PREFLIGHT_PUBLICATION_VERIFIED' if draft else 'PUBLICATION_VERIFIED')
         try:
             result['validation'] = self.dispatch_validation()
             if result['validation'].get('conclusion') != 'success':
