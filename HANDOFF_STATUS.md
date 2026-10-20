@@ -2,6 +2,43 @@
 
 Updated: October 20, 2026 (UTC).
 
+## PROS004 paired readiness — isolated review package
+
+Current integration owner works in `/workspace/nml-pros004-readiness`, branch
+`implementation/pros004-paired-readiness`, based on current main
+`735a464e9e8718303ef481abf711a8969de56694`. This supersedes the setup-pending
+status below: PR #7 is merged and its one-time pilot remains armed. Read-only
+GitHub checks on October 20 confirmed main unchanged, workflow 390126745 active,
+draft PR #8 at `df446eee302fd6662ef82184e2c733f5d6e2d2dd`, and draft PR #9 at
+`d68015778ab452c94db0385c471de663e830efec`. Their worktrees remain clean. No pilot
+workflow, producer, original records or native task was altered or retriggered.
+PR #9 / DEV005 is retained as completed frozen research; S0 remains inactive.
+
+This separate package implements prospective wrappers for unchanged R0/K0,
+full-history/shared-event input contracts, paired timing/recovery controls and
+shared-outcome statistical grading. Genuine operation is deliberately disabled.
+There are no live source captures, genuine forecasts, real statistical grades,
+reserved aggregate comparisons, financial settlements or qualified tickets from
+this package. No merge, deployment or PROS004 activation is authorized.
+
+Independent row-lineage reproduction from the original local Parquet bytes
+matches all 26,645 rows / 1,231 games / 14,720,351 bytes and original panel SHA-256,
+including all 8,238 exclusions. Evidence is
+`evidence/research/pros004-readiness-lineage.json`. A diagnostic source-drift stop
+before forecasting is retained in `pros004-readiness-attempt-01.json`. Full-history
+synthetic runtime and independent readback will be recorded at the completed
+readiness checkpoint below. The integrated local suite passed 338 Python tests
+in 19.286s, 60 PROS004 tests under optimized Python in 7.667s, 35 frontend tests,
+the demo and research artifact smoke check. No model evaluation is being rerun.
+
+The first selected T90 remains **unknown**: retained October 20 local-date source
+bytes do not prove complete UTC-October-21 schedule coverage. Midnight is not a
+safe assumed deadline. The reservation permits a theoretical earliest T90 of
+October 20 22:30 UTC / 17:30 CDT, without establishing an actual event. Complete
+permitted current schedule evidence and source-bound remotely recovered activation
+must precede the actual first cutoff. See `docs/PROS004_READINESS.md` for the
+completed and unresolved activation checklist; the reservation remains inactive.
+
 **Checkpoint: BOOTSTRAP complete; bounded Milestone 0 audit and full-category
 reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain

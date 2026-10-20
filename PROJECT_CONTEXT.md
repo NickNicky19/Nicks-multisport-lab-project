@@ -2,6 +2,29 @@
 
 Updated: October 20, 2026.
 
+## Current implementation package — PROS004 readiness
+
+The isolated branch `implementation/pros004-paired-readiness` starts from current
+main `735a464e9e8718303ef481abf711a8969de56694`. PR #7 has merged; its approved
+one-time pilot is armed on workflow 390126745. The protected pilot records branch
+and draft PR #8 remain at `df446eee302fd6662ef82184e2c733f5d6e2d2dd` at this
+package's initial read-only inspection. Earlier setup-pending text below is a
+historical checkpoint. This package does not operate or alter that pilot.
+
+PR #9 / DEV005 is completed, frozen development evidence at
+`d68015778ab452c94db0385c471de663e830efec`; S0 remains inactive. The new package
+implements separate prospective R0/K0 wrappers, shared full-history/event input
+contracts, paired recovery controls and shared-outcome statistical grading.
+It changes no mathematical law or frozen receipt. Its scope is a draft readiness
+PR, with no live captures, genuine issuance, activation, merge or deployment.
+See [docs/PROS004_READINESS.md](docs/PROS004_READINESS.md) and the latest handoff
+for measured diagnostics, capacity and unresolved activation requirements.
+
+The first selected cutoff is not established by the retained incomplete daily
+schedule evidence. October 21 midnight is not an automatic safe deadline. The
+reserved study stays inactive unless complete reviewed implementation and
+independently recovered activation evidence exist before its actual first T90.
+
 ## Canonical project
 
 - Repository: [NickNicky19/Nicks-multisport-lab-project](https://github.com/NickNicky19/Nicks-multisport-lab-project).

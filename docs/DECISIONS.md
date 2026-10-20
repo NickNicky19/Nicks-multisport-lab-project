@@ -1,5 +1,49 @@
 # Implementation decisions
 
+## October 20, 2026 — PROS004 paired producer readiness only
+
+The user's next package retains PR #9/DEV005 as frozen evidence and S0 inactive.
+Use `implementation/pros004-paired-readiness` based on main `735a464`. The scheduled
+pilot, protected records branch, PR #8, nine reviewed producer files, R0/K0 laws,
+prior protocols/receipts and PROS004 reservation stay unchanged. No new source
+capture, scheduling, actual issuance, activation, merge or deployment is authorized.
+
+Implement separate prospective wrapper/input/store versions instead of editing
+the frozen producer/ledger/forecast contract. A common full-history record and
+compact event records bind all 14 category PMFs and a complete joint-law replay
+recipe. Every retained atom/weight must recover exactly against its original
+joint hash; a code reference alone is not sufficient evidence.
+
+Choose a **1200-second source-age ceiling** before any PROS004 activation or
+outcome inspection. Capture/normalize/persist one complete event input during
+[T90-20min,T90-10min], including schedule and fixed lowest-two active IDs/team.
+This allows the schedule/cohort to be durable by the selection close. Neither
+600 seconds nor a later postselection input replacement is an existing reserved
+requirement. This is a proposed source operating bound, not source admission or
+proof of continuous status monitoring. Changed event/subject versions fail closed.
+
+An immutable event admission claim is distinct from generation/issuance. Only a
+complete atomic original forecast receipt constitutes issuance. Recover originals
+before any timely missing-peer attempt, using one writer and an independently
+recovered full state; ambiguous orphan/remote state stops generation. Never claim
+an atomic two-model success or generate a missing peer after the window. Current
+readiness code rejects genuine writes; synthetic tests remain explicitly labelled.
+
+The corrected base is 442 comparison records + 32 existing/pilot allowance = 474, not
+the reservation's superseded 466 count. Add 21 event claims + 4 study/activation/
+readback/evaluation metadata slots = 499; reserve 13 correction/failure slots = 512.
+No budget increase, silent history/atom truncation or forgotten pilot grades.
+Date-level empty/failure inputs occupy their existing input slot. Actual envelope
+sizes and the conservative byte ceiling must be independently measured.
+
+The first selected cutoff remains unknown without permitted complete UTC-date
+schedule coverage/current versions. An October 20 local-date source showing an Oct21
+01:30UTC candidate does not prove it is the first event of the full UTC date.
+Midnight October 21 is not an automatic safe activation deadline. PROS004 remains
+inactive until its complete reviewed implementation, source/retention admission
+and remotely recovered activation evidence exist before the actual first cutoff.
+
+
 ## October 19, 2026 Central / October 20 UTC — one unattended operating pilot
 
 The user's later explicit request authorizes one scheduled October 20 NBA pilot,
@@ -90,7 +134,7 @@ Fix T90, last-ten-minute current source captures/import/receipt, generation at
 T90 to T90+5 minutes with at most120 seconds latency, and actual local clocks
 only. Neither readiness success nor an earlier preparation snapshot admits
 future issuance. Prospective forecast v2 binds exact durable input records,
-source/event/cohort/model versions and generation clocks; all14 coherent outputs
+source/event/cohort/model versions and generation clocks; all 14 coherent outputs
 remain conditional on appearance and qualification UNAVAILABLE.
 
 The retained history cohort is the entire26,645-row panel, not a20k prefix.
