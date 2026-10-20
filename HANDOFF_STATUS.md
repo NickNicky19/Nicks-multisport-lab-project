@@ -7,7 +7,53 @@ reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
-## Current deployment checkpoint — 2026-10-20 01:32 UTC
+## Current implementation checkpoint — pregame preparation, October 19 evening Central / October 20 UTC
+
+Working branch: `implementation/pregame-research-cycle`, based on
+`29253a3e3cdb3827a4cab905c2ff36bb772d9e92`, which carries the post-deployment
+status over reviewed/deployed main `eca2a0679bd99eaff77c1c0785df13840fb99762`.
+Fresh fetch found no newer main work and the initial tree was clean. No reset,
+old ZIP, external NFL/MLB changes, new service/key or scheduler.
+
+A bounded current-source path and separately versioned R1 producer/forecast v2,
+input ledger, pending-grade UI and offer aliases are implemented. The actual
+source/selection/history audit is in `evidence/data/2026-10-20-pregame-cycle-verification.json`;
+policy, scope, exact clocks and runnable commands are in
+`docs/PREGAME_RESEARCH_CYCLE.md` and `docs/PREGAME_SOURCES.md`.
+The next consecutive model comparison is a reservation, not scoring authorization:
+`docs/NBA_PROSPECTIVE_004.md`, protocol payload SHA256
+`873cd140236253e995d759590c9237383ac5a2fc33f776f960446d793c70baee`.
+K0 and all R0/DEV002/DEV003 executed results remain frozen and unpromoted.
+
+Actual source observations show scheduled event401909088, Detroit8/Boston2,
+October20 at2:00p.m. CDT (19:00UTC). Four selected IDs were fixed before forecasts
+or outcomes and cross-checked by actual athlete profiles. Eight source requests /
+337,357 bytes; all selected identity/team checks passed. Full original-source
+normalization reproduced all26,645 rows/1,231 games and exact14,720,351-byte panel,
+SHA489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c.
+The1,636,253-byte compact history is lossless and preserves original source clocks;
+no20k truncation or current-season history claim.
+
+**Genuine issuance:0. New statistical grades:0. New financial settlements:0.**
+The actual01:51UTC observations are preparation, outside the fixed late capture
+window. Next eligible capture is October20 **12:20–12:30p.m. Central**, followed
+by actual generation/receipt **12:30–12:35p.m.** (17:20–17:30Z and17:30–17:35Z).
+Fresh exact-event/cohort capture and receipt by cutoff are required; no backdating.
+The selected event/version/cohort change guards can block that cycle. Existing
+six reconstructed bundles/six historical grades and18 original records remain.
+Public main remains the verified eca2a06 site; branch changes are not deployed.
+
+Initial integrated verification:203 Python tests,35 frontend tests, synthetic demo,
+local artifact and Chromium desktop/mobile checks passed. Separate verification
+reproduced source normalization and full compact roundtrip without model runs.
+Final suite/counts, durable compact-input Git readback and future grading command
+will be recorded after the remaining integrated checkpoint. Next concrete task:
+commit the reviewed producer/normalizer source, retain a new preparation input
+record and independently recover its original clocks/full history from Git with
+raw files absent; then complete the PR checks/review workflow. This preparation
+checkpoint does not claim future issuance, accuracy, qualified tickets or deployment.
+
+## Prior deployment checkpoint — 2026-10-20 01:32 UTC
 
 **PR #4 is merged and deployed.** The user explicitly approved its exact head
 `1f80112ed54a8c2eaa20024e806054739b815c98`. Fresh guarded checks confirmed that

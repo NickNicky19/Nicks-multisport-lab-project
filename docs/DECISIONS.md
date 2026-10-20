@@ -1,5 +1,59 @@
 # Implementation decisions
 
+## 2026-10-20 — bounded actual-clock pregame cycle
+
+Continue from deployed main eca2a0679bd99eaff77c1c0785df13840fb99762 and carry
+the separate29253a3 deployment documentation intact into
+`implementation/pregame-research-cycle`. Root integrates bounded source, ledger,
+UI, offer and model-protocol packages with a separate verifier. NFL/MLB stay
+untouched. No scheduler, new service, signup, key or wager is authorized.
+
+Fix one event/version and a pre-forecast four-player cohort from actual current
+ESPN event/roster observations. Explicit source status.type replaces an absent
+active boolean only through the retained pre-selection amendment. Cross-check
+the selected IDs/teams against four actual athlete profiles. No familiar-name
+assumption repairs an actual source response. Transfers/inactive/missing players
+or a changed event version block this cycle instead of silently reselection.
+
+R1 is a separate operating/model provenance version using unchanged R0 complete
+stat-line weights. Preserve the R0 historical-only API and every old receipt.
+Fix T90, last-ten-minute current source captures/import/receipt, generation at
+T90 to T90+5 minutes with at most120 seconds latency, and actual local clocks
+only. Neither readiness success nor an earlier preparation snapshot admits
+future issuance. Prospective forecast v2 binds exact durable input records,
+source/event/cohort/model versions and generation clocks; all14 coherent outputs
+remain conditional on appearance and qualification UNAVAILABLE.
+
+The retained history cohort is the entire26,645-row panel, not a20k prefix.
+Reproduce its exact bytes from original sources before storing one lossless,
+bounded compact derived input record (about1.6MiB, within4MiB/file and32MiB/512
+records). Keep raw provider bodies and large Parquets/JSONL outside Git/Pages.
+The bounded normalized input record is deliberately retained separately from
+public site assets to support original-input recovery. It still discloses full
+normalized statistics in public Git. The actual SportsDataverse release-store
+README's CC BY 4.0 badge and exact NBA release mapping support the bounded,
+attributed retention decision in HISTORY_RETENTION.md; MIT software licensing
+is not treated as a data grant. Underlying ESPN scope remains unverified.
+No broader source rights,
+raw redistribution or recurring extraction permission is inferred. Old archive
+observations can precede this future freeze even though historical completion
+bounds remain reconstructed. April history staleness and absent current-season
+role/participation features are material limitations, not filled with assumptions.
+
+Reserve PROS004's21 consecutive UTC dates and fixed paired R0/K0 sample before
+scoring. Per-category multiplicity/coverage/tail/workload/rare-event gates limit
+further research advancement without splicing independent marginals into the
+joint law. It remains RESERVATION_NOT_SCORING_AUTHORIZATION until paired producer,
+freshness, deduplicated retention and remote activation freeze are complete.
+No additional model run or promotion follows from preparing this protocol.
+
+Keep partial ESPN/Sleeper observations separate from complete player contracts.
+Newly observed Sleeper sum labels map into partial observations only; actual
+generic rules do not identify board variants or complete entry economics. Missing
+betting terms do not block this price-independent forecast/statistical-grade path.
+Upcoming/History use actual issue/event clocks; absent outcomes remain pending.
+Financial settlement and ticket qualification remain separate and unavailable.
+
 ## 2026-10-19 — ownership, evidence and publication
 
 Observed clean remote `main` at `de86e92352f0fb5a76831275f6de6b256ce05434`.

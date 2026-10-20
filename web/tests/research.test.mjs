@@ -96,3 +96,51 @@ test('a failed second sport does not erase a retained typed NBA forecast', async
   assert.equal(result.manifest.sports[0].retained, true);
   assert.equal(result.errors[0].league, 'WNBA');
 });
+
+test('pending grades do not become results after start or borrow another forecast identity', async () => {
+  const {forecastGradeState} = await import('../research.mjs');
+  const {sport} = typedFixture();
+  const forecast = sport.forecasts[0], grade = sport.performance[0];
+  assert.deepEqual(forecastGradeState(forecast, []), {pending: true, record_count: 0, statuses: []});
+  assert.deepEqual(forecastGradeState(forecast, [{...grade, forecast_id: 'f'.repeat(64)}]), {pending: true, record_count: 0, statuses: []});
+  assert.deepEqual(forecastGradeState(forecast, [grade]), {pending: false, record_count: 1, statuses: ['SCORED']});
+  assert.deepEqual(forecastGradeState(forecast, [{...grade, status: 'UNRESOLVED'}]), {pending: false, record_count: 1, statuses: ['UNRESOLVED']});
+  assert.throws(() => forecastGradeState(forecast, [{...grade, player_id: 'another-player'}]), /conflicting/);
+});
+
+test('empty Upcoming distinguishes missing issuance, current filters and an elapsed captured event', async () => {
+  const {upcomingEmptyReasons} = await import('../research.mjs');
+  const {sport} = typedFixture();
+  assert.deepEqual(upcomingEmptyReasons([sport]), sport.future_availability.reasons);
+  const captured = {...sport.forecasts[0], evidence_lane: 'REAL_TIME_CAPTURED', event_starts_at: '2000-01-02T00:00:00.000000Z'};
+  sport.forecasts.push(captured);
+  sport.future_availability = {status: 'AVAILABLE', reasons: []};
+  assert.match(upcomingEmptyReasons([sport], Date.parse('2000-01-01T00:00:00Z'))[0], /filters exclude/);
+  assert.match(upcomingEmptyReasons([sport], Date.parse('2000-01-02T00:00:00Z'))[0], /current viewing time/);
+  assert.match(upcomingEmptyReasons([sport], Date.parse('2000-01-02T00:00:00Z'))[0], /does not establish its outcome/);
+});
+
+test('prospective v2 validates bounded source capture and actual generation clocks without a grade', async () => {
+  const {prospectiveFixture} = await import('./fixtures.mjs');
+  const {sport, reference, manifest} = prospectiveFixture();
+  assert.equal(validateSport(sport, reference), sport);
+  assert.equal(sport.performance.length, 0);
+  assert.equal(filterResearchForecasts(sport.forecasts, {view: 'upcoming', category: 'ALL', window: 'upcoming'}, Date.parse(sport.generated_at)).length, 14);
+  const result = await loadSnapshot(async url => new Response(canonical(url.endsWith('manifest.json') ? manifest : sport)), webcrypto);
+  assert.equal(result.errors.length, 0);
+  assert.equal(result.sports[0].forecasts[0].schema_version, 'nba-research-forecast-v2');
+});
+
+test('prospective v2 rejects stale sources, late imports, unsupported revisions and fabricated latency', async () => {
+  const {prospectiveFixture} = await import('./fixtures.mjs');
+  for (const change of [{source_observed_min_at: '1999-12-31T23:19:59.999999Z'}, {source_observed_max_at: '1999-12-31T23:30:00.000001Z'}, {imported_at: '1999-12-31T23:30:00.000001Z'}, {generation_started_at: '1999-12-31T23:29:59.999999Z'}, {generation_completed_at: '1999-12-31T23:30:29.999999Z'}, {history_latest_event_at: '1999-12-31T00:00:00.000000Z'}, {history_rows: 100001}, {history_rows: true}, {source_pack_record_id: '5'.repeat(64)}, {producer_version: 'not-admitted'}]) {
+    const {sport, reference} = prospectiveFixture(); Object.assign(sport.forecasts[0].prospective, change);
+    assert.throws(() => validateSport(sport, reference));
+  }
+  const {sport, reference} = prospectiveFixture();
+  const forecast = sport.forecasts[0]; forecast.issued_at = forecast.prospective.generation_completed_at = '1999-12-31T23:32:00.000001Z';
+  assert.throws(() => validateSport(sport, reference), /latency/);
+  forecast.prospective.generation_started_at = '1999-12-31T23:34:00.000000Z';
+  forecast.issued_at = forecast.prospective.generation_completed_at = '1999-12-31T23:35:00.000001Z';
+  assert.throws(() => validateSport(sport, reference), /bounds/);
+});

@@ -110,7 +110,10 @@ def _validate_research_sport(snapshot: dict, *, league: str, now: datetime) -> N
         raise IntegrityError("Unsupported typed sport schema")
     # Reuse exact catalog/admission checks; v1 remains loadable for retained assets.
     catalog = {k: v for k, v in snapshot.items() if k != "future_availability"}
-    catalog.update(schema_version=1, **{field: [] for field in COLLECTIONS})
+    if snapshot["evidence_lane"] not in {"RECONSTRUCTED_RESEARCH", "RESEARCH_COLLECTION"}:
+        raise IntegrityError("Unsupported research collection evidence label")
+    catalog.update(schema_version=1, evidence_lane="RECONSTRUCTED_RESEARCH",
+                   **{field: [] for field in COLLECTIONS})
     validate_sport(catalog, league=league, now=now)
     generated = utc(snapshot["generated_at"])
     for field in COLLECTIONS:
@@ -141,6 +144,10 @@ def _validate_research_sport(snapshot: dict, *, league: str, now: datetime) -> N
                 or (bundle["evidence_lane"] == "REAL_TIME_CAPTURED" and event["status"] != "SCHEDULED")):
             raise IntegrityError("Forecast/event identity, version or status mismatch")
         forecasts[bundle["forecast_id"]] = bundle
+    expected_lane = ("RESEARCH_COLLECTION" if any(bundle["evidence_lane"] == "REAL_TIME_CAPTURED"
+                     for bundle in forecasts.values()) else "RECONSTRUCTED_RESEARCH")
+    if snapshot["evidence_lane"] != expected_lane:
+        raise IntegrityError("Collection evidence label must retain individual forecast lanes")
     grades = set()
     for grade in snapshot["performance"]:
         forecast = forecasts.get(grade.get("forecast_id")) if type(grade) is dict else None
@@ -223,10 +230,14 @@ def research_nba(root: Path, *, now: datetime) -> dict:
     result["events"] = list(events.values())
     has_future = any(bundle["evidence_lane"] == "REAL_TIME_CAPTURED" and utc(bundle["event_starts_at"]) > utc(now)
                      for bundle in result["forecasts"])
-    result["future_availability"] = {"status": "AVAILABLE" if has_future else "UNAVAILABLE", "reasons": [] if has_future else [
-        "No admitted pregame event/player candidate universe and observed-input capture route is available.",
-        "Archive start+24h availability bounds support reconstruction only; they do not establish real-time input availability.",
-        "No genuinely pregame T-90 reference issuance has been captured for upcoming games. Historical reconstructions are available in History."]}
+    has_captured = any(bundle["evidence_lane"] == "REAL_TIME_CAPTURED" for bundle in result["forecasts"])
+    result["evidence_lane"] = "RESEARCH_COLLECTION" if has_captured else "RECONSTRUCTED_RESEARCH"
+    reasons = (["No captured forecast remains upcoming at the publication clock. Past-event records are retained in History; an event starting does not establish a completed outcome."]
+               if has_captured else [
+                   "No timely event/player input capture has been admitted for an upcoming issuance.",
+                   "Archive start+24h availability bounds support reconstruction only; they do not establish real-time input availability.",
+                   "No genuinely pregame T-90 issuance has been captured for upcoming games. Historical reconstructions are available in History."])
+    result["future_availability"] = {"status": "AVAILABLE" if has_future else "UNAVAILABLE", "reasons": [] if has_future else reasons}
     validate_sport(result, league="NBA", now=now)
     return result
 

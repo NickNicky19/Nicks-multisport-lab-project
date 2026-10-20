@@ -129,6 +129,47 @@ class OfferImportTests(unittest.TestCase):
         self.assertEqual(report["nonplayer_rows_ignored"], 0)
         self.assertEqual(report["subject_type_invalid_rows"], 0)
 
+    def test_observed_sum_families_stay_partial_and_do_not_absorb_quarter_markets(self):
+        rows = []
+        expected = {
+            "points_and_assists": "PA", "points_and_rebounds": "PR",
+            "rebounds_and_assists": "RA", "blocks_and_steals": "BLK+STL",
+            "first_qtr_points": None,
+        }
+        for label in expected:
+            row = sleeper()
+            row["wager_type"] = label
+            row["market_type"] = f"{label}_over_under_player_fictional"
+            for option in row["options"]:
+                option["wager_type"] = label
+                option["market_type"] = row["market_type"]
+                option["line_id"] = f"fictional-{label}-{option['outcome']}"
+            rows.append(row)
+        report = import_capture(
+            capture(rows, source="sleeper", format="sleeper_lines_v1",
+                    pagination={"complete": False, "pages_observed": 1}),
+            imported_at=IMPORTED,
+        )
+        self.assertEqual(report["status"], "partial")
+        self.assertEqual(report["diagnostics"], [])
+        self.assertEqual(len(report["observations"]), 10)
+        for category in ("PR", "RA", "BLK+STL"):
+            self.assertEqual(report["coverage"][category], 2)
+        self.assertEqual(report["coverage"]["PTS"], 0)
+        for observation in report["observations"]:
+            category = expected[observation["raw_stat_label"]]
+            self.assertEqual(observation["stat"], category)
+            self.assertEqual(observation["units"], "stat_sum" if category else None)
+            self.assertEqual(observation["price"]["kind"], "pickem_multiplier")
+            for unknown in ("period", "extra_time_policy", "settlement_version",
+                            "event_starts_at", "contract", "quote"):
+                self.assertIsNone(observation[unknown])
+            self.assertFalse(observation["qualified"])
+            self.assertIn("entry_terms_unverified", observation["unavailable_reasons"])
+            self.assertIn("period_unverified", observation["unavailable_reasons"])
+            self.assertEqual("unmapped_statistic" in observation["unavailable_reasons"],
+                             category is None)
+
     def test_recognized_team_rows_and_options_are_counted_without_player_identity(self):
         row = sleeper()
         row["subject_type"] = "team"

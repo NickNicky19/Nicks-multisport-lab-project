@@ -41,6 +41,7 @@ export function typedFixture() {
 /** Browser/software fixtures only. These records never enter the ledger or build. */
 export function mixedEvidenceFixture() {
   const original = typedFixture(), sport = structuredClone(original.sport);
+  sport.evidence_lane = 'RESEARCH_COLLECTION';
   const capturedEvent = {...sport.events[0], event_id: 'synthetic-captured-event', label: 'Synthetic past captured event', status: 'SCHEDULED', schedule_basis: 'OBSERVED_CAPTURE'};
   sport.events.push(capturedEvent);
   sport.forecasts = []; sport.performance = [];
@@ -56,5 +57,18 @@ export function mixedEvidenceFixture() {
     delete grade.grade_id; grade.grade_id = hash(grade);
     sport.forecasts.push(forecast); sport.performance.push(grade);
   }
+  return reseal(sport);
+}
+
+/** Invented v2 wire record for software validation; never a genuine issuance. */
+export function prospectiveFixture() {
+  const {sport} = typedFixture();
+  sport.evidence_lane = 'RESEARCH_COLLECTION';
+  sport.future_availability = {status: 'AVAILABLE', reasons: []};
+  sport.performance = [];
+  Object.assign(sport.events[0], {starts_at: '2000-01-01T01:00:00.000000Z', status: 'SCHEDULED', schedule_basis: 'OBSERVED_CAPTURE'});
+  const forecast = sport.forecasts[0];
+  Object.assign(forecast, {schema_version: 'nba-research-forecast-v2', model_version: 'nba_joint_empirical_pregame_r1_v1', event_starts_at: sport.events[0].starts_at, cutoff_at: '1999-12-31T23:30:00.000000Z', history_freeze: '1999-12-31T00:00:00.000000Z', issued_at: '1999-12-31T23:30:30.000000Z', evidence_lane: 'REAL_TIME_CAPTURED', availability_basis: 'OBSERVED_INPUT_CAPTURE', input_capture_ids: ['f'.repeat(64)], prospective: {producer_version: 'nba-pregame-r1-v1', event_version: '1'.repeat(64), selection_sha256: '2'.repeat(64), source_pack_sha256: '3'.repeat(64), source_pack_record_id: 'f'.repeat(64), generation_started_at: '1999-12-31T23:30:00.000000Z', generation_completed_at: '1999-12-31T23:30:30.000000Z', source_observed_min_at: '1999-12-31T23:20:00.000000Z', source_observed_max_at: '1999-12-31T23:29:00.000000Z', imported_at: '1999-12-31T23:30:00.000000Z', base_model_version: 'nba_joint_empirical_r0_v1', base_model_code_sha256: '4'.repeat(64), history_rows: 26645, history_latest_event_at: '1999-12-01T20:00:00.000000Z'}});
+  delete forecast.forecast_id; forecast.forecast_id = hash(forecast);
   return reseal(sport);
 }

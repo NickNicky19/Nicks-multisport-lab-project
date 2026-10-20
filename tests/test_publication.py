@@ -5,6 +5,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from multisport_lab.integrity import IntegrityError, canonical, digest, read_receipt
 from multisport_lab.publication import build_site, empty_nba, publish, read_manifest, research_nba, resolve_scope, validate_sport
@@ -121,6 +122,57 @@ class PublicationTests(unittest.TestCase):
             self.assertGreater(bundle["issued_at"], bundle["event_starts_at"])
             self.assertEqual(bundle["evidence_lane"], "RECONSTRUCTED_RESEARCH")
         self.assertEqual(snapshot["tickets"], [])
+
+    def prospective_fixture(self, snapshot):
+        """Invented future wire object; no capture or actual issuance is claimed."""
+        bundle = deepcopy(snapshot["forecasts"][0])
+        start = datetime.now(timezone.utc) + timedelta(hours=1)
+        cutoff = start - timedelta(minutes=90)
+        freeze = cutoff.replace(hour=0, minute=0, second=0, microsecond=0)
+        from multisport_lab.integrity import stamp
+        bundle.update(schema_version="nba-research-forecast-v2", event_id="synthetic-upcoming",
+                      model_version="nba_joint_empirical_pregame_r1_v1",
+                      event_starts_at=stamp(start), cutoff_at=stamp(cutoff),
+                      history_freeze=stamp(freeze), issued_at=stamp(cutoff+timedelta(seconds=30)),
+                      evidence_lane="REAL_TIME_CAPTURED", availability_basis="OBSERVED_INPUT_CAPTURE",
+                      input_capture_ids=["f"*64],
+                      prospective={"producer_version": "nba-pregame-r1-v1", "event_version": "1"*64,
+                          "selection_sha256": "2"*64, "source_pack_sha256": "3"*64,
+                          "source_pack_record_id": "f"*64, "generation_started_at": stamp(cutoff),
+                          "generation_completed_at": stamp(cutoff+timedelta(seconds=30)),
+                          "source_observed_min_at": stamp(cutoff-timedelta(minutes=10)),
+                          "source_observed_max_at": stamp(cutoff-timedelta(minutes=1)),
+                          "imported_at": stamp(cutoff), "base_model_version": "nba_joint_empirical_r0_v1",
+                          "base_model_code_sha256": "4"*64, "history_rows": 26645,
+                          "history_latest_event_at": stamp(freeze-timedelta(days=1))})
+        bundle["forecast_id"] = digest({k: v for k, v in bundle.items() if k != "forecast_id"})
+        return bundle
+
+    def test_prospective_export_preserves_pending_grade_and_each_evidence_lane(self):
+        now = datetime.now(timezone.utc)
+        root = self.research_fixture()
+        original = research_nba(root, now=now)
+        prospective = self.prospective_fixture(original)
+        forecasts = original["forecasts"] + [prospective]
+        # A wire/export fixture does not bypass or claim ledger producer admission.
+        with patch("multisport_lab.ledger.Ledger.iter_active_forecasts", return_value=iter(forecasts)):
+            result = research_nba(root, now=datetime.now(timezone.utc))
+        self.assertEqual(result["evidence_lane"], "RESEARCH_COLLECTION")
+        self.assertEqual(result["future_availability"], {"status": "AVAILABLE", "reasons": []})
+        self.assertEqual(len(result["forecasts"]), 7)
+        self.assertEqual(len(result["performance"]), 6)
+        self.assertFalse(any(grade["forecast_id"] == prospective["forecast_id"] for grade in result["performance"]))
+        self.assertEqual(result["forecasts"][-1], prospective)
+        bad = deepcopy(result)
+        bad["evidence_lane"] = "RECONSTRUCTED_RESEARCH"
+        with self.assertRaisesRegex(IntegrityError, "Collection evidence"):
+            validate_sport(bad, league="NBA", now=datetime.now(timezone.utc))
+        with patch("multisport_lab.ledger.Ledger.iter_active_forecasts", return_value=iter(forecasts)):
+            later = research_nba(root, now=datetime.now(timezone.utc)+timedelta(hours=2))
+        self.assertEqual(later["future_availability"]["status"], "UNAVAILABLE")
+        self.assertIn("publication clock", later["future_availability"]["reasons"][0])
+        self.assertEqual(later["forecasts"][-1], prospective)
+        self.assertEqual(len(later["performance"]), 6)
 
     def test_typed_export_rejects_event_mismatch_and_self_rehashed_wrong_grade(self):
         now = datetime.now(timezone.utc)

@@ -17,7 +17,7 @@ from .integrity import canonical, digest, load_json, stamp, utc, write_receipt
 
 CAPTURE_SCHEMA = "nba-offer-capture-v1"
 REPORT_SCHEMA = "nba-offer-import-v1"
-PARSER_VERSION = "nba-offer-import-0.2"
+PARSER_VERSION = "nba-offer-import-0.3"
 MAX_ROWS = 10000
 REQUIRED_MARKETS = ("PTS", "PRA", "REB", "3PM", "AST", "RA", "PR", "TOV",
                     "TD", "DD", "BLK", "STL", "BLK+STL")
@@ -28,12 +28,15 @@ UNITS = {
     "DD": "indicator_0_or_1", "BLK": "blocks", "STL": "steals",
     "BLK+STL": "stat_sum", "PA": "stat_sum",
 }
-# Only these labels were actually observed in the 2026-10-19 bounded NBA sample.
-# Additional labels remain diagnostics until their meaning is inspected.
+# Labels observed in the bounded NBA samples, including OFFER-PILOT-003's four
+# sum families. A recognized statistic does not establish period, OT or terms.
+# Quarter and other unsupported labels remain diagnostics rather than aliases.
 SLEEPER_LABELS = {
     "points": "PTS", "pts_reb_ast": "PRA", "rebounds": "REB",
     "threes_made": "3PM", "assists": "AST", "turnovers": "TOV",
     "double_double": "DD", "blocks": "BLK", "steals": "STL",
+    "points_and_assists": "PA", "points_and_rebounds": "PR",
+    "rebounds_and_assists": "RA", "blocks_and_steals": "BLK+STL",
 }
 LANES = {"SYNTHETIC_TEST", "RECONSTRUCTED_RESEARCH", "VERIFIED_ASOF_REPLAY",
          "REAL_TIME_CAPTURED"}

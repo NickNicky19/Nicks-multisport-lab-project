@@ -51,5 +51,35 @@ No retention schedule or automated source job is enabled. Small issuance/outcome
 grade receipts are retained in this repository through commit/push/fresh remote
 readback; original clocks remain intact on restart. Raw bulk archives are excluded.
 Rebuilding a catalog updates its generation clock only: it does not claim new
-source capture or fresh forecast issuance. New observed future inputs and an
-admitted real-time producer remain separate work.
+source capture or fresh forecast issuance. Actual future capture and issuance remain separate operating evidence; preparation
+and a successful build do not create either.
+
+## Prospective records and pending grades
+
+Sport and manifest versions remain 2. The exporter and browser accept forecast
+wire versions v1 and v2, with v2's strict separately versioned pregame contract
+in [FORECAST_CONTRACT.md](FORECAST_CONTRACT.md). Loader checksum verification uses
+the forecast ID for both versions. An unknown version or modified inner payload
+fails even when the outer asset was rehashed.
+
+A sport envelope containing any captured record is labeled `RESEARCH_COLLECTION`;
+individual forecast and grade lanes remain authoritative. Reconstruction-only
+assets keep `RECONSTRUCTED_RESEARCH`, and retained v1/v2 assets stay readable.
+Python and JavaScript reject an envelope label that contradicts its records.
+`SCHEDULED`/`OBSERVED_CAPTURE` events describe the schedule snapshot bound at
+issuance, not a fresh assertion that an elapsed event is still pending or final.
+The interface uses the event clock only to select Upcoming versus History.
+
+AVAILABLE still requires an actual upcoming captured forecast. An elapsed captured
+record remains immutable in History; the next publication reports no remaining
+upcoming record. Between builds, the visitor's current clock also prevents an
+elapsed event appearing Upcoming. Empty states distinguish absence of issuance,
+current filters excluding available research, and a captured event whose start
+has passed. No unsupported qualification is needed to inspect research.
+
+Missing grades are not synthesized as unresolved, zero, loss or win records.
+Forecast cards show pending statistical grading until exact matching grade records
+exist, and Performance reports the number still pending separately from DNP and
+unresolved grades. No automatic source fetch, model rerun or outcome generation
+occurs during export or browser display. Scope, all fourteen categories and the
+2–6-leg direction/NO_ACTION contract remain unchanged.
