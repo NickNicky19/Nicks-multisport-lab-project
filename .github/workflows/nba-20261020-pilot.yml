@@ -1,0 +1,96 @@
+name: One October 20 NBA pilot
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/nba-20261020-pilot.yml
+      - multisport_lab/pilot_github.py
+      - multisport_lab/scheduled_cycle.py
+      - tests/test_pilot_github.py
+      - tests/test_scheduled_cycle.py
+  workflow_dispatch:
+  schedule:
+    # One eligible date; the worker verifies 2026 and disables this workflow
+    # before live collection. GitHub cron can start late; timing gates still apply.
+    - cron: '15 17 20 10 *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nba-20261020-401909088-t90
+  cancel-in-progress: false
+
+jobs:
+  pilot:
+    if: >-
+      github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NML_PILOT_CRON: ${{ github.event.schedule }}
+      NML_EXPECTED_CHECKOUT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24'
+      - name: Verify executor or run the single eligible pilot
+        id: worker
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = schedule ]; then
+            python3 -m multisport_lab.pilot_github execute
+          else
+            python3 -m multisport_lab.pilot_github preflight
+          fi
+      - name: Verify preserved software and research artifact
+        id: checks
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tests -v
+          python3 -m multisport_lab.demo
+          node --test --test-isolation=none web/tests/*.test.mjs
+          python3 -m multisport_lab.publication --build-commit "$(git rev-parse HEAD)"
+          node web/tests/site-smoke.mjs output
+          sha256sum --check --quiet MANIFEST.sha256
+      - name: Prepare factual records PR without merging
+        if: >-
+          always() && steps.checks.conclusion == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = schedule ]; then
+            python3 -m multisport_lab.pilot_github publication-pr
+          else
+            python3 -m multisport_lab.pilot_github publication-pr --draft
+          fi
+      - name: Retain emergency recovery evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nba-20261020-pilot-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: error
+          include-hidden-files: false
+          path: |
+            records/
+            evidence/cycles/
+            HANDOFF_STATUS.md
+            MANIFEST.sha256

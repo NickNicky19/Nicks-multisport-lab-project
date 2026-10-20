@@ -1,5 +1,18 @@
 # Verification history and delivery status
 
+## October 20 one-run scheduling preparation
+
+The exact one-time user authorization supersedes manual-only operation for the
+fixed October 20 cycle. The native task is paused: its executor diagnostic was
+unavailable, and an accepted task entry does not prove repository execution.
+`evidence/cycles/2026-10-20-scheduling-preparation.json` records the actual status.
+The GitHub Actions alternative must pass real hosted preflight and guarded merge
+before activation can be claimed. Synthetic interruption/timing/API tests are
+software evidence; early route probes are not timely pilot captures. See
+`docs/SCHEDULED_PILOT.md` for single-writer, exact-date expiry and remote-recovery
+requirements. No genuine forecasts, outcomes or new model scores are created by
+setup checks.
+
 ## Current public deployment: PR #6 — October 19 evening Central / October 20 UTC
 
 Exact approved head `0a20c2a752e6d5475e46feadee08c87e01846d6d` merged as

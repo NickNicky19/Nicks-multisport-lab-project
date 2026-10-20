@@ -7,7 +7,68 @@ reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
-## Current deployment checkpoint — October 19, 2026 Central (October 20 UTC)
+## Current operating preparation — October 20, 2026 UTC
+
+The user explicitly authorized ONE unattended execution of the existing October
+20 pilot, superseding manual-only/no-scheduling wording for this cycle only.
+Current integration branch is `automation/nba-20261020-pilot`, preserving main
+`cde77cbaa0908c2ed49d26140110dea5493b54b7` and post-deployment documentation
+`b498867a03b7c2d583383ff94d887ddd18cb2e42`. No reset or alternate repository.
+The original producer remains `58530309cf384425e15f02fd9fa980899a4dc0bc`.
+
+**Scheduling is not yet verified/activated.** Native automation entry
+`6ad6e46f754c81918f190eff2fdc248c` accepted the exact one-time schedule but is
+confirmed **paused**, with null next-run time. Its restricted read-only immediate
+diagnostic returned HTTP 404 before invocation; no native worker was verified.
+The earlier immediate full-prompt test was rejected by automatic approval review
+because it could execute mutations outside the approved window. The paused entry
+must remain paused so there is only one prospective executor.
+
+The prepared alternative uses this repository's existing GitHub Actions host,
+built-in token and ONE fixed records branch
+`records/nba-20261020-401909088-t90`. A computer or ChatGPT app need not stay open.
+Feature-branch cron alone is not a schedule: hosted runner capability verification,
+exact-head setup-PR approval/merge, active default-branch workflow readback and
+records-branch integration/readback are prerequisites. Start is October 20,
+12:15 p.m. CDT / 17:15 UTC; unchanged capture is 17:20–17:30 UTC and issuance is
+17:30–17:35 UTC. GitHub dispatch is best effort; late work must fail closed.
+
+New files are `.github/workflows/nba-20261020-pilot.yml`,
+`multisport_lab/scheduled_cycle.py`, `multisport_lab/pilot_github.py`, their two
+focused test modules, `docs/SCHEDULED_PILOT.md` and
+`evidence/cycles/2026-10-20-scheduling-preparation.json`. Runbook/decisions/context/
+verification/handoff/manifest record this authorized exception. The wrapper calls
+the unchanged guarded manual cycle, retains full history and the original cohort,
+and remotely journals capture/input/generation/original checkpoints. Ambiguous
+interruption cannot silently recapture or regenerate. The one workflow verifies
+and disables only itself before live work, with an exact-date gate; a different
+run cannot take over the immutable claim. Outcome grading remains a later task.
+
+Actual local checks: `python3 -m unittest discover -s tests -v` passed
+275 tests (13 phase-runner / 28 GitHub boundary tests); `python3 -m
+multisport_lab.demo` passed; `node --test --test-isolation=none
+web/tests/*.test.mjs` passed 35 tests. `python3 -m multisport_lab.publication
+--build-commit b498867a03b7c2d583383ff94d887ddd18cb2e42` and
+`node web/tests/site-smoke.mjs output` passed. YAML parsing and all three embedded
+Bash blocks passed, as did Python compilation and `git diff --check`. These are
+software/offline artifact checks, not hosted access or future evidence.
+`python3 -m multisport_lab.manual_cycle preflight --plan
+evidence/cycles/2026-10-20-nba-401909088-plan.json` actually reported
+CAPTURE_NOT_YET_OPEN/NOT_READY at 04:09:40.000231Z, null binding and zero originals;
+no provider request or model generation occurred. Native capability evidence is
+in the preparation receipt. Independent preservation proof is
+`evidence/cycles/2026-10-20-scheduled-preservation-audit.json`: all nine producer
+files, 19 original records, 34 frozen references and exact plan passed; full
+26,645-row/1,231-event/14,720,351-byte history and original clocks recovered with
+16 capture/generation/write operations forbidden and zero such calls. Hosted
+runner proof and the exact setup head will be added after the actual workflow.
+**New timely inputs/bindings/forecasts: 0; prospective grades: 0; financial
+settlements: 0; qualified tickets: 0.** The 19 original records, nine producer
+files, fixed plan and frozen experiments remain unchanged. NFL/MLB are untouched.
+K0 and PROS004 remain separate. Next concrete task is actual hosted preflight and
+guarded activation of the reviewable setup PR; do not describe it as armed yet.
+
+## Prior deployment checkpoint — October 19, 2026 Central (October 20 UTC)
 
 **PR #6 is merged and publicly deployed.** The user approved exact head
 `0a20c2a752e6d5475e46feadee08c87e01846d6d` for a merge commit and the existing
@@ -104,7 +165,7 @@ sha256sum --check --quiet MANIFEST.sha256
 git diff --check
 ```
 
-Next concrete operation remains **manual**, Tuesday October 20: capture,
+At that deployment checkpoint the next operation was **manual**, Tuesday October 20: capture,
 normalize, persist and bind during **12:20–12:30 p.m. CDT**, then generation,
 verification and forecast persistence during **12:30–12:35 p.m. CDT**. Use the
 complete runbook on the current tree and carry this deployment documentation

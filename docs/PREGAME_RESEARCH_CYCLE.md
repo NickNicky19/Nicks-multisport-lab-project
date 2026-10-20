@@ -30,7 +30,7 @@ rescheduling. A substantive new cycle requires a versioned policy decision.
 ## Actual clocks and operating window
 
 The event and both current team rosters are freshly read through four bounded
-manual ESPN requests. Each request must finish within30 seconds. Observation is
+ESPN requests. Each request must finish within30 seconds. Observation is
 the actual response-completion clock; upstream source update remains null when
 unknown. A root response timestamp is retained separately with unknown meaning,
 not relabeled as an upstream update. HTTP headers do not prove source freshness.
@@ -46,7 +46,9 @@ use microsecond UTC. Passing the old offline readiness validator admits nothing.
 
 For the current observed schedule, capture is **October20 12:20–12:30p.m.
 America/Chicago** (17:20–17:30UTC), followed by issuance **12:30–12:35p.m.**
-(17:30–17:35UTC). Do not wait or schedule collection in this session. Earlier
+(17:30–17:35UTC). The later explicit user authorization permits ONE unattended
+October 20 pilot; see [the one-shot operating plan](SCHEDULED_PILOT.md). This
+exception does not authorize a recurring collector or another cycle. Earlier
 preparation observations cannot be relabeled as captures from that window.
 Revalidate the event at capture; a conflict blocks issuance under the fixed policy.
 
@@ -141,8 +143,19 @@ Preflight validates the retained full-history record and all original receipts;
 its phase is diagnostic, never timely-capture admission. `recover` only reads
 records, reports original issue/receipt clocks, selected/missing subjects and
 partial/complete state. It can be run after the window or event without generating
-anything. Check the actual local UTC clock before any operating command. No sleep,
-cron, workflow schedule or background collector is installed by this runbook.
+anything. Check the actual local UTC clock before any operating command. The
+one-shot GitHub Actions worker is the sole live writer when armed or claimed.
+Do not run the manual capture/issue commands in parallel. Manual takeover requires
+cancelling/disarming the workflow, confirming no queued/in-progress worker and
+recovering the same remote branch, input and originals first. A disabled workflow
+can still have its original job running; do not infer an idle writer from that
+flag alone. After a scheduled claim/intent, standalone `manual_cycle recover`
+is diagnostic only and cannot clear ambiguous intents. Any live continuation must
+use the intent-aware scheduled runner under its original claim; do not invoke the
+standalone manual issue command to fill a subject whose original may have been
+lost. Ambiguous capture/generation remains blocked. Read-only recovery remains
+allowed. The worker's short phase waits
+are limited to this explicitly authorized run; no general collector is installed.
 
 ## Capture and input persistence — October 20, 12:20–12:30 p.m. CDT
 
