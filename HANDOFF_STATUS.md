@@ -2,6 +2,128 @@
 
 Updated: October 20, 2026 (UTC).
 
+## October 20, 23:19 UTC — strict callback proof verified; full cohort still blocked
+
+This checkpoint continues draft PR #10 on
+`implementation/pros004-paired-readiness`, preserving main
+`735a464e9e8718303ef481abf711a8969de56694` and all newer legitimate pilot records.
+Reviewed/executed producer and diagnostic source is exactly
+**`5a1b16edf84e0d765e20accc242f00597d0c749c`**. Later evidence/documentation HEAD
+must not become a new producer pin. PROS004 and S0 remain inactive; no scheduler,
+capture, genuine forecast, aggregate evaluation, merge or deployment was activated.
+
+The only new runtime changes since e469a589 are
+`multisport_lab/pros004_records.py` and `pros004_snapshot.py`: full strict typed
+verification before a callback creates a private one-operation exact-byte proof.
+After it, fresh checksums, canonical decoding, original references/chronology,
+correction graph, current clocks, source/root identities, journal and final raw
+seals still run. Only duplicate pure semantic validation of identical bytes is
+reused. Independent remote recovery remains fully typed. Actual completion is
+sampled after proof verification. There is no cached timing/admission result,
+new retained record or changed limit. New regressions are in
+`tests/test_pros004_records.py` and `tests/test_pros004_snapshot.py`.
+
+Independent focused normal/-O mutation/interruption checks passed. Changed-meaning
+receipts with valid checksums, changed parent/claim/journal/inventory/root/source,
+proof reuse, backward clocks, delayed post-proof completion and interruption are
+rejected. A forecast completing at126s remains retained/unadmitted on restart.
+The earlier c305 late-write reproductions, all original receipts and frozen pilot
+ledger code remain unchanged.
+
+Actual new non-issuance command:
+
+```bash
+python3 -m multisport_lab.pros004_readiness \
+  --producer-commit 5a1b16edf84e0d765e20accc242f00597d0c749c \
+  --store-root /tmp/nml-pros004-diagnostic-5a1b16edf84e \
+  --output evidence/research/pros004-readiness-measurement-v4.json
+```
+
+It ran23:02:39.268429–23:10:47.536377 UTC, **PARTIAL_OR_FAILED_TIMING**:
+cohort319.840583s exceeds300, input76.774496s, total488.269030s,
+peak213,892KiB. Six of eight synthetic originals survive, all local persistence
+timely. The sixth (3012/K0) remote readback atT90+303.744002s and post-proof
+completion at+304.064700s are late; it remains unadmitted on restart. Only five
+have timely remote proof. The final prefix was not fully published, two model
+originals are absent, genuine issuance0 and eligible0. This differs from v3's
+timely sixth original/unpublished last ACK; neither receipt was rewritten.
+
+All26,645 rows remain; two full-law replays recover26,645 atoms and all14 PMFs
+exactly. Actual30files/3,680,132bytes; history1,639,440,event10,972,
+claim5,786/8,192,maxforecast31,110/65,536bytes. Transient proof adds no ledger
+file/field/line. Full plan remains499+13reserve/512 and24,576,000/33,554,432bytes.
+Maximum typed512-record/hosted full-cohort timing remains unverified. Earlier
+generic transport/profile results are not substituted for this failed timing run.
+
+Actual current software commands/results, source5a1b16e:
+
+| Command | Observed result |
+| --- | --- |
+| `python3 -m unittest discover -s tests -v` |442 PASS,195.077s |
+| `python3 -O -m unittest discover -s tests -p 'test_pros004*.py' -v` |164 PASS,178.274s |
+| `python3 -m multisport_lab.demo` |PASS |
+| `node --test --test-isolation=none web/tests/*.test.mjs` |46 PASS |
+| `python3 -m multisport_lab.publication --build-commit 5a1b16edf84e0d765e20accc242f00597d0c749c` |PASS, local schema3 artifact |
+| `node web/tests/site-smoke.mjs output` |PASS |
+| `python3 -O web/tests/pros004_browser_smoke.py` |PASS desktop1440/mobile390, typed pairs/individual grades/scopes/builder; synthetic only |
+
+Independent standalone verification under normal/-O accepts retained strict typed
+store bytes but rejects the failed readiness report. Fresh restart confirms
+6local-timely/5remote-timely/5timing-complete/0eligible. Independent reconstruction
+of the exact during-run fetched prefix matches its original manifest; the
+temporary bare remote was already cleaned, so that later review does not claim
+another fresh fetch. No missing peer, clock or probability was rewritten.
+
+Actual GitHub idempotent checkpoint/readback using source5a1b16e ran
+23:11:46.398539–23:11:56.346523 UTC (9.948s), same diagnostic head
+8684aed08382d6be6c7e83ff93ee833888608d55. Zero new records/commits/stored ACKs;
+a separate fresh Git object database recovered identical bytes/clocks. It ran
+during software tests and is not a worst-case latency benchmark. A separate
+clean fresh fetch of source5a1b16e passed MANIFEST, all20 source pins,
+nine frozen pilot files, original19records, R0/K0 and protocol checks.
+
+New durable evidence: research `pros004-readiness-measurement-v4.json` and
+`pros004-github-idempotent-restart-v4.json`; verification
+`pros004-callback-proof-review-v4.json`,
+`pros004-diagnostic-readback-review-v4.json`, `pros004-software-checks-v4.json`,
+`pros004-browser-and-optimized-integrity-v4.json` and
+`pros004-source-remote-recovery-v4.json`. Supporting docs are
+`docs/PROS004_COMPLETION.md` and `docs/PROS004_READINESS.md`; MANIFEST is refreshed.
+Exact source maps, raw hashes, commands, actual clocks, partial state and the
+reviewer's corrected temporary helper typo are retained without overwriting v3.
+The13 changed/new Python production/verifier files contain no disappearing
+assert nodes; frozen DEV005 verification remains untouched.
+
+Actual exact-source hosted run39513969948 completed success23:21:21 UTC on
+5a1b16edf84e0d765e20accc242f00597d0c749c; build succeeded, deploy skipped and
+PR #10 remains draft. `pros004-source-ci-v4.json` retains the actual run/jobs,
+step clocks and PR state. This is source/software CI, not timely operation.
+The final documentation/evidence head receives its own post-push readback/checks.
+
+The latest pilot finding remains **ACTUAL_PARTIAL_EXECUTION / LATE_GUARDED_ABORT**:
+run39493005199, PR #8/records dec5cc9fa397332244985bea8815bd9a89ea264e,
+provider requests0/forecasts0/no fresh binding; workflow390126745 observed
+disabled, native task paused. Current read-only queries reconfirmed those heads
+and workflow state. Why GitHub created that run late remains unestablished.
+No dispatch, retry, re-enable, rebind or original-pilot write occurred here.
+
+Actual first selected T90 is still **unknown**: complete admitted UTC-date
+inventory/count proof is missing. The earliest theoretical22:30 UTC bound has
+passed, which does not prove the actual first cutoff passed; candidate midnight
+is not a safe deadline. Retain this reservation inactive/not started. No shift,
+backfill or replacement is permitted; any later window needs a separate
+reservation if timely original activation cannot be established.
+
+Next concrete task: resolve complete permitted UTC inventory/actual first cutoff
+and operating-source admission, and investigate typed-checkpoint latency without
+changing the laws or deadlines. Private primary raw outcome retention/full budget,
+reviewed genuine entrypoint/destination, maximum typed/hosted timing and exact
+remotely recovered activation evidence also remain unmet. Genuine writes stay
+hard-disabled. The separately isolated website readability work is draft PR #11;
+its manifest4 must be explicitly integrated with this branch's manifest3 before
+both can land. Website implementation is not deployed. NFL/MLB, PR #9/DEV005,
+all frozen experiments and original19records remain unchanged.
+
 
 ## October 20, 21:00 UTC — exact remote checkpoint and GitHub checks verified
 

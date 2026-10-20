@@ -9,6 +9,79 @@ activation flags. The proposed operational wrappers are
 `pros004-r0-producer-v3` and `pros004-k0-producer-v3`.
 The v3 completion policy is [PROS004_COMPLETION.md](PROS004_COMPLETION.md).
 
+## October 20, 23:10 UTC — new source pin, unchanged inactive gates
+
+Producer/driver source is now frozen at
+`5a1b16edf84e0d765e20accc242f00597d0c749c`. The wrapper versions and mathematical
+laws are unchanged. One private, single-use exact-byte proof avoids replaying
+the same pure local typed semantics after a callback; fresh hashes, inventory,
+references, correction graph, source/root context, journal and current clocks
+still run. Independent remote recovery remains fully typed. Completion is
+sampled after those checks. Independent normal/optimized mutation/interruption
+regressions passed; see `pros004-callback-proof-review-v4.json`.
+
+The separately retained **v4 non-issuance measurement** ran
+23:02:39.268429–23:10:47.536377 UTC. It remains
+**PARTIAL_OR_FAILED_TIMING**: input phase76.774s, cohort319.841s exceeds300,
+total488.269s, peak213,892KiB. Six synthetic originals survive. Their local
+persistence is timely, but the sixth original's remote readback completed at
+T90+303.744002s and post-proof completion at+304.064700s, late. It remains
+unadmitted on restart. The fetched prefix has only five timing-complete originals;
+two planned originals are absent and final ACK-prefix recovery is false.
+This differs from v3's timely sixth original with unpublished final proof.
+Neither result is repaired, relabeled, discarded or treated as activation success.
+
+All26,645 retained rows were used; both independently replayed complete laws
+retain26,645 atoms and all14 PMFs exactly. No actual outcome, genuine issuance,
+grade, comparative score, provider capture or qualification was generated.
+Measurement receipt: `evidence/research/pros004-readiness-measurement-v4.json`,
+payload SHA256`a87965be6aa5b4ffa691cadafc2f180d80e8c5d25003387f2467fe86d007cd7d`.
+
+The proof is transient; it adds no ledger file, journal line or envelope field.
+Capacity remains499planned+13reserve/512,24,576,000/33,554,432bytes. Actual
+diagnostic store:30files/3,680,132bytes; history1,639,440,event10,972,
+claim5,786/8,192,maxforecast31,110/65,536bytes. This is not a maximum typed
+512-record or hosted operating-path timing success.
+
+Actual GitHub idempotent restart using the new source recovered the same
+diagnostic head8684aed08382d6be6c7e83ff93ee833888608d55 in9.948s, with zero new
+records, commits or stored ACKs. Original bytes/clocks match a separate fresh
+fetch. This transport probe ran during software checks; it is not a worst-case
+latency benchmark. Receipt: `pros004-github-idempotent-restart-v4.json`.
+
+The theoretical earliest firstT90 bound,October20 22:30UTC, has passed.
+**Actual first selectedT90 remains unknown** because the retained three adjacent
+local-date routes lack the registered completeness/count proof. Passing that
+lower bound does not prove the actual cutoff passed; a candidate midnightT90 is
+not a safe deadline. Keep the reservation inactive/not started. Do not shift,
+backfill or replace it. If its actual first cutoff is already passed or timely
+activation cannot be established, any later study needs a separate reservation.
+
+Remaining dependencies: timely complete cohort/final proof, realistic maximum
+typed/hosted timing, complete permitted UTC inventory and actual cutoff, source
+operational admission, private primary raw-outcome evidence and full budget,
+reviewed genuine entrypoint/destination, and exact remotely recovered activation
+package. All genuine writes remain hard-disabled. The separate website display
+branch uses manifest4; its overlap with this branch's manifest3 requires explicit
+reviewed integration before both can land. No merge, deployment or scheduling.
+
+| Current readiness gate | Verified state at source5a1b16e |
+| --- | --- |
+| Strict post-operation/restart admission | PASS focused normal/-O delayed, interrupted and changed-byte cases |
+| Required software checks |442 Python /164 optimized PROS /46 frontend; demo/build/artifact/browser PASS |
+| Independent source recovery |Clean fresh GitHub fetch;20pins, frozen9, original19, laws/protocol exact |
+| Hosted source checks |39513969948 success23:21:21 UTC; deploy skipped, PR10draft |
+| Full-history operating cohort |**BLOCKED**319.841s/300;6local timely,5remote timely,2absent,0eligible |
+| Full-study storage |499+13/512;24,576,000/33,554,432 bytes; unchanged envelope caps |
+| Maximum typed/hosted timing |Unverified; generic transport and diagnostic restart do not establish it |
+| Complete UTC schedule and actual firstT90 |**Unresolved**; earliest lower bound passed, actual cutoff unknown |
+| Source admission/private primary raw evidence/operational entrypoint |**Unresolved**, hard genuine-write guard remains closed |
+| Reviewed activation and actual issuance/evaluation/deployment |None |
+
+The hosted observation is retained as
+`evidence/verification/pros004-source-ci-v4.json`. It checks the exact producer
+source commit, not a future documentation HEAD or timely prospective operation.
+
 ## Hosted checkpoint and exact-head recovery
 
 Integrated head 61d4032c759813a8818f8b8b3a9c9619d0e63e77 was independently fetched

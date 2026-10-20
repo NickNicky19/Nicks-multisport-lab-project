@@ -127,6 +127,38 @@ legs, directions and NO_ACTION. This package does not deploy that interface.
 
 ## Bounded validation reuse after the failed v2 timing diagnostic
 
+### One-operation local proof after the failed v3 timing diagnostic
+
+Source commit `5a1b16edf84e0d765e20accc242f00597d0c749c` removes only the
+duplicate pure semantic replay after one local checkpoint callback. Before the
+callback, complete strict snapshot verification creates a private single-use
+proof bound to the resolved root/directory identities, schema, limits, exact
+source hashes and complete canonical manifest. Callers cannot supply a manifest
+to construct it; returned JSON trees are isolated copies. Any attempted use,
+including a failed one, consumes it.
+
+After the callback, a fresh pass still decodes every receipt, verifies canonical
+payload and raw-byte hashes, exact inventory/references/chronology, correction
+graph, current clocks, bounded completion journal and final on-disk seals. The
+raw bytes and journal must be identical to the prior fully typed snapshot.
+Changed source, root, inventory, receipt, journal or clocks reject the proof.
+Only the previously checked typed meaning of those exact bytes is reused.
+There is no cached durability, timing, eligibility or acknowledgment result,
+and every independent remote fetch still receives full strict typed validation.
+Actual operation completion is sampled after this fresh pass; the same selection,
+120-second and five-minute deadlines apply, including after restart.
+
+The proof adds no retained record or journal line and changes no envelope cap or
+ledger allocation. New normal/optimized regressions cover checksum-consistent
+semantic mutation, parent/claim changes, inventory/journal replacement, root
+replacement, single-use interruption and an actual post-proof completion at
+126 seconds that must remain unadmitted after restart. Its independent review
+receipt is `evidence/verification/pros004-callback-proof-review-v4.json`.
+Any timing benefit requires the new separately retained advancing-clock v4
+diagnostic; the earlier failed v2/v3 measurements remain immutable.
+
+### Earlier bounded reuse
+
 The failed c188 full-history receipt is immutable. The next implementation reduces
 repeated JSON work, preserving source bytes, clock gates, models and every typed
 semantic check. A ledger-instance cache holds only successful legacy source-pack

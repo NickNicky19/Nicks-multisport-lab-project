@@ -1,0 +1,85 @@
+{
+  "actual_observation_clock_is_not_reconstructed_start": true,
+  "browser_command": [
+    "python3",
+    "-O",
+    "web/tests/pros004_browser_smoke.py"
+  ],
+  "browser_exit_code": 0,
+  "browser_log_sha256": "d7e2b6b17ad047ee66577d5eca90c6233a4d0a31d9242b83055ebebe468ffde9",
+  "browser_operation_utc_start_not_retained": true,
+  "browser_stdout": "SYNTHETIC ONLY: desktop1440/mobile390 typed paired History/Upcoming/individual grades/scope/builder passed; no issuance or deployment\n",
+  "deployment": false,
+  "genuine_issuance": 0,
+  "model_evaluation": false,
+  "new_or_changed_python_production_and_verifier_ast": [
+    {
+      "assert_nodes": 0,
+      "path": "multisport_lab/pros004_activation.py",
+      "sha256": "2adddf09906ffee38e257d585f50242a85bba1cfe6b93b0127e2ccf3fbeab4cb"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "multisport_lab/pros004_completion.py",
+      "sha256": "444e339740c687604d6e591b87600bda08fe16550aa23f63d2daf6a5cdcd5719"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "multisport_lab/pros004_load_diagnostic.py",
+      "sha256": "036a9b7bbf6043faca8777b1c9fcd95d945b23215ccc75182c90fd6ff81dc63d"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "multisport_lab/pros004_producer.py",
+      "sha256": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "multisport_lab/pros004_publication.py",
+      "sha256": "95ebaf2de072ab84412fd35c4d31532e0b806b63f38f1ef0a1f3e69270e1f580"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "multisport_lab/pros004_raw.py",
+      "sha256": "b43aba2db62d1d710e1485450906566090d5f747c2067cebe02ba4665b892217"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "multisport_lab/pros004_readiness.py",
+      "sha256": "d95804e1e43bb22151160b576fd3b3617a2e9176e821ef6d0e8e10bc678f091c"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "multisport_lab/pros004_records.py",
+      "sha256": "fe17065cddc534cca6bfe8812594c008ceba586933f1cf9d4fc9391f044f0e86"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "multisport_lab/pros004_remote.py",
+      "sha256": "fefc6f6d6846622d32b9c5e6c60d9de5f29abc2f49a3dd7ac84b7d7007f169ee"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "multisport_lab/pros004_snapshot.py",
+      "sha256": "64ffdbdeb567ebb1ea40e4ad657be560a6eac336c9af94a1f097ef02d34dc231"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "multisport_lab/publication.py",
+      "sha256": "25a416a24f34db90ff3162658c24d267a0eff634c8e334ef2306a1ddcf412f0d"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "scripts/verify_pros004_readiness.py",
+      "sha256": "71bfbd8d8c1d749103902aef87e2efcc75f6f7667a55324f3b5995605d99182b"
+    },
+    {
+      "assert_nodes": 0,
+      "path": "web/tests/pros004_browser_smoke.py",
+      "sha256": "a2bba01828b60cb6442f2588a9c953698687272e7575a41fd5300cfce970a169"
+    }
+  ],
+  "observed_at": "2026-10-20T23:19:11.182122+00:00",
+  "schema_version": "pros004-browser-and-optimized-integrity-v1",
+  "source_commit": "5a1b16edf84e0d765e20accc242f00597d0c749c"
+}
