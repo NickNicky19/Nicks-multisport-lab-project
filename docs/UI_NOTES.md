@@ -1,5 +1,21 @@
 # Research interface
 
+## Public PR #6 rollout — October 19 evening Central / October 20 UTC
+
+Main `cde77cbaa0908c2ed49d26140110dea5493b54b7` is publicly deployed.
+Actual Chromium 154 verification ran 03:22:04.491683–03:22:39.061976 UTC at
+1440px desktop and 390/320px mobile. Seven routes/reloads, 14 filters, six original
+historical bundles/84 PMFs/six grades, one R0 group, neutral History and three
+accurate empty Upcoming explanations passed. No actual pending forecasts are
+invented. All 45 scope/2–6-leg/direction combinations remain NO_ACTION/zero
+candidates/Not issued. Nine browser assets and seven exact static-byte checks
+passed without page/HTTP/prefix errors or synthetic injection. All 19 records
+and nine pilot-producer files remain unchanged; full history/raw inputs are
+excluded from Pages. Browser trust is process-only; independent urllib system
+TLS verifies the public bytes. Proof is
+`evidence/deployment/2026-10-20-pr6-pages.json`. Publication creates no genuine
+future forecasts, new grades, model evaluation, financial settlement or qualification.
+
 ## Public PR #5 rollout — October 19 evening Central / October 20 UTC
 
 Main 58530309cf384425e15f02fd9fa980899a4dc0bc is deployed; public manifest,

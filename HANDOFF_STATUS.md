@@ -7,7 +7,269 @@ reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
-## Current preparation checkpoint — October 19, 2026 Central (October 20 UTC)
+## Current operating preparation — October 20, 2026 UTC
+
+The user explicitly authorized ONE unattended execution of the existing October
+20 pilot, superseding manual-only/no-scheduling wording for this cycle only.
+Current integration branch is `automation/nba-20261020-pilot`, preserving main
+`cde77cbaa0908c2ed49d26140110dea5493b54b7` and post-deployment documentation
+`b498867a03b7c2d583383ff94d887ddd18cb2e42`. No reset or alternate repository.
+The original producer remains `58530309cf384425e15f02fd9fa980899a4dc0bc`.
+
+**Scheduling is not yet verified/activated.** Native automation entry
+`6ad6e46f754c81918f190eff2fdc248c` accepted the exact one-time schedule but is
+confirmed **paused**, with null next-run time. Its restricted read-only immediate
+diagnostic returned HTTP 404 before invocation; no native worker was verified.
+The earlier immediate full-prompt test was rejected by automatic approval review
+because it could execute mutations outside the approved window. The paused entry
+must remain paused so there is only one prospective executor.
+
+The prepared alternative uses this repository's existing GitHub Actions host,
+built-in token and ONE fixed records branch
+`records/nba-20261020-401909088-t90`. A computer or ChatGPT app need not stay open.
+Feature-branch cron alone is not a schedule: hosted runner capability verification,
+exact-head setup-PR approval/merge, active default-branch workflow readback and
+records-branch integration/readback are prerequisites. Start is October 20,
+12:15 p.m. CDT / 17:15 UTC; unchanged capture is 17:20–17:30 UTC and issuance is
+17:30–17:35 UTC. GitHub dispatch is best effort; late work must fail closed.
+
+New files are `.github/workflows/nba-20261020-pilot.yml`,
+`multisport_lab/scheduled_cycle.py`, `multisport_lab/pilot_github.py`, their two
+focused test modules, `docs/SCHEDULED_PILOT.md` and
+`evidence/cycles/2026-10-20-scheduling-preparation.json`. Runbook/decisions/context/
+verification/handoff/manifest record this authorized exception. The wrapper calls
+the unchanged guarded manual cycle, retains full history and the original cohort,
+and remotely journals capture/input/generation/original checkpoints. Ambiguous
+interruption cannot silently recapture or regenerate. The one workflow verifies
+and disables only itself before live work, with an exact-date gate; a different
+run cannot take over the immutable claim. Outcome grading remains a later task.
+
+Actual local checks: `python3 -m unittest discover -s tests -v` passed
+278 tests (13 phase-runner / 31 GitHub boundary tests); `python3 -m
+multisport_lab.demo` passed; `node --test --test-isolation=none
+web/tests/*.test.mjs` passed 35 tests. `python3 -m multisport_lab.publication
+--build-commit b498867a03b7c2d583383ff94d887ddd18cb2e42` and
+`node web/tests/site-smoke.mjs output` passed. YAML parsing and all three embedded
+Bash blocks passed, as did Python compilation and `git diff --check`. These are
+software/offline artifact checks, not hosted access or future evidence.
+`python3 -m multisport_lab.manual_cycle preflight --plan
+evidence/cycles/2026-10-20-nba-401909088-plan.json` actually reported
+CAPTURE_NOT_YET_OPEN/NOT_READY at 04:09:40.000231Z, null binding and zero originals;
+no provider request or model generation occurred. Native capability evidence is
+in the preparation receipt. Independent preservation proof is
+`evidence/cycles/2026-10-20-scheduled-preservation-audit.json`: all nine producer
+files, 19 original records, 34 frozen references and exact plan passed; full
+26,645-row/1,231-event/14,720,351-byte history and original clocks recovered with
+16 capture/generation/write operations forbidden and zero such calls. Hosted
+runner proof and the exact setup head will be added after the actual workflow.
+Actual hosted setup run [39368387144](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39368387144)
+on setup commit `3b81e958ca36a223907028d74ad1883402b64cf5` passed executor,
+275 Python/35 frontend tests, demo/export/smoke and manifest steps. The four ESPN
+routes returned HTTP 200 at 04:13:24.142112–04:13:24.712621Z (40,482 / 101,504 /
+87,740 / 85,732 bytes). Workflow **390126745** verified its own disable/readback/
+restore; normal records-branch push and fresh fetch/readback passed. These are
+early setup observations with source update clocks unknown, not timely inputs.
+First records checkpoint `31e46d0620c1f1dcaf4ef3ccd55cb02b0e02e657` independently
+recovers the source/capability and actual 403 receipts. Native entry remains paused.
+
+The run failed at draft creation: GitHub Actions cannot create/approve PRs under
+the existing owner setting (HTTP 403). Using already authorized integration access,
+we opened the ONE readiness-only draft [PR #8](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/8)
+from the fixed records branch. Actual runner update of that existing draft and
+Pages branch dispatch are being verified; no owner setting is presumed changed.
+The next wrapper revision distinguishes CREATED from UPDATED_EXISTING, keeps the
+original 403 and still runs validation after a blocked PR request. Opening the
+records PR also triggered a redundant safe preflight; cancellation completed and workflow 390126745 remains active;
+the workflow now excludes that fixed records PR from its setup job. It cannot
+issue in PR mode. `evidence/cycles/2026-10-20-hosted-pilot-preflight.json` retains
+exact source metadata, receipt hashes, run identity and draft origin. Scheduling
+is not activated by the API's feature-workflow active state.
+
+The corrected hosted run [39368941819](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39368941819)
+**passed every step** on exact setup `86a79d520434647d3d7410269a7e745b100b88c2`:
+277 Python tests, 35 frontend tests, demo/export/smoke, retained probe reuse,
+normal source integration/push/fresh readback, and actual PR #8 PATCH. Publication
+receipt payload `c1fc19fcea9570797d387ecaf0ea4e4ebec3dbda7e17db32a79de7b789e31886`
+truthfully records UPDATED_EXISTING, not bot creation. The cancelled duplicate did write an earlier publication receipt incorrectly
+labelled `pull_request_creation=VERIFIED` after updating the already open draft.
+That original is retained; `evidence/cycles/2026-10-20-publication-proof-correction.json`
+explicitly corrects its meaning to UPDATED_EXISTING and cross-references the
+original hash and accurate later proof. It establishes no bot creation permission.
+The built-in token dispatched
+[Pages validation 39369096848](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39369096848)
+on exact records head `783ac5622297a742e79ea539d885dade541744bd`; it passed and
+deployment was skipped off main. **No owner permission setting change is needed
+while the existing draft stays open.** The earlier request to enable PR creation
+is superseded by this verified update path. Proof:
+`evidence/cycles/2026-10-20-hosted-update-verification.json`. No second source probe
+was needed; the original four actual route observations retain their own clocks.
+The final expiry-only regression additionally ensures that bad producer/plan pins
+still expire the trusted one-run workflow before stopping all branch/data work.
+Local final full suite passed **278 tests in 8.713s**; the nine source files remain
+unchanged. The final setup revision needs its own hosted checks before approval.
+
+Final code commit **`2499a0075be6f854416d50b6c7b01f06bf1885f4`** was published
+through the existing connected GitHub app as a normal fast-forward from 86a79d5,
+with expected-parent and exact local/API tree SHA checks. Local Git recovered the
+exact API commit object by its verified SHA and advanced by fast-forward; no reset
+or history rewrite. Hosted setup workflow **39369616942** and Pages check
+**39369616935** both passed. Actual logs show **278 Python tests** plus the
+35 frontend tests, preflight and existing PR #8 update passed; exact records
+`24e298cd62743153d8886dc6b73e0ebd798ac32f` passed explicitly dispatched branch
+validation **39369740275** with no Pages deploy. Final adapter SHA256 is
+`77bb01ca9463762d62cb73b3427217725f684ac2507231311a19fdc60814aab0`.
+The remaining correction/documentation revision changes no operating code.
+Final documentation head bd55a3620c6b8a0e16f01f106c4f5b77f822f719 also passed
+setup workflow 39369906671 and Pages build 39369906881 (deployment skipped).
+The current status-only follow-up records recovered CLI access; its fresh checks
+will be observed before requesting exact-head activation approval.
+
+**Temporary activation interruption (now recovered):** the managed shell's existing GH_TOKEN began
+returning HTTP 401 (confirmed `gh auth status`, REST reads and Git fetch), while
+the connected GitHub app still successfully reads/writes this repository. The
+canonical watcher actually returned BLOCKED at 04:21:17.666993Z, not READY.
+The final validated tree is being published through that already connected app
+with a normal fast-forward and exact expected parent; no credential value is
+copied/replaced and no new key/login is introduced. Existing CLI access subsequently recovered without any credential change: a fresh
+repository REST read and `gh auth status` succeeded for NickNicky19. No owner
+permission-setting change, restart, signup or new key was needed. The temporary
+401 and blocked watcher remain historical evidence; current completion uses the
+mandatory guarded helper, with no alternate merge REST/GraphQL call. Main remains
+cde77cb, so **the cron is not armed**. After fresh readiness and exact-head user
+approval, merge the
+setup PR normally, verify the default-branch cron/active workflow, reconcile the
+records branch with exact merged main and independently recover it. Only then
+confirm the scheduled start. The native task must remain paused throughout.
+
+Actual additional commands were `gh pr create --draft --head
+records/nba-20261020-401909088-t90 --base main --body-file
+/tmp/nml-pilot-records-draft-body.md`, `git fetch --no-tags origin
+records/nba-20261020-401909088-t90`, `gh run view 39368387144 --log`, and the
+canonical `pr_watch.py --target /workspace/Nicks-multisport-lab-project=7
+--mode until-actionable`. After the 401, connected GitHub tools independently
+read the corrected run/jobs/logs/receipts. No merge or deploy mutation occurred.
+The exact final setup commit is the current PR #7 head; the two existing
+implementation commits are 3b81e958ca36a223907028d74ad1883402b64cf5 and
+86a79d520434647d3d7410269a7e745b100b88c2.
+
+**New timely inputs/bindings/forecasts: 0; prospective grades: 0; financial
+settlements: 0; qualified tickets: 0.** The 19 original records, nine producer
+files, fixed plan and frozen experiments remain unchanged. NFL/MLB are untouched.
+K0 and PROS004 remain separate. Next concrete task is actual hosted preflight and
+guarded activation of the reviewable setup PR; do not describe it as armed yet.
+
+## Prior deployment checkpoint — October 19, 2026 Central (October 20 UTC)
+
+**PR #6 is merged and publicly deployed.** The user approved exact head
+`0a20c2a752e6d5475e46feadee08c87e01846d6d` for a merge commit and the existing
+Pages workflow. Fresh guarded verification at 03:19:17.153601 UTC found that head
+ready/CLEAN/MERGEABLE, build passed, no pending/failed/unknown checks, no missing
+required reviewers and zero unresolved threads. The canonical helper retained
+policy digest `70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df`
+and used the exact-head normal protected merge path; no admin, bypass or force.
+Main merge **`cde77cbaa0908c2ed49d26140110dea5493b54b7`** occurred at GitHub
+**2026-10-20T03:19:59Z** (October 19, 10:19:59 p.m. CDT). Its parents are the
+prior main 58530309 and approved 0a20c2a; the merge/approved trees are identical,
+`7b7979f10287ecf2181660c29f8c8698875efaa6`. Helper requestedAt
+03:20:00.473480Z and merged watcher observation 03:20:10.883343Z are separate
+receipt clocks, not replacements for GitHub mergedAt. Local main was advanced
+by fast-forward; legitimate work and the carried PR #5 documentation are intact.
+
+[Workflow 39363727977](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39363727977)
+passed on exact main: build completed 03:20:31Z; Pages deploy completed
+03:20:46Z. Actual main logs show **234 Python tests / 35 frontend tests PASS**,
+including the two-pin provenance fetch, synthetic demo and artifact smoke.
+Live site: https://nicknicky19.github.io/Nicks-multisport-lab-project/ .
+The public manifest serves cde77cb above, published 03:20:21.017133Z. Snapshot:
+`e2a64fdaf340c8798609b21c7242b70576bca1a68d5c0e7f463ef79b4a457de3`.
+Manifest raw SHA256:
+`30d00ee04c036eab3a29185057859d11243247ce064030a4d856589cf36150e5`.
+The 151,194-byte NBA asset SHA256:
+`1813fd774b36e9dca4c2aa7d64ab77f9e9c61b9d3d7adba6477f030c9237a4dc`.
+System-verified HTTPS returned 200 for root/manifest/NBA and seven static assets;
+all seven served static files match exact main. Original inputs/raw provider
+bodies are excluded from Pages. Independent offline replay at the actual
+publication clock reproduced the snapshot, manifest, NBA asset and static bytes
+without source capture, model generation or ledger append.
+
+Actual public Chromium 154 checks ran 03:22:04.491683–03:22:39.061976 UTC at
+1440px desktop and 390/320px mobile. All seven routes/direct reloads, 14 category
+filters, six original historical bundles/84 PMFs/six statistical grades, the
+actual single R0 reconstruction group and neutral History wording passed.
+There are no actual pending forecasts to invent. Upcoming retains three honest
+missing-timely-capture/issuance and reconstructed-availability explanations.
+All 45 scope × 2–6-leg size × direction combinations stayed NO_ACTION, zero
+candidates and Not issued. Nine browser resources stayed within the exact
+allowlist/prefix; no page/HTTP errors or synthetic injection. Chromium used only
+the process-local configured-proxy CA SPKI pin; urllib independently verified
+system TLS. No persistent trust or HOME settings changed.
+
+**The pilot producer remains exactly
+`58530309cf384425e15f02fd9fa980899a4dc0bc`; it is not the new main/build SHA.**
+All nine reviewed source files, 19 original ledger records and 34 frozen/source
+files remain byte-identical. Cycle plan payload
+`22ae8db607374486ebee6eb569d236a3d27aedc8535c3085a6b6858226921908` is unchanged.
+The actual post-merge preflight at 03:21:01.358349 UTC reported
+`NOT_READY` / `CAPTURE_NOT_YET_OPEN`, null fresh input binding, all four subjects
+missing and zero issued forecasts. Independent checks explicitly forbade provider
+HTTP, generation, issue_cohort, ledger append and cycle writes. This deployment
+performed no provider capture, input refresh/binding, model evaluation, genuine
+issuance, outcome append or new grading. **Future forecasts 0; new prospective
+grades 0; financial settlements 0; qualified tickets 0.** K0 and all prior
+experiments remain frozen; PROS004 is not activated. NFL/MLB stayed untouched;
+no service, signup, API key, scheduler or collector was introduced.
+
+Deployment proof is `evidence/deployment/2026-10-20-pr6-pages.json`, payload SHA256
+`c078c8eb1d28318fe3eda27ad322598f214fe5072071d47f7f6a54a2a3bbbd9a`.
+Public browser aggregate SHA256:
+`7eeb6185314df60c100897675d10554d217b0b118c20f6b506a340627a621303`.
+Independent merge and static replay proof hashes are
+`befdbe3bf58c149d21ecac330a797c727091b4ceacd4218564d7d328ecfb58b7` and
+`273309aad30b134e385233ed5347763e7b81c0891faa675158d6200968caae35`.
+Final independent signoff cross-checked all ten referenced helper/browser/CI/
+replay artifacts and coherent merge/build/deploy/QA/readback clocks; no blocking
+finding remains. Proof `/tmp/nml-independent-pr6-deployment-review.json`, raw SHA256
+`092eb2bbdee9d5261d095880a6a8e980df11a0c8ebb7f7c7a8b1332befffb214`.
+This post-deployment documentation is retained on `docs/pr6-deployment`, based
+on exact main cde77cb, and changes only this handoff, PROJECT_CONTEXT.md,
+docs/VERIFICATION.md, docs/UI_NOTES.md, MANIFEST.sha256 and that new receipt.
+Resolve its exact commit with `git log -1 --format=%H docs/pr6-deployment`.
+It is separate from both approved application merge and frozen pilot producer.
+Earlier open-PR/not-deployed/main-585 statements below describe prior checkpoints.
+
+Commands actually run (full public/hash/browser proofs retained in the receipt):
+
+```bash
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=6 --mode until-actionable --interval 15 --timeout 180 --cursor /tmp/nml-pr-completion/pr6-cursor.json --observations-file /tmp/nml-pr-completion/pr6-observations.ndjson --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_land.py --repo /workspace/Nicks-multisport-lab-project --pr 6 --head 0a20c2a752e6d5475e46feadee08c87e01846d6d --mode auto --method merge --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_land.py --repo /workspace/Nicks-multisport-lab-project --pr 6 --head 0a20c2a752e6d5475e46feadee08c87e01846d6d --mode auto --method merge --policy-digest 70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df --confirm --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=6 --await-merge 0a20c2a752e6d5475e46feadee08c87e01846d6d --await-merge-mode auto --await-merge-since 2026-10-20T03:20:00.473480Z --interval 15 --timeout 180 --cursor /tmp/nml-pr-completion/pr6-cursor.json --observations-file /tmp/nml-pr-completion/pr6-observations.ndjson --pretty
+git fetch origin
+git switch main
+git merge --ff-only origin/main
+git switch -c docs/pr6-deployment
+gh run watch 39363727977 --repo NickNicky19/Nicks-multisport-lab-project --exit-status
+python3 -m multisport_lab.manual_cycle preflight --plan evidence/cycles/2026-10-20-nba-401909088-plan.json
+python3 /tmp/nml-public-pr6-qa.py cde77cbaa0908c2ed49d26140110dea5493b54b7
+sha256sum --check --quiet MANIFEST.sha256
+git diff --check
+```
+
+At that deployment checkpoint the next operation was **manual**, Tuesday October 20: capture,
+normalize, persist and bind during **12:20–12:30 p.m. CDT**, then generation,
+verification and forecast persistence during **12:30–12:35 p.m. CDT**. Use the
+complete runbook on the current tree and carry this deployment documentation
+into the eventual records branch. The same exact pinned producer and single
+fresh input binding must survive every retry/readback; the early input only
+recovers retained history. Fresh source status/event/cohort changes or missed
+windows must produce an honest failure/partial result, with no backdating or
+silent replacement. Outcomes remain pending until independently verified final
+source evidence; DNP, unresolved states and corrections retain their documented
+meaning. April history staleness, finite support, DD/TD/BLK uncertainty, workload
+limits and absent betting contracts/qualification remain. Publication alone does
+not establish forecasting quality or future paper evidence.
+
+## Prior preparation checkpoint — October 19, 2026 Central (October 20 UTC)
 
 **Manual pilot preparation is verified; no timely input or genuine forecast has
 been issued.** Current branch `preparation/pinned-pregame-cycle` preserves
@@ -132,7 +394,7 @@ final evidence is required for statistical grades; missing/nonfinal stays pendin
 explicit DNP is not zero production, and corrections append traceable links.
 History staleness, finite support, DD/TD/BLK and workload limitations remain.
 
-## Current deployment checkpoint — October 19, 2026 Central (October 20 UTC)
+## Prior deployment checkpoint — October 19, 2026 Central (October 20 UTC)
 
 **PR #5 is merged and publicly deployed.** The user explicitly approved only
 head `713716a17465c93d32795aabba9e0a8c9c3a5e8c`. Fresh guarded checks confirmed

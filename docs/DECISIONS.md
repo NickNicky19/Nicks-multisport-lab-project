@@ -1,5 +1,41 @@
 # Implementation decisions
 
+## October 19, 2026 Central / October 20 UTC — one unattended operating pilot
+
+The user's later explicit request authorizes one scheduled October 20 NBA pilot,
+including bounded phase waits, and supersedes earlier manual-only/no-scheduling
+instructions only for this event/cycle. Keep one implementation owner and one
+actual executor. The nine reviewed producer files and frozen producer SHA remain
+unchanged; scheduling/remote-journal wrappers live in separate modules.
+
+The native Automations service accepted a one-time configuration, but its
+immediate read-only executor diagnostic endpoint returned HTTP 404 before action
+invocation. Its entry was paused; it is not a verified execution host and must
+not compete with a replacement worker. An earlier immediate test carrying the
+full future prompt was rejected by automatic approval review; no pilot was run.
+The safer GitHub Actions alternative uses the project's existing host and built-in
+GITHUB_TOKEN. No copied credentials, new API key, signup or paid service is needed.
+It requires normal review/approval of the concrete setup PR before default-branch
+cron becomes active; a feature-branch YAML file is not an armed schedule.
+
+Use one dated cron at 17:15 UTC October 20 with a hard 2026/date/phase guard and
+self-disable of only its own verified workflow before live collection. GitHub
+cron is best effort; a delayed start never moves the capture/issuance deadlines.
+Use one concurrency group, one records branch and an immutable run claim. Before
+any source attempt or generation, acknowledge a durable operation intent remotely.
+Journal each original receipt synchronously to GitHub before continuing. A lost
+worker with intent but no original is ambiguous and must not regenerate it.
+Preserve exact local originals on push failure; stop further generation and retain
+factual partial results. No raw provider bodies are uploaded as recovery artifacts.
+
+Verify the actual GitHub runner now using source-route reachability reads,
+retained-history/source checks, normal branch push/readback, own-workflow disable/
+re-enable and draft PR preparation. Ordinary CI reruns reuse completed source
+probe evidence; at most three interrupted setup probe attempts are allowed.
+These probes are not timely pilot inputs. Only the later fresh bound input within
+the existing window can admit issuance. Keep financial settlement, predictive
+qualification, model experiments and PROS004 activation separate.
+
 ## October 19, 2026 Central / October 20 UTC — pin the manual cycle producer
 
 Preserve deployed/reviewed producer `58530309cf384425e15f02fd9fa980899a4dc0bc`
