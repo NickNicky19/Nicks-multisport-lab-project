@@ -9,13 +9,16 @@
 - `records/corrections/`: explicit supersedes/replacement links and reasons.
 - `records/input_captures/`: actual local capture-clock metadata groundwork for a
   later independently admitted future-input producer.
+- `records/research_inputs/`: the versioned pregame source package, including its
+  exact normalized selected-player/event evidence and losslessly compacted
+  historical input cohort. Provider response bodies remain outside public assets.
 
 No account, key, paid service, browser storage, scheduler or database is required.
 The default `Ledger()` root is this package's repository. Tests explicitly use
 temporary directories; those tests establish software behavior only.
 
 The initial milestone budget is **512 receipt files and 32 MiB total**, across all
-five kinds, with a **4 MiB maximum per file**. Counts and exact envelope bytes are
+six kinds, with a **4 MiB maximum per file**. Counts and exact envelope bytes are
 checked before a new append. Identical retries preserve the original bytes and
 continue to work when the budget is exactly full. Recovery inventories file sizes
 and counts before parsing any receipt and fails closed if the store is over budget.
@@ -94,6 +97,60 @@ or outcome has been superseded are also omitted, even if their own grade has no
 correction link. They become current only after an explicit replacement grade is
 appended against the current evidence. This prevents double-counting revisions or
 presenting a score against an obsolete source outcome as current.
+
+## Separately versioned pregame issuer
+
+`Ledger.record_research_inputs(pack)` stores a validated
+`nba-pregame-sourcepack-v1` under `records/research_inputs/`. The logical identity
+is the exact complete package digest, not a timestamp that a retry can replace.
+The package retains actual source observation, source update (or unknown), import
+and cohort-declaration clocks separately. Its compact history is normalized model
+input, not a raw provider feed: decoding must reproduce the complete declared
+normalized panel hash and row count. The operational pilot retains all 26,645
+rows; the separate offline readiness validator's 20,000-row ceiling is not used.
+Raw source bytes stay in the explicitly recorded local capture paths, with hashes
+and normalization provenance retained in the package. A checksum is not proof of
+upstream authenticity or redistribution permission.
+
+Preparation can be persisted before the issue window. Persistence alone admits
+no forecast. `Ledger.issue_prospective(bundle, reference=joint, input_ref=ref)` is
+the distinct R1 path: `nba-research-forecast-v2`, model
+`nba_joint_empirical_pregame_r1_v1`, `REAL_TIME_CAPTURED`, research qualification
+unavailable. The legacy R0 API still rejects the real-time lane, even if an older
+metadata-only input capture exists. R1 derives all fourteen marginal outcomes from
+one complete-player-stat joint distribution; it does not create executable tickets.
+
+The bounded policy requires source observations during the ten minutes before
+T90, normalization and the input ledger receipt by T90, generation at/after T90
+with at most 120 seconds elapsed, and original forecast receipt no later than
+T90+5 minutes. No caller-supplied issue or receipt clock can satisfy the operating
+CLI. The input package reference, event version, fixed player/team selection,
+source and history hashes, original clocks and each marginal bind the producer
+attestation. A successful offline readiness report never substitutes for these
+checks. Failed freshness, identity, status, latency or timing remains blocked.
+
+Both ordinary append and restart recovery validate the exact prospective
+verification envelope, input reference/body hash and package-to-forecast bindings.
+Creating a new prospective record through generic `append` is rejected: the R1
+issuer holds an internal, one-call permit only after comparing the actual joint
+producer and all marginals. This prevents accidental caller-supplied attestation
+bypasses; it is not cryptographic authentication or a protection against someone
+rewriting repository files. Recovery checks the retained attestation and exact
+normalized inputs without generating a replacement model or changing clocks.
+Inputs recorded after T90 cannot support an original issuance, and saving a
+new prospective forecast after T90+5 fails even if its supplied issue string is
+earlier. Identical retries read the original complete receipt after the issue
+window; they do not reissue or reset its time. Traceable corrections retain their
+original records and dependencies. Remote Git commit/push and independent byte
+readback remain separate durability evidence, required before reporting that the
+operating path is remotely retained.
+
+An actual future forecast remains pending until a verified outcome is appended.
+Existing outcome and statistical grading APIs apply to the exact event/player,
+preserve DNP/unresolved states and all categories, and continue to state
+`financial_settlement=NOT_EVALUATED`. No future outcome, grade, financial result,
+qualified probability or ticket follows from preparation or a passing software
+test.
 
 ## Record outcomes and grade forecasts
 

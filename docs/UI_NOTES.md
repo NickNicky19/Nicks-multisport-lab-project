@@ -1,5 +1,65 @@
 # Research interface
 
+## Pregame v2 preparation and pending grades, October 19, 2026 (Chicago)
+
+The client validates `nba-research-forecast-v2` alongside unchanged v1 records.
+V2 exposes the selected cohort, event version, retained source-pack reference,
+current observation range, import, generation start/completion and complete
+history metadata. Python and JavaScript enforce matching ten-minute capture,
+five-minute issuance and 120-second generation bounds. The producer/ledger must
+separately establish actual inputs and current clocks before a genuine record
+can exist; a wire object or offline validator cannot establish issuance.
+
+Forecast cards distinguish pending statistical grading from scored, DNP and
+unresolved grade records. Performance counts forecasts with no matching grade
+without inventing an outcome. Elapsed events move to History without becoming
+completed results. Empty Upcoming explains missing issuance, excluded filters,
+or elapsed captured events using the visitor's clock. Sport envelopes containing
+captured records use `RESEARCH_COLLECTION`; every row retains its own lane/model.
+Builder admission, fourteen categories, scopes and directions are unchanged.
+
+Commands actually run during this package:
+
+```bash
+python3 -m unittest discover -s tests -p test_forecast_contract.py -v
+python3 -m unittest discover -s tests -p test_publication.py -v
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.publication --build-commit eca2a0679bd99eaff77c1c0785df13840fb99762 --output /tmp/nml-pregame-publication-ui
+node web/tests/site-smoke.mjs /tmp/nml-pregame-publication-ui
+python3 web/tests/browser_smoke.py /tmp/nml-pregame-publication-ui --screenshots /tmp/nml-pregame-ui-screenshots
+```
+
+Eight focused forecast checks, nine publication checks and 35 frontend tests
+passed. Built-artifact validation and local Chromium 1440/390/320px checks passed.
+The actual artifact still contains the unchanged six historical bundles, 84 PMFs
+and six grades; these checks create no real forecast or grade. An explicitly
+synthetic v2 fixture with a fixed browser clock separately verifies Upcoming,
+pending grades and full prospective provenance, all three widths and NO_ACTION.
+Its mobile screenshot received visual inspection. Existing synthetic mixed-lane/
+model, corrupt/retained assets and seven routes/reloads also pass. The initial
+browser attempt lacked localhost socket permission; the repeated command with
+the environment's network permission passed. No trust-store or source access
+setting changed. This is local publication/software evidence, not deployment,
+true pregame issuance, model evaluation or product qualification.
+
+## Public PR #4 rollout — 2026-10-20
+
+The evidence grouping and History correction below are now deployed at main
+`eca2a0679bd99eaff77c1c0785df13840fb99762`, snapshot
+`76da4612338f8609f9f112ee13d370acda9104be63ece873f3d897d28013649d`.
+Public Chromium 154 checked 01:29:21.763192–01:29:58.168980 UTC: all seven
+routes/direct reloads at 1440/390/320px; six original reconstruction bundles,
+84 PMFs, fourteen filters and six statistical grades; the actual single R0
+reconstruction Performance group with eight-field identity; neutral History;
+Upcoming's three reasons; and all 45 scoped2–6-leg/direction NO_ACTION cases.
+There were no page/HTTP/prefix errors. System-verified HTTPS independently
+confirmed exact served commit, manifest/NBA hashes and application bytes. Browser
+rendering used a process-only configured-proxy CA SPKI pin without changing trust
+settings. Proof: `evidence/deployment/2026-10-20-pr4-pages.json`; temporary browser
+aggregate/screenshots: `/tmp/nml-public-pr4-qa/`. This verifies publication only;
+there are no new forecasts, grades, tickets, financial settlements or qualified
+products. The following local checks remain the development history of the fix.
+
 ## Evidence groups and History correction, 2026-10-20
 
 Performance now summarizes grades separately by league, evidence lane, model

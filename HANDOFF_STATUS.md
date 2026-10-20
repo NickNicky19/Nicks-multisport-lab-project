@@ -7,7 +7,251 @@ reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
-## Current deployment checkpoint — 2026-10-20 01:02 UTC
+## Current implementation checkpoint — pregame preparation, October 19 evening Central / October 20 UTC
+
+Working branch: `implementation/pregame-research-cycle`, based on
+`29253a3e3cdb3827a4cab905c2ff36bb772d9e92`, which carries the post-deployment
+status over reviewed/deployed main `eca2a0679bd99eaff77c1c0785df13840fb99762`.
+Fresh fetch found no newer main work and the initial tree was clean. No reset,
+old ZIP, external NFL/MLB changes, new service/key or scheduler.
+
+A bounded current-source path and separately versioned R1 producer/forecast v2,
+input ledger, pending-grade UI and offer aliases are implemented. The actual
+source/selection/history audit is in `evidence/data/2026-10-20-pregame-cycle-verification.json`;
+policy, scope, exact clocks and runnable commands are in
+`docs/PREGAME_RESEARCH_CYCLE.md` and `docs/PREGAME_SOURCES.md`.
+The next consecutive model comparison is a reservation, not scoring authorization:
+`docs/NBA_PROSPECTIVE_004.md`, protocol payload SHA256
+`873cd140236253e995d759590c9237383ac5a2fc33f776f960446d793c70baee`.
+K0 and all R0/DEV002/DEV003 executed results remain frozen and unpromoted.
+
+Actual source observations show scheduled event401909088, Detroit8/Boston2,
+October20 at2:00p.m. CDT (19:00UTC). Four selected IDs were fixed before forecasts
+or outcomes and cross-checked by actual athlete profiles. Eight source requests /
+337,357 bytes; all selected identity/team checks passed. Full original-source
+normalization reproduced all26,645 rows/1,231 games and exact14,720,351-byte panel,
+SHA489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c.
+The1,636,253-byte compact history is lossless and preserves original source clocks;
+no20k truncation or current-season history claim.
+
+**Genuine issuance:0. New statistical grades:0. New financial settlements:0.**
+The actual01:51UTC observations are preparation, outside the fixed late capture
+window. Next eligible capture is October20 **12:20–12:30p.m. Central**, followed
+by actual generation/receipt **12:30–12:35p.m.** (17:20–17:30Z and17:30–17:35Z).
+Fresh exact-event/cohort capture and receipt by cutoff are required; no backdating.
+The selected event/version/cohort change guards can block that cycle. Existing
+six reconstructed bundles/six historical grades and18 original records remain.
+Public main remains the verified eca2a06 site; branch changes are not deployed.
+
+Source/producer implementation committed as
+**`55547606e4fad6907f8fc06577976a83b3ed40a8`** before creating the final
+preparation input. Final code then re-normalized the same four original response
+bodies without network/model calls. New v3 import clock:02:10:36.352647UTC;
+sourcepack SHAe89f19cca65d3a26e57038a54888baab5a734e61f42989fc901381f3ae61bd12.
+The separately persisted preparation input reference is
+**research_inputs/dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc**,
+payload SHAbe1cf24531a241f1d2752cde3429414b9c6fc64491e99a8bffaf4695d8fa3659.
+Its source observations remain01:51:42.675230–01:51:55.889290UTC, not the import
+or receipt time. This early input cannot support the late T90 issuance window.
+
+The full compact normalized statistics are retained in public Git under the
+bounded publisher-asserted CC BY4.0 release-store basis documented with actual
+quotes, attribution, modification notice and upstream uncertainty in
+`docs/HISTORY_RETENTION.md`. No blanket ESPN rights or recurring collection grant
+is inferred. Raw provider bodies/large Parquets remain excluded; the full input
+record is excluded from Pages. Rights receipt payload SHA604fec4c1b2ecc884543d9a9a3d997e640e09a2d44bf9bb0bcd7c1a8098ee92f.
+
+Final integrated software verification: **221 Python tests**, **35 frontend
+tests**, synthetic demo and artifact checks passed. Local Chromium desktop1440px
+and mobile390/320px checks passed, including a clearly synthetic prospective-v2
+fixture, pending grades, all14categories and scoped2–6/direction NO_ACTION.
+Separate verification reproduced actual source normalization and compact recovery
+without model evaluation. The new manual `prospective_outcomes` path checks actual
+issued-input context/final boxscore identity, strict counts/DNP/missing semantics,
+original source-clock recovery and explicit corrections. Sixteen focused grading
+checks pass. A later actual historical final-boxscore audit verified the parser
+shape and all selected counts; the upcoming event must still supply its own
+verified final observation before any prospective grade.
+The real preparation grading-status command returned PENDING/NO_ISSUED_FORECASTS,
+zero source requests/outcomes/grades; no future result was fabricated.
+
+The bounded actual offer continuation made nine requests/4,782,230bytes: ESPN
+1,132items with73future-update anomalies; Sleeper1,360rows/2,720side options,
+2,472mapped partial options plus248unmapped quarter options. RA/PR/BLK+STL/PA
+were actually observed and added as aliases. Actual generic Sleeper rules were
+read, but board variant, exact complete side/period/economics remain unresolved.
+Complete contracts/usable quotes/qualified tickets remain0. Authoritative pilot
+receipt payload SHA269b3f74d2176ed39ce96c62c15f781711a4b98957cc67c2d7f0d1be9883d4fd.
+
+**Independent remote retention is verified.** Input checkpoint
+`a3934f5b7773999e2aa30c07c1ce85e0f5d9907f` was pushed and independently cloned.
+At02:13:42.628019UTC, all19 ledger files matched exact remote bytes. A fresh
+process with raw sources absent and network/model generation forbidden recovered
+the exact26,645 rows/panel SHA, original source clocks, import and actual input
+receipt02:10:44.260387UTC. All34 original frozen evidence/source/record hashes
+matched; no old record was changed. A real early issuance CLI attempt exited2
+before generation. The full independent source/test/recovery/public-state and
+browser proofs are retained in
+`evidence/research/2026-10-20-pregame-cycle-checkpoint.json`.
+
+Final local artifact build a3934f5 passed all seven routes at1440/390/320px,
+exact3 Upcoming reasons,45 scope×size×direction NO_ACTION cases, and unchanged
+six historical bundles/84 PMFs/six grades. All9 allowed artifact files were
+checked; no raw/full-history/research_inputs bytes were exported. NBA asset
+151,194bytes SHA930771e60caabf40063b8bae628f31ffa3f9b54df0123d53f1e33bc212c04cbe.
+A system-verified public manifest read at02:14:53UTC still served deployed main
+eca2a06 and its original snapshot76da4612...; this PR is not deployed.
+
+[PR #5](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/5) contains
+the carried29253a3 deployment status and this package. Initial a3934f5 checks
+passed; final exact-head checks/landing status come from the guarded watcher.
+No PR #5 merge or deployment has been performed. Current branch head is
+`git rev-parse HEAD`; source/retention commits are exact above. Exact package
+files: `git diff --name-status eca2a0679bd99eaff77c1c0785df13840fb99762 HEAD`.
+The input normalizer, coherent producer and ledger remain the5554760 code.
+A later actual historical-source audit exposed and fixed the separate outcome
+parser period-count path; its exact evidence/code hash and regression results
+are recorded below. It does not change or rerun any frozen model result.
+
+Commands actually run, in addition to the source/offer commands retained in the
+linked evidence:
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.prospective persist --pack .local-data/pregame-cycle/preparation-sourcepack-v3.json
+python3 -m multisport_lab.prospective issue --input-record-id dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc --model-commit 55547606e4fad6907f8fc06577976a83b3ed40a8
+python3 -m multisport_lab.prospective_outcomes --event 401909088 --input-record-id dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc
+python3 -m multisport_lab.publication --build-commit a3934f5b7773999e2aa30c07c1ce85e0f5d9907f --output /tmp/nml-pregame-final-artifact
+node web/tests/site-smoke.mjs /tmp/nml-pregame-final-artifact
+python3 web/tests/browser_smoke.py /tmp/nml-pregame-final-artifact --screenshots /tmp/nml-pregame-final-screenshots
+sha256sum --check --quiet MANIFEST.sha256
+git diff --check
+```
+
+A final bounded historical-source audit made one actual ESPN summary request
+for event401810135, with two retrospective subjects declared beforehand. All12
+identity fields,30count fields, reported minutes and28derived-category values
+matched the retained panel. It exposed a missing status.period despite a verified
+final status. The separate outcome parser now derives the count only from explicit
+NBA format4×720seconds/300second OT and both complete matching quarter arrays,
+whose sums must equal the final team scores; supplied ordinal/value conflicts
+fail. No default four-period assumption or old panel rewrite. This is one historical
+source-shape verification, not a whole-history exact-duration REB admission.
+Authoritative append-only evidence:
+`evidence/data/2026-10-20-outcome-normalizer-audit-v2.json`, payload
+c253d19d8cbefb01e7e1a9a0182ef62cc419357289d6d925847a5bd1c847ed93.
+Final outcome-source code SHA8d22da881bcae0e0e213e314f0181bc727edd4116361fa2b7413f01f154919bf;
+221Python/35frontend checks and demo pass. No forecast generation, model evaluation,
+actual future-source request, outcome/grade ledger write or financial settlement
+was performed by this extra audit. Independent re-normalization and16focused
+checks passed; proof is retained in
+`evidence/research/2026-10-20-outcome-independent-check.json`.
+The original18records and prepared input are unchanged.
+
+Next concrete task: land/deploy this exact reviewed PR only under its own
+head-specific confirmation, then perform the exact **unscheduled** manual capture
+and issuance commands in `docs/PREGAME_RESEARCH_CYCLE.md` at the eligible Central
+times above. The capture command recovers history from Git, not lost `/tmp`
+files. Do not issue from the early preparation pack or backdate a missed window.
+Later verified outcomes need a new manual grading capture; financial settlement
+stays separate. PROS004 still needs paired prospective versions, deduplicated
+history retention, freshness rules, remote activation freeze and a bounded export
+plan beyond today's32forecast/64grade caps. Independent review corrected its
+future total to474record slots/38reserved; the inactive reservation stays unchanged.
+No new scoring or K0 promotion follows. The original R0 pilot, DEV002, DEV003 and
+18 historical ledger bytes remain unchanged.
+
+## Prior deployment checkpoint — 2026-10-20 01:32 UTC
+
+**PR #4 is merged and deployed.** The user explicitly approved its exact head
+`1f80112ed54a8c2eaa20024e806054739b815c98`. Fresh guarded checks confirmed that
+head, CLEAN/MERGEABLE state, successful build, no pending/failed checks, no missing
+required reviewers and zero unresolved review threads. The canonical helper
+used policy digest
+`70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df`,
+the approved merge method and exact-head guard. No admin/bypass/force-push was
+used. GitHub records the merge at **2026-10-20T01:27:21Z** as main commit
+**`eca2a0679bd99eaff77c1c0785df13840fb99762`**. Its tree equals the approved head;
+parents are prior main `002a6b994c862c758f1d7c8199831c75eff761af` and that head.
+Local main was fast-forwarded, preserving all reviewed work.
+
+Live site: https://nicknicky19.github.io/Nicks-multisport-lab-project/ .
+[Workflow 39353520895](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39353520895)
+completed successfully: build at 01:27:41Z and deploy at 01:27:57Z. The main workflow
+ran the 177 Python/31 frontend checks, demo and artifact checks. System-verified
+HTTPS readback returned 200 for ten resources. The served v2 manifest identifies
+the exact main merge above, publication RESEARCH_ONLY, snapshot
+`76da4612338f8609f9f112ee13d370acda9104be63ece873f3d897d28013649d`.
+Manifest raw SHA256:
+`5c1c4b2c69346516dbdc30389431993b3bc8488b899627f957e5561786d6f868`.
+NBA asset 151,222 bytes, SHA256:
+`0cee10c154e9f4d678a05ef758cf7e239da363e5db19fa5c51ab8b3f1f1deeeb`.
+All seven static assets matched `git show eca2a06:web/<asset>` bytes.
+
+Independent public Chromium 154 checks ran 01:29:21.763192–01:29:58.168980 UTC at
+1440px desktop and 390/320px mobile. All seven routes/direct reloads, fourteen
+category filters, six original historical bundles/84 PMFs and six statistical
+grades passed. Performance now publicly shows the one actual R0 reconstruction
+group with full eight-field model/lane identity; mixed groups remain synthetic
+test cases. History uses the neutral past-event wording. Exact original
+event/cutoff/issue/grade identities were retained. Upcoming correctly explains
+its three missing-input/issuance reasons. SINGLE/SELECTED/ALL scopes, every 2–6-leg
+size and OVER_ONLY/UNDER_ONLY/MIXED passed all 45 combinations with zero candidates,
+NO_ACTION and Not issued. There were no page errors, failed HTTP responses or
+requests outside the repository prefix. Browser rendering used only the
+process-local configured-proxy CA SPKI pin; urllib independently verified TLS.
+No persistent trust settings changed.
+
+Separate offline verification at 01:32:36 UTC reproduced the manifest and NBA
+asset exactly from main code/config/web/records at the served publication clock,
+with no model generation or external requests. It checked the four guarded-helper
+and three browser artifact hashes, original record bindings, and deployment to
+HTTP/browser to receipt clock order. All checks passed.
+
+All 18 original ledger files/175,190 bytes, their original clocks, the v1
+publication summary and frozen R0/DEV002/DEV003 evidence are unchanged. These six
+forecasts remain **historical reconstructions**, actually issued October 20, 2026
+for November 24, 2025 events. Their statistical grades are separate from venue
+financial settlement. Deployment performed no model evaluation, source capture,
+genuine future issuance, outcome grading or ticket creation. No qualified ticket,
+confirmatory skill, admission of a prospective producer or financial result is
+claimed. NFL and MLB remained untouched; no new paid services, signups or keys.
+
+Durable combined evidence:
+`evidence/deployment/2026-10-20-pr4-pages.json`, payload SHA256
+`0d84bfb41a10c1f67a46e8cc258ce1fdccbccd4f3e2a2d5a80067a23016c6299`.
+This post-deployment documentation checkpoint is on `docs/pr4-deployment`, based
+on deployed main eca2a06. It changes only HANDOFF_STATUS.md, PROJECT_CONTEXT.md,
+docs/VERIFICATION.md, docs/UI_NOTES.md, MANIFEST.sha256 and that new receipt;
+it is separate from the approved application merge. Resolve its exact commit
+with `git log -1 --format=%H docs/pr4-deployment`. Earlier branch-only/open-PR
+statements below describe the prior checkpoint and are superseded here.
+
+Commands actually run (the receipt records HTTP/browser methods and all hashes):
+
+```bash
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=4 --mode until-actionable --interval 15 --timeout 180 --cursor /tmp/nml-pr-completion/pr4-cursor.json --observations-file /tmp/nml-pr-completion/pr4-observations.ndjson --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_land.py --repo /workspace/Nicks-multisport-lab-project --pr 4 --head 1f80112ed54a8c2eaa20024e806054739b815c98 --mode auto --method merge --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_land.py --repo /workspace/Nicks-multisport-lab-project --pr 4 --head 1f80112ed54a8c2eaa20024e806054739b815c98 --mode auto --method merge --policy-digest 70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df --confirm --pretty
+gh run view 39353520895 --repo NickNicky19/Nicks-multisport-lab-project --json status,conclusion,jobs,headSha,url,createdAt,updatedAt
+PYTHONPATH=. python3 /tmp/nml-pr4-pages-audit.py
+python3 /tmp/nml-public-pr4-qa.py eca2a0679bd99eaff77c1c0785df13840fb99762 > /tmp/nml-public-pr4-qa.log 2>&1
+sha256sum --check MANIFEST.sha256
+git diff --check
+```
+
+Next concrete task: revalidate the first as-observed event 401909088/start 19:00Z
+and a permitted selected-player/history route before its as-observed 17:30Z T90.
+Current status, player universe, history freshness/lineage, permission and an
+admitted current-T90 producer remain unresolved. The reported-clock audit below
+does not admit a forecast. Do not backdate issuance or schedule a collector.
+Any further development comparison needs a separately frozen protocol; retain
+tail/coverage concerns and the separate confirmatory holdout. K0 remains an
+unpromoted development challenger and exact-duration REB requirements remain open.
+
+## Prior deployment and implementation checkpoint — 2026-10-20 01:02–01:23 UTC
 
 Deployment/status checkpoint committed/pushed as
 `ff0cb00a2833bf7d3e889652157292df5a87a95d` on the separate follow-up branch.

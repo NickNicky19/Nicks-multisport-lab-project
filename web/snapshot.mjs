@@ -39,7 +39,7 @@ export function validateManifest(value) {
 
 export function validateSport(value, reference) {
   const version = value?.schema_version;
-  if (!keys(value, ['schema_version', 'league', 'generated_at', 'evidence_lane', 'status', 'coverage', 'markets', 'sources', ...COLLECTIONS, ...(version === 2 ? ['future_availability'] : [])]) || ![1, 2].includes(version) || value.league !== reference.league || value.status !== 'RESEARCH_ONLY' || value.evidence_lane !== 'RECONSTRUCTED_RESEARCH' || value.generated_at !== reference.generated_at || !utc(value.generated_at)) throw new Error('Incompatible sport snapshot.');
+  if (!keys(value, ['schema_version', 'league', 'generated_at', 'evidence_lane', 'status', 'coverage', 'markets', 'sources', ...COLLECTIONS, ...(version === 2 ? ['future_availability'] : [])]) || ![1, 2].includes(version) || value.league !== reference.league || value.status !== 'RESEARCH_ONLY' || !(value.evidence_lane === 'RECONSTRUCTED_RESEARCH' || version === 2 && value.evidence_lane === 'RESEARCH_COLLECTION') || value.generated_at !== reference.generated_at || !utc(value.generated_at)) throw new Error('Incompatible sport snapshot.');
   const coverage = value.coverage;
   if (!keys(coverage, ['forecast', 'quotes', 'settlement', 'paper']) || coverage.forecast !== 'UNVALIDATED' || coverage.quotes !== 'UNVERIFIED' || coverage.settlement !== 'UNVERIFIED' || coverage.paper !== 'NO_ACTION') throw new Error('Unsupported admission state.');
   if (!Array.isArray(value.markets)) throw new Error('Missing category inventory.');
@@ -73,6 +73,8 @@ export function validateSport(value, reference) {
     forecasts.set(forecast.forecast_id, forecast);
     forecastTargets.add(target);
   }
+  const collectionLane = value.forecasts.some(forecast => forecast.evidence_lane === 'REAL_TIME_CAPTURED') ? 'RESEARCH_COLLECTION' : 'RECONSTRUCTED_RESEARCH';
+  if (value.evidence_lane !== collectionLane) throw new Error('Collection evidence label must retain individual forecast lanes.');
   const grades = new Set();
   for (const grade of value.performance) {
     validateResearchGrade(grade, forecasts.get(grade.forecast_id), value.generated_at);
@@ -99,7 +101,7 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
     const sport = validateSport(JSON.parse(new TextDecoder('utf-8', {fatal: true}).decode(bytes)), reference);
     if (manifest.schema_version === 1 && sport.schema_version !== 1) throw new Error('Manifest version does not support typed research records.');
     for (const record of [...sport.forecasts, ...sport.performance]) {
-      const idKey = record.forecast_id && record.schema_version === 'nba-research-forecast-v1' ? 'forecast_id' : 'grade_id';
+      const idKey = record.forecast_id && ['nba-research-forecast-v1', 'nba-research-forecast-v2'].includes(record.schema_version) ? 'forecast_id' : 'grade_id';
       const {[idKey]: id, ...body} = record;
       if (await sha256(new TextEncoder().encode(canonical(body)), cryptoProvider) !== id) throw new Error('Typed research record checksum does not match.');
     }

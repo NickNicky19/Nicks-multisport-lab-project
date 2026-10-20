@@ -20,7 +20,7 @@ from .integrity import (HASH_FORMAT, RECEIPT_SCHEMA, IntegrityError, canonical,
 
 
 SCHEMA = "multisport-research-ledger-v1"
-KINDS = ("forecasts", "outcomes", "grades", "corrections", "input_captures")
+KINDS = ("forecasts", "outcomes", "grades", "corrections", "input_captures", "research_inputs")
 MAX_RECORD_BYTES = 4 * 1024 * 1024
 MAX_LEDGER_RECORDS = 512
 MAX_LEDGER_BYTES = 32 * 1024 * 1024
@@ -81,6 +81,9 @@ class Ledger:
     def __init__(self, repository_root: Path | str | None = None):
         self.root = Path(repository_root) if repository_root is not None else Path(__file__).resolve().parents[1]
         self.root = self.root.absolute()
+        # An internal admission boundary, not a signature or access-control
+        # mechanism: new R1 writes must pass the actual coherent producer API.
+        self._verified_prospective_append: tuple[str, str] | None = None
 
     def _path(self, kind: str, record_id: str) -> Path:
         if kind not in KINDS:
@@ -170,7 +173,8 @@ class Ledger:
                 raise IntegrityError("correction logical identity must be canonical for its superseded record")
         elif kind == "corrections":
             raise IntegrityError("correction requires an explicit superseded record")
-        typed_keys = {"bundle": "forecasts", "outcome": "outcomes", "grade": "grades", "capture": "input_captures"}
+        typed_keys = {"bundle": "forecasts", "outcome": "outcomes", "grade": "grades",
+                      "capture": "input_captures", "source_pack": "research_inputs"}
         if any(key in payload["data"] and kind != expected for key, expected in typed_keys.items()):
             raise IntegrityError("typed evidence is stored under the wrong record kind")
         if kind == "forecasts" and "bundle" in payload["data"]:
@@ -180,11 +184,12 @@ class Ledger:
                 raise IntegrityError("forecast issuance requires a producer verification record")
             bundle, verification = data["bundle"], data["producer_verification"]
             validate_forecast(bundle, now=utc(payload["received_at"]))
-            if (bundle["evidence_lane"] != "RECONSTRUCTED_RESEARCH"
-                    or data["identity"] != _nba_identity(bundle)
+            if (data["identity"] != _nba_identity(bundle)
                     or payload["logical_id"] != "forecast:" + bundle["forecast_id"]):
-                raise IntegrityError("current R0 ledger producer supports reconstructed research only")
-            expected = {"schema_version": "nba-r0-verification-envelope-v1",
+                raise IntegrityError("forecast logical or subject identity is inconsistent")
+            prospective = bundle["evidence_lane"] == "REAL_TIME_CAPTURED"
+            expected = {"schema_version": ("nba-pregame-r1-verification-envelope-v1" if prospective
+                                           else "nba-r0-verification-envelope-v1"),
                         "forecast_id": bundle["forecast_id"], "forecast_sha256": digest(bundle),
                         "joint_sha256": bundle["joint_sha256"], "model_version": bundle["model_version"]}
             if (type(verification) is not dict or set(verification) != {*expected, "verified_at", "producer_check"}
@@ -193,15 +198,42 @@ class Ledger:
                     or utc(verification["verified_at"]) > utc(payload["received_at"])):
                 raise IntegrityError("forecast producer verification is missing, changed or misbound")
             check = verification["producer_check"]
-            check_expected = {"schema_version": "nba-r0-joint-attestation-v1",
+            check_expected = {"schema_version": ("nba-pregame-r1-attestation-v1" if prospective
+                                                else "nba-r0-joint-attestation-v1"),
                               **{key: bundle[key] for key in ("forecast_id", "joint_sha256", "input_sha256",
                                  "model_version", "model_commit", "model_code_sha256")},
                               "categories_sha256": digest(bundle["categories"]),
-                              "scope": "EXACT_REFERENCE_COMPARISON_NOT_STATISTICAL_QUALIFICATION"}
+                              "scope": ("EXACT_CAPTURED_REFERENCE_COMPARISON_NOT_QUALIFICATION" if prospective
+                                        else "EXACT_REFERENCE_COMPARISON_NOT_STATISTICAL_QUALIFICATION")}
+            if prospective:
+                metadata = bundle.get("prospective", {})
+                if (bundle["schema_version"] != "nba-research-forecast-v2"
+                        or bundle["model_version"] != "nba_joint_empirical_pregame_r1_v1"
+                        or len(refs) != 1 or refs[0].kind != "research_inputs"
+                        or bundle["input_capture_ids"] != [refs[0].record_id]
+                        or metadata.get("source_pack_record_id") != refs[0].record_id):
+                    raise IntegrityError("prospective forecast requires the exact versioned input package")
+                check_expected.update(source_pack_sha256=metadata["source_pack_sha256"],
+                                      source_pack_record_id=refs[0].record_id)
+                if not (utc(bundle["issued_at"]) <= utc(verification["verified_at"])
+                        <= utc(payload["received_at"])
+                        <= utc(bundle["cutoff_at"]) + timedelta(minutes=5)):
+                    raise IntegrityError("prospective receipt or verification exceeds its issuance window")
             if (set(check) != {*check_expected, "verified_at"}
                     or any(check[key] != value for key, value in check_expected.items())
                     or utc(check["verified_at"]) > utc(payload["received_at"])):
                 raise IntegrityError("producer attestation does not bind the exact forecast/joint categories")
+            if prospective and not (utc(bundle["issued_at"]) <= _wire_time(check["verified_at"])
+                                    <= _wire_time(verification["verified_at"])):
+                raise IntegrityError("prospective attestation or verification precedes original generation")
+        if kind == "research_inputs":
+            from .pregame_sources import validate_pack
+            if set(payload["data"]) != {"source_pack"} or refs:
+                raise IntegrityError("research inputs require one standalone normalized source package")
+            pack = validate_pack(payload["data"]["source_pack"])
+            if (payload["logical_id"] != "research-inputs:" + digest(pack)
+                    or _wire_time(pack["imported_at"]) > utc(payload["received_at"])):
+                raise IntegrityError("research input identity or import clock exceeds actual receipt")
         if kind == "outcomes" and "outcome" in payload["data"]:
             data = payload["data"]
             if set(data) != {"identity", "outcome"}:
@@ -234,6 +266,19 @@ class Ledger:
                 raise IntegrityError("input capture identity does not bind its metadata")
 
     def _validate_typed_references(self, payload: dict) -> None:
+        if (payload["kind"] == "forecasts" and "bundle" in payload["data"]
+                and payload["data"]["bundle"]["evidence_lane"] == "REAL_TIME_CAPTURED"):
+            from .prospective import validate_input_binding
+            bundle = payload["data"]["bundle"]
+            refs = [LedgerRef.from_record(item) for item in payload["references"]]
+            if len(refs) != 1 or refs[0].kind != "research_inputs":
+                raise IntegrityError("prospective issuance requires one research input reference")
+            source_payload = self.read(refs[0])
+            if utc(source_payload["received_at"]) > utc(bundle["cutoff_at"]):
+                raise IntegrityError("prospective inputs were not durably recorded by the cutoff")
+            validate_input_binding(bundle, source_payload["data"]["source_pack"],
+                                   input_record_id=refs[0].record_id)
+            return
         if payload["kind"] != "grades" or "grade" not in payload["data"]:
             return
         refs = {item["kind"]: LedgerRef.from_record(item) for item in payload["references"]}
@@ -294,6 +339,11 @@ class Ledger:
                 raise IntegrityError("conflicting logical record; append a traceable correction")
             self._validate_typed_references(existing)
             return LedgerRef(kind, record_id, digest(existing))
+        if (kind == "forecasts" and type(data.get("bundle")) is dict
+                and data["bundle"].get("evidence_lane") == "REAL_TIME_CAPTURED"):
+            permit = (record_id, digest({"data": data, "references": request["references"]}))
+            if self._verified_prospective_append != permit:
+                raise IntegrityError("new prospective forecasts require the verified issue_prospective API")
         payload = {**request, "received_at": stamp(_now())}
         self._validate_payload(payload, kind=kind, record_id=record_id)
         self._validate_typed_references(payload)
@@ -436,6 +486,70 @@ class Ledger:
         capture = {"capture_id": digest(capture), **capture}
         return self.append("input_captures", logical,
                            {"identity": _nba_identity(metadata), "capture": capture})
+
+    def record_research_inputs(self, pack: dict) -> LedgerRef:
+        """Retain a normalized source package with an actual local receipt clock.
+
+        Preparation packages may be recorded early. Only a fresh package received
+        by T90 can support the separately versioned prospective issuer; this write
+        alone never admits a forecast or establishes remote retention.
+        """
+        from .pregame_sources import validate_pack
+        validate_pack(pack)
+        return self.append("research_inputs", "research-inputs:" + digest(pack),
+                           {"source_pack": pack})
+
+    def issue_prospective(self, bundle: dict, *, reference, input_ref: LedgerRef) -> LedgerRef:
+        """Persist a verified R1 pregame forecast, without loosening the R0 API.
+
+        Original issued bodies remain recoverable and idempotent after the issue
+        window. A new append must finish by T90+5 minutes and use normalized input
+        evidence already received by T90. Actual event outcomes remain separate.
+        """
+        from .forecast_contract import validate_forecast
+        from .prospective import verify_prospective
+        now = _now()
+        validate_forecast(bundle, now=now)
+        if (bundle["schema_version"] != "nba-research-forecast-v2"
+                or bundle["evidence_lane"] != "REAL_TIME_CAPTURED"
+                or bundle["model_version"] != "nba_joint_empirical_pregame_r1_v1"):
+            raise IntegrityError("prospective issuer requires its separately versioned R1 forecast")
+        if reference is None:
+            raise IntegrityError("the coherent prospective generator reference is required")
+        if not isinstance(input_ref, LedgerRef) or input_ref.kind != "research_inputs":
+            raise IntegrityError("prospective issuer requires an exact research input reference")
+        source_payload = self.read(input_ref)
+        pack = source_payload["data"]["source_pack"]
+        producer_check = verify_prospective(bundle, reference, pack,
+                                            input_record_id=input_ref.record_id)
+        logical = "forecast:" + bundle["forecast_id"]
+        existing = self._existing("forecasts", logical)
+        if existing is not None:
+            payload = self.read(existing)
+            if (canonical(payload["data"]["bundle"]) != canonical(bundle)
+                    or payload["references"] != [input_ref.to_record()]):
+                raise IntegrityError("conflicting original prospective forecast body or inputs")
+            return existing
+        cutoff = utc(bundle["cutoff_at"])
+        if not cutoff <= now <= cutoff + timedelta(minutes=5):
+            raise IntegrityError("new prospective issuance is outside the T90 to T90+5 window")
+        if utc(source_payload["received_at"]) > cutoff:
+            raise IntegrityError("prospective inputs were not durably recorded by the cutoff")
+        verification = {"schema_version": "nba-pregame-r1-verification-envelope-v1",
+                        "forecast_id": bundle["forecast_id"], "forecast_sha256": digest(bundle),
+                        "joint_sha256": bundle["joint_sha256"], "model_version": bundle["model_version"],
+                        "verified_at": stamp(_now()), "producer_check": producer_check}
+        data = {"identity": _nba_identity(bundle), "bundle": bundle,
+                "producer_verification": verification}
+        record_id = digest({"kind": "forecasts", "logical_id": logical})
+        if self._verified_prospective_append is not None:
+            raise IntegrityError("overlapping prospective writers are not supported")
+        self._verified_prospective_append = (
+            record_id, digest({"data": data, "references": [input_ref.to_record()]}))
+        try:
+            return self.append("forecasts", logical, data, references=(input_ref,))
+        finally:
+            self._verified_prospective_append = None
 
     def issue_forecast(self, bundle: dict, *, reference=None) -> LedgerRef:
         """Persist an already generated typed forecast with its original issuance.

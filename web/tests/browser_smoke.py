@@ -6,6 +6,7 @@ local browser evidence, never proof of deployment or forecast qualification.
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 from functools import partial
 import hashlib
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -77,27 +78,34 @@ def main():
             page.goto(base + "#/props")
             page.get_by_role("heading", name="Props", exact=True).wait_for()
             assert page.locator(".inventory-table tbody tr").count() == 14  # 13 required plus optional PA.
-            assert page.locator(".forecast-card").count() == 0
-            page.get_by_text("No upcoming research forecasts", exact=True).wait_for()
+            checked_now = datetime.now(timezone.utc)
+            history = [row for row in nba_snapshot["forecasts"] if row["evidence_lane"] == "RECONSTRUCTED_RESEARCH"
+                       or datetime.fromisoformat(row["event_starts_at"].replace("Z", "+00:00")) <= checked_now]
+            upcoming = [row for row in nba_snapshot["forecasts"] if row not in history]
+            if upcoming:
+                assert page.locator(".forecast-card").count() == min(28, len(upcoming)*14)
+                assert "Captured research" in page.locator(".forecast-card").first.inner_text()
+            else:
+                assert page.locator(".forecast-card").count() == 0
+                page.get_by_text("No upcoming research forecasts", exact=True).wait_for()
             page.locator('[data-filter="view"]').select_option("history")
-            if nba_snapshot["forecasts"]:
+            if history:
                 assert page.locator(".forecast-card").count() >= 14
-                assert "Historical reconstruction" in page.locator(".forecast-card").first.inner_text()
+                assert ("Historical reconstruction" if history[0]["evidence_lane"] == "RECONSTRUCTED_RESEARCH" else "Captured research") in page.locator(".forecast-card").first.inner_text()
                 assert len(set(page.locator(".forecast-card").evaluate_all("cards => cards.map(card => card.dataset.market)"))) == 14
                 assert len(json.dumps(nba_snapshot, ensure_ascii=False).encode()) <= 512 * 1024
-                assert all(row["evidence_lane"] == "RECONSTRUCTED_RESEARCH" for row in nba_snapshot["forecasts"])
                 while page.locator("#more-forecasts").count():
                     page.locator("#more-forecasts").click()
-                assert page.locator(".forecast-card").count() == len(nba_snapshot["forecasts"]) * 14
+                assert page.locator(".forecast-card").count() == len(history) * 14
                 first = page.locator(".forecast-card").first
                 first.locator("summary").click()
-                actual = nba_snapshot["forecasts"][0]
+                actual = history[0]
                 assert first.locator("time").get_attribute("datetime") == actual["event_starts_at"]
                 assert actual["issued_at"] in first.locator(".forecast-provenance").inner_text()
                 assert actual["cutoff_at"] in first.locator(".forecast-provenance").inner_text()
                 assert actual["forecast_id"] in first.locator(".forecast-provenance").inner_text()
                 page.locator('[data-filter="category"]').select_option("REB")
-                assert page.locator(".forecast-card").count() == len(nba_snapshot["forecasts"])
+                assert page.locator(".forecast-card").count() == len(history)
                 if args.screenshots:
                     screenshot(page, args.screenshots / "real-reb-history-desktop.png")
                     page.set_viewport_size({"width": 390, "height": 844})
@@ -105,11 +113,15 @@ def main():
                     page.locator(".forecast-card").first.screenshot(path=str(args.screenshots / "real-reb-card-mobile.png"))
                     page.set_viewport_size({"width": 1440, "height": 1000})
                 page.get_by_role("link", name="Performance", exact=True).click()
-                assert page.locator(".grade-summary tbody tr").count() == 14
+                scored = [row for row in nba_snapshot["performance"] if row["status"] == "SCORED"]
+                by_forecast = {row["forecast_id"]: row for row in nba_snapshot["forecasts"]}
+                groups = {tuple(by_forecast[row["forecast_id"]][key] for key in ("league", "evidence_lane", "model_version", "model_commit", "model_code_sha256", "conditioning", "period", "extra_time_policy")) for row in scored}
+                assert page.locator(".grade-summary tbody tr").count() == len(groups)*14
                 assert f'{len(nba_snapshot["performance"])} typed grade records published' in page.locator("main").inner_text()
-                page.locator(".grade-receipts>summary").click()
-                assert page.locator(".grade-receipt").count() == len(nba_snapshot["performance"])
-                assert "Financial settlement: NOT_EVALUATED" in page.locator(".grade-receipt").first.inner_text()
+                if nba_snapshot["performance"]:
+                    page.locator(".grade-receipts>summary").click()
+                    assert page.locator(".grade-receipt").count() == len(nba_snapshot["performance"])
+                    assert "Financial settlement: NOT_EVALUATED" in page.locator(".grade-receipt").first.inner_text()
                 assert "No settled paper tickets published" in page.locator("main").inner_text()
                 page.get_by_role("link", name="Props", exact=True).click()
                 page.locator('[data-filter="category"]').select_option("ALL")
@@ -264,11 +276,42 @@ def main():
             page.get_by_role("link", name="Paper Builder", exact=True).click()
             assert "0 admitted candidates" in page.locator(".request-summary").inner_text()
             assert "NO_ACTION" in page.locator(".decision-box").inner_text()
+            # Invented v2 prospective contract with a fixed browser clock only.
+            # It proves rendering/timing validation, never actual capture or issuance.
+            prospective = json.loads(subprocess.run(["node", "--input-type=module", "-e", "import {prospectiveFixture} from './web/tests/fixtures.mjs'; console.log(JSON.stringify(prospectiveFixture()));"], cwd=repo, text=True, capture_output=True, check=True).stdout)
+            prospective_page = context.new_page()
+            prospective_page.on("pageerror", lambda error: errors.append(str(error)))
+            prospective_page.clock.install(time=datetime(2000, 1, 1, tzinfo=timezone.utc))
+            prospective_page.route("**/data/manifest.json", lambda route: route.fulfill(body=canonical(prospective["manifest"]), content_type="application/json"))
+            prospective_page.route("**/data/nba.*.json", lambda route: route.fulfill(body=canonical(prospective["sport"]), content_type="application/json"))
+            prospective_page.goto(base + "#/props")
+            prospective_page.get_by_role("heading", name="Props", exact=True).wait_for()
+            assert prospective_page.locator(".forecast-card").count() == 14
+            assert prospective_page.get_by_role("alert").count() == 0
+            assert "Captured research" in prospective_page.locator(".forecast-card").first.inner_text()
+            assert "Statistical grade: pending" in prospective_page.locator(".forecast-card").first.inner_text()
+            prospective_page.locator('[data-filter="category"]').select_option("REB")
+            prospective_page.locator(".forecast-details summary").click()
+            provenance = prospective_page.locator(".forecast-provenance").inner_text()
+            for field in ("event_version", "source_pack_record_id", "generation_started_at", "generation_completed_at", "source_observed_min_at", "source_observed_max_at", "imported_at"):
+                assert prospective["sport"]["forecasts"][0]["prospective"][field] in provenance
+            for width in [1440, 390, 320]:
+                prospective_page.set_viewport_size({"width": width, "height": 1000 if width == 1440 else 844})
+                assert prospective_page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"Prospective card overflow at {width}px"
+                if args.screenshots and width != 320:
+                    screenshot(prospective_page, args.screenshots / f"synthetic-prospective-{width}.png")
+            prospective_page.get_by_role("link", name="Performance", exact=True).click()
+            assert prospective_page.locator(".grade-group").count() == 0
+            assert "1 forecast records pending a verified grade" in prospective_page.locator("main").inner_text()
+            prospective_page.get_by_role("link", name="Paper Builder", exact=True).click()
+            assert "0 admitted candidates" in prospective_page.locator(".request-summary").inner_text()
+            assert "NO_ACTION" in prospective_page.locator(".decision-box").inner_text()
+            prospective_page.close()
             assert not errors, errors
             browser.close()
         if nba_snapshot["forecasts"]:
             print(f'PASS real retained research: {len(nba_snapshot["events"])} events, {len(nba_snapshot["forecasts"])} bundles, {len(nba_snapshot["forecasts"]) * 14} category PMFs and {len(nba_snapshot["performance"])} forecast grades; actual event/cutoff/issue/record IDs, all-category load-more, REB filter, finite support and separate NOT_EVALUATED financial state checked.')
-        print("PASS: Chromium desktop, 390px and 320px; seven routes and reloads; repository-prefix assets; all-13 inventory; shared scope and builder requests; NO_ACTION; unknown route; incompatible, corrupt, retained and first-failure snapshots; synthetic typed-v2 fourteen-category history, future exclusion, provenance, separate forecast grades and mixed-lane/model summaries. Local browser/software evidence only; no deployment/model/product claim.")
+        print("PASS: Chromium desktop, 390px and 320px; seven routes and reloads; repository-prefix assets; all-13 inventory; shared scope and builder requests; NO_ACTION; unknown route; incompatible, corrupt, retained and first-failure snapshots; synthetic typed-v2 fourteen-category history, future exclusion, provenance, separate forecast grades mixed-lane/model summaries and prospective-v2 pending-grade provenance. Local browser/software evidence only; no deployment/model/product claim.")
     finally:
         server.shutdown()
         server.server_close()

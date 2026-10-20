@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 import unittest
 
 from multisport_lab.baseline import HistoricalAppearance, ForecastTarget, forecast_reference
-from multisport_lab.forecast_contract import from_reference, validate_forecast, verify_reference
+from multisport_lab.forecast_contract import FORECAST_SCHEMA_V2, from_reference, validate_forecast, verify_reference
 from multisport_lab.integrity import IntegrityError, digest, stamp
 
 
@@ -29,6 +29,68 @@ class ForecastContractTests(unittest.TestCase):
     def setUp(self):
         self.reference, self.observed = synthetic_reference()
         self.bundle = from_reference(self.reference, self.observed, model_commit="a"*40)
+
+    def prospective_fixture(self):
+        """Invented wire fixture only; never a captured or ledger-issued forecast."""
+        result = deepcopy(self.bundle)
+        cutoff = self.reference.target.cutoff
+        result.update(schema_version=FORECAST_SCHEMA_V2,
+                      model_version="nba_joint_empirical_pregame_r1_v1",
+                      evidence_lane="REAL_TIME_CAPTURED", availability_basis="OBSERVED_INPUT_CAPTURE",
+                      issued_at=stamp(cutoff + timedelta(seconds=30)), input_capture_ids=["f"*64],
+                      prospective={"producer_version": "nba-pregame-r1-v1", "event_version": "1"*64,
+                          "selection_sha256": "2"*64, "source_pack_sha256": "3"*64,
+                          "source_pack_record_id": "f"*64,
+                          "generation_started_at": stamp(cutoff),
+                          "generation_completed_at": stamp(cutoff + timedelta(seconds=30)),
+                          "source_observed_min_at": stamp(cutoff - timedelta(minutes=10)),
+                          "source_observed_max_at": stamp(cutoff - timedelta(minutes=1)),
+                          "imported_at": stamp(cutoff),
+                          "base_model_version": "nba_joint_empirical_r0_v1",
+                          "base_model_code_sha256": "4"*64, "history_rows": 26645,
+                          "history_latest_event_at": stamp(cutoff - timedelta(days=10))})
+        return rehash(result)
+
+    def test_prospective_v2_retains_all_categories_and_rejects_r0_attestation(self):
+        bundle = self.prospective_fixture()
+        self.assertEqual(validate_forecast(bundle), bundle)
+        self.assertEqual(len(bundle["categories"]), 14)
+        with self.assertRaisesRegex(IntegrityError, "reconstructed reference"):
+            verify_reference(bundle, self.reference)
+        bundle["schema_version"] = "nba-research-forecast-v1"
+        with self.assertRaisesRegex(IntegrityError, "schema"):
+            validate_forecast(rehash(bundle))
+
+    def test_prospective_v2_source_clocks_window_latency_and_full_history_budget(self):
+        cutoff = self.reference.target.cutoff
+        changes = [
+            {"source_observed_min_at": stamp(cutoff - timedelta(minutes=10, microseconds=1))},
+            {"source_observed_max_at": stamp(cutoff + timedelta(microseconds=1))},
+            {"imported_at": stamp(cutoff + timedelta(microseconds=1))},
+            {"generation_started_at": stamp(cutoff - timedelta(microseconds=1))},
+            {"generation_started_at": stamp(cutoff + timedelta(seconds=31))},
+            {"generation_completed_at": stamp(cutoff + timedelta(seconds=29))},
+            {"generation_started_at": stamp(cutoff),
+             "generation_completed_at": stamp(cutoff + timedelta(seconds=121))},
+            {"history_latest_event_at": stamp(self.reference.target.history_freeze)},
+            {"history_rows": 100001}, {"history_rows": True},
+            {"source_pack_record_id": "5"*64}, {"event_version": "unknown"},
+            {"producer_version": "nba-pregame-r2-v1"},
+        ]
+        for change in changes:
+            bundle = self.prospective_fixture()
+            bundle["prospective"].update(change)
+            # Keep the completion/issue equality when specifically testing latency.
+            if change.get("generation_completed_at") == stamp(cutoff + timedelta(seconds=121)):
+                bundle["issued_at"] = change["generation_completed_at"]
+            with self.subTest(change=change), self.assertRaises(IntegrityError):
+                validate_forecast(rehash(bundle))
+        bundle = self.prospective_fixture()
+        bundle["issued_at"] = stamp(cutoff + timedelta(minutes=5, microseconds=1))
+        bundle["prospective"].update(generation_started_at=stamp(cutoff + timedelta(minutes=4)),
+                                     generation_completed_at=bundle["issued_at"])
+        with self.assertRaisesRegex(IntegrityError, "window"):
+            validate_forecast(rehash(bundle))
 
     def test_complete_reference_exports_compact_14_pmfs_without_raw_support(self):
         self.assertEqual(len(self.bundle["categories"]), 14)

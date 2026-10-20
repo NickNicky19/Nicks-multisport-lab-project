@@ -57,7 +57,8 @@ export function validateResearchEvent(record) {
 
 export function validateResearchForecast(record, event, generatedAt) {
   const names = ['schema_version', 'forecast_id', 'id_namespace', 'league', 'event_id', 'player_id', 'player_label', 'team_id', 'opponent_id', 'event_starts_at', 'period', 'extra_time_policy', 'model_version', 'model_commit', 'model_code_sha256', 'input_sha256', 'trained_through', 'cutoff_at', 'history_freeze', 'issued_at', 'conditioning', 'evidence_lane', 'availability_basis', 'input_capture_ids', 'joint_method', 'joint_sha256', 'tail_policy', 'categories', 'qualification'];
-  if (!fields(record, names) || record.schema_version !== 'nba-research-forecast-v1' || record.id_namespace !== 'espn' || record.league !== 'NBA' || !['event_id', 'player_id', 'player_label', 'team_id', 'opponent_id', 'model_version'].every(key => isText(record[key])) || !['forecast_id', 'model_code_sha256', 'input_sha256', 'joint_sha256'].every(key => SHA.test(record[key]))) return fail('Invalid typed forecast identity.');
+  const prospective = record?.schema_version === 'nba-research-forecast-v2';
+  if (!fields(record, prospective ? [...names, 'prospective'] : names) || !['nba-research-forecast-v1', 'nba-research-forecast-v2'].includes(record.schema_version) || record.id_namespace !== 'espn' || record.league !== 'NBA' || !['event_id', 'player_id', 'player_label', 'team_id', 'opponent_id', 'model_version'].every(key => isText(record[key])) || !['forecast_id', 'model_code_sha256', 'input_sha256', 'joint_sha256'].every(key => SHA.test(record[key]))) return fail('Invalid typed forecast identity.');
   if (!event || event.event_id !== record.event_id || event.league !== record.league || event.id_namespace !== record.id_namespace || record.event_starts_at !== event.starts_at || record.team_id === record.opponent_id || !event.team_ids.includes(record.team_id) || !event.team_ids.includes(record.opponent_id)) return fail('Forecast references an inconsistent event.');
   if (!/^[a-f0-9]{40}$/.test(record.model_commit) || record.period !== 'full_game' || record.extra_time_policy !== 'includes_overtime' || record.conditioning !== 'CONDITIONAL_ON_APPEARANCE' || record.joint_method !== 'COMPLETE_LINE_EMPIRICAL' || record.tail_policy !== 'FINITE_EMPIRICAL_SUPPORT_NO_SMOOTHING' || record.qualification !== 'UNAVAILABLE') return fail('Unsupported forecast period, conditioning, method or qualification.');
   const start = utcMicros(record.event_starts_at), cutoff = utcMicros(record.cutoff_at), freeze = utcMicros(record.history_freeze), issued = utcMicros(record.issued_at), trained = utcMicros(record.trained_through);
@@ -69,6 +70,13 @@ export function validateResearchForecast(record, event, generatedAt) {
   } else if (record.evidence_lane === 'REAL_TIME_CAPTURED') {
     if (record.availability_basis !== 'OBSERVED_INPUT_CAPTURE' || !record.input_capture_ids.length || issued >= start || event.status !== 'SCHEDULED' || event.schedule_basis !== 'OBSERVED_CAPTURE') return fail('Invalid prospective capture semantics.');
   } else return fail('Unsupported research evidence lane.');
+  if (prospective) {
+    const details = record.prospective;
+    const detailNames = ['producer_version', 'event_version', 'selection_sha256', 'source_pack_sha256', 'source_pack_record_id', 'generation_started_at', 'generation_completed_at', 'source_observed_min_at', 'source_observed_max_at', 'imported_at', 'base_model_version', 'base_model_code_sha256', 'history_rows', 'history_latest_event_at'];
+    if (!fields(details, detailNames) || record.evidence_lane !== 'REAL_TIME_CAPTURED' || record.model_version !== 'nba_joint_empirical_pregame_r1_v1' || details.producer_version !== 'nba-pregame-r1-v1' || details.base_model_version !== 'nba_joint_empirical_r0_v1' || !['event_version', 'selection_sha256', 'source_pack_sha256', 'source_pack_record_id', 'base_model_code_sha256'].every(key => SHA.test(details[key])) || !Number.isSafeInteger(details.history_rows) || details.history_rows < 1 || details.history_rows > 100000 || record.input_capture_ids.length !== 1 || record.input_capture_ids[0] !== details.source_pack_record_id) return fail('Unsupported prospective producer contract or references.');
+    const observedMin = utcMicros(details.source_observed_min_at), observedMax = utcMicros(details.source_observed_max_at), imported = utcMicros(details.imported_at), generationStart = utcMicros(details.generation_started_at), generationEnd = utcMicros(details.generation_completed_at);
+    if (!(cutoff - 10n * 60n * 1000000n <= observedMin && observedMin <= observedMax && observedMax <= imported && imported <= cutoff && cutoff <= generationStart && generationStart <= generationEnd && generationEnd === issued && issued <= cutoff + 5n * 60n * 1000000n) || generationEnd - generationStart > 120n * 1000000n || utcMicros(details.history_latest_event_at) >= freeze) return fail('Prospective capture, import, issuance or latency bounds violated.');
+  }
   if (!Array.isArray(record.categories) || record.categories.length !== ALL_NBA_CATEGORIES.length || new Set(record.categories.map(item => item.code)).size !== ALL_NBA_CATEGORIES.length) return fail('All fourteen NBA category outputs are required.');
   record.categories.forEach(category);
   const means = Object.fromEntries(record.categories.map(item => [item.code, Number(item.mean)]));
@@ -101,6 +109,23 @@ export function filterResearchForecasts(rows, filters, now = Date.now()) {
     if (filters.view !== 'history' && (filters.window === '24h' && Date.parse(row.event_starts_at) > now + 86400000 || filters.window === '7d' && Date.parse(row.event_starts_at) > now + 7 * 86400000)) return false;
     return true;
   }).flatMap(forecast => forecast.categories.filter(item => filters.category === 'ALL' || item.code === filters.category).map(item => ({forecast, category: item})));
+}
+
+/** The published availability clock and the visitor's current filters are distinct. */
+export function upcomingEmptyReasons(sports, now = Date.now()) {
+  const captured = sports.flatMap(sport => sport.forecasts || []).filter(row => row.evidence_lane === 'REAL_TIME_CAPTURED');
+  if (captured.some(row => Date.parse(row.event_starts_at) > now)) return ['The selected category, event window or evidence filters exclude the available captured research records.'];
+  if (captured.length) return ['No captured forecast remains upcoming at the current viewing time. Past-event records remain in History; an event starting does not establish its outcome.'];
+  return [...new Set(sports.flatMap(sport => sport.future_availability?.reasons?.length ? sport.future_availability.reasons : ['No genuinely pregame research issuance is present in this published snapshot.']))];
+}
+
+/** A missing statistical grade remains pending, irrespective of the event clock.
+ * Do not infer a result from an event starting or borrow a different forecast's grade.
+ */
+export function forecastGradeState(forecast, grades) {
+  const matches = grades.filter(grade => grade.forecast_id === forecast.forecast_id);
+  if (matches.some(grade => ['league', 'evidence_lane', 'event_id', 'player_id'].some(field => grade[field] !== forecast[field]))) return fail('A grade has conflicting forecast identity.');
+  return {pending: matches.length === 0, record_count: matches.length, statuses: [...new Set(matches.map(grade => grade.status))]};
 }
 
 /** Summarize validated grade records within one lane and exact model identity.

@@ -17,6 +17,7 @@ from .baseline import MARKETS, JointForecast, HistoricalAppearance
 from .integrity import IntegrityError, canonical, digest, stamp, utc
 
 FORECAST_SCHEMA = "nba-research-forecast-v1"
+FORECAST_SCHEMA_V2 = "nba-research-forecast-v2"
 EVENT_SCHEMA = "nba-research-event-v1"
 UNITS = {"PTS": "points", "PRA": "stat_sum", "REB": "rebounds",
          "3PM": "made_three_point_field_goals", "AST": "assists", "RA": "stat_sum",
@@ -30,6 +31,49 @@ FIELDS = {"schema_version", "forecast_id", "id_namespace", "league", "event_id",
           "model_commit", "model_code_sha256", "input_sha256", "trained_through", "cutoff_at",
           "history_freeze", "issued_at", "conditioning", "evidence_lane", "availability_basis",
           "input_capture_ids", "joint_method", "joint_sha256", "tail_policy", "categories", "qualification"}
+
+
+PROSPECTIVE_FIELDS = {"producer_version", "event_version", "selection_sha256",
+                      "source_pack_sha256", "source_pack_record_id", "generation_started_at",
+                      "generation_completed_at", "source_observed_min_at", "source_observed_max_at",
+                      "imported_at", "base_model_version", "base_model_code_sha256",
+                      "history_rows", "history_latest_event_at"}
+FIELDS_V2 = FIELDS | {"prospective"}
+
+
+def _validate_prospective(bundle: dict, clocks: dict) -> None:
+    """Strict wire timing for the separately admitted pregame producer.
+
+    Receipt recovery additionally verifies source bytes/references and producer
+    attestation; these supplied clocks alone cannot establish genuine issuance.
+    """
+    details = bundle["prospective"]
+    if (type(details) is not dict or set(details) != PROSPECTIVE_FIELDS
+            or bundle["evidence_lane"] != "REAL_TIME_CAPTURED"
+            or bundle["model_version"] != "nba_joint_empirical_pregame_r1_v1"
+            or details["producer_version"] != "nba-pregame-r1-v1"
+            or details["base_model_version"] != "nba_joint_empirical_r0_v1"):
+        raise IntegrityError("Unsupported prospective producer contract")
+    for name in ("event_version", "selection_sha256", "source_pack_sha256",
+                 "source_pack_record_id", "base_model_code_sha256"):
+        if type(details[name]) is not str or not SHA.fullmatch(details[name]):
+            raise IntegrityError(f"Invalid prospective {name}")
+    if (type(details["history_rows"]) is not int
+            or not 1 <= details["history_rows"] <= 100000
+            or bundle["input_capture_ids"] != [details["source_pack_record_id"]]):
+        raise IntegrityError("Invalid prospective history budget or source-pack reference")
+    times = {name: _time(details[name]) for name in
+             ("generation_started_at", "generation_completed_at", "source_observed_min_at",
+              "source_observed_max_at", "imported_at", "history_latest_event_at")}
+    cutoff = clocks["cutoff_at"]
+    if not (cutoff - timedelta(minutes=10) <= times["source_observed_min_at"]
+            <= times["source_observed_max_at"] <= times["imported_at"] <= cutoff
+            <= times["generation_started_at"] <= times["generation_completed_at"]
+            == clocks["issued_at"] <= cutoff + timedelta(minutes=5)):
+        raise IntegrityError("Prospective capture, import or issuance window violated")
+    if (times["generation_completed_at"] - times["generation_started_at"] > timedelta(seconds=120)
+            or times["history_latest_event_at"] >= clocks["history_freeze"]):
+        raise IntegrityError("Prospective generation latency or history freeze violated")
 
 
 def decimal_text(value) -> str:
@@ -78,7 +122,11 @@ def quantile(pmf: list[dict], q: float) -> int:
 
 
 def validate_forecast(bundle: dict, *, now=None) -> dict:
-    if type(bundle) is not dict or set(bundle) != FIELDS or bundle["schema_version"] != FORECAST_SCHEMA:
+    if type(bundle) is not dict:
+        raise IntegrityError("Unsupported research forecast schema")
+    version = bundle.get("schema_version")
+    if not ((version == FORECAST_SCHEMA and set(bundle) == FIELDS)
+            or (version == FORECAST_SCHEMA_V2 and set(bundle) == FIELDS_V2)):
         raise IntegrityError("Unsupported research forecast schema")
     for field in ("event_id", "player_id", "player_label", "team_id", "opponent_id", "model_version"):
         _text(bundle[field], field)
@@ -116,6 +164,8 @@ def validate_forecast(bundle: dict, *, now=None) -> dict:
         # The ledger verifies that these captured input receipts really exist.
     else:
         raise IntegrityError("Unsupported forecast evidence lane")
+    if version == FORECAST_SCHEMA_V2:
+        _validate_prospective(bundle, clocks)
     categories = bundle["categories"]
     if type(categories) is not list or len(categories) != len(MARKETS):
         raise IntegrityError("Every forecast must contain all 13 categories plus PA")

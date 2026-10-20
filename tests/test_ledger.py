@@ -1,13 +1,14 @@
 """Synthetic receipt/grading checks in temporary storage; no future evidence."""
 from dataclasses import replace
 from copy import deepcopy
+from contextlib import ExitStack
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
 
-from multisport_lab.integrity import IntegrityError, canonical, digest, read_receipt, write_receipt
+from multisport_lab.integrity import IntegrityError, canonical, digest, read_receipt, stamp, write_receipt
 from multisport_lab.ledger import Ledger, LedgerRef, SCHEMA, validate_grade, validate_outcome
 from multisport_lab.baseline import ForecastTarget, HistoricalAppearance, forecast_reference
 from multisport_lab.forecast_contract import from_reference
@@ -470,6 +471,134 @@ class TypedIssuanceAndGradingTests(unittest.TestCase):
         with self.assertRaisesRegex(IntegrityError, "before the event"):
             self.store.record_outcome(outcome_row(), source_evidence_sha256="a"*64,
                                       source_observed_at=datetime(2024, 1, 1, tzinfo=timezone.utc))
+
+
+class ProspectiveLedgerTests(unittest.TestCase):
+    """Synthetic actual-clock operating tests; no future research evidence."""
+
+    def setUp(self):
+        from prospective_fixtures import CUTOFF, synthetic_pack
+        self.stack = ExitStack()
+        self.addCleanup(self.stack.close)
+        self.temporary = self.stack.enter_context(tempfile.TemporaryDirectory())
+        self.root = Path(self.temporary)
+        self.store = Ledger(self.root)
+        self.cutoff = CUTOFF
+        self.issue_time = CUTOFF + timedelta(seconds=1)
+        self.pack = synthetic_pack()
+        self.ledger_clock = self.stack.enter_context(patch("multisport_lab.ledger._now", return_value=self.issue_time))
+        self.stack.enter_context(patch("multisport_lab.pregame_sources._now", return_value=self.issue_time))
+        self.stack.enter_context(patch("multisport_lab.prospective._now", return_value=self.issue_time))
+        self.stack.enter_context(patch("multisport_lab.baseline._now", return_value=self.issue_time))
+        self.forecast_clock = self.stack.enter_context(patch("multisport_lab.forecast_contract.datetime"))
+        self.forecast_clock.now.return_value = self.issue_time
+        # The common two-row fixture replaces only explicit cohort/version pins;
+        # production keeps the complete original panel and fixed selected event.
+        panel_hash = self.pack["history_provenance"]["normalized_panel_sha256"]
+        self.stack.enter_context(patch("multisport_lab.pregame_sources.PANEL_SHA", panel_hash))
+        self.stack.enter_context(patch("multisport_lab.prospective.PILOT_PANEL_SHA256", panel_hash))
+        self.stack.enter_context(patch("multisport_lab.prospective.PILOT_HISTORY_ROWS", 2))
+        self.stack.enter_context(patch("multisport_lab.prospective.PILOT_EVENT_VERSION", self.pack["event"]["event_version"]))
+        self.stack.enter_context(patch("multisport_lab.prospective.PILOT_SELECTION_SHA256", digest(self.pack["selection"])))
+
+    def prepare(self):
+        with patch("multisport_lab.ledger._now", return_value=self.cutoff-timedelta(minutes=3)):
+            return self.store.record_research_inputs(self.pack)
+
+    def generate(self, input_ref):
+        from multisport_lab.prospective import generate
+        return generate(self.pack, "10", input_record_id=input_ref.record_id, model_commit="f"*40)
+
+    def path(self, ref):
+        return self.root/"records"/ref.kind/f"{ref.record_id}.json"
+
+    def test_separate_pregame_issue_survives_restart_without_resetting_original_clocks(self):
+        input_ref = self.prepare()
+        bundle, joint = self.generate(input_ref)
+        forecast = self.store.issue_prospective(bundle, reference=joint, input_ref=input_ref)
+        before = {ref: self.path(ref).read_bytes() for ref in (input_ref, forecast)}
+        after_event = self.cutoff+timedelta(hours=3)
+        with patch("multisport_lab.ledger._now", return_value=after_event):
+            restarted = Ledger(self.root)
+            self.assertEqual(restarted.issue_prospective(bundle, reference=joint, input_ref=input_ref), forecast)
+            self.assertEqual(restarted.record_research_inputs(self.pack), input_ref)
+            index = restarted.scan()
+        self.assertEqual([len(index[key]) for key in ("research_inputs", "forecasts", "outcomes", "grades")], [1, 1, 0, 0])
+        self.assertEqual(len(bundle["categories"]), 14)
+        for ref, content in before.items():
+            self.assertEqual(self.path(ref).read_bytes(), content)
+
+    def test_new_forecast_requires_inputs_received_by_cutoff(self):
+        input_ref = self.store.record_research_inputs(self.pack)
+        bundle, joint = self.generate(input_ref)
+        with self.assertRaisesRegex(IntegrityError, "not durably recorded by the cutoff"):
+            self.store.issue_prospective(bundle, reference=joint, input_ref=input_ref)
+        self.assertEqual(self.store.scan()["forecasts"], {})
+
+    def test_generic_append_cannot_create_a_new_self_attested_prospective_record(self):
+        input_ref = self.prepare()
+        bundle, joint = self.generate(input_ref)
+        forecast = self.store.issue_prospective(bundle, reference=joint, input_ref=input_ref)
+        payload = self.store.read(forecast)
+        self.path(forecast).unlink()
+        with self.assertRaisesRegex(IntegrityError, "verified issue_prospective API"):
+            self.store.append("forecasts", payload["logical_id"], payload["data"], references=(input_ref,))
+        self.assertFalse(self.path(forecast).exists())
+        self.assertIsNone(self.store._verified_prospective_append)
+
+    def test_new_persistence_after_deadline_cannot_reuse_an_earlier_issue_string(self):
+        input_ref = self.prepare()
+        bundle, joint = self.generate(input_ref)
+        with patch("multisport_lab.ledger._now", return_value=self.cutoff+timedelta(minutes=5, microseconds=1)):
+            with self.assertRaisesRegex(IntegrityError, "outside the T90"):
+                self.store.issue_prospective(bundle, reference=joint, input_ref=input_ref)
+        self.assertEqual(self.store.scan()["forecasts"], {})
+
+    def test_restart_rejects_missing_inputs_or_changed_original_receipt_window(self):
+        input_ref = self.prepare()
+        bundle, joint = self.generate(input_ref)
+        forecast = self.store.issue_prospective(bundle, reference=joint, input_ref=input_ref)
+        original_input = self.path(input_ref).read_bytes()
+        self.path(input_ref).unlink()
+        with self.assertRaises((FileNotFoundError, IntegrityError)):
+            Ledger(self.root).scan()
+        self.path(input_ref).write_bytes(original_input)
+        payload = self.store.read(forecast)
+        payload["received_at"] = stamp(self.cutoff+timedelta(minutes=5, microseconds=1))
+        self.path(forecast).unlink()
+        write_receipt(self.path(forecast), payload)
+        with patch("multisport_lab.ledger._now", return_value=self.cutoff+timedelta(minutes=6)):
+            with self.assertRaisesRegex(IntegrityError, "issuance window"):
+                Ledger(self.root).scan()
+
+    def test_legacy_r0_api_does_not_accept_the_new_pregame_lane(self):
+        input_ref = self.prepare()
+        bundle, joint = self.generate(input_ref)
+        with self.assertRaisesRegex(IntegrityError, "does not support REAL_TIME_CAPTURED"):
+            self.store.issue_forecast(bundle, reference=joint)
+        self.assertEqual(self.store.scan()["forecasts"], {})
+
+    def test_later_verified_synthetic_outcome_grades_r1_without_financial_settlement(self):
+        input_ref = self.prepare()
+        bundle, joint = self.generate(input_ref)
+        forecast = self.store.issue_prospective(bundle, reference=joint, input_ref=input_ref)
+        self.assertEqual(list(self.store.iter_grades()), [])
+        event_start = self.cutoff+timedelta(minutes=90)
+        observation = event_start+timedelta(hours=3)
+        with patch("multisport_lab.ledger._now", return_value=observation):
+            outcome = self.store.record_outcome(
+                outcome_row(event_id=self.pack["event"]["event_id"], player_id="10", season_ending_year=2027,
+                            event_start=event_start),
+                source_evidence_sha256="c"*64, source_observed_at=observation)
+            grade_ref = self.store.grade_forecast(forecast, outcome)
+            restarted = Ledger(self.root)
+            grade = restarted.read(grade_ref)["data"]["grade"]
+            self.assertEqual(len(list(restarted.iter_active_grades())), 1)
+        self.assertEqual(grade["evidence_lane"], "REAL_TIME_CAPTURED")
+        self.assertEqual(grade["status"], "SCORED")
+        self.assertEqual(len(grade["categories"]), 14)
+        self.assertEqual(grade["financial_settlement"], "NOT_EVALUATED")
+        self.assertEqual(self.store.read(forecast)["data"]["bundle"], bundle)
 
 
 if __name__ == "__main__":
