@@ -2,6 +2,96 @@
 
 Updated: October 20, 2026 (UTC).
 
+## October 20, 20:07 UTC — completion fixes verified; full-history timing failed safely
+
+Exact implementation source commit: `c18809f2fc7752d8f48c4749024623f5f4d73eb6`
+on `implementation/pros004-paired-readiness`, draft PR #10. Source bindings cover
+19 producer dependencies and the diagnostic adds its driver as the 20th pin.
+Independent fresh GitHub recovery verified those exact bytes, all nine frozen
+pilot files, unchanged R0/K0 laws/protocol and all original 19 receipts. Main
+remains `735a464e9e8718303ef481abf711a8969de56694`; the pilot records branch/PR #8
+remain `df446eee302fd6662ef82184e2c733f5d6e2d2dd`. PROS004/S0 remain inactive.
+
+The persistence fixes preserve pre-write `received_at`, observe actual post-write
+completion, require exact structured remote readback, publish the final original
+ACK prefix, and distinguish timing, evidence publication and comparison admission.
+Missing generation requires the original strict input-finalization report; its
+genuine durable operating-state admission remains unresolved. Typed recovery now
+validates every supported contract and relationship. Explicit integrity exceptions
+survive optimized Python. The 20-case normal/optimized old/new reproduction receipt
+preserves both reviewed c305 defects and the fixed behavior.
+
+Actual final software commands at this source: `python3 -m unittest discover -s
+tests -v` **416 PASS / 152.963s**; `python3 -O -m unittest discover -s tests -p
+"test_pros004*.py" -v` **138 PASS / 127.721s**; `node --test
+--test-isolation=none web/tests/*.test.mjs` **45 PASS**; `python3 -m
+multisport_lab.demo` PASS. Earlier source-drift stops during coordinated editing
+remain recorded separately. They were followed by these stable-source passes.
+
+Actual GitHub diagnostic writer/readback succeeded at
+`8684aed08382d6be6c7e83ff93ee833888608d55` on
+`diagnostics/pros004-checkpoint-20261020`: **21 files (20 ledger + 1 journal),
+1,820,865 bytes, 25.387s total**, with actual UTC clocks and fresh independent
+fetches. The only new record is explicitly synthetic transport status, not an
+actual study selection failure. All 19 original receipts remain byte-identical.
+No provider request, forecast generation, activation or pilot mutation was involved.
+
+The separate generic high-entropy load retained **499 synthetic receipts /
+25,165,824 bytes**, local bare-Git push/fresh-fetch **5.763s**, total **6.666s**.
+It verifies transport load, not full typed-study execution or GitHub latency.
+The complete conservative study allocation remains **499 + 13 slots / 512**,
+**24,576,000 bytes**, under unchanged 32-MiB limits. One 2-MiB journal replaces
+one existing metadata slot; no per-forecast record or probability truncation.
+
+The complete retained 26,645-row path ran with explicitly advancing synthetic
+clocks and actual local Git checkpoints:
+
+```bash
+python3 -m multisport_lab.pros004_readiness \
+  --output evidence/research/pros004-readiness-measurement-v2.json \
+  --store-root /tmp/nml-pros004-diagnostic-c188 \
+  --producer-commit c18809f2fc7752d8f48c4749024623f5f4d73eb6
+```
+
+**PARTIAL_OR_FAILED_TIMING**, actual 19:59:09.051962–20:07:01.835522 UTC.
+Cohort generation/verification/persistence took **339.438s**; five model generations
+used only **29.745s**. Required checkpoint completion crossed the 300-second gate.
+Five original diagnostic forecasts survive, four have local timely original
+completion proof, and **zero are comparison-eligible**. Three model peers remain
+missing. The last ACK journal entry was not published after failure, so exact full
+remote-prefix recovery is false; this is not a complete paired cycle. The fetched
+prefix/readback retained five originals and explicit missing/unacknowledged state.
+Two integrity replays recovered every **26,645** joint atom and all **14** original
+category PMFs exactly; no outcomes or comparative scores were used. Local state is
+29 files / **3,645,510 bytes**, fetched prefix 3,644,111 bytes, peak RSS **185,396 KiB**.
+The create-only failed receipt is preserved unchanged, not replaced by old v1 timing.
+
+Research UI/export implementation and synthetic desktop/mobile checks passed;
+no website deployment occurred. No genuine prospective issuance, new real outcome
+grading, reserved comparative evaluation, financial settlement or qualified ticket
+was produced. Six historical forecast bundles/grades remain their original lane.
+
+Evidence: `evidence/research/pros004-readiness-measurement-v2.json`,
+`pros004-transport-load-20261020-v1.json`,
+`pros004-actual-github-checkpoint-20261020-v2.json`,
+`evidence/verification/pros004-software-checks-v2.json`,
+`pros004-independent-review-v2.json`, and the dated completion reproduction.
+Detailed new contracts are `docs/PROS004_COMPLETION.md` and
+`docs/PROS004_PUBLIC_EXPORT.md`; source files/commands are recoverable from
+`git show --stat c18809f2` and the receipts' exact source inventories.
+
+Remaining activation dependencies: complete permitted first UTC-date inventory
+(actual first T90 still unknown), source operational admission, private primary raw
+outcome retention/permission/full raw budget/linkage, reviewed durable operating
+phase-report admission, exact remotely recovered activation evidence, full typed
+late-study/hosted timing and sufficient cohort latency. The original reservation
+stays inactive and will not shift/backfill if its actual cutoff passes.
+
+Next concrete task already in progress: one bounded content-verified validation
+optimization, retaining all independent byte/hash/reference and typed checks,
+followed by a new exact source pin and separately named non-issuance timing receipt.
+R0/K0 mathematics, gates, capacities and all frozen experiments remain unchanged.
+
 ## October 20, 19:29–19:40 UTC — expired pilot audit and PR #10 corrections
 
 This is a new checkpoint; earlier operating observations below remain unchanged.
