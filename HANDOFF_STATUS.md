@@ -90,7 +90,12 @@ The corrected hosted run [39368941819](https://github.com/NickNicky19/Nicks-mult
 277 Python tests, 35 frontend tests, demo/export/smoke, retained probe reuse,
 normal source integration/push/fresh readback, and actual PR #8 PATCH. Publication
 receipt payload `c1fc19fcea9570797d387ecaf0ea4e4ebec3dbda7e17db32a79de7b789e31886`
-truthfully records UPDATED_EXISTING, not bot creation. The built-in token dispatched
+truthfully records UPDATED_EXISTING, not bot creation. The cancelled duplicate did write an earlier publication receipt incorrectly
+labelled `pull_request_creation=VERIFIED` after updating the already open draft.
+That original is retained; `evidence/cycles/2026-10-20-publication-proof-correction.json`
+explicitly corrects its meaning to UPDATED_EXISTING and cross-references the
+original hash and accurate later proof. It establishes no bot creation permission.
+The built-in token dispatched
 [Pages validation 39369096848](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39369096848)
 on exact records head `783ac5622297a742e79ea539d885dade541744bd`; it passed and
 deployment was skipped off main. **No owner permission setting change is needed
@@ -102,6 +107,18 @@ The final expiry-only regression additionally ensures that bad producer/plan pin
 still expire the trusted one-run workflow before stopping all branch/data work.
 Local final full suite passed **278 tests in 8.713s**; the nine source files remain
 unchanged. The final setup revision needs its own hosted checks before approval.
+
+Final code commit **`2499a0075be6f854416d50b6c7b01f06bf1885f4`** was published
+through the existing connected GitHub app as a normal fast-forward from 86a79d5,
+with expected-parent and exact local/API tree SHA checks. Local Git recovered the
+exact API commit object by its verified SHA and advanced by fast-forward; no reset
+or history rewrite. Hosted setup workflow **39369616942** and Pages check
+**39369616935** both passed. Actual logs show **278 Python tests** plus the
+35 frontend tests, preflight and existing PR #8 update passed; exact records
+`24e298cd62743153d8886dc6b73e0ebd798ac32f` passed explicitly dispatched branch
+validation **39369740275** with no Pages deploy. Final adapter SHA256 is
+`77bb01ca9463762d62cb73b3427217725f684ac2507231311a19fdc60814aab0`.
+The remaining correction/documentation revision changes no operating code.
 
 **Current activation blocker:** the managed shell's existing GH_TOKEN began
 returning HTTP 401 (confirmed `gh auth status`, REST reads and Git fetch), while
