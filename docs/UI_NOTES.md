@@ -1,5 +1,22 @@
 # Research interface
 
+## Public PR #7 rollout — October 20, 2026
+
+Main `735a464e9e8718303ef481abf711a8969de56694` is publicly deployed by successful
+workflow `39377816184`. Actual Chromium verification ran
+06:00:31.974143–06:01:07.440771 UTC at 1440/390/320px. Seven routes/reloads,
+all 14 category filters, six unchanged historical bundles/84 PMFs/six statistical
+grades, accurate Upcoming explanations and all 45 scope/2–6-leg/direction
+NO_ACTION cases passed, with no page or HTTP errors. Public system-TLS hashes
+match the exact main manifest, NBA asset and seven static files. Full inputs/raw
+responses remain outside Pages. Proof:
+`evidence/deployment/2026-10-20-pr7-pages.json` on the one records branch.
+
+The operating pilot is now scheduled separately; publication has created zero
+genuine future forecasts, outcomes, new grades, settlements or qualified tickets.
+Actual later issuance must be retained and reviewed through PR #8 before public
+publication. No UI fixture or synthetic future result was injected during QA.
+
 ## Public PR #6 rollout — October 19 evening Central / October 20 UTC
 
 Main `cde77cbaa0908c2ed49d26140110dea5493b54b7` is publicly deployed.

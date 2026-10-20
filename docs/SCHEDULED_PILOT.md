@@ -9,6 +9,26 @@ The reviewed producer stays `58530309cf384425e15f02fd9fa980899a4dc0bc`. The exis
 cycle plan, selection and all nine reviewed source files remain unchanged. New
 operating code is `scheduled_cycle.py` and `pilot_github.py`, outside those files.
 
+## Activation verified — October 20, 2026
+
+PR #7 was approved at exact head `7dd59fd2b8cda7772cfbcb6b662c07ba0d2e5f6a`
+and merged normally as main `735a464e9e8718303ef481abf711a8969de56694` at
+05:59:10 UTC / 12:59:10 a.m. CDT. GitHub independently confirms workflow
+**390126745 ACTIVE** and the exact default-branch cron/bytes. The next configured
+trigger is **October 20, 12:15 p.m. CDT / 17:15 UTC**. A run ID will be assigned
+when GitHub queues it. No computer/app must stay running and no further setup
+is required; keep the repository and Actions enabled.
+
+The one records branch normally integrates exact main at
+`ec04fc65d4b9a2342f92ee2f7f5be3e13730ac74`; independent fresh restart/readback
+passed all original source/record/history/plan checks, with no execution claim,
+fresh input binding, forecast or new grade. The native task remains paused.
+`evidence/cycles/2026-10-20-scheduled-activation.json` and the latest handoff on
+that branch retain the factual activation. PR #8 remains draft for actual results.
+The owner reports enabling Actions PR creation; the integration cannot read that
+setting (HTTP403). Existing-draft update and validation access are verified and
+remain the operating path. No additional PR was created to test the setting.
+
 ## Host and activation
 
 Use the repository's existing GitHub Actions host, with the built-in GITHUB_TOKEN,

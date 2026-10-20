@@ -7,7 +7,118 @@ reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
-## Current operating preparation — October 20, 2026 UTC
+## Current checkpoint — one pilot scheduled, October 20, 2026 CDT
+
+**The ONE unattended NBA pilot is armed on GitHub Actions.** The user approved
+PR #7 at exact head `7dd59fd2b8cda7772cfbcb6b662c07ba0d2e5f6a`, merge commit,
+and activation. Fresh guarded readiness at 05:58:52.393784 UTC found CLEAN /
+MERGEABLE, build+pilot checks passed, no pending/failed/unknown checks, no missing
+required reviewers and zero unresolved threads. The canonical helper revalidated
+policy digest `70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df`
+and used the normal exact-head protected path; no admin, bypass or force push.
+GitHub mergedAt is **05:59:10 UTC / 12:59:10 a.m. CDT**; helper requestedAt
+05:59:11.243383Z and watcher observation 05:59:37.114793Z are distinct clocks.
+Actual main merge **`735a464e9e8718303ef481abf711a8969de56694`** has parents
+cde77cb and approved 7dd59fd, with the same approved tree
+`3ef0ab089411bad93252818ebab9838059aad7a5`. Newer legitimate work is preserved.
+
+**Scheduler registration ID `390126745`, state ACTIVE**, exact path
+`.github/workflows/nba-20261020-pilot.yml`. Independent GitHub default-branch
+contents readback (without a ref override) matches exact main and cron
+`15 17 20 10 *`. Workflow blob `a6f8ed2f5627704e9682bb1d765d63b3d0be4e11`,
+raw SHA256 `900783602710fd82761c071a143ad7e9c7d5d491461ca4c8d650427638583dab`.
+The next configured trigger is **October 20, 2026, 12:15 p.m. CDT / 17:15 UTC**.
+GitHub assigns an execution run ID only when it queues the scheduled run; there
+is none yet. This is confirmed scheduler configuration, not an early execution.
+GitHub dispatch can be late; original gates must still fail closed.
+
+The GitHub-hosted runner uses existing access and its built-in token. **No personal
+computer or ChatGPT/Codex app must stay running. No further user setup is needed.**
+Keep this repository and Actions enabled. The user reports enabling Actions PR
+creation/approval; the integration's settings read returned HTTP403, so that bit
+is owner-reported rather than independently read. The previously verified update
+path to the existing draft PR #8 remains sufficient; no duplicate PR or new token
+was created to test that setting. Native task `6ad6e46f754c81918f190eff2fdc248c`
+was independently confirmed paused with null next-run time and remains paused.
+There is only one prospective executor.
+
+One retained state/writer uses `records/nba-20261020-401909088-t90`. We normally
+merged exact main into its existing c854d13 tip, preserving all receipts and handoff
+history, as **`ec04fc65d4b9a2342f92ee2f7f5be3e13730ac74`**, and pushed/read it back.
+There was no content conflict; the manifest passed unchanged after integration.
+Independent fresh-clone/restart recovery confirms exact main ancestry, all nine
+producer files, 19 original records, 34 frozen files, original plan and full
+26,645-row/1,231-event/14,720,351-byte history. Sixteen capture/model/write paths
+were forbidden with zero calls. Actual post-merge preflight at 06:00:33.403381Z
+reported CAPTURE_NOT_YET_OPEN / NOT_READY, no fresh binding or execution claim,
+no capture/generation intent and zero issued subjects. This status is expected
+before the capture window; it does not mean the scheduler is disabled.
+
+The producer remains **`58530309cf384425e15f02fd9fa980899a4dc0bc`**, independently
+of main/build/records HEAD. All nine reviewed files stay unchanged. Early input
+`dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc`
+is history-only. The actual worker must capture, normalize, persist and bind a
+fresh input during **12:20–12:30 p.m. CDT / 17:20–17:30 UTC**, then generate,
+verify and persist during **12:30–12:35 p.m. CDT / 17:30–17:35 UTC**. It invokes
+the guarded manual-cycle path; retries retain the same fresh input and producer,
+recover originals first and generate only missing subjects while timely. Changed
+sources/event/cohort, missed windows or ambiguous interruption produce an actual
+failed/partial result, with no backdating, replacement or relaxed gate. The
+workflow verifies and disables only itself before live work, and never re-enables
+in live mode. Pending original-less intents cannot trigger regeneration.
+
+[Pages workflow 39377816184](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39377816184)
+passed on exact main: build completed 05:59:41Z, deployment 05:59:57Z. Actual main
+checks: **278 Python tests, 35 frontend tests, synthetic demo and artifact smoke
+PASS**. Public system-TLS manifest serves exact 735a464; manifest SHA256
+`66f2910d660d7a696f56a86fd1d5acb09c908fee4014429629a54023ff3f64c5`, snapshot
+`88c6146c65b22e6cf9baeefd9b5d7340e9112e0298a79482c280029c0d7a8b1f`.
+The 151,194-byte NBA asset hash is
+`22e04b7a68fde0a9a639af9a71512a5a149fd3326e5ee1491a0f5f26f7a46f2b`; all
+seven static assets match main. Actual public Chromium at 1440/390/320px passed
+seven routes/reloads, all 14 categories, six original historical bundles/84 PMFs/
+six statistical grades, the three accurate Upcoming reasons and all 45 scoped
+2–6-leg/direction NO_ACTION cases, with no page/HTTP errors. Public QA clocks
+06:00:31.974143–06:01:07.440771 UTC. This is website/software verification only.
+
+Durable proofs: `evidence/cycles/2026-10-20-scheduled-activation.json` and
+`evidence/deployment/2026-10-20-pr7-pages.json`. This post-activation documentation
+is retained on the ONE records branch after ec04fc6; its exact current commit is
+visible with `git log -1 --format=%H`. It is not another producer revision and
+is not a second execution. PR #8 remains draft/pending execution; it will receive
+actual records, partial status and explicit validation after the worker runs.
+Any later merge/publication approval can occur after time-sensitive preservation.
+Files changed in this checkpoint: this handoff, PROJECT_CONTEXT.md,
+docs/SCHEDULED_PILOT.md, docs/VERIFICATION.md, docs/UI_NOTES.md, MANIFEST.sha256
+and those two new receipts. No operating/model/source file changed.
+
+**Genuine forecasts 0; new outcomes/grades 0; financial settlements 0; qualified
+tickets 0.** Existing six historical statistical grades are unchanged. Outcome
+append and grading await verified final evidence, with DNP/unresolved/corrections
+handled separately from venue settlement. K0, R0, DEV002/003 and PROS004 boundaries
+remain frozen. NFL/MLB were untouched. No paid service, signup or API key was added.
+The next concrete operation is the single configured worker at 17:15 UTC. Do not
+run parallel manual capture/issue or resume the paused native task. A disabled
+workflow may still have a live job; future recovery must remain intent-aware.
+
+Actual commands this checkpoint:
+
+```bash
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=7 --mode until-actionable --interval 15 --timeout 180 --cursor /tmp/nml-pr-completion/pr7-cursor.json --observations-file /tmp/nml-pr-completion/pr7-observations.ndjson --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_land.py --repo /workspace/Nicks-multisport-lab-project --pr 7 --head 7dd59fd2b8cda7772cfbcb6b662c07ba0d2e5f6a --mode auto --method merge --policy-digest 70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df --confirm --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=7 --await-merge 7dd59fd2b8cda7772cfbcb6b662c07ba0d2e5f6a --await-merge-mode auto --await-merge-since 2026-10-20T05:59:11.243383Z --interval 15 --timeout 180 --cursor /tmp/nml-pr-completion/pr7-cursor.json --observations-file /tmp/nml-pr-completion/pr7-observations.ndjson --pretty
+git fetch origin
+git switch main
+git merge --ff-only origin/main
+git switch -c records/nba-20261020-401909088-t90 --track origin/records/nba-20261020-401909088-t90
+git merge --no-edit main
+python3 -m multisport_lab.manual_cycle preflight --plan evidence/cycles/2026-10-20-nba-401909088-plan.json
+sha256sum --check --quiet MANIFEST.sha256
+git push origin records/nba-20261020-401909088-t90
+python3 /tmp/nml-public-pr7-qa.py 735a464e9e8718303ef481abf711a8969de56694
+```
+
+## Prior operating preparation — October 20, 2026 UTC
 
 The user explicitly authorized ONE unattended execution of the existing October
 20 pilot, superseding manual-only/no-scheduling wording for this cycle only.

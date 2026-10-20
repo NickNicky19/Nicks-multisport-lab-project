@@ -1,5 +1,28 @@
 # Verification history and delivery status
 
+## Current activation and public deployment: PR #7 — October 20, 2026
+
+Approved exact head 7dd59fd2b8cda7772cfbcb6b662c07ba0d2e5f6a merged through the
+canonical guarded helper as main 735a464e9e8718303ef481abf711a8969de56694 at
+05:59:10Z. Main/approved trees match. Independent GitHub default-branch file and
+workflow API readback confirm workflow 390126745 ACTIVE, exact cron `15 17 20 10 *`,
+next configured trigger 12:15 p.m. CDT / 17:15 UTC October 20. The native task stays
+paused. The records branch normally integrated exact main as ec04fc65 and passed
+fresh-clone/restart recovery of all nine producer files, 19 original records, 34 frozen
+files and complete 26,645-row history with 16 source/model/write paths forbidden.
+There is no early claim, binding or genuine issuance. Timing/identity gates and
+self-expiry remain unchanged; scheduling does not establish future evidence.
+
+Pages workflow 39377816184 passed 278 Python/35 frontend tests, demo/artifact and
+deployment, completed 05:59:57Z. Independent public system-TLS/hash checks matched
+exact main, the NBA asset and all seven static files. Chromium at 1440/390/320px passed
+seven routes/reloads, 14 filters, six historical bundles/84 PMFs/six grades, three honest Upcoming
+reasons and 45 builder scope/size/direction NO_ACTION cases without page/HTTP errors.
+No new model evaluation, outcome grading, financial settlement or qualified ticket.
+Full receipts: `evidence/cycles/2026-10-20-scheduled-activation.json` and
+`evidence/deployment/2026-10-20-pr7-pages.json`, retained with the current handoff
+on `records/nba-20261020-401909088-t90`. PR #8 remains draft/pending actual execution.
+
 ## October 20 one-run scheduling preparation
 
 The exact one-time user authorization supersedes manual-only operation for the
@@ -19,7 +42,7 @@ software evidence; early route probes are not timely pilot captures. See
 requirements. No genuine forecasts, outcomes or new model scores are created by
 setup checks.
 
-## Current public deployment: PR #6 — October 19 evening Central / October 20 UTC
+## Prior public deployment: PR #6 — October 19 evening Central / October 20 UTC
 
 Exact approved head `0a20c2a752e6d5475e46feadee08c87e01846d6d` merged as
 `cde77cbaa0908c2ed49d26140110dea5493b54b7` at 03:19:59Z; trees match.
@@ -149,7 +172,7 @@ PR #3's approved head2d30ae98b20918bc97ea9eda4578ef0c8d509d71 merged unchanged
 as main002a6b994c862c758f1d7c8199831c75eff761af. Workflow39350851916 build/deploy
 succeeded, deployment completed00:59:52 UTC. Public system-verified HTTPS and
 manifest/asset/module hashes matched exact main. Independent Chromium154 passed
-all7routes/reloads at1440/390/320px, six historical bundles/all84 PMFs/all14
+all sevenroutes/reloads at1440/390/320px, six historical bundles/all84 PMFs/all14
 filters, six statistical grades and exact saved clocks, Upcoming's three
 missing-input reasons, and45 scope×size×direction builder cases with NO_ACTION.
 Zero page/HTTP/prefix errors; all18 immutable ledger bytes unchanged. Exact
