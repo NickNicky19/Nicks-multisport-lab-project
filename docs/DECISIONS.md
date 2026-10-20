@@ -17,10 +17,10 @@ joint hash; a code reference alone is not sufficient evidence.
 Choose a **1200-second source-age ceiling** before any PROS004 activation or
 outcome inspection. Capture/normalize/persist one complete event input during
 [T90-20min,T90-10min], including schedule and fixed lowest-two active IDs/team.
-This allows the schedule/cohort to be durable by the selection close. Neither
-600 seconds nor a later postselection input replacement is an existing reserved
-requirement. This is a proposed source operating bound, not source admission or
-proof of continuous status monitoring. Changed event/subject versions fail closed.
+This allows the schedule/cohort to be durable by the selection close. A later
+input replacement cannot silently change the frozen selection. This proposed
+source operating bound does not establish source admission or continuous status
+monitoring. Changed event/subject versions fail closed.
 
 An immutable event admission claim is distinct from generation/issuance. Only a
 complete atomic original forecast receipt constitutes issuance. Recover originals
@@ -32,13 +32,21 @@ readiness code rejects genuine writes; synthetic tests remain explicitly labelle
 The corrected base is 442 comparison records + 32 existing/pilot allowance = 474, not
 the reservation's superseded 466 count. Add 21 event claims + 4 study/activation/
 readback/evaluation metadata slots = 499; reserve 13 correction/failure slots = 512.
-No budget increase, silent history/atom truncation or forgotten pilot grades.
+The conservative complete plan is 22,487,040 bytes; no file slots remain beyond
+the 13-record reserve. No budget increase, silent history/atom truncation or forgotten pilot grades.
 Date-level empty/failure inputs occupy their existing input slot. Actual envelope
 sizes and the conservative byte ceiling must be independently measured.
 
 The first selected cutoff remains unknown without permitted complete UTC-date
-schedule coverage/current versions. An October 20 local-date source showing an Oct21
-01:30UTC candidate does not prove it is the first event of the full UTC date.
+schedule coverage/current versions. An October 20 local-date source showing an October 21
+01:30 UTC candidate does not prove it is the first event of the full UTC date.
+Measured diagnostics use explicitly invented events and simulated clocks, with
+actual resource clocks measured separately. A bounded content-addressed cache
+retains immutable normalized rows only; body hashes, clocks, provenance, source
+receipt bytes and exclusions are rechecked. Exact frozen law sources remain
+unchanged. Deterministic snapshots verify original receipt bytes and references
+before an offline acknowledgment; they establish no GitHub issuance checkpoint.
+
 Midnight October 21 is not an automatic safe activation deadline. PROS004 remains
 inactive until its complete reviewed implementation, source/retention admission
 and remotely recovered activation evidence exist before the actual first cutoff.

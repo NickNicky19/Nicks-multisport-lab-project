@@ -1,6 +1,6 @@
 # PROS004 paired producer readiness
 
-Status: implementation in progress; **INACTIVE / READINESS ONLY**. This package
+Status: implemented and independently checked in draft PR #10; **INACTIVE / READINESS ONLY**. This package
 prepares a draft PR. It authorizes no source capture, scheduler, genuine issuance,
 activation, merge or deployment. The mathematical reservation remains unchanged in
 `docs/NBA_PROSPECTIVE_004.md` and its immutable protocol receipt.
@@ -94,8 +94,11 @@ lock and complete validated recovery prevent duplicates; orphan/unacknowledged
 state blocks regeneration. A post-link interruption recovers the original bytes.
 Loss of local state requires independent complete remote recovery before resuming.
 Remote commit/readback evidence is distinct from local persistence.
-Synthetic checkpoint callbacks test stopping and recovery; they do not establish
-an actual GitHub writer integration for the new record version.
+A deterministic offline snapshot adapter binds every original receipt byte hash,
+encoded size and payload hash, verifies full references and timing, and acknowledges
+only a complete readback into a fresh root outside Git. It retains interrupted
+copies and partial peers. These offline checks do not establish an actual GitHub
+writer integration for the new record version.
 
 ## Outcomes and statistical grading
 
@@ -119,18 +122,20 @@ with explicit exceptions under normal and optimized Python; DEV005 stays frozen.
 
 | Requirement | Current state |
 | --- | --- |
-| Separate wrapper/input/store implementation | In progress |
-| Unchanged R0/K0 and coherent all 13 + PA | Pending independent tests |
-| Full-history retention/restart/encoded sizes | Pending bounded diagnostic |
-| Full-study capacity including pilot/metadata/corrections | Defined, measurement pending |
-| Timing, partial peers, duplicates, DNP and correction tests | In progress |
-| Explicit integrity checks under python -O | In progress |
-| Reviewed source commit and independent GitHub readback | Pending draft delivery |
+| Separate wrapper/input/store/snapshot implementation | Complete for diagnostic review at `6e08b405d79d0fe7fde7299b3407504b35ef128f` |
+| Unchanged R0/K0 and coherent all 13 + PA | 338 integrated tests pass; all 8 full-history diagnostic contracts checked |
+| Full-history retention/restart/encoded sizes | Complete: 31 records / 3,716,686 bytes, including original 19 |
+| Full-study capacity including pilot/metadata/corrections | Enforced: 499 + 13 records / 22,487,040 bytes |
+| Timing, partial peers, duplicates, DNP and correction tests | Pass; synthetic evidence only |
+| Explicit integrity checks under python -O | 60 focused tests and independent final verification pass |
+| Source commit and independent GitHub readback | Exact `6e08b405d79d0fe7fde7299b3407504b35ef128f` and original 19 records recovered; PR #10 review pending |
 | Complete permitted first UTC-date schedule and selected cutoff | **Unresolved** |
 | Actual source route completeness/operation admission | **Unresolved** |
 | Actual fresh event/cohort/input capture | Not performed; not authorized here |
 | Source-bound remotely recovered activation evidence | Not created; not authorized here |
 | Reviewed genuine activation validator and remote writer integration | **Unresolved; live guard disabled** |
+| Operational generic failure metadata admission | **Unresolved**: private diagnostic-only schema needs exact event and receipt-clock contract |
+| Durable actual raw outcome evidence | **Unresolved**; only offline byte-bound normalization demonstrated |
 | Bounded public history/publication admission for 168 forecasts / 168 grades | Separate activation dependency |
 | Genuine paired issuance / outcomes / financial settlement | None |
 
@@ -142,6 +147,65 @@ with current versions is required before declaring the first selected cutoff.
 The reservation alone permits a first T90 as early as October 20 22:30 UTC (17:30 CDT).
 Do not assume midnight is safe, move the reservation, backfill or replace misses.
 
-Exact implementation commits, commands, actual checks, diagnostic sizes/costs and
-remaining blockers will be appended at the completed checkpoint. Next: finish the
-shared contracts and verification, then commit/push and open a draft readiness PR.
+## Measured review checkpoint
+
+Implementation source is frozen at
+`6e08b405d79d0fe7fde7299b3407504b35ef128f`; later evidence/documentation commits do
+not change its executed bytes. Retained measurement:
+`evidence/research/pros004-readiness-measurement.json`. Independent readback and
+normal/optimized verification are in the adjacent source-recovery and verification
+receipts. The full diagnostic used a fictitious event and explicitly simulated
+input/issuance clocks; actual wall/resource clocks were measured separately.
+
+| Complete encoded envelope | Measured maximum | Ceiling |
+| --- | ---: | ---: |
+| Shared full history | 1,639,440 bytes | 2,097,152 bytes |
+| Event input | 10,972 bytes | 32,768 bytes |
+| R0 forecast | 30,347 bytes | 65,536 bytes |
+| K0 forecast | 30,488 bytes | 65,536 bytes |
+| Event admission | 3,774 bytes | 8,192 bytes |
+| Study manifest | 1,616 bytes | 8,192 bytes |
+| Invented shared outcome / correction revision | 2,649 bytes | 8,192 bytes |
+| Synthetic individual statistical grade | 5,164 bytes | 16,384 bytes |
+| Correction link | 1,406 bytes | 8,192 bytes |
+
+The existing 19 receipts remained byte-identical. Eight diagnostic forecasts retained
+all 14 PMFs and reported-minute distributions. Restart replay reconstructed one
+full 26,645-atom law per model and matched every original atom/weight hash and PMF.
+No atom was omitted. Generation/verification/persistence of the four-subject cohort
+measured **196.304 seconds**; total including baseline recovery and full-law replay
+was **281.226 seconds**, peak RSS **185,296 KiB**. These measurements include the
+existing ledger. They do not establish actual source or hosted checkpoint latency,
+and the synthetic clock fields do not prove genuine timely issuance.
+
+A separate size-only stress used these retained full PMFs with invented counts,
+with model fitting/generation patched to fail. It appended two synthetic outcome
+revisions, four synthetic individual grades and three links to a copied store,
+31 to 40 records / 3,746,774 bytes. Restart, idempotent retry, six-slot correction
+accounting and preservation of all original forecast bytes passed. The original
+31-record diagnostic store/report remained unchanged. The executed script and
+size-only receipt are retained as `pros004-readiness-size-stress.py` and
+`pros004-readiness-full-pmf-size.json` under `evidence/research/`. It produced no
+real outcome, model fit, genuine forecast or comparative score.
+
+The full-study byte figure is a conservative ceiling plan, not an observed future
+ledger. Each future record must still pass its own complete-envelope limit. The
+13 reserve slots are finite; a correction exhausting them blocks operation rather
+than dropping evidence. The reserved 900-second aggregate-evaluation budget has
+not been benchmarked by scoring this study; no comparative aggregate was run.
+
+Reproduce diagnostic preparation only, with a **new nonexistent** temporary root:
+
+```bash
+python3 -m multisport_lab.pros004_readiness \
+  --producer-commit 6e08b405d79d0fe7fde7299b3407504b35ef128f \
+  --store-root /tmp/nml-pros004-new-diagnostic-store \
+  --output /tmp/nml-pros004-new-diagnostic-report.json
+python3 scripts/verify_pros004_readiness.py \
+  --report evidence/research/pros004-readiness-measurement.json --root .
+```
+
+The next concrete action is review of [draft PR #10](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/10)
+and resolution of the activation checklist. No activation or landing is requested
+by this readiness package. If requirements cannot be met before the actual first
+cutoff, retain this reservation as inactive; do not move its window or backfill.

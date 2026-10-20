@@ -39,6 +39,144 @@ permitted current schedule evidence and source-bound remotely recovered activati
 must precede the actual first cutoff. See `docs/PROS004_READINESS.md` for the
 completed and unresolved activation checklist; the reservation remains inactive.
 
+### Completed implementation and measured checkpoint
+
+Draft [PR #10](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/10)
+is open. Executed implementation commit is
+**`6e08b405d79d0fe7fde7299b3407504b35ef128f`**, normally committed/pushed on this
+branch. Subsequent evidence/documentation commits retain these same source bytes.
+One integration owner coordinated input, producer, records, offline snapshot and
+separate verification agents. No agent wrote to the protected pilot/DEV005 trees.
+
+Implemented files:
+
+- `multisport_lab/pros004_inputs.py`: versioned full-history and compact event
+  packs, source-byte normalization, complete UTC-date inventory/selection,
+  exact evidence lanes and observation/update/import/receipt clocks. Bounded
+  content-addressed caches retain immutable rows while all dynamic clocks,
+  checksums, provenance, source receipts and exclusions are revalidated.
+- `multisport_lab/pros004_producer.py`: separate `pros004-r0-producer-v1` and
+  `pros004-k0-producer-v1`; unchanged laws and causal contexts; all 14 complete
+  PMFs plus reported minutes; full joint replay recipe/hash; common T90,
+  five-minute window, 120-second latency gate, exact source/runtime/input pins,
+  pair preflight, fixed original identities and timely missing-peer recovery.
+- `multisport_lab/pros004_records.py`: new facade/private research-input validator
+  extension over the unchanged ledger; 499+13 record budget, immutable originals,
+  one writer, strict calendar/admission records, source-byte outcome normalization,
+  one shared outcome, separate statistical grades and traceable corrections.
+  A paired correction preflights all six needed revision/link slots and recovers
+  interruptions without replacing original probabilities or clocks.
+- `multisport_lab/pros004_snapshot.py`: deterministic bounded receipt manifests,
+  verified fresh-root copy/readback, exact raw/payload hashes and references,
+  interruption refusal and preservation of partial peers. This is offline
+  recovery code, not a live GitHub checkpoint or activation proof.
+- `multisport_lab/pros004_readiness.py`: source-pinned, explicitly non-issuance
+  full-history diagnostic; copies all existing receipts before synthetic work,
+  retains eight diagnostic forecasts and verifies baseline/snapshot/replay.
+- `scripts/verify_pros004_readiness.py` and six `tests/test_pros004_*.py` modules:
+  independent integrity, timing, identity, arithmetic, limit and recovery checks.
+  All new integrity guards remain active under optimized Python. DEV005's
+  original verifier is untouched.
+- `docs/PROS004_READINESS.md`, `docs/DECISIONS.md`, `PROJECT_CONTEXT.md`, this
+  handoff, `MANIFEST.sha256` and the `evidence/research/pros004-readiness-*`
+  receipts record scope, source recovery, lineage, measurements and limitations.
+
+Actual commands/results:
+
+```bash
+python3 -m unittest discover -s tests -v
+# 338 tests PASS, 19.286 seconds
+python3 -O -m unittest discover -s tests -p 'test_pros004*.py' -v
+# 60 focused tests PASS, 7.667 seconds
+python3 -m multisport_lab.demo
+# PASS
+node --test --test-isolation=none web/tests/*.test.mjs
+# 35 tests PASS
+python3 -m multisport_lab.publication --build-commit 735a464e9e8718303ef481abf711a8969de56694
+node web/tests/site-smoke.mjs output
+# PASS: bounded local research artifact, all-13 inventory and NO_ACTION
+PYTHONPATH=/tmp/nml-nba-audit/deps python3 scripts/prepare_nba_panel.py \
+  --players /tmp/nml-nba-audit/sdv_player_box_2026.parquet \
+  --schedule /tmp/nml-nba-audit/sdv_schedule_2026.parquet \
+  --output /tmp/nml-pros004-readiness/independent-renormalized.jsonl
+# PASS: exact original 26,645 rows / 1,231 events / 14,720,351 bytes and exclusions
+python3 -m multisport_lab.pros004_readiness \
+  --producer-commit 6e08b405d79d0fe7fde7299b3407504b35ef128f \
+  --store-root /tmp/nml-pros004-final-store \
+  --output /tmp/nml-pros004-final-report.json
+# PASS: explicit non-issuance diagnostic; actual clocks 12:16:53.909964–12:21:35.133660Z
+git clone --single-branch --branch implementation/pros004-paired-readiness \
+  https://github.com/NickNicky19/Nicks-multisport-lab-project.git \
+  /tmp/nml-pros004-independent-remote
+# PASS: independent exact source commit, clean tree, original 19 records
+python3 scripts/verify_pros004_readiness.py \
+  --report evidence/research/pros004-readiness-measurement.json --root .
+# Independent equivalent from fresh GitHub clone, with --store-root, passes normal and -O
+```
+
+The measured ledger contains **31 records / 3,716,686 bytes**: original 19 retained
+byte-for-byte plus 12 diagnostic records. History envelope is **1,639,440 bytes**;
+event **10,972**; R0 maximum **30,347**; K0 **30,488**; event admission **3,774**;
+manifest **1,616**. All are within registered complete-envelope ceilings.
+Eight retained forecasts include every original category and minute probability.
+One full **26,645-atom law per model** was regenerated for integrity only and
+matched every original atom/weight hash and marginal exactly. No real outcome
+entered this diagnostic and no predictive score or aggregate comparison was run.
+
+Actual four-subject cohort generation/verification/persistence cost was
+**196.303935 seconds**; complete diagnostic including baseline recovery and
+replay **281.225514 seconds**; peak RSS **185,296 KiB**. These are measured local
+resource results with explicitly simulated source/issuance clocks, not genuine
+timeliness or hosted latency evidence. The maximum conservative full-study plan
+is **512 records / 22,487,040 bytes**, including all 499 planned records and
+13 correction/failure reserve slots. Byte headroom is 11,067,392; no record slots
+remain outside the reserve. Bounds were not raised and no atoms/history dropped.
+
+A further size-only synthetic stress used the retained full PMFs, with fitting
+and forecast generation patched to raise. Exact executed command:
+`PYTHONPATH=/workspace/nml-pros004-readiness python3 /tmp/nml-pros004-size-stress.py`.
+The script is retained byte-for-byte in
+`evidence/research/pros004-readiness-size-stress.py`; exact paths/rerun refusal are
+in its adjacent `pros004-readiness-full-pmf-size.json` receipt. Two invented outcome
+revisions, four synthetic individual grade contracts and three supersession links
+expanded a separate copy from 31 to **40 records / 3,746,774 bytes**, consuming six
+reserve slots. Maximum outcome was **2,649 bytes**, grade **5,164**, correction link
+**1,406**. Restart/copied readback, idempotent retry and all 14 existing forecast
+byte hashes passed. The original final 31-record store/report were unchanged.
+No real outcome or comparative metric was inspected. A first stress preparation
+rejected an incorrect diagnostic-lane expectation before appending; its actual
+failure/copy was retained, and the fresh retry used the original exact lane.
+
+Independent review fixed lane consistency, strict admission metadata, interrupted
+correction linking/capacity and inclusion of the old ledger in the runtime path.
+The independent verifier's initial K0 version spelling/fixture was corrected to
+the unchanged law; no model source was changed. It then confirmed all 16 executed
+source files, 12 frozen pins, 19 original receipts and all eight new diagnostic
+contracts under normal and optimized Python. Final report raw SHA-256 is
+`76cc9c0e9fb00d2786fc8cab7bfdb7dda79f5bf7c0953becab94dc55c175188c`.
+`pros004-readiness-independent-verification.json` retains exact commands/results.
+The initial source-drift stop, intermediate empty-ledger measurement and malformed
+literal source-pin rejection remain separately retained; none is hidden or
+relabeled as prospective evidence.
+
+Activation remains **INACTIVE**. Still required: permitted complete current UTC
+schedule evidence/actual first cutoff; actual fresh selection/input capture;
+reviewed operational activation and GitHub writer/readback admission; new public
+input/forecast/history pagination support for the full study; durable raw outcome
+evidence; exact admission for unused private generic failure metadata. The current
+genuine-write guard deliberately rejects all activation flags. The reserved
+aggregate evaluation has not been executed or benchmarked; its original
+November 25 gate and 900-second/512-MiB budget remain. The local tests and resource
+measurements establish software behavior only. New genuine issuance, real grades,
+financial settlements, qualified tickets, deployment and model evaluation are all
+**zero** for this package. Existing historical records retain their original lane.
+
+Next concrete task: review the draft implementation and resolve the explicit
+source/operational/publication dependencies before any separately authorized
+activation. If they cannot be completed before the actual first selected cutoff,
+retain PROS004's original reservation as inactive. A later window needs a new
+reservation; do not replace subjects, backfill or relax gates.
+
 **Checkpoint: BOOTSTRAP complete; bounded Milestone 0 audit and full-category
 reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
