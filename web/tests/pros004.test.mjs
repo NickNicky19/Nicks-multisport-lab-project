@@ -17,6 +17,23 @@ test('schema3 recovers complete paired originals separately from legacy historic
   assert.equal(r.sports[0].candidates.length,0);
 });
 
+test('operational producer3 binds source3; legacy1/2 remain read-only compatible with exact inventories',async()=>{
+  const current=prospectiveRow();
+  await validatePros004Forecast(current,clock,webcrypto);
+  assert.equal(pros004Original(current).producer_version,'pros004-r0-producer-v3');
+  for(const version of [1,2]){
+    const original=pros004Original(current);original.producer_version=`pros004-r0-producer-v${version}`;original.producer_binding.schema_version=`nba-pros004-source-binding-v${version}`;
+    if(version===1)for(const file of ['pros004_completion','pros004_activation','pros004_remote','pros004_raw','pros004_snapshot'])delete original.producer_binding.source_sha256[`multisport_lab/${file}.py`];
+    if(version===1)delete original.producer_binding.source_sha256['scripts/verify_pros004_readiness.py'];
+    const legacy=project(original,current.admission);await validatePros004Forecast(legacy,clock,webcrypto);
+    assert.equal(Object.keys(pros004Original(legacy).producer_binding.source_sha256).length,version===1?13:19);
+    original.producer_binding.schema_version=`nba-pros004-source-binding-v${version===1?2:3}`;
+    await assert.rejects(()=>validatePros004Forecast(project(original,current.admission),clock,webcrypto),/binding/);
+  }
+  const v3=pros004Original(current);delete v3.producer_binding.source_sha256['multisport_lab/pros004_completion.py'];
+  await assert.rejects(()=>validatePros004Forecast(project(v3,current.admission),clock,webcrypto),/binding/);
+});
+
 test('checksum-consistent duplicated original keys reject without reformatting floats',async()=>{
   const row=prospectiveRow();row.record_json=row.record_json.replace('{','{"player_id":"ambiguous",');row.original_id=hash(row.record_json);delete row.projection_id;row.projection_id=hash(row);
   await assert.rejects(()=>validatePros004Forecast(row,clock,webcrypto),/Duplicate/);
@@ -41,7 +58,7 @@ test('late, unacknowledged and checksum-consistent invalid originals reject',asy
     row=>Object.assign(row.admission,{eligible_for_comparison:true,reasons:[],local_persistence_completed_at:'1999-12-01T18:35:00.000000Z',remote_checkpoint_completed_at:'1999-12-01T18:35:01.000000Z'}),
     row=>row.admission.reasons=[],
   ]){const row=structuredClone(good);change(row);delete row.projection_id;row.projection_id=hash(row);await assert.rejects(()=>validatePros004Forecast(row,clock,webcrypto));}
-  for(const change of [r=>r.event_version='invalid',r=>r.producer_version='pros004-k0-producer-v2',r=>r.joint_recipe.omitted_atoms=1,r=>r.joint_recipe.target.player_id='wrong',r=>r.categories[0].mean='999',r=>r.generation_completed_at='1999-12-01T18:32:01.000000Z',r=>r.reported_minutes={pmf:[{value:-.5,probability:'0.5'},{value:1.5,probability:'0.5'}],mean:'0.5',interval80:[-.5,1.5],precision:'reported_source_precision_not_exact_workload'}]){
+  for(const change of [r=>r.event_version='invalid',r=>r.producer_version='pros004-k0-producer-v3',r=>r.joint_recipe.omitted_atoms=1,r=>r.joint_recipe.target.player_id='wrong',r=>r.categories[0].mean='999',r=>r.generation_completed_at='1999-12-01T18:32:01.000000Z',r=>r.reported_minutes={pmf:[{value:-.5,probability:'0.5'},{value:1.5,probability:'0.5'}],mean:'0.5',interval80:[-.5,1.5],precision:'reported_source_precision_not_exact_workload'}]){
     const record=pros004Original(good);change(record);const row=project(record,good.admission);await assert.rejects(()=>validatePros004Forecast(row,clock,webcrypto));
   }
 });

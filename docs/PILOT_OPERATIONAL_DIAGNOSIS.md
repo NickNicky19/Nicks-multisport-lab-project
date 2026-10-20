@@ -87,3 +87,19 @@ append a new dated observation of its real state and clocks. Do not rewrite this
 observation or treat a late invocation as timely issuance. Any later operating
 cycle requires a separate versioned reservation and authorization. PROS004's
 separate inactive implementation work does not revive this expired pilot.
+
+## Read-only follow-up, October 20 20:30 UTC
+
+A separate checkpoint at 20:30:40.993165–20:30:46.121326 UTC retained the
+same classification. Repository-wide and workflow-specific schedule filters
+still returned zero runs; workflow390126745 remains active at the unchanged
+path/timestamps. Its inventory remains18 earlier PR setup runs. The repository
+now has76 runs because PR10 review builds continued; this is unrelated to pilot
+execution. Main remains735a464e9e8718303ef481abf711a8969de56694 and draft
+PR8/records branch remain df446eee302fd6662ef82184e2c733f5d6e2d2dd. No
+execution log was found from which to establish a cause. Ten read-only GitHub
+queries, their exact clocks and response hashes are retained in
+`evidence/cycles/2026-10-20-pilot-operational-followup-2030.json` (raw SHA256
+`4e971b62c6da3eec814a7b87e7072beee30bcdf899164ca511c4ea45fefcba37`).
+The earlier full inventory, six log archives, independent records clone and
+read-only manual recovery remain preserved; no pilot mutation occurred.

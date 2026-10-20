@@ -157,12 +157,12 @@ def validate_forecast_projection(row, *, now):
     _require(record["schema_version"] == "nba-pros004-forecast-v1" and record["study_id"] == STUDY_ID
              and record["mode"] == "REAL_TIME_CAPTURED" and record["model_key"] in MODELS
              and record["model_version"] == MODELS[record["model_key"]]
-             and record["producer_version"] in {f"pros004-{record['model_key'].lower()}-producer-v1", f"pros004-{record['model_key'].lower()}-producer-v2"},
+             and record["producer_version"] in {f"pros004-{record['model_key'].lower()}-producer-v1", f"pros004-{record['model_key'].lower()}-producer-v2", f"pros004-{record['model_key'].lower()}-producer-v3"},
              "Original public model/lane/version mismatch")
     _verify_seal(record, "forecast_id")
     validate_source_binding(record["producer_binding"])
     _require(record["producer_binding"]["verification"] == "VERIFIED_COMMIT", "Public source commit is unverified")
-    _require(record["producer_version"].endswith("v1") == (record["producer_binding"]["schema_version"] == "nba-pros004-source-binding-v1"), "Public producer/source versions disagree")
+    _require(record["producer_binding"]["schema_version"] == "nba-pros004-source-binding-" + record["producer_version"].rsplit("-", 1)[1], "Public producer/source versions disagree")
     _require(_hash(record["event_version"]), "Invalid original event version")
     _require(LedgerRef.from_record(record["history_ref"]).kind == "research_inputs"
              and LedgerRef.from_record(record["event_ref"]).kind == "research_inputs", "Changed public input reference")

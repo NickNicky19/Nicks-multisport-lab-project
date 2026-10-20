@@ -23,7 +23,8 @@ import stat
 import sys
 from types import MappingProxyType
 
-SCHEMA = 'nba-pros004-readiness-report-v2'
+SCHEMA = 'nba-pros004-readiness-report-v3'
+PREVIOUS_SCHEMA = 'nba-pros004-readiness-report-v2'
 LEGACY_SCHEMA = 'nba-pros004-readiness-report-v1'
 HISTORY_SHA256 = '489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c'
 HISTORY_ROWS, HISTORY_EVENTS, HISTORY_BYTES = 26645, 1231, 14720351
@@ -201,7 +202,8 @@ def _verify_forecast(body,payload,records,hashes=None):
     model=body.get('model_key')
     require(model in MODEL_VERSIONS and body.get('model_version')==MODEL_VERSIONS[model],
             'forecast model law/version is not unchanged R0/K0')
-    require(body.get('producer_version') in {'pros004-'+model.lower()+'-producer-v1','pros004-'+model.lower()+'-producer-v2'},
+    require(body.get('producer_version') in {'pros004-'+model.lower()+'-producer-v1',
+            'pros004-'+model.lower()+'-producer-v2','pros004-'+model.lower()+'-producer-v3'},
             'forecast prospective wrapper identity changed')
     require(body.get('conditioning')=='CONDITIONAL_ON_APPEARANCE' and body.get('qualification')=='UNAVAILABLE',
             'research conditioning/qualification changed')
@@ -217,7 +219,7 @@ def _verify_forecast(body,payload,records,hashes=None):
     require(len(payload['references'])==3 and payload['references'][:2]==[body['event_ref'],body['history_ref']],
             'forecast references must retain exact event/history/admission order')
     claim=_reference_target(payload['references'][2],records,hashes)['data'].get('pros004',{})
-    require(claim.get('schema_version')=='nba-pros004-event-claim-v1' and
+    require(claim.get('schema_version') in {'nba-pros004-event-claim-v1','nba-pros004-event-claim-v2'} and
             claim.get('event_ref')==body['event_ref'] and claim.get('history_ref')==body['history_ref'] and
             claim.get('producer_identity')==body.get('producer_binding'),
             'forecast changed the original admitted input/producer')
@@ -324,7 +326,7 @@ class _VerifiedRecordIndex:
 
     The independent pass has decoded/hashed every original and checked references.
     Hashes are verified again against a private deep copy before reuse. Generic
-    semantic validators still run once per original. Fresh decoding of private
+    semantic validators still run once per original that is read. Fresh decoding of private
     canonical bytes supplies isolated deep copies without repeatedly traversing
     the Python history graph. Nothing survives across operations or source roots.
     """
@@ -348,6 +350,10 @@ class _VerifiedRecordIndex:
                     hashlib.sha256(self.__encoded[key]).hexdigest()==self.__hashes[key]
                     for key,payload in self.__payloads.items()),
                 'operation-local verified record index changed')
+
+    @property
+    def records_read(self):
+        return len(self.__validated)
 
     def read(self,reference):
         from multisport_lab.ledger import LedgerRef
@@ -407,11 +413,10 @@ def _strict_semantics(root,records,hashes):
             stack.enter_context(patch.object(store.ledger,'append',side_effect=forbidden))
             for name in ('generate_forecast','_fit_laws','verify_replay','forecast_reference'):
                 stack.enter_context(patch.object(pros004_producer,name,side_effect=forbidden))
-            # Validate every generic envelope/legacy typed meaning once as well
-            # as the new typed facade. All references still check original hashes.
-            for (kind,record_id),payload in records.items():
-                reference=LedgerRef(kind,record_id,hashes[(kind,record_id)])
-                require(store.ledger.read(reference)==payload,'strict generic readback changed original content')
+            # Every supported PROS004 typed contract and its referenced parents
+            # run their strict validators. Unrelated frozen legacy records keep
+            # the existing independent envelope/hash/reference checks; this pass
+            # does not rerun their historical normalizers or statistical grades.
             for payload in markers:
                 reference=LedgerRef(payload['kind'],payload['record_id'],hashes[(payload['kind'],payload['record_id'])])
                 require(store.read(reference)==payload,'strict typed readback changed original bytes')
@@ -425,7 +430,8 @@ def _strict_semantics(root,records,hashes):
                     'independent first-pass record index changed during semantic validation')
     except (IntegrityError,ValueError,KeyError,TypeError,AttributeError) as error:
         raise VerificationError('strict typed recovery semantics rejected: '+str(error)) from error
-    return {'typed_records':len(markers),'generic_records':len(records),
+    return {'typed_records':len(markers),'generic_records_read':verified_index.records_read,
+            'legacy_semantic_scope':'REFERENCED_PARENTS_ONLY',
             'semantic_clock_mode':'EXPLICIT_DIAGNOSTIC_READ_ONLY' if markers else 'ACTUAL_READ_ONLY',
             'comparison_eligibility':'NOT_ESTABLISHED_BY_RECOVERY'}
 
@@ -590,8 +596,9 @@ def verify_store(root):
 
 
 def verify_readiness(report, root):
-    require(type(report) is dict and report.get('schema_version') in {SCHEMA,LEGACY_SCHEMA}, 'invalid readiness report schema')
-    version2=report['schema_version']==SCHEMA
+    require(type(report) is dict and report.get('schema_version') in {SCHEMA,PREVIOUS_SCHEMA,LEGACY_SCHEMA}, 'invalid readiness report schema')
+    version3=report['schema_version']==SCHEMA
+    version2=version3 or report['schema_version']==PREVIOUS_SCHEMA
     require(report.get('mode')=='READINESS_DIAGNOSTIC_NON_ISSUANCE','report is not a non-issuance diagnostic')
     evidence=report.get('evidence')
     require(type(evidence) is dict,'missing evidence lane declarations')
@@ -614,7 +621,8 @@ def verify_readiness(report, root):
         from multisport_lab.pros004_producer import validate_source_binding
         from multisport_lab.integrity import IntegrityError
         binding=report.get('producer_binding')
-        require(type(binding) is dict and binding.get('schema_version')=='nba-pros004-source-binding-v2',
+        binding_schema='nba-pros004-source-binding-v3' if version3 else 'nba-pros004-source-binding-v2'
+        require(type(binding) is dict and binding.get('schema_version')==binding_schema,
                 'completion-aware producer binding is absent')
         try:
             validate_source_binding(binding)
@@ -668,6 +676,20 @@ def verify_readiness(report, root):
         require(type(final_checkpoint) is dict and final_checkpoint.get('timely') is True and
                 type(input_checkpoint) is dict and input_checkpoint.get('timely') is True,
                 'required final input/forecast checkpoint completion was not timely')
+        if version3:
+            event_input=report.get('event_input',{})
+            admission=event_input.get('admission_ref')
+            require(type(admission) is dict and set(admission)=={'kind','record_id','payload_sha256'} and
+                    admission['kind']=='input_captures','durable input admission reference is absent')
+            _sha(admission['record_id'],'input admission record identity')
+            _sha(admission['payload_sha256'],'input admission content hash')
+            size=event_input.get('admission_encoded_envelope_bytes')
+            require(type(size) is int and 0<size<=8*1024,'input admission exceeds its unchanged envelope ceiling')
+            admitted=event_input.get('admission_final_checkpoint')
+            require(type(admitted) is dict and admitted.get('timely') is True and
+                    admitted.get('references')==[admission] and
+                    recovery.get('input_admission_recovered') is True,
+                    'original input admission phase was not durably recovered')
     diagnostics=report.get('diagnostics')
     require(type(diagnostics) is dict and set(diagnostics)=={'R0','K0'},'comparison requires exactly R0 and K0')
     for model,value in diagnostics.items():
@@ -680,8 +702,9 @@ def verify_readiness(report, root):
         require(_sha(value.get('joint_sha256'),'joint hash')==_sha(value.get('restored_joint_sha256'),'restored joint hash'),
                 'recovered joint law changed: '+model)
         if version2:
+            wrapper='pros004-'+model.lower()+('-producer-v3' if version3 else '-producer-v2')
             require(value.get('model_version')==MODEL_VERSIONS[model] and
-                    value.get('producer_version')=='pros004-'+model.lower()+'-producer-v2',
+                    value.get('producer_version')==wrapper,
                     'measured producer model or completion-aware wrapper changed: '+model)
     return {'status':'PASS_INDEPENDENT_READINESS_CHECK','frozen_source_files':len(pins),
             'executed_source_files':len(sources),'full_history_rows':HISTORY_ROWS,'categories_per_model':14,

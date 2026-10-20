@@ -1,5 +1,6 @@
 """Offline receipt snapshot integrity/recovery; no captures or real issuance."""
 from pathlib import Path
+from datetime import datetime,timedelta,timezone
 import hashlib
 import json
 import subprocess
@@ -11,6 +12,7 @@ from unittest.mock import patch
 from multisport_lab import pros004_snapshot as snapshot
 from multisport_lab.integrity import IntegrityError, canonical, digest, read_receipt, write_receipt
 from multisport_lab.ledger import Ledger
+from multisport_lab.integrity import stamp
 
 
 def make_store(root, count=2):
@@ -37,6 +39,58 @@ def refresh_manifest(root):
 
 
 class Pros004SnapshotTests(unittest.TestCase):
+    def test_raw_prefix_reconstruction_is_exact_without_semantic_recursion(self):
+        from multisport_lab import pros004_completion as completion
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);clock=datetime.now(timezone.utc)-timedelta(minutes=1)
+            ledger=Ledger(root)
+            with patch('multisport_lab.ledger._now',return_value=clock):
+                first=ledger.append('input_captures','synthetic-prefix-original',{'note':'Explicit synthetic prefix'})
+            path=ledger._path(first.kind,first.record_id)
+            completion.append_completion(root,first,mode='SYNTHETIC_DIAGNOSTIC',
+                raw_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                completed_at=clock+timedelta(seconds=1),recorded_at=clock+timedelta(seconds=1))
+            original=snapshot.snapshot_manifest(root)
+            journal_hash=completion.journal_inventory(root)['raw_sha256']
+            started=clock+timedelta(seconds=2)
+            with patch('multisport_lab.ledger._now',return_value=clock+timedelta(seconds=3)):
+                later=ledger.append('input_captures','synthetic-prefix-later',
+                    {'note':'Later original, outside earlier prefix'},references=(first,))
+            completion.append_completion(root,later,mode='SYNTHETIC_DIAGNOSTIC',
+                raw_sha256=hashlib.sha256(ledger._path(later.kind,later.record_id).read_bytes()).hexdigest(),
+                completed_at=clock+timedelta(seconds=4),recorded_at=clock+timedelta(seconds=4))
+            with (patch.object(snapshot,'snapshot_manifest',side_effect=RuntimeError('No semantic recursion')),
+                    patch.object(snapshot,'verify_store',side_effect=RuntimeError('No semantic recursion'))):
+                recovered=snapshot.recover_manifest_prefix(root,journal_hash,stamp(started))
+            self.assertEqual(recovered,original)
+            for bad_hash,bad_start in (('f'*64,stamp(started)),(journal_hash,stamp(clock))):
+                with self.subTest(hash=bad_hash,start=bad_start),self.assertRaises(snapshot.SnapshotError):
+                    snapshot.recover_manifest_prefix(root,bad_hash,bad_start)
+            # Tied clocks never silently drop a later original to make an old
+            # proof fit. Inclusion changes the digest, so its caller rejects it.
+            with patch('multisport_lab.ledger._now',return_value=started):
+                ledger.append('input_captures','synthetic-prefix-clock-tie',{'note':'Ambiguous tied original'})
+            tied=snapshot.recover_manifest_prefix(root,journal_hash,stamp(started))
+            self.assertNotEqual(tied['manifest_id'],original['manifest_id'])
+            self.assertEqual(tied['record_count'],original['record_count']+1)
+
+    def test_raw_prefix_rejects_changed_original_bytes_even_with_resealed_receipt(self):
+        from multisport_lab import pros004_completion as completion
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);clock=datetime.now(timezone.utc)-timedelta(minutes=1)
+            ledger=Ledger(root)
+            with patch('multisport_lab.ledger._now',return_value=clock):
+                first=ledger.append('input_captures','synthetic-prefix-tampering',{'note':'Original meaning'})
+            path=ledger._path(first.kind,first.record_id)
+            completion.append_completion(root,first,mode='SYNTHETIC_DIAGNOSTIC',
+                raw_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                completed_at=clock+timedelta(seconds=1),recorded_at=clock+timedelta(seconds=1))
+            prefix=completion.journal_inventory(root)['raw_sha256']
+            envelope=json.loads(path.read_bytes());envelope['payload']['data']['note']='Different meaning'
+            envelope['payload_sha256']=digest(envelope['payload']);path.write_bytes(canonical(envelope))
+            with self.assertRaisesRegex(snapshot.SnapshotError,'identity/bytes/clocks'):
+                snapshot.recover_manifest_prefix(root,prefix,stamp(clock+timedelta(seconds=2)))
+
     def test_exact_export_reopen_readback_and_documented_readme(self):
         with tempfile.TemporaryDirectory() as folder:
             parent=Path(folder);source=parent/'source';make_store(source)
@@ -161,9 +215,9 @@ class Pros004SnapshotTests(unittest.TestCase):
         original=(fixture.store.root/relative).read_bytes()
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);manifest=snapshot.export_snapshot(fixture.store.root,root/'snapshot')
-            self.assertEqual(manifest['ledger_record_count'],2)
+            self.assertEqual(manifest['ledger_record_count'],3)
             self.assertEqual(manifest['completion_journal_count'],1)
-            self.assertEqual(manifest['record_count'],3)
+            self.assertEqual(manifest['record_count'],4)
             entry=next(e for e in manifest['entries'] if e['entry_type']=='COMPLETION_JOURNAL')
             self.assertEqual(entry['raw_sha256'],hashlib.sha256(original).hexdigest())
             self.assertEqual(entry['encoded_bytes'],len(original))
@@ -173,13 +227,13 @@ class Pros004SnapshotTests(unittest.TestCase):
             recovered=records.Pros004Store(root/'recovered',diagnostic=True)
             self.assertTrue(recovered.admission_status(fixture.event_ref)['timing_complete'])
             self.assertFalse(recovered.admission_status(fixture.event_ref)['eligible_for_comparison'])
-            with patch.object(snapshot,'MAX_RECORDS',2):
-                with self.assertRaisesRegex(snapshot.SnapshotError,'journal.*capacity'):
+            with patch.object(snapshot,'MAX_RECORDS',3):
+                with self.assertRaisesRegex(snapshot.SnapshotError,'capacity'):
                     snapshot.snapshot_manifest(fixture.store.root)
 
     def test_torn_omitted_or_resealed_incorrect_journal_cannot_get_acknowledgment(self):
         from test_pros004_producer import ProducerFixture
-        fixture=ProducerFixture(self)
+        fixture=ProducerFixture(self,prepare_admission=False)
         for change in ('torn','omitted','wrong-original','pre-receipt-clock'):
             with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
                 root=Path(folder);snapshot.export_snapshot(fixture.store.root,root/'snapshot')
@@ -205,7 +259,7 @@ class Pros004SnapshotTests(unittest.TestCase):
         from test_pros004_producer import ProducerFixture
         from multisport_lab import pros004_records as records
         import shutil
-        fixture=ProducerFixture(self)
+        fixture=ProducerFixture(self,prepare_admission=False)
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);source=root/'source'
             shutil.copytree(fixture.store.root/'records',source/'records')
@@ -231,17 +285,21 @@ class Pros004SnapshotTests(unittest.TestCase):
             path=root/'snapshot'/'records'/outcome.kind/(outcome.record_id+'.json')
             original=read_receipt(path);body=original['data']['pros004'];body['status']='ALIEN'
             revised=replace_typed_receipt(root/'snapshot',original,body)
-            # The manifest and completion chain are valid hashes for the bad
-            # body. Drop the journal for this legacy-style semantic-only case.
+            # Retain the exact earlier input-proof journal while excluding the
+            # later outcome's byte seal, so typed meaning is what rejects it.
             journal=root/'snapshot'/snapshot.JOURNAL_RELATIVE_PATH
-            journal.unlink();journal.parent.rmdir();journal.parent.parent.rmdir()
+            target=fixture.store.body(fixture.claim_ref)['input_final_checkpoint']['journal_raw_sha256']
+            prefix=bytearray()
+            for line in journal.read_bytes().splitlines(keepends=True):
+                prefix.extend(line)
+                if hashlib.sha256(prefix).hexdigest()==target:break
+            else:self.fail('Synthetic fixture lost its input proof')
+            journal.write_bytes(prefix)
             manifest=read_receipt(root/'snapshot'/snapshot.MANIFEST)
             for entry in manifest['entries']:
                 if entry['path']==path.relative_to(root/'snapshot').as_posix():
                     entry['path']='records/outcomes/'+revised['record_id']+'.json'
-            manifest['entries']=[e for e in manifest['entries'] if e['entry_type']=='LEDGER_RECEIPT']
             manifest['entries'].sort(key=lambda e:e['path'])
-            manifest['completion_journal_count']=0;manifest['record_count']=len(manifest['entries'])
             manifest_path=root/'snapshot'/snapshot.MANIFEST
             manifest_path.unlink();write_receipt(manifest_path,manifest)
             refresh_manifest(root/'snapshot')

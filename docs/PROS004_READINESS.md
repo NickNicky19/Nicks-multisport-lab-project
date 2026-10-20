@@ -6,8 +6,8 @@ activation, merge or deployment. The mathematical reservation remains unchanged 
 `docs/NBA_PROSPECTIVE_004.md` and its immutable protocol receipt.
 Genuine writes explicitly fail `READINESS_ONLY`, including caller-supplied
 activation flags. The proposed operational wrappers are
-`pros004-r0-producer-v2` and `pros004-k0-producer-v2`.
-The v2 completion policy is [PROS004_COMPLETION.md](PROS004_COMPLETION.md).
+`pros004-r0-producer-v3` and `pros004-k0-producer-v3`.
+The v3 completion policy is [PROS004_COMPLETION.md](PROS004_COMPLETION.md).
 
 ## October 20 completion/recovery correction checkpoint
 
@@ -21,6 +21,10 @@ under optimized Python. New post-write local completion and strict remote
 checkpoint/readback observations preserve originals while refusing late or
 unacknowledged admission after restart. Final prefix publication makes the last
 original acknowledgment independently recoverable without renewing its clock.
+The v3 event-admission claim now durably embeds the original input-finalization
+proof in its existing bounded slot; independent restart needs no temporary
+phase-report file. The claim itself must finish remote acknowledgment and proof
+publication before selection closes. Legacy v1/v2 originals remain unchanged.
 Strict typed recovery now checks all supported contracts, grade arithmetic,
 causal clocks and correction relationships after independent byte/hash checks.
 Exact reproduction evidence is in

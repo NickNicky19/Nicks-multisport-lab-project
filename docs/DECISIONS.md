@@ -1,5 +1,19 @@
 # Implementation decisions
 
+## October 20, after 20:25 UTC — retain original input admission in the existing claim
+
+Version the prospective wrappers and source binding to v3, preserving both laws
+and all older originals. Event-claim-v2 embeds the original typed input-final
+checkpoint inside the same 8-KiB event-claim slot. Claim creation, local/remote
+completion and final prefix publication move into the input phase before selection
+closes; generation recovers that original from durable state. This eliminates
+temporary-file dependence without an extra ledger record or a renewed clock.
+Missing, conflicting, late or unacknowledged proof blocks missing-peer generation.
+Legacy claim-v1 remains readable evidence and cannot establish v3 admission.
+The readiness report is independently versioned v3; failed v2 measurements and
+their source bindings remain immutable. No activation follows from this change.
+
+
 ## October 20 — preserve failed timing and reduce duplicate verification work
 
 Retain source c18809f2 and its PARTIAL_OR_FAILED_TIMING receipt unchanged: five

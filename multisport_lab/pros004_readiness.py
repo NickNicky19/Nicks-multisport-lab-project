@@ -26,7 +26,7 @@ from . import pros004_snapshot as snapshots, pros004_remote as remote
 from .integrity import IntegrityError, canonical, digest, stamp, write_receipt
 from .ledger import Ledger, LedgerRef, KINDS
 
-SCHEMA = "nba-pros004-readiness-report-v2"
+SCHEMA = "nba-pros004-readiness-report-v3"
 MODE = "READINESS_DIAGNOSTIC_NON_ISSUANCE"
 EVENT_ID = "999000004"
 INPUT_CLOCK = datetime(2026, 10, 21, 22, 45, tzinfo=timezone.utc)
@@ -289,6 +289,11 @@ def run_diagnostic(*, output, store_root=None, producer_commit=None):
             input_final_checkpoint = store.finalize_checkpoint((event_ref,),checkpoint)
             if type(input_final_checkpoint) is not dict or input_final_checkpoint.get("timely") is not True:
                 raise IntegrityError("event-input proof publication missed selection close; retained input cannot start generation")
+            admission_ref,_=store.claim_event(event_ref,binding,input_final_checkpoint=input_final_checkpoint)
+            store.complete_checkpoint(admission_ref,checkpoint)
+            admission_final_checkpoint=store.finalize_checkpoint((admission_ref,),checkpoint)
+            if admission_final_checkpoint["timely"] is not True:
+                raise IntegrityError("durable input admission publication missed selection close; generation remains disabled")
         input_seconds = time.perf_counter()-input_started
         generation_seconds = []
         original_generate = producer.generate_forecast
@@ -303,8 +308,7 @@ def run_diagnostic(*, output, store_root=None, producer_commit=None):
         operation_failure = None
         with _advancing_clock(generation_clock), patch.object(producer,"generate_forecast",side_effect=timed_generate):
             try:
-                result = producer.issue_pair(store,event_ref,binding,checkpoint=checkpoint,
-                    input_final_checkpoint=input_final_checkpoint)
+                result = producer.issue_pair(store,event_ref,binding,checkpoint=checkpoint)
             except (IntegrityError,OSError) as error:
                 # The retained actual partial state is diagnostic evidence. Do
                 # not replace originals or hold the clock still to make it pass.
@@ -350,6 +354,13 @@ def run_diagnostic(*, output, store_root=None, producer_commit=None):
             readback = snapshots.recover_snapshot(readback_root/"snapshot",readback_root/"reopened")
             restored = records.Pros004Store(readback_root/"reopened",diagnostic=True)
             reread = restored.recover_event(event_ref,binding)
+            restored_admission=restored.lookup_claim(event_ref,binding)
+            input_admission_recovered=(restored_admission==admission_ref and
+                restored.body(restored_admission)["schema_version"]=="nba-pros004-event-claim-v2" and
+                restored.body(restored_admission)["input_final_checkpoint"]==input_final_checkpoint and
+                restored.admission_status(restored_admission)["timing_complete"])
+            if not input_admission_recovered:
+                raise IntegrityError("independent restart did not recover the original durable input admission")
             if operation_failure is None and _recovery_content(reread) != _recovery_content(recovery):
                 raise IntegrityError("independent Git restart changed original recovery metadata")
             for item in originals:
@@ -404,7 +415,9 @@ def run_diagnostic(*, output, store_root=None, producer_commit=None):
                 "history_ref":history_ref.to_record(),"recovered_history_actual_seconds":history_seconds,
                 "reconstructed_history_limitations_unchanged":True,"rows_dropped":0},
             "event_input":{"encoded_envelope_bytes":_encoded_size(store,event_ref),"event_ref":event_ref.to_record(),
-                "final_checkpoint":input_final_checkpoint},
+                "final_checkpoint":input_final_checkpoint,"admission_ref":admission_ref.to_record(),
+                "admission_encoded_envelope_bytes":_encoded_size(store,admission_ref),
+                "admission_final_checkpoint":admission_final_checkpoint},
             "retention":{"max_records":plan["global_record_limit"],"max_bytes":plan["global_byte_limit"],
                 "comparison_records":442,"baseline_and_pilot_records":32,"metadata_records":metadata_records,
                 "projected_records":plan["maximum_records_including_reserve"],
@@ -427,6 +440,7 @@ def run_diagnostic(*, output, store_root=None, producer_commit=None):
                 "original_records_recovered":reread["retained_models"],"full_joint_replays":len(diagnostics),
                 "retained_models":reread["retained_models"],"timing_complete_models":reread["timing_complete_models"],
                 "eligible_models":reread["eligible_models"],"remote_recovery":exact_remote,
+                "input_admission_recovered":bool(input_admission_recovered),
                 "transport":transport,"github_recovery":False,"remote_commit":remote_commit,
                 "final_checkpoint":final_checkpoint,
                 "snapshot_manifest_id":snapshot["manifest_id"],"snapshot_readback":readback,

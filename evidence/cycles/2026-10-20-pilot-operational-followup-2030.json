@@ -1,0 +1,210 @@
+{
+  "cause": "NOT_ESTABLISHED",
+  "completed_at": "2026-10-20T20:30:46.121326Z",
+  "earlier_checkpoint_preserved": "evidence/cycles/2026-10-20-pilot-operational-recovery.json",
+  "mutations": 0,
+  "pilot_diagnosis": "MISSED_OR_UNOBSERVED_EXECUTION",
+  "provider_requests": 0,
+  "queries": [
+    {
+      "completed_at": "2026-10-20T20:30:41.586172Z",
+      "raw_response_bytes": 6451,
+      "raw_sha256": "6548221f4d85b9d5be9c047f86271d27f549c543132771801da8fdaf80f1a015",
+      "route": "/repos/NickNicky19/Nicks-multisport-lab-project",
+      "started_at": "2026-10-20T20:30:40.993175Z",
+      "summary": {
+        "default_branch": "main",
+        "full_name": "NickNicky19/Nicks-multisport-lab-project",
+        "pushed_at": "2026-10-20T20:18:48Z",
+        "updated_at": "2026-10-20T05:59:15Z"
+      }
+    },
+    {
+      "completed_at": "2026-10-20T20:30:42.042917Z",
+      "raw_response_bytes": 378,
+      "raw_sha256": "c849c8966fc81da6c8dab87c53bb31b8eceabd1c2ecca552bcdaecfd7f4a9975",
+      "route": "/repos/NickNicky19/Nicks-multisport-lab-project/git/ref/heads/main",
+      "started_at": "2026-10-20T20:30:41.586281Z",
+      "summary": {
+        "ref": "refs/heads/main",
+        "sha": "735a464e9e8718303ef481abf711a8969de56694"
+      }
+    },
+    {
+      "completed_at": "2026-10-20T20:30:42.477791Z",
+      "raw_response_bytes": 481,
+      "raw_sha256": "1e298bca33c8b91f0ad2c45d5adced190e7194d37f13fef353efcc5455129663",
+      "route": "/repos/NickNicky19/Nicks-multisport-lab-project/git/ref/heads/records/nba-20261020-401909088-t90",
+      "started_at": "2026-10-20T20:30:42.042974Z",
+      "summary": {
+        "ref": "refs/heads/records/nba-20261020-401909088-t90",
+        "sha": "df446eee302fd6662ef82184e2c733f5d6e2d2dd"
+      }
+    },
+    {
+      "completed_at": "2026-10-20T20:30:42.702584Z",
+      "raw_response_bytes": 585,
+      "raw_sha256": "207ad9926d2d8ad8c7cc0b66f39f74c1e48c26737b538ce47aa19a99b094b89d",
+      "route": "/repos/NickNicky19/Nicks-multisport-lab-project/actions/workflows/390126745",
+      "started_at": "2026-10-20T20:30:42.477835Z",
+      "summary": {
+        "created_at": "2026-10-20T04:12:56.000Z",
+        "id": 390126745,
+        "name": "One October 20 NBA pilot",
+        "path": ".github/workflows/nba-20261020-pilot.yml",
+        "state": "active",
+        "updated_at": "2026-10-20T05:59:11.000Z"
+      }
+    },
+    {
+      "completed_at": "2026-10-20T20:30:43.025471Z",
+      "raw_response_bytes": 36,
+      "raw_sha256": "a2790a384d7d281e7395679000c35d27768d89dbd7052f725b8f4688beb59915",
+      "route": "/repos/NickNicky19/Nicks-multisport-lab-project/actions/runs?event=schedule&per_page=1",
+      "started_at": "2026-10-20T20:30:42.702634Z",
+      "summary": {
+        "total_count": 0,
+        "workflow_runs": []
+      }
+    },
+    {
+      "completed_at": "2026-10-20T20:30:43.557121Z",
+      "raw_response_bytes": 36,
+      "raw_sha256": "a2790a384d7d281e7395679000c35d27768d89dbd7052f725b8f4688beb59915",
+      "route": "/repos/NickNicky19/Nicks-multisport-lab-project/actions/workflows/390126745/runs?event=schedule&per_page=1",
+      "started_at": "2026-10-20T20:30:43.025536Z",
+      "summary": {
+        "total_count": 0,
+        "workflow_runs": []
+      }
+    },
+    {
+      "completed_at": "2026-10-20T20:30:44.093076Z",
+      "raw_response_bytes": 44073,
+      "raw_sha256": "33e7928af5719f0947f3cdda65c657240b284b91fc3e3b8147a348a6ddc321a9",
+      "route": "/repos/NickNicky19/Nicks-multisport-lab-project/actions/runs?per_page=3",
+      "started_at": "2026-10-20T20:30:43.557160Z",
+      "summary": {
+        "total_count": 76,
+        "workflow_runs": [
+          {
+            "conclusion": "success",
+            "created_at": "2026-10-20T20:18:53Z",
+            "event": "pull_request",
+            "head_sha": "a5112cb6f66b02a47a2f6c91aafd84ba57e0a2f0",
+            "id": 39490904718,
+            "path": ".github/workflows/pages.yml",
+            "run_attempt": 1,
+            "run_started_at": "2026-10-20T20:18:53Z",
+            "status": "completed",
+            "updated_at": "2026-10-20T20:27:21Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-10-20T20:12:15Z",
+            "event": "pull_request",
+            "head_sha": "4c38ffbbf4711d38f7528c3a1927a85f3067a24b",
+            "id": 39489962337,
+            "path": ".github/workflows/pages.yml",
+            "run_attempt": 1,
+            "run_started_at": "2026-10-20T20:12:15Z",
+            "status": "completed",
+            "updated_at": "2026-10-20T20:15:43Z"
+          },
+          {
+            "conclusion": "success",
+            "created_at": "2026-10-20T19:57:39Z",
+            "event": "pull_request",
+            "head_sha": "c18809f2fc7752d8f48c4749024623f5f4d73eb6",
+            "id": 39487881437,
+            "path": ".github/workflows/pages.yml",
+            "run_attempt": 1,
+            "run_started_at": "2026-10-20T19:57:39Z",
+            "status": "completed",
+            "updated_at": "2026-10-20T20:01:07Z"
+          }
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-10-20T20:30:44.671584Z",
+      "raw_response_bytes": 44106,
+      "raw_sha256": "f76ee6091d0e4bccdba74d4bf2e45fdb86abe5953b1843fa1461db5d8890b02d",
+      "route": "/repos/NickNicky19/Nicks-multisport-lab-project/actions/workflows/390126745/runs?per_page=3",
+      "started_at": "2026-10-20T20:30:44.093388Z",
+      "summary": {
+        "total_count": 18,
+        "workflow_runs": [
+          {
+            "conclusion": "success",
+            "created_at": "2026-10-20T04:33:21Z",
+            "event": "pull_request",
+            "head_sha": "7dd59fd2b8cda7772cfbcb6b662c07ba0d2e5f6a",
+            "id": 39370196314,
+            "path": ".github/workflows/nba-20261020-pilot.yml",
+            "run_attempt": 1,
+            "run_started_at": "2026-10-20T04:33:21Z",
+            "status": "completed",
+            "updated_at": "2026-10-20T04:36:05Z"
+          },
+          {
+            "conclusion": "action_required",
+            "created_at": "2026-10-20T04:31:42Z",
+            "event": "pull_request",
+            "head_sha": "905384a77acc0184fcd8b8ea18ff4b47c049a317",
+            "id": 39370047337,
+            "path": ".github/workflows/nba-20261020-pilot.yml",
+            "run_attempt": 1,
+            "run_started_at": "2026-10-20T04:31:42Z",
+            "status": "completed",
+            "updated_at": "2026-10-20T04:31:42Z"
+          },
+          {
+            "conclusion": "action_required",
+            "created_at": "2026-10-20T04:31:23Z",
+            "event": "pull_request",
+            "head_sha": "44dc3539ed4ed5fe25698f910abd9dad30a2569d",
+            "id": 39370019402,
+            "path": ".github/workflows/nba-20261020-pilot.yml",
+            "run_attempt": 1,
+            "run_started_at": "2026-10-20T04:31:23Z",
+            "status": "completed",
+            "updated_at": "2026-10-20T04:31:23Z"
+          }
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-10-20T20:30:45.441962Z",
+      "raw_response_bytes": 19727,
+      "raw_sha256": "4588f079994ef8f21e0067d5e13c151712a544b9b7b6b05f7b23c9fb5b39b6a6",
+      "route": "/repos/NickNicky19/Nicks-multisport-lab-project/pulls/8",
+      "started_at": "2026-10-20T20:30:44.671931Z",
+      "summary": {
+        "base": "735a464e9e8718303ef481abf711a8969de56694",
+        "draft": true,
+        "head": "df446eee302fd6662ef82184e2c733f5d6e2d2dd",
+        "number": 8,
+        "state": "open",
+        "updated_at": "2026-10-20T06:07:36Z"
+      }
+    },
+    {
+      "completed_at": "2026-10-20T20:30:46.120976Z",
+      "raw_response_bytes": 20851,
+      "raw_sha256": "222cba28a027865e3a1f67f38c736777f09097059b28621df1213e32da6abdc3",
+      "route": "/repos/NickNicky19/Nicks-multisport-lab-project/pulls/10",
+      "started_at": "2026-10-20T20:30:45.442294Z",
+      "summary": {
+        "base": "735a464e9e8718303ef481abf711a8969de56694",
+        "draft": true,
+        "head": "a5112cb6f66b02a47a2f6c91aafd84ba57e0a2f0",
+        "number": 10,
+        "state": "open",
+        "updated_at": "2026-10-20T20:18:49Z"
+      }
+    }
+  ],
+  "schema_version": "nba-pros004-readonly-github-followup-v1",
+  "started_at": "2026-10-20T20:30:40.993165Z"
+}

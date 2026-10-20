@@ -47,6 +47,16 @@ input references remain intact. Python and JavaScript validators enforce the
 frozen R0/K0 identities, complete source-binding inventory, coherent category
 summaries, T90/window/latency bounds, and separate completion clocks.
 
+Operational producer 3 uses source binding 3 with the same 19-file source
+inventory as binding 2. The original forecast body and public projection schema
+remain unchanged. The source forecast receipt references the versioned event
+claim retaining its original input-finalization proof. Strict source-store
+recovery checks that proof before public assembly; the browser retains its exact
+source references and admission explanation without exporting raw inputs.
+Producer/binding 1 (13 files) and producer/binding 2 (19 files) remain readable as
+original evidence. Operational and binding version numbers must agree exactly;
+compatibility does not admit legacy evidence under the new completion policy.
+
 `admission` separately reports retained-original status, actual local completion,
 independent remote completion, eligibility and reasons. A missing or late proof
 cannot be inferred from pre-write `received_at`. The inactive collection rejects

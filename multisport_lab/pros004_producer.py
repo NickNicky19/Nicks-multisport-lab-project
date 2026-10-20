@@ -27,10 +27,11 @@ from .ledger import LedgerRef
 
 STUDY_ID = "NBA-ALL13-JOINT-PROS-004"
 SCHEMA = "nba-pros004-forecast-v1"
-BINDING_SCHEMA = "nba-pros004-source-binding-v2"
+BINDING_SCHEMA = "nba-pros004-source-binding-v3"
 JOINT_SCHEMA = "nba-pros004-complete-joint-replay-v1"
 MODEL_VERSIONS = {"R0": R0_VERSION, "K0": KERNEL_VERSION}
-PRODUCER_VERSIONS = {"R0": "pros004-r0-producer-v2", "K0": "pros004-k0-producer-v2"}
+PRODUCER_VERSIONS = {"R0": "pros004-r0-producer-v3", "K0": "pros004-k0-producer-v3"}
+PRIOR_PRODUCER_VERSIONS = {"R0": "pros004-r0-producer-v2", "K0": "pros004-k0-producer-v2"}
 LEGACY_PRODUCER_VERSIONS = {"R0": "pros004-r0-producer-v1", "K0": "pros004-k0-producer-v1"}
 DIAGNOSTIC_MODES = {"READINESS_DIAGNOSTIC", "SYNTHETIC_DIAGNOSTIC"}
 LAW_SHA256 = {"R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
@@ -108,7 +109,7 @@ def make_source_binding(model_commit=None, *, diagnostic=False, root=None):
 def validate_source_binding(binding, *, check_current=False):
     _exact(binding, {"schema_version", "model_commit", "verification", "source_sha256", "law_sha256", "runtime"}, "producer source binding")
     legacy=binding["schema_version"]=="nba-pros004-source-binding-v1"
-    if binding["schema_version"] not in {BINDING_SCHEMA,"nba-pros004-source-binding-v1"} or binding["law_sha256"] != LAW_SHA256:
+    if binding["schema_version"] not in {BINDING_SCHEMA,"nba-pros004-source-binding-v2","nba-pros004-source-binding-v1"} or binding["law_sha256"] != LAW_SHA256:
         raise IntegrityError("producer mathematical law/source identity changed")
     if type(binding["source_sha256"]) is not dict or set(binding["source_sha256"]) != set(LEGACY_SOURCE_FILES if legacy else SOURCE_FILES):
         raise IntegrityError("producer dependency fingerprint inventory changed")
@@ -132,8 +133,8 @@ def validate_source_binding(binding, *, check_current=False):
             or type(runtime["float_mantissa_bits"]) is not int or runtime["float_mantissa_bits"] < 1):
         raise IntegrityError("producer runtime fingerprint is malformed")
     if check_current:
-        if legacy:
-            raise IntegrityError("legacy producer cannot be reused as the new completion-aware producer")
+        if binding["schema_version"]!=BINDING_SCHEMA:
+            raise IntegrityError("legacy producer cannot be reused as the new durable-input producer")
         expected = make_source_binding(binding["model_commit"], diagnostic=binding["verification"] == "LOCAL_DIAGNOSTIC_SOURCE")
         if expected != binding:
             raise IntegrityError("source/runtime changed; original forecast must not be regenerated or replaced")
@@ -358,9 +359,11 @@ def validate_forecast_record(body, event_body, history_body):
             or body["qualification"] != "UNAVAILABLE"):
         raise IntegrityError("unsupported PROS004 forecast/model meaning")
     model = body["model_key"]
-    if body["model_version"] != MODEL_VERSIONS[model] or body["producer_version"] not in {PRODUCER_VERSIONS[model],LEGACY_PRODUCER_VERSIONS[model]}:
+    if body["model_version"] != MODEL_VERSIONS[model] or body["producer_version"] not in {PRODUCER_VERSIONS[model],PRIOR_PRODUCER_VERSIONS[model],LEGACY_PRODUCER_VERSIONS[model]}:
         raise IntegrityError("mathematical model and operational producer identities disagree")
-    if (body["producer_version"]==LEGACY_PRODUCER_VERSIONS[model]) != (body["producer_binding"].get("schema_version")=="nba-pros004-source-binding-v1"):
+    expected_schema={LEGACY_PRODUCER_VERSIONS[model]:"nba-pros004-source-binding-v1",
+        PRIOR_PRODUCER_VERSIONS[model]:"nba-pros004-source-binding-v2",PRODUCER_VERSIONS[model]:BINDING_SCHEMA}
+    if body["producer_binding"].get("schema_version")!=expected_schema[body["producer_version"]]:
         raise IntegrityError("operational producer version conflicts with its source binding")
     validate_source_binding(body["producer_binding"])
     target = _input_gate(event_body, history_body)
@@ -512,9 +515,18 @@ def issue_pair(store, event_ref, producer_binding, *, player_id=None, checkpoint
             return {**recovery, "status":status, "generation_attempted":False}
         if checkpoint is None:
             return {**recovery,"status":"REMOTE_CHECKPOINT_REQUIRED","generation_attempted":False}
-        if input_final_checkpoint is None:
-            return {**recovery,"status":"INPUT_FINAL_CHECKPOINT_REQUIRED","generation_attempted":False}
-        store.validate_input_checkpoint(event_ref,input_final_checkpoint)
+        claim_ref=LedgerRef.from_record(recovery["claim_ref"]) if recovery["claim_ref"] else None
+        if claim_ref is None:
+            return {**recovery,"status":"DURABLE_INPUT_ADMISSION_REQUIRED","generation_attempted":False}
+        claim=store.body(claim_ref)
+        if claim["schema_version"]!="nba-pros004-event-claim-v2":
+            raise IntegrityError("legacy admission lacks durable input-phase proof; originals remain unadmitted")
+        retained_input=claim["input_final_checkpoint"]
+        if input_final_checkpoint is not None and input_final_checkpoint!=retained_input:
+            raise IntegrityError("caller input-phase proof differs from the immutable admission")
+        store.validate_input_checkpoint(event_ref,retained_input)
+        if not store.admission_status(claim_ref)["timing_complete"]:
+            raise IntegrityError("durable input admission lacks timely local/remote completion")
         if not store.admission_status(event_ref)["timing_complete"]:
             raise IntegrityError("event input lacks timely local/remote completion before selection closed")
         # Recover and acknowledge retained originals before any new generation.
@@ -528,8 +540,6 @@ def issue_pair(store, event_ref, producer_binding, *, player_id=None, checkpoint
                     raise IntegrityError("retained original lacks timely local completion; no replacement generation is permitted")
                 if not status["remote_timely"]:
                     store.complete_checkpoint(record,checkpoint)
-        claim_ref, created = store.claim_event(event_ref, producer_binding)
-        store.complete_checkpoint(claim_ref,checkpoint)
         for subject in subjects:
             for model_key in ("R0", "K0"):
                 if model_key not in subject["missing_models"]:

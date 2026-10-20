@@ -169,9 +169,10 @@ class Pros004RecordsTests(unittest.TestCase):
         self.assertEqual(restart.body(f.history_ref),f.history)
         with tempfile.TemporaryDirectory() as independent:
             shutil.copytree(Path(f.tmp)/'records',Path(independent)/'records')
+            shutil.copytree(Path(f.tmp)/'evidence',Path(independent)/'evidence')
             recovered=rec.Pros004Store(independent,diagnostic=True)
             self.assertEqual(recovered.body(f.event_ref),f.event)
-            self.assertEqual(recovered.capacity_report()['actual_records'],2)
+            self.assertEqual(recovered.capacity_report()['actual_records'],4)
             self.assertEqual(original,recovered.ledger._path(f.history_ref.kind,f.history_ref.record_id).read_bytes())
         payload=restart.read(f.event_ref)
         measured=rec.encoded_envelope_size(payload['kind'],payload['logical_id'],payload['data'],
@@ -192,7 +193,7 @@ class Pros004RecordsTests(unittest.TestCase):
             other.store_history(live)
         with self.assertRaisesRegex(IntegrityError,'readiness-only'):
             other.store_manifest()
-        self.assertEqual(f.store.capacity_report()['actual_records'],3)
+        self.assertEqual(f.store.capacity_report()['actual_records'],4)
 
     def test_event_cannot_bind_history_from_another_evidence_lane(self):
         f=ProducerFixture(self)
@@ -200,7 +201,7 @@ class Pros004RecordsTests(unittest.TestCase):
         changed['sourcepack_id']=digest({k:v for k,v in changed.items() if k!='sourcepack_id'})
         with self.assertRaisesRegex(IntegrityError,'evidence lanes differ'):
             f.store.store_event(changed,f.history_ref)
-        self.assertEqual(f.store.capacity_report()['actual_records'],3)
+        self.assertEqual(f.store.capacity_report()['actual_records'],4)
 
     def test_complete_snapshot_and_single_writer_are_required_for_recovery(self):
         f=ProducerFixture(self)
@@ -217,7 +218,7 @@ class Pros004RecordsTests(unittest.TestCase):
     def test_stable_admission_rejects_well_formed_model_revision_and_input_retry(self):
         f=ProducerFixture(self)
         original,created=f.store.claim_event(f.event_ref,f.binding)
-        self.assertTrue(created)
+        self.assertFalse(created)
         f.record_clock.return_value=ISSUE+timedelta(seconds=1)
         f.ledger_clock.return_value=ISSUE+timedelta(seconds=1)
         self.assertEqual(f.store.claim_event(f.event_ref,f.binding),(original,False))
@@ -233,6 +234,84 @@ class Pros004RecordsTests(unittest.TestCase):
         with self.assertRaises(IntegrityError):
             f.store.store_event(changed_event,f.history_ref)
         self.assertEqual(f.store.capacity_report()['actual_records'],4)
+
+    def test_durable_input_admission_recovers_without_external_phase_state_in_same_slot(self):
+        from multisport_lab.pros004_snapshot import snapshot_manifest
+        f=ProducerFixture(self)
+        claim=f.store.body(f.claim_ref)
+        self.assertEqual(claim['schema_version'],'nba-pros004-event-claim-v2')
+        self.assertEqual(claim['input_final_checkpoint'],f.input_final_checkpoint)
+        self.assertLessEqual(f.store.ledger._path(f.claim_ref.kind,f.claim_ref.record_id).stat().st_size,8192)
+        counts=f.store.capacity_report()
+        self.assertEqual(counts['actual_records'],4)
+        self.assertEqual(counts['pros004_schema_counts']['nba-pros004-event-claim-v1'],0)
+        self.assertEqual(counts['pros004_schema_counts']['nba-pros004-event-claim-v2'],1)
+        self.assertEqual(counts['event_admission_claim_count'],1)
+        self.assertEqual(counts['pros004_capacity_counts']['nba-pros004-event-claim-v1'],1)
+        self.assertEqual(counts['maximum_records_including_reserve'],512)
+        root=self.enterContext(tempfile.TemporaryDirectory())
+        shutil.copytree(Path(f.tmp)/'records',Path(root)/'records')
+        shutil.copytree(Path(f.tmp)/'evidence',Path(root)/'evidence')
+        restored=rec.Pros004Store(root,diagnostic=True)
+        self.assertEqual(restored.lookup_claim(f.event_ref,f.binding),f.claim_ref)
+        self.assertEqual(restored.body(f.claim_ref)['input_final_checkpoint'],f.input_final_checkpoint)
+        def acknowledge(reference):
+            return {'schema_version':'nba-pros004-remote-checkpoint-v1','reference':reference.to_record(),
+                'remote_repository':'NickNicky19/Nicks-multisport-lab-project','remote_branch':'records/SYNTHETIC_ONLY',
+                'remote_commit':'a'*40,'snapshot_sha256':digest(snapshot_manifest(root)),
+                'readback_raw_sha256':restored._raw_sha256(reference),'remote_completed_at':stamp(f.record_clock.return_value)}
+        result=prod.issue_pair(restored,f.event_ref,f.binding,player_id='10',checkpoint=acknowledge)
+        self.assertEqual(result['retained_models'],2)
+        self.assertEqual(result['timing_complete_models'],2)
+        self.assertEqual(result['eligible_models'],0)
+        self.assertEqual(f.store.body(f.claim_ref),claim)
+
+    def test_date_status_capacity_grouping_preserves_truthful_schema_inventory(self):
+        f=ProducerFixture(self)
+        f.store.store_date_status('2026-10-22',status='SOURCE_FAILURE',
+            reason='Synthetic complete source unavailable',mode='SYNTHETIC_DIAGNOSTIC')
+        report=f.store.capacity_report()
+        self.assertEqual(report['pros004_schema_counts']['nba-pros004-event-v1'],1)
+        self.assertEqual(report['pros004_schema_counts']['nba-pros004-date-status-v1'],1)
+        self.assertEqual(report['event_input_or_date_status_count'],2)
+        self.assertEqual(report['pros004_capacity_counts']['nba-pros004-event-v1'],2)
+        self.assertEqual(report['actual_records'],5)
+        self.assertEqual(sum(report['pros004_schema_counts'].values()),4)
+
+    def test_late_durable_admission_completion_is_retained_but_blocks_restart_generation(self):
+        f=ProducerFixture(self,prepare_admission=False)
+        close=START-timedelta(minutes=100)
+        for clock in (f.record_clock,f.ledger_clock):clock.return_value=close-timedelta(seconds=1)
+        write=rec.frozen_ledger.write_receipt
+        def delayed(path,payload,**kwargs):
+            result=write(path,payload,**kwargs)
+            if payload.get('data',{}).get('pros004',{}).get('schema_version')=='nba-pros004-event-claim-v2':
+                for clock in (f.record_clock,f.ledger_clock):clock.return_value=close+timedelta(seconds=1)
+            return result
+        with patch.object(rec.frozen_ledger,'write_receipt',side_effect=delayed):
+            with self.assertRaisesRegex(IntegrityError,'durable input admission completed late'):
+                f.store.claim_event(f.event_ref,f.binding,input_final_checkpoint=f.input_final_checkpoint)
+        ref=f.store.lookup_claim(f.event_ref,f.binding)
+        self.assertIsNotNone(ref);original=f.store.ledger._path(ref.kind,ref.record_id).read_bytes()
+        for clock in (f.record_clock,f.ledger_clock):clock.return_value=ISSUE
+        restored=rec.Pros004Store(f.tmp,diagnostic=True)
+        self.assertFalse(restored.admission_status(ref)['local_timely'])
+        with patch.object(prod,'generate_forecast',side_effect=AssertionError('late admission cannot generate')):
+            with self.assertRaisesRegex(IntegrityError,'durable input admission lacks timely'):
+                prod.issue_pair(restored,f.event_ref,f.binding,player_id='10',checkpoint=f.ack)
+        self.assertEqual(restored.ledger._path(ref.kind,ref.record_id).read_bytes(),original)
+
+    def test_resealed_durable_input_phase_tampering_is_rejected_without_timestamp_repair(self):
+        f=ProducerFixture(self)
+        path=f.store.ledger._path(f.claim_ref.kind,f.claim_ref.record_id)
+        original=path.read_bytes();envelope=json.loads(original)
+        envelope['payload']['data']['pros004']['input_final_checkpoint']['snapshot_sha256']='f'*64
+        envelope['payload_sha256']=digest(envelope['payload']);path.write_bytes(canonical(envelope))
+        altered=LedgerRef(f.claim_ref.kind,f.claim_ref.record_id,envelope['payload_sha256'])
+        restored=rec.Pros004Store(f.tmp,diagnostic=True)
+        with self.assertRaisesRegex(IntegrityError,'snapshot contradicts'):
+            restored.read(altered)
+        self.assertEqual(path.read_bytes(),canonical(envelope))
 
     def test_one_missing_peer_is_preserved_on_restart_and_late_completion_rejected(self):
         f=ProducerFixture(self);claim,_=f.store.claim_event(f.event_ref,f.binding)

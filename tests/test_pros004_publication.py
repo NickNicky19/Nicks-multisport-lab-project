@@ -70,6 +70,21 @@ class Pros004PublicationTests(unittest.TestCase):
             forecasts,grades,excluded=pub.collect_public_records(root,now=NOW)
         self.assertEqual((forecasts,grades),([],[]))
 
+    def test_operational_versions_bind_exact_corresponding_source_contract(self):
+        from multisport_lab.pros004_producer import LEGACY_SOURCE_FILES
+        row=synthetic_forecast(self)
+        for version in (1,2,3):
+            body=pub.original_record(row)
+            body['producer_version']=f"pros004-r0-producer-v{version}"
+            body['producer_binding']['schema_version']=f"nba-pros004-source-binding-v{version}"
+            if version==1:
+                body['producer_binding']['source_sha256']={k:v for k,v in body['producer_binding']['source_sha256'].items() if k in LEGACY_SOURCE_FILES}
+            reseal(body,'forecast_id');projected=pub.project_original(body,row['source_record'],admission=row['admission'])
+            pub.validate_forecast_projection(projected,now=NOW)
+            body['producer_binding']['schema_version']=f"nba-pros004-source-binding-v{2 if version==1 else 1}"
+            reseal(body,'forecast_id')
+            with self.assertRaises(IntegrityError):pub.validate_forecast_projection(pub.project_original(body,row['source_record'],admission=row['admission']),now=NOW)
+
     def test_exact_unsigned_json_preserves_integral_float_source_bytes(self):
         row=synthetic_forecast(self)
         original=pub.original_record(row)
@@ -173,8 +188,9 @@ class Pros004PublicationTests(unittest.TestCase):
     @unittest.skipUnless(shutil.which('node'), 'Node is required for the cross-runtime publication contract')
     def test_python_generated_source_bound_pages_recover_through_browser_loader(self):
         from multisport_lab import publication as legacy
-        row=synthetic_forecast(self);grade=synthetic_grade(row,scored=True)
-        descriptor,index,assets=pub.make_assets([row],[grade],now=NOW)
+        row=synthetic_forecast(self);peer=synthetic_forecast(self,model='K0')
+        grade=synthetic_grade(row,scored=True);peer_grade=synthetic_grade(peer,scored=True)
+        descriptor,index,assets=pub.make_assets([row,peer],[grade,peer_grade],now=NOW)
         sport=legacy.empty_nba(Path(__file__).resolve().parents[1],now=NOW)
         sport_raw=canonical(sport);sport_hash=hashlib.sha256(sport_raw).hexdigest()
         sport_name=f'nba.{sport_hash}.json';assets[sport_name]=sport_raw
@@ -190,8 +206,9 @@ const assets=JSON.parse(input);
 // browser publication-clock checking only, never a producer/source clock.
 Date.now=()=>Date.parse('2026-10-25T00:00:00Z');
 const result=await loadSnapshot(async path=>new Response(assets[path.replace('./data/','')]),webcrypto);
-if(result.errors.length||result.pros004Error||result.pros004?.forecasts.length!==1||result.pros004?.grades.length!==1)throw new Error(JSON.stringify({errors:result.errors,pros004Error:result.pros004Error}));
-console.log('Python19-file producer + original LedgerRef + complete PMFs + grade browser readback passed');"""
+if(result.errors.length||result.pros004Error||result.pros004?.forecasts.length!==2||result.pros004?.grades.length!==2)throw new Error(JSON.stringify({errors:result.errors,pros004Error:result.pros004Error}));
+if(new Set(result.pros004.forecasts.map(row=>JSON.parse(row.record_json).model_key)).size!==2)throw new Error('R0/K0 identity lost');
+console.log('Python19-file paired '+JSON.parse(result.pros004.forecasts[0].record_json).producer_version+' + original LedgerRef + complete PMFs + grade browser readback passed');"""
         result=subprocess.run(['node','--input-type=module','-e',code],input=json.dumps({k:v.decode() for k,v in assets.items()}),
             cwd=Path(__file__).resolve().parents[1],capture_output=True,text=True)
         self.assertEqual(result.returncode,0,result.stderr)

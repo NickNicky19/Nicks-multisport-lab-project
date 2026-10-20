@@ -43,14 +43,19 @@ def report(root):
             'baseline_and_pilot_records':32,'metadata_records':38,'projected_records':512,
             'projected_bytes':24576000,'metadata_encoded_ceiling_bytes':3145728},
         'diagnostic_status':'PASS','operation_failure':None,
-        'event_input':{'final_checkpoint':{'timely':True}},
+        'event_input':{'final_checkpoint':{'timely':True},
+            'admission_ref':{'kind':'input_captures','record_id':'a'*64,'payload_sha256':'b'*64},
+            'admission_encoded_envelope_bytes':6500,
+            'admission_final_checkpoint':{'timely':True,'references':[
+                {'kind':'input_captures','record_id':'a'*64,'payload_sha256':'b'*64}]}},
         'recovery':{'retained_models':8,'timing_complete_models':8,'eligible_models':0,
             'remote_recovery':True,'github_recovery':False,'transport':'ISOLATED_LOCAL_BARE_GIT',
-            'original_probabilities_and_clocks_preserved':True,'final_checkpoint':{'timely':True}},
+            'original_probabilities_and_clocks_preserved':True,'final_checkpoint':{'timely':True},
+            'input_admission_recovered':True},
         'diagnostics':{model:{'forecast_envelope_bytes':40000,'support_count':26645,
             'restored_support_count':26645,'category_count':14,
             'model_version':verifier.MODEL_VERSIONS[model],
-            'producer_version':'pros004-'+model.lower()+'-producer-v2',
+            'producer_version':'pros004-'+model.lower()+'-producer-v3',
             'joint_sha256':'a'*64,'restored_joint_sha256':'a'*64} for model in ('R0','K0')}}
 
 
@@ -95,6 +100,32 @@ def typed_fixture(case):
         body,_=f.generate(model)
         refs.append(f.store.persist_forecast(body,f.event_ref,f.history_ref,claim))
     return f,refs
+
+
+def copy_for_semantic_mutation(source,root):
+    """Keep the immutable input proof, without unrelated later completion seals.
+
+    Deliberate test mutations must exercise typed meanings rather than simply
+    breaking a later receipt's raw-byte seal. Missing later ACK evidence never
+    grants timing admission.
+    """
+    from multisport_lab.integrity import read_receipt
+    source=Path(source);root=Path(root)
+    shutil.copytree(source/'records',root/'records')
+    target_hash=None
+    for path in (source/'records/input_captures').glob('*.json'):
+        body=read_receipt(path)['data'].get('pros004',{})
+        if body.get('schema_version')=='nba-pros004-event-claim-v2':
+            target_hash=body['input_final_checkpoint']['journal_raw_sha256'];break
+    if target_hash is not None:
+        prefix=bytearray()
+        for line in (source/'evidence/pros004/completion-journal.jsonl').read_bytes().splitlines(keepends=True):
+            prefix.extend(line)
+            if hashlib.sha256(prefix).hexdigest()==target_hash:
+                target=root/'evidence/pros004/completion-journal.jsonl'
+                target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(prefix)
+                break
+        else:raise RuntimeError('Synthetic fixture lost its original input proof')
 
 
 def replace_typed_receipt(root,original,body,refs=None):
@@ -159,6 +190,58 @@ class Pros004VerifierTests(unittest.TestCase):
             with patch.object(verifier,'MAX_BYTES',1):
                 with self.assertRaisesRegex(verifier.VerificationError,'index changed'):
                     verifier._VerifiedRecordIndex({key:item},{key:sha},_Pros004Ledger(folder))
+
+    def test_semantic_scope_keeps_all_pros004_and_referenced_parents_without_legacy_reexecution(self):
+        from multisport_lab import pros004_records as records
+        from multisport_lab import pregame_sources
+        from test_pros004_producer import ProducerFixture,ISSUE
+        from test_pregame_sources import pack_fixture,tiny_history,NOW as LEGACY_CLOCK
+        f=ProducerFixture(self,prepare_admission=False)
+        # This checksum-consistent stand-in is deliberately unreferenced and
+        # subject only to the original independent generic checks. It is not
+        # presented as a semantically validated historical input package.
+        f.stack.enter_context(patch.object(pregame_sources,'PANEL_SHA',
+            hashlib.sha256(pregame_sources._panel_bytes(tiny_history())).hexdigest()))
+        with patch.object(pregame_sources,'_now',return_value=LEGACY_CLOCK):
+            legacy_pack=pack_fixture()
+        legacy=payload('research_inputs','research-inputs:'+verifier.fingerprint(legacy_pack),
+            {'source_pack':legacy_pack},clock=legacy_pack['imported_at'])
+        save(Path(f.tmp),legacy)
+        # Establish the input proof after this baseline already exists. Adding
+        # a backdated original after the proof would correctly change its hash.
+        capture_clock=verifier._time(f.event['imported_at'])+timedelta(microseconds=2)
+        f.record_clock.return_value=capture_clock;f.ledger_clock.return_value=capture_clock
+        phase=f.store.finalize_checkpoint((f.event_ref,),f.ack)
+        f.record_clock.return_value=capture_clock+timedelta(microseconds=1)
+        f.ledger_clock.return_value=f.record_clock.return_value
+        claim,_=f.store.claim_event(f.event_ref,f.binding,input_final_checkpoint=phase)
+        f.store.complete_checkpoint(claim,f.ack)
+        f.store.finalize_checkpoint((claim,),f.ack)
+        f.record_clock.return_value=ISSUE;f.ledger_clock.return_value=ISSUE
+        for model in ('R0','K0'):
+            body,_=f.generate(model)
+            f.store.persist_forecast(body,f.event_ref,f.history_ref,claim)
+        actual=records._Pros004Ledger._validate_payload;calls=[]
+        def generic(ledger,body,*,kind,record_id):
+            calls.append((kind,record_id))
+            return actual(ledger,body,kind=kind,record_id=record_id)
+        with patch.object(records._Pros004Ledger,'_validate_payload',generic),patch(
+                'multisport_lab.pregame_sources.validate_pack',side_effect=RuntimeError('Unrelated legacy reexecution')):
+            result=verifier.verify_store(f.tmp)
+        semantics=result['strict_typed_semantics']
+        self.assertEqual(semantics['legacy_semantic_scope'],'REFERENCED_PARENTS_ONLY')
+        self.assertEqual(semantics['generic_records_read'],len(set(calls)))
+        self.assertNotIn(('research_inputs',legacy['record_id']),calls)
+        self.assertEqual(calls.count((f.history_ref.kind,f.history_ref.record_id)),1)
+        self.assertEqual(calls.count((f.event_ref.kind,f.event_ref.record_id)),1)
+        self.assertEqual(result['independently_checked_forecast_contracts'],2)
+        # Scoping out unrelated legacy semantics cannot exempt a newly marked
+        # PROS004 outcome, including one with internally consistent checksums.
+        malformed=payload('outcomes','new-invalid-pros004-scope',{'identity':{},'pros004':{
+            'schema_version':'nba-pros004-outcome-v1','mode':'SYNTHETIC_DIAGNOSTIC','status':'ALIEN'}})
+        save(Path(f.tmp),malformed)
+        with self.assertRaisesRegex(verifier.VerificationError,'strict typed'):
+            verifier.verify_store(f.tmp)
 
     def test_standalone_store_rejects_source_mutation_after_indexed_semantics(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -230,7 +313,7 @@ with patch.object(v,'_strict_semantics',side_effect=mutate):
                 with self.assertRaisesRegex(verifier.VerificationError,'frozen source changed'):
                     verifier.verify_readiness(base,root)
 
-    def test_v2_requires_completion_execution_and_recovery_pins_and_legacy_stays_readable(self):
+    def test_completion_aware_report_requires_execution_recovery_pins_and_legacy_stays_readable(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);base=report(root)
             with patch.object(verifier,'PINNED_SOURCE_HASHES',{}):
@@ -248,6 +331,40 @@ with patch.object(v,'_strict_semantics',side_effect=mutate):
                 legacy=deepcopy(bad);legacy['schema_version']=verifier.LEGACY_SCHEMA
                 legacy['source_sha256']={name:legacy['source_sha256'][name] for name in verifier.LEGACY_PRODUCER_FILES}
                 self.assertEqual(verifier.verify_readiness(legacy,root)['planned_bytes'],22487040)
+
+    def test_v2_read_policy_does_not_gain_v3_durable_input_claim(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);legacy=report(root)
+            legacy['schema_version']=verifier.PREVIOUS_SCHEMA
+            legacy['producer_binding']['schema_version']='nba-pros004-source-binding-v2'
+            for model in ('R0','K0'):
+                legacy['diagnostics'][model]['producer_version']='pros004-'+model.lower()+'-producer-v2'
+            for key in ('admission_ref','admission_encoded_envelope_bytes','admission_final_checkpoint'):
+                del legacy['event_input'][key]
+            del legacy['recovery']['input_admission_recovered']
+            with patch.object(verifier,'PINNED_SOURCE_HASHES',{}):
+                self.assertEqual(verifier.verify_readiness(legacy,root)['status'],'PASS_INDEPENDENT_READINESS_CHECK')
+                legacy['schema_version']=verifier.SCHEMA
+                legacy['producer_binding']['schema_version']='nba-pros004-source-binding-v3'
+                for model in ('R0','K0'):
+                    legacy['diagnostics'][model]['producer_version']='pros004-'+model.lower()+'-producer-v3'
+                with self.assertRaisesRegex(verifier.VerificationError,'durable input admission'):
+                    verifier.verify_readiness(legacy,root)
+
+    def test_v3_requires_durable_original_input_admission_and_unchanged_ceiling(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);base=report(root)
+            with patch.object(verifier,'PINNED_SOURCE_HASHES',{}):
+                for change in ('missing','identity','bytes','late','wrong-reference','not-recovered'):
+                    bad=deepcopy(base)
+                    if change=='missing':del bad['event_input']['admission_ref']
+                    if change=='identity':bad['event_input']['admission_ref']['payload_sha256']='invalid'
+                    if change=='bytes':bad['event_input']['admission_encoded_envelope_bytes']=8193
+                    if change=='late':bad['event_input']['admission_final_checkpoint']['timely']=False
+                    if change=='wrong-reference':bad['event_input']['admission_final_checkpoint']['references']=[]
+                    if change=='not-recovered':bad['recovery']['input_admission_recovered']=False
+                    with self.subTest(change=change),self.assertRaises(verifier.VerificationError):
+                        verifier.verify_readiness(bad,root)
 
     def test_v2_producer_binding_cannot_disagree_with_executed_source_map(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -376,7 +493,7 @@ with patch.object(v,'_strict_semantics',side_effect=mutate):
         self.assertGreater(verifier.verify_store(f.tmp)['strict_typed_semantics']['typed_records'],0)
         for change in ('status','identity','arithmetic','observation_clock','normalization_clock','mode'):
             with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
-                root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+                root=Path(folder);copy_for_semantic_mutation(f.tmp,root)
                 body=deepcopy(original['data']['pros004'])
                 if change=='status':body['status']='IMPOSSIBLE_STATUS'
                 if change=='identity':body['player_id']='999'
@@ -400,7 +517,7 @@ with patch.object(v,'_strict_semantics',side_effect=mutate):
         verifier.verify_store(f.tmp)
         for change in ('status','score','forecast_id','grade_clock','reference'):
             with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
-                root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+                root=Path(folder);copy_for_semantic_mutation(f.tmp,root)
                 body=deepcopy(original['data']['pros004']);changed_refs=deepcopy(original['references'])
                 if change=='status':body['status']='DNP_NOT_SCORED'
                 if change=='score':body['categories'][0]['crps']='999'
@@ -425,7 +542,7 @@ with patch.object(v,'_strict_semantics',side_effect=mutate):
         original=read_receipt(f.store.ledger._path(grade.kind,grade.record_id))
         body=f.store._grade(f.store.body(refs[1]),f.store.body(out),stamp(f.record_clock.return_value))
         with tempfile.TemporaryDirectory() as folder:
-            root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+            root=Path(folder);copy_for_semantic_mutation(f.tmp,root)
             replace_typed_receipt(root,original,body,[refs[1].to_record(),out.to_record()])
             with self.assertRaisesRegex(verifier.VerificationError,'not linked by its shared outcome'):
                 verifier.verify_store(root)
@@ -436,10 +553,10 @@ with patch.object(v,'_strict_semantics',side_effect=mutate):
         f,_=typed_fixture(self)
         claim_path=next((Path(f.tmp)/'records/input_captures').glob('*.json'))
         claim=read_receipt(claim_path)
-        self.assertEqual(claim['data']['pros004']['schema_version'],'nba-pros004-event-claim-v1')
+        self.assertEqual(claim['data']['pros004']['schema_version'],'nba-pros004-event-claim-v2')
         for change in ('cohort','event','clock','identity'):
             with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
-                root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+                root=Path(folder);copy_for_semantic_mutation(f.tmp,root)
                 # Remove dependents so a broken content reference cannot mask a
                 # checksum-consistent admission-body semantic failure.
                 shutil.rmtree(root/'records/forecasts')
@@ -450,6 +567,26 @@ with patch.object(v,'_strict_semantics',side_effect=mutate):
                 if change=='identity':original['data']['identity']['event_id']='401999999'
                 if change!='identity':original['data']['identity']=rec._identity(body)
                 save(root,original)
+                with self.assertRaisesRegex(verifier.VerificationError,'strict typed'):
+                    verifier.verify_store(root)
+
+    def test_checksum_consistent_claim_v2_cannot_change_original_input_phase_proof(self):
+        from multisport_lab.integrity import read_receipt
+        f,_=typed_fixture(self)
+        original=read_receipt(f.store.ledger._path(f.claim_ref.kind,f.claim_ref.record_id))
+        self.assertEqual(original['data']['pros004']['schema_version'],'nba-pros004-event-claim-v2')
+        for change in ('snapshot','journal','references','late','acknowledgment','missing-proof'):
+            with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
+                root=Path(folder);copy_for_semantic_mutation(f.tmp,root)
+                shutil.rmtree(root/'records/forecasts')
+                body=deepcopy(original['data']['pros004']);proof=body['input_final_checkpoint']
+                if change=='snapshot':proof['snapshot_sha256']='f'*64;proof['acknowledgment']['snapshot_sha256']='f'*64
+                if change=='journal':proof['journal_raw_sha256']='f'*64
+                if change=='references':proof['references']=[]
+                if change=='late':proof['completed_at']='2026-10-21T22:50:00.000001Z'
+                if change=='acknowledgment':proof['acknowledgment']['reference']=f.history_ref.to_record()
+                if change=='missing-proof':del body['input_final_checkpoint']
+                replace_typed_receipt(root,original,body)
                 with self.assertRaisesRegex(verifier.VerificationError,'strict typed'):
                     verifier.verify_store(root)
 
@@ -504,7 +641,7 @@ with patch.object(v,'_strict_semantics',side_effect=mutate):
         original=read_receipt(f.store.ledger._path(date_ref.kind,date_ref.record_id))
         for change in ('status','outside-reservation','clock','false-completeness'):
             with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
-                root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+                root=Path(folder);copy_for_semantic_mutation(f.tmp,root)
                 body=deepcopy(original['data']['pros004'])
                 if change=='status':body['status']='COMPLETE'
                 if change=='outside-reservation':body['event_date']='2026-11-11'
@@ -523,7 +660,7 @@ with patch.object(v,'_strict_semantics',side_effect=mutate):
         verifier.verify_store(f.tmp)
         for change in ('status','operation','subject','original','clock'):
             with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
-                root=Path(folder);shutil.copytree(Path(f.tmp)/'records',root/'records')
+                root=Path(folder);copy_for_semantic_mutation(f.tmp,root)
                 body=deepcopy(original['data']['pros004'])
                 if change=='status':body['status']='SUCCESS'
                 if change=='operation':body['operation']='BET_PLACEMENT'

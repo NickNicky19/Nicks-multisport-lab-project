@@ -28,7 +28,7 @@ ISSUE=CUTOFF+timedelta(seconds=5)
 
 class ProducerFixture:
     """Only temporary synthetic data; original frozen modules are merely patched."""
-    def __init__(self, case):
+    def __init__(self, case, *, prepare_admission=True, acknowledge_admission=True):
         stack=ExitStack();case.addCleanup(stack.close);self.stack=stack
         base=tiny_history()[0]
         rows=[replace(base,event_id='1001',player_id='10',minutes=20),
@@ -51,8 +51,19 @@ class ProducerFixture:
         self.event_ref=self.store.store_event(self.event,self.history_ref)
         self.store.complete_checkpoint(self.event_ref,self.ack)
         self.input_final_checkpoint=self.store.finalize_checkpoint((self.event_ref,),self.ack)
-        self.record_clock.return_value=ISSUE;self.ledger_clock.return_value=ISSUE
         self.binding=prod.make_source_binding(diagnostic=True)
+        # Distinguish the later admission from its already-completed input
+        # checkpoint when reconstructing the immutable original snapshot.
+        self.record_clock.return_value=NOW+timedelta(microseconds=1)
+        self.ledger_clock.return_value=NOW+timedelta(microseconds=1)
+        self.claim_ref=None;self.input_admission_checkpoint=None
+        if prepare_admission:
+            self.claim_ref,_=self.store.claim_event(self.event_ref,self.binding,
+                input_final_checkpoint=self.input_final_checkpoint)
+            if acknowledge_admission:
+                self.store.complete_checkpoint(self.claim_ref,self.ack)
+                self.input_admission_checkpoint=self.store.finalize_checkpoint((self.claim_ref,),self.ack)
+        self.record_clock.return_value=ISSUE;self.ledger_clock.return_value=ISSUE
 
     def ack(self, reference):
         # Explicitly fictitious remote metadata for timing/control tests only.
@@ -65,7 +76,6 @@ class ProducerFixture:
 
     def issue(self, store=None, **kwargs):
         kwargs.setdefault('checkpoint',self.ack)
-        kwargs.setdefault('input_final_checkpoint',self.input_final_checkpoint)
         return prod.issue_pair(store or self.store,self.event_ref,self.binding,**kwargs)
 
     def generate(self, model='R0', player='10'):
@@ -198,24 +208,23 @@ class Pros004ProducerTests(unittest.TestCase):
         self.assertFalse(late['final_checkpoint']['timely'])
         self.assertEqual(late['metadata_publication_status'],'LATE_METADATA_PUBLICATION')
 
-    def test_missing_or_invalid_original_input_phase_receipt_prevents_generation(self):
-        f=ProducerFixture(self)
+    def test_missing_or_invalid_durable_input_admission_prevents_generation(self):
+        absent=ProducerFixture(self,prepare_admission=False)
         with patch.object(prod,'generate_forecast',side_effect=AssertionError('unproved phase cannot generate')):
-            missing=f.issue(player_id='10',input_final_checkpoint=None)
-            self.assertEqual(missing['status'],'INPUT_FINAL_CHECKPOINT_REQUIRED')
-            self.assertFalse(missing['generation_attempted'])
+            missing=absent.issue(player_id='10')
+        self.assertEqual(missing['status'],'DURABLE_INPUT_ADMISSION_REQUIRED')
+        self.assertFalse(missing['generation_attempted'])
+        f=ProducerFixture(self)
+        with patch.object(prod,'generate_forecast',side_effect=AssertionError('changed phase cannot generate')):
             for field,value in [('references',[f.history_ref.to_record()]),
                     ('snapshot_sha256','e'*64),('journal_raw_sha256','e'*64),
                     ('completed_at',stamp(CUTOFF-timedelta(minutes=10)+timedelta(microseconds=1)))]:
                 with self.subTest(field=field):
                     changed=deepcopy(f.input_final_checkpoint);changed[field]=value
-                    with self.assertRaises(IntegrityError):
+                    with self.assertRaisesRegex(IntegrityError,'differs from the immutable admission'):
                         f.issue(player_id='10',input_final_checkpoint=changed)
-        self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','R0'))
-        self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','K0'))
-        # A missing phase receipt on recovery never permits replacement of an
-        # existing original, even though a valid fresh receipt would allow its
-        # genuinely missing peer to proceed while timely.
+        # An independently restarted store recovers the original report solely
+        # from the durable claim and generates only the genuinely missing peer.
         def partial(reference):
             if reference.kind=='forecasts':raise OSError('synthetic partial original')
             return f.ack(reference)
@@ -223,14 +232,16 @@ class Pros004ProducerTests(unittest.TestCase):
             f.issue(player_id='10',checkpoint=partial)
         ref=f.store.lookup_forecast(f.event_ref,'10','R0')
         original=f.store.ledger._path(ref.kind,ref.record_id).read_bytes()
-        with patch.object(prod,'generate_forecast',side_effect=AssertionError('missing receipt recovery cannot generate')):
+        generation=prod.generate_forecast;models=[]
+        def track(*args,**kwargs):
+            models.append(kwargs['model_key']);return generation(*args,**kwargs)
+        with patch.object(prod,'generate_forecast',side_effect=track):
             recovery=f.issue(store=rec.Pros004Store(f.tmp,diagnostic=True),player_id='10',input_final_checkpoint=None)
-        self.assertEqual(recovery['status'],'INPUT_FINAL_CHECKPOINT_REQUIRED')
-        self.assertEqual(recovery['retained_models'],1)
+        self.assertEqual(models,['K0']);self.assertEqual(recovery['retained_models'],2)
         self.assertEqual(f.store.ledger._path(ref.kind,ref.record_id).read_bytes(),original)
 
     def test_input_phase_snapshot_reconstruction_rejects_ambiguous_tied_receipts(self):
-        f=ProducerFixture(self)
+        f=ProducerFixture(self,prepare_admission=False)
         # This new receipt was absent from the original remote input snapshot.
         # A forged/tied pre-write clock cannot silently choose a convenient
         # subset when reconstructing that snapshot on restart.
@@ -240,7 +251,7 @@ class Pros004ProducerTests(unittest.TestCase):
         f.record_clock.return_value=ISSUE;f.ledger_clock.return_value=ISSUE
         with patch.object(prod,'generate_forecast',side_effect=AssertionError('ambiguous input cannot generate')):
             with self.assertRaisesRegex(IntegrityError,'cannot be recovered unambiguously'):
-                f.issue(player_id='10')
+                f.store.validate_input_checkpoint(f.event_ref,f.input_final_checkpoint)
 
     def test_before_persistence_interruption_has_no_original_and_can_retry_timely(self):
         f=ProducerFixture(self)
@@ -284,11 +295,11 @@ class Pros004ProducerTests(unittest.TestCase):
             report=f.issue(player_id='10')
         self.assertEqual(report['status'],'ISSUANCE_NOT_YET_OPEN')
         self.assertFalse(report['generation_attempted'])
-        self.assertIsNone(report['claim_ref'])
-        f.producer_clock.return_value=ISSUE
+        self.assertEqual(report['claim_ref'],f.claim_ref.to_record())
+        f=ProducerFixture(self,acknowledge_admission=False)
         with patch.object(prod,'generate_forecast',side_effect=AssertionError('unacknowledged admission')):
-            with self.assertRaisesRegex(IntegrityError,'structured independent'):
-                f.issue(player_id='10',checkpoint=lambda ref:False)
+            with self.assertRaisesRegex(IntegrityError,'durable input admission lacks timely'):
+                f.issue(player_id='10')
         self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','R0'))
         self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','K0'))
 

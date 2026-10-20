@@ -19,11 +19,12 @@ import re
 import stat
 import subprocess
 
-from .integrity import IntegrityError, canonical, digest, read_receipt, write_receipt
+from .integrity import IntegrityError, canonical, digest, read_receipt, write_receipt, utc
 from .pros004_completion import (JOURNAL_RELATIVE_PATH, MAX_JOURNAL_BYTES,
     journal_inventory, load_journal)
 from scripts.verify_pros004_readiness import (
     KINDS, MAX_BYTES, MAX_RECORDS, VerificationError, load_receipt, verify_store,
+    _verify_corrections, _verify_original_bytes,
 )
 
 SCHEMA = "nba-pros004-diagnostic-snapshot-v2"
@@ -145,6 +146,100 @@ def snapshot_manifest(source_root):
     A missing legacy journal remains missing; recovery never manufactures proof.
     """
     return _manifest_for_schema(source_root)
+
+
+def recover_manifest_prefix(source_root, journal_raw_sha256, operation_started_at):
+    """Reconstruct the byte identity of an earlier already-validated snapshot.
+
+    This raw-only helper does not call typed recovery, grant admission or produce
+    an acknowledgment. It avoids recursion when a typed admission validates its
+    original input-phase proof. The returned identity includes the original
+    manifest's semantic-validation field; that is not a new semantic claim by
+    this helper. The enclosing strict facade must still validate typed meanings.
+
+    Equal receipt clocks are included deliberately. If a later record tied an
+    earlier operation's clock, its reconstructed digest differs from the retained
+    original proof; callers must reject the ambiguity instead of guessing.
+    """
+    root=_path_root(source_root)
+    _require(type(journal_raw_sha256) is str and re.fullmatch('[a-f0-9]{64}',journal_raw_sha256) is not None,
+             'invalid original journal-prefix hash')
+    _require(type(operation_started_at) is str and re.fullmatch(
+        r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z',operation_started_at) is not None,
+        'original snapshot operation needs a precise UTC clock')
+    try:
+        started=utc(operation_started_at)
+        files=_strict_layout(root)
+        current_journal=journal_inventory(root);journal=load_journal(root)
+        _require(len(files)+current_journal['files']<=MAX_RECORDS and
+                 sum(p.stat().st_size for p in files)+current_journal['bytes']<=MAX_BYTES,
+                 'prefix source exceeds unchanged ledger capacity')
+        records={};hashes={};raw_hashes={};sizes={};entries=[]
+        for path in files:
+            payload,raw_sha,size=load_receipt(path,maximum=4*1024*1024)
+            kind=path.parent.name;key=(kind,path.stem)
+            fields={'schema_version','kind','record_id','logical_id','received_at','data','references',
+                    'supersedes','persistence_status'}
+            _require(type(payload) is dict and set(payload)==fields and
+                payload['schema_version']=='multisport-research-ledger-v1' and payload['kind']==kind and
+                payload['record_id']==path.stem and payload['persistence_status']=='LOCAL_RECEIPT_ONLY',
+                'original prefix ledger envelope changed')
+            _require(type(payload['logical_id']) is str and bool(payload['logical_id'].strip()) and
+                payload['record_id']==digest({'kind':kind,'logical_id':payload['logical_id']}) and
+                type(payload['data']) is dict and type(payload['references']) is list,
+                'original prefix logical identity/data changed')
+            received=payload['received_at']
+            _require(type(received) is str and re.fullmatch(
+                r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z',received) is not None,
+                'original prefix receipt clock is malformed')
+            raw_hashes[key]=raw_sha;sizes[key]=size
+            if utc(received)>started:
+                continue
+            records[key]=payload;hashes[key]=digest(payload)
+            entries.append({'entry_type':'LEDGER_RECEIPT','path':path.relative_to(root).as_posix(),
+                'encoded_bytes':size,'raw_sha256':raw_sha,'payload_sha256':hashes[key]})
+        for payload in records.values():
+            observed=[]
+            for ref in payload['references']:
+                _require(type(ref) is dict and set(ref)=={'kind','record_id','payload_sha256'} and
+                    ref['kind'] in KINDS and type(ref['record_id']) is str and
+                    re.fullmatch('[a-f0-9]{64}',ref['record_id']) is not None,
+                    'original prefix reference is malformed')
+                key=(ref['kind'],ref['record_id'])
+                _require(key in records and hashes[key]==ref['payload_sha256'] and
+                    utc(records[key]['received_at'])<=utc(payload['received_at']),
+                    'original prefix reference content/clock is unavailable or changed')
+                observed.append(key)
+            _require(len(set(observed))==len(observed),'original prefix duplicates references')
+        _verify_corrections(records,hashes)
+        prefix=bytearray();prefix_entries=[];matched=False
+        for entry in journal:
+            prefix.extend(canonical(entry)+b'\n');prefix_entries.append(entry)
+            if hashlib.sha256(prefix).hexdigest()==journal_raw_sha256:
+                matched=True;break
+        _require(matched,'original journal prefix is unavailable or changed')
+        for entry in prefix_entries:
+            ref=entry['reference'];key=(ref['kind'],ref['record_id'])
+            _require(key in records and hashes[key]==ref['payload_sha256'] and
+                raw_hashes[key]==entry['record_raw_sha256'] and
+                utc(records[key]['received_at'])<=utc(entry['completed_at']) and
+                utc(entry['recorded_at'])<=started,
+                'original journal prefix changes its record identity/bytes/clocks')
+        entries.append({'entry_type':'COMPLETION_JOURNAL','path':JOURNAL_RELATIVE_PATH,
+            'encoded_bytes':len(prefix),'raw_sha256':journal_raw_sha256,
+            'payload_sha256':digest(prefix_entries)})
+        entries.sort(key=lambda entry:entry['path'])
+        body={'schema_version':SCHEMA,'mode':MODE,'record_count':len(entries),
+            'encoded_bytes':sum(entry['encoded_bytes'] for entry in entries),
+            'global_record_limit':MAX_RECORDS,'global_byte_limit':MAX_BYTES,'entries':entries,
+            'activation':False,'genuine_issuance':0,'remote_durability_established':False,
+            'ledger_record_count':len(records),'completion_journal_count':1,'typed_semantics_validated':True}
+        _verify_original_bytes(root,raw_hashes,sizes)
+        _require(journal_inventory(root)==current_journal,'source journal changed during prefix reconstruction')
+        return {**body,'manifest_id':digest(body)}
+    except (IntegrityError,VerificationError,ValueError,OSError,KeyError,TypeError) as error:
+        if isinstance(error,SnapshotError):raise
+        raise SnapshotError('original raw-prefix reconstruction failed: '+str(error)) from error
 
 
 def _validate_manifest(body):

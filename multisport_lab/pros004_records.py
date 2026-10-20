@@ -26,6 +26,7 @@ from .ledger import (Ledger, LedgerRef, SCHEMA as LEDGER_SCHEMA, KINDS,
 
 STUDY_ID = "NBA-ALL13-JOINT-PROS-004"
 MODEL_KEYS = ("R0", "K0")
+CLAIM_SCHEMAS = {"nba-pros004-event-claim-v1","nba-pros004-event-claim-v2"}
 RESERVE_RECORDS = 13
 DIAGNOSTIC_MODES = {"READINESS_DIAGNOSTIC", "SYNTHETIC_DIAGNOSTIC"}
 MODES = DIAGNOSTIC_MODES | {"REAL_TIME_CAPTURED"}
@@ -37,6 +38,7 @@ CEILINGS = {"nba-pros004-history-v1": 2*1024*1024,
             "nba-pros004-outcome-v1": 8*1024,
             "nba-pros004-grade-v1": 16*1024,
             "nba-pros004-event-claim-v1": 8*1024,
+            "nba-pros004-event-claim-v2": 8*1024,
             "nba-pros004-study-manifest-v1": 8*1024,
             "nba-pros004-failure-v1": 8*1024}
 SCHEMA_KINDS = {"nba-pros004-history-v1": "research_inputs",
@@ -46,6 +48,7 @@ SCHEMA_KINDS = {"nba-pros004-history-v1": "research_inputs",
                 "nba-pros004-outcome-v1": "outcomes",
                 "nba-pros004-grade-v1": "grades",
                 "nba-pros004-event-claim-v1": "input_captures",
+                "nba-pros004-event-claim-v2": "input_captures",
                 "nba-pros004-study-manifest-v1": "input_captures",
                 "nba-pros004-failure-v1": "input_captures"}
 OUTCOME_STATUSES = {"APPEARED", "DNP", "MISSING", "POSTPONED", "NONFINAL", "UNRESOLVED"}
@@ -166,7 +169,7 @@ def _logical(body):
         # One selected event per registered date; changed event cannot create
         # another original event after a recovery/selection failure.
         return f"pros004:event:{day}"
-    if schema == "nba-pros004-event-claim-v1":
+    if schema in CLAIM_SCHEMAS:
         return f"pros004:event-admission:{day}"
     if schema == "nba-pros004-forecast-v1":
         return f"pros004:forecast:{day}:{event['event_id']}:{body['player_id']}:{body['model_key']}:{body['cutoff_at']}"
@@ -400,11 +403,14 @@ class Pros004Store:
             event, history = self.body(event_ref), self.body(history_ref)
             validate_forecast_record(body, event, history)
             claim = self.body(refs[2])
-            if claim["schema_version"] != "nba-pros004-event-claim-v1" or claim["event_ref"] != event_ref.to_record() or claim["producer_identity"] != body["producer_binding"]:
+            if claim["schema_version"] not in CLAIM_SCHEMAS or claim["event_ref"] != event_ref.to_record() or claim["producer_identity"] != body["producer_binding"]:
                 raise IntegrityError("forecast differs from its original admitted producer/input")
-        elif schema == "nba-pros004-event-claim-v1":
+            if body["producer_version"].endswith("-v3") and claim["schema_version"]!="nba-pros004-event-claim-v2":
+                raise IntegrityError("current producer requires its durable input-phase admission")
+        elif schema in CLAIM_SCHEMAS:
             fields={"schema_version","study_id","event_id","event_starts_at","event_ref","history_ref",
                     "players","producer_identity","claimed_at","mode","record_basis"}
+            if schema=="nba-pros004-event-claim-v2":fields.add("input_final_checkpoint")
             if set(body)!=fields:
                 raise IntegrityError("invalid event admission fields")
             event_ref = LedgerRef.from_record(body["event_ref"])
@@ -420,6 +426,14 @@ class Pros004Store:
             claimed=_time(body["claimed_at"],"claimed_at")
             if not utc(self.read(event_ref)["received_at"])<=claimed<=_now():
                 raise IntegrityError("event admission clock precedes its retained input or is in future")
+            if schema=="nba-pros004-event-claim-v2":
+                if body["producer_identity"]["schema_version"]!="nba-pros004-source-binding-v3":
+                    raise IntegrityError("durable input admission requires the current source-bound producer")
+                self.validate_input_checkpoint(event_ref,body["input_final_checkpoint"])
+                if not utc(body["input_final_checkpoint"]["completed_at"])<=claimed<=utc(event["event"]["event_starts_at"])-timedelta(minutes=100):
+                    raise IntegrityError("durable input admission was not prepared within the capture phase")
+            elif body["producer_identity"]["schema_version"]=="nba-pros004-source-binding-v3":
+                raise IntegrityError("current producer cannot create a legacy admission without durable input proof")
         elif schema == "nba-pros004-outcome-v1":
             validate_outcome_body(body)
             if not refs or any(r.kind != "forecasts" for r in refs) or len(refs) > 2:
@@ -524,8 +538,10 @@ class Pros004Store:
             raise IntegrityError("statistical grading occurs after its receipt")
         elif schema=="nba-pros004-history-v1" and utc(body["imported_at"])>received:
             raise IntegrityError("history import occurs after its receipt")
-        elif schema=="nba-pros004-event-claim-v1" and utc(body["claimed_at"])>received:
+        elif schema in CLAIM_SCHEMAS and utc(body["claimed_at"])>received:
             raise IntegrityError("event admission observation occurs after its receipt")
+        elif schema=="nba-pros004-event-claim-v2" and received>utc(body["event_starts_at"])-timedelta(minutes=100):
+            raise IntegrityError("durable input admission receipt exceeds selection close")
         elif schema in {"nba-pros004-date-status-v1","nba-pros004-study-manifest-v1"} and utc(body["recorded_at"])>received:
             raise IntegrityError("operational metadata observation occurs after its receipt")
         elif schema=="nba-pros004-failure-v1" and utc(body["recorded_at"])>received:
@@ -574,7 +590,9 @@ class Pros004Store:
                   "nba-pros004-forecast-v1":168,"nba-pros004-outcome-v1":84,
                   "nba-pros004-grade-v1":168,"nba-pros004-event-claim-v1":21,
                   "nba-pros004-study-manifest-v1":1}
-        counts["nba-pros004-event-v1"]+=counts["nba-pros004-date-status-v1"]
+        capacity_counts=dict(counts)
+        capacity_counts["nba-pros004-event-v1"]+=counts["nba-pros004-date-status-v1"]
+        capacity_counts["nba-pros004-event-claim-v1"]+=counts["nba-pros004-event-claim-v2"]
         # Revisions and correction links consume the13-record residual reserve;
         # they never steal slots from unissued registered subjects.
         subject_keys={schema:[] for schema in ("nba-pros004-outcome-v1","nba-pros004-grade-v1")}
@@ -583,14 +601,17 @@ class Pros004Store:
             if schema in subject_keys:
                 subject_keys[schema].append(digest(payload["data"]["identity"]))
         revisions={schema:len(keys)-len(set(keys)) for schema,keys in subject_keys.items()}
-        overages=sum(max(0,counts[schema]-limit,revisions.get(schema,0)) for schema,limit in limits.items())
+        overages=sum(max(0,capacity_counts[schema]-limit,revisions.get(schema,0)) for schema,limit in limits.items())
         extras = counts["nba-pros004-failure-v1"]+len(study_corrections)+overages
         if extras > RESERVE_RECORDS:
             raise IntegrityError("correction/failure metadata exhausts the full-study reserve")
         return {**plan,"actual_records":all_count,"actual_bytes":actual,
                 "completion_journal":journal,
                 "existing_or_pilot_records":len(external),"existing_or_pilot_bytes":external_bytes,
-                "pros004_schema_counts":counts,"maximum_measured_envelope_bytes":maxima,
+                "pros004_schema_counts":counts,"pros004_capacity_counts":capacity_counts,
+                "event_admission_claim_count":capacity_counts["nba-pros004-event-claim-v1"],
+                "event_input_or_date_status_count":capacity_counts["nba-pros004-event-v1"],
+                "maximum_measured_envelope_bytes":maxima,
                 "used_correction_failure_reserve":extras,
                 "original_subject_identity_sha256":{schema:sorted(set(keys)) for schema,keys in subject_keys.items()}}
 
@@ -614,8 +635,9 @@ class Pros004Store:
             return existing
         report = self.capacity_report()
         schema = body["schema_version"]
-        counts = report["pros004_schema_counts"]
-        capacity_schema="nba-pros004-event-v1" if schema=="nba-pros004-date-status-v1" else schema
+        counts = report["pros004_capacity_counts"]
+        capacity_schema=("nba-pros004-event-v1" if schema=="nba-pros004-date-status-v1" else
+            "nba-pros004-event-claim-v1" if schema=="nba-pros004-event-claim-v2" else schema)
         limit = {"nba-pros004-history-v1":1,"nba-pros004-event-v1":21,
                  "nba-pros004-forecast-v1":168,"nba-pros004-outcome-v1":84,
                  "nba-pros004-grade-v1":168,"nba-pros004-event-claim-v1":21,
@@ -668,8 +690,8 @@ class Pros004Store:
         elif schema=="nba-pros004-forecast-v1":
             deadline=utc(body["cutoff_at"])+timedelta(minutes=5)
             start=utc(body["generation_started_at"])
-        elif schema=="nba-pros004-event-claim-v1":
-            deadline=utc(body["event_starts_at"])-timedelta(minutes=85)
+        elif schema in CLAIM_SCHEMAS:
+            deadline=utc(body["event_starts_at"])-timedelta(minutes=100 if schema.endswith("-v2") else 85)
             start=utc(body["claimed_at"])
         local_timely=bool(local_clock is not None and utc(payload["received_at"])<=local_clock
             and (start is None or start<=local_clock) and (deadline is None or local_clock<=deadline))
@@ -685,6 +707,7 @@ class Pros004Store:
         elif not remote_timely:reasons.append("REMOTE_COMPLETION_LATE_OR_INVALID")
         input_status=None
         timing_complete=bool(local_timely and remote_timely)
+        current_policy=True
         if schema=="nba-pros004-forecast-v1":
             input_status=self.admission_status(LedgerRef.from_record(body["event_ref"]))
             if not input_status["timing_complete"]:
@@ -693,9 +716,21 @@ class Pros004Store:
             if body["producer_version"].endswith("-v1"):
                 reasons.append("LEGACY_PRODUCER_WITHOUT_COMPLETION_POLICY")
                 timing_complete=False
+                current_policy=False
+            elif body["producer_version"].endswith("-v2"):
+                # Original v2 completion clocks remain interpretable under
+                # their original policy; they cannot become v3 study admission.
+                reasons.append("LEGACY_PRODUCER_WITHOUT_DURABLE_INPUT_ADMISSION")
+                current_policy=False
+            else:
+                claim_ref=LedgerRef.from_record(payload["references"][2])
+                claim=self.body(claim_ref)
+                if claim["schema_version"]!="nba-pros004-event-claim-v2" or not self.admission_status(claim_ref)["timing_complete"]:
+                    reasons.append("DURABLE_INPUT_ADMISSION_NOT_COMPLETE")
+                    timing_complete=False
         eligible=False
         if body.get("mode")!="REAL_TIME_CAPTURED":reasons.append("DIAGNOSTIC_NON_ISSUANCE")
-        elif timing_complete:
+        elif timing_complete and current_policy:
             # The reviewed activation path remains separately disabled. A caller
             # flag or a completion journal cannot activate this reservation.
             from .pros004_producer import validate_activation_binding
@@ -781,8 +816,10 @@ class Pros004Store:
                 deadlines.append(utc(body["event"]["event_starts_at"])-timedelta(minutes=100))
             elif schema=="nba-pros004-forecast-v1":
                 deadlines.append(utc(body["cutoff_at"])+timedelta(minutes=5))
+            elif schema=="nba-pros004-event-claim-v2":
+                deadlines.append(utc(body["event_starts_at"])-timedelta(minutes=100))
             else:
-                raise IntegrityError("final publication supports only event inputs and original forecasts")
+                raise IntegrityError("final publication supports only event inputs, durable admissions and original forecasts")
         timely=all(completed<=deadline for deadline in deadlines)
         return {"schema_version":"nba-pros004-final-checkpoint-v1",
             "references":[reference.to_record() for reference in refs],
@@ -797,9 +834,9 @@ class Pros004Store:
 
         The receipt is not a caller permission flag: its exact input, retained
         journal prefix, immutable record subset, snapshot and operation clocks
-        must agree. A caller must independently recover the original receipt on
-        restart. This readiness package does not install that future operating
-        state retention; absent or ambiguous evidence fails closed.
+        must agree. The durable event admission embeds the original receipt so
+        a restart recovers it from immutable ledger bytes. Missing, changed or
+        ambiguous evidence fails closed.
         """
         fields={"schema_version","references","operation_started_at","completed_at",
             "snapshot_sha256","journal_raw_sha256","acknowledgment","timely",
@@ -837,24 +874,11 @@ class Pros004Store:
             raise IntegrityError("input checkpoint prefix lacks original local/remote completion evidence")
         if not self.admission_status(event_ref)["timing_complete"]:
             raise IntegrityError("input checkpoint original local/remote completion is unadmitted")
-        # Reconstruct exactly the snapshot that existed when this operation
-        # began. A later receipt with a tied clock is deliberately included;
-        # if that makes the original hash ambiguous, reject instead of guessing.
-        from .pros004_snapshot import snapshot_manifest
-        full=snapshot_manifest(self.root);entries=[];ledger_count=0
-        for entry in full["entries"]:
-            if entry["entry_type"]=="COMPLETION_JOURNAL":
-                entries.append({**entry,"encoded_bytes":len(prefix),
-                    "raw_sha256":report["journal_raw_sha256"],"payload_sha256":digest(prefix_entries)})
-                continue
-            path=Path(entry["path"]);kind=path.parts[1];record_id=path.stem
-            payload=self.ledger.read(LedgerRef(kind,record_id,entry["payload_sha256"]))
-            if utc(payload["received_at"])<=started:
-                entries.append(entry);ledger_count+=1
-        body={key:value for key,value in full.items() if key!="manifest_id"}
-        body.update(entries=entries,record_count=len(entries),ledger_record_count=ledger_count,
-            encoded_bytes=sum(entry["encoded_bytes"] for entry in entries))
-        expected={**body,"manifest_id":digest(body)}
+        # The raw prefix helper never enters whole-store semantic validation;
+        # this remains cycle-free while a claim itself embeds this proof.
+        from .pros004_snapshot import recover_manifest_prefix
+        expected=recover_manifest_prefix(self.root,report["journal_raw_sha256"],
+            report["operation_started_at"])
         if digest(expected)!=report["snapshot_sha256"]:
             raise IntegrityError("input checkpoint exact record subset/prefix cannot be recovered unambiguously")
         return report
@@ -883,21 +907,39 @@ class Pros004Store:
             "status":"INACTIVE_READINESS_ONLY","recorded_at":recorded_at or stamp(_now()),
             "capacity":full_study_capacity()})
 
-    def claim_event(self,event_ref,producer_identity):
-        event = self.body(event_ref)
-        body = {"schema_version":"nba-pros004-event-claim-v1","study_id":STUDY_ID,
-                "event_id":event["event"]["event_id"],"event_starts_at":event["event"]["event_starts_at"],
-                "event_ref":event_ref.to_record(),"history_ref":event["history_ref"],
-                "players":event["selection"]["players"],"producer_identity":producer_identity,
-                "claimed_at":stamp(_now()),"mode":event["mode"],
-                "record_basis":"INPUT_ADMISSION_NOT_GENERATION_INTENT"}
-        existing = self.ledger._existing("input_captures",_logical(body))
-        if existing is not None:
-            original = self.body(existing)
-            if {k:v for k,v in original.items() if k != "claimed_at"} != {k:v for k,v in body.items() if k != "claimed_at"}:
+    def lookup_claim(self,event_ref,producer_identity=None):
+        event=self.body(event_ref)
+        logical=_logical({"schema_version":"nba-pros004-event-claim-v2",**event["event"]})
+        reference=self.ledger._existing("input_captures",logical)
+        if reference is not None:
+            original=self.body(reference)
+            if original["event_ref"]!=event_ref.to_record() or (producer_identity is not None and original["producer_identity"]!=producer_identity):
                 raise IntegrityError("event already admitted under different input/cohort/producer")
+        return reference
+
+    def claim_event(self,event_ref,producer_identity,*,input_final_checkpoint=None):
+        """Retain the original input phase receipt inside the existing event slot."""
+        event=self.body(event_ref)
+        existing=self.lookup_claim(event_ref,producer_identity)
+        if existing is not None:
+            original=self.body(existing)
+            if input_final_checkpoint is not None and original.get("input_final_checkpoint")!=input_final_checkpoint:
+                raise IntegrityError("recovery cannot replace the original durable input-phase proof")
             return existing,False
-        return self._append(body,references=(event_ref,)),True
+        if input_final_checkpoint is None:
+            raise IntegrityError("new durable admission requires the original input final checkpoint")
+        self.validate_input_checkpoint(event_ref,input_final_checkpoint)
+        body={"schema_version":"nba-pros004-event-claim-v2","study_id":STUDY_ID,
+            "event_id":event["event"]["event_id"],"event_starts_at":event["event"]["event_starts_at"],
+            "event_ref":event_ref.to_record(),"history_ref":event["history_ref"],
+            "players":event["selection"]["players"],"producer_identity":producer_identity,
+            "claimed_at":stamp(_now()),"mode":event["mode"],
+            "record_basis":"INPUT_ADMISSION_NOT_GENERATION_INTENT",
+            "input_final_checkpoint":input_final_checkpoint}
+        reference=self._append(body,references=(event_ref,))
+        if not self.admission_status(reference)["local_timely"]:
+            raise IntegrityError("durable input admission completed late; original retained unadmitted")
+        return reference,True
 
     def lookup_forecast(self,event_ref,player_id,model):
         event = self.body(event_ref)

@@ -1,9 +1,10 @@
-# PROS004 completion and recovery policy v2
+# PROS004 completion and recovery policy v3
 
 This implementation remains inactive. R0/K0 mathematical laws, the original
 reservation, frozen experiments and October 20 pilot code/records are unchanged.
-The prospective wrappers are `pros004-r0-producer-v2` and
-`pros004-k0-producer-v2`. Legacy v1 records remain readable as original evidence;
+The prospective wrappers are `pros004-r0-producer-v3` and
+`pros004-k0-producer-v3`, bound to the same 19 dependencies. Legacy v1/v2 records
+remain readable with their original identities and policies;
 missing completion proof cannot be inferred from their pre-write receipt clock.
 
 ## Distinct operations and clocks
@@ -44,8 +45,24 @@ input-finalization receipt. It verifies the exact event, acknowledgment clocks,
 original journal prefix and reconstructed snapshot. A missing, unrelated,
 tampered, late or ambiguous report cannot be replaced by a boolean readiness flag.
 Complete original forecasts remain readable without recreating this phase.
-The readiness diagnostic retains its input report; admission and durable recovery
-of genuine operating phase reports still require review before activation.
+The v3 event-admission claim embeds that original report inside its existing
+8-KiB envelope. It is written, remotely acknowledged and independently published
+before selection closes. Generation recovers this claim and its original proof
+without a temporary file or a new generation-phase claim. An optional supplied
+report must match the retained one exactly. Legacy claim-v1 records remain
+evidence and cannot satisfy this new admission policy. This changes producer
+identity and completion policy, not either mathematical law. Genuine activation
+and operational destination admission remain disabled.
+The paired primitive requires the original claim acknowledgment; it does not
+claim that the acknowledgment journal has itself been published. The complete
+operating driver and report separately require timely final claim-prefix
+publication and fresh remote recovery. A local-only restart cannot establish
+that final publication, and remote recovery without the acknowledgment blocks
+generation. Bypassing the complete driver cannot establish a completed cycle. Genuine
+operating-entrypoint admission must require independently recovered original
+admission-finalization evidence, or a separately reviewed equivalent; claim
+`timing_complete` alone must not stand in for full phase-publication success.
+That operating admission remains an activation dependency behind the hard guard.
 
 `timing_complete` describes an original's local/remote completion evidence.
 `metadata_publication_status=NOT_ESTABLISHED_BY_LOCAL_JOURNAL` prevents local
@@ -119,7 +136,11 @@ checksum, references and the current clock. Compact PROS004 inputs bypass it.
 Within each independent verification invocation, a private bounded index reuses
 already decoded/hashed originals and their canonical finite-JSON bytes. Every
 reference checks the original payload hash; strict generic validators run once
-per original and all normal typed store/grade/correction validators still run.
+for each read original and all normal typed store/grade/correction validators
+still run. Every supported PROS004 type receives strict semantic validation;
+legacy input semantics are validated for referenced parents. Unrelated legacy
+receipts retain the independent byte/hash/envelope/reference/clock/correction
+checks, as in the previous typed recovery scope.
 Fresh JSON decoding gives each caller isolated mutable containers. Initial/final
 payload/encoded seals and final on-disk raw hashes, sizes, inventory and journal
 checks reject mutation during verification. No cache crosses invocations or
@@ -127,3 +148,9 @@ independent source roots; every fresh remote fetch receives a full typed pass.
 At most 512 entries / 32 MiB of canonical index bytes are retained in memory.
 This optimization establishes no latency result until the separately versioned
 fixed-source timing diagnostic completes.
+
+The v3 diagnostic additionally recovers the embedded original input admission
+from independently fetched state before generating missing peers. No extra
+ledger record is allocated: the 21 existing event-claim slots retain the proof.
+The focused synthetic fixture measured 5,675 bytes against the unchanged
+8,192-byte claim ceiling; the full-history measurement is reported separately.
