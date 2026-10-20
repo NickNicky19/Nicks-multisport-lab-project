@@ -1,6 +1,24 @@
 # Verification history and delivery status
 
-## Bounded pregame preparation branch — October 19 evening Central / October 20 UTC
+## Current public deployment: PR #5 — October 19 evening Central / October 20 UTC
+
+Approved head 713716a17465c93d32795aabba9e0a8c9c3a5e8c merged unchanged as main
+58530309cf384425e15f02fd9fa980899a4dc0bc at 02:30:40Z.
+[Workflow 39359308833](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39359308833)
+build/deploy passed, completed 02:31:22Z. Required 221 Python/35 frontend tests, demo
+and artifact checks passed. Ten public HTTPS resources returned 200; manifest,
+NBA hash and seven static assets matched exact main. Public Chromium 154 passed
+seven routes/reloads at 1440/390/320px, six unchanged historical bundles/84 PMFs/
+six grades/all 14 filters, one R0 reconstruction group, accurate pending/Upcoming
+states and all 45 scoped 2–6/direction NO_ACTION cases. No browser/HTTP/prefix errors.
+All 19 records/clocks and frozen research files stayed unchanged; full normalized
+input/raw sources are excluded from Pages. Proof:
+`evidence/deployment/2026-10-20-pr5-pages.json`. This verifies publication, not
+model evaluation, genuine future issuance, new grading or financial settlement.
+The next eligible manual capture/issuance windows remain Tuesday October 20,
+12:20–12:30 p.m./12:30–12:35 p.m. Central; no collector or scheduler is enabled.
+
+## Prior bounded pregame preparation branch — October 19 evening Central / October 20 UTC
 
 Code55547606e4fad6907f8fc06577976a83b3ed40a8 and input checkpoint
 a3934f5b7773999e2aa30c07c1ce85e0f5d9907f passed221Python/35frontend tests, demo,
@@ -18,7 +36,7 @@ builder combinations retain NO_ACTION. Public Pages still serves main eca2a06.
 Proof: `evidence/research/2026-10-20-pregame-cycle-checkpoint.json`. See current
 handoff for exact source, retention basis, commands, PR checks and next timed action.
 
-## Current public deployment: PR #4 — 2026-10-20
+## Prior public deployment: PR #4 — 2026-10-20
 
 The exact approved head `1f80112ed54a8c2eaa20024e806054739b815c98` merged through
 the guarded workflow as main `eca2a0679bd99eaff77c1c0785df13840fb99762` at 01:27:21Z.

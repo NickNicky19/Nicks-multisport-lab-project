@@ -1,5 +1,24 @@
 # Research interface
 
+## Public PR #5 rollout — October 19 evening Central / October 20 UTC
+
+Main 58530309cf384425e15f02fd9fa980899a4dc0bc is deployed; public manifest,
+NBA data and static assets match it. Actual public Chromium 154 verification ran
+02:31:56.023463–02:32:27.219269 UTC at 1440px desktop and 390/320px mobile. All seven
+routes/reloads, fourteen category filters, unchanged six historical bundles/
+84 PMFs/six grades, one actual R0 reconstruction group and neutral History passed.
+All six actual forecasts are statistically scored; no pending result is invented.
+Upcoming has three accurate missing-timely-capture/issuance reasons. All 45 scope ×
+2–6-size × direction builder combinations remain NO_ACTION/zero candidates/Not issued.
+The nine-asset browser allowlist and exact static-byte checks passed with no
+page/HTTP/prefix errors or synthetic injection. Full history/preparation records
+and raw sources remain outside Pages. Browser-only proxy CA SPKI trust did not
+change persistent settings; urllib independently verified TLS. Proof:
+`evidence/deployment/2026-10-20-pr5-pages.json`; temporary browser aggregate and
+screenshots are `/tmp/nml-public-pr5-qa/`. No genuine issuance, future outcome,
+statistical grade, financial settlement or product qualification is created by
+this rollout. Earlier synthetic/local fixtures below remain software evidence.
+
 ## Pregame v2 preparation and pending grades, October 19, 2026 (Chicago)
 
 The client validates `nba-research-forecast-v2` alongside unchanged v1 records.
