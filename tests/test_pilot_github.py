@@ -66,7 +66,19 @@ class GitHubPilotTests(unittest.TestCase):
         self.pilot.pins = Mock()
         self.pilot.branch = Mock(); self.pilot.claim = Mock()
         with self.assertRaisesRegex(gh.PilotError, '403'): self.pilot.execute()
+        self.pilot.pins.assert_not_called()
         self.pilot.branch.assert_not_called(); self.pilot.claim.assert_not_called()
+
+    def test_corrupted_pins_cannot_prevent_expiry_or_reach_any_pilot_work(self):
+        self.pilot.context = Mock(); self.pilot.workflow = Mock()
+        self.pilot.pins = Mock(side_effect=gh.PilotError('corrupted producer pin'))
+        self.pilot.branch = Mock(); self.pilot.claim = Mock()
+        with patch('multisport_lab.scheduled_cycle.run_cycle') as run_cycle, \
+             patch.object(gh, 'source_probe') as probe, self.assertRaisesRegex(gh.PilotError, 'corrupted producer pin'):
+            self.pilot.execute()
+        self.pilot.workflow.assert_called_once_with()
+        self.pilot.branch.assert_not_called(); self.pilot.claim.assert_not_called()
+        run_cycle.assert_not_called(); probe.assert_not_called()
 
     def test_missed_year_expires_trusted_workflow_before_refusing_claim_or_data(self):
         self.pilot.git = Mock(return_value=process(f'https://github.com/{gh.REPOSITORY}.git'))

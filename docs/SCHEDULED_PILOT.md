@@ -98,6 +98,16 @@ closed/deleted, retain the actual failure/body/compare URL and records; never
 introduce another credential. Explicit branch validation proceeds even if PR
 creation/update is blocked. The records PR itself does not run another setup job.
 
+Actual corrected run 39368941819 passed the existing-draft update and explicit
+Pages branch validation 39369096848. The earlier owner-setting request is therefore
+superseded; keep PR #8 open. Current setup activation is separately blocked by
+the managed shell's HTTP401 GitHub credential and the guarded exact-head landing
+step. The already connected GitHub app can retain the final feature-branch tree,
+but is not an alternative merge mechanism. Restore the existing environment CLI
+access, run the canonical watcher/landing plan, obtain exact-head approval and
+verify main/records integration before calling the cron active. No new key is
+required and no computer/app must run once GitHub Actions is actually armed.
+
 ## One state and interruption recovery
 
 All work uses `records/nba-20261020-401909088-t90`. Its Git history includes the

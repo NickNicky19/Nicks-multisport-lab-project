@@ -6,8 +6,12 @@ The exact one-time user authorization supersedes manual-only operation for the
 fixed October 20 cycle. The native task is paused: its executor diagnostic was
 unavailable, and an accepted task entry does not prove repository execution.
 `evidence/cycles/2026-10-20-scheduling-preparation.json` records the actual status.
-The GitHub Actions alternative must pass real hosted preflight and guarded merge
-before activation can be claimed. Synthetic interruption/timing/API tests are
+The GitHub Actions alternative passed actual hosted run 39368941819, four HTTP200
+source-route reads, full retained history, push/fresh readback, own-workflow expiry/
+restore, existing draft PR #8 update and Pages branch validation 39369096848.
+Guarded merge/default-branch readback are still required before activation. The
+managed shell GitHub credential returned HTTP401, blocking its canonical watcher;
+the existing GitHub app remains available. No alternate merge API is authorized. Synthetic interruption/timing/API tests are
 software evidence; early route probes are not timely pilot captures. See
 `docs/SCHEDULED_PILOT.md` for single-writer, exact-date expiry and remote-recovery
 requirements. No genuine forecasts, outcomes or new model scores are created by
