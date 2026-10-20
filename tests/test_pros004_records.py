@@ -268,7 +268,7 @@ class Pros004RecordsTests(unittest.TestCase):
 
     def test_date_status_capacity_grouping_preserves_truthful_schema_inventory(self):
         f=ProducerFixture(self)
-        f.store.store_date_status('2026-10-22',status='SOURCE_FAILURE',
+        f.store.store_date_status('2026-10-23',status='SOURCE_FAILURE',
             reason='Synthetic complete source unavailable',mode='SYNTHETIC_DIAGNOSTIC')
         report=f.store.capacity_report()
         self.assertEqual(report['pros004_schema_counts']['nba-pros004-event-v1'],1)
