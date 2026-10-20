@@ -17,7 +17,7 @@ from .integrity import canonical, digest, load_json, stamp, utc, write_receipt
 
 CAPTURE_SCHEMA = "nba-offer-capture-v1"
 REPORT_SCHEMA = "nba-offer-import-v1"
-PARSER_VERSION = "nba-offer-import-0.1"
+PARSER_VERSION = "nba-offer-import-0.2"
 MAX_ROWS = 10000
 REQUIRED_MARKETS = ("PTS", "PRA", "REB", "3PM", "AST", "RA", "PR", "TOV",
                     "TD", "DD", "BLK", "STL", "BLK+STL")
@@ -37,6 +37,30 @@ SLEEPER_LABELS = {
 }
 LANES = {"SYNTHETIC_TEST", "RECONSTRUCTED_RESEARCH", "VERIFIED_ASOF_REPLAY",
          "REAL_TIME_CAPTURED"}
+
+
+class _SubjectTypeError(ValueError):
+    def __init__(self, reason: str, *, option_index: int | None = None):
+        super().__init__(reason)
+        self.option_index = option_index
+
+
+def _sleeper_subject_type(row: dict, options: list) -> str:
+    """Check every subject type before constructing even one player identity."""
+    subject_type = row.get("subject_type")
+    if subject_type is None or subject_type == "":
+        raise _SubjectTypeError("missing_row_subject_type")
+    if type(subject_type) is not str or subject_type not in {"player", "team"}:
+        raise _SubjectTypeError("unrecognized_row_subject_type")
+    for index, option in enumerate(options):
+        if type(option) is not dict:
+            raise ValueError("option must be an object")
+        option_type = option.get("subject_type")
+        if option_type is None or option_type == "":
+            raise _SubjectTypeError("missing_option_subject_type", option_index=index)
+        if option_type != subject_type:
+            raise _SubjectTypeError("row_option_subject_type_mismatch", option_index=index)
+    return subject_type
 
 
 def _text(value: Any, name: str) -> str:
@@ -104,11 +128,13 @@ def _sleeper(row: dict, metadata: dict, index: int) -> list[dict]:
     if row.get("sport") != "nba":
         return []
     row_id = f"row:{index}"
-    for name in ("game_id", "subject_id", "market_type", "wager_type", "line_type"):
-        _text(row.get(name), name)
     options = row.get("options")
     if type(options) is not list or not options:
         raise ValueError("NBA board row requires a nonempty options list")
+    if _sleeper_subject_type(row, options) == "team":
+        return []  # Recognized nonplayer subject; import_capture records why it is ignored.
+    for name in ("game_id", "subject_id", "market_type", "wager_type", "line_type"):
+        _text(row.get(name), name)
     updated = row.get("updated_at")
     if updated is not None:
         if type(updated) is not int or updated < 0:
@@ -121,7 +147,7 @@ def _sleeper(row: dict, metadata: dict, index: int) -> list[dict]:
         if type(option) is not dict:
             raise ValueError("option must be an object")
         # Never splice a line or multiplier from a different event/player/variant.
-        for name in ("sport", "game_id", "subject_id", "market_type", "wager_type",
+        for name in ("sport", "game_id", "subject_id", "subject_type", "market_type", "wager_type",
                      "outcome_type", "line_type", "season", "season_type", "game_status"):
             if name not in row or name not in option or option[name] != row[name]:
                 raise ValueError(f"row/option identity mismatch: {name}")
@@ -152,6 +178,7 @@ def _sleeper(row: dict, metadata: dict, index: int) -> list[dict]:
         observations.append({
             "row_id": f"{row_id}/option:{option_index}", "provider": "sleeper",
             "provider_event_id": row["game_id"], "provider_player_id": row["subject_id"],
+            "subject_type": "player",
             "provider_market_id": row["market_type"], "provider_selection_id": selection_id,
             "event_id": f"sleeper:nba:event:{row['game_id']}",
             "player_id": f"sleeper:nba:player:{row['subject_id']}",
@@ -235,7 +262,9 @@ def import_capture(capture: dict, *, imported_at: datetime) -> dict:
     report = {"schema_version": REPORT_SCHEMA, "parser_version": PARSER_VERSION,
               **metadata, "status": None, "observations": [], "diagnostics": [],
               "coverage": {stat: 0 for stat in REQUIRED_MARKETS}, "qualified": False,
-              "input_row_count": None, "other_sport_rows_ignored": 0}
+              "input_row_count": None, "other_sport_rows_ignored": 0,
+              "nonplayer_rows_ignored": 0, "subject_type_invalid_rows": 0,
+              "ignored_rows": []}
     status = metadata["http_status"]
     if status in {401, 403, 429}:
         report["status"] = "blocked_access"
@@ -262,6 +291,17 @@ def import_capture(capture: dict, *, imported_at: datetime) -> dict:
             if parser is _sleeper and isinstance(row.get("sport"), str) and row["sport"] != "nba":
                 report["other_sport_rows_ignored"] += 1
             report["observations"].extend(parser(row, metadata, index))
+            if parser is _sleeper and row.get("sport") == "nba" and row.get("subject_type") == "team":
+                report["nonplayer_rows_ignored"] += 1
+                report["ignored_rows"].append({"row_index": index,
+                                               "reason": "recognized_nonplayer_subject_type",
+                                               "subject_type": "team", "row_sha256": digest(row)})
+        except _SubjectTypeError as error:
+            report["subject_type_invalid_rows"] += 1
+            diagnostic = {"row_index": index, "reason": str(error), "row_sha256": digest(row)}
+            if error.option_index is not None:
+                diagnostic["option_index"] = error.option_index
+            report["diagnostics"].append(diagnostic)
         except (KeyError, TypeError, ValueError, OverflowError) as error:
             report["diagnostics"].append({"row_index": index, "reason": str(error),
                                           "row_sha256": digest(row)})
