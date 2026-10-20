@@ -7,7 +7,95 @@ reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
-## Current deployment checkpoint — 2026-10-20 01:02 UTC
+## Current deployment checkpoint — 2026-10-20 01:32 UTC
+
+**PR #4 is merged and deployed.** The user explicitly approved its exact head
+`1f80112ed54a8c2eaa20024e806054739b815c98`. Fresh guarded checks confirmed that
+head, CLEAN/MERGEABLE state, successful build, no pending/failed checks, no missing
+required reviewers and zero unresolved review threads. The canonical helper
+used policy digest
+`70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df`,
+the approved merge method and exact-head guard. No admin/bypass/force-push was
+used. GitHub records the merge at **2026-10-20T01:27:21Z** as main commit
+**`eca2a0679bd99eaff77c1c0785df13840fb99762`**. Its tree equals the approved head;
+parents are prior main `002a6b994c862c758f1d7c8199831c75eff761af` and that head.
+Local main was fast-forwarded, preserving all reviewed work.
+
+Live site: https://nicknicky19.github.io/Nicks-multisport-lab-project/ .
+[Workflow 39353520895](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39353520895)
+completed successfully: build at 01:27:41Z and deploy at 01:27:57Z. The main workflow
+ran the 177 Python/31 frontend checks, demo and artifact checks. System-verified
+HTTPS readback returned 200 for ten resources. The served v2 manifest identifies
+the exact main merge above, publication RESEARCH_ONLY, snapshot
+`76da4612338f8609f9f112ee13d370acda9104be63ece873f3d897d28013649d`.
+Manifest raw SHA256:
+`5c1c4b2c69346516dbdc30389431993b3bc8488b899627f957e5561786d6f868`.
+NBA asset 151,222 bytes, SHA256:
+`0cee10c154e9f4d678a05ef758cf7e239da363e5db19fa5c51ab8b3f1f1deeeb`.
+All seven static assets matched `git show eca2a06:web/<asset>` bytes.
+
+Independent public Chromium 154 checks ran 01:29:21.763192–01:29:58.168980 UTC at
+1440px desktop and 390/320px mobile. All seven routes/direct reloads, fourteen
+category filters, six original historical bundles/84 PMFs and six statistical
+grades passed. Performance now publicly shows the one actual R0 reconstruction
+group with full eight-field model/lane identity; mixed groups remain synthetic
+test cases. History uses the neutral past-event wording. Exact original
+event/cutoff/issue/grade identities were retained. Upcoming correctly explains
+its three missing-input/issuance reasons. SINGLE/SELECTED/ALL scopes, every 2–6-leg
+size and OVER_ONLY/UNDER_ONLY/MIXED passed all 45 combinations with zero candidates,
+NO_ACTION and Not issued. There were no page errors, failed HTTP responses or
+requests outside the repository prefix. Browser rendering used only the
+process-local configured-proxy CA SPKI pin; urllib independently verified TLS.
+No persistent trust settings changed.
+
+Separate offline verification at 01:32:36 UTC reproduced the manifest and NBA
+asset exactly from main code/config/web/records at the served publication clock,
+with no model generation or external requests. It checked the four guarded-helper
+and three browser artifact hashes, original record bindings, and deployment to
+HTTP/browser to receipt clock order. All checks passed.
+
+All 18 original ledger files/175,190 bytes, their original clocks, the v1
+publication summary and frozen R0/DEV002/DEV003 evidence are unchanged. These six
+forecasts remain **historical reconstructions**, actually issued October 20, 2026
+for November 24, 2025 events. Their statistical grades are separate from venue
+financial settlement. Deployment performed no model evaluation, source capture,
+genuine future issuance, outcome grading or ticket creation. No qualified ticket,
+confirmatory skill, admission of a prospective producer or financial result is
+claimed. NFL and MLB remained untouched; no new paid services, signups or keys.
+
+Durable combined evidence:
+`evidence/deployment/2026-10-20-pr4-pages.json`, payload SHA256
+`0d84bfb41a10c1f67a46e8cc258ce1fdccbccd4f3e2a2d5a80067a23016c6299`.
+This post-deployment documentation checkpoint is on `docs/pr4-deployment`, based
+on deployed main eca2a06. It changes only HANDOFF_STATUS.md, PROJECT_CONTEXT.md,
+docs/VERIFICATION.md, docs/UI_NOTES.md, MANIFEST.sha256 and that new receipt;
+it is separate from the approved application merge. Resolve its exact commit
+with `git log -1 --format=%H docs/pr4-deployment`. Earlier branch-only/open-PR
+statements below describe the prior checkpoint and are superseded here.
+
+Commands actually run (the receipt records HTTP/browser methods and all hashes):
+
+```bash
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=4 --mode until-actionable --interval 15 --timeout 180 --cursor /tmp/nml-pr-completion/pr4-cursor.json --observations-file /tmp/nml-pr-completion/pr4-observations.ndjson --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_land.py --repo /workspace/Nicks-multisport-lab-project --pr 4 --head 1f80112ed54a8c2eaa20024e806054739b815c98 --mode auto --method merge --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_land.py --repo /workspace/Nicks-multisport-lab-project --pr 4 --head 1f80112ed54a8c2eaa20024e806054739b815c98 --mode auto --method merge --policy-digest 70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df --confirm --pretty
+gh run view 39353520895 --repo NickNicky19/Nicks-multisport-lab-project --json status,conclusion,jobs,headSha,url,createdAt,updatedAt
+PYTHONPATH=. python3 /tmp/nml-pr4-pages-audit.py
+python3 /tmp/nml-public-pr4-qa.py eca2a0679bd99eaff77c1c0785df13840fb99762 > /tmp/nml-public-pr4-qa.log 2>&1
+sha256sum --check MANIFEST.sha256
+git diff --check
+```
+
+Next concrete task: revalidate the first as-observed event 401909088/start 19:00Z
+and a permitted selected-player/history route before its as-observed 17:30Z T90.
+Current status, player universe, history freshness/lineage, permission and an
+admitted current-T90 producer remain unresolved. The reported-clock audit below
+does not admit a forecast. Do not backdate issuance or schedule a collector.
+Any further development comparison needs a separately frozen protocol; retain
+tail/coverage concerns and the separate confirmatory holdout. K0 remains an
+unpromoted development challenger and exact-duration REB requirements remain open.
+
+## Prior deployment and implementation checkpoint — 2026-10-20 01:02–01:23 UTC
 
 Deployment/status checkpoint committed/pushed as
 `ff0cb00a2833bf7d3e889652157292df5a87a95d` on the separate follow-up branch.

@@ -1,12 +1,34 @@
 # Verification history and delivery status
 
-## Post-deployment continuation — 2026-10-20
+## Current public deployment: PR #4 — 2026-10-20
+
+The exact approved head `1f80112ed54a8c2eaa20024e806054739b815c98` merged through
+the guarded workflow as main `eca2a0679bd99eaff77c1c0785df13840fb99762` at 01:27:21Z.
+The approved and merged trees match. [Workflow39353520895](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39353520895)
+passed build/deploy, completed01:27:57Z; 177 Python/31 frontend tests, demo and
+artifact checks passed on main. Public verified HTTPS returned 200 for ten
+resources; manifest build commit/snapshot/asset hashes and seven static assets
+matched exact main. Receipt: `evidence/deployment/2026-10-20-pr4-pages.json`.
+
+Public Chromium 154 passed seven routes/direct reloads at 1440/390/320px, six
+original historical bundles/84 PMFs/all 14 filters, six original statistical
+grades, one actual R0 reconstruction Performance group with full identity and
+neutral History wording. Upcoming gives three specific unavailable-input/issuance
+reasons. All45 scope×2–6-size×direction builder cases preserve NO_ACTION and
+Not issued; no browser/HTTP/prefix errors. Browser-only proxy CA SPKI trust did
+not change persistent settings; urllib independently verified TLS. Original 18
+ledger files/clocks and frozen research receipts remain unchanged. Deployment
+is distinct from model evaluation, genuine future issuance, statistical grading,
+financial settlement and product qualification; it created none of those records.
+
+## Prior implementation continuation (before PR #4 deployment) — 2026-10-20
 
 177 Python tests and31frontend tests pass; demo and artifact/desktop/mobile
 Chromium checks pass. New interruption tests preserve old/new source clocks and
 original v1/eighteen receipts. Mixed synthetic lane/model cases remain separate
 in Performance and keep past captured records in History without relabeling.
-These follow-up UI changes are branch-only; deployed main remains002a6b9.
+At that checkpoint these UI changes were branch-only and deployed main was002a6b9;
+the PR #4 deployment above supersedes that publication state.
 
 One precommitted frozen DEV003 run scored517 appearances/24games/12weeks under
 R0/L0/K0, zero post-score exclusions. K0 rawCRPS lowered13categories but TD
