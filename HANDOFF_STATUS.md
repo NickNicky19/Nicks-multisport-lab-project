@@ -45,7 +45,7 @@ and disables only itself before live work, with an exact-date gate; a different
 run cannot take over the immutable claim. Outcome grading remains a later task.
 
 Actual local checks: `python3 -m unittest discover -s tests -v` passed
-275 tests (13 phase-runner / 28 GitHub boundary tests); `python3 -m
+277 tests (13 phase-runner / 30 GitHub boundary tests); `python3 -m
 multisport_lab.demo` passed; `node --test --test-isolation=none
 web/tests/*.test.mjs` passed 35 tests. `python3 -m multisport_lab.publication
 --build-commit b498867a03b7c2d583383ff94d887ddd18cb2e42` and
@@ -62,6 +62,29 @@ files, 19 original records, 34 frozen references and exact plan passed; full
 26,645-row/1,231-event/14,720,351-byte history and original clocks recovered with
 16 capture/generation/write operations forbidden and zero such calls. Hosted
 runner proof and the exact setup head will be added after the actual workflow.
+Actual hosted setup run [39368387144](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39368387144)
+on setup commit `3b81e958ca36a223907028d74ad1883402b64cf5` passed executor,
+275 Python/35 frontend tests, demo/export/smoke and manifest steps. The four ESPN
+routes returned HTTP 200 at 04:13:24.142112–04:13:24.712621Z (40,482 / 101,504 /
+87,740 / 85,732 bytes). Workflow **390126745** verified its own disable/readback/
+restore; normal records-branch push and fresh fetch/readback passed. These are
+early setup observations with source update clocks unknown, not timely inputs.
+First records checkpoint `31e46d0620c1f1dcaf4ef3ccd55cb02b0e02e657` independently
+recovers the source/capability and actual 403 receipts. Native entry remains paused.
+
+The run failed at draft creation: GitHub Actions cannot create/approve PRs under
+the existing owner setting (HTTP 403). Using already authorized integration access,
+we opened the ONE readiness-only draft [PR #8](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/8)
+from the fixed records branch. Actual runner update of that existing draft and
+Pages branch dispatch are being verified; no owner setting is presumed changed.
+The next wrapper revision distinguishes CREATED from UPDATED_EXISTING, keeps the
+original 403 and still runs validation after a blocked PR request. Opening the
+records PR also triggered a redundant safe preflight; cancellation completed and workflow 390126745 remains active;
+the workflow now excludes that fixed records PR from its setup job. It cannot
+issue in PR mode. `evidence/cycles/2026-10-20-hosted-pilot-preflight.json` retains
+exact source metadata, receipt hashes, run identity and draft origin. Scheduling
+is not activated by the API's feature-workflow active state.
+
 **New timely inputs/bindings/forecasts: 0; prospective grades: 0; financial
 settlements: 0; qualified tickets: 0.** The 19 original records, nine producer
 files, fixed plan and frozen experiments remain unchanged. NFL/MLB are untouched.

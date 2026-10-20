@@ -306,12 +306,29 @@ class GitHubPilotTests(unittest.TestCase):
         self.pilot.read_workflow = Mock()
         self.pilot.receipt('capability-123', {'status': 'PASS'})
         self.pilot.api = Mock(side_effect=[[], gh.PilotError('HTTP 403: GitHub Actions cannot create PRs')])
+        self.pilot.dispatch_validation = Mock(return_value={'status': 'completed', 'conclusion': 'success'})
         result = self.pilot.publication_pr(draft=True)
         self.assertEqual(result['status'], 'PR_CREATION_BLOCKED')
+        self.assertEqual(result['exit_code'], 1)
+        self.assertEqual(result['validation']['conclusion'], 'success')
+        self.pilot.dispatch_validation.assert_called_once_with()
+        self.assertFalse((self.root / f'{gh.PREFIX}publication-result-123-1.json').exists())
         body = (self.root / f'{gh.PREFIX}publication-123.md').read_text()
         self.assertIn('zero new forecasts', body)
         blocked = read_receipt(self.root / f'{gh.PREFIX}publication-blocked-123-1.json')
         self.assertIn('Allow GitHub Actions', blocked['owner_prerequisite'])
+
+    def test_pr_403_stays_distinct_when_shared_validation_also_fails(self):
+        self.pilot.context = Mock(); self.pilot.persist = Mock(); self.pilot.read_workflow = Mock()
+        self.pilot.git = Mock(return_value=process(gh.BRANCH))
+        self.pilot.receipt('capability-123', {'status': 'PASS'})
+        self.pilot.api = Mock(side_effect=[[], gh.PilotError('HTTP 403: GitHub Actions cannot create PRs')])
+        self.pilot.dispatch_validation = Mock(side_effect=gh.PilotError('HTTP 403: workflow dispatch denied'))
+        result = self.pilot.publication_pr(draft=True)
+        self.assertEqual(result['status'], 'PR_CREATION_BLOCKED')
+        self.assertEqual(result['exit_code'], 1)
+        self.assertIn('cannot create PRs', result['error'])
+        self.assertEqual(result['validation']['status'], 'DISPATCH_BLOCKED')
 
     def test_new_publication_process_recovers_workflow_id_and_keeps_partial_draft(self):
         self.pilot.claim(); self.pilot.workflow_id = None
@@ -324,6 +341,24 @@ class GitHubPilotTests(unittest.TestCase):
         self.assertEqual(self.pilot.workflow_id, 99)
         self.assertEqual(result['status'], 'DRAFT_PR_OPEN')
         self.assertTrue(self.pilot.api.call_args_list[3].args[2]['draft'])
+        proof = read_receipt(self.root / f'{gh.PREFIX}publication-result-123-1.json')
+        self.assertEqual(proof['operation'], 'CREATED')
+        self.assertEqual(proof['pull_request_write'], 'VERIFIED')
+
+    def test_existing_root_created_draft_proves_runner_update_only(self):
+        self.pilot.context = Mock(); self.pilot.persist = Mock(); self.pilot.read_workflow = Mock()
+        self.pilot.git = Mock(return_value=process(gh.BRANCH))
+        self.pilot.dispatch_validation = Mock(return_value={'status': 'completed', 'conclusion': 'success'})
+        self.pilot.receipt('capability-123', {'status': 'PASS'})
+        existing = {'number': 8, 'head': {'ref': gh.BRANCH, 'repo': {'full_name': gh.REPOSITORY}}, 'base': {'ref': 'main'}}
+        self.pilot.api = Mock(side_effect=[[existing], {'html_url': 'https://github.com/pull/8', 'draft': True}])
+        result = self.pilot.publication_pr(draft=True)
+        self.assertEqual(result['status'], 'DRAFT_PR_OPEN')
+        self.assertEqual(self.pilot.api.call_args_list[1].args[:2], ('pulls/8', 'PATCH'))
+        proof = read_receipt(self.root / f'{gh.PREFIX}publication-result-123-1.json')
+        self.assertEqual(proof['operation'], 'UPDATED_EXISTING')
+        self.assertEqual(proof['pull_request_write'], 'VERIFIED')
+        self.assertNotIn('pull_request_creation', proof)
 
     def test_explicit_validation_dispatch_matches_actual_records_sha_and_never_merges(self):
         self.pilot.git = Mock(return_value=process('a' * 40))

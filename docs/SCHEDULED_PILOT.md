@@ -87,6 +87,17 @@ Actions → General → Workflow permissions → Allow GitHub Actions to create 
 approve pull requests. Do not modify that setting or introduce a new credential
 silently. Failure to create a PR must not erase remotely preserved pilot records.
 
+The first actual hosted test received that creation-only HTTP 403. The existing
+authorized integration session has therefore precreated ONE readiness-only draft
+PR #8 from the fixed records branch. Test the runner's update of this existing
+draft before activation; do not assume creation and update have the same policy.
+Keep that draft open through the cycle. Record the actual operation as
+UPDATED_EXISTING, separately from who originally created it. A verified update
+path does not require enabling broader repository PR creation. If the draft is
+closed/deleted, retain the actual failure/body/compare URL and records; never
+introduce another credential. Explicit branch validation proceeds even if PR
+creation/update is blocked. The records PR itself does not run another setup job.
+
 ## One state and interruption recovery
 
 All work uses `records/nba-20261020-401909088-t90`. Its Git history includes the

@@ -26,7 +26,8 @@ jobs:
     if: >-
       github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
       (github.event_name != 'pull_request' ||
-       github.event.pull_request.head.repo.full_name == github.repository)
+       (github.event.pull_request.head.repo.full_name == github.repository &&
+        github.head_ref != 'records/nba-20261020-401909088-t90'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
