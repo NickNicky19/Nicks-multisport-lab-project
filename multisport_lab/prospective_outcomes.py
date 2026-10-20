@@ -10,6 +10,7 @@ import argparse
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 from time import monotonic
@@ -45,6 +46,26 @@ def _pair(value, label):
     if type(value) is not str or not re.fullmatch(r"[0-9]+-[0-9]+", value):
         raise IntegrityError(f"{label} requires explicit made-attempted counts")
     return tuple(int(x) for x in value.split("-"))
+
+
+def _period_scores(side):
+    scores = side.get("linescores")
+    if type(scores) is not list or len(scores) < 4:
+        raise IntegrityError("final event lacks complete team period score arrays")
+    total = 0
+    for ordinal, score in enumerate(scores, 1):
+        if type(score) is not dict:
+            raise IntegrityError("final period scores must be explicit numeric entries")
+        parsed = _count(score.get("displayValue"), "period score")
+        if "value" in score and (type(score["value"]) not in (int, float)
+                or not math.isfinite(score["value"]) or score["value"] < 0 or score["value"] != parsed):
+            raise IntegrityError("supplied numeric period score contradicts its display count")
+        total += parsed
+        if "period" in score and (type(score["period"]) is not int or score["period"] != ordinal):
+            raise IntegrityError("final period score ordinals must be consecutive")
+    if total != _count(side.get("score"), "final team score"):
+        raise IntegrityError("final period scores do not sum to the final team score")
+    return len(scores)
 
 
 def _event_identity(body, event):
@@ -135,14 +156,35 @@ def normalize_summary(raw: bytes, event: dict, candidates: list[dict], *, observ
         result["pending"] = [{"player_id": p, "reason": "EVENT_NOT_VERIFIED_FINAL"} for p in selected]
         return result
     period = status.get("period")
+    period_basis = "EXPLICIT_FINAL_STATUS_PERIOD"
+    if period is None:
+        # Actual summary responses can omit status.period while retaining both
+        # complete quarter-score arrays. Derive only from matching numeric arrays
+        # plus an explicit standard-NBA format; never default a final game to four.
+        form = body.get("format", {})
+        regulation = form.get("regulation") if type(form) is dict else None
+        overtime = form.get("overtime") if type(form) is dict else None
+        if (type(regulation) is not dict or type(overtime) is not dict
+                or type(regulation.get("periods")) is not int or regulation["periods"] != 4
+                or type(regulation.get("clock")) not in (int, float) or regulation["clock"] != 720
+                or type(overtime.get("clock")) not in (int, float) or overtime["clock"] != 300):
+            raise IntegrityError("final event lacks explicit standard NBA period format")
+        lengths = []
+        for side in competition["competitors"]:
+            lengths.append(_period_scores(side))
+        if len(set(lengths)) != 1:
+            raise IntegrityError("final team period score counts conflict")
+        period = lengths[0]
+        period_basis = "MATCHING_FINAL_TEAM_QUARTER_ARRAYS_WITH_EXPLICIT_NBA_FORMAT"
     if type(period) is not int or period < 4:
         raise IntegrityError("final event requires an explicit complete NBA period count")
     for side in competition["competitors"]:
         scores = side.get("linescores")
-        if scores is not None and (type(scores) is not list or len(scores) != period):
+        if scores is not None and _period_scores(side) != period:
             raise IntegrityError("final period count conflicts with team period scores")
     result["outcome_event_version"] = digest({"event_id": event["event_id"], "pregame_event_version": event["event_version"],
                                              "status": "FINAL", "final_periods": period})
+    result["final_period_count_basis"] = period_basis
     boxscore = body.get("boxscore", {})
     if type(boxscore) is not dict:
         raise IntegrityError("summary boxscore must be an object")
@@ -330,6 +372,7 @@ def persist_grades(store: Ledger, forecasts: dict[str, list[LedgerRef]], normali
     report = {"schema_version": "nba-prospective-grading-report-v1", "recorded_at": stamp(_now()),
               "normalizer_version": NORMALIZER_VERSION, "event_id": normalized["event_id"],
               "pregame_event_version": normalized["pregame_event_version"],
+              "final_period_count_basis": normalized.get("final_period_count_basis"),
               "fresh_capture": {k: normalized[k] for k in ("source_raw_sha256", "source_observed_at", "source_updated_at", "normalized_at")},
               "selected_normalized_rows": [row.to_record() for row in normalized["rows"].values()],
               "pending": normalized["pending"], "results": results,

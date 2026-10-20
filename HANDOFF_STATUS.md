@@ -61,15 +61,17 @@ quotes, attribution, modification notice and upstream uncertainty in
 is inferred. Raw provider bodies/large Parquets remain excluded; the full input
 record is excluded from Pages. Rights receipt payload SHA604fec4c1b2ecc884543d9a9a3d997e640e09a2d44bf9bb0bcd7c1a8098ee92f.
 
-Final integrated software verification: **220 Python tests**, **35 frontend
+Final integrated software verification: **221 Python tests**, **35 frontend
 tests**, synthetic demo and artifact checks passed. Local Chromium desktop1440px
 and mobile390/320px checks passed, including a clearly synthetic prospective-v2
 fixture, pending grades, all14categories and scoped2–6/direction NO_ACTION.
 Separate verification reproduced actual source normalization and compact recovery
 without model evaluation. The new manual `prospective_outcomes` path checks actual
 issued-input context/final boxscore identity, strict counts/DNP/missing semantics,
-original source-clock recovery and explicit corrections. Fifteen synthetic grading
-checks pass; **actual final ESPN shape remains unverified until the event**.
+original source-clock recovery and explicit corrections. Sixteen focused grading
+checks pass. A later actual historical final-boxscore audit verified the parser
+shape and all selected counts; the upcoming event must still supply its own
+verified final observation before any prospective grade.
 The real preparation grading-status command returned PENDING/NO_ISSUED_FORECASTS,
 zero source requests/outcomes/grades; no future result was fabricated.
 
@@ -106,8 +108,10 @@ passed; final exact-head checks/landing status come from the guarded watcher.
 No PR #5 merge or deployment has been performed. Current branch head is
 `git rev-parse HEAD`; source/retention commits are exact above. Exact package
 files: `git diff --name-status eca2a0679bd99eaff77c1c0785df13840fb99762 HEAD`.
-No source/model code changed after the5554760 implementation freeze; subsequent
-commits add the actual input and documentation/verification evidence only.
+The input normalizer, coherent producer and ledger remain the5554760 code.
+A later actual historical-source audit exposed and fixed the separate outcome
+parser period-count path; its exact evidence/code hash and regression results
+are recorded below. It does not change or rerun any frozen model result.
 
 Commands actually run, in addition to the source/offer commands retained in the
 linked evidence:
@@ -125,6 +129,26 @@ python3 web/tests/browser_smoke.py /tmp/nml-pregame-final-artifact --screenshots
 sha256sum --check --quiet MANIFEST.sha256
 git diff --check
 ```
+
+A final bounded historical-source audit made one actual ESPN summary request
+for event401810135, with two retrospective subjects declared beforehand. All12
+identity fields,30count fields, reported minutes and28derived-category values
+matched the retained panel. It exposed a missing status.period despite a verified
+final status. The separate outcome parser now derives the count only from explicit
+NBA format4×720seconds/300second OT and both complete matching quarter arrays,
+whose sums must equal the final team scores; supplied ordinal/value conflicts
+fail. No default four-period assumption or old panel rewrite. This is one historical
+source-shape verification, not a whole-history exact-duration REB admission.
+Authoritative append-only evidence:
+`evidence/data/2026-10-20-outcome-normalizer-audit-v2.json`, payload
+c253d19d8cbefb01e7e1a9a0182ef62cc419357289d6d925847a5bd1c847ed93.
+Final outcome-source code SHA8d22da881bcae0e0e213e314f0181bc727edd4116361fa2b7413f01f154919bf;
+221Python/35frontend checks and demo pass. No forecast generation, model evaluation,
+actual future-source request, outcome/grade ledger write or financial settlement
+was performed by this extra audit. Independent re-normalization and16focused
+checks passed; proof is retained in
+`evidence/research/2026-10-20-outcome-independent-check.json`.
+The original18records and prepared input are unchanged.
 
 Next concrete task: land/deploy this exact reviewed PR only under its own
 head-specific confirmation, then perform the exact **unscheduled** manual capture

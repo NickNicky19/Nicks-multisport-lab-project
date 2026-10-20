@@ -3,11 +3,14 @@
 ## Bounded pregame preparation branch — October 19 evening Central / October 20 UTC
 
 Code55547606e4fad6907f8fc06577976a83b3ed40a8 and input checkpoint
-a3934f5b7773999e2aa30c07c1ce85e0f5d9907f passed220Python/35frontend tests, demo,
+a3934f5b7773999e2aa30c07c1ce85e0f5d9907f passed221Python/35frontend tests, demo,
 artifact and local desktop/mobile Chromium. Actual eight-response source/cohort
 verification and original-byte normalization retained all26,645 rows; independent
 fresh remote recovery reproduced the exact panel with no raw inputs or model run.
-All19 ledger records and34 original frozen/source files matched. Only a preparation
+All19 ledger records and34 original frozen/source files matched. One additional
+actual historical final summary matched12identity/30count/28derived fields and
+exposed the documented verified-quarter period-count fallback; no new forecast
+or grade was persisted. See outcome-normalizer-audit-v2.json and the handoff. Only a preparation
 input was added: no genuine forecast, prospective outcome/grade or financial result.
 Current time is outside the declared capture/issuance window. Existing6/84/6
 historical records remain unchanged; Upcoming has three accurate reasons and all45

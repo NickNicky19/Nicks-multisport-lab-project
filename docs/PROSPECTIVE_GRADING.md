@@ -5,11 +5,12 @@ pregame research cycle. It does **not** issue a forecast, place or settle a tick
 request an outcome before event start, create a scheduler, or turn an offline
 readiness result into prospective evidence.
 
-At this implementation checkpoint, all outcome examples are synthetic fixtures.
-There have been **zero actual future-outcome requests, appended prospective
-outcomes or prospective grades**. Actual postgame ESPN shape and outcome accuracy
-must be checked when the chosen event has occurred. The historical ledger and
-R0/DEV002/DEV003 receipts remain unchanged.
+This implementation has synthetic regression fixtures and the bounded actual
+historical-source verification below. There have been **zero actual future-outcome
+requests, appended prospective outcomes or prospective grades**. The prospective
+event and its outcomes remain pending. One historical response verifies the
+selected normalizer shape; it does not establish broad coverage or future grading.
+The historical ledger and R0/DEV002/DEV003 receipts remain unchanged.
 
 ## Exact event, player and source path
 
@@ -51,8 +52,12 @@ required to equal a digest of the earlier scheduled state. A changed start or
 team identity fails closed rather than being silently treated as the issued event.
 
 An event only qualifies as final with explicit `STATUS_FINAL`, `state=post`,
-`completed=true`, an integer final period count of at least four, and consistent
-team period scores when present. Other statuses remain pending, including
+`completed=true`, and a verified final period count of at least four. When the
+source omits `status.period`, the versioned fallback requires explicit NBA format
+(regulation four periods, overtime 300 seconds), both teams' matching numeric quarter
+arrays, and each array summing to its explicit final team score. Explicit ordinal
+fields, when present, must be consecutive. An explicit status period, when supplied,
+must also agree with the arrays and their sums. No final game defaults to four. Other statuses remain pending, including
 postponed/suspended/in-progress states. No incomplete event becomes an all-zero
 outcome.
 
@@ -68,8 +73,8 @@ Whole-minute source text retains `rounded_whole_minutes`; `MM:SS` retains second
 No exact playing duration is invented. Overtime is included through the completed
 full-game boxscore and explicit final period count. Named quarter/half/period
 statistics are rejected. An unrecognized or incomplete shape remains blocked
-until the actual source mapping can be reviewed; synthetic fixtures do not
-establish a verified live adapter.
+until its actual mapping can be reviewed. The historical sample below verifies
+one returned final-summary shape; synthetic branches alone do not establish it.
 
 An appearance needs an explicit `didNotPlay=false` and a complete valid line.
 An explicit `didNotPlay=true` becomes DNP with null statistics, provided supplied
@@ -168,5 +173,75 @@ symlink restrictions, actual capture latency, no premature
 requests, exact input/lane filtering, restart/readback, retained/new source-clock
 recovery, explicit corrections, interrupted correction recovery, immutable bytes
 and separate financial status. No actual source outcome or model result is
-created by those tests. Full-suite/demo and integration checks are reported by
+created by those tests; the separate historical-source check below performs no
+ledger append or model generation. Full-suite/demo and integration checks are reported by
 the integration owner separately.
+
+
+## Actual historical final-source verification
+
+A single bounded GET on **October 19, 2026, at 9:19:28–9:19:29 p.m. CDT**
+(`2026-10-20T02:19:28.884620Z–02:19:29.335832Z`) retrieved the already used ESPN
+summary route for historical event 401810135, Portland at Oklahoma City,
+November 23, 2025 at 6 p.m. CST (`2025-11-24T00:00:00Z`). The retrospective selection
+was declared at `02:18:59.888060Z`, before that source request: the lowest numeric
+athlete ID per team in the full retained historical panel. This selected
+2991070/team 22 and 2991350/team 25. No forecast probabilities were examined or
+regenerated to choose those subjects.
+
+[Final audit evidence](../evidence/data/2026-10-20-outcome-normalizer-audit-v2.json),
+payload SHA256 `c253d19d8cbefb01e7e1a9a0182ef62cc419357289d6d925847a5bd1c847ed93`,
+retains the selection, actual source metadata, exact expected identity basis,
+period evidence and comparison results. The first audit receipt remains unchanged;
+the v2 receipt independently repeats the offline comparisons under the final
+format/score/ordinal guards and links its original evidence. It adds no request
+or changed source clock. Final executed normalizer SHA256:
+`8d22da881bcae0e0e213e314f0181bc727edd4116361fa2b7413f01f154919bf`.
+HTTP 200 returned 388,342 bytes, raw SHA256
+`9e09dc3ae993025f8839672a6d859c7aea3e7d2fa3df3effdce1670d10917f69`.
+Saved raw bytes and scripts are local under `/tmp/nml-outcome-normalizer-audit/`;
+only compact derived facts and hashes enter Git. Observation time is current,
+source update time is unknown, and neither is relabeled as historical availability.
+
+The first actual parse correctly blocked because this source omitted
+`status.period`. It supplied explicit final/post/completed status, NBA format
+(four regulation periods and 300-second overtime), and four numeric quarter
+scores for each team, summing exactly to 122 and 95. No explicit period ordinals
+were present. The narrow fallback described above was added and regression-tested
+before replaying **the same retained bytes offline**, with no second request.
+Its basis remains `MATCHING_FINAL_TEAM_QUARTER_ARRAYS_WITH_EXPLICIT_NBA_FORMAT`,
+not a claim that the source supplied a status-period field.
+
+Actual verification passed **12 identity-field comparisons, 30 primitive/count
+comparisons and 28 derived-category comparisons**, covering all thirteen categories
+plus PA for both subjects. Independent label lookup from the raw response agreed
+with the versioned normalizer and original full-panel rows. Scoring, FGM decomposition,
+rebound and made/attempt identities passed. Minutes agreed as 24 and 14, at rounded
+whole-minute precision only; exact seconds remain unknown. The original archive's
+period counts remain null, while this one source response supports four quarters.
+No archive row was repaired or promoted to full-history duration evidence.
+
+Expected event facts came from the retained historical schedule/panel and are
+explicitly marked `RETROSPECTIVE_ARCHIVE_AUDIT_NOT_OBSERVED_PREGAME`. The pure
+normalizer's expected-target PRE_GAME validation state is a reconstructed audit
+input, not an observed historical schedule receipt or genuine forecast issuance.
+Both actual sampled rows are appearances in a regulation game; DNP, missing and
+overtime cases remain separately synthetic tests. No model score, forecast,
+outcome ledger record, grade, financial settlement or qualified ticket was created.
+
+Actual offline verification command:
+
+```bash
+PYTHONPATH=. python3 /tmp/nml-outcome-normalizer-audit/audit.py
+PYTHONPATH=. python3 /tmp/nml-outcome-normalizer-audit/audit-final.py
+python3 -m unittest discover -s tests -p test_prospective_outcomes.py -v
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+```
+
+
+After the actual-source fix and final format/count guards, **16 focused outcome
+software tests and 221 full Python tests passed**; the synthetic demo exited 0,
+and whitespace checks passed. These software results remain separate from the
+one-source/two-subject normalization audit and from pending actual prospective
+outcomes, statistical grading, financial settlement and publication.

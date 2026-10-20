@@ -39,7 +39,8 @@ def source(*, final=True, include_second=True):
     state = {"name": "STATUS_FINAL", "state": "post", "completed": True} if final else {
         "name": "STATUS_IN_PROGRESS", "state": "in", "completed": False}
     competition = {"id": "200", "date": stamp(START), "status": {"period": 5, "type": state},
-                   "competitors": [{"id": t, "homeAway": side, "team": {"id": t}, "linescores": [{}]*5}
+                   "competitors": [{"id": t, "homeAway": side, "team": {"id": t}, "score": "100",
+                                    "linescores": [{"displayValue": "20"} for _ in range(5)]}
                                    for t, side in (("1", "home"), ("2", "away"))]}
     groups = [{"team": {"id": "1"}, "statistics": [{"labels": list(LABELS),
                "athletes": [{"athlete": {"id": "10"}, "didNotPlay": False,
@@ -100,6 +101,45 @@ class SummaryNormalizationTests(unittest.TestCase):
         self.assertEqual(report["rows"], {})
         self.assertEqual(report["status"], "PENDING")
         self.assertTrue(all(x["reason"] == "EVENT_NOT_VERIFIED_FINAL" for x in report["pending"]))
+
+    def test_actual_summary_shape_can_prove_period_count_with_two_complete_score_arrays(self):
+        body = source()
+        del body["header"]["competitions"][0]["status"]["period"]
+        body["format"] = {"regulation": {"periods": 4, "clock": 720.0}, "overtime": {"clock": 300.0}}
+        for side in body["header"]["competitions"][0]["competitors"]:
+            side["linescores"] = [{"displayValue": "20"} for _ in range(5)]
+            side["score"] = "100"
+        parsed = normalized(body)
+        self.assertEqual(parsed["rows"]["10"].final_periods, 5)
+        self.assertEqual(parsed["rows"]["10"].game_duration_minutes, 53)
+        self.assertEqual(parsed["final_period_count_basis"], "MATCHING_FINAL_TEAM_QUARTER_ARRAYS_WITH_EXPLICIT_NBA_FORMAT")
+        bad = deepcopy(body);bad["header"]["competitions"][0]["competitors"][0]["linescores"].pop()
+        bad["header"]["competitions"][0]["competitors"][0]["score"] = "80"
+        with self.assertRaisesRegex(IntegrityError, "counts conflict"):
+            normalized(bad)
+        bad = deepcopy(body);del bad["format"]
+        with self.assertRaisesRegex(IntegrityError, "period format"):
+            normalized(bad)
+        bad = deepcopy(body);bad["header"]["competitions"][0]["competitors"][0]["linescores"][0] = {}
+        with self.assertRaisesRegex(IntegrityError, "period score"):
+            normalized(bad)
+        bad = deepcopy(body);bad["header"]["competitions"][0]["competitors"][0]["score"] = "101"
+        with self.assertRaisesRegex(IntegrityError, "sum to"):
+            normalized(bad)
+        bad = deepcopy(body);bad["header"]["competitions"][0]["competitors"][0]["linescores"][0]["period"] = 2
+        with self.assertRaisesRegex(IntegrityError, "ordinals"):
+            normalized(bad)
+        for section, value in [("regulation", None), ("overtime", []),
+                               ("regulation", {"periods": 4.0, "clock": 720}),
+                               ("regulation", {"periods": 4, "clock": 600}),
+                               ("overtime", {"clock": True})]:
+            bad = deepcopy(body);bad["format"][section] = value
+            with self.subTest(section=section, value=value), self.assertRaisesRegex(IntegrityError, "period format"):
+                normalized(bad)
+        for value in [21, True, "20", -1]:
+            bad = deepcopy(body);bad["header"]["competitions"][0]["competitors"][0]["linescores"][0]["value"] = value
+            with self.subTest(value=value), self.assertRaisesRegex(IntegrityError, "numeric period score"):
+                normalized(bad)
 
     def test_identity_start_team_season_and_version_conflicts_fail_closed(self):
         for mutate in [
