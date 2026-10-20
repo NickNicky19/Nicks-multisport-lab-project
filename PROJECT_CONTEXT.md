@@ -7,8 +7,8 @@ Updated: October 20, 2026.
 - Repository: [NickNicky19/Nicks-multisport-lab-project](https://github.com/NickNicky19/Nicks-multisport-lab-project).
 - Default branch observed before starter import: `main`.
 - Initial remote commit observed: `c82225cf893b16de70ebbbcd476774f043360d24`.
-- Current checkpoint: **PR #1 implementation and PR #2 deployment documentation merged; typed all-category exports, immutable issuance/outcome/grading records, bounded DEV002 and corrected-route offer pilot implemented on `implementation/typed-research-ledger`**. New feature publication/remote evidence is recorded in the current handoff; historical development is not confirmation.
-- Deployed research site: https://nicknicky19.github.io/Nicks-multisport-lab-project/ ; verified main commit `e9bfa4ce7ec07b57dc5688bd592fd2e61d45f7ba` on 2026-10-20 after PR #2. This is v1 inventory; typed v2 is a separately checked feature branch. PR #1 merged after the user’s deployment request.
+- Current checkpoint: **PR #3 merged at approved head2d30ae9; typed all-category historical exports and immutable issuance/outcome/grading records are deployed and publicly verified**. DEV002 remains development, not confirmation. Follow-up recovery/evidence grouping and bounded NBA/input readiness work is isolated on `implementation/recovery-and-evidence-groups`.
+- Deployed research site: https://nicknicky19.github.io/Nicks-multisport-lab-project/ ; verified main commit `002a6b994c862c758f1d7c8199831c75eff761af` on 2026-10-20 after PR #3. Workflow39350851916 succeeded; public HTTPS/hash and desktop/mobile checks verified six historical bundles/all14 categories/six statistical grades, specific empty Upcoming and scoped2–6-leg NO_ACTION. No genuine future issuance, financial settlement or qualification follows.
 - First implementation commit: `243bc9e495f25906216f1a438cb060ec64de3f7c`, based on reviewed handoff `de86e92352f0fb5a76831275f6de6b256ce05434`; no branch reset or older ZIP import.
 - Status authority for the next session: [`HANDOFF_STATUS.md`](HANDOFF_STATUS.md), supplemented by the actual checked-out commit and observed repository state.
 

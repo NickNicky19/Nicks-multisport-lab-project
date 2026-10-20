@@ -1,5 +1,18 @@
 # Verification history and delivery status
 
+## Public typed v2 deployment — 2026-10-20
+
+PR #3's approved head2d30ae98b20918bc97ea9eda4578ef0c8d509d71 merged unchanged
+as main002a6b994c862c758f1d7c8199831c75eff761af. Workflow39350851916 build/deploy
+succeeded, deployment completed00:59:52 UTC. Public system-verified HTTPS and
+manifest/asset/module hashes matched exact main. Independent Chromium154 passed
+all7routes/reloads at1440/390/320px, six historical bundles/all84 PMFs/all14
+filters, six statistical grades and exact saved clocks, Upcoming's three
+missing-input reasons, and45 scope×size×direction builder cases with NO_ACTION.
+Zero page/HTTP/prefix errors; all18 immutable ledger bytes unchanged. Exact
+evidence: `evidence/deployment/2026-10-20-pr3-pages.json`. No new model evaluation,
+genuine future issuance, financial settlement or product qualification follows.
+
 ## Typed research checkpoint — 2026-10-20
 
 142 Python tests, offline synthetic demo and 25 frontend tests passed. Typed v2

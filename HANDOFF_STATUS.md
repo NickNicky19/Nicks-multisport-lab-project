@@ -7,7 +7,79 @@ reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
-## Current implementation checkpoint — 2026-10-20
+## Current deployment checkpoint — 2026-10-20 01:02 UTC
+
+**PR #3 is merged and typed v2 is deployed.** The user approved only head
+`2d30ae98b20918bc97ea9eda4578ef0c8d509d71`. A fresh guarded watcher confirmed
+that exact head ready, clean/mergeable, build passed, no pending checks, no
+missing required reviewers and zero unresolved threads. The canonical helper
+used policy digest `70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df`,
+normal merge method, no admin/bypass/force-push, and the exact-head merge watcher
+observed MERGED. Actual main merge commit:
+**`002a6b994c862c758f1d7c8199831c75eff761af`**, merged 2026-10-20 00:59:09 UTC.
+
+Live site: https://nicknicky19.github.io/Nicks-multisport-lab-project/ .
+[Workflow39350851916](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39350851916)
+completed successfully; build/deploy passed, deployment completed00:59:52 UTC.
+System-CA HTTPS returned200 for root, manifest, NBA asset and seven static assets.
+The served build commit is the exact main merge above; every static asset matched
+`git show 002a6b9:web/<asset>` bytes. Public snapshot:
+`45f9c2d7cf10baf00ace7b399f948e91d95c0e14fc5dbf494b8191af24ce7ae5`.
+Manifest raw SHA256:
+`957520ca4128a3c86c0d64fdd1f50bf5a682cfdb26f37a0cd8a57c9d7b392cc6`.
+NBA asset151,222 bytes, SHA256:
+`e33696949bb60d07643682748701011f864930919dccde6ba270d639b4c54789`.
+
+Independent public Chromium154 checks,01:01:39.714719–01:02:10.831386 UTC,
+passed1440px desktop/390px/320px mobile, all seven routes/direct reloads,
+84 PMFs across six original bundles, all14 category filters, six separate
+statistical grade records and exact event/cutoff/actual-issue/grade identities.
+Upcoming has no forecasts and three specific missing-input/issuance reasons.
+SINGLE/SELECTED/ALL scopes, every2–6-leg size and all three directions passed
+45 builder combinations, with zero admitted candidates, NO_ACTION and Not issued.
+No JS errors, failedHTTP requests or URLs outside the repository prefix occurred.
+Browser trust used only the process-local configured-proxy CA SPKI pin;
+independent urllib used verified system HTTPS. No persistent trust/HOME changes.
+
+All18 original ledger records and exported bundles/grades match committed main
+bytes and clocks. These are six **historical reconstructions** issued October20
+for November24,2025 games, with retrospective source observations and statistical
+forecast grades. No genuine future forecast, actual issued/settled paper ticket,
+financial settlement, qualified pick or confirmatory model quality is claimed.
+
+Exact commands, workflow jobs, public hashes, original record clocks and browser
+results: `evidence/deployment/2026-10-20-pr3-pages.json`. Deployment changed main
+through the merge only; this status follow-up changes HANDOFF_STATUS.md,
+PROJECT_CONTEXT.md, README.md, docs/VERIFICATION.md, MANIFEST.sha256 and the new
+deployment receipt. Existing R0/DEV002/eighteen ledger receipts are unchanged.
+
+Commands actually run:
+
+```bash
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=3 --mode until-actionable --interval 15 --timeout 180 --cursor /tmp/nml-pr-completion/pr3-cursor.json --observations-file /tmp/nml-pr-completion/pr3-observations.ndjson --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_land.py --repo /workspace/Nicks-multisport-lab-project --pr 3 --head 2d30ae98b20918bc97ea9eda4578ef0c8d509d71 --mode auto --method merge --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_land.py --repo /workspace/Nicks-multisport-lab-project --pr 3 --head 2d30ae98b20918bc97ea9eda4578ef0c8d509d71 --mode auto --method merge --policy-digest 70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df --confirm --pretty
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=3 --await-merge 2d30ae98b20918bc97ea9eda4578ef0c8d509d71 --await-merge-mode auto --await-merge-since 2026-10-20T00:59:10.831382Z --mode until-actionable --interval 10 --timeout 180 --cursor /tmp/nml-pr-completion/pr3-cursor.json --observations-file /tmp/nml-pr-completion/pr3-observations.ndjson --pretty
+git fetch origin main
+git switch main
+git merge --ff-only origin/main
+git switch -c implementation/recovery-and-evidence-groups
+```
+
+Read-only workflow/HTTPS/browser commands and their exact programs/outputs are
+retained in the deployment receipt. Main's workflow reran142Python/25frontend
+tests and demo/build successfully; deployment verification did not rerun any
+statistical evaluation or generate new forecasts/outcomes.
+
+Next package is isolated on **implementation/recovery-and-evidence-groups**,
+based on002a6b9. Carry both user review findings: interrupted publication summary
+must preserve original outcome clocks and validate every referenced record;
+Performance must separate lanes/models and History must describe past prospective
+records accurately before those records are admitted. Bounded coherent NBA
+development and offline pregame-input readiness work continue; no new paid
+service/signup/key, source collector, NFL/MLB mutation or prospective result.
+
+## Previous implementation checkpoint — 2026-10-20
 
 PR #2 was reviewed and merged through the guarded workflow at authorized head
 `05643e1f9f3a60c457357b301d3021f670629b70`; main advanced to
