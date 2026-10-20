@@ -72,6 +72,30 @@ manifest. Carried PR #5 deployment documentation/receipt remains preserved.
 Resolve this checkpoint's delivery revision with
 `git log -1 --format=%H preparation/pinned-pregame-cycle`; it is never the model SHA.
 
+Implementation and runbook commit **`f28911f74cb36fec3c6ae03dd0883177606d00d0`**
+is pushed on `preparation/pinned-pregame-cycle` and opened as
+[PR #6](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/6).
+[Workflow 39363160886](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39363160886)
+passed all 234 Python/35 frontend tests, the exact-pin fetch, demo and artifact
+checks; deploy was correctly skipped on the PR. The guarded watcher at
+03:14:11.137670 UTC found this head ready/CLEAN/MERGEABLE, build passed, zero
+pending/failed/unknown checks and zero unresolved review threads. No new PR
+landing is authorized by the completed PR #5 approval.
+
+A fresh independent GitHub clone recovered exact implementation bytes, all
+original records/frozen sources, the plan and preflight receipt. Read-only
+preflight/recovery again passed, and 13 guard tests passed. A separate depth-1
+clone initially lacked both provenance commits; the exact two-SHA CI fetch
+restored them without changing HEAD and all 13 guard tests passed. Full history
+recovery again retained 26,645 rows / 1,231 events / 14,720,351 bytes. The actual
+source model identity stayed 58530309 despite the committed preparation HEAD.
+Remote/shallow/CI/committed-head proofs are retained in
+`evidence/cycles/2026-10-20-manual-pilot-preparation-delivery.json`.
+A following documentation-only commit records this readback; its branch HEAD
+is deliberately distinct from the frozen producer SHA and does not add issuance.
+Main/Pages remains the deployed 58530309 checkpoint until a separately approved
+PR lands. Final refreshed PR check state is reported with the exact delivery head.
+
 Commands actually run (all preparation only):
 
 ```bash
@@ -86,6 +110,9 @@ python3 -m multisport_lab.manual_cycle bind --plan evidence/cycles/2026-10-20-nb
 python3 -m multisport_lab.publication --build-commit 58530309cf384425e15f02fd9fa980899a4dc0bc --output .local-data/pinned-cycle-preflight-site
 node web/tests/site-smoke.mjs .local-data/pinned-cycle-preflight-site
 git diff --check
+git push -u origin preparation/pinned-pregame-cycle
+gh pr create --repo NickNicky19/Nicks-multisport-lab-project --base main --head preparation/pinned-pregame-cycle --title 'Pin manual NBA pilot producer and guard recovery' --body-file /tmp/nml-pinned-cycle-pr-body.md
+PATH=/tmp/nml-pr-completion/bin:$PATH python3 /tmp/nml-pr-completion/pr_watch.py --target /workspace/Nicks-multisport-lab-project=6 --mode until-actionable --interval 15 --timeout 180 --cursor /tmp/nml-pr-completion/pr6-cursor.json --observations-file /tmp/nml-pr-completion/pr6-observations.ndjson --pretty
 ```
 
 The two explicitly negative commands above returned 2, as intended; the remaining

@@ -17,6 +17,14 @@ manual operating/recovery/publication/grading commands are in
 `docs/PREGAME_RESEARCH_CYCLE.md`. The existing CI fetches the two exact Git
 provenance commits for shallow source-byte tests; it adds no collector/schedule.
 
+The implementation is committed as `f28911f74cb36fec3c6ae03dd0883177606d00d0`
+and submitted in PR #6. GitHub workflow 39363160886 passed the full suite/artifact;
+deploy was skipped. Independent full and shallow GitHub clones recovered exact
+committed bytes and passed all 13 guard tests. Original model SHA remains
+58530309 despite the new records/documentation HEAD. Delivery proof:
+`evidence/cycles/2026-10-20-manual-pilot-preparation-delivery.json`.
+No PR #6 merge, Pages update or actual issuance is claimed by this preparation.
+
 ## Current public deployment: PR #5 — October 19 evening Central / October 20 UTC
 
 Approved head 713716a17465c93d32795aabba9e0a8c9c3a5e8c merged unchanged as main
