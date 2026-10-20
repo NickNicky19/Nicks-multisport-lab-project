@@ -119,17 +119,24 @@ or history rewrite. Hosted setup workflow **39369616942** and Pages check
 validation **39369740275** with no Pages deploy. Final adapter SHA256 is
 `77bb01ca9463762d62cb73b3427217725f684ac2507231311a19fdc60814aab0`.
 The remaining correction/documentation revision changes no operating code.
+Final documentation head bd55a3620c6b8a0e16f01f106c4f5b77f822f719 also passed
+setup workflow 39369906671 and Pages build 39369906881 (deployment skipped).
+The current status-only follow-up records recovered CLI access; its fresh checks
+will be observed before requesting exact-head activation approval.
 
-**Current activation blocker:** the managed shell's existing GH_TOKEN began
+**Temporary activation interruption (now recovered):** the managed shell's existing GH_TOKEN began
 returning HTTP 401 (confirmed `gh auth status`, REST reads and Git fetch), while
 the connected GitHub app still successfully reads/writes this repository. The
 canonical watcher actually returned BLOCKED at 04:21:17.666993Z, not READY.
 The final validated tree is being published through that already connected app
 with a normal fast-forward and exact expected parent; no credential value is
-copied/replaced and no new key/login is introduced. Restore the environment's
-existing GitHub CLI access before using the mandatory guarded completion helper;
-do not substitute a merge REST/GraphQL call. Main remains cde77cb, so **the cron
-is not armed**. After fresh readiness and exact-head user approval, merge the
+copied/replaced and no new key/login is introduced. Existing CLI access subsequently recovered without any credential change: a fresh
+repository REST read and `gh auth status` succeeded for NickNicky19. No owner
+permission-setting change, restart, signup or new key was needed. The temporary
+401 and blocked watcher remain historical evidence; current completion uses the
+mandatory guarded helper, with no alternate merge REST/GraphQL call. Main remains
+cde77cb, so **the cron is not armed**. After fresh readiness and exact-head user
+approval, merge the
 setup PR normally, verify the default-branch cron/active workflow, reconcile the
 records branch with exact merged main and independently recover it. Only then
 confirm the scheduled start. The native task must remain paused throughout.
