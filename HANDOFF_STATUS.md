@@ -96,8 +96,26 @@ issuance 0; new statistical ledger grades 0; financial settlements 0; qualified
 tickets 0; website deployment 0. Existing six historical grades are unchanged.
 No betting contract, cross-player model, PROS004 activation or confirmatory quality.
 
-Next delivery: commit/push actual evidence and analysis, independently recover it,
-and open a separate **DRAFT research PR**. No merge/deployment is authorized.
+**Delivery complete: [DRAFT PR #9](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/9).**
+Results commit `5cec1d41ee1dc532b406865b7ffea0f24ab99b46`; LF-only CSV fix
+`26116fe4bb13c820804f688e8ba9f810380a6fe1`, preserving all 42 rows/22 columns.
+Independent fresh GitHub recovery at exact 26116fe verified the immutable result,
+12 frozen source files, protocol/receipts, CSV and all 19 original records/29 protected
+references/nine producer files. Its repeated **score-only** replay passed 34,880
+checks, with no additional real forecast generation. Durable proof:
+`dev005-delivery-verification.json`.
+
+[GitHub workflow 39398916959](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39398916959)
+passed build at 09:12:25Z on 26116fe: **300 Python tests /35 frontend tests**,
+demo and artifact smoke; deployment **SKIPPED**. Canonical PR watcher finds
+build PASS, zero unresolved threads, no failed/unknown checks; it blocks landing
+because the PR is DRAFT, exactly as requested. No merge/deployment approval was
+requested. The follow-up documentation/proof commit adds no model/source changes;
+its final CI is visible in PR #9 checks. `dev005-draft-delivery.json` retains the
+exact observed head/workflow/watcher state rather than claiming a future check.
+Original CLI log retrieval needed a writable task cache (`XDG_CACHE_HOME` under
+`/tmp`); it succeeded without changing credentials or access.
+
 Next research: inspect retained zero/interval/dependence failures, then register
 any revised construction on a fresh separate sample. Do not retune DEV005 or
 substitute it into the operating pilot or PROS004.

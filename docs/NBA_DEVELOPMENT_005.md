@@ -267,3 +267,14 @@ three paired comparisons, bootstrap bounds, guards and minute identities.
 `dev005-verification-interpretation.json` explicitly limits the no-zero-support
 finding to category marginals; it preserves the original review rather than
 silently changing its clock or wording. No joint-vector log score was registered.
+
+Delivery: [DRAFT PR #9](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/9),
+results commit `5cec1d41ee1dc532b406865b7ffea0f24ab99b46`, CSV LF-only follow-up
+`26116fe4bb13c820804f688e8ba9f810380a6fe1`. The CSV change preserves all 42 rows
+and 22 columns. Fresh remote recovery at 26116fe verified result/source/protocol,
+840 numeric/blank CSV cells and original records, then replayed saved scores only.
+GitHub build 39398916959 passed 300 Python/35 frontend tests, demo/artifact, deployment
+skipped. `dev005-delivery-verification.json` and `dev005-draft-delivery.json` retain
+those exact observed revisions/clocks. Later documentation does not revise the
+frozen source, probabilities, result or original verification receipts. The PR
+remains draft; no merge, deployment or live activation is authorized.
