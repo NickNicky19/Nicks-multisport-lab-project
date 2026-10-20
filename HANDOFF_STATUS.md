@@ -13,6 +13,29 @@ Deployment/status checkpoint committed/pushed as
 `ff0cb00a2833bf7d3e889652157292df5a87a95d` on the separate follow-up branch.
 The approved deployed main below remains unchanged.
 
+**Follow-up application checkpoint:** committed/pushed as
+**73dd8a5a15fd5ffa2e49513daa19546cdba91b13** on
+`implementation/recovery-and-evidence-groups`;
+[PR #4](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/4) is open.
+[Workflow39352862246](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39352862246)
+passed177Python/31frontend tests, demo, build/artifact checks; deploy skipped by
+the non-main guard. Guarded watcher reported ready, clean/mergeable, zero
+unresolved review threads, no auto-merge. Exact package files/commits:
+`git diff --name-status 002a6b9 73dd8a5` and the checkpoint commits below.
+No PR #4 landing/deployment is claimed; PR #3 approval applied only to its2d30
+head. The public site remains main002a6b9, independently verified above/below.
+
+Independent fresh remote checkout at73dd8a5, checked01:22:22.917014 UTC, matched
+46 evidence/record/source files including all18 original records /175,190bytes
+and the frozen DEV003 source fingerprints. An isolated new process recovered
+the actual six-bundle/six-outcome/six-grade ledger and existing v1 summary with
+raw inputs absent and model/panel generation forbidden. All original clocks and
+bytes stayed intact. Proof/hashes/commands:
+`evidence/research/2026-10-20-followup-remote-check.json`. This is Git retention
+and recovery evidence, not another model run, deployment, future issuance,
+permission or statistical qualification. A documentation-only follow-up records
+this final checkpoint; final live PR head/check state is reported by the watcher.
+
 **Completed DEV003 continuation:** new DEV003 specification was frozen at
 `2026-10-20T01:09:19.742752Z`, protocol payloadSHA
 `06600825f5c64f396315c29251516da72133f659efca6e3f72a7a2ab7c3322db`.
