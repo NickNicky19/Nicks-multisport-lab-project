@@ -26,7 +26,7 @@ matches all 26,645 rows / 1,231 games / 14,720,351 bytes and original panel SHA-
 including all 8,238 exclusions. Evidence is
 `evidence/research/pros004-readiness-lineage.json`. A diagnostic source-drift stop
 before forecasting is retained in `pros004-readiness-attempt-01.json`. Full-history
-synthetic runtime and independent readback will be recorded at the completed
+synthetic runtime and independent readback are recorded at the completed
 readiness checkpoint below. The integrated local suite passed 338 Python tests
 in 19.286s, 60 PROS004 tests under optimized Python in 7.667s, 35 frontend tests,
 the demo and research artifact smoke check. No model evaluation is being rerun.
