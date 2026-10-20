@@ -1,5 +1,22 @@
 # Implementation decisions
 
+## October 20, 2026 — isolated DEV005 count support research
+
+The current user request authorizes one implemented and independently reviewed
+offline challenger comparison, with a pre-scoring remote freeze and a separate
+DRAFT research PR. It expressly forbids merging, deploying or live activation.
+Use a separate worktree based on main735a464; leave PR#8, records branch,
+workflow390126745 and paused native automation unchanged.
+
+Before inspecting DEV005 target scores, choose S0's fixed .10 NB2 generative
+mixture, positive training-only half-count prior and unchanged K0 minute law.
+Use eight consecutive Jan19-Mar15 UTC weeks and identity-hash whole-game selection.
+`docs/NBA_DEVELOPMENT_005.md` and the immutable pre-scoring protocol define the
+complete joint law, causal rules, primary family, numerical/tail/coverage guards,
+limits and exposure. Finite log loss is a support property, not forecasting
+improvement. No post-score category splicing or retuning is authorized.
+
+
 ## October 19, 2026 Central / October 20 UTC — one unattended operating pilot
 
 The user's later explicit request authorizes one scheduled October 20 NBA pilot,

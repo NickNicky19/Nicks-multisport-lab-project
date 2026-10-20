@@ -7,6 +7,46 @@ reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
+## Current research checkpoint — DEV005 isolated preparation
+
+Repository verified at main `735a464e9e8718303ef481abf711a8969de56694`.
+The original worktree remains clean on the protected pilot records branch at
+`df446eee302fd6662ef82184e2c733f5d6e2d2dd`; no reset or old-file import occurred.
+New work is isolated in `/workspace/nml-count-support-dev005`, branch
+`research/nba-count-support-dev005`. This request permits a DRAFT research PR
+only: no merge, deployment or live activation.
+
+Read-only GitHub checks found PR#8 OPEN/DRAFT at df446eee and workflow390126745
+ACTIVE. The post-activation handoff at that exact records commit is the current
+operating status: PR#7 merged as735a464 and the ONE17:15UTC pilot is armed.
+The older setup/manual-only text below is historical and does not disarm it.
+No workflow retrigger, pilot input/record change, competing collector or native
+unpause occurred. Nine reviewed producer files remain pinned to58530309.
+
+Baseline software: `python3 -m unittest discover -s tests -v` passed278 tests
+in11.149s; `python3 -m multisport_lab.demo` passed. No DEV005 target was scored.
+One model worker, one causal-evaluation worker and an independent reviewer use
+separate new files under one integration owner. The pre-scoring design is in
+`docs/NBA_DEVELOPMENT_005.md`; exact code/cohort/protocol freeze and remote
+readback must precede its single authorized comparison. Retained history recovers
+losslessly to26,645 rows /14,720,351 bytes with original SHA489b7148...
+
+Integrated software now passes300 Python tests/35 frontend tests, demo and
+local artifact smoke. The22 new tests cover positive likelihoods and tail
+bounds, DD/TD/coherence, cutoff/clock/source freeze and failure/renamed-output
+recovery. Independent synthetic score replay passed11,995checks and rejected
+a corrupted aggregate. Timing-only synthetic feasibility retained no real
+evaluation scores and supports the proposed900s/512MiB ceiling.
+
+Independent pre-scoring review PASS is retained with exact12 source hashes.
+The integration owner approved the immutable DEV005 protocol after that review.
+No real target has yet been scored.
+
+Next: commit/push
+and independently recover the frozen protocol, then execute exactly one offline
+comparison. Actual future issuance, grades, financial settlements and qualified
+tickets created by this research package: zero. Existing evidence is unchanged.
+
 ## Current operating preparation — October 20, 2026 UTC
 
 The user explicitly authorized ONE unattended execution of the existing October
