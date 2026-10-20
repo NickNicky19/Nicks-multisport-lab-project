@@ -1,3 +1,4 @@
+import {validateDisplayDescriptor,validateDisplayMetadata} from './display.mjs';
 export const REQUIRED_MARKETS = ['PTS', 'PRA', 'REB', '3PM', 'AST', 'RA', 'PR', 'TOV', 'TD', 'DD', 'BLK', 'STL', 'BLK+STL'];
 const COLLECTIONS = ['events', 'offers', 'forecasts', 'candidates', 'tickets', 'performance'];
 const SHA256 = /^[a-f0-9]{64}$/;
@@ -21,7 +22,7 @@ async function boundedBytes(response) {
 }
 
 export function validateManifest(value) {
-  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors']) || ![1, 2].includes(value.schema_version) || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
+  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors',...(value?.schema_version===4?['display','display_error']:[])]) || ![1, 2, 4].includes(value.schema_version) || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
   if (!SHA256.test(value.snapshot_id) || !COMMIT.test(value.build_commit) || !utc(value.published_at) || Date.parse(value.published_at) > Date.now()) throw new Error('Incomplete publication identity or invalid clock.');
   if (!Array.isArray(value.supported_sports) || !value.supported_sports.length || value.supported_sports.some(s => typeof s !== 'string' || !/^[A-Z]+$/.test(s)) || new Set(value.supported_sports).size !== value.supported_sports.length) throw new Error('Invalid sport coverage.');
   if (!value.errors || typeof value.errors !== 'object' || Array.isArray(value.errors) || Object.entries(value.errors).some(([league, error]) => !/^[A-Z]+$/.test(league) || !text(error))) throw new Error('Invalid publication errors.');
@@ -34,6 +35,7 @@ export function validateManifest(value) {
     if (sport.path !== `${sport.league.toLowerCase()}.${sport.sha256}.json`) throw new Error('Unsafe or unversioned sport asset path.');
     seen.add(sport.league);
   }
+  // Optional display semantics are isolated after core manifest/hash checks.
   return value;
 }
 
@@ -107,6 +109,28 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
     }
     return sport;
   }));
-  return {manifest, sports: results.flatMap(result => result.status === 'fulfilled' ? [result.value] : []), errors: results.flatMap((result, index) => result.status === 'rejected' ? [{league: manifest.sports[index].league, message: result.reason.message}] : [])};
+  const sports=results.flatMap(result=>result.status==='fulfilled'?[result.value]:[]);
+  let display=null,displayError=null;
+  if(manifest.schema_version===4){
+    try{
+      if(!(manifest.display_error===null||text(manifest.display_error)))throw new Error('Invalid display metadata error.');
+      if(manifest.display===null){if(!text(manifest.display_error))throw new Error('Missing display metadata needs an explanation.');displayError=manifest.display_error;}
+      else {
+      const reference=validateDisplayDescriptor(manifest.display,manifest.published_at),result=await fetcher(`./data/${reference.path}`,{cache:'no-store',signal:AbortSignal.timeout(12000)});
+      if(!result.ok)throw new Error(`Display metadata unavailable (HTTP ${result.status}).`);
+      const raw=await boundedBytes(result);
+      if(raw.byteLength>128*1024||await sha256(raw,cryptoProvider)!==reference.sha256)throw new Error('Display metadata byte/hash mismatch.');
+      const asset=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));
+      validateDisplayMetadata(asset,sports,manifest.published_at);
+      if(asset.generated_at!==reference.generated_at)throw new Error('Display metadata generation mismatch.');
+      for(const [record,key] of [[asset,'metadata_id'],[asset.catalog,'catalog_id']]){
+        const {[key]:id,...body}=record;
+        if(await sha256(new TextEncoder().encode(canonical(body)),cryptoProvider)!==id)throw new Error('Display record checksum mismatch.');
+      }
+      display=asset;displayError=manifest.display_error;
+      }
+    }catch(error){displayError=error.message||'Display metadata could not be verified.';}
+  }
+  return {manifest,sports,display,displayError,errors:results.flatMap((result,index)=>result.status==='rejected'?[{league:manifest.sports[index].league,message:result.reason.message}]:[])};
 }
 import {validateResearchEvent, validateResearchForecast, validateResearchGrade, utcMicros} from './research.mjs';

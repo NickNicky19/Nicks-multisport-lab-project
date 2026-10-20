@@ -255,11 +255,13 @@ def _write_atomic(path: Path, raw: bytes):
         Path(name).unlink(missing_ok=True)
 
 
-def read_manifest(data_dir: Path, *, now: datetime) -> dict:
+def read_manifest(data_dir: Path, *, now: datetime, validate_display: bool = True) -> dict:
     manifest = load_json(data_dir / "manifest.json", max_bytes=MAX_ASSET_BYTES)
     fields = {"schema_version", "snapshot_id", "build_commit", "published_at", "publication_status", "supported_sports", "sports", "errors"}
+    if type(manifest) is dict and manifest.get("schema_version") == 4:
+        fields |= {"display", "display_error"}
     if (type(manifest) is not dict or set(manifest) != fields
-            or type(manifest["schema_version"]) is not int or manifest["schema_version"] not in {1, 2}
+            or type(manifest["schema_version"]) is not int or manifest["schema_version"] not in {1, 2, 4}
             or manifest["publication_status"] != "RESEARCH_ONLY"
             or not re.fullmatch(r"[a-f0-9]{40}", manifest["build_commit"])
             or utc(manifest["published_at"]) > utc(now)):
@@ -267,6 +269,7 @@ def read_manifest(data_dir: Path, *, now: datetime) -> dict:
     if manifest["snapshot_id"] != digest({k: v for k, v in manifest.items() if k != "snapshot_id"}):
         raise IntegrityError("Manifest checksum mismatch")
     seen = set()
+    snapshots = []
     for entry in manifest["sports"]:
         if set(entry) != {"league", "path", "sha256", "generated_at", "status", "retained", "error"}:
             raise IntegrityError("Invalid manifest sport entry")
@@ -284,8 +287,18 @@ def read_manifest(data_dir: Path, *, now: datetime) -> dict:
         validate_sport(snapshot, league=league, now=utc(manifest["published_at"]))
         if snapshot["generated_at"] != entry["generated_at"]:
             raise IntegrityError("Generation clock mismatch")
+        snapshots.append(snapshot)
     if sorted(seen) != manifest["supported_sports"]:
         raise IntegrityError("Sport references do not match supported scope")
+    if manifest["schema_version"] == 4 and validate_display:
+        from .display_metadata import read_asset
+        if manifest["display_error"] is not None:
+            _text(manifest["display_error"], "display publication error")
+        if manifest["display"] is None:
+            if manifest["display_error"] is None:
+                raise IntegrityError("Missing display metadata requires an explanation")
+        else:
+            read_asset(data_dir, manifest["display"], snapshots, now=utc(manifest["published_at"]))
     return manifest
 
 
@@ -294,7 +307,7 @@ def publish(data_dir: Path, snapshots: dict[str, dict | Exception], *, build_com
     now = utc(now)
     if not re.fullmatch(r"[a-f0-9]{40}", build_commit):
         raise IntegrityError("Full build commit SHA required")
-    previous = read_manifest(data_dir, now=now) if (data_dir / "manifest.json").exists() else None
+    previous = read_manifest(data_dir, now=now, validate_display=False) if (data_dir / "manifest.json").exists() else None
     entries = {item["league"]: dict(item) for item in previous["sports"]} if previous else {}
     errors = {}
     for league, snapshot in snapshots.items():
@@ -333,12 +346,26 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
     output.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix=".site-build-", dir=output.parent))
     backup = None
+    old = None
+    old_display = None
     try:
         if (output / "data/manifest.json").exists():
-            old = read_manifest(output / "data", now=now)
+            old = read_manifest(output / "data", now=now, validate_display=False)
             (staging / "data").mkdir()
             for name in ("manifest.json", *(item["path"] for item in old["sports"])):
                 shutil.copyfile(output / "data" / name, staging / "data" / name)
+            if old.get("display") is not None:
+                # Optional display corruption cannot block valid sport recovery.
+                # Validate before resolving/copying its untrusted path.
+                from .display_metadata import read_asset
+                try:
+                    old_sports = [load_json(output / "data" / ref["path"], max_bytes=MAX_ASSET_BYTES) for ref in old["sports"]]
+                    read_asset(output / "data", old["display"], old_sports, now=now)
+                    old_display = old["display"]
+                    name = old_display["path"]
+                    shutil.copyfile(output / "data" / name, staging / "data" / name)
+                except (ValueError, KeyError, TypeError, OSError):
+                    pass
         for source in (root / "web").iterdir():
             if source.is_file() and not source.is_symlink() and source.suffix in {".html", ".css", ".js", ".mjs", ".svg", ".webmanifest"}:
                 shutil.copyfile(source, staging / source.name)
@@ -349,6 +376,32 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
         except (ValueError, KeyError, TypeError, OSError) as error:
             nba_snapshot = error
         result = publish(staging / "data", {"NBA": nba_snapshot}, build_commit=build_commit, now=now)
+        from .display_metadata import make_asset, read_asset
+        snapshots = [load_json(staging / "data" / ref["path"], max_bytes=MAX_ASSET_BYTES) for ref in result["sports"]]
+        descriptor = None
+        display_error = None
+        try:
+            asset = make_asset(root, snapshots, now=now)
+            raw = canonical(asset)
+            sha = hashlib.sha256(raw).hexdigest()
+            descriptor = {"path": f"display.{sha}.json", "sha256": sha,
+                "generated_at": asset["generated_at"], "status": "DISPLAY_METADATA_ONLY", "retained": False, "error": None}
+            _write_atomic(staging / "data" / descriptor["path"], raw)
+        except (ValueError, KeyError, TypeError, OSError) as error:
+            display_error = f"{type(error).__name__}: display metadata unavailable; source IDs remain visible"
+            previous = old_display
+            if previous is not None:
+                try:
+                    read_asset(staging / "data", previous, snapshots, now=now)
+                    descriptor = {**previous, "retained": True, "error": display_error}
+                except (ValueError, KeyError, TypeError, OSError):
+                    pass
+        # Manifest 3 belongs to the independent, unmerged PROS004 contract.
+        # This metadata-only shape uses 4 and does not reinterpret that schema.
+        result.update(schema_version=4, display=descriptor, display_error=display_error)
+        result["snapshot_id"] = digest({k:v for k,v in result.items() if k != "snapshot_id"})
+        _write_atomic(staging / "data/manifest.json", canonical(result))
+        read_manifest(staging / "data", now=now)
         if output.exists():
             backup = Path(tempfile.mkdtemp(prefix=".site-old-", dir=output.parent))
             backup.rmdir()
