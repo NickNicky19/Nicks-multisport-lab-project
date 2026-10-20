@@ -1,8 +1,66 @@
 # NBA offer inventory and local capture import
 
-Inspected **2026-10-19 22:53–22:55 UTC** in this repository's managed runtime.
-This is a bounded real-source feasibility audit, not live-feed admission, product
-qualification, model evaluation, wagering, or future paper settlement.
+Updated **2026-10-20 UTC**. The latest bounded source inspection was
+**2026-10-20 00:10:09–00:10:50 UTC**; see [OFFER-PILOT-002](OFFER_PILOT_002.md)
+and its [structural evidence](../evidence/offers/2026-10-20-offer-pilot-002.json).
+These are real-source feasibility findings, not live-feed admission, product
+qualification, model evaluation, wagering or future paper settlement.
+
+## Current checkpoint
+
+The corrected case-sensitive ESPN NBA route combines `/sports/basketball/leagues/nba/`
+with `/odds/100/propBets`. It returned **HTTP 200 and 1,135 items across both declared
+pages**, with the returned provider reference confirming `100 / DraftKings`.
+The prior 404 was a path/casing failure, not evidence of absent player markets.
+The current collection includes explicit American, decimal and fractional price
+fields; it must not be described as thresholds-only. Side/selection identity,
+full-game/OT, current status and settlement meaning remain incomplete, and
+**138 source update timestamps are later than their own page captures**.
+No side is inferred by item order and no capture clock is shifted to make a row pass.
+
+Current observed family counts follow. ESPN counts are primary total/achievement
+labels, excluding its separately retained milestone/quarter labels. Sleeper counts
+are individual side options. Neither column counts complete tradable contracts.
+
+| Category | ESPN primary-family items | Sleeper options |
+| --- | ---: | ---: |
+| PTS | 26 | 278 |
+| PRA | 22 | 202 |
+| REB | 26 | 292 |
+| 3PM | 16 | 246 |
+| AST | 20 | 222 |
+| RA | 22 | 0 |
+| PR | 26 | 0 |
+| TOV | 0 | 6 |
+| TD | 4 | 0 |
+| DD | 12 | 32 |
+| BLK | 8 | 24 |
+| STL | 10 | 48 |
+| BLK+STL | 6 | 0 |
+| PA (optional) | 22 | 0 |
+
+ESPN has 12 requested families plus PA in this one event; TOV was not observed.
+Sleeper has 675 NBA rows / 1,350 options in nine families; RA, PR, TD, BLK+STL
+and optional PA were not observed. These are bounded snapshot findings, not
+permanent coverage exclusions. All 13 requested categories remain in scope.
+
+ESPN's declared paging was fully inspected, but the two pages are not an atomic
+snapshot. Sleeper's bare-array remote paging remains unknown. Both sources still
+establish **zero complete full-game contracts, zero kernel quotes and zero
+qualified candidates**. Production adapters remain disabled: reviewed restrictive
+terms do not establish ongoing automation or raw-public-redistribution permission.
+Sleeper multipliers remain pick'em multipliers, not sportsbook odds or entry terms.
+
+The [subject-type validation fix](SLEEPER_IMPORT_VALIDATION.md) requires matching
+player types before assigning player identities, explicitly counts ignored team
+rows and diagnoses missing/conflicting types. The new actual capture has matching
+player types throughout; it produced zero subject-type errors and remains partial
+because remote paging is unproved. Full contract semantics remain missing.
+
+## Historical first audit: 2026-10-19
+
+The first inspection ran **2026-10-19 22:53–22:55 UTC**. Its observations below
+remain recorded as observed; they do not replace the newer successful route evidence.
 
 The public retained evidence is
 [`evidence/offers/2026-10-19-offer-audit.json`](../evidence/offers/2026-10-19-offer-audit.json):
@@ -12,7 +70,7 @@ Raw inspection files remain local in `/tmp/nml-offer-audit/`; a normalized local
 receipt is in ignored `.local-data/offers/2026-10-19-sleeper-import-receipt.json`.
 Those local paths are neither public archives nor durable remote retention.
 
-## What the actual responses establish
+## First-audit responses (historical)
 
 | Route | Actual result | Consequence |
 | --- | --- | --- |
@@ -29,14 +87,15 @@ Earlier exploratory ESPN core requests omitted `/leagues/` and also returned 404
 They are retained as wrong-route attempts in the evidence; they cannot establish
 missing source coverage. A single ordinary corrected-path request was made under
 the user's explicit bounded audit instruction. No authentication, bypass, paid
-access or new account was used. No further extraction or collector was enabled.
+access or new account was used. No collector was enabled. The later separately
+bounded pilot above corrected both path structure and casing together.
 
 Sleeper's response is a bare array, without count/page/next-page metadata. All
 returned rows were processed, but **upstream pagination completeness is UNKNOWN**.
 The importer records `pagination.complete: false` and reports `partial`; it cannot
 claim a comprehensive remote board solely from a successful HTTP response.
 
-## All 13 requested categories
+## First-capture inventory (historical)
 
 Counts are NBA board rows and individual side options from the first Sleeper
 capture. They are not independent forecasts, paper decisions or eligible tickets.
@@ -62,7 +121,7 @@ Optional PA was not observed. Unobserved categories remain initial development
 scope; a snapshot's zero count does not prove permanent source absence. The parser
 maps only actually observed labels. Future labels remain unmapped diagnostics.
 
-For the actual NBA subset:
+For that first actual NBA subset:
 
 - Every row has `sport: nba`, `subject_type: player`, `outcome_type: over_under`,
   `line_type: normal`, `season: 2026`, `season_type: regular`, `game_status: pre_game`
@@ -110,11 +169,14 @@ The audit retrieved these public documents, with exact response hashes retained:
   and the terms linked a contest-rules collection, but current exact NBA entry
   terms were not captured or verified. A rules link is not a settled payout model.
 
-**PASS:** bounded runtime access and observed Sleeper labels/IDs/line-multiplier
-structure. **FAIL:** attempted ESPN candidate player route and attempted rule
-routes did not supply the required evidence. **UNKNOWN:** permitted ongoing Picks
-or ESPN automation, raw redistribution, complete offer paging, full-game/OT and
-settlement identity, actual ticket eligibility and complete payout economics.
+**PASS:** bounded runtime access, observed Sleeper labels/IDs/line-multiplier
+structure, and now the corrected ESPN NBA player route, explicit price fields and
+both declared pages. **Historical request FAIL:** the earlier ESPN path/casing
+attempts and attempted rule URLs did not supply the required evidence.
+**UNKNOWN:** permitted ongoing Picks or ESPN automation, raw redistribution,
+Sleeper remote paging, cross-page atomicity, exact sides/full-game/OT and settlement
+identity, actual ticket eligibility and complete payout economics. ESPN also has
+the source-clock anomalies reported above.
 Both live adapters remain disabled. Accessible URLs and the user's one-time audit
 request are not presented as provider permission for scheduled extraction or
 publication. No raw public redistribution was added.
@@ -174,7 +236,7 @@ response, incomplete board, valid empty board and unmapped labels remain distinc
 Row/option identity mismatches, duplicated provider selections, source-update
 clocks later than capture, mismatched units and nonfinite values fail closed.
 
-## Commands and measured results
+## First-audit commands and measured results (historical)
 
 The bounded probes used Python standard-library `urllib.request`, inherited proxy
 and TLS verification, 18–20 second per-request timeouts, and at most three workers.
@@ -194,6 +256,8 @@ bytes. These timings describe this bounded run, not an approved production budge
 
 Next concrete requirement: obtain a permitted local full-game example with exact
 period/OT, event/player crosswalk, current rules/product and complete entry terms;
-then test the corresponding semantic mapping and settlement. Separately establish
-an authorized ESPN player-prop route; the 404 does not imply absent categories.
+then test the corresponding semantic mapping and settlement. ESPN route access is
+now verified; exact side/selection mapping, consistent source clocks and permitted
+ongoing use remain unresolved. See the current pilot report for commands, counts
+and the separate synthetic software checks.
 Continue price-independent forecasting and honest research website work now.

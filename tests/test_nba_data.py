@@ -2,6 +2,8 @@
 from dataclasses import replace
 from datetime import datetime, timezone
 import json
+from pathlib import Path
+import tempfile
 import unittest
 
 from multisport_lab.nba_data import (
@@ -59,6 +61,39 @@ class NBADataTests(unittest.TestCase):
         self.assertEqual(row.final_status, "UNKNOWN")
         self.assertIsNone(row.game_duration_minutes)
         self.assertFalse(audit_rows([row])["claims"]["historical_asof_verified"])
+
+    def test_supplied_field_goals_must_equal_two_and_three_point_makes(self):
+        row = normalize_sdv_row(raw_row())
+        with self.assertRaisesRegex(ValueError, "FGM = FG2M \\+ FG3M"):
+            replace(row, fgm=5)
+        # Incomplete counts stay missing; validation must not invent a value.
+        incomplete = replace(row, fg2m=None)
+        self.assertIsNone(incomplete.fg2m)
+        report = audit_rows([incomplete])
+        self.assertEqual(report["appearance_missing_fields"]["fg2m"], 1)
+        self.assertEqual(report["identity_failures"], {})
+
+    def test_audit_independently_flags_legacy_field_goal_contradictions(self):
+        for participation in ("APPEARED", "UNKNOWN"):
+            row = replace(normalize_sdv_row(raw_row()), participation=participation)
+            # Simulate an unchecked/legacy in-memory row so this exercises the
+            # audit independently of the current constructor's rejection.
+            object.__setattr__(row, "fgm", 5)
+            with self.subTest(participation=participation):
+                self.assertEqual(audit_rows([row])["identity_failures"], {"fgm_component_identity": 1})
+
+    def test_normalized_panel_import_rejects_contradictory_supplied_fgm(self):
+        from multisport_lab.research_pilot import read_normalized_panel
+
+        record = normalize_sdv_row(raw_row()).to_record()
+        record["fgm"] = 5
+        # Points still equal 2*FG2M + 3*FG3M + FTM and FGM <= FGA. This
+        # specifically reaches the formerly missing component identity.
+        with tempfile.TemporaryDirectory(prefix="nba-import-validation-") as folder:
+            path = Path(folder) / "contradictory.jsonl"
+            path.write_text(json.dumps(record) + "\n")
+            with self.assertRaisesRegex(ValueError, "FGM = FG2M \\+ FG3M"):
+                read_normalized_panel(path)
 
     def test_dnp_is_not_zero_and_unknown_is_preserved(self):
         raw = raw_row()

@@ -5,7 +5,7 @@ infrastructure for 2–6 legs.** Six legs are preferred only when the complete t
 meets the eventual evidence and economics policy. Smaller tickets and NO_ACTION
 remain valid results.
 
-Prepared October 19, 2026 for a **new repository and new Codex session**.
+Updated October 20, 2026. Work continues in the existing repository.
 Canonical repository: [NickNicky19/Nicks-multisport-lab-project](https://github.com/NickNicky19/Nicks-multisport-lab-project).
 Nick created this repository; the bootstrap imported the starter and its tailored
 implementation roadmap. The implementation owner is now working from that handoff.
@@ -14,8 +14,12 @@ implementation roadmap. The implementation owner is now working from that handof
 in [HANDOFF_STATUS.md](HANDOFF_STATUS.md). The initial work adds audited NBA source
 normalization, a coherent all-category empirical research reference, authorized
 offline offer import, conservative paper-draft contracts, and a mobile static
-research interface. These do not establish a validated model, qualified ticket or
-live deployment. The original starter description below is retained as history.
+research interface. The initial site is deployed at
+https://nicknicky19.github.io/Nicks-multisport-lab-project/ . The next implementation
+adds typed fourteen-category historical research distributions and immutable
+Git-backed issuance/outcome/grade records. See the handoff for exact branch,
+publication and durability evidence; these do not establish a validated model,
+qualified ticket or genuine future result.
 
 Build the research website locally (Python 3.11+, Node 24 for frontend checks):
 
@@ -27,8 +31,9 @@ python3 -m multisport_lab.publication --build-commit "$(git rev-parse HEAD)"
 node web/tests/site-smoke.mjs output
 ```
 
-Only `output/` is the Pages artifact. It contains research coverage and honest
-empty states; forecasts and offers are deliberately not public export v1 rows.
+Only `output/` is the Pages artifact. V2 contains historical research distributions
+and forecast grades read from saved records, plus specific empty future/offer/
+ticket states. A build never regenerates a forecast or fetches a live source.
 See [publication contract](docs/PUBLICATION_SCHEMA.md),
 [baseline protocol](docs/BASELINE_REFERENCE.md),
 [data feasibility](DATA_FEASIBILITY.md), and
@@ -42,10 +47,9 @@ already contains the starter's contents at its root; an older ZIP is unnecessary
 Use [`PROJECT_CONTEXT.md`](PROJECT_CONTEXT.md) and
 [`HANDOFF_STATUS.md`](HANDOFF_STATUS.md) for the accepted scope and actual status.
 
-The website is explicit implementation scope. Its expected address after a
-successful GitHub Pages deployment is
+The website is explicit implementation scope. The verified initial site is
 `https://nicknicky19.github.io/Nicks-multisport-lab-project/`.
-That address is a deployment target, not a verified live site. See
+Feature changes publish only after their checked main-branch deployment. See
 [`docs/WEBSITE_DELIVERY.md`](docs/WEBSITE_DELIVERY.md) for the hosting plan and
 [`docs/CHATGPT_PROJECT_SETUP.md`](docs/CHATGPT_PROJECT_SETUP.md) for session organization.
 
@@ -65,12 +69,14 @@ That address is a deployment target, not a verified live site. See
 - All 13 requested NBA markets in a planned registry, with deterministic coherent
   sums and double-/triple-double indicators from one supplied basketball draw.
 
-## What is planned, not built
+## What remains unadmitted
 
-No live multisport Sleeper/ESPN collector, trained NBA model, automatic ticket
-selector, provider-specific settlement engine, website deployment, or wagering
-integration is included. There are no current picks. The package is deliberately
-the smallest useful foundation for the next implementation session.
+No live multisport Sleeper/ESPN collector, confirmatorily validated NBA model,
+qualified ticket selector, provider-specific financial settlement engine or
+wagering integration is included. There are no current picks. R0 and DEV002 are
+historical development work; the six publication grades are engineering examples
+from already exposed data. The proposed precise-duration rebound experiment and
+an admitted captured-future producer remain separate research work.
 
 All live quote sources remain unverified for the new project. A sport's appearance
 in the capability register does not imply that its feed or model works.

@@ -83,3 +83,38 @@ archive now marks that game final. It cannot admit a captured-future claim.
 The primitive variogram diagnostic uses fixed unit scales and power 1/2 across
 eight counts; it is descriptive, not an equally scaled multi-target accuracy
 metric or a validation of cross-player ticket dependence.
+
+
+## 2026-10-20 — typed research and durable record package
+
+User requested current PR #2 reconciliation and the next implementation package.
+PR #2 head05643e1 was verified ready and merged; main e9bfa4c retained all prior
+history. Validation findings A/B reproduced and fixed before this package, with
+no contradictions in the frozen panel and no changed old protocol/pilot receipts.
+
+Publish compact all-14-category marginal PMFs from the same complete-line R0
+measure. Keep the joint construction and input/support hashes without publishing
+raw historical support/player rows. Typed real-valued numbers use fixed-point
+strings for stable cross-language hashes. Identity, event version/start, actual
+issue, cutoff, reconstructed availability and conditional appearance are explicit.
+A record issued now for an old event stays historical reconstruction. Public
+future view remains empty until an admitted event/player universe, observed input
+captures and actual pregame issuance exist. Model qualification remains unavailable.
+
+Use create-only checksummed records under this existing Git repository, with
+append-only references/corrections. A local write alone is pending durability;
+commit/push and independent fresh remote read establish retained content. Record
+actual receipt clock separately from original issuance. Browser storage and /tmp
+are never the sole issuance ledger. Forecast outcome scoring is independent from
+venue contract grading and financial settlement. No synthetic ticket is entered
+as an actual issued ticket.
+
+Broader development protocol NBA-ALL13-JOINT-DEV-002: fixed R0 versus league-only
+L0, original unchanged panel, useful prior history from Oct21 onward, window
+Nov24 2025–Jan18 2026, first two games in each of eight full UTC weeks and all
+appearances (338 total /16games), shared T90/midnight daily freeze and reconstructed
+start+24h completion bound. 2,000 paired whole-week bootstrap draws, fixed seed
+20261020; per-category scores/uncertainty, sparse-event/tail limits and no
+multiplicity-adjusted promotion or confirmatory claim. No tuning. Full exact
+pre-scoring inventory and protocol receipts bind the fixed game list and hashes.
+The old R0 pilot and separate proposed REB B0/B1/C1 protocol are unchanged.

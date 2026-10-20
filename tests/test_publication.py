@@ -2,11 +2,12 @@ from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 import hashlib
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
 
-from multisport_lab.integrity import IntegrityError, canonical
-from multisport_lab.publication import build_site, empty_nba, publish, read_manifest, resolve_scope, validate_sport
+from multisport_lab.integrity import IntegrityError, canonical, digest, read_receipt
+from multisport_lab.publication import build_site, empty_nba, publish, read_manifest, research_nba, resolve_scope, validate_sport
 
 ROOT = Path(__file__).resolve().parent.parent
 NOW = datetime(2026, 10, 19, 23, tzinfo=timezone.utc)
@@ -14,6 +15,22 @@ COMMIT = "a" * 40
 
 
 class PublicationTests(unittest.TestCase):
+    def research_fixture(self):
+        """Pin six immutable exemplars; legitimate ledger growth must not fail CI."""
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        root = Path(directory.name) / "project"
+        for name in ("config", "web"):
+            shutil.copytree(ROOT / name, root / name)
+        summary = read_receipt(ROOT / "evidence/research/reference-publication-002.json")
+        for example in summary["examples"]:
+            for name in ("forecast_ref", "outcome_ref", "grade_ref"):
+                ref = example[name]
+                relative = Path("records", ref["kind"], ref["record_id"] + ".json")
+                (root / relative).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(ROOT / relative, root / relative)
+        return root
+
     def test_single_selected_all_never_expand_unsupported_scope(self):
         supported = ["NBA", "WNBA"]  # synthetic future coverage, not admitted sports
         self.assertEqual(resolve_scope("SINGLE", ["NBA"], supported), {"NBA"})
@@ -90,6 +107,49 @@ class PublicationTests(unittest.TestCase):
             self.assertTrue((output / "app.mjs").is_file())
             self.assertTrue((output / "index.html").is_file())
             read_manifest(output / "data", now=NOW)
+
+    def test_retained_real_reconstructions_have_complete_typed_coverage_not_future(self):
+        now = datetime.now(timezone.utc)
+        snapshot = research_nba(self.research_fixture(), now=now)
+        self.assertEqual(snapshot["schema_version"], 2)
+        self.assertEqual(len(snapshot["forecasts"]), 6)
+        self.assertEqual(len(snapshot["performance"]), 6)
+        self.assertEqual(len(snapshot["events"]), 3)
+        self.assertEqual(snapshot["future_availability"]["status"], "UNAVAILABLE")
+        for bundle in snapshot["forecasts"]:
+            self.assertEqual(len(bundle["categories"]), 14)
+            self.assertGreater(bundle["issued_at"], bundle["event_starts_at"])
+            self.assertEqual(bundle["evidence_lane"], "RECONSTRUCTED_RESEARCH")
+        self.assertEqual(snapshot["tickets"], [])
+
+    def test_typed_export_rejects_event_mismatch_and_self_rehashed_wrong_grade(self):
+        now = datetime.now(timezone.utc)
+        snapshot = research_nba(self.research_fixture(), now=now)
+        bad = deepcopy(snapshot)
+        bad["events"][0]["team_ids"] = ["fake-team", "another-team"]
+        with self.assertRaisesRegex(IntegrityError, "Forecast/event"):
+            validate_sport(bad, league="NBA", now=now)
+        bad = deepcopy(snapshot)
+        grade = bad["performance"][0]
+        grade["categories"][0]["crps"] = "1000000"
+        grade["grade_id"] = digest({k: v for k, v in grade.items() if k != "grade_id"})
+        with self.assertRaises(IntegrityError):
+            validate_sport(bad, league="NBA", now=now)
+
+    def test_corrupt_ledger_retains_previous_typed_asset_without_freshening_it(self):
+        now = datetime.now(timezone.utc)
+        root = self.research_fixture()
+        output = root / "output"
+        first = build_site(root, output, build_commit=COMMIT, now=now)
+        previous = first["sports"][0]
+        asset = (output / "data" / previous["path"]).read_bytes()
+        record = next((root / "records/forecasts").glob("*.json"))
+        record.write_text("{}")
+        later = now + timedelta(seconds=10)
+        retained = build_site(root, output, build_commit="b"*40, now=later)["sports"][0]
+        self.assertTrue(retained["retained"])
+        self.assertEqual(retained["generated_at"], previous["generated_at"])
+        self.assertEqual((output / "data" / retained["path"]).read_bytes(), asset)
 
 
 if __name__ == "__main__":

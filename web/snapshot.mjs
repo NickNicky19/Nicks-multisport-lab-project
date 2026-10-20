@@ -21,7 +21,7 @@ async function boundedBytes(response) {
 }
 
 export function validateManifest(value) {
-  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors']) || value.schema_version !== 1 || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
+  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors']) || ![1, 2].includes(value.schema_version) || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
   if (!SHA256.test(value.snapshot_id) || !COMMIT.test(value.build_commit) || !utc(value.published_at) || Date.parse(value.published_at) > Date.now()) throw new Error('Incomplete publication identity or invalid clock.');
   if (!Array.isArray(value.supported_sports) || !value.supported_sports.length || value.supported_sports.some(s => typeof s !== 'string' || !/^[A-Z]+$/.test(s)) || new Set(value.supported_sports).size !== value.supported_sports.length) throw new Error('Invalid sport coverage.');
   if (!value.errors || typeof value.errors !== 'object' || Array.isArray(value.errors) || Object.entries(value.errors).some(([league, error]) => !/^[A-Z]+$/.test(league) || !text(error))) throw new Error('Invalid publication errors.');
@@ -38,7 +38,8 @@ export function validateManifest(value) {
 }
 
 export function validateSport(value, reference) {
-  if (!keys(value, ['schema_version', 'league', 'generated_at', 'evidence_lane', 'status', 'coverage', 'markets', 'sources', ...COLLECTIONS]) || value.schema_version !== 1 || value.league !== reference.league || value.status !== 'RESEARCH_ONLY' || value.evidence_lane !== 'RECONSTRUCTED_RESEARCH' || value.generated_at !== reference.generated_at || !utc(value.generated_at)) throw new Error('Incompatible sport snapshot.');
+  const version = value?.schema_version;
+  if (!keys(value, ['schema_version', 'league', 'generated_at', 'evidence_lane', 'status', 'coverage', 'markets', 'sources', ...COLLECTIONS, ...(version === 2 ? ['future_availability'] : [])]) || ![1, 2].includes(version) || value.league !== reference.league || value.status !== 'RESEARCH_ONLY' || value.evidence_lane !== 'RECONSTRUCTED_RESEARCH' || value.generated_at !== reference.generated_at || !utc(value.generated_at)) throw new Error('Incompatible sport snapshot.');
   const coverage = value.coverage;
   if (!keys(coverage, ['forecast', 'quotes', 'settlement', 'paper']) || coverage.forecast !== 'UNVALIDATED' || coverage.quotes !== 'UNVERIFIED' || coverage.settlement !== 'UNVERIFIED' || coverage.paper !== 'NO_ACTION') throw new Error('Unsupported admission state.');
   if (!Array.isArray(value.markets)) throw new Error('Missing category inventory.');
@@ -49,8 +50,37 @@ export function validateSport(value, reference) {
   }
   if (value.league === 'NBA' && (REQUIRED_MARKETS.some(code => !codes.has(code) || !value.markets.find(m => m.code === code).requested) || value.markets.some(market => !REQUIRED_MARKETS.includes(market.code) && (market.code !== 'PA' || market.requested)))) throw new Error('Incomplete or unsupported NBA category inventory.');
   if (!Array.isArray(value.sources) || value.sources.some(source => !keys(source, ['id', 'name', 'status', 'detail', 'observed_at']) || !['id', 'name', 'status', 'detail'].every(key => text(source[key])) || !(source.observed_at === null || utc(source.observed_at) && Date.parse(source.observed_at) <= Date.parse(value.generated_at))) || new Set(value.sources.map(source => source.id)).size !== value.sources.length) throw new Error('Invalid source status.');
-  // v1 is a research inventory publication. New populated row types require their own validation and UI.
-  if (COLLECTIONS.some(key => !Array.isArray(value[key]) || value[key].length !== 0)) throw new Error('This client does not support populated research row collections.');
+  if (COLLECTIONS.some(key => !Array.isArray(value[key]))) throw new Error('Invalid observation collection.');
+  if (version === 1) {
+    if (COLLECTIONS.some(key => value[key].length !== 0)) throw new Error('The v1 client contract rejects populated research row collections.');
+    return value;
+  }
+  if (value.league !== 'NBA' || value.forecasts.length > 32 || value.events.length > 32 || value.performance.length > 64) throw new Error('Typed sport or collection budget is unsupported.');
+  if (['offers', 'candidates', 'tickets'].some(key => value[key].length)) throw new Error('Quotes, candidates and tickets remain unadmitted under research v2.');
+  if (!keys(value.future_availability, ['status', 'reasons']) || !['UNAVAILABLE', 'AVAILABLE'].includes(value.future_availability.status) || !Array.isArray(value.future_availability.reasons) || value.future_availability.reasons.some(reason => !text(reason)) || value.future_availability.status === 'UNAVAILABLE' && !value.future_availability.reasons.length) throw new Error('Invalid future availability reasons.');
+  const events = new Map();
+  for (const event of value.events) {
+    validateResearchEvent(event);
+    if (event.league !== value.league || events.has(event.event_id)) throw new Error('Duplicate or cross-sport event.');
+    events.set(event.event_id, event);
+  }
+  const forecasts = new Map(), forecastTargets = new Set();
+  for (const forecast of value.forecasts) {
+    validateResearchForecast(forecast, events.get(forecast.event_id), value.generated_at);
+    const target = JSON.stringify([forecast.event_id, forecast.player_id, forecast.model_version, forecast.cutoff_at]);
+    if (forecasts.has(forecast.forecast_id) || forecastTargets.has(target)) throw new Error('Duplicate forecast identity or original issue revision.');
+    if (new TextEncoder().encode(canonical(forecast)).byteLength > 128 * 1024) throw new Error('Forecast exceeds its byte budget.');
+    forecasts.set(forecast.forecast_id, forecast);
+    forecastTargets.add(target);
+  }
+  const grades = new Set();
+  for (const grade of value.performance) {
+    validateResearchGrade(grade, forecasts.get(grade.forecast_id), value.generated_at);
+    if (grades.has(grade.grade_id)) throw new Error('Duplicate grade identity.');
+    grades.add(grade.grade_id);
+  }
+  const hasFuture = value.forecasts.some(forecast => forecast.evidence_lane === 'REAL_TIME_CAPTURED' && utcMicros(forecast.event_starts_at) > utcMicros(value.generated_at));
+  if ((value.future_availability.status === 'AVAILABLE') !== hasFuture) throw new Error('Future availability must match genuinely captured upcoming forecasts.');
   return value;
 }
 
@@ -66,7 +96,15 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
     const bytes = await boundedBytes(result);
     const hash = await sha256(bytes, cryptoProvider);
     if (hash !== reference.sha256) throw new Error('Sport snapshot content hash does not match.');
-    return validateSport(JSON.parse(new TextDecoder('utf-8', {fatal: true}).decode(bytes)), reference);
+    const sport = validateSport(JSON.parse(new TextDecoder('utf-8', {fatal: true}).decode(bytes)), reference);
+    if (manifest.schema_version === 1 && sport.schema_version !== 1) throw new Error('Manifest version does not support typed research records.');
+    for (const record of [...sport.forecasts, ...sport.performance]) {
+      const idKey = record.forecast_id && record.schema_version === 'nba-research-forecast-v1' ? 'forecast_id' : 'grade_id';
+      const {[idKey]: id, ...body} = record;
+      if (await sha256(new TextEncoder().encode(canonical(body)), cryptoProvider) !== id) throw new Error('Typed research record checksum does not match.');
+    }
+    return sport;
   }));
   return {manifest, sports: results.flatMap(result => result.status === 'fulfilled' ? [result.value] : []), errors: results.flatMap((result, index) => result.status === 'rejected' ? [{league: manifest.sports[index].league, message: result.reason.message}] : [])};
 }
+import {validateResearchEvent, validateResearchForecast, validateResearchGrade, utcMicros} from './research.mjs';

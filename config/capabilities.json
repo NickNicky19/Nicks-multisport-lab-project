@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at_utc": "2026-10-19T23:05:39.507678+00:00",
+  "checked_at_utc": "2026-10-20T00:22:02.737184+00:00",
   "status": "NBA_DEVELOPMENT_FOUNDATION_NO_ADMITTED_LIVE_FEEDS_OR_QUALIFIED_MODEL",
   "scope": {
     "project": "nicks-multisport-lab",
@@ -97,18 +97,63 @@
   },
   "live_feed_candidates": {
     "espn_draftkings_player_props": {
-      "status": "provider-label-observed;player-route-404;ongoing-automation-rights-unestablished",
+      "status": "NBA-player-route-200;declared-pages-observed;incomplete-side-and-contract-semantics;138-future-updates;automation-rights-unestablished",
       "enabled": false,
       "sport_contracts_verified": [],
       "both_prices_verified": false,
-      "evidence_report": "docs/OFFER_INVENTORY.md"
+      "evidence_report": "docs/OFFER_PILOT_002.md",
+      "inventory_report": "docs/OFFER_INVENTORY.md",
+      "evidence_summary": "evidence/offers/2026-10-20-offer-pilot-002.json",
+      "observed_category_codes": [
+        "PTS",
+        "PRA",
+        "REB",
+        "3PM",
+        "AST",
+        "RA",
+        "PR",
+        "TD",
+        "DD",
+        "BLK",
+        "STL",
+        "BLK+STL"
+      ],
+      "optional_observed_category_codes": [
+        "PA"
+      ],
+      "not_observed_category_codes": [
+        "TOV"
+      ],
+      "capture_scope": "one NBA event 401909088; both declared pages observed; no atomic cross-page snapshot token",
+      "last_observed_at": "2026-10-20T00:10:50.454783+00:00",
+      "route": "https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/events/401909088/competitions/401909088/odds/100/propBets?lang=en&region=us&limit=1000",
+      "reported_item_count": 1135,
+      "observed_item_count": 1135,
+      "declared_page_count": 2,
+      "declared_pages_observed": 2,
+      "atomic_cross_page_snapshot_verified": false,
+      "provider_id_observed": "100",
+      "provider_name_observed": "DraftKings",
+      "price_representations_observed": [
+        "american",
+        "decimal",
+        "fraction"
+      ],
+      "sides_verified": false,
+      "full_game_overtime_verified": false,
+      "source_updates_after_page_capture": 138,
+      "complete_contract_count": 0,
+      "kernel_quote_count": 0,
+      "qualified_candidate_count": 0,
+      "ongoing_automation_permission": "unestablished-restrictive-terms-reviewed",
+      "public_raw_redistribution_permission": "unestablished"
     },
     "sleeper_picks": {
       "status": "nine-NBA-labels-observed;incomplete-contract-semantics;automation-rights-unestablished",
       "enabled": false,
       "sport_contracts_verified": [],
       "full_entry_payouts_verified": false,
-      "evidence_report": "docs/OFFER_INVENTORY.md",
+      "evidence_report": "docs/OFFER_PILOT_002.md",
       "observed_category_codes": [
         "PTS",
         "PRA",
@@ -119,7 +164,34 @@
         "DD",
         "BLK",
         "STL"
-      ]
+      ],
+      "inventory_report": "docs/OFFER_INVENTORY.md",
+      "import_validation_report": "docs/SLEEPER_IMPORT_VALIDATION.md",
+      "evidence_summary": "evidence/offers/2026-10-20-offer-pilot-002.json",
+      "not_observed_category_codes": [
+        "RA",
+        "PR",
+        "TD",
+        "BLK+STL"
+      ],
+      "optional_not_observed_category_codes": [
+        "PA"
+      ],
+      "capture_scope": "one mixed-sport response; all returned NBA rows inspected; remote pagination completeness unknown",
+      "last_observed_at": "2026-10-20T00:10:10.659737+00:00",
+      "nba_rows_observed": 675,
+      "nba_options_observed": 1350,
+      "matching_player_subject_types_verified_in_capture": true,
+      "nonplayer_rows_ignored": 0,
+      "subject_type_invalid_rows": 0,
+      "remote_pagination_complete": null,
+      "price_kind_observed": "pickem_multiplier",
+      "full_game_overtime_verified": false,
+      "complete_contract_count": 0,
+      "kernel_quote_count": 0,
+      "qualified_candidate_count": 0,
+      "ongoing_automation_permission": "unestablished-restrictive-terms-reviewed",
+      "public_raw_redistribution_permission": "unestablished"
     }
   },
   "sources": {
@@ -508,8 +580,8 @@
         "conditioning": "conditional-on-eventual-appearance",
         "production_admitted": false
       },
-      "current_props": "unverified",
-      "current_two_sided_odds": "unverified",
+      "current_props": "bounded-ESPN-and-Sleeper-label-price-evidence;exact-contract-and-live-source-admission-unverified",
+      "current_two_sided_odds": "ESPN-price-fields-observed;explicit-sides-unverified;no-complete-quotes",
       "current_ticket_payouts": "unverified",
       "settlement_mapping": "unverified",
       "automation_rights": "unresolved-for-intended-adapters",

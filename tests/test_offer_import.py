@@ -48,7 +48,7 @@ def sleeper():
         "sport": "nba", "game_id": "fictional-sleeper-event", "subject_id": "fictional-subject",
         "market_type": "points_over_under_player_fictional", "wager_type": "points",
         "outcome_type": "over_under", "line_type": "normal", "season": "2026",
-        "season_type": "regular", "game_status": "pre_game",
+        "season_type": "regular", "game_status": "pre_game", "subject_type": "player",
     }
     return {**common, "status": "active", "updated_at": 1792400000000,
             "options": [{**common, "status": "active", "line_id": f"fictional-{side}",
@@ -125,6 +125,84 @@ class OfferImportTests(unittest.TestCase):
         self.assertIsNone(observation["extra_time_policy"])
         self.assertIn("entry_terms_unverified", observation["unavailable_reasons"])
         self.assertEqual(observation["provider_selection_id"], "fictional-over")
+        self.assertEqual(observation["subject_type"], "player")
+        self.assertEqual(report["nonplayer_rows_ignored"], 0)
+        self.assertEqual(report["subject_type_invalid_rows"], 0)
+
+    def test_recognized_team_rows_and_options_are_counted_without_player_identity(self):
+        row = sleeper()
+        row["subject_type"] = "team"
+        for option in row["options"]:
+            option["subject_type"] = "team"
+        report = import_capture(capture([row], source="sleeper", format="sleeper_lines_v1"),
+                                imported_at=IMPORTED)
+        self.assertEqual(report["status"], "empty")
+        self.assertEqual(report["observations"], [])
+        self.assertEqual(report["nonplayer_rows_ignored"], 1)
+        self.assertEqual(report["subject_type_invalid_rows"], 0)
+        self.assertEqual(report["diagnostics"], [])
+        self.assertEqual(report["ignored_rows"][0]["reason"], "recognized_nonplayer_subject_type")
+        self.assertEqual(report["ignored_rows"][0]["subject_type"], "team")
+        self.assertNotIn("player_id", report["ignored_rows"][0])
+        self.assertNotIn("provider_player_id", report["ignored_rows"][0])
+        self.assertEqual(sum(report["coverage"].values()), 0)
+
+    def test_row_option_subject_type_conflicts_reject_whole_row_before_player_identity(self):
+        for row_type, option_type in (("player", "team"), ("team", "player")):
+            row = sleeper()
+            row["subject_type"] = row_type
+            for option in row["options"]:
+                option["subject_type"] = row_type
+            # A conflict in a later option must also reject the first player's option.
+            row["options"][-1]["subject_type"] = option_type
+            with self.subTest(row_type=row_type):
+                report = import_capture(capture([row], source="sleeper", format="sleeper_lines_v1"),
+                                        imported_at=IMPORTED)
+                self.assertEqual(report["status"], "parser_failure")
+                self.assertEqual(report["observations"], [])
+                self.assertEqual(report["subject_type_invalid_rows"], 1)
+                self.assertEqual(report["nonplayer_rows_ignored"], 0)
+                self.assertEqual(report["diagnostics"][0]["reason"], "row_option_subject_type_mismatch")
+                self.assertEqual(report["diagnostics"][0]["option_index"], 1)
+
+    def test_missing_and_unknown_subject_types_are_diagnosed_separately_from_nonplayers(self):
+        cases = []
+        row = sleeper()
+        del row["subject_type"]
+        cases.append((row, "missing_row_subject_type"))
+        row = sleeper()
+        del row["options"][-1]["subject_type"]
+        cases.append((row, "missing_option_subject_type"))
+        row = sleeper()
+        row["subject_type"] = "unrecognized-type"
+        cases.append((row, "unrecognized_row_subject_type"))
+        for row, reason in cases:
+            with self.subTest(reason=reason):
+                report = import_capture(capture([row], source="sleeper", format="sleeper_lines_v1"),
+                                        imported_at=IMPORTED)
+                self.assertEqual(report["status"], "parser_failure")
+                self.assertEqual(report["observations"], [])
+                self.assertEqual(report["subject_type_invalid_rows"], 1)
+                self.assertEqual(report["nonplayer_rows_ignored"], 0)
+                self.assertEqual(report["diagnostics"][0]["reason"], reason)
+
+    def test_partial_board_separates_player_nonplayer_and_type_error_counts(self):
+        player = sleeper()
+        team = deepcopy(player)
+        team["subject_type"] = "team"
+        for option in team["options"]:
+            option["subject_type"] = "team"
+        invalid = deepcopy(player)
+        del invalid["subject_type"]
+        report = import_capture(capture([player, team, invalid], source="sleeper",
+                                        format="sleeper_lines_v1"), imported_at=IMPORTED)
+        self.assertEqual(report["status"], "partial")
+        self.assertEqual(len(report["observations"]), 2)
+        self.assertEqual(report["nonplayer_rows_ignored"], 1)
+        self.assertEqual(report["subject_type_invalid_rows"], 1)
+        self.assertEqual(report["coverage"]["PTS"], 2)
+        self.assertTrue(all(o["contract"] is None and o["quote"] is None and not o["qualified"]
+                            for o in report["observations"]))
 
     def test_unmapped_labels_are_retained_and_identity_splicing_is_rejected(self):
         row = sleeper()

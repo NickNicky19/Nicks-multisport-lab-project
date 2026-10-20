@@ -1,5 +1,30 @@
 # Verification history and delivery status
 
+## Typed research checkpoint — 2026-10-20
+
+142 Python tests, offline synthetic demo and 25 frontend tests passed. Typed v2
+actual artifact and Chromium 1440/390/320px checks passed across all routes,
+six archived bundles/all84 category PMFs, six statistical grades, exact dates,
+scopes/directions/NO_ACTION and empty upcoming. Ledger tests cover immutable
+original clocks, idempotence, restart, corrupt receipts, typed reference/score
+recomputation and correction chains without superseded-grade double counting.
+
+Independent actual-data verification reproduced the fixed six-target rule,
+retained primitive outcomes, eligible-input hashes/cutoffs/code hashes, and all
+18 receipt recovery bindings without rerunning model scores. DEV002 was frozen
+before its one 338-appearance development run; independent verification reproduced
+week-bootstrap intervals from retained aggregates. TD worsened and PR log loss
+was infinite for both references. No confirmatory or product claim follows.
+The corrected ESPN route actually returned both declared NBA pages, with price
+fields but incomplete side/period/settlement and 138 future timestamp anomalies.
+Sleeper observations remain partial despite validated player subject types.
+
+See current HANDOFF_STATUS.md for exact commits/commands and separate Git remote
+retention, website publication, genuine future issuance, forecast grading and
+financial settlement evidence. The prior deployed v1 website is distinct from
+this branch's typed v2 feature. No actual future forecast/ticket result or
+financial settlement exists; no paid services/keys or NFL/MLB changes occurred.
+
 ## Implementation checkpoint — 2026-10-19
 
 The integration owner ran the current required checks: **94 Python tests passed**,

@@ -1,14 +1,14 @@
 # Nick's Multisport Lab — project context
 
-Updated: October 19, 2026.
+Updated: October 20, 2026.
 
 ## Canonical project
 
 - Repository: [NickNicky19/Nicks-multisport-lab-project](https://github.com/NickNicky19/Nicks-multisport-lab-project).
 - Default branch observed before starter import: `main`.
 - Initial remote commit observed: `c82225cf893b16de70ebbbcd476774f043360d24`.
-- Current checkpoint: **implementation landed through PR #1; BOOTSTRAP complete, bounded real-data/offer audit, all-category empirical development reference implemented and early research website deployed/verified**.
-- Deployed research site: https://nicknicky19.github.io/Nicks-multisport-lab-project/ ; verified main commit `5d19fa344de5ceaa6e7cc550f0ac8ac832458202` on 2026-10-19. PR #1 merged after the user’s deployment request.
+- Current checkpoint: **PR #1 implementation and PR #2 deployment documentation merged; typed all-category exports, immutable issuance/outcome/grading records, bounded DEV002 and corrected-route offer pilot implemented on `implementation/typed-research-ledger`**. New feature publication/remote evidence is recorded in the current handoff; historical development is not confirmation.
+- Deployed research site: https://nicknicky19.github.io/Nicks-multisport-lab-project/ ; verified main commit `e9bfa4ce7ec07b57dc5688bd592fd2e61d45f7ba` on 2026-10-20 after PR #2. This is v1 inventory; typed v2 is a separately checked feature branch. PR #1 merged after the user’s deployment request.
 - First implementation commit: `243bc9e495f25906216f1a438cb060ec64de3f7c`, based on reviewed handoff `de86e92352f0fb5a76831275f6de6b256ce05434`; no branch reset or older ZIP import.
 - Status authority for the next session: [`HANDOFF_STATUS.md`](HANDOFF_STATUS.md), supplemented by the actual checked-out commit and observed repository state.
 

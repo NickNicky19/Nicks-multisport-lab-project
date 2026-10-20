@@ -156,6 +156,9 @@ class NBAPlayerGame:
                 raise ValueError("fractional minutes conflict with whole-minute precision")
         for field in COUNT_FIELDS:
             _count(getattr(self, field), field)
+        if (None not in (self.fgm, self.fg2m, self.fg3m)
+                and self.fgm != self.fg2m + self.fg3m):
+            raise ValueError("field-goal identity requires FGM = FG2M + FG3M")
         if self.participation == "DNP" and (
             self.minutes is not None or any(getattr(self, f) is not None for f in COUNT_FIELDS)
         ):
@@ -350,6 +353,9 @@ def audit_rows(rows: Iterable[NBAPlayerGame], *, max_rows: int = 100_000) -> dic
         seasons[f"{row.season_ending_year}:{row.season_type}"] += 1
         known_final += row.final_status == "FINAL"
         verified_duration += row.game_duration_minutes is not None
+        if (None not in (row.fgm, row.fg2m, row.fg3m)
+                and row.fgm != row.fg2m + row.fg3m):
+            failures["fgm_component_identity"] += 1
         if row.participation != "APPEARED":
             continue
         for field in missing:

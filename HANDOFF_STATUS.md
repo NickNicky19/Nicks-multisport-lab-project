@@ -1,13 +1,153 @@
 # Implementation handoff status
 
-Updated: October 19, 2026 (UTC).
+Updated: October 20, 2026 (UTC).
 
 **Checkpoint: BOOTSTRAP complete; bounded Milestone 0 audit and full-category
 reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
-## Repository and ownership
+## Current implementation checkpoint — 2026-10-20
+
+PR #2 was reviewed and merged through the guarded workflow at authorized head
+`05643e1f9f3a60c457357b301d3021f670629b70`; main advanced to
+`e9bfa4ce7ec07b57dc5688bd592fd2e61d45f7ba`. New work is on
+`implementation/typed-research-ledger` with one integration owner.
+
+Implementation package committed/pushed as **900a7df5ed5270ec6e32054cfa7e6bb2bf29dec7**
+(58 files; exact inventory: `git show --stat 900a7df`).
+[PR #3](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/3) is open.
+[GitHub build39347811263](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39347811263)
+passed for that exact head; deploy was skipped by the non-main guard. Guarded
+watcher reported ready, clean/mergeable, zero unresolved review threads, no
+auto-merge configured. A documentation-only follow-up records this checkpoint.
+
+**Remote durability verified:** independent fresh HTTPS checkout of this same
+repository at900a7df matched all18 original record files /175,190 bytes. An
+isolated fresh Python process loaded the checkout's modules, blocked reads of the
+integration/raw-data directories and recovered every schema/hash/reference/grade
+and original clock with a missing raw input path. No forecasts were regenerated.
+Exact commands, per-file hashes and readback clocks are in
+`evidence/research/2026-10-20-remote-ledger.json`; verification completed
+2026-10-20 00:29:44.860776 UTC. Persisted local-receipt labels remain honest;
+this separately observed remote Git checkpoint establishes retention. It is not
+source authenticity, historical as-of evidence or genuine future issuance.
+
+Current published main is **e9bfa4ce7ec07b57dc5688bd592fd2e61d45f7ba**:
+[workflow39345735154](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39345735154)
+build/deploy succeeded, deployment completed 2026-10-20 00:07:45 UTC. Public
+root/manifest/NBA asset/app modules returned HTTP200 with verified HTTPS and
+matching commit/hashes at00:23:44 UTC. See
+`evidence/deployment/2026-10-20-pr2-pages.json`. This is deployed **v1**; the new
+typed feature remains branch-only until its separately verified rollout.
+
+Import findings A/B are fixed in **`cde185088f032db587e1fb10845cd84541ef0a8b`**:
+`multisport_lab/nba_data.py`, `multisport_lab/offer_import.py`, their tests and
+`docs/NBA_IMPORT_VALIDATION.md`, `docs/SLEEPER_IMPORT_VALIDATION.md`.
+The exact reproducers failed before fixes and pass after; 101 Python tests and
+synthetic demo passed. FGM must equal FG2M+FG3M whenever known, and a Sleeper
+player identity requires matching explicit row/option player subject types.
+Recognized teams are classified separately; missing/conflicting types diagnosed.
+
+The retained 26,645-row panel has zero FGM component contradictions, and every
+NBA subject in the prior real Sleeper sample explicitly says player. Neither
+finding establishes corrupted saved evidence. Frozen R0 protocol/pilot receipt
+bytes remain unchanged; no original pilot evaluation was rerun.
+
+Typed exports, immutable issuance/outcome/grading records and frontend v2 are
+implemented on this branch. Python/frontend validate the same fourteen-category
+contract, period/OT, exact identities, microsecond clocks, PMFs and scores. Six
+deterministically selected **historical reconstructions** were actually generated
+2026-10-20 00:21:42.792328–00:21:48.758578 UTC for three 2025-11-24 games. Their
+already exposed outcomes make these engineering examples, not a new holdout.
+Eighteen create-only ledger receipts total 175,190 bytes. Restart/readback and
+idempotent recovery preserve every original clock/hash; commit/push/fresh remote
+readback is verified separately above. No actual future issuance,
+paper-ticket outcome or financial settlement exists.
+
+The static build reads saved records without running a model or fetching sources.
+History has 84 marginal PMFs and six separately scored forecast records. Upcoming
+explains that no admitted pregame candidate universe/observed-input producer and
+genuine T90 capture exist. Current R0 explicitly rejects REAL_TIME issuance.
+Active correction chains prevent superseded forecasts/outcomes/grades from being
+double-counted; original receipts remain immutable and readable. The builder
+retains scopes, 2–6 legs, all directions, smaller-ticket/NO_ACTION behavior.
+
+DEV002 was frozen before one run: eight full UTC weeks, 16 fixed games /338
+appearances, all 13+PA, fixed R0 versus league-only L0, shared T90/daily freeze,
+reconstructed start+24h history and 2,000 paired week-bootstrap draws. Runtime
+156.871699 seconds; peak RSS 96,232 KiB; no post-score exclusions/tuning. R0 CRPS
+was descriptively lower in 13 categories; TD worsened (only one TD observed),
+delta +0.0002771724865 with 95% week CI [0.000001325405,0.000587670881]. PR had
+one zero-support log outcome in both models, so infinite aggregate log loss was
+retained. These sparse selected games establish no confirmatory quality or
+product qualification. The separate exact-duration REB experiment remains blocked.
+
+OFFER-PILOT-002 used four bounded ordinary GETs, all200, 3.367 MB. The **correct
+full inherited NBA `propBets` route and both declared pages** returned 1,135 ESPN
+items, 48 type/name families, 12 requested families plus PA (TOV absent this
+event). Provider ref verified DraftKings; prices exist but side, period/OT and
+settlement meaning remain unresolved, and 138 update clocks exceeded capture.
+Sleeper returned 675 NBA rows /1,350 options with matching player subject types,
+nine families; absent families are snapshot-specific. Zero complete usable
+quotes, qualified contracts/tickets or source-automation permission are claimed.
+
+Exact package file inventory is `git diff --name-status cde1850 900a7df`: new typed forecast,
+ledger, fixed-publication command, DEV002 modules/tests; `records/`; publication
+and web validators/renderers/tests; capability/inventory and research docs; new
+offer/development/publication receipts. See `docs/FORECAST_CONTRACT.md`,
+`docs/DURABLE_LEDGER.md`, `docs/REFERENCE_PUBLICATION_002.md`,
+`docs/NBA_DEVELOPMENT_002.md`, `docs/OFFER_PILOT_002.md` for exact contracts and
+source/execution hashes. Original R0 receipt bytes remain unchanged.
+
+Current package verification: 142 Python tests, synthetic demo, 25 frontend tests,
+artifact checks and actual-history Chromium at 1440/390/320px passed. Actual
+artifact was 151,222 bytes after the source-description refresh, below512 KiB.
+Final committed900a7df artifact/Chromium checks passed; all seven routes/reloads,
+all84 PMFs, category filtering, exact
+event/cutoff/issue IDs, grades/NOT_EVALUATED, empty future and builder scopes were
+checked. An independent read-only review checked actual source rows, cutoff
+input hashes, model code, ledger recovery and bootstrap arithmetic without
+rerunning old R0 or DEV002 forecasts. These are distinct evidence lanes.
+
+Commands used for this package (plus the earlier required checks below):
+
+```bash
+python3 -m multisport_lab.development_002 --input /tmp/nml-nba-audit/normalized.jsonl --output evidence/research/dev002-results.json --protocol evidence/research/dev002-protocol.json
+python3 -m multisport_lab.record_reference --input /tmp/nml-nba-audit/normalized.jsonl --model-commit cde185088f032db587e1fb10845cd84541ef0a8b
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.publication --build-commit cde185088f032db587e1fb10845cd84541ef0a8b
+node web/tests/site-smoke.mjs output
+python3 web/tests/browser_smoke.py output --screenshots /tmp/nicks-multisport-real-research-002
+python3 -m multisport_lab.publication --build-commit 900a7df5ed5270ec6e32054cfa7e6bb2bf29dec7
+python3 web/tests/browser_smoke.py output --screenshots /tmp/nml-final-typed-900a
+```
+
+The final browser command initially lacked sandbox localhost socket access;
+rerunning with network-enabled execution passed. No application fix or trust
+store change was required. Remote readback used `git clone --depth 1
+--single-branch --branch implementation/typed-research-ledger <existing-origin>`
+and the isolated verification program retained in its evidence JSON.
+
+Remaining: publish this feature only after its PR/checks/authorized landing and
+main Pages verification. Current live
+site and deployment PR #2 are separate from local typed v2. Next research task is
+a new frozen challenger protocol with broader/sparser-category guards and an
+independently unexamined confirmation window; next future-input task is a permitted
+observed pregame universe/capture producer, not relabeling an archive. Exact
+provider semantics/identity/rules and ongoing permission remain admission blockers.
+Ledger limits are 512 receipt files /32 MiB total /4 MiB per file, checked before
+new writes and before recovery decoding. Identical retries work at capacity;
+expansion needs a versioned retention decision rather than deleting originals.
+
+Next concrete integration task: obtain the new PR's exact-head landing approval,
+use the guarded helper, observe merge, then verify main build/deploy and public
+typed manifest/asset hashes. PR #2 authorization was used only for PR #2. Until
+then the live v1 site and locally/GitHub-tested typed v2 branch are distinct.
+
+## Prior implementation and deployment history
 
 - Exact repository: `NickNicky19/Nicks-multisport-lab-project`.
 - Observed starting `main` / `origin/main`: `de86e92352f0fb5a76831275f6de6b256ce05434`.
@@ -87,7 +227,7 @@ No score/evaluator code changed after results. It does not backdate issuance.
 Independent review reproduced schedule joins, actual offer import counts, receipt
 integrity, code hashes and all category sample counts without rerunning scores.
 
-## Verified Pages deployment
+## Earlier Pages verification — 2026-10-19
 
 Live research site: **[Nick’s Multisport Lab](https://nicknicky19.github.io/Nicks-multisport-lab-project/)**.
 [Main workflow 39341268746](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39341268746)
@@ -107,7 +247,7 @@ HOME change occurred. Full bounded evidence:
 [evidence/deployment/2026-10-19-pages.json](evidence/deployment/2026-10-19-pages.json).
 No statistical evaluation, quotes, qualification or future paper outcomes changed.
 
-## Commands actually run
+## Earlier commands actually run — 2026-10-19
 
 From this repository root (raw-file paths are local, not durable storage):
 
@@ -130,7 +270,7 @@ Actual local offer import returned `partial: 1314 observations, 0 diagnostics`;
 zero qualification. The audit used ordinary bounded public GETs with no new key,
 account, paid service or access bypass. No collector/scheduler was enabled.
 
-## Remaining uncertainty and next concrete tasks
+## Earlier next tasks — superseded by the current checkpoint above
 
 1. **PR #1 is merged and its research site is deployed.** The deployment record
    is a documentation-only follow-up; it does not require a new application rollout.
