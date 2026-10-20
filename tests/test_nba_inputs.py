@@ -8,9 +8,9 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from multisport_lab.integrity import digest
+from multisport_lab.integrity import IntegrityError, digest
 from multisport_lab.nba_data import NBAPlayerGame
-from multisport_lab.nba_inputs import assess_snapshot, diagnose_archive
+from multisport_lab.nba_inputs import assess_snapshot, diagnose_archive, audit_future_history_timing
 
 NOW = datetime(2026, 10, 20, 12, tzinfo=timezone.utc)
 
@@ -169,6 +169,84 @@ class NBAInputTests(unittest.TestCase):
         self.assertEqual(report["historical_asof_limitations"]["sources_fetched_after_inspected_historical_event_cutoffs"],
                          ["sdv_player_box_2026"])
         self.assertTrue(report["pilot_budget_scope"]["whole_file_exceeds_prior_row_limit"])
+
+
+class FutureHistoryTimingTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory(prefix="nba-history-timing-")
+        self.root=Path(self.temp.name)
+        self.panel=self.root/"panel.jsonl";self.receipts=self.root/"receipts.json";self.discovery=self.root/"discovery.json"
+        base=snapshot("a"*64)["history"][0]["row"]
+        rows=[]
+        for day in range(1,10):
+            row=deepcopy(base);row["event_id"]=f"past{day}";row["event_start"]=f"2026-10-{day:02}T15:00:00+00:00"
+            rows.append(row)
+        self.panel.write_text("".join(json.dumps(row)+"\n" for row in rows))
+        self.panel_sha=hashlib.sha256(self.panel.read_bytes()).hexdigest()
+        self.sources={"receipts":[{"key":key,"status":200,"sha256":"b"*64,
+            "observed_at":"2026-10-19T22:00:00Z","source_updated_at":"2026-10-19T21:00:00Z"}
+            for key in ("sdv_player_box_2026","sdv_schedule_2026")]}
+        self.events={"schema_version":"nba-pregame-discovery-audit-v1","event_count":1,
+            "sources":[{"source_id":"espn_scoreboard","raw_file_sha256":"c"*64,
+                "original_observed_at":"2026-10-19T23:00:00.000000Z","source_updated_at":None}],
+            "event_metadata_as_captured":[{"provider":"ESPN","league":"NBA","provider_event_id":"future",
+                "provider_competition_id":"future","event_and_competition_start_agree":True,
+                "team_competitor_id_agreement":True,"time_valid_flag":True,
+                "provider_home_team_id":"1","provider_away_team_id":"2",
+                "status_name_as_captured":"STATUS_SCHEDULED","status_state_as_captured":"pre","completed_as_captured":False,
+                "scheduled_start_as_captured":"2026-10-21T01:30:00.000000Z",
+                "original_observed_at":"2026-10-19T23:00:00.000000Z",
+                "derived_t90_for_recorded_start":"2026-10-21T00:00:00.000000Z"}]}
+
+    def tearDown(self):self.temp.cleanup()
+
+    def audit(self,now=NOW):
+        self.receipts.write_text(json.dumps(self.sources));self.discovery.write_text(json.dumps(self.events))
+        with patch("multisport_lab.nba_inputs._now",return_value=now), \
+                patch("multisport_lab.baseline.forecast_reference",side_effect=AssertionError("no forecast allowed")), \
+                patch("multisport_lab.research_pilot.forecast_reference",side_effect=AssertionError("no forecast allowed")):
+            return audit_future_history_timing(self.panel,self.receipts,self.discovery,expected_panel_sha256=self.panel_sha)
+
+    def test_prior_stats_can_pass_later_event_timing_without_future_admission(self):
+        report=self.audit();event=report["events"][0]
+        self.assertEqual(report["status"],"REPORTED_CLOCK_CONSISTENCY_PASS")
+        self.assertEqual(event["daily_history_freeze"],"2026-10-21T00:00:00.000000Z")
+        self.assertEqual(event["prior_row_start_and_reconstructed_completion_eligible_count"],9)
+        self.assertEqual(event["window_state_at_audit"],"T90_NOT_YET_REACHED_AT_AUDIT")
+        self.assertFalse(report["future_issuance_admitted"])
+        self.assertFalse(report["normalization_lineage_verified"])
+        self.assertFalse(report["current_event_status_verified"])
+
+    def test_late_stat_observation_fails_only_reported_timing_component(self):
+        self.sources["receipts"][0]["observed_at"]="2026-10-21T00:00:00.000001Z"
+        report=self.audit(now=datetime(2026,10,21,0,10,tzinfo=timezone.utc));event=report["events"][0]
+        self.assertEqual(report["status"],"REPORTED_CLOCK_CONSISTENCY_FAIL")
+        self.assertEqual(event["prior_row_start_and_reconstructed_completion_eligible_count"],9)
+        self.assertEqual(event["reported_batch_source_clock_compatible_prior_rows"],0)
+
+    def test_event_clock_and_history_source_clock_are_separate_checks(self):
+        late="2026-10-21T00:01:00.000000Z"
+        self.events["sources"][0]["original_observed_at"]=late
+        self.events["event_metadata_as_captured"][0]["original_observed_at"]=late
+        report=self.audit(now=datetime(2026,10,21,0,10,tzinfo=timezone.utc));event=report["events"][0]
+        self.assertEqual(event["old_stat_source_clock_consistency"],"PASS")
+        self.assertEqual(event["event_metadata_reported_clock_checks"]["reported_clock_consistency"],"FAIL")
+        self.assertEqual(event["reported_batch_source_clock_compatible_prior_rows"],9)
+
+    def test_panel_change_duplicate_event_or_conflicting_event_clock_rejected(self):
+        self.panel.write_text(self.panel.read_text()+"\n")
+        with self.assertRaisesRegex(IntegrityError,"exact expected full normalized panel"):self.audit()
+        self.panel.write_text(self.panel.read_text()[:-1])
+        self.events["event_metadata_as_captured"].append(deepcopy(self.events["event_metadata_as_captured"][0]));self.events["event_count"]=2
+        with self.assertRaisesRegex(IntegrityError,"duplicate as-observed event"):self.audit()
+        self.events["event_metadata_as_captured"].pop();self.events["event_count"]=1
+        self.events["event_metadata_as_captured"][0]["derived_t90_for_recorded_start"]="2026-10-21T00:00:01.000000Z"
+        with self.assertRaisesRegex(IntegrityError,"event observation/T90"):self.audit()
+
+    def test_audit_after_as_captured_start_never_calls_event_current(self):
+        report=self.audit(now=datetime(2026,10,21,2,tzinfo=timezone.utc))
+        self.assertEqual(report["events"][0]["window_state_at_audit"],"AS_CAPTURED_START_ALREADY_REACHED_AT_AUDIT")
+        self.assertFalse(report["current_event_status_verified"])
 
 
 if __name__ == "__main__":

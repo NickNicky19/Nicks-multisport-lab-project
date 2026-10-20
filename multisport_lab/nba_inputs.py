@@ -25,6 +25,7 @@ MAX_HISTORY_ROWS = 20_000
 MAX_CANDIDATES = 1000
 STANDARD_TEAMS = frozenset(str(i) for i in range(1, 31))
 ROW_FIELDS = {field.name for field in fields(NBAPlayerGame)}
+FROZEN_PANEL_SHA256 = "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c"
 
 
 def _now():
@@ -248,6 +249,140 @@ def diagnose_archive(panel_path, receipts_path):
             "known_post_event_archive_sources": late_sources, "bundle_blockers": blockers}
 
 
+def audit_future_history_timing(panel_path, receipts_path, discovery_path, *, expected_panel_sha256=FROZEN_PANEL_SHA256):
+    """Compare reported old-stat/event clocks for exact as-observed future events.
+
+    Uses the unchanged full-panel importer's 64 MiB / 100,000-row budget and
+    reconstructed start+24h completion bound. No forecasting/evaluation is run.
+    Timing consistency is not prospective bundle or source/producer admission.
+    """
+    from .research_pilot import read_normalized_panel
+
+    checked_at = _now()
+    _hash(expected_panel_sha256, "expected_panel_sha256")
+    raw = _read_local(panel_path, 64 * 1024 * 1024)
+    panel_hash = hashlib.sha256(raw).hexdigest()
+    _require(panel_hash == expected_panel_sha256, "FROZEN_PANEL_HASH", "history timing audit requires the exact expected full normalized panel")
+    history, inventory = read_normalized_panel(Path(panel_path))
+    _require(inventory["input_file_sha256"] == panel_hash, "PANEL_CHANGED", "panel changed during import validation")
+    receipts = load_json(receipts_path, max_bytes=MAX_METADATA_BYTES)
+    discovery = load_json(discovery_path, max_bytes=MAX_METADATA_BYTES)
+    _require(discovery.get("schema_version") == "nba-pregame-discovery-audit-v1", "DISCOVERY_SCHEMA", "expected the retained pregame discovery audit")
+    receipt_sources = {}
+    for source in receipts["receipts"]:
+        if source["key"] in {"sdv_player_box_2026", "sdv_schedule_2026"}:
+            _require(source["key"] not in receipt_sources, "DUPLICATE_SOURCE", "ambiguous historical source clock")
+            _hash(source.get("sha256"), "historical raw source hash")
+            _require(source.get("status") == 200, "SOURCE_STATUS", "historical source receipt must record a successful read")
+            receipt_sources[source["key"]] = source
+    _require(len(receipt_sources) == 2, "HISTORY_SOURCE_COVERAGE", "player and schedule observation receipts are both required")
+    scoreboards = [s for s in discovery["sources"] if s["source_id"] == "espn_scoreboard"]
+    _require(len(scoreboards) == 1, "EVENT_SOURCE_COVERAGE", "one explicit retained scoreboard source is required")
+    scoreboard = scoreboards[0]
+    _hash(scoreboard["raw_file_sha256"], "scoreboard raw hash")
+    event_observed = utc(scoreboard["original_observed_at"])
+    observed_events = discovery["event_metadata_as_captured"]
+    _require(type(observed_events) is list and 0 < len(observed_events) <= MAX_CANDIDATES,
+             "EVENT_BUDGET", "bounded nonempty discovery event inventory required")
+    _require(discovery["event_count"] == len(observed_events), "EVENT_COVERAGE", "discovery event count mismatch")
+    reports, identities = [], set()
+    for event in observed_events:
+        key = event["provider_event_id"]
+        _text(key, "provider_event_id")
+        _require(key not in identities, "DUPLICATE_EVENT", "duplicate as-observed event identity")
+        identities.add(key)
+        _require(event["provider"] == "ESPN" and event["league"] == "NBA"
+                 and event["provider_competition_id"] == key
+                 and event["event_and_competition_start_agree"] is True
+                 and event["team_competitor_id_agreement"] is True
+                 and event["time_valid_flag"] is True, "EVENT_IDENTITY", "event identity/start/team metadata must agree as captured")
+        teams = {event["provider_home_team_id"], event["provider_away_team_id"]}
+        _require(len(teams) == 2 and teams <= STANDARD_TEAMS, "EVENT_TEAMS", "two distinct standard team IDs required")
+        _require(event["status_name_as_captured"] == "STATUS_SCHEDULED"
+                 and event["status_state_as_captured"] == "pre" and event["completed_as_captured"] is False,
+                 "EVENT_STATUS", "this audit requires scheduled/pre/noncompleted status as captured")
+        start = _clock(event["scheduled_start_as_captured"])
+        cutoff = start-timedelta(minutes=90)
+        freeze = cutoff.replace(hour=0, minute=0, second=0, microsecond=0)
+        _require(utc(event["original_observed_at"]) == event_observed
+                 and _clock(event["derived_t90_for_recorded_start"]) == cutoff,
+                 "EVENT_CLOCK_BINDING", "event observation/T90 must match retained source metadata")
+        source_checks = []
+        for source_id, source in sorted(receipt_sources.items()):
+            observed = utc(source["observed_at"])
+            updated = source.get("source_updated_at")
+            not_prior_to_observation = sum(row.event_start >= observed for row in history)
+            clock_valid = (observed <= checked_at and (updated is None or utc(updated) <= observed)
+                           and not_prior_to_observation == 0)
+            source_checks.append({"source": source_id, "reported_observed_at": source["observed_at"],
+                "source_updated_at": updated, "source_version": source.get("source_version"),
+                "raw_sha256": source["sha256"], "observation_not_after_audit": observed <= checked_at,
+                "known_update_not_after_observation": None if updated is None else utc(updated) <= observed,
+                "observation_at_or_before_history_freeze": observed <= freeze,
+                "observation_at_or_before_t90": observed <= cutoff,
+                "history_events_not_started_before_reported_observation_rows": not_prior_to_observation,
+                "reported_clock_consistency": "PASS" if clock_valid and observed <= freeze else "FAIL"})
+        eligible = [row for row in history if row.event_id != key and row.event_start < freeze
+                    and row.outcome_available_at <= freeze]
+        event_clock_checks = {"reported_observed_at": scoreboard["original_observed_at"],
+            "raw_sha256": scoreboard["raw_file_sha256"], "source_updated_at": scoreboard.get("source_updated_at"),
+            "observation_not_after_audit": event_observed <= checked_at,
+            "observation_at_or_before_t90": event_observed <= cutoff,
+            "observation_at_or_before_history_freeze": event_observed <= freeze,
+            "observation_before_as_captured_start": event_observed < start}
+        event_clock_valid = event_observed <= min(checked_at, cutoff) and event_observed < start
+        if scoreboard.get("source_updated_at") is not None:
+            event_clock_valid = event_clock_valid and utc(scoreboard["source_updated_at"]) <= event_observed
+        event_clock_checks["reported_clock_consistency"] = "PASS" if event_clock_valid else "FAIL"
+        history_clock_valid = all(item["reported_clock_consistency"] == "PASS" for item in source_checks)
+        if checked_at < cutoff:
+            window = "T90_NOT_YET_REACHED_AT_AUDIT"
+        elif checked_at < start:
+            window = "T90_REACHED_BEFORE_AS_CAPTURED_START"
+        else:
+            window = "AS_CAPTURED_START_ALREADY_REACHED_AT_AUDIT"
+        reports.append({"id_namespace": "espn", "league": "NBA", "event_id": key,
+            "home_team_id_as_captured": event["provider_home_team_id"], "away_team_id_as_captured": event["provider_away_team_id"],
+            "event_starts_at_as_captured": stamp(start), "t90_cutoff_for_as_captured_start": stamp(cutoff),
+            "daily_history_freeze": stamp(freeze), "window_state_at_audit": window,
+            "old_stat_sources_reported_clock_checks": source_checks,
+            "old_stat_source_clock_consistency": "PASS" if history_clock_valid else "FAIL",
+            "event_metadata_reported_clock_checks": event_clock_checks,
+            "prior_row_start_and_reconstructed_completion_eligible_count": len(eligible),
+            "prior_eligible_event_count": len({row.event_id for row in eligible}),
+            "prior_rows_excluded_by_start_completion_or_target_identity": len(history)-len(eligible),
+            "reported_batch_source_clock_compatible_prior_rows": len(eligible) if history_clock_valid else 0,
+            "history_row_source_binding": "REPORTED_BATCH_ASSOCIATION_NOT_INDEPENDENTLY_PROVED",
+            "current_event_status_verified": False, "candidate_universe_established": False,
+            "fresh_revalidation_required": True, "future_issuance_admitted": False})
+    consistent = all(r["old_stat_source_clock_consistency"] == "PASS"
+                     and r["event_metadata_reported_clock_checks"]["reported_clock_consistency"] == "PASS" for r in reports)
+    return {"schema_version": "nba-future-history-observation-timing-v1", "checked_at": stamp(checked_at),
+        "assessment_scope": "REPORTED_OBSERVATION_CLOCK_CONSISTENCY_FOR_AS_OBSERVED_EVENTS_ONLY",
+        "status": "REPORTED_CLOCK_CONSISTENCY_PASS" if consistent else "REPORTED_CLOCK_CONSISTENCY_FAIL",
+        "evidence_lane": "RECONSTRUCTED_RESEARCH", "panel_sha256": panel_hash, "panel_bytes": len(raw),
+        "full_panel_input_rows": inventory["input_rows"], "full_panel_import_eligible_rows": len(history),
+        "full_panel_import_exclusions": inventory["input_exclusions"],
+        "upstream_exclusions": inventory["upstream_exclusions"],
+        "history_budget": {"maximum_bytes": 64*1024*1024, "maximum_rows": 100_000,
+            "basis": "unchanged full-panel importer; not the separate20k/8MiB snapshot pilot"},
+        "latest_history_event_start": stamp(max(row.event_start for row in history)),
+        "latest_reconstructed_completion_bound": stamp(max(row.outcome_available_at for row in history)),
+        "completion_bound_meaning": "archived_event_start_plus_24h_RECONSTRUCTED_NOT_ORIGINAL_PUBLICATION",
+        "source_receipts_sha256": hashlib.sha256(Path(receipts_path).read_bytes()).hexdigest(),
+        "pregame_discovery_sha256": hashlib.sha256(Path(discovery_path).read_bytes()).hexdigest(),
+        "events": reports, "normalization_lineage_verified": False, "source_authenticity_verified": False,
+        "source_permission_verified": False, "current_event_status_verified": False,
+        "current_candidate_universe_established": False, "current_t90_producer_established": False,
+        "future_issuance_admitted": False, "qualification": "UNAVAILABLE", "new_network_requests": 0,
+        "no_capture_forecast_or_score_created": True,
+        "limitations": ["Capture metadata and matching local hashes are not upstream signatures or independent publication proof.",
+            "These reported clocks are consistent only with the exact as-captured event starts, not freshly verified current status.",
+            "Prior-stat timing does not establish current roster, history freshness/coverage, permission, participation or horizon qualification.",
+            "The reconstructed completion bound and reported batch-to-normalized association are not independently proved as-of lineage.",
+            "Fresh source/event/player revalidation and an admitted producer remain necessary; current R0 REAL_TIME issuance stays disabled."]}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
@@ -257,6 +392,10 @@ def main():
     archive = commands.add_parser("archive-diagnostic")
     archive.add_argument("--panel", type=Path, required=True)
     archive.add_argument("--source-receipts", type=Path, required=True)
+    timing = commands.add_parser("history-timing")
+    timing.add_argument("--panel", type=Path, required=True)
+    timing.add_argument("--source-receipts", type=Path, required=True)
+    timing.add_argument("--discovery", type=Path, required=True)
     args = parser.parse_args()
     try:
         if args.command == "check":
@@ -267,8 +406,10 @@ def main():
                     raise ValueError("source mappings need unique SOURCE_ID=LOCAL_PATH entries")
                 paths[key] = Path(value)
             report = assess_snapshot(load_json(args.snapshot, max_bytes=MAX_METADATA_BYTES), paths)
-        else:
+        elif args.command == "archive-diagnostic":
             report = diagnose_archive(args.panel, args.source_receipts)
+        else:
+            report = audit_future_history_timing(args.panel, args.source_receipts, args.discovery)
     except (IntegrityError, ValueError, TypeError, KeyError, OSError) as error:
         parser.error(str(error))
     import json

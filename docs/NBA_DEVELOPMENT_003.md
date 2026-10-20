@@ -1,10 +1,10 @@
 # NBA DEV003: one lagged-workload-prior challenger
 
-**Status: implemented for inventory and synthetic verification; no real-data
-forecasting or scoring has run.** The integration owner must freeze the exact
-proposed protocol and authorize one execution before evaluation. R0, L0, DEV002
-and their immutable receipts remain unchanged. This is a new exposed-development
-trial, not confirmation, model selection or product qualification.
+**Status: one frozen, authorized development run completed.** All 517 selected
+appearances were scored under all three laws; complete results and material
+limitations appear below. R0, L0, DEV002 and their immutable receipts remain
+unchanged. This is exposed development, not confirmation, model selection or
+product qualification.
 
 ## Hypothesis and limits
 
@@ -23,7 +23,7 @@ average is not verified role, lineup, injury, pace, participation or exact game
 duration. It may reflect overtime, garbage time and past injuries. The proposed
 REB B0/B1/C1 share-duration experiment remains separate and blocked.
 
-## Frozen candidate specification to approve before scoring
+## Candidate specification frozen before scoring
 
 Input: original 26,645-row ESPN normalized panel, SHA-256
 `489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c`.
@@ -120,7 +120,7 @@ confirmation. A later chronological block cannot be called confirmatory without
 an exposure declaration and separately frozen guards. Genuinely future captured
 confirmation needs immutable actual pregame records and admitted capture paths.
 
-## Evaluation and uncertainty, still unexecuted
+## Frozen evaluation and uncertainty
 
 Reference laws are unchanged R0 and L0. K0 is the only challenger and the only
 new registered trial; there is no search. Primary comparisons are **per-category
@@ -177,4 +177,115 @@ Registered proposed budgets are **900 wall seconds/512 MiB peak RSS**, with a
 code-change or budget failure aborts the whole run without partial publication
 or automatic restart. Actual code/input hashes, issuance/execution clocks, frozen
 cohort, fallback/zero/cold-start counts, weekly metrics and resource measurements
-will be retained only when a run is authorized and actually occurs.
+are retained in the authorized run's immutable result receipt.
+
+## Observed single run, 2026-10-20
+
+The integration owner froze [`dev003-protocol.json`](../evidence/research/dev003-protocol.json)
+at **2026-10-20T01:09:19.742752Z**. Its payload SHA-256 is
+`06600825f5c64f396315c29251516da72133f659efca6e3f72a7a2ab7c3322db`.
+The implementation, tests, specification, inventory and frozen protocol were
+committed and pushed as `2b58ac45c7ec29fa0cba2c41facd3862c137a961` **before
+scoring**. Independent pre-scoring review verified cohort, clocks and content
+hashes. Exactly one authorized command then created
+[`dev003-results.json`](../evidence/research/dev003-results.json):
+
+```bash
+python3 -m multisport_lab.development_003 \
+  --input /tmp/nml-nba-audit/normalized.jsonl \
+  --output evidence/research/dev003-results.json \
+  --protocol evidence/research/dev003-protocol.json
+```
+
+All three models scored **517 appearances, 24 games and all 12 weeks**, with
+zero post-score exclusions. K0 used its kernel prior for 508 rows and reused
+the exact R0 support for all nine true cold starts. Both rounded-zero-minute
+appearances remained included. Training pools contained 899–12,802 appearances
+and personal histories zero to 39. No scoring code, test, parameter or protocol
+changed after execution began.
+
+The principal cautions are **slightly higher TD Brier/CRPS under K0**, paired
+intervals crossing zero for **TD, DD and BLK**, **infinite BLK/PRA log losses**,
+and unresolved workload/zero/tail coverage. Those findings remain visible beside
+the favorable point-score changes; they do not trigger retuning or exclusions.
+
+| Category | R0 CRPS | L0 CRPS | K0 CRPS | K0 minus R0 | 95% week-cluster percentile interval |
+| --- | ---: | ---: | ---: | ---: | --- |
+| PTS | 3.474106 | 4.793755 | 3.320331 | -0.153775 | [-0.213216, -0.105163] |
+| PRA | 4.709303 | 6.776717 | 4.454433 | -0.254871 | [-0.353693, -0.174784] |
+| REB | 1.483866 | 1.845569 | 1.453300 | -0.030566 | [-0.045624, -0.017435] |
+| 3PM | 0.641035 | 0.764988 | 0.631348 | -0.009687 | [-0.018342, -0.002718] |
+| AST | 0.978332 | 1.326097 | 0.949368 | -0.028964 | [-0.043292, -0.015965] |
+| RA | 2.053225 | 2.684400 | 1.979846 | -0.073379 | [-0.107934, -0.043700] |
+| PR | 4.293402 | 5.934992 | 4.090327 | -0.203075 | [-0.281106, -0.140031] |
+| TOV | 0.658574 | 0.778410 | 0.643164 | -0.015410 | [-0.022317, -0.009320] |
+| TD | 0.003669754 | 0.003850044 | 0.003670558 | +0.000000804 | [-0.000020442, +0.000013576] |
+| DD | 0.056740599 | 0.069873543 | 0.056111858 | -0.000628741 | [-0.001513496, +0.000035030] |
+| BLK | 0.323670 | 0.357060 | 0.323237 | -0.000433 | [-0.001344, +0.000484] |
+| STL | 0.468282 | 0.495387 | 0.463651 | -0.004631 | [-0.007516, -0.001985] |
+| BLK+STL | 0.652964 | 0.701887 | 0.646441 | -0.006523 | [-0.010138, -0.003056] |
+| PA, optional | 3.910215 | 5.660330 | 3.707872 | -0.202343 | [-0.280819, -0.138628] |
+
+K0's raw mean CRPS was lower than R0's for 13 categories and higher for TD.
+There is no unscaled pooled score, model selection, promotion or confirmatory
+decision. These unadjusted intervals describe the registered sparse development
+sample with 12 week clusters and do not establish product accuracy.
+
+There were **39 DD events and two TD events**. Mean DD probabilities were
+0.077302 for R0 and 0.075620 for K0, against observed frequency 0.075435.
+Mean TD probabilities were 0.006601 and 0.006286, against observed frequency
+0.003868. TD log loss was lower for K0 (0.019704 versus 0.021049), while its
+Brier was slightly higher; both diagnostics remain retained. Two events cannot
+establish rare-event reliability. Binary CRPS and Brier agree here.
+
+All three models assigned zero mass to **one BLK outcome and two PRA outcomes**.
+Their respective aggregate unsmoothed log losses are therefore **infinite**,
+represented by null means with explicit status/count. These rows remain in all
+CRPS and applicable diagnostics. The league floor preserves empirical support;
+it did not fix the unsupported outcomes and does not model unseen tails.
+
+The sparse-history point diagnostics support only a limited mechanism check:
+
+| Earlier appearances / diagnostic group | Rows | PTS CRPS difference | REB CRPS difference | Reported-minute CRPS difference |
+| --- | ---: | ---: | ---: | ---: |
+| 0 | 9 | 0.000000 | 0.000000 | 0.000000 |
+| 1–3 | 44 | -0.609582 | -0.137974 | -1.285643 |
+| 4–9 | 126 | -0.197373 | -0.045399 | -0.454365 |
+| 10+ | 338 | -0.082281 | -0.011869 | -0.155160 |
+| Overlapping lagged shift | 21 | -0.175467 | -0.022649 | -0.266260 |
+
+These are K0-minus-R0 point differences with no subgroup intervals. The role
+group overlaps established-history rows. All 14 category diagnostics for every
+group are in the receipt, including the TD worsening within the 4–9-history
+group. Exact zero differences for nine cold starts follow by construction and
+are not evidence that cold-start predictions are accurate or improved.
+
+Reported-minute MAE was 5.614846 for K0 versus 6.255385 for R0; RMSE 7.172859
+versus 7.856510 and CRPS 3.913093 versus 4.234684. Coverage remains unresolved:
+K0's 95% workload interval covered **0.938104**, below mean predicted interval
+mass **0.964426**, and below R0's observed coverage 0.947776. K0's intervals
+were narrower (mean width 30.311412 versus 34.259188). These are rounded-minute
+diagnostics, not exact-duration or participation validation.
+
+Other cautions also remain. Observed zero TOV frequency was 0.386847 while K0
+predicted 0.354970, versus R0's 0.356392. The observed fraction above K0's 95%
+TOV endpoint was 0.029014 versus predicted tail mass 0.013477. For BLK the
+corresponding values were 0.019342 versus 0.010732. These descriptive zero/tail
+mismatches are retained without claiming a confirmed calibration failure or
+allowing better mean scores to substitute for distributional qualification.
+
+Execution ran from **2026-10-20T01:11:10.705240Z to
+2026-10-20T01:14:56.988909Z**, taking **226.283679 wall seconds** and process
+peak RSS **169,436 KiB**, within the fixed budgets. The receipt records actual
+issuance ranges, all executed content hashes, protocol/cohort hashes and weekly
+metrics for independent verification without forecasting again. No future paper
+outcomes, pregame participation/role proof, calibrated prices, ticket dependence,
+provider settlement or product qualification follows from this development run.
+
+Independent read-only review verified the saved protocol, fingerprints, cohort,
+clocks and negative findings, then rebuilt all 14 categories' three-model
+aggregates, history-band pooled metrics and 2,000-draw cluster intervals from
+retained summaries only. Its 3,018 checks agreed within floating roundoff
+(maximum absolute difference 2.27e-13), including exact cold-start subgroup
+equality. No forecasts were rerun. Earlier research receipts and 18 retained
+reference records also matched their pre-existing committed bytes.

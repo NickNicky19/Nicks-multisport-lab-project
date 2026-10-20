@@ -149,3 +149,56 @@ observed start was October 20 at 19:00 UTC, with T90 at 17:30 UTC. Those older
 observations require fresh event/player/source revalidation before the relevant
 decision window; the discovery record does not establish their current status or
 a complete selected-player universe. No scheduler or future issuance is enabled.
+
+## Separate event-specific prior-history observation audit
+
+The prior v1/v2 diagnostics remain unchanged, including v2's then-unexamined
+future-event timing status. A new, separate metadata-only audit now checks the
+retained stat observations against all three exact **as-observed** event starts:
+
+```bash
+python3 -m multisport_lab.nba_inputs history-timing --panel /tmp/nml-nba-audit/normalized.jsonl --source-receipts evidence/data/2026-10-19-source-receipts.json --discovery evidence/data/2026-10-20-pregame-discovery.json
+```
+
+The [new report](../evidence/data/2026-10-20-future-history-timing.json) was produced
+at **2026-10-20T01:16:19.315915Z** with `REPORTED_CLOCK_CONSISTENCY_PASS`. This
+result concerns supplied/retained clocks and the exact old metadata only.
+
+| As-observed ESPN event | As-observed start UTC | T90 UTC | Daily history freeze UTC | Prior rows passing start/reconstructed completion bounds |
+| --- | --- | --- | --- | ---: |
+| 401909088 | Oct 20 19:00 | Oct 20 17:30 | Oct 20 00:00 | 26,645 |
+| 401909089 | Oct 20 23:00 | Oct 20 21:30 | Oct 20 00:00 | 26,645 |
+| 401909090 | Oct 21 01:30 | Oct 21 00:00 | Oct 21 00:00 | 26,645 |
+
+For every event, the player archive observation (October 19, 22:53:58.496791 UTC)
+and statistical schedule archive observation (22:58:04.960091 UTC) precede its
+history freeze and T90. Their known archive update clocks also precede their
+observations. Each event's separate scoreboard observation (22:53:26.629259 UTC)
+precedes its T90 and as-captured start; that event-clock check is reported
+separately from old-stat history timing. Every retained normalized appearance
+starts before the relevant freeze and has reconstructed `event_start+24h` bound
+at or before it. No row was omitted by those predicates for these three events.
+
+This audit uses the **unchanged full-panel importer's 64 MiB / 100,000-row
+budget**, validates the exact original panel hash, and examines all **26,645
+retained appearances**, without the separate snapshot pilot's 20,000-row
+truncation. It calls import/inventory validation only, no R0 generation, grading
+or evaluation. The panel was already filtered upstream; its retained cohort and
+external exclusion references remain explicit, so this is not complete roster
+or all-history coverage. Its latest event start is April 13, 2026 at 00:30 UTC;
+the latest reconstructed completion bound is April 14 at 00:30 UTC. Reported
+clock compatibility does not establish current history freshness or coverage.
+
+The batch association between these source receipts and normalized rows remains
+reported lineage, not independently proved row-by-row authenticity. A matching
+hash and capture metadata are not upstream signatures. `event_start+24h` remains
+a reconstructed bound, not an original source-publication clock. Source rights,
+the current player universe, live event status, a current permitted producer,
+participation and horizon qualification remain unestablished. All corresponding
+admission flags stay false, with qualification unavailable.
+
+At the actual audit clock, **none of the three recorded T90 times had occurred**.
+No future forecast or input-capture record was created. Fresh event/player/source
+revalidation is still required before the relevant decision window; the earliest
+as-observed T90 is October 20 at 17:30 UTC. This work neither schedules that check
+nor treats an old scheduled/pre status as today's verified status.

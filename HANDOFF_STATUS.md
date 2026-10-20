@@ -13,7 +13,7 @@ Deployment/status checkpoint committed/pushed as
 `ff0cb00a2833bf7d3e889652157292df5a87a95d` on the separate follow-up branch.
 The approved deployed main below remains unchanged.
 
-**01:09 UTC pre-scoring continuation:** new DEV003 specification is frozen at
+**Completed DEV003 continuation:** new DEV003 specification was frozen at
 `2026-10-20T01:09:19.742752Z`, protocol payloadSHA
 `06600825f5c64f396315c29251516da72133f659efca6e3f72a7a2ab7c3322db`.
 New files: `multisport_lab/development_003.py`, `tests/test_development_003.py`,
@@ -26,9 +26,23 @@ weights/5-prior mass and exact n0 fallback. All14 outcomes stay coherent.
 Two games/42rows overlap exposedDEV002; no confirmation/model-selection or
 promotion is authorized. Independent pre-scoring review checked exact game list,
 cohort hash, all8 executed source/test hashes, equations and synthetic causal
-tests. Only one900sec/512MiB execution is permitted after root authorization;
-actual results will be appended when obtained. Existing R0/DEV002 source and
-receipt bytes remain unchanged.
+tests. Frozen source/tests/protocol were committed and pushed before execution
+as **2b58ac45c7ec29fa0cba2c41facd3862c137a961**. Exactly one authorized run
+completed01:11:10.705240–01:14:56.988909 UTC:517 appearances under each of R0,
+L0 and K0,24games/12weeks,508kernel cases/nine exact R0 cold-start fallbacks,
+zero post-score exclusions,226.283679 wall seconds/169,436KiB peak RSS. Results:
+`evidence/research/dev003-results.json`, payloadSHA
+`e02454af951c9af4efb3491a23329e1d78574805e7b2f108172205ed850b3fb7`.
+All14 per-category scores/intervals/zero/tail/log/workload/subgroup diagnostics
+are in `docs/NBA_DEVELOPMENT_003.md` and the receipt. K0 rawCRPS was lower in13
+categories; TD worsened slightly, with only two observed TDs, and TD/DD/BLK paired
+intervals cross zero. All models retain infinite log losses for oneBLK/twoPRA
+outcomes. K0 minute95% coverage worsened to0.938104 versus R0 0.947776 and K0
+predicted mass0.964426. No confirmation, model selection, calibrated probability,
+promotion, product qualification or future paper evidence follows. Independent
+review reproduced3,018 aggregate/bootstrap checks from retained weekly summaries
+without model reruns (largest difference2.27e-13). No executed code/test/protocol
+changed after scoring began. Existing R0/DEV002 and18 ledger bytes are unchanged.
 
 **Follow-up fixes and future-input checkpoint:** `record_reference.py` now writes
 v2 only for a batch without an existing summary, copying each original record's
@@ -38,6 +52,8 @@ both v1/v2 exact references, identities, grade dependencies and chronology.
 Synthetic interruption before summary and partial1-old/5-new-outcome recovery
 passed. Actual v1 summary and all18 original receipts remain byte-identical.
 See `tests/test_record_reference.py`, `docs/REFERENCE_PUBLICATION_002.md`.
+Core follow-up fixes were committed/pushed as
+**d4fad699a5da11cc3e6847a55040589642cf8a35** (17files; `git show --stat d4fad69`).
 
 Performance now groups by league, lane, exact model version/commit/code hash,
 conditioning and period/OT. History includes past captured forecasts while
@@ -52,7 +68,8 @@ coverage and lagged complete counts. Structural success explicitly remains
 NOT_ADMITTED, with no source authenticity/permission or prospective producer
 claim. No capture, forecast or source network request is made. Actual diagnostic
 commands and limits are in `docs/PREGAME_INPUT_READINESS.md`; current172 Python
-tests and synthetic demo passed. New evidence:
+tests and synthetic demo passed at that checkpoint; final suite now passes177.
+New evidence:
 `evidence/data/2026-10-20-input-readiness.json` and the scoped clarification
 `2026-10-20-input-readiness-v2.json`. The latter is authoritative: an archive
 alone is not a prospective bundle; its old statistics can still be eligible for
@@ -70,6 +87,44 @@ clocks remain unknown. Earliest **as-observed** T90 is October20 17:30Z and need
 fresh event/player/source revalidation before use; no scheduler or future issue
 is enabled. Permission, complete input provenance and admitted current-T90
 producer remain unresolved independently of prices.
+
+A separate actual **event-specific history timing audit**, checked01:16:19 UTC,
+now fills that earlier NOT_EVALUATED timing gap without changing either prior
+diagnostic: `evidence/data/2026-10-20-future-history-timing.json`. All26,645 rows
+were validated under the existing64MiB/100k importer, not truncated to the20k
+readiness pilot. The reported October19 player/schedule observations precede all
+three as-captured freezes/cutoffs; old event starts and reconstructed completion
+bounds also pass. Status is only REPORTED_CLOCK_CONSISTENCY_PASS. Current event
+status, selected-player universe, history freshness/lineage, source authenticity,
+permission and current-T90 producer remain unverified; no future admission or
+capture/forecast/grade was created. At audit time all three T90 windows were
+still in the future. Independent metadata-only recomputation matched every
+substantive report field;17 focused readiness/timing tests passed.
+
+Additional commands actually run:
+
+```bash
+python3 -m multisport_lab.development_003 --input /tmp/nml-nba-audit/normalized.jsonl --output evidence/research/dev003-inventory.json --inventory-only
+python3 -m multisport_lab.development_003 --input /tmp/nml-nba-audit/normalized.jsonl --output evidence/research/dev003-results.json --protocol evidence/research/dev003-protocol.json
+python3 -m multisport_lab.nba_inputs archive-diagnostic --panel /tmp/nml-nba-audit/normalized.jsonl --source-receipts evidence/data/2026-10-19-source-receipts.json
+python3 -m multisport_lab.nba_inputs history-timing --panel /tmp/nml-nba-audit/normalized.jsonl --source-receipts evidence/data/2026-10-19-source-receipts.json --discovery evidence/data/2026-10-20-pregame-discovery.json
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.publication --build-commit d4fad699a5da11cc3e6847a55040589642cf8a35
+node web/tests/site-smoke.mjs output
+python3 web/tests/browser_smoke.py output --screenshots /tmp/nml-followup-final-ui
+```
+
+Next concrete work: review/land this separate follow-up only under its own exact
+head authorization; revalidate the first as-observed event401909088/start19:00Z
+and permitted selected-player/history source route before17:30Z T90. That clock
+is a captured schedule assumption, not a currently verified deadline. Establish
+the admitted producer/full history budget/provenance first; do not backdate an
+issue, treat two injury IDs as a roster, or schedule a collector. Keep future
+statistical grades separate from later venue financial settlement. Research next
+needs independently frozen tail/coverage and confirmation guards; favorable
+development CRPS does not promote K0 or unblock the precise-duration REB design.
 
 **PR #3 is merged and typed v2 is deployed.** The user approved only head
 `2d30ae98b20918bc97ea9eda4578ef0c8d509d71`. A fresh guarded watcher confirmed
