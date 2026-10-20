@@ -10,8 +10,10 @@ The GitHub Actions alternative passed actual hosted run 39368941819, four HTTP20
 source-route reads, full retained history, push/fresh readback, own-workflow expiry/
 restore, existing draft PR #8 update and Pages branch validation 39369096848.
 Guarded merge/default-branch readback are still required before activation. The
-managed shell GitHub credential returned HTTP401, blocking its canonical watcher;
-the existing GitHub app remains available. No alternate merge API is authorized. Synthetic interruption/timing/API tests are
+managed shell GitHub credential temporarily returned HTTP401, blocking its
+canonical watcher; existing CLI access subsequently recovered without a credential
+change. The GitHub app retained the feature tree meanwhile. No alternate merge
+API is authorized. Synthetic interruption/timing/API tests are
 software evidence; early route probes are not timely pilot captures. See
 `docs/SCHEDULED_PILOT.md` for single-writer, exact-date expiry and remote-recovery
 requirements. No genuine forecasts, outcomes or new model scores are created by
