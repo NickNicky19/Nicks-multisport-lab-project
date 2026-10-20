@@ -1,0 +1,185 @@
+{
+  "all_forecast_category_counts": [
+    14
+  ],
+  "base_url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/",
+  "counts": {
+    "candidates": 0,
+    "forecasts": 6,
+    "offers": 0,
+    "performance": 6,
+    "tickets": 0
+  },
+  "future_availability": {
+    "reasons": [
+      "No timely event/player input capture has been admitted for an upcoming issuance.",
+      "Archive start+24h availability bounds support reconstruction only; they do not establish real-time input availability.",
+      "No genuinely pregame T-90 issuance has been captured for upcoming games. Historical reconstructions are available in History."
+    ],
+    "status": "UNAVAILABLE"
+  },
+  "manifest": {
+    "build_commit": "735a464e9e8718303ef481abf711a8969de56694",
+    "errors": {},
+    "publication_status": "RESEARCH_ONLY",
+    "published_at": "2026-10-20T05:59:32.398269Z",
+    "schema_version": 2,
+    "snapshot_id": "88c6146c65b22e6cf9baeefd9b5d7340e9112e0298a79482c280029c0d7a8b1f",
+    "sports": [
+      {
+        "error": null,
+        "generated_at": "2026-10-20T05:59:32.398269Z",
+        "league": "NBA",
+        "path": "nba.22e04b7a68fde0a9a639af9a71512a5a149fd3326e5ee1491a0f5f26f7a46f2b.json",
+        "retained": false,
+        "sha256": "22e04b7a68fde0a9a639af9a71512a5a149fd3326e5ee1491a0f5f26f7a46f2b",
+        "status": "RESEARCH_ONLY"
+      }
+    ],
+    "supported_sports": [
+      "NBA"
+    ]
+  },
+  "new_deployment": false,
+  "new_forecast_issuance": false,
+  "observations": [
+    {
+      "bytes": 567,
+      "path": "data/manifest.json",
+      "read_completed_at": "2026-10-20T22:58:29.186587+00:00",
+      "read_started_at": "2026-10-20T22:58:29.007442+00:00",
+      "sha256": "66f2910d660d7a696f56a86fd1d5acb09c908fee4014429629a54023ff3f64c5"
+    },
+    {
+      "bytes": 151194,
+      "path": "data/nba.22e04b7a68fde0a9a639af9a71512a5a149fd3326e5ee1491a0f5f26f7a46f2b.json",
+      "read_completed_at": "2026-10-20T22:58:29.419168+00:00",
+      "read_started_at": "2026-10-20T22:58:29.186693+00:00",
+      "sha256": "22e04b7a68fde0a9a639af9a71512a5a149fd3326e5ee1491a0f5f26f7a46f2b"
+    }
+  ],
+  "original_ledger_baseline": {
+    "base_commit": "735a464e9e8718303ef481abf711a8969de56694",
+    "captured_at": "2026-10-20T22:59:02.249827+00:00",
+    "files": [
+      {
+        "bytes": 22838,
+        "git_blob": "3e71f3322d4d806639214d72b7c65da793002bad",
+        "path": "records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json",
+        "sha256": "499b358129adde25134d5ba6243b372b1937915f7a0f2245750a057d40c4b8c6"
+      },
+      {
+        "bytes": 22747,
+        "git_blob": "6fc09387652dbfa53bf26515081eaaa20307ff42",
+        "path": "records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json",
+        "sha256": "507344a333f5218039e39b1201e1f203f6045bf8e04375a7a19740ddea337967"
+      },
+      {
+        "bytes": 22813,
+        "git_blob": "b0661f54c927186eb287db7c3f8e6178694c98e6",
+        "path": "records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json",
+        "sha256": "e35af6116e8151aacb23d21465c2744324501a92d0f83cf7e780066677df74fa"
+      },
+      {
+        "bytes": 22815,
+        "git_blob": "69f4b779d736d98b166f814f8b05799ee2c95914",
+        "path": "records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json",
+        "sha256": "1748dce54d24cc583deb3e102d08680142307c3c784ddfc728abc02f78e82f0f"
+      },
+      {
+        "bytes": 22826,
+        "git_blob": "b766e4f591c72c34e1a58cafb3462af9a6ec5caa",
+        "path": "records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json",
+        "sha256": "d74070a12aa144b4bc917de930e6527f4bd5bdeb84db693a215bec1513562f7b"
+      },
+      {
+        "bytes": 22830,
+        "git_blob": "57f1335ad3348484b4277ee257ad6318ca6437f2",
+        "path": "records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json",
+        "sha256": "bf3aa0b6fab62f64a03070fc6775db1bec8b0654e89ae93b3c42133e94649894"
+      },
+      {
+        "bytes": 4375,
+        "git_blob": "e2f20e843317a566b4d407ed24e6d3aadd8dc011",
+        "path": "records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json",
+        "sha256": "cf519c4238f641724d81040f8cdee82b693aa3f98e4ae8db772fbadc480fd6a0"
+      },
+      {
+        "bytes": 4357,
+        "git_blob": "4e370d0a8ebe469fc85299ec35d0ed29088510fa",
+        "path": "records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json",
+        "sha256": "73b72a5ed145708157052c269d25c0dd72467a002e26efac41e1136839fa0f60"
+      },
+      {
+        "bytes": 4365,
+        "git_blob": "b588aedfb733aecf126c0d9c8760e7fd66b554af",
+        "path": "records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json",
+        "sha256": "c691398d641af291bcd3c2a9d7427ff59ab953606ee9388bc2c202642d80947c"
+      },
+      {
+        "bytes": 4370,
+        "git_blob": "972d856667b57222f3cc3108f8861ddd824d3a4b",
+        "path": "records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json",
+        "sha256": "41e3453b89b97c160d56e932f1389ac90b451142dcda3cff27629b1448bc77dd"
+      },
+      {
+        "bytes": 4369,
+        "git_blob": "3ab9f5dd40e750f98c466522ebf49022fc7696b4",
+        "path": "records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json",
+        "sha256": "1297f91dc9154d2b6111e60a1505f4a08e911dd3c99b919431833df76dbe40b5"
+      },
+      {
+        "bytes": 4368,
+        "git_blob": "f5554a43ae1b9dc665b049b3728c39431e1cfbab",
+        "path": "records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json",
+        "sha256": "2a343e191af2f809baf91ab4d6f9de8d09f593c9f6b088d9740238982107237b"
+      },
+      {
+        "bytes": 2023,
+        "git_blob": "62d2d56f192834fdd892062803b08d467d7def45",
+        "path": "records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json",
+        "sha256": "a9474a89403e3aa87f44adb014eee6e10b09761002e5a4deabc198022ea88ce3"
+      },
+      {
+        "bytes": 2018,
+        "git_blob": "dcb6d14d159ccf90241624400dd5d9de536583f5",
+        "path": "records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json",
+        "sha256": "c9938334da0fbfb3032558df23d5e69588fdf6ca7f0b9eb562fb271c090ef93e"
+      },
+      {
+        "bytes": 2019,
+        "git_blob": "a6a391d6005cb8810c3a97da5cc8b8f25d88ffe6",
+        "path": "records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json",
+        "sha256": "e94d071bf65e5f4815400a0e334b81529d6fd71147fb467584fc0aa1bb7e4f9c"
+      },
+      {
+        "bytes": 2018,
+        "git_blob": "b72ff6fb1b6b2059f1e9ff0efbd02d33702a6d01",
+        "path": "records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json",
+        "sha256": "74bd3778ce79875bb6f238cabda878ab88789df928b3b7804494c3e94f346b54"
+      },
+      {
+        "bytes": 2018,
+        "git_blob": "ac15ccb9869dc71d8aa46b0eed67c3b4a0f09fa1",
+        "path": "records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json",
+        "sha256": "f4787faceff42cc52a2c446b03fc6ee7b8b2103643dff937b411193c75994bc5"
+      },
+      {
+        "bytes": 2021,
+        "git_blob": "9a86cab2a2a8786528e873501fe2831f9a19c132",
+        "path": "records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json",
+        "sha256": "1332e892946d072d1500bdd693a877cbefb1ee54b51c3eb657e3c7af6393ee63"
+      },
+      {
+        "bytes": 1642610,
+        "git_blob": "41888d0a15e1e18986ccafaab9d74966d0c6b765",
+        "path": "records/research_inputs/dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc.json",
+        "sha256": "db9a682099e28ce087edf430e9aa52f9be8e060ebf4b4cf8deb53d1317c8b122"
+      }
+    ]
+  },
+  "purpose": "PUBLIC_WEBSITE_READBACK_NOT_SOURCE_INPUT_CAPTURE",
+  "recorded_at": "2026-10-20T22:59:52.940059+00:00",
+  "schema_version": "website-display-before-readback-v1",
+  "unchanged_required": true
+}
