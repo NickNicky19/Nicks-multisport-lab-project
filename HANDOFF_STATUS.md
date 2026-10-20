@@ -3,6 +3,90 @@
 Updated: October 20, 2026 (UTC).
 
 
+## October 20, 21:00 UTC — exact remote checkpoint and GitHub checks verified
+
+Exact integrated checkpoint: **61d4032c759813a8818f8b8b3a9c9619d0e63e77**,
+independently fetched into a fresh Git object database, clean with MANIFEST PASS.
+All 20 diagnostic/producer source pins still match 71329d184f3857c9e75ee6cf12bbe841c6e4cccb;
+all nine frozen pilot files, original 19 raw records, protocol, laws, runbook and
+workflow bytes match. Independent receipt:
+`evidence/verification/pros004-final-head-recovery-v3.json`, raw SHA256
+**f0960e9575e62ca6bd70b5031a44eacbb5984361aec3efec8782077b8df1b681**.
+It also records the newly advanced PR #8/records head dec5cc9f and keeps the older
+observations separate. Main 735a464 and PR #9 d680157 remain unchanged; PR #10 is draft.
+
+Actual GitHub workflow **39496046715**, event pull_request, exact head 61d4032c,
+created 20:54:59, completed success 20:59:10 UTC. Build job 118881239910 succeeded;
+deploy job 118883201934 was **skipped**. Exact queries/responses/clocks/hashes and
+PR draft status are retained in
+`evidence/verification/pros004-checkpoint-a-ci-v3.json`. Local 434/156/46 and browser
+results below are separate from this hosted build and from actual pilot execution.
+`gh pr edit` hit the old CLI's deprecated projectCards GraphQL query; the same
+reviewable title/body update succeeded through structured REST PATCH, retaining
+draft status. No merge or deployment occurred.
+
+This following documentation/evidence-only checkpoint adds the newly observed
+late pilot facts, independent exact-head receipt and hosted check receipt, then
+refreshes MANIFEST. It changes no runtime/source pin, original record, model,
+probability, timing gate, workflow or schedule. Its eventual exact HEAD and final
+GitHub check/readback status are reported in PR #10 and the final session report.
+
+## October 20, 20:55–20:59 UTC — late pilot execution became visible; guarded abort recovered
+
+**Current pilot classification: ACTUAL_PARTIAL_EXECUTION / LATE_GUARDED_ABORT.**
+This supersedes the earlier no-observed-run classification with a new dated
+checkpoint; the 19:35 and 20:30 observations remain unchanged and were accurate
+before this run was visible. This session performed read-only inspection/recovery.
+It did not dispatch, retry, re-enable, capture, issue, rebind or mutate the pilot.
+
+Actual GitHub scheduled run **39493005199**, attempt 1, default main
+**735a464e9e8718303ef481abf711a8969de56694**, was created/started
+**20:33:35 UTC** and completed failure **20:36:37 UTC**. Its actual runner report
+starts 20:34:24.536822 and ends 20:34:33.119840 UTC: **EXPIRED_INCOMPLETE**, exit 1,
+issuance window expired; no source capture, **provider requests 0, forecasts 0,
+fresh input/binding absent, selected retained forecasts 0, all four subjects missing**.
+The guard ran after both 17:20–17:30 capture and 17:30–17:35 generation windows.
+Logs establish that guarded abort; **why GitHub created the run late is still
+NOT_ESTABLISHED**. No source/access failure is inferred.
+
+The legitimate bot records branch/draft PR #8 is now
+**dec5cc9fa397332244985bea8815bd9a89ea264e**, authored 20:35:49 UTC.
+It retains the original cycle/producer 58530309cf384425e15f02fd9fa980899a4dc0bc,
+claim, factual failure report and draft-PR publication result. An independent
+fresh clone at `/tmp/nml-pilot-current-dec5cc9f` is clean before/after documented
+read-only `python3 -m multisport_lab.manual_cycle recover --plan
+ evidence/cycles/2026-10-20-nba-401909088-plan.json`: exit0, closed/NOT_READY,
+null input, no forecasts, no pending grades, all four missing, provider 0/generation 0.
+All **19 original ledger records / 1,817,800 bytes** match the original frozen plan;
+there is no fresh binding, capture/generation intent or new forecast record.
+The original local protected worktree remains untouched; its older local HEAD
+must not be reset over this newer remote work.
+
+`PUBLICATION_VERIFIED` here means the factual records/draft PR #8 checkpoint was
+updated and verified, **not** completed forecasting or GitHub Pages deployment.
+Current workflow 390126745 is independently observed **disabled_manually**,
+updated 20:33:43 UTC; its source YAML and nine producer files remain unchanged.
+Native automation was last observed paused and was not touched. No outcome should
+be graded for a nonexistent original forecast; the six historical grades stay frozen.
+
+Evidence: `evidence/cycles/2026-10-20-pilot-late-observation.json`, 34,634 bytes,
+raw SHA256 **be524327d6b0abd649239291e642e7e0bbfa06e5353834d2d1239d04367d6203**.
+It binds actual API/job/log-archive evidence, exact executor report agreement,
+new isolated checkout/raw record inventory and read-only recovery output. The
+older audit and 20:30 follow-up receipts remain unchanged. Pilot operational
+execution is now observed, but **genuine issuance remains 0**, no fresh input was
+captured, no new real grades/financial settlement/tickets/deployment occurred.
+
+PROS004 remains inactive and draft PR #10 remains separate. Its integrated package
+checkpoint **61d4032c759813a8818f8b8b3a9c9619d0e63e77** contains the fixed
+producer source pin **71329d184f3857c9e75ee6cf12bbe841c6e4cccb**, final local
+434/156/46 checks and browser correction, preserved failed 312.366-second timing
+receipt and actual diagnostic readback. Main 735a464 and PR #9/DEV005 remain unchanged.
+This later pilot evidence does not activate, shift or backfill PROS004. Remaining
+source-completeness/private-retention/operating-admission/latency dependencies and
+next concrete optimization task are unchanged from the software checkpoint below.
+
+
 ## October 20, 20:51 UTC — final local checks and independently checked partial recovery
 
 This completes the local correction package on draft [PR #10](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/10).

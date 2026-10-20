@@ -1,5 +1,9 @@
 # October 20 expired pilot: read-only operational diagnosis
 
+Latest dated observation: a late scheduled run is now visible and its guarded
+abort is independently recovered. See the final section. Earlier findings below
+remain observations at their stated times, not claims about later remote state.
+
 Observation interval: October 20, 2026, **19:30–19:35 UTC**, after the original
 17:20–17:30 capture and 17:30–17:35 issuance windows. This is a new checkpoint;
 earlier preparation, activation and source observations remain unchanged.
@@ -103,3 +107,27 @@ queries, their exact clocks and response hashes are retained in
 `4e971b62c6da3eec814a7b87e7072beee30bcdf899164ca511c4ea45fefcba37`).
 The earlier full inventory, six log archives, independent records clone and
 read-only manual recovery remain preserved; no pilot mutation occurred.
+
+## Later actual execution, observed20:55–20:59 UTC
+
+**ACTUAL_PARTIAL_EXECUTION / LATE_GUARDED_ABORT.** Scheduled run39493005199,
+attempt1, main735a464, was created/started20:33:35 and failed20:36:37 UTC.
+Actual executor logs match the retained report20:34:24.536822–20:34:33.119840:
+EXPIRED_INCOMPLETE/exit1, issuance window expired, zero provider requests,
+zero forecasts, null input and all four subjects missing. Why the scheduler
+created the run late is not established; source/access failure is not inferred.
+
+Independent fresh records recovery atdec5cc9fa397332244985bea8815bd9a89ea264e
+retains the claim and factual abort/publication metadata, while all19 original
+ledger records/1,817,800 bytes still match the plan. No binding, capture/generation
+intent or new forecast exists. Read-only manual recovery returns closed/NOT_READY,
+null input, zero selected records and zero pending grades. Clone stays clean.
+
+Workflow390126745 is now observed disabled_manually (updated20:33:43 UTC).
+No state mutation or retry was performed by this implementation session.
+PUBLICATION_VERIFIED denotes the factual draft-PR8 checkpoint, not completed
+issuance or site publication. New source/forecast/grade/settlement counts remain0.
+The older observations and original cycle identity/deadlines remain unchanged.
+
+Exact evidence: `evidence/cycles/2026-10-20-pilot-late-observation.json`, raw
+SHA256 `be524327d6b0abd649239291e642e7e0bbfa06e5353834d2d1239d04367d6203`.

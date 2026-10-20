@@ -9,6 +9,30 @@ activation flags. The proposed operational wrappers are
 `pros004-r0-producer-v3` and `pros004-k0-producer-v3`.
 The v3 completion policy is [PROS004_COMPLETION.md](PROS004_COMPLETION.md).
 
+## Hosted checkpoint and exact-head recovery
+
+Integrated head 61d4032c759813a8818f8b8b3a9c9619d0e63e77 was independently fetched
+clean; MANIFEST, 20 source pins at 71329d1, frozen pilot/protocol/laws and all 19
+original records passed. Workflow39496046715 completed success 20:59:10 UTC:
+build succeeded, deployment skipped, PR #10 remained draft. Exact remote-head and
+CI receipts are `pros004-final-head-recovery-v3.json` and
+`pros004-checkpoint-a-ci-v3.json` under `evidence/verification/`.
+The later documentary pilot checkpoint changes no runtime or activation state.
+The failed 312.366-second typed cohort remains blocked; hosted software CI is
+not timely source capture, genuine issuance, qualification or deployment.
+
+## Latest pilot observation20:55–20:59 UTC
+
+A scheduled run became visible after the earlier zero-run checkpoints:
+39493005199,20:33:35–20:36:37 UTC, **ACTUAL_PARTIAL_EXECUTION /
+LATE_GUARDED_ABORT**, EXPIRED_INCOMPLETE, no capture/requests/forecasts/input.
+Draft PR #8/records advanced legitimately todec5cc9fa397332244985bea8815bd9a89ea264e;
+all 19 original ledger records remain unchanged. Workflow is now observed disabled.
+Its factual PR publication marker is not forecast completion or site deployment.
+Earlier observations below remain dated history. See the new late-observation
+receipt and `PILOT_OPERATIONAL_DIAGNOSIS.md`; no retry or pilot mutation occurred
+in this session. This does not activate or alter the separate PROS004 reservation.
+
 ## October 20 completion/recovery correction checkpoint
 
 PR #10 remains draft and PROS004 remains inactive. The expired operating pilot is
