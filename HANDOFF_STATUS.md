@@ -45,7 +45,7 @@ and disables only itself before live work, with an exact-date gate; a different
 run cannot take over the immutable claim. Outcome grading remains a later task.
 
 Actual local checks: `python3 -m unittest discover -s tests -v` passed
-277 tests (13 phase-runner / 30 GitHub boundary tests); `python3 -m
+278 tests (13 phase-runner / 31 GitHub boundary tests); `python3 -m
 multisport_lab.demo` passed; `node --test --test-isolation=none
 web/tests/*.test.mjs` passed 35 tests. `python3 -m multisport_lab.publication
 --build-commit b498867a03b7c2d583383ff94d887ddd18cb2e42` and
@@ -84,6 +84,49 @@ the workflow now excludes that fixed records PR from its setup job. It cannot
 issue in PR mode. `evidence/cycles/2026-10-20-hosted-pilot-preflight.json` retains
 exact source metadata, receipt hashes, run identity and draft origin. Scheduling
 is not activated by the API's feature-workflow active state.
+
+The corrected hosted run [39368941819](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39368941819)
+**passed every step** on exact setup `86a79d520434647d3d7410269a7e745b100b88c2`:
+277 Python tests, 35 frontend tests, demo/export/smoke, retained probe reuse,
+normal source integration/push/fresh readback, and actual PR #8 PATCH. Publication
+receipt payload `c1fc19fcea9570797d387ecaf0ea4e4ebec3dbda7e17db32a79de7b789e31886`
+truthfully records UPDATED_EXISTING, not bot creation. The built-in token dispatched
+[Pages validation 39369096848](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39369096848)
+on exact records head `783ac5622297a742e79ea539d885dade541744bd`; it passed and
+deployment was skipped off main. **No owner permission setting change is needed
+while the existing draft stays open.** The earlier request to enable PR creation
+is superseded by this verified update path. Proof:
+`evidence/cycles/2026-10-20-hosted-update-verification.json`. No second source probe
+was needed; the original four actual route observations retain their own clocks.
+The final expiry-only regression additionally ensures that bad producer/plan pins
+still expire the trusted one-run workflow before stopping all branch/data work.
+Local final full suite passed **278 tests in 8.713s**; the nine source files remain
+unchanged. The final setup revision needs its own hosted checks before approval.
+
+**Current activation blocker:** the managed shell's existing GH_TOKEN began
+returning HTTP 401 (confirmed `gh auth status`, REST reads and Git fetch), while
+the connected GitHub app still successfully reads/writes this repository. The
+canonical watcher actually returned BLOCKED at 04:21:17.666993Z, not READY.
+The final validated tree is being published through that already connected app
+with a normal fast-forward and exact expected parent; no credential value is
+copied/replaced and no new key/login is introduced. Restore the environment's
+existing GitHub CLI access before using the mandatory guarded completion helper;
+do not substitute a merge REST/GraphQL call. Main remains cde77cb, so **the cron
+is not armed**. After fresh readiness and exact-head user approval, merge the
+setup PR normally, verify the default-branch cron/active workflow, reconcile the
+records branch with exact merged main and independently recover it. Only then
+confirm the scheduled start. The native task must remain paused throughout.
+
+Actual additional commands were `gh pr create --draft --head
+records/nba-20261020-401909088-t90 --base main --body-file
+/tmp/nml-pilot-records-draft-body.md`, `git fetch --no-tags origin
+records/nba-20261020-401909088-t90`, `gh run view 39368387144 --log`, and the
+canonical `pr_watch.py --target /workspace/Nicks-multisport-lab-project=7
+--mode until-actionable`. After the 401, connected GitHub tools independently
+read the corrected run/jobs/logs/receipts. No merge or deploy mutation occurred.
+The exact final setup commit is the current PR #7 head; the two existing
+implementation commits are 3b81e958ca36a223907028d74ad1883402b64cf5 and
+86a79d520434647d3d7410269a7e745b100b88c2.
 
 **New timely inputs/bindings/forecasts: 0; prospective grades: 0; financial
 settlements: 0; qualified tickets: 0.** The 19 original records, nine producer

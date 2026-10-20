@@ -460,8 +460,8 @@ class GitHubPilot:
 
     def execute(self):
         self.context(execute=True, check_clock=False)
-        self.pins()
         self.workflow()  # Permanently expire before any pilot data or branch write.
+        self.pins()  # Invalid pins cannot prevent expiry or permit any pilot work.
         self.execution_clock()  # Even a missed year expires before refusing data.
         self.branch()
         claim = self.claim()
