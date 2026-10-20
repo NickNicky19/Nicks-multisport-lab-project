@@ -56,8 +56,8 @@ python3 -m multisport_lab.pros004_readiness \
 **PARTIAL_OR_FAILED_TIMING**, actual 19:59:09.051962–20:07:01.835522 UTC.
 Cohort generation/verification/persistence took **339.438s**; five model generations
 used only **29.745s**. Required checkpoint completion crossed the 300-second gate.
-Five original diagnostic forecasts survive, four have local timely original
-completion proof, and **zero are comparison-eligible**. Three model peers remain
+Five original diagnostic forecasts survive, four have complete timely local/remote
+original-completion proof, and **zero are comparison-eligible**. Three model peers remain
 missing. The last ACK journal entry was not published after failure, so exact full
 remote-prefix recovery is false; this is not a complete paired cycle. The fetched
 prefix/readback retained five originals and explicit missing/unacknowledged state.

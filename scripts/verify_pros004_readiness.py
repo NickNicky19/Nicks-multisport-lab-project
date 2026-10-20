@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 from contextlib import ExitStack
+from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
@@ -20,6 +21,7 @@ from pathlib import Path
 import re
 import stat
 import sys
+from types import MappingProxyType
 
 SCHEMA = 'nba-pros004-readiness-report-v2'
 LEGACY_SCHEMA = 'nba-pros004-readiness-report-v1'
@@ -181,16 +183,16 @@ def _pmf_mean(pmf, *, count=True):
     return math.fsum(products)
 
 
-def _reference_target(reference,records):
+def _reference_target(reference,records,hashes=None):
     require(type(reference) is dict and set(reference)=={'kind','record_id','payload_sha256'},
             'invalid typed input reference')
     key=(reference['kind'],reference['record_id'])
-    require(key in records and fingerprint(records[key])==reference['payload_sha256'],
+    require(key in records and (hashes[key] if hashes is not None else fingerprint(records[key]))==reference['payload_sha256'],
             'typed input reference content is unavailable or changed')
     return records[key]
 
 
-def _verify_forecast(body,payload,records):
+def _verify_forecast(body,payload,records,hashes=None):
     """Independent original clocks, common inputs and marginal arithmetic checks.
 
     Full-law reconstruction is a separate source-bound diagnostic. These checks
@@ -205,8 +207,8 @@ def _verify_forecast(body,payload,records):
             'research conditioning/qualification changed')
     require(body.get('forecast_id')==fingerprint({k:v for k,v in body.items() if k!='forecast_id'}),
             'original forecast content hash changed')
-    event_record=_reference_target(body.get('event_ref'),records)
-    history_record=_reference_target(body.get('history_ref'),records)
+    event_record=_reference_target(body.get('event_ref'),records,hashes)
+    history_record=_reference_target(body.get('history_ref'),records,hashes)
     event=event_record['data'].get('pros004',{})
     history=history_record['data'].get('pros004',{})
     require(event.get('schema_version')=='nba-pros004-event-v1' and
@@ -214,7 +216,7 @@ def _verify_forecast(body,payload,records):
     require(event.get('history_ref')==body['history_ref'],'models do not share the exact admitted history')
     require(len(payload['references'])==3 and payload['references'][:2]==[body['event_ref'],body['history_ref']],
             'forecast references must retain exact event/history/admission order')
-    claim=_reference_target(payload['references'][2],records)['data'].get('pros004',{})
+    claim=_reference_target(payload['references'][2],records,hashes)['data'].get('pros004',{})
     require(claim.get('schema_version')=='nba-pros004-event-claim-v1' and
             claim.get('event_ref')==body['event_ref'] and claim.get('history_ref')==body['history_ref'] and
             claim.get('producer_identity')==body.get('producer_binding'),
@@ -265,7 +267,7 @@ def _verify_forecast(body,payload,records):
     _pmf_mean(body.get('reported_minutes',{}).get('pmf'),count=False)
 
 
-def _verify_corrections(records):
+def _verify_corrections(records,hashes=None):
     """Check the complete supersession graph and original subject links."""
     mapping = {}
     for (kind,record_id), payload in records.items():
@@ -277,7 +279,7 @@ def _verify_corrections(records):
         require(type(data['reason']) is str and 0<len(data['reason'].strip())<=2048,
                 'correction requires a bounded explicit reason')
         old=payload['supersedes'];new=data['replacement']
-        old_payload=_reference_target(old,records);new_payload=_reference_target(new,records)
+        old_payload=_reference_target(old,records,hashes);new_payload=_reference_target(new,records,hashes)
         require(old['kind']==new['kind'] and old!=new,'correction must link distinct records of the same kind')
         require(payload['references']==[old,new],'correction must retain exact original/replacement references')
         require(payload['logical_id']=='supersedes:'+old['kind']+':'+old['record_id'],
@@ -317,7 +319,63 @@ def _verify_corrections(records):
     return len(mapping)
 
 
-def _strict_semantics(root,records):
+class _VerifiedRecordIndex:
+    """A private, bounded snapshot for exactly one strict semantic pass.
+
+    The independent pass has decoded/hashed every original and checked references.
+    Hashes are verified again against a private deep copy before reuse. Generic
+    semantic validators still run once per original. Fresh decoding of private
+    canonical bytes supplies isolated deep copies without repeatedly traversing
+    the Python history graph. Nothing survives across operations or source roots.
+    """
+    def __init__(self,records,hashes,ledger):
+        require(type(records) is dict and type(hashes) is dict and
+                set(records)==set(hashes) and len(records)<=MAX_RECORDS,
+                'invalid operation-local verified record index')
+        self.__payloads=deepcopy(records)
+        self.__hashes=MappingProxyType(dict(hashes))
+        self.__encoded={key:canonical(payload) for key,payload in self.__payloads.items()}
+        self.__ledger=ledger
+        self.__validated=set()
+        self.__validating=set()
+        self.verify_unchanged()
+
+    def verify_unchanged(self):
+        require(set(self.__payloads)==set(self.__encoded)==set(self.__hashes) and
+                all(type(raw) is bytes for raw in self.__encoded.values()) and
+                sum(len(raw) for raw in self.__encoded.values())<=MAX_BYTES and
+                all(canonical(payload)==self.__encoded[key] and
+                    hashlib.sha256(self.__encoded[key]).hexdigest()==self.__hashes[key]
+                    for key,payload in self.__payloads.items()),
+                'operation-local verified record index changed')
+
+    def read(self,reference):
+        from multisport_lab.ledger import LedgerRef
+        require(isinstance(reference,LedgerRef),'verified index requires a complete ledger reference')
+        key=(reference.kind,reference.record_id)
+        require(key in self.__payloads and reference.payload_sha256==self.__hashes[key],
+                'verified index reference identity/hash differs from original')
+        raw=self.__encoded.get(key)
+        require(type(raw) is bytes and hashlib.sha256(raw).hexdigest()==self.__hashes[key],
+                'verified index canonical bytes changed')
+        require(key not in self.__validating,'cyclic strict semantic reference graph')
+        if key not in self.__validated:
+            self.__validating.add(key)
+            try:
+                # These are the unchanged strict generic and legacy typed
+                # validators. Their recursive reads use this same bounded pass.
+                self.__ledger._validate_payload(self.__payloads[key],
+                    kind=reference.kind,record_id=reference.record_id)
+                self.__ledger._validate_typed_references(self.__payloads[key])
+                self.__validated.add(key)
+            finally:
+                self.__validating.remove(key)
+        # Original inputs are already strict finite JSON, so decoding preserves
+        # every nested JSON value and returns a new mutable object graph.
+        return json.loads(raw)
+
+
+def _strict_semantics(root,records,hashes):
     """Read every typed body through the shared strict validation boundary.
 
     Explicitly simulated diagnostic clocks are interpreted only after the outer
@@ -326,16 +384,14 @@ def _strict_semantics(root,records):
     cannot confer capture/issuance eligibility, write records or call a producer.
     """
     markers=[p for p in records.values() if 'pros004' in p['data']]
-    if not markers:
-        return {'typed_records':0,'semantic_clock_mode':'ACTUAL_READ_ONLY','comparison_eligibility':'NOT_ESTABLISHED_BY_RECOVERY'}
     from unittest.mock import patch
     package_root=str(Path(__file__).resolve().parents[1])
     if package_root not in sys.path:sys.path.insert(0,package_root)
     from multisport_lab import ledger, pros004_inputs, pros004_producer, pros004_records
     from multisport_lab.integrity import IntegrityError
     from multisport_lab.ledger import LedgerRef
-    simulated=max(_time(p['received_at']) for p in records.values())
     actual=datetime.now(timezone.utc)
+    simulated=max((_time(p['received_at']) for p in records.values()),default=actual)
     validation_clock=max(simulated,actual)
     try:
         with ExitStack() as stack:
@@ -344,26 +400,37 @@ def _strict_semantics(root,records):
             for module in (ledger,pros004_inputs,pros004_producer,pros004_records):
                 stack.enter_context(patch.object(module,'_now',return_value=validation_clock))
             store=pros004_records.Pros004Store(root,diagnostic=False)
+            verified_index=_VerifiedRecordIndex(records,hashes,store.ledger)
+            stack.enter_context(patch.object(store.ledger,'read',side_effect=verified_index.read))
             def forbidden(*args,**kwargs):
                 raise VerificationError('read-only semantic recovery attempted a write or model generation')
             stack.enter_context(patch.object(store.ledger,'append',side_effect=forbidden))
             for name in ('generate_forecast','_fit_laws','verify_replay','forecast_reference'):
                 stack.enter_context(patch.object(pros004_producer,name,side_effect=forbidden))
+            # Validate every generic envelope/legacy typed meaning once as well
+            # as the new typed facade. All references still check original hashes.
+            for (kind,record_id),payload in records.items():
+                reference=LedgerRef(kind,record_id,hashes[(kind,record_id)])
+                require(store.ledger.read(reference)==payload,'strict generic readback changed original content')
             for payload in markers:
-                reference=LedgerRef(payload['kind'],payload['record_id'],fingerprint(payload))
+                reference=LedgerRef(payload['kind'],payload['record_id'],hashes[(payload['kind'],payload['record_id'])])
                 require(store.read(reference)==payload,'strict typed readback changed original bytes')
             # Also validates old graph conventions while the independent graph
             # pass above checks the additional PROS004 relationships.
             index={kind:{} for kind in KINDS}
             for (kind,record_id),payload in records.items():index[kind][record_id]=payload
             store.ledger._correction_map(index)
+            verified_index.verify_unchanged()
+            require(all(fingerprint(payload)==hashes[key] for key,payload in records.items()),
+                    'independent first-pass record index changed during semantic validation')
     except (IntegrityError,ValueError,KeyError,TypeError,AttributeError) as error:
         raise VerificationError('strict typed recovery semantics rejected: '+str(error)) from error
-    return {'typed_records':len(markers),'semantic_clock_mode':'EXPLICIT_DIAGNOSTIC_READ_ONLY',
+    return {'typed_records':len(markers),'generic_records':len(records),
+            'semantic_clock_mode':'EXPLICIT_DIAGNOSTIC_READ_ONLY' if markers else 'ACTUAL_READ_ONLY',
             'comparison_eligibility':'NOT_ESTABLISHED_BY_RECOVERY'}
 
 
-def _verify_completion_journal(root,records,encoded):
+def _verify_completion_journal(root,records,encoded,hashes=None):
     """Retain and cross-check the bounded completion evidence without issuing."""
     package_root=str(Path(__file__).resolve().parents[1])
     if package_root not in sys.path:sys.path.insert(0,package_root)
@@ -375,7 +442,7 @@ def _verify_completion_journal(root,records,encoded):
         raise VerificationError('completion journal recovery rejected: '+str(error)) from error
     local={}
     for entry in entries:
-        reference=entry['reference'];target=_reference_target(reference,records)
+        reference=entry['reference'];target=_reference_target(reference,records,hashes)
         key=(reference['kind'],reference['record_id'])
         require(encoded[key]==entry['record_raw_sha256'],'completion journal original raw bytes changed')
         body=target['data'].get('pros004',{})
@@ -392,6 +459,32 @@ def _verify_completion_journal(root,records,encoded):
     return inventory
 
 
+def _verify_original_bytes(root,encoded,sizes):
+    """A private index cannot acknowledge source bytes that changed meanwhile."""
+    observed=set()
+    try:
+        require(not root.is_symlink() and not (root/'records').is_symlink(),
+                'source root changed during semantic verification')
+        for kind in KINDS:
+            folder=root/'records'/kind
+            require(not folder.is_symlink(),'source directory changed during semantic verification')
+            if not folder.exists():
+                continue
+            for path in folder.iterdir():
+                key=(kind,path.stem)
+                require(stat.S_ISREG(path.lstat().st_mode) and
+                        re.fullmatch('[a-f0-9]{64}\\.json',path.name) is not None and key in encoded,
+                        'source inventory changed during semantic verification')
+                with path.open('rb') as handle:
+                    raw=handle.read(4*1024*1024+1)
+                require(len(raw)==sizes[key] and hashlib.sha256(raw).hexdigest()==encoded[key],
+                        'source raw bytes changed during semantic verification')
+                observed.add(key)
+        require(observed==set(encoded),'source inventory changed during semantic verification')
+    except OSError as error:
+        raise VerificationError('source bytes became unavailable during semantic verification') from error
+
+
 def verify_store(root):
     """Independent generic-envelope/references/budget check of a retained store.
 
@@ -400,7 +493,7 @@ def verify_store(root):
     """
     root = Path(root)
     require(not root.is_symlink() and not (root/'records').is_symlink(), 'symlinked ledger root')
-    records,encoded = {},{}
+    records,encoded,sizes = {},{},{}
     count = total = unpublished = 0
     maxima = {kind:0 for kind in KINDS}
     for kind in KINDS:
@@ -449,14 +542,16 @@ def verify_store(root):
             require(key not in records,'duplicate ledger record')
             records[key]=payload
             encoded[key]=raw_sha
+            sizes[key]=size
     require(unpublished==0, 'unresolved interrupted receipt file requires recovery')
+    hashes={key:fingerprint(payload) for key,payload in records.items()}
     for key,payload in records.items():
         refs=[]
         for ref in payload['references']:
             require(type(ref) is dict and set(ref)=={'kind','record_id','payload_sha256'}, 'invalid ledger reference')
             target=(ref['kind'],ref['record_id'])
             require(target in records,'missing referenced record')
-            require(ref['payload_sha256']==fingerprint(records[target]), 'referenced content hash mismatch')
+            require(ref['payload_sha256']==hashes[target], 'referenced content hash mismatch')
             require(_time(records[target]['received_at'])<=_time(payload['received_at']), 'reference clock follows record')
             refs.append(target)
         require(len(refs)==len(set(refs)),'duplicate references')
@@ -465,23 +560,26 @@ def verify_store(root):
             continue
         diagnostic_correction=False
         if kind=='corrections':
-            left=_reference_target(payload['supersedes'],records)
-            right=_reference_target(payload['data'].get('replacement'),records)
+            left=_reference_target(payload['supersedes'],records,hashes)
+            right=_reference_target(payload['data'].get('replacement'),records,hashes)
             diagnostic_correction=all(p['data'].get('pros004',{}).get('mode') in DIAGNOSTIC_MODES for p in (left,right))
         if not diagnostic_correction:
             require(_time(payload['received_at'])<=datetime.now(timezone.utc),
                     'unrelated original receipt clock is in the future')
-    correction_count=_verify_corrections(records)
+    correction_count=_verify_corrections(records,hashes)
     forecast_count=0
     for payload in records.values():
         body=payload['data'].get('pros004',{})
         if body.get('schema_version')=='nba-pros004-forecast-v1':
-            _verify_forecast(body,payload,records)
+            _verify_forecast(body,payload,records,hashes)
             forecast_count+=1
-    journal=_verify_completion_journal(root,records,encoded)
+    journal=_verify_completion_journal(root,records,encoded,hashes)
     require(count+journal['files']<=MAX_RECORDS and total+journal['bytes']<=MAX_BYTES,
             'ledger plus completion journal exceeds unchanged global capacity')
-    semantics=_strict_semantics(root,records)
+    semantics=_strict_semantics(root,records,hashes)
+    _verify_original_bytes(root,encoded,sizes)
+    from multisport_lab.pros004_completion import journal_inventory
+    require(journal_inventory(root)==journal,'completion journal changed during semantic verification')
     return {'status':'PASS_INDEPENDENT_STORE_CHECK','records':count+journal['files'],'encoded_bytes':total+journal['bytes'],
             'ledger_record_count':count,'completion_journal':journal,
             'strict_typed_semantics':semantics,'checked_correction_links':correction_count,

@@ -107,3 +107,23 @@ identities remain distinct. No reserved comparative means, winners or aggregate
 study result are published before the registered evaluation gate. Empty inactive
 views and the paper builder preserve NBA scope, all 13 categories plus PA, 2–6
 legs, directions and NO_ACTION. This package does not deploy that interface.
+
+## Bounded validation reuse after the failed v2 timing diagnostic
+
+The failed c188 full-history receipt is immutable. The next implementation reduces
+repeated JSON work, preserving source bytes, clock gates, models and every typed
+semantic check. A ledger-instance cache holds only successful legacy source-pack
+payload identities, at most 512; every read still checks fresh receipt bytes,
+checksum, references and the current clock. Compact PROS004 inputs bypass it.
+
+Within each independent verification invocation, a private bounded index reuses
+already decoded/hashed originals and their canonical finite-JSON bytes. Every
+reference checks the original payload hash; strict generic validators run once
+per original and all normal typed store/grade/correction validators still run.
+Fresh JSON decoding gives each caller isolated mutable containers. Initial/final
+payload/encoded seals and final on-disk raw hashes, sizes, inventory and journal
+checks reject mutation during verification. No cache crosses invocations or
+independent source roots; every fresh remote fetch receives a full typed pass.
+At most 512 entries / 32 MiB of canonical index bytes are retained in memory.
+This optimization establishes no latency result until the separately versioned
+fixed-source timing diagnostic completes.

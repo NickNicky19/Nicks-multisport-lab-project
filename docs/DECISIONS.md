@@ -1,5 +1,16 @@
 # Implementation decisions
 
+## October 20 — preserve failed timing and reduce duplicate verification work
+
+Retain source c18809f2 and its PARTIAL_OR_FAILED_TIMING receipt unchanged: five
+synthetic originals, four timing-complete, no eligible forecasts. The next source
+revision may reuse only exact-content successful legacy validation identities
+and a private per-verification decoded/hash-checked JSON index. Fresh source
+bytes/hashes, current clocks, references, strict typed meaning, correction graphs
+and independent fetched-root validation remain mandatory. No model law, window,
+latency, probability support or ledger limit changes. Measure a new v3 receipt;
+never overwrite the failed v2 result or label profiling as prospective readiness.
+
 ## October 20 — completion policy and inactive operating preparation
 
 Per-original admission uses observed post-write local completion and exact remote

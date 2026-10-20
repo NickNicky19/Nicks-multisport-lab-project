@@ -114,6 +114,91 @@ def replace_typed_receipt(root,original,body,refs=None):
 
 
 class Pros004VerifierTests(unittest.TestCase):
+    def test_verified_index_is_private_reference_bound_and_returns_isolated_copies(self):
+        from multisport_lab.pros004_records import _Pros004Ledger
+        from multisport_lab.ledger import LedgerRef
+        with tempfile.TemporaryDirectory() as folder:
+            original=payload('input_captures','index-isolation',{'note':'Original immutable evidence',
+                'nested':[{'values':[None,True,False,2**100,0.0,-0.0,0.1,'NBA é\n']} ]})
+            key=(original['kind'],original['record_id']);sha=verifier.fingerprint(original)
+            ledger=_Pros004Ledger(folder)
+            index=verifier._VerifiedRecordIndex({key:original},{key:sha},ledger)
+            reference=LedgerRef(*key,sha)
+            with patch.object(ledger,'read',side_effect=index.read),patch.object(ledger,'_validate_payload',wraps=ledger._validate_payload) as generic:
+                returned=index.read(reference);returned['data']['note']='Caller mutation'
+                returned['data']['nested'][0]['values'].append('Nested caller mutation')
+                self.assertEqual(index.read(reference),original)
+                self.assertEqual(verifier.canonical(index.read(reference)),verifier.canonical(original))
+                self.assertEqual(generic.call_count,1)
+                with self.assertRaisesRegex(verifier.VerificationError,'identity/hash'):
+                    index.read(LedgerRef(*key,'f'*64))
+            # Mutating the caller's source map cannot contaminate the private
+            # snapshot; a private-cache mutation itself must fail its final seal.
+            original['data']['note']='Changed outer index'
+            self.assertEqual(index.read(reference)['data']['note'],'Original immutable evidence')
+            index.verify_unchanged()
+            index._VerifiedRecordIndex__payloads[key]['data']['note']='Invalid private mutation'
+            with self.assertRaisesRegex(verifier.VerificationError,'index changed'):
+                index.verify_unchanged()
+            with self.assertRaisesRegex(verifier.VerificationError,'index changed'):
+                verifier._VerifiedRecordIndex({key:original},{key:sha},ledger)
+
+    def test_verified_index_rejects_replaced_encoded_bytes_and_encoded_budget(self):
+        from multisport_lab.pros004_records import _Pros004Ledger
+        from multisport_lab.ledger import LedgerRef
+        with tempfile.TemporaryDirectory() as folder:
+            item=payload('input_captures','encoded-index',{'note':'Strict original bytes'})
+            key=(item['kind'],item['record_id']);sha=verifier.fingerprint(item)
+            index=verifier._VerifiedRecordIndex({key:item},{key:sha},_Pros004Ledger(folder))
+            changed=deepcopy(item);changed['data']['note']='Checksum-consistent different meaning'
+            index._VerifiedRecordIndex__encoded[key]=verifier.canonical(changed)
+            with self.assertRaisesRegex(verifier.VerificationError,'canonical bytes changed'):
+                index.read(LedgerRef(*key,sha))
+            with self.assertRaisesRegex(verifier.VerificationError,'index changed'):
+                index.verify_unchanged()
+            with patch.object(verifier,'MAX_BYTES',1):
+                with self.assertRaisesRegex(verifier.VerificationError,'index changed'):
+                    verifier._VerifiedRecordIndex({key:item},{key:sha},_Pros004Ledger(folder))
+
+    def test_standalone_store_rejects_source_mutation_after_indexed_semantics(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);item=payload('input_captures','concurrent-source',{'note':'Preserve original'})
+            save(root,item);path=root/'records'/item['kind']/(item['record_id']+'.json')
+            actual=verifier._strict_semantics
+            def mutate_after_semantics(*args):
+                result=actual(*args)
+                envelope=json.loads(path.read_bytes())
+                path.write_bytes(json.dumps(dict(reversed(list(envelope.items()))),
+                    separators=(',',':'),ensure_ascii=False,allow_nan=False).encode())
+                return result
+            with patch.object(verifier,'_strict_semantics',side_effect=mutate_after_semantics):
+                with self.assertRaisesRegex(verifier.VerificationError,'source raw bytes changed'):
+                    verifier.verify_store(root)
+
+    def test_optimized_standalone_verifier_rejects_source_mutation_after_semantics(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);item=payload('input_captures','optimized-concurrent-source',{'note':'Preserve original'})
+            save(root,item)
+            source="""import json
+from pathlib import Path
+from unittest.mock import patch
+from scripts import verify_pros004_readiness as v
+root=Path(%r)
+original=v._strict_semantics
+def mutate(*args):
+    result=original(*args)
+    path=next(root.glob('records/*/*.json'))
+    value=json.loads(path.read_bytes())
+    path.write_bytes(json.dumps(dict(reversed(list(value.items()))),separators=(',',':')).encode())
+    return result
+with patch.object(v,'_strict_semantics',side_effect=mutate):
+    v.verify_store(root)
+""" % str(root)
+            run=subprocess.run([sys.executable,'-O','-c',source],cwd=SCRIPT.parents[1],capture_output=True,text=True)
+            self.assertNotEqual(run.returncode,0)
+            self.assertIn('source raw bytes changed',run.stderr)
+            self.assertNotIn('AssertionError',run.stderr)
+
     def test_report_detects_changed_input_atoms_source_and_capacity(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);base=report(root)

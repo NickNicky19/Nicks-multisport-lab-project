@@ -251,8 +251,36 @@ class _Pros004Ledger(Ledger):
     facade verifies separate shared-history/event contracts. Every old record
     and every other kind still uses the exact frozen validator.
     """
+    def __init__(self,root=None):
+        super().__init__(root)
+        # Cache only successful, self-contained legacy source-pack semantics.
+        # No decoded object, receipt bytes, reference result or clock is cached.
+        # New compact PROS004 inputs avoid an otherwise redundant large digest.
+        self._legacy_source_validations={}
+
+    def _validate_payload(self,payload, *, kind, record_id):
+        data=payload.get('data') if type(payload) is dict else None
+        legacy_source=(kind=="research_inputs" and type(data) is dict
+                       and "source_pack" in data and "pros004" not in data)
+        if not legacy_source:
+            return self._validate_uncached_payload(payload,kind=kind,record_id=record_id)
+        # Read/scan callers still read and verify the actual receipt first. A
+        # backwards clock must fail even when these exact bytes were valid in
+        # an earlier read. Source clocks were proved <=received_at on the miss.
+        if _time(payload.get("received_at"),"received_at")>frozen_ledger._now():
+            raise IntegrityError("ledger receipt creation clock is in the future")
+        key=(kind,record_id,digest(payload))
+        if key in self._legacy_source_validations:
+            return
+        self._validate_uncached_payload(payload,kind=kind,record_id=record_id)
+        if _time(payload["received_at"],"received_at")>frozen_ledger._now():
+            raise IntegrityError("ledger receipt creation clock is in the future")
+        if len(self._legacy_source_validations)>=MAX_LEDGER_RECORDS:
+            self._legacy_source_validations.pop(next(iter(self._legacy_source_validations)))
+        self._legacy_source_validations[key]=None
+
     @staticmethod
-    def _validate_payload(payload, *, kind, record_id):
+    def _validate_uncached_payload(payload, *, kind, record_id):
         data=payload.get('data') if type(payload) is dict else None
         body=data.get("pros004") if type(data) is dict else None
         if kind!="research_inputs" or body is None:

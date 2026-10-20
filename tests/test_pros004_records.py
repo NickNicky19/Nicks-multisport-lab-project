@@ -17,6 +17,7 @@ from multisport_lab import pros004_producer as prod
 from multisport_lab.integrity import IntegrityError, canonical, digest, stamp
 from multisport_lab.ledger import LedgerRef
 from test_pregame_sources import tiny_history
+from test_pregame_sources import pack_fixture, NOW as LEGACY_NOW
 from test_pros004_producer import ProducerFixture, CUTOFF, ISSUE, START
 
 OBSERVED=START+timedelta(hours=4)
@@ -68,6 +69,86 @@ def outcome_bytes(f,*,final=True,postponed=False):
 
 
 class Pros004RecordsTests(unittest.TestCase):
+    def legacy_source_fixture(self):
+        from multisport_lab import pregame_sources
+        root=self.enterContext(tempfile.TemporaryDirectory())
+        self.enterContext(patch.object(pregame_sources,'_now',return_value=LEGACY_NOW))
+        self.enterContext(patch.object(rec.frozen_ledger,'_now',return_value=LEGACY_NOW))
+        pack=pack_fixture()
+        self.enterContext(patch.object(pregame_sources,'PANEL_SHA',pack['history_provenance']['normalized_panel_sha256']))
+        source=rec.frozen_ledger.Ledger(root)
+        reference=source.record_research_inputs(pack)
+        return rec._Pros004Ledger(root),reference
+
+    def test_legacy_semantic_cache_preserves_fresh_bytes_hashes_objects_and_clocks(self):
+        from multisport_lab import pregame_sources
+        ledger,reference=self.legacy_source_fixture()
+        validator=pregame_sources.validate_pack
+        with patch.object(pregame_sources,'validate_pack',wraps=validator) as checked:
+            first=ledger.read(reference);second=ledger.read(reference)
+            self.assertEqual(checked.call_count,1)
+            self.assertEqual(first,second);self.assertIsNot(first,second)
+            first['data']['source_pack']['history']['rows'].clear()
+            self.assertTrue(ledger.read(reference)['data']['source_pack']['history']['rows'])
+            self.assertEqual(checked.call_count,1)
+        with patch.object(rec.frozen_ledger,'_now',return_value=LEGACY_NOW-timedelta(microseconds=1)):
+            with self.assertRaisesRegex(IntegrityError,'future'):
+                ledger.read(reference)
+        self.assertEqual(len(ledger._legacy_source_validations),1)
+        path=ledger._path(reference.kind,reference.record_id)
+        original=path.read_bytes();changed=json.loads(original)
+        changed['payload']['data']['source_pack']['history']['rows'].clear()
+        changed['payload_sha256']=digest(changed['payload']);path.write_bytes(canonical(changed))
+        # A valid envelope checksum with changed semantics cannot reuse the old
+        # successful cache key, even if the caller supplies its new payload hash.
+        altered=LedgerRef(reference.kind,reference.record_id,changed['payload_sha256'])
+        with self.assertRaises(ValueError):ledger.read(altered)
+        self.assertEqual(len(ledger._legacy_source_validations),1)
+        # The ordinary original reference and a broken checksum also still fail.
+        with self.assertRaises(ValueError):ledger.read(reference)
+        path.write_bytes(original+b' ')
+        # Extra harmless JSON whitespace has the same valid semantics but is
+        # freshly decoded: it is not a cached mutable payload object.
+        self.assertEqual(ledger.read(reference)['record_id'],reference.record_id)
+        path.write_bytes(original.replace(b'LOCAL_RECEIPT_ONLY',b'LOCAL_RECEIPT_XNLY'))
+        with self.assertRaises(IntegrityError):ledger.read(reference)
+
+    def test_legacy_semantic_cache_is_bounded_and_does_not_cache_new_compact_inputs(self):
+        ledger,reference=self.legacy_source_fixture();payload=ledger.read(reference)
+        original_key=next(iter(ledger._legacy_source_validations))
+        with patch.object(rec,'MAX_LEDGER_RECORDS',2),patch.object(rec.frozen_ledger,'_now',return_value=LEGACY_NOW+timedelta(seconds=3)):
+            for offset in (1,2):
+                changed=deepcopy(payload);changed['received_at']=stamp(LEGACY_NOW+timedelta(seconds=offset))
+                ledger._validate_payload(changed,kind=reference.kind,record_id=reference.record_id)
+            self.assertEqual(len(ledger._legacy_source_validations),2)
+            self.assertNotIn(original_key,ledger._legacy_source_validations)
+        f=ProducerFixture(self)
+        f.store.body(f.history_ref);f.store.body(f.event_ref)
+        self.assertEqual(len(f.store.ledger._legacy_source_validations),0)
+
+    def test_legacy_semantic_cache_does_not_cache_parent_or_correction_graph_checks(self):
+        ledger,reference=self.legacy_source_fixture();ledger.read(reference)
+        child=ledger.append('input_captures','synthetic-child',{'note':'No evidence claim'},references=(reference,))
+        index=ledger.scan();self.assertIn(child.record_id,index['input_captures'])
+        path=ledger._path(reference.kind,reference.record_id);original=path.read_bytes()
+        changed=json.loads(original);changed['payload']['received_at']=stamp(LEGACY_NOW+timedelta(seconds=1))
+        changed['payload_sha256']=digest(changed['payload']);path.write_bytes(canonical(changed))
+        with patch.object(rec.frozen_ledger,'_now',return_value=LEGACY_NOW+timedelta(seconds=2)):
+            with self.assertRaisesRegex(IntegrityError,'missing or changed|chronology'):
+                ledger.scan()
+        path.write_bytes(original)
+        first=ledger.append('outcomes','synthetic-cache-correction-first',{'identity':{'player':'10'},'note':'First'})
+        replacement=ledger.append('outcomes','synthetic-cache-correction-second',{'identity':{'player':'10'},'note':'Second'})
+        other=ledger.append('outcomes','synthetic-cache-correction-other-subject',{'identity':{'player':'20'},'note':'Other'})
+        corrected=ledger.correct(first,replacement,reason='Synthetic correction graph test')
+        ledger.scan()
+        correction=ledger._path(corrected.kind,corrected.record_id)
+        content=json.loads(correction.read_bytes())
+        content['payload']['data']['replacement']=other.to_record()
+        content['payload']['references']=[first.to_record(),other.to_record()]
+        content['payload_sha256']=digest(content['payload']);correction.write_bytes(canonical(content))
+        with self.assertRaisesRegex(IntegrityError,'correction changes subject identity'):ledger.scan()
+
     def test_full_comparison_and_metadata_are_reserved_before_first_write(self):
         plan=rec.full_study_capacity()
         self.assertEqual(plan['comparison_records'],442)
