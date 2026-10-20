@@ -1,5 +1,25 @@
 # Verification history and delivery status
 
+## Current public deployment: PR #6 — October 19 evening Central / October 20 UTC
+
+Exact approved head `0a20c2a752e6d5475e46feadee08c87e01846d6d` merged as
+`cde77cbaa0908c2ed49d26140110dea5493b54b7` at 03:19:59Z; trees match.
+[Workflow 39363727977](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39363727977)
+passed build/deploy, completed 03:20:46Z, with 234 Python/35 frontend tests,
+synthetic demo, exact provenance fetch and artifact smoke. Public system-TLS
+manifest/NBA/seven static checks passed; independent offline exact-clock replay
+matched all served bytes. Public Chromium 154 at 1440/390/320px passed seven
+routes/reloads, all 14 categories, six unchanged historical bundles/84 PMFs/six
+grades, accurate empty Upcoming and all 45 NO_ACTION builder cases. No errors.
+The cycle still pins producer 58530309; its nine source files, all 19 ledger
+records and 34 frozen references are unchanged. Actual read-only preflight is
+NOT_READY/CAPTURE_NOT_YET_OPEN with no fresh binding or issued subjects.
+No source capture, model evaluation, genuine issuance, new grading, settlement
+or scheduler resulted from deployment. Proof:
+`evidence/deployment/2026-10-20-pr6-pages.json`; exact clocks/hashes and manual
+next steps are in the handoff. Capture remains October 20, 12:20–12:30 p.m. CDT;
+issuance 12:30–12:35 p.m., never early or backdated.
+
 ## Manual pinned-cycle preparation — October 19 evening Central / October 20 UTC
 
 Producer `58530309cf384425e15f02fd9fa980899a4dc0bc` remains byte-identical across
@@ -25,7 +45,7 @@ committed bytes and passed all 13 guard tests. Original model SHA remains
 `evidence/cycles/2026-10-20-manual-pilot-preparation-delivery.json`.
 No PR #6 merge, Pages update or actual issuance is claimed by this preparation.
 
-## Current public deployment: PR #5 — October 19 evening Central / October 20 UTC
+## Prior public deployment: PR #5 — October 19 evening Central / October 20 UTC
 
 Approved head 713716a17465c93d32795aabba9e0a8c9c3a5e8c merged unchanged as main
 58530309cf384425e15f02fd9fa980899a4dc0bc at 02:30:40Z.
