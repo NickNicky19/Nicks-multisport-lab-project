@@ -86,14 +86,52 @@ export function validateResearchForecast(record, event, generatedAt) {
   return record;
 }
 
+/** History includes reconstructions and captured forecasts whose events have started.
+ * Passing a start clock alone does not establish a completed event or an outcome.
+ */
+export function isHistoryForecast(row, now = Date.now()) {
+  return row.evidence_lane === 'RECONSTRUCTED_RESEARCH' || row.evidence_lane === 'REAL_TIME_CAPTURED' && Date.parse(row.event_starts_at) <= now;
+}
+
 /** Historical reconstructions never enter the upcoming research view. */
 export function filterResearchForecasts(rows, filters, now = Date.now()) {
   return rows.filter(row => {
-    const historical = row.evidence_lane === 'RECONSTRUCTED_RESEARCH' || Date.parse(row.event_starts_at) <= now;
-    if (filters.view === 'history' ? !historical : historical) return false;
+    const historical = isHistoryForecast(row, now);
+    if (filters.view === 'history' ? !historical : row.evidence_lane !== 'REAL_TIME_CAPTURED' || !Number.isFinite(Date.parse(row.event_starts_at)) || historical) return false;
     if (filters.view !== 'history' && (filters.window === '24h' && Date.parse(row.event_starts_at) > now + 86400000 || filters.window === '7d' && Date.parse(row.event_starts_at) > now + 7 * 86400000)) return false;
     return true;
   }).flatMap(forecast => forecast.categories.filter(item => filters.category === 'ALL' || item.code === filters.category).map(item => ({forecast, category: item})));
+}
+
+/** Summarize validated grade records within one lane and exact model identity.
+ * Counts are grade records, never independent trials or product qualification.
+ */
+export function groupForecastGrades(grades, forecasts) {
+  const identities = ['league', 'evidence_lane', 'model_version', 'model_commit', 'model_code_sha256', 'conditioning', 'period', 'extra_time_policy'];
+  const byForecast = new Map(forecasts.map(forecast => [forecast.forecast_id, forecast]));
+  const groups = new Map();
+  for (const grade of grades) {
+    const forecast = byForecast.get(grade.forecast_id);
+    if (!forecast || identities.some(key => !isText(forecast[key])) || ['league', 'evidence_lane', 'event_id', 'player_id'].some(key => grade[key] !== forecast[key])) return fail('A grade lacks its matching forecast/model identity.');
+    const key = JSON.stringify(identities.map(field => forecast[field]));
+    if (!groups.has(key)) groups.set(key, {...Object.fromEntries(identities.map(field => [field, forecast[field]])), grade_count: 0, scored_count: 0, dnp_count: 0, unresolved_count: 0, rows: new Map()});
+    const group = groups.get(key);
+    group.grade_count++;
+    if (grade.status === 'DNP_NOT_SCORED') {group.dnp_count++; continue;}
+    if (grade.status === 'UNRESOLVED') {group.unresolved_count++; continue;}
+    if (grade.status !== 'SCORED') return fail('Unsupported grade status in a research summary.');
+    group.scored_count++;
+    for (const category of grade.categories) {
+      if (!group.rows.has(category.code)) group.rows.set(category.code, []);
+      group.rows.get(category.code).push(category);
+    }
+  }
+  return [...groups.values()].map(({rows, ...group}) => ({...group, categories: [...rows].map(([code, values]) => {
+    const missingSupport = values.filter(row => row.log_loss_status === 'ZERO_SUPPORT').length;
+    return {code, grade_count: values.length, mean_crps: values.reduce((sum, row) => sum + Number(row.crps), 0) / values.length,
+      mean_log_loss: missingSupport ? null : values.reduce((sum, row) => sum + Number(row.log_loss), 0) / values.length,
+      zero_support_count: missingSupport, mean_brier: ['DD', 'TD'].includes(code) ? values.reduce((sum, row) => sum + Number(row.brier), 0) / values.length : null};
+  })}));
 }
 
 export function validateResearchGrade(record, forecast, generatedAt) {

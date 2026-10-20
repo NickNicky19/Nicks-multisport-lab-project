@@ -216,11 +216,59 @@ def main():
             page.get_by_role("link", name="Paper Builder", exact=True).click()
             assert "0 admitted candidates" in page.locator(".request-summary").inner_text()
             assert "NO_ACTION" in page.locator(".decision-box").inner_text()
+
+            # Synthetic past captures exercise display grouping, not a real-time producer.
+            page.unroute("**/data/manifest.json")
+            page.unroute("**/data/nba.*.json")
+            mixed = json.loads(subprocess.run(["node", "--input-type=module", "-e", "import {mixedEvidenceFixture} from './web/tests/fixtures.mjs'; console.log(JSON.stringify(mixedEvidenceFixture()));"], cwd=repo, text=True, capture_output=True, check=True).stdout)
+            page.route("**/data/manifest.json", lambda route: route.fulfill(body=canonical(mixed["manifest"]), content_type="application/json"))
+            page.route("**/data/nba.*.json", lambda route: route.fulfill(body=canonical(mixed["sport"]), content_type="application/json"))
+            page.goto(base + "#/props")
+            page.reload()
+            page.get_by_text("No upcoming research forecasts", exact=True).wait_for()
+            assert not page.get_by_role("alert").count()
+            assert "Explore 4 forecast records in History" in page.locator("#view-history").inner_text()
+            page.locator("#view-history").click()
+            while page.locator("#more-forecasts").count():
+                page.locator("#more-forecasts").click()
+            assert page.locator(".forecast-card").count() == 56
+            assert page.locator(".historical-notice strong").inner_text() == "Past-event forecasts and reconstructed research"
+            assert "does not establish completion" in page.locator(".historical-notice").inner_text()
+            page.locator('[data-filter="category"]').select_option("REB")
+            assert page.locator(".forecast-card").count() == 4
+            captured = page.locator(".forecast-card").filter(has_text="Synthetic captured-a")
+            assert captured.locator(".forecast-card-heading>.pill").inner_text() == "Captured research"
+            captured.locator("summary").click()
+            assert "REAL_TIME_CAPTURED" in captured.locator(".forecast-details").inner_text()
+            assert "not a pregame receipt" not in captured.locator(".forecast-details").inner_text()
+            page.get_by_role("link", name="Performance", exact=True).click()
+            assert page.locator(".grade-group").count() == 3
+            assert page.locator(".grade-summary tbody tr").count() == 42
+            reconstructed = page.locator('.grade-group[data-evidence-lane="RECONSTRUCTED_RESEARCH"]')
+            captured = page.locator('.grade-group[data-evidence-lane="REAL_TIME_CAPTURED"][data-model-commit="' + "a" * 40 + '"]')
+            revision = page.locator('.grade-group[data-model-commit="' + "f" * 40 + '"]')
+            assert reconstructed.locator(".grade-summary tbody tr").first.locator("td").all_inner_texts()[:4] == ["2", "3", "0.69315", "0"]
+            assert captured.locator(".grade-summary tbody tr").first.locator("td").all_inner_texts()[:4] == ["1", "4", "∞ · zero support", "1"]
+            assert revision.locator(".grade-summary tbody tr").first.locator("td").all_inner_texts()[:4] == ["1", "3", "0.69315", "0"]
+            for width in [1440, 390, 320]:
+                page.set_viewport_size({"width": width, "height": 1000 if width == 1440 else 844})
+                assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"Mixed group overflow at {width}px"
+                if args.screenshots and width != 320:
+                    screenshot(page, args.screenshots / f"synthetic-mixed-groups-{width}.png")
+            page.get_by_role("link", name="Props", exact=True).click()
+            page.get_by_role("button", name="Selected sports", exact=True).click()
+            page.locator('input[name="sport"]').uncheck()
+            assert page.locator(".forecast-card").count() == 0
+            page.get_by_role("link", name="Performance", exact=True).click()
+            assert page.locator(".grade-group").count() == 0
+            page.get_by_role("link", name="Paper Builder", exact=True).click()
+            assert "0 admitted candidates" in page.locator(".request-summary").inner_text()
+            assert "NO_ACTION" in page.locator(".decision-box").inner_text()
             assert not errors, errors
             browser.close()
         if nba_snapshot["forecasts"]:
             print(f'PASS real retained research: {len(nba_snapshot["events"])} events, {len(nba_snapshot["forecasts"])} bundles, {len(nba_snapshot["forecasts"]) * 14} category PMFs and {len(nba_snapshot["performance"])} forecast grades; actual event/cutoff/issue/record IDs, all-category load-more, REB filter, finite support and separate NOT_EVALUATED financial state checked.')
-        print("PASS: Chromium desktop, 390px and 320px; seven routes and reloads; repository-prefix assets; all-13 inventory; shared scope and builder requests; NO_ACTION; unknown route; incompatible, corrupt, retained and first-failure snapshots; synthetic typed-v2 fourteen-category history, future exclusion, provenance and separate forecast grades. Local browser/software evidence only; no deployment/model/product claim.")
+        print("PASS: Chromium desktop, 390px and 320px; seven routes and reloads; repository-prefix assets; all-13 inventory; shared scope and builder requests; NO_ACTION; unknown route; incompatible, corrupt, retained and first-failure snapshots; synthetic typed-v2 fourteen-category history, future exclusion, provenance, separate forecast grades and mixed-lane/model summaries. Local browser/software evidence only; no deployment/model/product claim.")
     finally:
         server.shutdown()
         server.server_close()

@@ -30,6 +30,47 @@ tests. Only one900sec/512MiB execution is permitted after root authorization;
 actual results will be appended when obtained. Existing R0/DEV002 source and
 receipt bytes remain unchanged.
 
+**Follow-up fixes and future-input checkpoint:** `record_reference.py` now writes
+v2 only for a batch without an existing summary, copying each original record's
+source/receipt/model/input/issue/grade metadata. Mixed retained/new outcome clocks
+stay individual; the common clock appears only when all agree. Recovery verifies
+both v1/v2 exact references, identities, grade dependencies and chronology.
+Synthetic interruption before summary and partial1-old/5-new-outcome recovery
+passed. Actual v1 summary and all18 original receipts remain byte-identical.
+See `tests/test_record_reference.py`, `docs/REFERENCE_PUBLICATION_002.md`.
+
+Performance now groups by league, lane, exact model version/commit/code hash,
+conditioning and period/OT. History includes past captured forecasts while
+retaining their lane and avoiding a completion claim from start time alone.
+31 frontend checks and local Chromium1440/390/320px passed, including real6/84/6
+records and a clearly synthetic mixed4-record/3-group fixture. This follow-up UI
+is branch-only; the public site remains the approved002a6b9 implementation.
+
+New `nba_inputs.py` and12 focused tests implement a bounded offline readiness
+contract/CLI with exact event/version/player/team/source identity, hashes, clocks,
+coverage and lagged complete counts. Structural success explicitly remains
+NOT_ADMITTED, with no source authenticity/permission or prospective producer
+claim. No capture, forecast or source network request is made. Actual diagnostic
+commands and limits are in `docs/PREGAME_INPUT_READINESS.md`; current172 Python
+tests and synthetic demo passed. New evidence:
+`evidence/data/2026-10-20-input-readiness.json` and the scoped clarification
+`2026-10-20-input-readiness-v2.json`. The latter is authoritative: an archive
+alone is not a prospective bundle; its old statistics can still be eligible for
+a later future event when actual source observations precede that event's bounds.
+No event-specific future-history timing audit is claimed. The readiness pilot's
+20k rows/8MiB metadata cannot silently replace the complete26,645-row R0 cohort.
+
+The retained-source discovery audit in
+`evidence/data/2026-10-20-pregame-discovery.json` verified two original captures /
+142,589 bytes without new HTTP. As observed October19, three games were scheduled
+for October20 19:00Z,23:00Z and October21 01:30Z; exact ESPN IDs/start/team/status
+were retained. No explicit roster/player boxscore or leader athlete IDs exist;
+two injury IDs do not establish a pregame candidate universe. Source event-update
+clocks remain unknown. Earliest **as-observed** T90 is October20 17:30Z and needs
+fresh event/player/source revalidation before use; no scheduler or future issue
+is enabled. Permission, complete input provenance and admitted current-T90
+producer remain unresolved independently of prices.
+
 **PR #3 is merged and typed v2 is deployed.** The user approved only head
 `2d30ae98b20918bc97ea9eda4578ef0c8d509d71`. A fresh guarded watcher confirmed
 that exact head ready, clean/mergeable, build passed, no pending checks, no
