@@ -3,7 +3,8 @@
 Updated: October 19, 2026 (UTC).
 
 **Checkpoint: BOOTSTRAP complete; bounded Milestone 0 audit and full-category
-reference/early website implemented. Source/product and confirmation gates remain
+reference implemented; early research website deployed and publicly verified.
+Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
 ## Repository and ownership
@@ -11,16 +12,21 @@ open. This is a development checkpoint, not a completed validated model.**
 - Exact repository: `NickNicky19/Nicks-multisport-lab-project`.
 - Observed starting `main` / `origin/main`: `de86e92352f0fb5a76831275f6de6b256ce05434`.
 - Implementation commit: **`243bc9e495f25906216f1a438cb060ec64de3f7c`**.
-- Branch: **`implementation/nba-foundation`**. This status revision follows that
-  implementation commit; `git rev-parse HEAD` identifies its exact documentation head.
-- Review: [PR #1](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/1),
-  open and mergeable when checked. No merge or auto-merge was requested.
-- Verified CI revision: `70b74ed49c458fbcc61715df0d26a3f95c983b15`.
+- Landed branch: **`implementation/nba-foundation`**.
+- [PR #1](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/1) merged
+  on 2026-10-19 at 23:23:30 UTC, after the user explicitly requested deployment of
+  its exact head `6c6647108a7e807046aecc5ce93e28dda7b95618`.
+- Deployed `main` commit: **`5d19fa344de5ceaa6e7cc550f0ac8ac832458202`**.
+  Guarded helper/watchers verified ready → landing requested → merged, with a
+  normal merge commit preserving history, no admin bypass or force-push.
+- This deployment-record update is on `docs/pages-deployment`; it does not alter
+  the deployed application or the source/model/product qualification gates.
+- Earlier feature-branch CI revision: `70b74ed49c458fbcc61715df0d26a3f95c983b15`.
   Both [branch run](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39339596935)
   and [PR run](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39339634821)
   completed successfully, including checks, build and artifact upload. Deploy was
-  **skipped** by the non-main guard. This documentation-only update records those
-  observed results; newer checks may be inspected from the PR without implying deployment.
+  **skipped** by the non-main guard at that earlier checkpoint. The main run and
+  completed deployment are recorded in the verified Pages section below.
 - Workspace originally had no project checkout. Cloned the existing remote into
   `/workspace/Nicks-multisport-lab-project`; initial tree clean, no workflows.
   Re-fetched before integration: remote main remained at the starting SHA.
@@ -68,7 +74,7 @@ open. This is a development checkpoint, not a completed validated model.**
 | Website local | Built under repository prefix; Chromium 154 desktop/390px/320px, seven routes/direct reloads, scopes/builder, errors/hash/retention checked | Research inventory and empty collections only; no public forecasts/picks or qualified tickets |
 | Future paper evidence | No issued paper ticket, completed future grade or return | Real offer capture is not a frozen model/ticket/settlement record |
 | Product qualification | **Unavailable**; production/live/priced-selection gates disabled | Generic supplied terms and independence assumptions do not certify providers |
-| Deployment | Workflow implemented; Pages not deployed | Pages creation API returned **403 Resource not accessible by integration**; live URL unverified |
+| Deployment | **Deployed and public HTTP/browser verified** at 2026-10-19 23:25:46 UTC; main build/deploy succeeded | Research inventory and empty states only; no model/product qualification follows |
 
 Exact source routes/clocks/hash/missingness/budgets: [data report](DATA_FEASIBILITY.md)
 and [offer inventory](docs/OFFER_INVENTORY.md). Full results and protocol:
@@ -80,6 +86,26 @@ receipt preserves exact executed source hashes, which match the committed files.
 No score/evaluator code changed after results. It does not backdate issuance.
 Independent review reproduced schedule joins, actual offer import counts, receipt
 integrity, code hashes and all category sample counts without rerunning scores.
+
+## Verified Pages deployment
+
+Live research site: **[Nick’s Multisport Lab](https://nicknicky19.github.io/Nicks-multisport-lab-project/)**.
+[Main workflow 39341268746](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39341268746)
+succeeded in build and deploy; deployment completed 2026-10-19 23:23:58 UTC.
+Root, manifest and NBA asset returned HTTP 200 using system-verified HTTPS. The
+served manifest identifies main commit `5d19fa344de5ceaa6e7cc550f0ac8ac832458202`,
+snapshot `ea7d3bb77ad9e112f8f0f5d5522c01d0ff3f7362869b659cd3e0a1130da84019`,
+and its NBA asset hash matched. The owner’s GitHub Actions source setting resolved
+the earlier integration-only setup blocker; no further Pages setting is pending.
+
+Independent public Chromium checks passed desktop, 390px and 320px, all seven
+routes/direct reloads, repository-prefix assets, shared scope, all 2–6-leg sizes
+and three direction modes with honest NO_ACTION/not-issued states. Public QA used
+a temporary process-only exception pinned to the configured proxy CA for browser
+rendering, with independent urllib HTTPS verification. No persistent trust or
+HOME change occurred. Full bounded evidence:
+[evidence/deployment/2026-10-19-pages.json](evidence/deployment/2026-10-19-pages.json).
+No statistical evaluation, quotes, qualification or future paper outcomes changed.
 
 ## Commands actually run
 
@@ -106,14 +132,11 @@ account, paid service or access bypass. No collector/scheduler was enabled.
 
 ## Remaining uncertainty and next concrete tasks
 
-1. **Review this implementation branch.** Remote PR/CI state is reported alongside
-   this checkpoint; no main merge or deployment is inferred from local checks.
-2. **Pages owner action:** Repository Settings → Pages → Build and deployment →
-   Source: **GitHub Actions**. The connection reported repository admin metadata
-   but its actual create-Pages request was forbidden. After review/merge, require
-   a successful deploy job and HTTP/browser readback of manifest commit and routes
-   before calling the expected URL live:
-   `https://nicknicky19.github.io/Nicks-multisport-lab-project/`.
+1. **PR #1 is merged and its research site is deployed.** The deployment record
+   is a documentation-only follow-up; it does not require a new application rollout.
+2. **Pages setting complete:** Source is GitHub Actions, HTTPS enforced, and
+   workflow plus public manifest commit/hash/routes verified. Preserve the checked
+   static artifact path and main-only deployment guard for subsequent releases.
 3. **Next local implementation package:** version typed event/forecast records
    for research-only static export, retaining exact identities, real issuance,
    input hashes, conditioning and independent gates. Current v1 deliberately
