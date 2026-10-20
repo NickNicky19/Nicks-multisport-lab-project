@@ -620,6 +620,37 @@ class Pros004RecordsTests(unittest.TestCase):
         self.assertIsNone(f.store.lookup_forecast(f.event_ref,'10','K0'))
         self.assertEqual(f.store.ledger._path(ref.kind,ref.record_id).read_bytes(),original)
 
+    def test_callback_final_verification_time_is_included_before_remote_completion(self):
+        from multisport_lab import pros004_snapshot as snapshot
+        f=ProducerFixture(self)
+        body,_=f.generate('R0');reference=f.store.persist_forecast(body,f.event_ref,f.history_ref,f.claim_ref)
+        actual=snapshot._fresh_identical_snapshot
+        def slow_verification(*args,**kwargs):
+            result=actual(*args,**kwargs)
+            # The original callback finished at T90+5; its required subsequent
+            # independent local proof completes after the total120s limit.
+            for clock in (f.record_clock,f.ledger_clock):clock.return_value=CUTOFF+timedelta(seconds=126)
+            return result
+        with patch.object(snapshot,'_fresh_identical_snapshot',side_effect=slow_verification):
+            with self.assertRaisesRegex(IntegrityError,'remote checkpoint completed late'):
+                f.store.complete_checkpoint(reference,f.ack)
+        status=rec.Pros004Store(f.tmp,diagnostic=True).admission_status(reference)
+        self.assertEqual(status['remote_checkpoint_completed_at'],stamp(CUTOFF+timedelta(seconds=126)))
+        self.assertFalse(status['remote_timely']);self.assertFalse(status['eligible_for_comparison'])
+
+    def test_interrupted_callback_final_proof_keeps_original_unacknowledged(self):
+        from multisport_lab import pros004_snapshot as snapshot
+        f=ProducerFixture(self)
+        body,_=f.generate('R0');reference=f.store.persist_forecast(body,f.event_ref,f.history_ref,f.claim_ref)
+        path=f.store.ledger._path(reference.kind,reference.record_id);original=path.read_bytes()
+        with patch.object(snapshot,'_fresh_identical_snapshot',side_effect=IntegrityError('Interrupted final proof')):
+            with self.assertRaisesRegex(IntegrityError,'Interrupted final proof'):
+                f.store.complete_checkpoint(reference,f.ack)
+        recovered=rec.Pros004Store(f.tmp,diagnostic=True).admission_status(reference)
+        self.assertIsNone(recovered['remote_checkpoint_completed_at'])
+        self.assertFalse(recovered['remote_timely']);self.assertFalse(recovered['eligible_for_comparison'])
+        self.assertEqual(path.read_bytes(),original)
+
     def test_event_remote_readback_must_also_finish_before_selection_close(self):
         f=ProducerFixture(self)
         # Retain an independent local-only diagnostic pack, with no original

@@ -760,14 +760,14 @@ class Pros004Store:
             return status
         if not status["local_timely"]:
             raise IntegrityError("original lacks timely local persistence completion; retain it unadmitted")
-        from .pros004_snapshot import snapshot_manifest
-        expected_snapshot=digest(snapshot_manifest(self.root))
+        from .pros004_snapshot import begin_callback_verification
+        verification=begin_callback_verification(self.root)
+        expected_snapshot=digest(verification.manifest)
         started=_now()
         acknowledgment=checkpoint(reference)
         # The callback must publish the actual current prefix, and cannot mutate
         # the original retained state while claiming an unrelated snapshot.
-        if digest(snapshot_manifest(self.root))!=expected_snapshot:
-            raise IntegrityError("checkpoint mutated the retained local snapshot")
+        verification.verify_unchanged(clock=_now)
         completed=_now()  # callback and local verification have completed.
         raw_sha=self._raw_sha256(reference)
         completion.validate_acknowledgment(acknowledgment,reference,started_at=stamp(started),
@@ -798,12 +798,12 @@ class Pros004Store:
         statuses=[self.admission_status(reference) for reference in refs]
         if not all(status["timing_complete"] for status in statuses):
             raise IntegrityError("cannot finalize evidence for unacknowledged or late originals")
-        from .pros004_snapshot import snapshot_manifest
-        expected=digest(snapshot_manifest(self.root))
+        from .pros004_snapshot import begin_callback_verification
+        verification=begin_callback_verification(self.root)
+        expected=digest(verification.manifest)
         prefix=completion.journal_inventory(self.root)["raw_sha256"]
         started=_now();acknowledgment=checkpoint(refs[-1])
-        if digest(snapshot_manifest(self.root))!=expected:
-            raise IntegrityError("final checkpoint mutated the retained local snapshot")
+        verification.verify_unchanged(clock=_now)
         completed=_now()
         completion.validate_acknowledgment(acknowledgment,refs[-1],started_at=stamp(started),
             completed_at=stamp(completed),raw_sha256=self._raw_sha256(refs[-1]))

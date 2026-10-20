@@ -13,6 +13,7 @@ copying them never reclassifies their original issuance or grading evidence.
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 from pathlib import Path
 import re
@@ -24,7 +25,7 @@ from .pros004_completion import (JOURNAL_RELATIVE_PATH, MAX_JOURNAL_BYTES,
     journal_inventory, load_journal)
 from scripts.verify_pros004_readiness import (
     KINDS, MAX_BYTES, MAX_RECORDS, VerificationError, load_receipt, verify_store,
-    _verify_corrections, _verify_original_bytes,
+    _verify_corrections, _verify_original_bytes, _verify_completion_journal,
 )
 
 SCHEMA = "nba-pros004-diagnostic-snapshot-v2"
@@ -32,6 +33,7 @@ LEGACY_SCHEMA = "nba-pros004-diagnostic-snapshot-v1"
 MODE = "READINESS_DIAGNOSTIC_NON_ISSUANCE"
 MANIFEST = "pros004-snapshot.json"
 MAX_MANIFEST_BYTES = 256*1024
+_CALLBACK_PROOF_KEY = object()
 
 
 class SnapshotError(IntegrityError):
@@ -146,6 +148,124 @@ def snapshot_manifest(source_root):
     A missing legacy journal remains missing; recovery never manufactures proof.
     """
     return _manifest_for_schema(source_root)
+
+
+def _callback_context(root):
+    """Bind the actual data directories and the reviewed validation code bytes."""
+    from .pros004_producer import source_hashes
+    root=_path_root(root)
+    _require(root.is_dir() and (root/'records').is_dir(),"callback proof needs an existing records root")
+    directories=[]
+    for path in (root,root/'records'):
+        _require(not path.is_symlink(),"callback proof cannot traverse replaced/symlinked directories")
+        info=path.stat()
+        directories.append([info.st_dev,info.st_ino])
+    return digest({'root':str(root),'directories':directories,'schema':SCHEMA,'mode':MODE,
+        'record_limit':MAX_RECORDS,'byte_limit':MAX_BYTES,'journal_path':JOURNAL_RELATIVE_PATH,
+        'journal_byte_limit':MAX_JOURNAL_BYTES,'source_sha256':source_hashes()})
+
+
+def _fresh_identical_snapshot(root,expected,clock):
+    """Recheck bytes, canonical hashes, references and clocks after a callback.
+
+    Only pure typed semantics for exactly identical bytes are reused. No current
+    timing, completion, durability or admission result is retained by this path.
+    The remote writer still performs its own fresh complete strict verification.
+    """
+    _validate_manifest(expected)
+    _require(expected['schema_version']==SCHEMA,"callback proof requires the current snapshot contract")
+    files=_strict_layout(root)
+    original={entry['path']:entry for entry in expected['entries']}
+    ledger_entries={name:entry for name,entry in original.items() if entry['entry_type']=='LEDGER_RECEIPT'}
+    _require({path.relative_to(root).as_posix() for path in files}==set(ledger_entries),
+             "callback changed the retained receipt inventory")
+    observed_at=utc(clock())
+    records={};hashes={};encoded={};sizes={}
+    for path in files:
+        entry=ledger_entries[path.relative_to(root).as_posix()]
+        # load_receipt freshly decodes strict finite JSON and recomputes the
+        # canonical payload checksum. Exact raw identity also binds that checked
+        # payload hash to the original strictly validated envelope.
+        payload,raw_sha,size=load_receipt(path,maximum=4*1024*1024)
+        _require(raw_sha==entry['raw_sha256'] and size==entry['encoded_bytes'],
+                 "callback changed original receipt bytes")
+        kind=path.parent.name;key=(kind,path.stem)
+        _require(payload['kind']==kind and payload['record_id']==path.stem,
+                 "callback receipt identity changed")
+        received=payload['received_at']
+        _require(type(received) is str and re.fullmatch(
+            r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z',received) is not None and
+            utc(received)<=observed_at,"callback receipt clock exceeds the actual reread clock")
+        records[key]=payload;hashes[key]=entry['payload_sha256'];encoded[key]=raw_sha;sizes[key]=size
+    for payload in records.values():
+        seen=set()
+        for reference in payload['references']:
+            _require(type(reference) is dict and set(reference)=={'kind','record_id','payload_sha256'},
+                     "callback reference contract changed")
+            key=(reference['kind'],reference['record_id'])
+            _require(key not in seen and key in records and hashes[key]==reference['payload_sha256'] and
+                utc(records[key]['received_at'])<=utc(payload['received_at']),
+                "callback reference identity/hash/chronology changed")
+            seen.add(key)
+    _verify_corrections(records,hashes)
+    journal=_verify_completion_journal(root,records,encoded,hashes)
+    expected_journals=[entry for entry in original.values() if entry['entry_type']=='COMPLETION_JOURNAL']
+    _require(journal['files']==len(expected_journals),"callback changed the completion-journal inventory")
+    if expected_journals:
+        entry=expected_journals[0]
+        _require(journal['raw_sha256']==entry['raw_sha256'] and journal['bytes']==entry['encoded_bytes'],
+                 "callback changed original completion-journal bytes")
+        for observation in load_journal(root):
+            _require(utc(observation['recorded_at'])<=observed_at,
+                     "callback completion observation exceeds the actual reread clock")
+    _require(len(records)+journal['files']<=MAX_RECORDS and sum(sizes.values())+journal['bytes']<=MAX_BYTES,
+             "callback proof exceeds unchanged ledger limits")
+    _verify_original_bytes(root,encoded,sizes)
+    _require(journal_inventory(root)==journal,"completion journal changed during callback verification")
+    _require(utc(clock())>=observed_at,"actual callback verification clock moved backwards")
+
+
+class _CallbackVerification:
+    """An opaque, single-use semantic proof for one bounded callback operation."""
+    __slots__=('__root','__context','__manifest_bytes','__used')
+
+    def __init__(self,root,manifest,context,*,_key=None):
+        _require(_key is _CALLBACK_PROOF_KEY,"callback proofs must originate from strict verification")
+        self.__root=root;self.__context=context;self.__used=False
+        self.__manifest_bytes=canonical(manifest)
+        _require(len(self.__manifest_bytes)<=MAX_MANIFEST_BYTES,"callback proof manifest exceeds its memory bound")
+
+    @property
+    def manifest(self):
+        return json.loads(self.__manifest_bytes)
+
+    def verify_unchanged(self,*,clock):
+        _require(not self.__used,"callback verification proof has already been consumed")
+        self.__used=True  # A failed/interrupted proof cannot be retried as success.
+        try:
+            _require(callable(clock),"callback verification requires the actual clock reader")
+            _require(_callback_context(self.__root)==self.__context,
+                     "callback root/schema/source context changed")
+            expected=json.loads(self.__manifest_bytes)
+            _fresh_identical_snapshot(self.__root,expected,clock)
+            _require(_callback_context(self.__root)==self.__context,
+                     "callback root/schema/source context changed during verification")
+            return json.loads(self.__manifest_bytes)
+        except (IntegrityError,VerificationError,OSError,KeyError,TypeError,ValueError) as error:
+            if isinstance(error,SnapshotError):raise
+            raise SnapshotError('callback snapshot verification rejected: '+str(error)) from error
+
+
+def begin_callback_verification(source_root):
+    """Run complete strict verification before creating a one-operation proof.
+
+    This factory accepts no caller-supplied manifest or cached admission result.
+    A proof cannot be transferred to another root or reused by another callback.
+    """
+    root=_path_root(source_root);context=_callback_context(root)
+    manifest=snapshot_manifest(root)
+    _require(_callback_context(root)==context,"root/source context changed during strict callback verification")
+    return _CallbackVerification(root,manifest,context,_key=_CALLBACK_PROOF_KEY)
 
 
 def recover_manifest_prefix(source_root, journal_raw_sha256, operation_started_at):

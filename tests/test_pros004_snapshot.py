@@ -3,6 +3,7 @@ from pathlib import Path
 from datetime import datetime,timedelta,timezone
 import hashlib
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -39,6 +40,121 @@ def refresh_manifest(root):
 
 
 class Pros004SnapshotTests(unittest.TestCase):
+    def test_callback_proof_reuses_only_identical_semantics_and_is_single_use(self):
+        from multisport_lab import pros004_producer as producer
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);make_store(root)
+            proof=snapshot.begin_callback_verification(root)
+            expected=proof.manifest
+            returned=proof.manifest;returned['entries'][0]['raw_sha256']='f'*64
+            with (patch.object(snapshot,'verify_store',side_effect=RuntimeError('No second semantic pass')),
+                    patch.object(producer,'generate_forecast',side_effect=RuntimeError('No generation')),
+                    patch.object(producer,'_fit_laws',side_effect=RuntimeError('No model fit'))):
+                actual=proof.verify_unchanged(clock=lambda:datetime.now(timezone.utc))
+            self.assertEqual(actual,expected)
+            actual['entries'].clear()
+            self.assertEqual(proof.manifest,expected)
+            with self.assertRaisesRegex(snapshot.SnapshotError,'consumed'):
+                proof.verify_unchanged(clock=lambda:datetime.now(timezone.utc))
+            with self.assertRaisesRegex(snapshot.SnapshotError,'originate from strict'):
+                snapshot._CallbackVerification(root,expected,'not a proof')
+
+    def test_callback_proof_rejects_resealed_receipt_and_cannot_retry_after_failure(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);store=make_store(root)
+            proof=snapshot.begin_callback_verification(root)
+            path=next((root/'records/input_captures').glob('*.json'))
+            original=path.read_bytes();envelope=json.loads(original)
+            envelope['payload']['data']['note']='Changed with a valid checksum'
+            envelope['payload_sha256']=digest(envelope['payload']);path.write_bytes(canonical(envelope))
+            with self.assertRaisesRegex(snapshot.SnapshotError,'original receipt bytes'):
+                proof.verify_unchanged(clock=lambda:datetime.now(timezone.utc))
+            path.write_bytes(original)
+            with self.assertRaisesRegex(snapshot.SnapshotError,'consumed'):
+                proof.verify_unchanged(clock=lambda:datetime.now(timezone.utc))
+
+    def test_callback_proof_rejects_resealed_typed_status_phase_and_parent_mutations(self):
+        from test_pros004_producer import ProducerFixture
+        for subject in ('event-status','phase-proof','parent-history'):
+            with self.subTest(subject=subject):
+                f=ProducerFixture(self);proof=snapshot.begin_callback_verification(f.tmp)
+                reference={'event-status':f.event_ref,'phase-proof':f.claim_ref,'parent-history':f.history_ref}[subject]
+                path=f.store.ledger._path(reference.kind,reference.record_id)
+                envelope=json.loads(path.read_bytes());body=envelope['payload']['data']['pros004']
+                if subject=='event-status':
+                    body['event']['status']='FINAL'
+                    body['sourcepack_id']=digest({key:value for key,value in body.items() if key!='sourcepack_id'})
+                elif subject=='phase-proof':body['input_final_checkpoint']['snapshot_sha256']='f'*64
+                else:body['history_id']='f'*64
+                envelope['payload_sha256']=digest(envelope['payload']);path.write_bytes(canonical(envelope))
+                with self.assertRaisesRegex(snapshot.SnapshotError,'original receipt bytes'):
+                    proof.verify_unchanged(clock=f.record_clock)
+
+    def test_callback_proof_rejects_fresh_inventory_and_directory_replacements(self):
+        for change in ('unpublished','removed','symlink','replaced-root'):
+            with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
+                parent=Path(folder);root=parent/'source';make_store(root)
+                proof=snapshot.begin_callback_verification(root)
+                if change=='unpublished':
+                    (root/'records/input_captures/.receipt-interrupted').write_bytes(b'Unpublished original')
+                elif change=='removed':next((root/'records/input_captures').glob('*.json')).unlink()
+                elif change=='symlink':
+                    (root/'records').rename(parent/'original-records')
+                    (root/'records').symlink_to(parent/'original-records',target_is_directory=True)
+                else:
+                    root.rename(parent/'original-root');shutil.copytree(parent/'original-root',root)
+                with self.assertRaises(snapshot.SnapshotError):
+                    proof.verify_unchanged(clock=lambda:datetime.now(timezone.utc))
+
+    def test_callback_proof_rejects_journal_append_removal_and_resealed_replacement(self):
+        from multisport_lab import pros004_completion as completion
+        for change in ('added','removed','replaced'):
+            with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
+                root=Path(folder);past=datetime.now(timezone.utc)-timedelta(minutes=1)
+                with patch('multisport_lab.ledger._now',return_value=past):
+                    store=make_store(root,count=1)
+                payload=next(iter(store.scan()['input_captures'].values()))
+                from multisport_lab.ledger import LedgerRef
+                reference=LedgerRef('input_captures',payload['record_id'],digest(payload))
+                raw_sha=hashlib.sha256(store._path(reference.kind,reference.record_id).read_bytes()).hexdigest()
+                def append():
+                    completion.append_completion(root,reference,mode='SYNTHETIC_DIAGNOSTIC',raw_sha256=raw_sha,
+                        completed_at=past+timedelta(seconds=1),recorded_at=past+timedelta(seconds=1))
+                if change!='added':append()
+                proof=snapshot.begin_callback_verification(root);path=completion.journal_path(root)
+                if change=='added':append()
+                elif change=='removed':path.unlink()
+                else:
+                    entry=json.loads(path.read_bytes())
+                    entry['recorded_at']=stamp(past+timedelta(seconds=2))
+                    entry['entry_sha256']=digest({key:value for key,value in entry.items() if key!='entry_sha256'})
+                    path.write_bytes(canonical(entry)+b'\n')
+                with self.assertRaisesRegex(snapshot.SnapshotError,'journal'):
+                    proof.verify_unchanged(clock=lambda:datetime.now(timezone.utc))
+
+    def test_callback_proof_rejects_new_correction_and_actual_clock_or_source_changes(self):
+        from multisport_lab import pros004_producer as producer
+        for change in ('correction','old-clock','backwards-clock','source-context'):
+            with self.subTest(change=change),tempfile.TemporaryDirectory() as folder:
+                root=Path(folder);store=make_store(root)
+                first=store.append('outcomes','synthetic-original',{'identity':{'player':'10'},'note':'Original'})
+                replacement=store.append('outcomes','synthetic-replacement',{'identity':{'player':'10'},'note':'Replacement'})
+                proof=snapshot.begin_callback_verification(root)
+                if change=='correction':
+                    store.correct(first,replacement,reason='Synthetic correction after snapshot')
+                    with self.assertRaises(snapshot.SnapshotError):proof.verify_unchanged(clock=lambda:datetime.now(timezone.utc))
+                elif change=='old-clock':
+                    with self.assertRaisesRegex(snapshot.SnapshotError,'clock'):
+                        proof.verify_unchanged(clock=lambda:datetime(2020,1,1,tzinfo=timezone.utc))
+                elif change=='backwards-clock':
+                    now=datetime.now(timezone.utc);values=iter((now+timedelta(seconds=1),now))
+                    with self.assertRaisesRegex(snapshot.SnapshotError,'moved backwards'):
+                        proof.verify_unchanged(clock=lambda:next(values))
+                else:
+                    with patch.object(producer,'source_hashes',return_value={'changed_source':'f'*64}):
+                        with self.assertRaisesRegex(snapshot.SnapshotError,'context changed'):
+                            proof.verify_unchanged(clock=lambda:datetime.now(timezone.utc))
+
     def test_raw_prefix_reconstruction_is_exact_without_semantic_recursion(self):
         from multisport_lab import pros004_completion as completion
         with tempfile.TemporaryDirectory() as folder:
