@@ -1,5 +1,22 @@
 # Verification history and delivery status
 
+## Manual pinned-cycle preparation — October 19 evening Central / October 20 UTC
+
+Producer `58530309cf384425e15f02fd9fa980899a4dc0bc` remains byte-identical across
+all nine checked files. The independent synthetic changed-commit recovery defect
+was reproduced, and the separate operating guard rejects it before generation.
+All 234 Python tests (13 guard regressions), 35 frontend tests, demo, local
+artifact smoke and ten Bash block syntax checks pass. Independent read-only
+preflight, early phase/preparation-input rejection and full 26,645-row / 1,231-game /
+14,720,351-byte panel readback pass. All 19 real records and 34 frozen/source
+files remain unchanged. Phase is `CAPTURE_NOT_YET_OPEN`, no fresh binding or
+actual issuance exists. No provider capture, new model evaluation, prospective
+grade, settlement or deployment occurred. Proof:
+`evidence/cycles/2026-10-20-manual-pilot-preflight.json`. The fixed plan and complete
+manual operating/recovery/publication/grading commands are in
+`docs/PREGAME_RESEARCH_CYCLE.md`. The existing CI fetches the two exact Git
+provenance commits for shallow source-byte tests; it adds no collector/schedule.
+
 ## Current public deployment: PR #5 — October 19 evening Central / October 20 UTC
 
 Approved head 713716a17465c93d32795aabba9e0a8c9c3a5e8c merged unchanged as main

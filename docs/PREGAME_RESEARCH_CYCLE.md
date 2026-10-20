@@ -82,58 +82,340 @@ use for this later event. Latest history starts April13,2026; no2026–27 comple
 appearances or current role/minute/injury features are supplied. Long staleness is
 a material forecast limitation, not silently filled using future information.
 
-## Manual commands and recovery
+## Frozen producer and cycle metadata
 
-The committed preparation input record is
-`dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc`.
-The refreshed capture recovers all original history from it, without `/tmp`
-Parquets or PyArrow. It still performs four actual current event/roster requests.
-Use a new create-only output filename for every attempt.
+The reviewed producer for this cycle is **exactly**
+`58530309cf384425e15f02fd9fa980899a4dc0bc`. Never derive `--model-commit` from
+HEAD. Committing input/forecast records, a handoff or a publication artifact can
+move HEAD without changing the executed model. All retries and readback retain
+this producer SHA and the **same fresh input record ID**.
 
-During the capture window:
+The create-only plan is
+`evidence/cycles/2026-10-20-nba-401909088-plan.json` (payload SHA256
+`22ae8db607374486ebee6eb569d236a3d27aedc8535c3085a6b6858226921908`).
+It freezes the producer, its nine checked source hashes, event/version, selected
+IDs/selection hash, capture/issuance bounds, history-only preparation reference
+and all 19 original record hashes. Its actual preparation clock does not claim
+capture or issuance. A later create-only binding at
+`evidence/cycles/nba-20261020-401909088-t90-r1-binding.json` retains the exact plan
+hash, producer SHA, complete fresh input LedgerRef and actual binding clock.
+No fresh input binding exists yet. The plan is metadata, not a forecast.
+
+`multisport_lab.manual_cycle` is a bounded operating guard outside the reviewed
+producer's `MODEL_FILES`; the producer and ledger bytes remain unchanged. It
+verifies those executed bytes against the pinned Git commit and plan. Before
+calling the reviewed `issue_cohort`, it checks all original forecasts for this
+cycle, across model revisions and input IDs. A different model/input, duplicate
+original or changed subject blocks recovery instead of creating another original
+cohort. The direct reviewed `prospective issue` command alone does not have this
+cross-model guard: **use the guarded command below for this cycle**. Direct API
+hardening remains a separately versioned follow-up with the changed-model
+regression case; it must not silently change this reviewed producer's identity.
+
+## Local preflight — safe outside the execution window
+
+Run from this repository; keep newer legitimate work. These commands perform no
+source capture, model issuance, outcome capture or grading:
 
 ```bash
+cd /workspace/Nicks-multisport-lab-project
+git status --short --branch
+python3 -m multisport_lab.manual_cycle preflight \
+  --plan evidence/cycles/2026-10-20-nba-401909088-plan.json
+python3 -m multisport_lab.manual_cycle recover \
+  --plan evidence/cycles/2026-10-20-nba-401909088-plan.json
+```
+
+A shallow checkout must first fetch the two exact provenance objects; this is
+GitHub repository history, not a provider capture or a branch reset:
+
+```bash
+git fetch --no-tags --depth=1 origin \
+  58530309cf384425e15f02fd9fa980899a4dc0bc \
+  c19bcd67d4fefe7f818fed569c683db9cc5ab9fc
+```
+
+The existing Actions workflow performs the same bounded fetch before testing.
+
+Preflight validates the retained full-history record and all original receipts;
+its phase is diagnostic, never timely-capture admission. `recover` only reads
+records, reports original issue/receipt clocks, selected/missing subjects and
+partial/complete state. It can be run after the window or event without generating
+anything. Check the actual local UTC clock before any operating command. No sleep,
+cron, workflow schedule or background collector is installed by this runbook.
+
+## Capture and input persistence — October 20, 12:20–12:30 p.m. CDT
+
+The early preparation ID
+`dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc`
+is used **only** by `--history-input-record-id`. It recovers all 26,645 original
+normalized rows with their original clocks, without `/tmp` Parquets or PyArrow.
+It must never be supplied as the issuance input ID. Capture makes four actual
+current event/roster requests and revalidates the exact selected event/version,
+teams, player IDs/labels and active statuses. Changed source facts block this
+cycle; do not alter the plan, swap players or silently change the event.
+
+During the capture window only, in a shell that stops on an error:
+
+```bash
+set -eu
+python3 -m multisport_lab.manual_cycle preflight \
+  --plan evidence/cycles/2026-10-20-nba-401909088-plan.json --require-capture-window
+test ! -e .local-data/pregame-cycle/t90-sourcepack.json
+test ! -L .local-data/pregame-cycle/t90-sourcepack.json
+test ! -e .local-data/pregame-cycle/t90-persist-report.json
+test ! -L .local-data/pregame-cycle/t90-persist-report.json
+set -C
 python3 -m multisport_lab.pregame_sources capture \
   --event 401909088 --date 20261020 \
   --selection evidence/data/2026-10-20-pregame-cycle-cohort.json \
   --history-input-record-id dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc \
   --raw-directory .local-data/pregame-cycle/t90 \
   --output .local-data/pregame-cycle/t90-sourcepack.json
-python3 -m multisport_lab.prospective persist --pack .local-data/pregame-cycle/t90-sourcepack.json
+python3 -m multisport_lab.prospective persist \
+  --pack .local-data/pregame-cycle/t90-sourcepack.json \
+  > .local-data/pregame-cycle/t90-persist-report.json
+NML_FRESH_INPUT_ID="$(python3 -c 'import json; print(json.load(open(".local-data/pregame-cycle/t90-persist-report.json"))["input_reference"]["record_id"])')"
+python3 -m multisport_lab.manual_cycle bind \
+  --plan evidence/cycles/2026-10-20-nba-401909088-plan.json \
+  --input-record-id "$NML_FRESH_INPUT_ID"
 ```
 
-The persist command returns the exact research_inputs record ID. At or after
-T90, still within the five-minute issuance window:
+All response observations, normalization, actual ledger persistence and binding
+must finish by **17:30 UTC**. Allow time for four at-most-30-second source reads,
+normalization and persistence; starting a request before cutoff is insufficient.
+The output prechecks and shell noclobber prevent accidental overwriting/redundant
+requests on a copied capture block. If persistence finished but stdout was lost,
+recover its ID without another request or append, then bind it while still timely:
 
 ```bash
-python3 -m multisport_lab.prospective issue \
-  --input-record-id <ID returned by persist> --model-commit "$(git rev-parse HEAD)"
+set -eu
+NML_FRESH_INPUT_ID="$(python3 - <<'PY_ID'
+from multisport_lab.integrity import digest, read_receipt
+from multisport_lab.ledger import Ledger, LedgerRef
+from multisport_lab.pregame_sources import load_pack
+pack = load_pack('.local-data/pregame-cycle/t90-sourcepack.json')
+record_id = digest({'kind': 'research_inputs', 'logical_id': 'research-inputs:'+digest(pack)})
+store = Ledger()
+payload = read_receipt(store._path('research_inputs', record_id), max_bytes=4*1024*1024)
+ref = LedgerRef('research_inputs', record_id, digest(payload))
+assert store.read(ref)['data']['source_pack'] == pack
+print(record_id)
+PY_ID
+)"
+python3 -m multisport_lab.manual_cycle bind \
+  --plan evidence/cycles/2026-10-20-nba-401909088-plan.json \
+  --input-record-id "$NML_FRESH_INPUT_ID"
 ```
 
-The full model commit must contain the exact executed producer, normalizer,
-ledger, probability/count/integrity dependencies and historical-panel preparation
-source. Uncommitted/different model code fails. The operating wrapper does not
-claim that the R0 model itself is newly trained, calibrated or promoted.
+The report file and shell variable are conveniences: the original input receipt
+and create-only cycle binding are the authoritative records and must be committed
+and pushed. A retry reads the existing binding and input; it does not recapture.
 
-Records are create-only and idempotent. After interruption, already issued cohort
-subjects recover unchanged; only missing subjects may generate while still timely.
-A partial cohort is never reported complete. Readback after the event recovers
-original inputs/probabilities/clocks without rerunning the model or needing the
-large source Parquets. Direct generic append cannot create a new prospective
-forecast from a self-supplied attestation. The consistency attestation is not a
-cryptographic signature or upstream authenticity proof.
+If capture was interrupted before any binding, inspect the actual partial state.
+A further explicit capture attempt may use a new create-only raw/output path only
+while capture is still timely, before any subject was issued. Keep failed evidence
+and actual failure clocks. Once bound, do not replace the fresh input. If the
+capture/persistence window is missed, report failure; do not issue from the early
+pack or shift/backdate a clock. `persist` alone can store an early research pack;
+only successful guard validation/binding admits that pack for this cycle.
 
-Local writes still require commit/push and independent remote byte/readback
-verification. Commit the exact new records, normally push, and complete the
-existing PR workflow; publication consumes retained records and performs no live
-capture/model rebuild. Use the independently reviewed, committed producer for
-actual issuance. Publishing a changed main site follows the existing per-PR
-exact-head landing authorization; an open PR is not a deployed site. If timely
-capture or issuance fails, report no issuance and do not backdate it.
+## Issuance and interrupted recovery — 12:30–12:35 p.m. CDT
 
-The website distinguishes future captured records from historical reconstruction,
-shows explicit generation/capture/history dates, and keeps missing grades pending.
-Passing the event-start clock moves a captured record to History without implying
-completion. Performance groups by lane and exact model. Verified outcomes and
-statistical grades are appended later through the separate manual grading path;
-financial settlement and qualified tickets remain unavailable.
+In any restarted shell, recover the same fresh ID from the create-only binding:
+
+```bash
+set -eu
+NML_FRESH_INPUT_ID="$(python3 -c 'from multisport_lab.integrity import read_receipt; print(read_receipt("evidence/cycles/nba-20261020-401909088-t90-r1-binding.json")["input_reference"]["record_id"])')"
+python3 -m multisport_lab.manual_cycle issue \
+  --plan evidence/cycles/2026-10-20-nba-401909088-plan.json \
+  --input-record-id "$NML_FRESH_INPUT_ID" \
+  --model-commit 58530309cf384425e15f02fd9fa980899a4dc0bc
+python3 -m multisport_lab.manual_cycle recover \
+  --plan evidence/cycles/2026-10-20-nba-401909088-plan.json
+```
+
+Use one operator process at a time; do not run capture/issuance or retries in
+parallel. Run issuance only at/after **17:30 UTC**. Generation must complete within
+120 seconds per subject; verification and original forecast persistence must
+finish by **17:35 UTC**. The guard passes the fixed SHA to the unchanged reviewed
+producer, which enforces actual clocks. The four selected subjects each retain
+all 13 categories plus PA from coherent shared stat outcomes.
+
+On failure or interruption, run `recover` even if the issuance shell stopped.
+It must report the actual partial count/missing IDs. Repeat the same guarded
+`issue` command with the original SHA/input only while timely. Already-issued
+subjects recover byte-for-byte; only missing subjects may generate. If all are
+already present, a late retry may read them; if any remain missing after the
+window, preserve and publish the partial state without generating replacements.
+Never use a later HEAD as a new model identity to "recover" the same cycle.
+
+## Commit, push and independent remote recovery
+
+Use one ordinary records branch derived from the preparation branch. Do not reset
+newer work. Even a partial/failure checkpoint should retain its actual new input,
+binding and any originals. Inspect/stage exact new receipt paths; never stage raw
+responses, `.local-data`, all of `evidence/`, or unrelated changes indiscriminately.
+Refresh the manifest using only its tracked existing entries and the selected
+new tracked evidence/record paths. Run the repository's software checks and
+artifact smoke check before publication; none of them performs actual capture.
+
+For a successful or accurately partial issuance checkpoint:
+
+```bash
+set -eu
+# First creation only; on retry retain/switch to the existing branch.
+git switch -c records/nba-20261020-401909088-t90
+# First update HANDOFF_STATUS.md with actual clocks/counts/partial state.
+git status --short
+python3 - <<'PY_STAGE'
+import subprocess
+from pathlib import Path
+from multisport_lab.manual_cycle import recover
+report = recover()
+assert report['input_reference'] is not None, 'No bound input: document the failure manually'
+paths = [f"records/research_inputs/{report['input_reference']['record_id']}.json",
+         'evidence/cycles/nba-20261020-401909088-t90-r1-binding.json', 'HANDOFF_STATUS.md']
+paths += [f"records/forecasts/{item['reference']['record_id']}.json"
+          for item in report['forecast_records'].values()]
+assert all(Path(name).is_file() for name in paths)
+print('Stage only these inspected paths:', *paths, sep='\n')
+subprocess.run(['git', 'add', '--', *paths], check=True)
+PY_STAGE
+python3 - <<'PY_MANIFEST'
+import hashlib, subprocess
+from pathlib import Path
+names = subprocess.check_output(['git', 'ls-files', '-z']).decode().split('\0')
+paths = sorted(name for name in names if name and name != 'MANIFEST.sha256')
+Path('MANIFEST.sha256').write_text(''.join(
+    hashlib.sha256(Path(name).read_bytes()).hexdigest()+'  '+name+'\n' for name in paths))
+PY_MANIFEST
+sha256sum --check --quiet MANIFEST.sha256
+git add -- MANIFEST.sha256
+git diff --cached --stat
+git diff --cached --check
+git commit -m 'Record actual manual NBA pregame pilot state'
+NML_RECORD_BRANCH="$(git branch --show-current)"
+NML_RECORD_COMMIT="$(git rev-parse HEAD)"
+printf 'Records checkpoint: %s\n' "$NML_RECORD_COMMIT"
+git push -u origin "$NML_RECORD_BRANCH"
+```
+
+If that records branch already exists, retain it and skip branch creation; do not
+replace or reset it. Retain the printed full `NML_RECORD_COMMIT` for this checkpoint
+if the shell restarts; do not silently replace it with a later HEAD.
+
+That commit is a **records revision**, not a replacement producer revision.
+Retries still use the pinned `58530309...` and binding's exact input ID.
+Independently fetch the same remote project into a fresh readback directory:
+
+```bash
+set -eu
+NML_RECOVERY_DIR="$(mktemp -d /tmp/nml-pregame-readback.XXXXXX)"
+git clone --single-branch --branch "$NML_RECORD_BRANCH" \
+  https://github.com/NickNicky19/Nicks-multisport-lab-project.git "$NML_RECOVERY_DIR"
+test "$(git -C "$NML_RECOVERY_DIR" rev-parse HEAD)" = "$NML_RECORD_COMMIT"
+(cd "$NML_RECOVERY_DIR" && \
+  python3 -m multisport_lab.manual_cycle recover \
+    --plan evidence/cycles/2026-10-20-nba-401909088-plan.json)
+python3 - "$NML_RECORD_COMMIT" "$NML_RECOVERY_DIR" <<'PY_REMOTE'
+import hashlib, subprocess, sys
+from pathlib import Path
+commit, remote = sys.argv[1], Path(sys.argv[2])
+for directory in ('records', 'evidence/cycles'):
+    names = subprocess.check_output(
+        ['git', 'ls-tree', '-r', '--name-only', commit, '--', directory], text=True).splitlines()
+    paths = sorted(name for name in names if name.endswith('.json'))
+    recovered = sorted(str(p.relative_to(remote)) for p in (remote/directory).glob('**/*.json'))
+    assert paths == recovered, 'Remote checkpoint inventory differs'
+    for name in paths:
+        expected = subprocess.check_output(['git', 'show', f'{commit}:{name}'])
+        assert expected == (remote/name).read_bytes(), name
+        print(hashlib.sha256(expected).hexdigest(), name)
+print('Exact committed remote record/metadata bytes recovered; no generation performed.')
+PY_REMOTE
+```
+
+If the remote advanced, investigate and preserve that revision; do not reset it.
+Record the actual remote revision, original forecast/input refs/clocks, byte
+comparisons and readback time in the handoff/evidence and push that documentation
+normally. Readback is a fresh process with no source requests, forecasts or
+probability regeneration. Local/browser/temp files alone do not establish remote
+durability; a normal push plus independent remote receipt validation is required.
+
+## Publication — separate from issuance
+
+After the records commit and independent recovery:
+
+```bash
+set -eu
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.publication --build-commit "$(git rev-parse HEAD)"
+node web/tests/site-smoke.mjs output
+gh pr create --repo NickNicky19/Nicks-multisport-lab-project --base main \
+  --head "$(git branch --show-current)" \
+  --title 'Publish actual manual NBA pregame pilot records' \
+  --body-file .local-data/pregame-cycle/publication-pr.md
+```
+
+Write that PR body first with the actual count, partial/failure state, exact
+record/producer revisions, clocks, coverage, recovery results and pending grades.
+The export's build SHA identifies the published repository snapshot; unlike
+`--model-commit`, it legitimately follows the new records/publication revision.
+Do not replace the original forecast's model SHA with the export/build SHA.
+
+Complete the existing guarded PR checks/review/exact-head landing workflow.
+Explicit per-PR approval is required to merge/deploy a new publication PR; past
+PR #5 approval does not cover it. Main's existing workflow builds validated static
+records and deploys; a branch build or open PR does not deploy. Verify the actual
+main merge/workflow, public manifest build SHA, asset hashes and desktop/mobile
+Upcoming/History/Performance. After start, History does not itself mean a completed
+or graded result. A site refresh never scrapes sources or rebuilds a model.
+
+## Later verified outcomes and statistical grading
+
+Keep all actual prospective forecasts pending until verified final evidence
+exists. After the event has actually started and a completed result is expected,
+recover the original binding/records and explicitly run:
+
+```bash
+set -eu
+NML_FRESH_INPUT_ID="$(python3 -c 'from multisport_lab.integrity import read_receipt; print(read_receipt("evidence/cycles/nba-20261020-401909088-t90-r1-binding.json")["input_reference"]["record_id"])')"
+python3 -m multisport_lab.manual_cycle recover \
+  --plan evidence/cycles/2026-10-20-nba-401909088-plan.json
+python3 -m multisport_lab.prospective_outcomes \
+  --event 401909088 --input-record-id "$NML_FRESH_INPUT_ID" \
+  --raw-directory .local-data/pregame-cycle/outcomes
+```
+
+This makes one actual bounded source request when eligible, retains its actual
+capture clock/hash, validates final identity/teams/start/period/stat arithmetic,
+and appends separate outcomes/statistical grades only for verified selected rows.
+Nonfinal, missing or unclear participation stays pending; do not force an
+UNRESOLVED record or assign a zero line. Explicit source DNP becomes
+`DNP_NOT_SCORED` with no category scores. A verified appearance scores all 14
+original category PMFs; finite-support failures remain `ZERO_SUPPORT` rather
+than silently smoothing. `UNRESOLVED` ledger semantics do not authorize inventing
+an observation when the source is ambiguous.
+
+An actually verified changed final line requires an explicit reason:
+
+```bash
+set -eu
+python3 -m multisport_lab.manual_cycle recover \
+  --plan evidence/cycles/2026-10-20-nba-401909088-plan.json
+python3 -m multisport_lab.prospective_outcomes \
+  --event 401909088 --input-record-id "$NML_FRESH_INPUT_ID" \
+  --raw-directory .local-data/pregame-cycle/outcome-corrections \
+  --correct-outcomes --correction-reason 'REPLACE WITH THE ACTUAL VERIFIED CORRECTION'
+```
+
+Never run that placeholder as a claimed correction. Unchanged source outcomes
+recover original clocks and receipts; changed verified outcomes/grades append
+traceable correction links while preserving originals. Recover, commit/push,
+independently read back and publish grades through the same separate workflow.
+Statistical grades are not venue financial settlement. K0, prior experiments,
+PROS004 activation, qualified tickets and predictive qualification remain outside
+this operating pilot. Qualification stays unavailable.
