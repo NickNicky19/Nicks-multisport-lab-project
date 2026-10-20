@@ -2,6 +2,176 @@
 
 Updated: October 20, 2026 (UTC).
 
+
+## October 20, 20:51 UTC — final local checks and independently checked partial recovery
+
+This completes the local correction package on draft [PR #10](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/10).
+Producer/driver source stays **71329d184f3857c9e75ee6cf12bbe841c6e4cccb**;
+Python/frontend test revision is **80f17e12d78406f8ac38d7b319ac2e051ecccf59**.
+The subsequent browser-test-only correction waits for destination headings after
+hash navigation; no UI, fixture, model, input, frozen pilot or source pin changed.
+Final remote-head/check-run evidence is recorded after pushing this checkpoint.
+No activation, scheduler, genuine issuance, merge or deployment is requested.
+
+Commands and actual results:
+
+| Command | Observed result |
+| --- | --- |
+| `python3 -m unittest discover -s tests -v` | **434 PASS**, 216.286s |
+| `python3 -O -m unittest discover -s tests -p 'test_pros004*.py' -v` | **156 PASS**, 214.149s |
+| `node --test --test-isolation=none web/tests/*.test.mjs` | **46 PASS** |
+| `python3 -m multisport_lab.demo` | PASS |
+| `python3 -m multisport_lab.publication --build-commit 80f17e12d78406f8ac38d7b319ac2e051ecccf59` | PASS; local schema3 artifact |
+| `node web/tests/site-smoke.mjs output` | PASS; relative assets and strict hash/schema readback |
+| `python3 -O web/tests/pros004_browser_smoke.py` | PASS twice after test-only route wait; desktop1440/mobile390, paired all14/PA, individual DNP, no reserved aggregate, scopes, 2–6/all directions/NO_ACTION |
+| `node /tmp/nml-pros004-artifact-inventory-v3.mjs` | PASS;13 local artifact files hashed,6 unchanged historical bundles/grades with all14; actual PROS004 records0; accurate unavailable Upcoming reasons |
+
+The initial browser invocation failed because it inspected the previous Props DOM
+before asynchronous Performance navigation finished. Its failed receipt/log is
+retained, not overwritten. The follow-up final software receipt links all six
+unchanged passing checks and the successful optimized browser retry, including
+exact verifier hash. New PROS004/verifier/browser Python has zero disappearing
+assert nodes. This establishes software behavior, not predictive quality.
+
+Independent normal/optimized verification accepts the partial store's byte/hash/
+reference/typed semantics, rejects its failed report as readiness, and confirms
+late recovery creates nothing. Precise local-versus-remote clarification: all six
+originals have timely local/original-remote proof; the independently reconstructed
+last fetched prefix proves only five, missing the final1,399-byte ACK entry.
+The sixth original's embedded remote readback completed at T90+291.127777s,
+post-verification completion+296.424543s, journal observation+296.638528s: it is
+**timely**, not a late original. Later bookkeeping/window check prevents model7.
+The diagnostic driver performed the actual fresh Git fetch; the separate reviewer
+reconstructed its exact prefix after that temporary bare remote was cleaned and
+does not claim an additional fresh remote fetch. No missing peer is regenerated.
+
+Actual GitHub idempotent restart used the new source against the retained writer:
+
+```bash
+PYTHONPATH=. python3 /tmp/nml-pros004-github-restart-probe.py \
+  71329d184f3857c9e75ee6cf12bbe841c6e4cccb \
+  evidence/research/pros004-github-idempotent-restart-v3.json
+python3 -m multisport_lab.pros004_load_diagnostic \
+  --output evidence/research/pros004-transport-load-20261020-v2.json \
+  --work-root /tmp/nml-pros004-generic-load-71329d18
+```
+
+GitHub restart/readback **12.123s**, same diagnostic head
+**8684aed08382d6be6c7e83ff93ee833888608d55**,21 files/1,820,865 bytes;
+**zero new records, commits or stored acknowledgments**. Every original byte and
+clock survived. Generic local-bare-Git load:499 explicitly synthetic receipts /
+25,165,824 bytes,7.435s checkpoint,8.810s total. This excludes typed study/model
+execution and hosted worst-case latency. The actual full-history typed result
+remains **PARTIAL_OR_FAILED_TIMING**,312.366s against300s; no old passing/fixed-clock
+result replaces it. Complete allocation stays499+13/512,24,576,000/33,554,432 bytes.
+
+Durable evidence under `evidence/verification/`: `pros004-software-checks-v3.json`
+(initial mixed result), `pros004-software-checks-v3-final.json`,
+`pros004-local-artifact-v3.json`, `pros004-independent-review-v3.json`.
+New research receipts are `pros004-readiness-measurement-v3.json`,
+`pros004-transport-load-20261020-v2.json`, and
+`pros004-github-idempotent-restart-v3.json`. Prior v1/v2 receipts remain unchanged.
+Exact source/file inventories and commands are bound in these receipts, source
+commit71329d1, test commit80f17e1 and the final manifest. The additional changed
+browser file is `web/tests/pros004_browser_smoke.py`; no runtime source changed
+since the timing pin. Detailed contracts/checklist: `docs/PROS004_COMPLETION.md`,
+`docs/PROS004_PUBLIC_EXPORT.md`, `docs/PROS004_READINESS.md`.
+
+Operational pilot finding remains **MISSED_OR_UNOBSERVED_EXECUTION**, cause
+**NOT_ESTABLISHED**, as of the20:30 read-only follow-up. Original PR8/records,
+workflow/producer, paused native task, PR9/DEV005 and NFL/MLB boundaries remain
+preserved. Three earlier permitted metadata GETs did not establish complete UTC
+inventory; actual firstT90 is **unknown**. The theoretical earliest22:30UTC /
+17:30CDT and conditional midnight candidate are not interchangeable deadlines.
+
+Remaining activation dependencies: cohort and maximum typed/hosted timing;
+complete permitted UTC inventory/actual cutoff and source operational admission;
+private primary raw outcome retention/full budget/outcome linkage; reviewed genuine
+entrypoint final-admission-publication proof and destination; exact reviewed remote
+activation evidence. The original reservation stays inactive and will not move or
+backfill. If its actual first cutoff passes, any later study needs a new reservation.
+
+**Next concrete action:** review this inactive draft, then a bounded optimization
+of repeated strict history/prefix verification with a new exact source pin and
+new non-issuance timing receipt. Separately resolve source completeness and private
+retention before any genuine activation review. Genuine issuance0, new real
+statistical grades0, comparative study evaluations0, financial settlements0,
+qualified tickets0, deployments0. Existing six historical bundles/grades remain
+historical research; synthetic diagnostic outputs are not public prospective picks.
+
+
+## October 20, 20:41 UTC — v3 input admission recovered; cohort timing still blocked
+
+Producer/driver source pin: `71329d184f3857c9e75ee6cf12bbe841c6e4cccb`.
+Current local test revision: `80f17e12d78406f8ac38d7b319ac2e051ecccf59`
+(test-only unused-date correction and manifest). Same PR #10 branch/worktree;
+main `735a464e9e8718303ef481abf711a8969de56694`, pilot records/draft PR #8
+`df446eee302fd6662ef82184e2c733f5d6e2d2dd` unchanged. PR #10 stays draft;
+PROS004/S0 remain inactive. No source pin follows later documentation HEAD.
+
+Producer/binding v3 retains the original input-finalization proof inside the
+existing event-claim-v2 slot. Capture-phase claim local persistence, original
+remote acknowledgment and final prefix publication finish before selection close.
+Independent restart recovers the exact claim/proof without a temporary report.
+Originals under v1/v2 remain readable and are not promoted to the new policy.
+Truthful schema inventories now distinguish v1/v2 claims; only capacity groups
+combine their shared allocation. No new ledger slot or limit increase was added.
+
+Actual non-issuance diagnostic, **20:33:05.889159–20:41:04.450416 UTC**:
+
+```bash
+python3 -m multisport_lab.pros004_readiness \
+  --output evidence/research/pros004-readiness-measurement-v3.json \
+  --store-root /tmp/nml-pros004-diagnostic-71329d184f38 \
+  --producer-commit 71329d184f3857c9e75ee6cf12bbe841c6e4cccb
+```
+
+**PARTIAL_OR_FAILED_TIMING**, total 478.562s; input persistence/checkpoint/finalization
+85.530s; cohort generation/verification/persistence 312.366s, exceeding 300s.
+Six originals survive. All six have timely local/original remote-operation
+proof in the retained local journal, but fresh remote recovery has only five
+complete proofs because its last acknowledgment entry was not published. Zero
+are comparison-eligible; two planned model originals remain absent. The next
+model is not generated after the window. The final original acknowledgment prefix
+was not fully published; exact full remote recovery is false. Fresh local-bare-Git
+fetch retains six originals and their original probabilities/clocks, explicitly
+unacknowledged state, and the original durable input claim. The sixth original itself is timely; its missing published acknowledgment
+must not be described as a late original. No partial state is replaced or
+relabeled as successful issuance.
+
+All 26,645 rows / 1,231 events / 14,720,351 normalized bytes were used, unchanged
+panel SHA-256 `489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c`; zero rows dropped. Each model's replay recovers 26,645 atoms
+and all 14 PMFs exactly, with no outcomes or comparison score. Measured local
+state 30 files / 3,680,132 bytes; fetched prefix 3,678,733 bytes. History 1,639,440;
+event 10,972; claim 5,786; maximum forecast 31,110; journal 18 entries / 18,457 bytes.
+Peak RSS 212,000 KiB. Actual first T90 remains unknown; earliest theoretical 22:30 UTC
+is distinct from conditional midnight. No genuine prospective input capture or issuance followed.
+
+Changed source/contracts: `multisport_lab/pros004_{producer,records,readiness,
+snapshot,publication}.py`, `scripts/verify_pros004_readiness.py`, matching
+producer/records/readiness/snapshot/verifier/publication tests, `web/pros004.mjs`
+and its fixtures/tests; completion/public/readiness/decision documents. Exact
+22-file source commit inventory: `git show --stat 71329d1`; test-only correction:
+`git show --stat 80f17e1`. The 20:30 read-only pilot follow-up remains
+MISSED_OR_UNOBSERVED_EXECUTION / cause NOT_ESTABLISHED, schedule filters 0;
+its dated evidence and earlier full audit are preserved separately.
+
+Independent review confirms original-claim remote durability differs from final
+acknowledgment-prefix publication. The complete diagnostic driver/report enforces
+both. The direct paired API does not establish the complete operating phase from
+claim timing alone; admission of a genuine entrypoint must require independently
+recovered original finalization evidence or a reviewed equivalent. All genuine
+paths are hard-disabled. Private raw primary retention, source completeness and
+operation admission, exact activation/readback and maximum typed/hosted timing
+remain dependencies. The fixed reservation is not shifted or backfilled.
+
+Next concrete work is in progress: final stable-source normal/optimized/frontend
+checks, idempotent actual-GitHub diagnostic restart and independent strict review.
+The failed v2 and new partial v3 receipts remain immutable. Software tests,
+operational execution, genuine issuance, statistical evaluation and deployment
+are distinct: this checkpoint has no genuine forecasts, new real grades,
+comparative study result, financial settlement, qualified ticket or deployment.
+
 ## October 20, 20:07 UTC — completion fixes verified; full-history timing failed safely
 
 Exact implementation source commit: `c18809f2fc7752d8f48c4749024623f5f4d73eb6`

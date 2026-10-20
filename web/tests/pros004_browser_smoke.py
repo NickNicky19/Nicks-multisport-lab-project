@@ -67,12 +67,16 @@ def main():
                     page.get_by_role('button',name='All supported',exact=True).click()
                     require(page.locator('.pros004-research .forecast-card').count()==28,'All-supported scope did not restore exact NBA coverage')
                     page.get_by_role('link',name='Performance',exact=True).click()
+                    # Hash changes precede this SPA's asynchronous render event.
+                    # Wait for the destination view before reading its records.
+                    page.get_by_role('heading',level=1,name='Performance',exact=True).wait_for()
                     study=page.locator('.pros004-research')
                     require(study.locator('.forecast-card').count()==2,'Individual paired grade states missing')
                     require('DNP_NOT_SCORED' in study.inner_text(),'DNP state lost')
                     require('Mean CRPS' not in study.inner_text() and study.locator('.grade-summary').count()==0,'Reserved comparison aggregates exposed')
                     require(page.evaluate('document.documentElement.scrollWidth <= innerWidth'),'Typed Performance overflows viewport')
                     page.get_by_role('link',name='Paper Builder',exact=True).click()
+                    page.get_by_role('heading',level=1,name='Paper Builder',exact=True).wait_for()
                     for legs in range(2,7):
                         page.locator(f'input[name="legs"][value="{legs}"]').check()
                         require('NO_ACTION' in page.locator('main').inner_text(),'Research originals entered builder')

@@ -1,6 +1,6 @@
 # PROS004 paired producer readiness
 
-Status: implemented and independently checked in draft PR #10; **INACTIVE / READINESS ONLY**. This package
+Status: implemented for review in draft PR #10; **INACTIVE / READINESS ONLY**. This package
 prepares a draft PR. It authorizes no source capture, scheduler, genuine issuance,
 activation, merge or deployment. The mathematical reservation remains unchanged in
 `docs/NBA_PROSPECTIVE_004.md` and its immutable protocol receipt.
@@ -56,6 +56,62 @@ reservation will not move, backfill or activate automatically.
 New fixed-source timing, capacity and remote-readback evidence is recorded in the
 completed checkpoint below after execution. All older measurements/receipts below
 are retained as **v1 diagnostic evidence**, not post-write/remote completion proof.
+
+## October 20 20:41 UTC — current v3 timing checkpoint
+
+Fixed producer/driver source: `71329d184f3857c9e75ee6cf12bbe841c6e4cccb`.
+`pros004-readiness-measurement-v3.json` is a separate immutable non-issuance
+measurement: **PARTIAL_OR_FAILED_TIMING**, cohort 312.366s against 300s,
+total 478.562s. Six originals survive, all six timely in the local journal but only five with
+complete proof in the fetched prefix; eligible 0. Two planned models are absent.
+The sixth original is timely; its final acknowledgment entry was not published. Full remote ACK-prefix recovery is false; the
+independent fetched prefix preserves all six originals and the original input
+admission. Both full-law replays retain 26,645 atoms/all 14 PMFs. This is not a
+complete paired cycle or genuine prospective evidence. Earlier v1/v2 measurements
+are preserved with their own source/clock policies, not substituted for this result.
+
+Measured envelopes: history 1,639,440; event 10,972; admission 5,786 / 8,192;
+maximum forecast 31,110 / 65,536 bytes. Local 30 files / 3,680,132 bytes include the
+18-entry 18,457-byte journal. Full conservative plan remains 499 + 13 / 512 and
+24,576,000 / 33,554,432 bytes. Schema counts stay truthful; only capacity groups
+combine event/date and claim versions. No extra claim/report record is allocated.
+
+Activation dependencies remain explicit: cohort latency, complete permitted UTC
+inventory/actual first T90, source operational admission, private primary raw
+retention/full raw budget/linkage, reviewed genuine entrypoint and destination,
+exact source-bound activation/readback, and maximum typed/hosted execution timing.
+The complete driver verifies final admission-prefix publication; direct API claim
+`timing_complete` alone cannot establish full operating-phase publication.
+Normal/optimized/final independent checks are being recorded in the next checkpoint.
+
+## Current activation checklist after v3 local verification
+
+| Requirement | Current evidence / unresolved work |
+| --- | --- |
+| Late-write/120-second/post-ACK/interruption/restart controls | Implemented; normal/optimized synthetic regressions pass, originals retained |
+| All supported typed contracts and corrections on snapshot recovery | Strict independent bytes/references plus semantic pass; negative meaning cases pass |
+| Original input-phase durability | Claim-v2 embedded proof,5,786/8,192 bytes; independent restart recovers it |
+| Frozen R0/K0, full history and all13+PA | Preserved;26,645 rows/atoms, both replayed laws/all14 original PMFs exact |
+| Ledger allocation |499 planned+13 reserve/512;24,576,000/33,554,432 bytes |
+| Actual remote adapter/restart | Diagnostic branch only; same8684aed recovered, no new original/clock |
+| Large transport |499 generic receipts/24MiB local Git passes; not maximum typed execution |
+| Current local software/UI |434 Python,156 optimized,46 frontend; demo/build/artifact and corrected optimized desktop/mobile smoke pass |
+| Full-history cohort latency | **BLOCKED**:312.366s exceeds300; local6timely, fetched prefix5complete, missing2, eligible0 |
+| Maximum typed and hosted full-cohort timing | **Unresolved**; generic load and small hosted probe do not establish it |
+| Complete permitted UTC schedule / actual firstT90 | **Unresolved**: three routes lack registered pagination/count proof |
+| Source operational admission | **Unresolved**; bounded metadata reads do not authorize scheduled collection |
+| Private primary raw evidence, complete raw budget and outcome linkage | **Unresolved**; interfaces/synthetic readback only |
+| Genuine entrypoint and destination | **Unresolved**; must admit independent original final-phase-publication evidence, not claim timing alone |
+| Reviewed exact remote activation evidence | Not created/not authorized; hard guard remains disabled |
+| Genuine forecasts, real new grades, comparative study evaluation, financial settlement, deployment | None |
+
+Final software evidence is `pros004-software-checks-v3-final.json`; its predecessor
+preserves the browser timing-race failure. Only the smoke test now awaits the
+completed route heading; runtime UI/producer bytes stayed unchanged. Separate
+artifact readback verifies six historical bundles and grades, all14 categories,
+zero actual PROS004 records and explicit empty Upcoming reasons. The independent
+review distinguishes local6timely from fetched-prefix5complete. No repaired or
+late partner is created. Draft PR10 remains inactive; no landing is requested.
 
 ## Preservation and versions
 
