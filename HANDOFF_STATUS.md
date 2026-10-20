@@ -9,6 +9,27 @@ open. This is a development checkpoint, not a completed validated model.**
 
 ## Current deployment checkpoint — 2026-10-20 01:02 UTC
 
+Deployment/status checkpoint committed/pushed as
+`ff0cb00a2833bf7d3e889652157292df5a87a95d` on the separate follow-up branch.
+The approved deployed main below remains unchanged.
+
+**01:09 UTC pre-scoring continuation:** new DEV003 specification is frozen at
+`2026-10-20T01:09:19.742752Z`, protocol payloadSHA
+`06600825f5c64f396315c29251516da72133f659efca6e3f72a7a2ab7c3322db`.
+New files: `multisport_lab/development_003.py`, `tests/test_development_003.py`,
+`docs/NBA_DEVELOPMENT_003.md`, `evidence/research/dev003-inventory.json`,
+`evidence/research/dev003-protocol.json`. The fixed input is unchanged;12week
+hashed-ID selection gives24 complete games/517 appearances, nine true n0 cases.
+One K0 lagged-workload-prior challenger uses donor-specific prior T90/daily-freeze
+contexts, fixed8-minute bandwidth/0.25 league floor, unchanged R0 personal
+weights/5-prior mass and exact n0 fallback. All14 outcomes stay coherent.
+Two games/42rows overlap exposedDEV002; no confirmation/model-selection or
+promotion is authorized. Independent pre-scoring review checked exact game list,
+cohort hash, all8 executed source/test hashes, equations and synthetic causal
+tests. Only one900sec/512MiB execution is permitted after root authorization;
+actual results will be appended when obtained. Existing R0/DEV002 source and
+receipt bytes remain unchanged.
+
 **PR #3 is merged and typed v2 is deployed.** The user approved only head
 `2d30ae98b20918bc97ea9eda4578ef0c8d509d71`. A fresh guarded watcher confirmed
 that exact head ready, clean/mergeable, build passed, no pending checks, no
