@@ -5,8 +5,8 @@
 The current user request authorizes one implemented and independently reviewed
 offline challenger comparison, with a pre-scoring remote freeze and a separate
 DRAFT research PR. It expressly forbids merging, deploying or live activation.
-Use a separate worktree based on main735a464; leave PR#8, records branch,
-workflow390126745 and paused native automation unchanged.
+Use a separate worktree based on main 735a464; leave PR #8, records branch,
+workflow 390126745 and paused native automation unchanged.
 
 Before inspecting DEV005 target scores, choose S0's fixed .10 NB2 generative
 mixture, positive training-only half-count prior and unchanged K0 minute law.
@@ -107,7 +107,7 @@ Fix T90, last-ten-minute current source captures/import/receipt, generation at
 T90 to T90+5 minutes with at most120 seconds latency, and actual local clocks
 only. Neither readiness success nor an earlier preparation snapshot admits
 future issuance. Prospective forecast v2 binds exact durable input records,
-source/event/cohort/model versions and generation clocks; all14 coherent outputs
+source/event/cohort/model versions and generation clocks; all 14 coherent outputs
 remain conditional on appearance and qualification UNAVAILABLE.
 
 The retained history cohort is the entire26,645-row panel, not a20k prefix.

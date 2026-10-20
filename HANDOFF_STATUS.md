@@ -7,7 +7,102 @@ reference implemented; early research website deployed and publicly verified.
 Source/product and confirmation gates remain
 open. This is a development checkpoint, not a completed validated model.**
 
-## Current research checkpoint — DEV005 isolated preparation
+## Current research checkpoint — DEV005 completed, draft PR only
+
+Work remains isolated on `research/nba-count-support-dev005` at
+`/workspace/nml-count-support-dev005`, based on main
+`735a464e9e8718303ef481abf711a8969de56694`. Frozen implementation/protocol commit
+**`c2780d79bd4110582e14a75317af36fac0400bcb`** was pushed and independently
+recovered from GitHub before scoring. Protocol payload SHA256:
+`74c5430a8dc938c8f6e17a07e733af9aab5e17d429b754bcd5381a40d102c945`.
+Independent approval/recovery clock08:56:02.243607Z followed source/math review
+and root approval. No source, test, protocol or parameter changed after that freeze.
+
+Exactly ONE registered comparison ran **08:56:20.246091–09:05:30.638996UTC**,
+**550.392914 wall seconds / 232,580 KiB peak RSS**, below 900s/512MiB. Its immutable
+protocol-adjacent claim prevents a renamed-output retry. Actual result envelope
+**8,427,627 bytes**, below 16MiB. No registered failure or second comparison occurred.
+`dev005-prescore-feasibility.json` separately retains prior/artificial-outcome
+resource checks; they produced no real target score and changed no parameter.
+
+Full input recovered losslessly: **26,645 rows / 1,231 events / 14,720,351 bytes**,
+original SHA 489b7148..., retaining all documented exclusions and reconstructed
+availability. Identity selection: **350 appearances / 16 complete games / 8 weeks**,
+January 19–March 15, 2026, no old evaluation-game overlap but exposed archive/design.
+Earlier training pools13,889–21,187 rows; personal histories 0–66. K0 kernel 345,
+five exact R0 cold-start fallbacks; two rounded-zero-minute appearances retained.
+All three models and all 13 categories plusPA scored on every row; exclusions 0.
+
+**Actual findings:** S0 has 7 lower / 7 higher CRPS point scores than K0. AST worsens,
+95% week interval entirely above 0. Only BLK/STL/BLK+STL meet the registered
+exploratory guards; these are possible further-research signals, never a selected
+joint model or spliced production marginals. REB's 50% coverage 0.694286 versus
+predicted mass 0.641838 fails its guard. DD 22 events / TD 5; both S0 Brier/log scores
+worsen relative K0, intervals cross 0, and TD fails minimum-positive count.
+Variogram difference −0.004319 has interval [−0.012675,+0.002135], inconclusive.
+
+Every observed **category value** had positiveR0/K0/S0 probability; zero observed
+marginal support failures and zero underflow. This sample does not demonstrate a
+realized repair on that failure mode. S0's positive primitive support is a law/
+software finding. Actual joint-vector log likelihood was not registered/computed;
+joint vectors may be unseen. The original verifier interpretation is preserved,
+with a separate traceable clarification receipt. No flooring or tail renormalization.
+
+K0 has lower point CRPS than R0 in all 14categories on this later development
+window, with six descriptive intervals still crossing 0. Its workload benefit has
+additional descriptive support, not confirmation. All350 S0 minute marginals/
+diagnostics exactly equal K0. Current workload guards pass; unchanged minute law
+does not repair DEV003 undercoverage or validate exact duration. Full per-category
+scores, log/zero/tail and 50/80/95% coverage/mass/width results are in
+`docs/NBA_DEVELOPMENT_005.md`, `dev005-category-summary.csv` and immutable result.
+
+**Verification:**300 Python/35 frontend tests, synthetic demo and local artifact
+smoke passed before freezing. Independent 10,275 synthetic mathematical checks and
+11,995 synthetic replay checks/tamper rejection passed. Actual score-only replay:
+**34,880 checks**, maximum difference 7.106e−15; no model regenerated/refitted.
+Peak analytic CRPS omission3.562e−14, floating mass residual2.221e−15, variogram
+omission6.649e−17, largest grid 1472. Floating checks are not interval certificates.
+
+Exact commands:
+
+```bash
+python3 -m unittest discover -s tests -v
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.demo
+python3 -m multisport_lab.publication --build-commit 735a464e9e8718303ef481abf711a8969de56694
+node web/tests/site-smoke.mjs output
+python3 -m multisport_lab.development_005 --input /tmp/nml-dev005/recovered.jsonl --output evidence/research/dev005-inventory.json --inventory-only
+# Already executed ONCE; preserve claim/result, do not rerun:
+python3 -m multisport_lab.development_005 --input /tmp/nml-dev005/recovered.jsonl --output evidence/research/dev005-result.json --protocol evidence/research/dev005-protocol.json --readback evidence/research/dev005-freeze-readback.json
+# Recovery verification only, no forecasting:
+python3 scripts/verify_dev005_result.py --result evidence/research/dev005-result.json --protocol evidence/research/dev005-protocol.json
+```
+
+Files: new `count_support.py`, `development_005.py`, their two test files,
+`scripts/verify_dev005_result.py`, `docs/NBA_DEVELOPMENT_005.md`, and the bounded
+`evidence/research/dev005-*` inventory/protocol/review/readback/attempt/result/
+verification/interpretation/recovery/resource/environment/software/CSV records.
+Updated this handoff, PROJECT_CONTEXT, DECISIONS and MANIFEST. Existing producer,
+model/experiment files, ledger records, web assets and workflows are unchanged.
+
+The protected original worktree remains clean at
+`df446eee302fd6662ef82184e2c733f5d6e2d2dd` on the ONE pilot records branch.
+PR #8 and workflow 390126745 were only read; exact reviewed 58530309 producer,
+all nine files, fixed pilot, original records and paused native task are preserved.
+No source capture, early issuance or new scheduler. NFL/MLB are untouched.
+
+This package creates **historical development evaluation only**. Genuine future
+issuance 0; new statistical ledger grades 0; financial settlements 0; qualified
+tickets 0; website deployment 0. Existing six historical grades are unchanged.
+No betting contract, cross-player model, PROS004 activation or confirmatory quality.
+
+Next delivery: commit/push actual evidence and analysis, independently recover it,
+and open a separate **DRAFT research PR**. No merge/deployment is authorized.
+Next research: inspect retained zero/interval/dependence failures, then register
+any revised construction on a fresh separate sample. Do not retune DEV005 or
+substitute it into the operating pilot or PROS004.
+
+## Prior DEV005 preparation checkpoint
 
 Repository verified at main `735a464e9e8718303ef481abf711a8969de56694`.
 The original worktree remains clean on the protected pilot records branch at
@@ -16,29 +111,29 @@ New work is isolated in `/workspace/nml-count-support-dev005`, branch
 `research/nba-count-support-dev005`. This request permits a DRAFT research PR
 only: no merge, deployment or live activation.
 
-Read-only GitHub checks found PR#8 OPEN/DRAFT at df446eee and workflow390126745
+Read-only GitHub checks found PR #8 OPEN/DRAFT at df446eee and workflow 390126745
 ACTIVE. The post-activation handoff at that exact records commit is the current
-operating status: PR#7 merged as735a464 and the ONE17:15UTC pilot is armed.
+operating status: PR #7 merged as735a464 and the ONE17:15UTC pilot is armed.
 The older setup/manual-only text below is historical and does not disarm it.
 No workflow retrigger, pilot input/record change, competing collector or native
 unpause occurred. Nine reviewed producer files remain pinned to58530309.
 
-Baseline software: `python3 -m unittest discover -s tests -v` passed278 tests
-in11.149s; `python3 -m multisport_lab.demo` passed. No DEV005 target was scored.
+Baseline software: `python3 -m unittest discover -s tests -v` passed 278 tests
+in 11.149s; `python3 -m multisport_lab.demo` passed. No DEV005 target was scored.
 One model worker, one causal-evaluation worker and an independent reviewer use
 separate new files under one integration owner. The pre-scoring design is in
 `docs/NBA_DEVELOPMENT_005.md`; exact code/cohort/protocol freeze and remote
 readback must precede its single authorized comparison. Retained history recovers
-losslessly to26,645 rows /14,720,351 bytes with original SHA489b7148...
+losslessly to26,645 rows /14,720,351 bytes with original SHA 489b7148...
 
-Integrated software now passes300 Python tests/35 frontend tests, demo and
+Integrated software now passes 300 Python tests/35 frontend tests, demo and
 local artifact smoke. The22 new tests cover positive likelihoods and tail
 bounds, DD/TD/coherence, cutoff/clock/source freeze and failure/renamed-output
 recovery. Independent synthetic score replay passed11,995checks and rejected
 a corrupted aggregate. Timing-only synthetic feasibility retained no real
 evaluation scores and supports the proposed900s/512MiB ceiling.
 
-Independent pre-scoring review PASS is retained with exact12 source hashes.
+Independent pre-scoring review PASS is retained with exact 12 source hashes.
 The integration owner approved the immutable DEV005 protocol after that review.
 No real target has yet been scored.
 
@@ -562,7 +657,7 @@ October20 at2:00p.m. CDT (19:00UTC). Four selected IDs were fixed before forecas
 or outcomes and cross-checked by actual athlete profiles. Eight source requests /
 337,357 bytes; all selected identity/team checks passed. Full original-source
 normalization reproduced all26,645 rows/1,231 games and exact14,720,351-byte panel,
-SHA489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c.
+SHA 489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c.
 The1,636,253-byte compact history is lossless and preserves original source clocks;
 no20k truncation or current-season history claim.
 
@@ -596,7 +691,7 @@ record is excluded from Pages. Rights receipt payload SHA604fec4c1b2ecc884543d9a
 Final integrated software verification: **221 Python tests**, **35 frontend
 tests**, synthetic demo and artifact checks passed. Local Chromium desktop1440px
 and mobile390/320px checks passed, including a clearly synthetic prospective-v2
-fixture, pending grades, all14categories and scoped2–6/direction NO_ACTION.
+fixture, pending grades, all 14categories and scoped2–6/direction NO_ACTION.
 Separate verification reproduced actual source normalization and compact recovery
 without model evaluation. The new manual `prospective_outcomes` path checks actual
 issued-input context/final boxscore identity, strict counts/DNP/missing semantics,
@@ -663,7 +758,7 @@ git diff --check
 ```
 
 A final bounded historical-source audit made one actual ESPN summary request
-for event401810135, with two retrospective subjects declared beforehand. All12
+for event401810135, with two retrospective subjects declared beforehand. All 12
 identity fields,30count fields, reported minutes and28derived-category values
 matched the retained panel. It exposed a missing status.period despite a verified
 final status. The separate outcome parser now derives the count only from explicit
@@ -675,7 +770,7 @@ Authoritative append-only evidence:
 `evidence/data/2026-10-20-outcome-normalizer-audit-v2.json`, payload
 c253d19d8cbefb01e7e1a9a0182ef62cc419357289d6d925847a5bd1c847ed93.
 Final outcome-source code SHA8d22da881bcae0e0e213e314f0181bc727edd4116361fa2b7413f01f154919bf;
-221Python/35frontend checks and demo pass. No forecast generation, model evaluation,
+221Python/35 frontend checks and demo pass. No forecast generation, model evaluation,
 actual future-source request, outcome/grade ledger write or financial settlement
 was performed by this extra audit. Independent re-normalization and16focused
 checks passed; proof is retained in
@@ -948,7 +1043,7 @@ NBA asset151,222 bytes, SHA256:
 
 Independent public Chromium154 checks,01:01:39.714719–01:02:10.831386 UTC,
 passed1440px desktop/390px/320px mobile, all seven routes/direct reloads,
-84 PMFs across six original bundles, all14 category filters, six separate
+84 PMFs across six original bundles, all 14 category filters, six separate
 statistical grade records and exact event/cutoff/actual-issue/grade identities.
 Upcoming has no forecasts and three specific missing-input/issuance reasons.
 SINGLE/SELECTED/ALL scopes, every2–6-leg size and all three directions passed

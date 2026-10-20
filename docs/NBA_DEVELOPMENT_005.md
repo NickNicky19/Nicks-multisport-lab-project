@@ -1,7 +1,8 @@
 # NBA DEV005: coherent count-support challenger
 
-Status: source/protocol frozen after independent pre-scoring review; no DEV005
-result generated or inspected. Exact pre-scoring commit will be recorded below.
+Status: one frozen development comparison completed; mixed results. Source and
+protocol remain unchanged. Independent verification and draft-PR delivery are
+recorded below and in the handoff. No merge, deployment or activation.
 This package stays on `research/nba-count-support-dev005`, with no merge,
 deployment or live activation. R0, K0, DEV002, DEV003 and PROS004 remain frozen.
 The separate October 20 scheduled operating pilot is not an input or a tuning run.
@@ -169,9 +170,9 @@ and betting qualification remain distinct evidence lanes.
 
 The independent pre-scoring review is retained in `dev005-prescore-review.json`:
 10,275 synthetic mathematical checks against independent SciPy/NumPy calculations
-(maximum absolute difference2.75e-14), plus11,995 synthetic receipt replay checks
-(maximum3.55e-15) and deliberate aggregate-tamper rejection. No real evaluation
-outcome was scored. All12 declared source/test/verification files match inventory.
+(maximum absolute difference 2.75e-14), plus 11,995 synthetic receipt replay checks
+(maximum 3.55e-15) and deliberate aggregate-tamper rejection. No real evaluation
+outcome was scored. All 12 declared source/test/verification files match inventory.
 The integration owner approved the exact immutable `dev005-protocol.json` only
 after that review. Before execution, GitHub readback must bind its committed SHA.
 
@@ -189,3 +190,80 @@ The protocol-adjacent create-only `dev005-protocol-attempt.json` preserves the
 single attempt even if an output filename changes. Failure is an actual result,
 not permission to retune or restart. Independent score-only verification uses
 `scripts/verify_dev005_result.py`; it fits or generates no new forecasts.
+
+## Actual single development comparison — October 20, 2026
+
+Frozen implementation/protocol commit **`c2780d79bd4110582e14a75317af36fac0400bcb`** was pushed before scoring. Independent fresh GitHub readback completed at **08:56:02.243607Z**, binding all 12 source files and protocol payload SHA256 **`74c5430a8dc938c8f6e17a07e733af9aab5e17d429b754bcd5381a40d102c945`**. The create-only attempt was claimed at **08:56:20.240997Z**. Exactly one actual comparison ran from **08:56:20.246091Z to 09:05:30.638996Z**, with no code, parameter, protocol or population change.
+
+All **350 appearances / 16 games / eight weeks** were scored under each complete law, with **zero post-score exclusions**. K0 used its kernel for 345 and exact R0 fallback for five cold starts; S0 then applied its registered mixture to every subject. Training pools contained **13,889–21,187** earlier rows and personal histories **0–66**; S0 effective sizes ranged **25.328–11,087.049**. Both rounded-zero-minute appearances remain.
+
+Actual scoring/aggregation runtime was **550.392914 seconds**, peak RSS **232,580 KiB (227.13 MiB)**, within the frozen 900-second/512-MiB limits. Runtime starts after input/inventory preflight and includes model fits, scores and bootstraps. The result envelope is **8,427,627 bytes**, below its 16-MiB cap. Python **3.12.14 / Linux x86_64**, executable hash and actual invocation are retained.
+
+### Per-category CRPS/RPS
+
+Negative S0-minus-K0 differences favor S0. Intervals are descriptive whole-week percentiles; adjusted upper bounds use the registered 14-comparison allocation. No unscaled pooled category score is calculated.
+
+| Category | R0 | K0 | S0 | S0 − K0 | 95% week interval | Adjusted upper | Interpretation |
+| --- | ---: | ---: | ---: | ---: | --- | ---: | --- |
+| PTS | 3.355518 | 3.293355 | 3.294962 | +0.00160648 | [-0.00601366, +0.00888203] | +0.01071683 | Worse point; inconclusive interval |
+| PRA | 4.515494 | 4.394348 | 4.391242 | -0.00310527 | [-0.01257507, +0.00683525] | +0.00895831 | Lower point; inconclusive interval |
+| REB | 1.321693 | 1.305738 | 1.306026 | +0.00028781 | [-0.00152498, +0.00214480] | +0.00287969 | Worse point; interval guard fails |
+| 3PM | 0.610153 | 0.605967 | 0.606480 | +0.00051298 | [-0.00025226, +0.00132796] | +0.00152545 | Worse point; inconclusive interval |
+| AST | 0.960380 | 0.940175 | 0.942287 | +0.00211138 | [+0.00123649, +0.00302004] | +0.00338697 | Worse; interval above zero |
+| RA | 1.904602 | 1.861972 | 1.861655 | -0.00031735 | [-0.00359869, +0.00275103] | +0.00408019 | Lower point; inconclusive interval |
+| PR | 4.040365 | 3.947495 | 3.946248 | -0.00124736 | [-0.00946999, +0.00631078] | +0.00843273 | Lower point; inconclusive interval |
+| TOV | 0.598179 | 0.593552 | 0.593364 | -0.00018855 | [-0.00099901, +0.00060264] | +0.00082587 | Lower point; inconclusive interval |
+| TD | 0.012457 | 0.012451 | 0.012507 | +0.00005553 | [-0.00010117, +0.00027277] | +0.00035796 | Worse point; only five events |
+| DD | 0.039347 | 0.038949 | 0.039071 | +0.00012192 | [-0.00017363, +0.00044723] | +0.00056128 | Worse point; inconclusive interval |
+| BLK | 0.272939 | 0.271944 | 0.271685 | -0.00025836 | [-0.00038412, -0.00008572] | -0.00001516 | Exploratory requirements met |
+| STL | 0.465304 | 0.463293 | 0.462456 | -0.00083684 | [-0.00139971, -0.00021422] | -0.00000576 | Exploratory requirements met |
+| BLK+STL | 0.608473 | 0.604770 | 0.603256 | -0.00151369 | [-0.00192560, -0.00112526] | -0.00097651 | Exploratory requirements met |
+| PA | 3.797098 | 3.706881 | 3.708954 | +0.00207285 | [-0.00645860, +0.01027345] | +0.01283612 | Worse point; inconclusive interval |
+
+S0 has seven lower and seven higher point CRPS values than K0. **AST regresses with its descriptive 95% interval entirely above zero.** Only **BLK, STL and BLK+STL** meet the predeclared exploratory requirements. This is permission to consider a later independently frozen study of the coherent model, not category splicing, a selected winning joint model, live admission or qualification. Eight clusters and the very sparse adjusted-bootstrap tail sharply limit inference.
+
+All three models had **zero unsupported observed outcomes in every category on this sample**, and no likelihood underflow occurred. Thus the run contains no observed marginal zero-support case to demonstrate a realized gain on that failure mode. Joint-vector log likelihood was not a registered metric and was not computed; individual eight-count vectors may still be unseen in the empirical law. S0’s positive support is established by its construction and mathematical/software checks; this sample tests its broader distributional consequences. S0 log loss is lower than K0 for the 12 nonbinary categories but slightly higher for DD and TD. Finite log loss alone establishes no forecasting improvement.
+
+### Calibration, rare events and dependence
+
+Complete three-model zero, tail, log and 50/80/95% coverage/mass/width diagnostics are in [`dev005-category-summary.csv`](../evidence/research/dev005-category-summary.csv); full row records and uncertainty remain in [`dev005-result.json`](../evidence/research/dev005-result.json). These retain regressions and inconclusive findings, not only favorable rows.
+
+S0 REB fails its 50% interval guard: **0.694286 observed coverage versus 0.641838 predicted mass**, a +0.052448 gap. Its 80/95% coverage is 0.911429/0.982857 versus mass 0.885267/0.978677. Its predicted zero rate is 0.109350 versus observed 0.085714. Wider or better-supported distributions do not automatically improve calibration.
+
+**DD: 22 positives / 328 negatives.** S0 Brier/CRPS is **0.039070502**, versus K0 **0.038948577** and R0 **0.039346899**. S0-minus-K0 is +0.000121924, 95% interval [−0.000173634,+0.000447231]. Observed frequency is **0.062857**, with week interval [0.045711,0.078717]; S0 mean probability **0.070191**, K0 **0.070159**. The event-count requirement passes, but the primary bound does not.
+
+**TD: five positives / 345 negatives.** S0 Brier/CRPS is **0.012506682**, versus K0 **0.012451150** and R0 **0.012457331**. S0-minus-K0 is +0.000055532, interval [−0.000101170,+0.000272775]. Observed frequency **0.014286** has interval [0.002976,0.026163]; S0 probability **0.004890**, K0 **0.005071**. Sparse positives fail the registered count requirement. No reliable rare-event or dependence claim follows.
+
+Primitive power-1 variogram means: **R0 3.196112, K0 3.142433, S0 3.138114**. S0-minus-K0 is **−0.004319**, interval **[−0.012675,+0.002135]**. Its lower point does not establish improved dependence; the interval crosses zero and this diagnostic is non-strict. No cross-player or ticket law has been evaluated.
+
+### Unchanged workload prior and numerical controls
+
+K0 has lower point CRPS than R0 in **all 14 categories** on this new development window. Its descriptive intervals still cross zero for 3PM, BLK, STL, BLK+STL, TOV and TD. These reference-anchor comparisons are secondary and do not promote K0 or alter DEV003/PROS004. The earlier workload-prior benefit therefore has descriptive support here with category-specific uncertainty.
+
+All **350** S0 reported-minute marginals and diagnostics equal K0 exactly. K0/S0 minute CRPS **3.868213**, MAE **5.552654**, RMSE **7.041597**, compared with R0 **4.014621 / 5.851395 / 7.358117**. K0/S0 95% observed coverage **0.968571**, predicted mass **0.964789**, width **29.171429**; R0 coverage **0.965714**, mass **0.964953**, width **32.902857**. Common workload guards pass on this sample. This unchanged-law result does not erase DEV003’s undercoverage, fix workload uncertainty or validate exact playing minutes/duration.
+
+Largest prediction grid **1472**; largest declared CRPS omission bound **3.562e−14**; largest coefficient mass residual **2.221e−15**; largest variogram score omission bound **6.649e−17**. All are below frozen tolerances. These analytic-tail bounds and operational floating checks remain distinct from a rigorous interval-arithmetic certificate. No simulation histogram, renormalized finite tail, probability floor or clipping was used.
+
+### Evidence, recovery and next task
+
+[`dev005-protocol.json`](../evidence/research/dev005-protocol.json), [`dev005-freeze-readback.json`](../evidence/research/dev005-freeze-readback.json), the immutable attempt and result preserve the sole execution. Result payload SHA256 **`1c5f9882fac2b0272d3244f0bacbb11516526d75bb66e4287d1441091a3193e3`**; complete file SHA256 **`b535f38e1d5604ee4ab59dae397344b76f18fc2871f9967cb56ccf961abd3ac2`**. Do not rerun the historical one-run command above. Recover/replay retained evidence instead:
+
+```bash
+python3 scripts/verify_dev005_result.py \
+  --result evidence/research/dev005-result.json \
+  --protocol evidence/research/dev005-protocol.json
+```
+
+The half-count/half-exposure regularizer estimates the generator mean from weighted moments; fixed NB shape 2 is an explicit dispersion assumption, not an exact conjugate posterior fit. Full support also allocates mass to unrealistic extremes and weakens count/minute dependence. The fixed mixture remains a research candidate with mixed results. **No parameter or category has been changed after scoring.**
+
+Next concrete research task: audit the saved row-level zero/interval and rare-event/dependence diagnostics, then specify any revised support/dependence mechanism as a new model and experiment on a separately frozen sample. Do not retune DEV005, substitute it into PROS004 or today’s operating pilot, or splice its three favorable categories into K0. No prospective issuance, new statistical ledger grade, financial settlement, qualified ticket or website deployment was created by this package.
+
+
+Independent score-only verification completed **34,880 checks**, maximum numeric
+difference **7.106e−15**, with no forecast generation/refitting. It confirms the
+exact protocol/source hashes, all 14 categories, causal clocks, complete cohort,
+three paired comparisons, bootstrap bounds, guards and minute identities.
+`dev005-result-verification.json` preserves that proof. The append-only
+`dev005-verification-interpretation.json` explicitly limits the no-zero-support
+finding to category marginals; it preserves the original review rather than
+silently changing its clock or wording. No joint-vector log score was registered.
