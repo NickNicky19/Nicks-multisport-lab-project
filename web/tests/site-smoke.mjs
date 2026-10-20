@@ -18,5 +18,5 @@ const snapshot = await loadSnapshot(async path => {assert.ok(path.startsWith('./
 assert.equal(snapshot.errors.length, 0);
 assert.equal(snapshot.sports.length, snapshot.manifest.supported_sports.length);
 assert.equal(snapshot.sports[0].coverage.paper, 'NO_ACTION');
-for (const file of ['app.mjs', 'scope.mjs', 'snapshot.mjs']) await readFile(join(root, file));
+for (const file of ['app.mjs', 'scope.mjs', 'snapshot.mjs', 'research.mjs']) await readFile(join(root, file));
 console.log(`PASS: artifact root, ${assets.length} relative assets, ${requests.length} validated data files, all-13 NBA inventory and research-only NO_ACTION. Browser/deployment not established by this smoke check.`);

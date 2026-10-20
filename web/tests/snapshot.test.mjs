@@ -13,7 +13,7 @@ test('v1 accepts only complete empty research snapshots', () => {
 });
 
 test('incompatible schemas and unknown admission claims fail closed', () => {
-  for (const change of [{schema_version: 2}, {publication_status: 'QUALIFIED'}, {build_commit: 'short'}, {published_at: '2099-01-01T00:00:00Z'}, {unexpected: true}, {errors: []}]) assert.throws(() => validateManifest({...fixture().manifest, ...change}));
+  for (const change of [{schema_version: 3}, {publication_status: 'QUALIFIED'}, {build_commit: 'short'}, {published_at: '2099-01-01T00:00:00Z'}, {unexpected: true}, {errors: []}]) assert.throws(() => validateManifest({...fixture().manifest, ...change}));
   const {sport, reference} = fixture();
   for (const change of [{schema_version: 2}, {status: 'QUALIFIED'}, {league: 'WNBA'}, {generated_at: '1999-01-01T00:00:00Z'}, {unexpected: true}, {coverage: {...sport.coverage, forecast: 'VALIDATED'}}]) assert.throws(() => validateSport({...sport, ...change}, reference));
 });

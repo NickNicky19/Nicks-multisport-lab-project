@@ -1,0 +1,777 @@
+{
+  "schema_version": "nba-offer-pilot-summary-v1",
+  "pilot_id": "OFFER-PILOT-002",
+  "inspected_utc_date": "2026-10-20",
+  "source_request_count": 4,
+  "scope": "One existing NBA event for ESPN, one returned Sleeper board; one-time user-requested read-only feasibility inspection. No recurring collector.",
+  "source_routes": [
+    {
+      "key": "espn_nba_propBets_full",
+      "url": "https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/events/401909088/competitions/401909088/odds/100/propBets?lang=en&region=us&limit=1000",
+      "retrieval_started_at": "2026-10-20T00:10:09.285067+00:00",
+      "http_status": 200,
+      "bytes": 760993,
+      "raw_body_sha256": "06747b21b43ac4262a3a4cc81e8df2f803a05d4c587ab281197f3a166c41a979",
+      "content_type": "application/json;charset=utf-8",
+      "http_date": "Tue, 20 Oct 2026 00:10:09 GMT",
+      "last_modified": null,
+      "final_url": "https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/events/401909088/competitions/401909088/odds/100/propBets?lang=en&region=us&limit=1000",
+      "structure": {
+        "root_type": "dict",
+        "root_keys": [
+          "count",
+          "pageIndex",
+          "pageSize",
+          "pageCount",
+          "items"
+        ],
+        "root_count": 5
+      },
+      "pagination": {
+        "count": 1135,
+        "pageIndex": 1,
+        "pageSize": 1000,
+        "pageCount": 2
+      },
+      "retrieval_finished_at": "2026-10-20T00:10:09.838153+00:00",
+      "elapsed_seconds": 0.55311
+    },
+    {
+      "key": "sleeper_lines_available",
+      "url": "https://api.sleeper.com/lines/available",
+      "retrieval_started_at": "2026-10-20T00:10:09.838238+00:00",
+      "http_status": 200,
+      "bytes": 2501338,
+      "raw_body_sha256": "70a99302891d8d1a4b50e58c7c0ad7d391b358f45fedbcffaecace2abae20e45",
+      "content_type": "application/json; charset=utf-8",
+      "http_date": "Tue, 20 Oct 2026 00:10:10 GMT",
+      "last_modified": null,
+      "final_url": "https://api.sleeper.com/lines/available",
+      "structure": {
+        "root_type": "list",
+        "root_keys": null,
+        "root_count": 1508
+      },
+      "retrieval_finished_at": "2026-10-20T00:10:10.659737+00:00",
+      "elapsed_seconds": 0.821534
+    },
+    {
+      "key": "espn_nba_propBets_page2",
+      "url": "https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/events/401909088/competitions/401909088/odds/100/propBets?lang=en&region=us&limit=1000&page=2",
+      "retrieval_started_at": "2026-10-20T00:10:50.009520+00:00",
+      "http_status": 200,
+      "bytes": 104553,
+      "raw_body_sha256": "ca340036e11aa6259f634862c5056712a250dbb0e47eea5b1097b1810c9bf701",
+      "content_type": "application/json;charset=utf-8",
+      "http_date": "Tue, 20 Oct 2026 00:10:50 GMT",
+      "last_modified": null,
+      "final_url": "https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/events/401909088/competitions/401909088/odds/100/propBets?lang=en&region=us&limit=1000&page=2",
+      "structure": {
+        "root_type": "dict",
+        "root_keys": [
+          "count",
+          "pageIndex",
+          "pageSize",
+          "pageCount",
+          "items"
+        ],
+        "root_count": 5
+      },
+      "pagination": {
+        "count": 1135,
+        "pageIndex": 2,
+        "pageSize": 1000,
+        "pageCount": 2
+      },
+      "retrieval_finished_at": "2026-10-20T00:10:50.454783+00:00",
+      "elapsed_seconds": 0.445295
+    },
+    {
+      "key": "espn_nba_provider_returned_ref",
+      "url": "https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/casinos/100?lang=en&region=us",
+      "retrieval_started_at": "2026-10-20T00:10:50.454914+00:00",
+      "http_status": 200,
+      "bytes": 160,
+      "raw_body_sha256": "101448a5e2bf365ae79efff5e7355e8e1193324014386df04b66afa82e974fa2",
+      "content_type": "application/json;charset=utf-8",
+      "http_date": "Tue, 20 Oct 2026 00:10:50 GMT",
+      "last_modified": null,
+      "final_url": "https://sports.core.api.espn.com/v2/sports/basketball/leagues/nba/casinos/100?lang=en&region=us",
+      "structure": {
+        "root_type": "dict",
+        "root_keys": [
+          "$ref",
+          "id",
+          "name",
+          "active",
+          "priority"
+        ],
+        "root_count": 5
+      },
+      "pagination": {},
+      "provider_identity": {
+        "id": "100",
+        "name": "DraftKings",
+        "displayName": null
+      },
+      "retrieval_finished_at": "2026-10-20T00:10:50.814448+00:00",
+      "elapsed_seconds": 0.359558
+    }
+  ],
+  "retention": "Structural/derived aggregate counts, field names, request metadata and hashes only. Raw responses and individual prices/offer rows excluded from Git/site.",
+  "permission_status": {
+    "espn_automation": "UNKNOWN_NOT_ADMITTED: earlier reviewed Disney terms restrict automated extraction; bounded user-requested inspection does not prove provider authorization.",
+    "sleeper_picks_automation": "UNKNOWN_NOT_ADMITTED: earlier reviewed Sleeper terms restrict automated access/scraping; fantasy API documentation is not a Picks grant.",
+    "public_raw_redistribution": "UNKNOWN_NOT_ADMITTED",
+    "adapter_enabled": false
+  },
+  "espn": {
+    "route_correction": "The earlier probes combined correct /leagues/ structure with lowercase propbets, or propBets casing without /leagues/. This bounded probe combines both correctly.",
+    "reported_item_count": 1135,
+    "observed_item_count": 1135,
+    "observed_page_indices": [
+      1,
+      2
+    ],
+    "reported_page_counts": [
+      2,
+      2
+    ],
+    "declared_pagination_pages_observed": true,
+    "cross_page_atomic_snapshot_proven": false,
+    "page_capture_skew_seconds": 40.61663,
+    "provider_identity": {
+      "id": "100",
+      "name": "DraftKings",
+      "displayName": null
+    },
+    "competition_ref_count": 1,
+    "athlete_ref_count": 13,
+    "athlete_item_count": 1093,
+    "item_field_counts": {
+      "competition": 1135,
+      "athlete": 1093,
+      "provider": 1135,
+      "type": 1135,
+      "odds": 1135,
+      "lastUpdated": 1135,
+      "current": 1135,
+      "open": 1135,
+      "team": 30
+    },
+    "observed_type_families": [
+      {
+        "type_id": "1",
+        "label": "Total Points",
+        "item_count": 26,
+        "athlete_items": 26,
+        "team_items": 0
+      },
+      {
+        "type_id": "2",
+        "label": "Total Assists",
+        "item_count": 20,
+        "athlete_items": 20,
+        "team_items": 0
+      },
+      {
+        "type_id": "3",
+        "label": "Total Rebounds",
+        "item_count": 26,
+        "athlete_items": 26,
+        "team_items": 0
+      },
+      {
+        "type_id": "4",
+        "label": "Total 3-Point Field Goals",
+        "item_count": 16,
+        "athlete_items": 16,
+        "team_items": 0
+      },
+      {
+        "type_id": "5",
+        "label": "Total Steals",
+        "item_count": 10,
+        "athlete_items": 10,
+        "team_items": 0
+      },
+      {
+        "type_id": "6",
+        "label": "Total Blocks",
+        "item_count": 8,
+        "athlete_items": 8,
+        "team_items": 0
+      },
+      {
+        "type_id": "72",
+        "label": "1st Half Total",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 0
+      },
+      {
+        "type_id": "73",
+        "label": "1st Half Moneyline",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 2
+      },
+      {
+        "type_id": "74",
+        "label": "1st Half Spread",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 2
+      },
+      {
+        "type_id": "75",
+        "label": "1st Quarter Total",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 0
+      },
+      {
+        "type_id": "76",
+        "label": "1st Quarter Moneyline",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 2
+      },
+      {
+        "type_id": "77",
+        "label": "1st Quarter Spread",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 2
+      },
+      {
+        "type_id": "78",
+        "label": "2nd Quarter Total",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 0
+      },
+      {
+        "type_id": "79",
+        "label": "2nd Quarter Moneyline",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 2
+      },
+      {
+        "type_id": "80",
+        "label": "2nd Quarter Spread",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 2
+      },
+      {
+        "type_id": "81",
+        "label": "3rd Quarter Total",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 0
+      },
+      {
+        "type_id": "82",
+        "label": "3rd Quarter Moneyline",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 2
+      },
+      {
+        "type_id": "83",
+        "label": "3rd Quarter Spread",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 2
+      },
+      {
+        "type_id": "84",
+        "label": "4th Quarter Total",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 0
+      },
+      {
+        "type_id": "85",
+        "label": "4th Quarter Moneyline",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 2
+      },
+      {
+        "type_id": "86",
+        "label": "4th Quarter Spread",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 2
+      },
+      {
+        "type_id": "87",
+        "label": "Total Points and Assists",
+        "item_count": 22,
+        "athlete_items": 22,
+        "team_items": 0
+      },
+      {
+        "type_id": "88",
+        "label": "Total Points and Rebounds",
+        "item_count": 26,
+        "athlete_items": 26,
+        "team_items": 0
+      },
+      {
+        "type_id": "89",
+        "label": "Total Assists and Rebounds",
+        "item_count": 22,
+        "athlete_items": 22,
+        "team_items": 0
+      },
+      {
+        "type_id": "90",
+        "label": "Total Points, Rebounds, and Assists",
+        "item_count": 22,
+        "athlete_items": 22,
+        "team_items": 0
+      },
+      {
+        "type_id": "91",
+        "label": "Total Steals and Blocks",
+        "item_count": 6,
+        "athlete_items": 6,
+        "team_items": 0
+      },
+      {
+        "type_id": "92",
+        "label": "To Record a Double Double",
+        "item_count": 12,
+        "athlete_items": 12,
+        "team_items": 0
+      },
+      {
+        "type_id": "93",
+        "label": "To Record a Triple Double",
+        "item_count": 4,
+        "athlete_items": 4,
+        "team_items": 0
+      },
+      {
+        "type_id": "94",
+        "label": "First Basket",
+        "item_count": 9,
+        "athlete_items": 9,
+        "team_items": 0
+      },
+      {
+        "type_id": "96",
+        "label": "1st Team FG Scorer",
+        "item_count": 9,
+        "athlete_items": 9,
+        "team_items": 0
+      },
+      {
+        "type_id": "97",
+        "label": "1st Team FG Scorer Exact",
+        "item_count": 18,
+        "athlete_items": 18,
+        "team_items": 0
+      },
+      {
+        "type_id": "98",
+        "label": "Team Total Points",
+        "item_count": 4,
+        "athlete_items": 0,
+        "team_items": 4
+      },
+      {
+        "type_id": "99",
+        "label": "Team 1st Half Total Points",
+        "item_count": 4,
+        "athlete_items": 0,
+        "team_items": 4
+      },
+      {
+        "type_id": "150",
+        "label": "First Team to Score",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 2
+      },
+      {
+        "type_id": "153",
+        "label": "Will There Be Overtime?",
+        "item_count": 2,
+        "athlete_items": 0,
+        "team_items": 0
+      },
+      {
+        "type_id": "218",
+        "label": "Points Milestones",
+        "item_count": 107,
+        "athlete_items": 107,
+        "team_items": 0
+      },
+      {
+        "type_id": "219",
+        "label": "Assists Milestones",
+        "item_count": 77,
+        "athlete_items": 77,
+        "team_items": 0
+      },
+      {
+        "type_id": "220",
+        "label": "Rebounds Milestones",
+        "item_count": 156,
+        "athlete_items": 156,
+        "team_items": 0
+      },
+      {
+        "type_id": "221",
+        "label": "3-Point Field Goals Milestones",
+        "item_count": 51,
+        "athlete_items": 51,
+        "team_items": 0
+      },
+      {
+        "type_id": "222",
+        "label": "Steals Milestones",
+        "item_count": 26,
+        "athlete_items": 26,
+        "team_items": 0
+      },
+      {
+        "type_id": "223",
+        "label": "Blocks Milestones",
+        "item_count": 21,
+        "athlete_items": 21,
+        "team_items": 0
+      },
+      {
+        "type_id": "224",
+        "label": "Assists Milestones - 1st Quarter",
+        "item_count": 12,
+        "athlete_items": 12,
+        "team_items": 0
+      },
+      {
+        "type_id": "225",
+        "label": "Points + Assists + Rebounds Milestones",
+        "item_count": 77,
+        "athlete_items": 77,
+        "team_items": 0
+      },
+      {
+        "type_id": "226",
+        "label": "Points + Assists Milestones",
+        "item_count": 70,
+        "athlete_items": 70,
+        "team_items": 0
+      },
+      {
+        "type_id": "227",
+        "label": "Points + Rebounds Milestones",
+        "item_count": 88,
+        "athlete_items": 88,
+        "team_items": 0
+      },
+      {
+        "type_id": "228",
+        "label": "Points Milestones - 1st Quarter",
+        "item_count": 81,
+        "athlete_items": 81,
+        "team_items": 0
+      },
+      {
+        "type_id": "327",
+        "label": "Rebounds + Assists Milestones",
+        "item_count": 53,
+        "athlete_items": 53,
+        "team_items": 0
+      },
+      {
+        "type_id": "336",
+        "label": "Steals + Blocks Milestones",
+        "item_count": 18,
+        "athlete_items": 18,
+        "team_items": 0
+      }
+    ],
+    "requested_category_inventory": {
+      "PTS": {
+        "observed_type_labels": [
+          "Total Points"
+        ],
+        "primary_label_item_count": 26,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      },
+      "PRA": {
+        "observed_type_labels": [
+          "Total Points, Rebounds, and Assists"
+        ],
+        "primary_label_item_count": 22,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      },
+      "REB": {
+        "observed_type_labels": [
+          "Total Rebounds"
+        ],
+        "primary_label_item_count": 26,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      },
+      "3PM": {
+        "observed_type_labels": [
+          "Total 3-Point Field Goals"
+        ],
+        "primary_label_item_count": 16,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      },
+      "AST": {
+        "observed_type_labels": [
+          "Total Assists"
+        ],
+        "primary_label_item_count": 20,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      },
+      "RA": {
+        "observed_type_labels": [
+          "Total Assists and Rebounds"
+        ],
+        "primary_label_item_count": 22,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      },
+      "PR": {
+        "observed_type_labels": [
+          "Total Points and Rebounds"
+        ],
+        "primary_label_item_count": 26,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      },
+      "TOV": {
+        "observed_type_labels": [],
+        "primary_label_item_count": 0,
+        "status": "NOT_OBSERVED_IN_THIS_BOUNDED_EVENT"
+      },
+      "TD": {
+        "observed_type_labels": [
+          "To Record a Triple Double"
+        ],
+        "primary_label_item_count": 4,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      },
+      "DD": {
+        "observed_type_labels": [
+          "To Record a Double Double"
+        ],
+        "primary_label_item_count": 12,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      },
+      "BLK": {
+        "observed_type_labels": [
+          "Total Blocks"
+        ],
+        "primary_label_item_count": 8,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      },
+      "STL": {
+        "observed_type_labels": [
+          "Total Steals"
+        ],
+        "primary_label_item_count": 10,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      },
+      "BLK+STL": {
+        "observed_type_labels": [
+          "Total Steals and Blocks"
+        ],
+        "primary_label_item_count": 6,
+        "status": "OBSERVED_LABEL_FAMILY_INCOMPLETE_CONTRACT"
+      }
+    },
+    "optional_PA_inventory": {
+      "labels": [
+        "Total Points and Assists"
+      ],
+      "primary_label_item_count": 22
+    },
+    "odds_representation_fields": [
+      "american.value",
+      "american.open",
+      "decimal.value",
+      "decimal.open",
+      "fraction.value",
+      "fraction.open",
+      "total.value",
+      "total.open"
+    ],
+    "explicit_side_field_count": 0,
+    "explicit_selection_id_count": 0,
+    "explicit_period_field_count": 0,
+    "explicit_overtime_policy_count": 0,
+    "explicit_settlement_version_count": 0,
+    "explicit_market_status_field_count": 0,
+    "current_target_present": 1069,
+    "source_update_field": "lastUpdated with explicit Z timezone",
+    "source_update_min": "2026-10-15T06:12Z",
+    "source_update_max": "2026-10-20T02:52Z",
+    "future_source_update_counts_by_page": [
+      {
+        "page_index": 1,
+        "source_updates_later_than_observation": 124
+      },
+      {
+        "page_index": 2,
+        "source_updates_later_than_observation": 14
+      }
+    ],
+    "repeated_athlete_type_target_groups": 124,
+    "two_item_group_does_not_establish_over_under": true,
+    "complete_kernel_contract_count": 0,
+    "kernel_quote_count": 0,
+    "qualified_count": 0,
+    "diagnostic_status": "PARTIAL_SEMANTICS_AND_CLOCK_ERRORS",
+    "full_game_status": "UNKNOWN: no full-game/OT settlement meaning independently established from generic total labels.",
+    "no_selection_order_assumption": true,
+    "recursive_field_path_counts": {
+      "athlete": 1093,
+      "athlete.$ref": 1093,
+      "competition": 1135,
+      "competition.$ref": 1135,
+      "current": 1135,
+      "current.target": 1069,
+      "current.target.displayValue": 1069,
+      "current.target.value": 1069,
+      "lastUpdated": 1135,
+      "odds": 1135,
+      "odds.american": 1135,
+      "odds.american.open": 1135,
+      "odds.american.value": 1135,
+      "odds.decimal": 1135,
+      "odds.decimal.open": 1135,
+      "odds.decimal.value": 1135,
+      "odds.fraction": 1135,
+      "odds.fraction.open": 1135,
+      "odds.fraction.value": 1135,
+      "odds.total": 1135,
+      "odds.total.open": 1069,
+      "odds.total.value": 1069,
+      "open": 1135,
+      "open.target": 1069,
+      "open.target.displayValue": 1069,
+      "open.target.value": 1069,
+      "provider": 1135,
+      "provider.$ref": 1135,
+      "team": 30,
+      "team.$ref": 30,
+      "type": 1135,
+      "type.id": 1135,
+      "type.name": 1135
+    }
+  },
+  "sleeper": {
+    "response_row_count": 1508,
+    "nba_row_count": 675,
+    "nba_option_count": 1350,
+    "row_subject_type_counts": {
+      "player": 675
+    },
+    "option_subject_type_counts": {
+      "player": 1350
+    },
+    "nba_wager_type_counts": {
+      "assists": 111,
+      "points": 139,
+      "pts_reb_ast": 101,
+      "rebounds": 146,
+      "steals": 24,
+      "threes_made": 123,
+      "blocks": 12,
+      "double_double": 16,
+      "turnovers": 3
+    },
+    "requested_category_option_counts": {
+      "PTS": 278,
+      "PRA": 202,
+      "REB": 292,
+      "3PM": 246,
+      "AST": 222,
+      "RA": 0,
+      "PR": 0,
+      "TOV": 6,
+      "TD": 0,
+      "DD": 32,
+      "BLK": 24,
+      "STL": 48,
+      "BLK+STL": 0
+    },
+    "optional_PA_option_count": 0,
+    "line_type_counts": {
+      "normal": 675
+    },
+    "nba_game_id_count": 14,
+    "nba_subject_id_count": 164,
+    "row_keys": [
+      "game_id",
+      "game_status",
+      "line_type",
+      "market_type",
+      "options",
+      "outcome_type",
+      "pick_stats",
+      "recent_performance",
+      "season",
+      "season_type",
+      "sport",
+      "status",
+      "subject_id",
+      "subject_type",
+      "updated_at",
+      "wager_type"
+    ],
+    "option_keys": [
+      "game_id",
+      "game_status",
+      "line_id",
+      "line_type",
+      "market_type",
+      "metadata",
+      "outcome",
+      "outcome_type",
+      "outcome_value",
+      "payout_multiplier",
+      "season",
+      "season_type",
+      "sport",
+      "status",
+      "subject_id",
+      "subject_pos_rank",
+      "subject_position",
+      "subject_team",
+      "subject_type",
+      "wager_type"
+    ],
+    "price_kind": "pickem_multiplier",
+    "import_status": "partial",
+    "parser_version": "nba-offer-import-0.2",
+    "nonplayer_rows_ignored": 0,
+    "subject_type_invalid_rows": 0,
+    "parser_diagnostic_count": 0,
+    "other_sport_rows_ignored": 833,
+    "complete_kernel_contract_count": 0,
+    "kernel_quote_count": 0,
+    "qualified_count": 0,
+    "source_payload_sha256": "dfb023ec7cb66ca1194c2bd23681a3322efe655e80bbc79aa72122bddba88c4f",
+    "capture_sha256": "d586bd5fc33427e14c61038f9c614bb703542ed023fcca8c7a5dfdbb1b91bfdd",
+    "parser_elapsed_seconds": 0.146111,
+    "private_receipt_bytes": 1494533,
+    "pagination_complete": "UNKNOWN: bare response array; no pagination count/token established.",
+    "period_overtime_event_start_rules_terms": "ABSENT; incomplete observation remains distinct from contract/quote."
+  },
+  "source_response_bytes_total": 3367044,
+  "local_software_checks": {
+    "focused_offer_tests_passed": 12,
+    "full_current_suite_tests_passed": 110,
+    "demo_exit_code": 0,
+    "meaning": "Software checks only; not model evaluation or provider qualification."
+  }
+}

@@ -1,4 +1,4 @@
-"""Bounded research-only static publication v1; no raw feeds or qualified rows.
+"""Bounded research-only static publication v2; no raw feeds or qualified rows.
 
 Publication time is distinct from each sport's generation/capture clocks.
 Content-addressed assets are written before the manifest commit point. A failed
@@ -17,7 +17,7 @@ import tempfile
 
 from .integrity import IntegrityError, canonical, digest, load_json, stamp, utc
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 MAX_ASSET_BYTES = 512 * 1024
 COLLECTIONS = ("events", "offers", "forecasts", "candidates", "tickets", "performance")
 MARKETS = ("PTS", "PRA", "REB", "3PM", "AST", "RA", "PR", "TOV", "TD", "DD", "BLK", "STL", "BLK+STL")
@@ -46,6 +46,9 @@ def _text(value, name):
 
 def validate_sport(snapshot: dict, *, league: str, now: datetime) -> None:
     """Fail closed: v1 has a full category catalog but no typed observation rows."""
+    if type(snapshot) is dict and type(snapshot.get("schema_version")) is int and snapshot["schema_version"] == 2:
+        _validate_research_sport(snapshot, league=league, now=now)
+        return
     fields = {"schema_version", "league", "generated_at", "evidence_lane", "status",
               "coverage", "markets", "sources", *COLLECTIONS}
     if type(snapshot) is not dict or set(snapshot) != fields:
@@ -98,6 +101,70 @@ def validate_sport(snapshot: dict, *, league: str, now: datetime) -> None:
         raise IntegrityError("Sport asset exceeds byte budget")
 
 
+def _validate_research_sport(snapshot: dict, *, league: str, now: datetime) -> None:
+    from .forecast_contract import validate_forecast, validate_event
+    from .ledger import validate_grade
+    expected = {"schema_version", "league", "generated_at", "evidence_lane", "status",
+                "coverage", "markets", "sources", "future_availability", *COLLECTIONS}
+    if set(snapshot) != expected or league != "NBA":
+        raise IntegrityError("Unsupported typed sport schema")
+    # Reuse exact catalog/admission checks; v1 remains loadable for retained assets.
+    catalog = {k: v for k, v in snapshot.items() if k != "future_availability"}
+    catalog.update(schema_version=1, **{field: [] for field in COLLECTIONS})
+    validate_sport(catalog, league=league, now=now)
+    generated = utc(snapshot["generated_at"])
+    for field in COLLECTIONS:
+        if type(snapshot[field]) is not list:
+            raise IntegrityError("Typed collections must be lists")
+    if any(snapshot[field] for field in ("offers", "candidates", "tickets")):
+        raise IntegrityError("Research forecasts do not admit offers or tickets")
+    if len(snapshot["forecasts"]) > 32 or len(snapshot["events"]) > 32 or len(snapshot["performance"]) > 64:
+        raise IntegrityError("Typed research collection exceeds its budget")
+    events = {}
+    for event in snapshot["events"]:
+        validate_event(event)
+        if event["event_id"] in events:
+            raise IntegrityError("Duplicate event identity")
+        events[event["event_id"]] = event
+    forecasts = {}
+    identities = set()
+    for bundle in snapshot["forecasts"]:
+        validate_forecast(bundle, now=generated)
+        key = (bundle["event_id"], bundle["player_id"], bundle["model_version"], bundle["cutoff_at"])
+        if bundle["forecast_id"] in forecasts or key in identities:
+            raise IntegrityError("Duplicate forecast identity or original issue revision")
+        identities.add(key)
+        event = events.get(bundle["event_id"])
+        if (event is None or event["starts_at"] != bundle["event_starts_at"]
+                or set(event["team_ids"]) != {bundle["team_id"], bundle["opponent_id"]}
+                or (bundle["evidence_lane"] == "RECONSTRUCTED_RESEARCH" and event["status"] != "FINAL")
+                or (bundle["evidence_lane"] == "REAL_TIME_CAPTURED" and event["status"] != "SCHEDULED")):
+            raise IntegrityError("Forecast/event identity, version or status mismatch")
+        forecasts[bundle["forecast_id"]] = bundle
+    grades = set()
+    for grade in snapshot["performance"]:
+        forecast = forecasts.get(grade.get("forecast_id")) if type(grade) is dict else None
+        if forecast is None:
+            raise IntegrityError("Grade references an unpublished forecast")
+        validate_grade(grade, forecast=forecast)
+        if grade["grade_id"] in grades or utc(grade["graded_at"]) > generated:
+            raise IntegrityError("Duplicate grade or future grading clock")
+        grades.add(grade["grade_id"])
+    availability = snapshot["future_availability"]
+    if (type(availability) is not dict or set(availability) != {"status", "reasons"}
+            or availability["status"] not in {"AVAILABLE", "UNAVAILABLE"}
+            or type(availability["reasons"]) is not list
+            or any(type(reason) is not str or not reason.strip() for reason in availability["reasons"])):
+        raise IntegrityError("Invalid future coverage explanation")
+    has_future = any(bundle["evidence_lane"] == "REAL_TIME_CAPTURED"
+                     and utc(bundle["event_starts_at"]) > generated for bundle in forecasts.values())
+    if ((availability["status"] == "AVAILABLE") != has_future
+            or (not has_future and not availability["reasons"])):
+        raise IntegrityError("Future coverage status must match genuine available issuance")
+    if len(canonical(snapshot)) > MAX_ASSET_BYTES:
+        raise IntegrityError("Sport asset exceeds byte budget")
+
+
 def empty_nba(root: Path, *, now: datetime) -> dict:
     registry = load_json(root / "config/nba_markets.json")
     caps = load_json(root / "config/capabilities.json")
@@ -116,13 +183,50 @@ def empty_nba(root: Path, *, now: datetime) -> dict:
     result["sources"].extend([
         {"id": "espn_draftkings_player_props", "name": "ESPN Draft Kings-labelled NBA offers",
          "status": caps["live_feed_candidates"]["espn_draftkings_player_props"]["status"],
-         "detail": "Provider label observed; attempted player route returned error. Player prices, full-game contracts and ongoing access permission are unestablished.",
+         "detail": "Bounded NBA audit: 1,135 items across both declared pages; 12 requested families plus PA and price fields observed. TOV absent this event. Side, full-game/OT and settlement unresolved; 138 future source-update clocks; zero complete quotes. Ongoing access permission unestablished.",
          "observed_at": None},
         {"id": "sleeper_picks", "name": "Sleeper NBA Picks observations",
          "status": caps["live_feed_candidates"]["sleeper_picks"]["status"],
-         "detail": "Nine NBA labels observed in one bounded capture. Side multipliers are not sportsbook odds. Period, overtime, identity crosswalk and complete entry terms remain unresolved; live adapter disabled.",
+         "detail": "Latest bounded capture: 675 NBA rows / 1,350 options across nine families, with matching player subject types. RA, PR, TD and BLK+STL absent this snapshot. Multipliers are not sportsbook odds; paging, full-game/OT and entry terms unresolved; live adapter disabled.",
          "observed_at": None},
     ])
+    for source in result["sources"]:
+        observed = caps["live_feed_candidates"].get(source["id"], {}).get("last_observed_at")
+        if observed is not None and utc(observed) <= utc(now):
+            source["observed_at"] = stamp(utc(observed))
+    validate_sport(result, league="NBA", now=now)
+    return result
+
+
+def research_nba(root: Path, *, now: datetime) -> dict:
+    """Read the durable repository ledger; build never regenerates forecasts."""
+    from .ledger import Ledger
+    from .forecast_contract import EVENT_SCHEMA
+    result = empty_nba(root, now=now)
+    result["schema_version"] = 2
+    ledger = Ledger(root)
+    # Recovery checks every checksum and reference before anything is published.
+    ledger.scan()
+    result["forecasts"] = list(ledger.iter_active_forecasts())
+    result["performance"] = list(ledger.iter_active_grades())
+    events = {}
+    for bundle in result["forecasts"]:
+        event = {"schema_version": EVENT_SCHEMA, "id_namespace": bundle["id_namespace"], "league": "NBA",
+                 "event_id": bundle["event_id"], "starts_at": bundle["event_starts_at"],
+                 "status": "FINAL" if bundle["evidence_lane"] == "RECONSTRUCTED_RESEARCH" else "SCHEDULED",
+                 "team_ids": sorted([bundle["team_id"], bundle["opponent_id"]]),
+                 "label": f"ESPN event {bundle['event_id']}",
+                 "schedule_basis": "RETROSPECTIVE_ARCHIVE" if bundle["evidence_lane"] == "RECONSTRUCTED_RESEARCH" else "OBSERVED_CAPTURE"}
+        if bundle["event_id"] in events and events[bundle["event_id"]] != event:
+            raise IntegrityError("Conflicting retained event identities")
+        events[bundle["event_id"]] = event
+    result["events"] = list(events.values())
+    has_future = any(bundle["evidence_lane"] == "REAL_TIME_CAPTURED" and utc(bundle["event_starts_at"]) > utc(now)
+                     for bundle in result["forecasts"])
+    result["future_availability"] = {"status": "AVAILABLE" if has_future else "UNAVAILABLE", "reasons": [] if has_future else [
+        "No admitted pregame event/player candidate universe and observed-input capture route is available.",
+        "Archive start+24h availability bounds support reconstruction only; they do not establish real-time input availability.",
+        "No genuinely pregame T-90 reference issuance has been captured for upcoming games. Historical reconstructions are available in History."]}
     validate_sport(result, league="NBA", now=now)
     return result
 
@@ -144,7 +248,7 @@ def read_manifest(data_dir: Path, *, now: datetime) -> dict:
     manifest = load_json(data_dir / "manifest.json", max_bytes=MAX_ASSET_BYTES)
     fields = {"schema_version", "snapshot_id", "build_commit", "published_at", "publication_status", "supported_sports", "sports", "errors"}
     if (type(manifest) is not dict or set(manifest) != fields
-            or type(manifest["schema_version"]) is not int or manifest["schema_version"] != 1
+            or type(manifest["schema_version"]) is not int or manifest["schema_version"] not in {1, 2}
             or manifest["publication_status"] != "RESEARCH_ONLY"
             or not re.fullmatch(r"[a-f0-9]{40}", manifest["build_commit"])
             or utc(manifest["published_at"]) > utc(now)):
@@ -201,7 +305,7 @@ def publish(data_dir: Path, snapshots: dict[str, dict | Exception], *, build_com
                 entries[league].update(retained=True, error=errors[league])
     if not entries:
         raise IntegrityError("No valid sport snapshot; previous publication unchanged")
-    result = {"schema_version": 1, "build_commit": build_commit, "published_at": stamp(now),
+    result = {"schema_version": SCHEMA_VERSION, "build_commit": build_commit, "published_at": stamp(now),
               "publication_status": "RESEARCH_ONLY", "supported_sports": sorted(entries),
               "sports": [entries[key] for key in sorted(entries)], "errors": errors}
     result["snapshot_id"] = digest(result)
@@ -229,7 +333,11 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
                 shutil.copyfile(source, staging / source.name)
         if not (staging / "index.html").is_file():
             raise IntegrityError("Site artifact requires index.html at its root")
-        result = publish(staging / "data", {"NBA": empty_nba(root, now=now)}, build_commit=build_commit, now=now)
+        try:
+            nba_snapshot = research_nba(root, now=now)
+        except (ValueError, KeyError, TypeError, OSError) as error:
+            nba_snapshot = error
+        result = publish(staging / "data", {"NBA": nba_snapshot}, build_commit=build_commit, now=now)
         if output.exists():
             backup = Path(tempfile.mkdtemp(prefix=".site-old-", dir=output.parent))
             backup.rmdir()

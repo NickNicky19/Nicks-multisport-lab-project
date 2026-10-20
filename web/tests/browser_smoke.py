@@ -11,6 +11,7 @@ import hashlib
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
+import subprocess
 from threading import Thread
 
 from playwright.sync_api import sync_playwright
@@ -33,6 +34,12 @@ class Handler(SimpleHTTPRequestHandler):
         pass
 
 
+def screenshot(page, path):
+    # Full-page captures otherwise place fixed navigation at the current scroll offset.
+    page.evaluate("document.activeElement?.blur(); window.scrollTo(0, 0)")
+    page.screenshot(path=str(path), full_page=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output", nargs="?", type=Path, default=Path("output"))
@@ -40,6 +47,7 @@ def main():
     args = parser.parse_args()
     root = args.output.resolve()
     manifest = json.loads((root / "data/manifest.json").read_text())
+    nba_snapshot = json.loads((root / "data" / manifest["sports"][0]["path"]).read_text())
     server = ThreadingHTTPServer(("127.0.0.1", 0), partial(Handler, directory=str(root)))
     Thread(target=server.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{server.server_port}{PREFIX}"
@@ -65,14 +73,51 @@ def main():
             page.get_by_role("heading", level=1).filter(has_text="Better questions.").wait_for()
             assert page.locator(".category-card").count() == 13
             if args.screenshots:
-                page.screenshot(path=str(args.screenshots / "overview-desktop.png"), full_page=True)
+                screenshot(page, args.screenshots / "overview-desktop.png")
             page.goto(base + "#/props")
             page.get_by_role("heading", name="Props", exact=True).wait_for()
-            assert page.locator("tbody tr").count() == 14  # 13 required plus optional PA.
+            assert page.locator(".inventory-table tbody tr").count() == 14  # 13 required plus optional PA.
+            assert page.locator(".forecast-card").count() == 0
+            page.get_by_text("No upcoming research forecasts", exact=True).wait_for()
+            page.locator('[data-filter="view"]').select_option("history")
+            if nba_snapshot["forecasts"]:
+                assert page.locator(".forecast-card").count() >= 14
+                assert "Historical reconstruction" in page.locator(".forecast-card").first.inner_text()
+                assert len(set(page.locator(".forecast-card").evaluate_all("cards => cards.map(card => card.dataset.market)"))) == 14
+                assert len(json.dumps(nba_snapshot, ensure_ascii=False).encode()) <= 512 * 1024
+                assert all(row["evidence_lane"] == "RECONSTRUCTED_RESEARCH" for row in nba_snapshot["forecasts"])
+                while page.locator("#more-forecasts").count():
+                    page.locator("#more-forecasts").click()
+                assert page.locator(".forecast-card").count() == len(nba_snapshot["forecasts"]) * 14
+                first = page.locator(".forecast-card").first
+                first.locator("summary").click()
+                actual = nba_snapshot["forecasts"][0]
+                assert first.locator("time").get_attribute("datetime") == actual["event_starts_at"]
+                assert actual["issued_at"] in first.locator(".forecast-provenance").inner_text()
+                assert actual["cutoff_at"] in first.locator(".forecast-provenance").inner_text()
+                assert actual["forecast_id"] in first.locator(".forecast-provenance").inner_text()
+                page.locator('[data-filter="category"]').select_option("REB")
+                assert page.locator(".forecast-card").count() == len(nba_snapshot["forecasts"])
+                if args.screenshots:
+                    screenshot(page, args.screenshots / "real-reb-history-desktop.png")
+                    page.set_viewport_size({"width": 390, "height": 844})
+                    screenshot(page, args.screenshots / "real-reb-history-mobile.png")
+                    page.locator(".forecast-card").first.screenshot(path=str(args.screenshots / "real-reb-card-mobile.png"))
+                    page.set_viewport_size({"width": 1440, "height": 1000})
+                page.get_by_role("link", name="Performance", exact=True).click()
+                assert page.locator(".grade-summary tbody tr").count() == 14
+                assert f'{len(nba_snapshot["performance"])} typed grade records published' in page.locator("main").inner_text()
+                page.locator(".grade-receipts>summary").click()
+                assert page.locator(".grade-receipt").count() == len(nba_snapshot["performance"])
+                assert "Financial settlement: NOT_EVALUATED" in page.locator(".grade-receipt").first.inner_text()
+                assert "No settled paper tickets published" in page.locator("main").inner_text()
+                page.get_by_role("link", name="Props", exact=True).click()
+                page.locator('[data-filter="category"]').select_option("ALL")
             page.get_by_role("button", name="Selected sports", exact=True).click()
             page.locator('input[name="sport"]').uncheck()
             assert "No sports selected" in page.locator("main").inner_text()
-            assert page.locator("tbody tr").count() == 1
+            assert page.locator(".inventory-table tbody tr").count() == 1
+            assert page.locator(".forecast-card").count() == 0
             page.get_by_role("link", name="Paper Builder", exact=True).click()
             page.get_by_role("heading", name="Paper Builder", exact=True).wait_for()
             assert "No sports selected" in page.locator(".request-summary").inner_text()
@@ -95,7 +140,7 @@ def main():
                     page.get_by_role("heading", level=1).filter(has_text=heading).wait_for()
                     assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"Mobile overflow: {name} at {width}px"
                     if args.screenshots and width == 390 and name in ("overview", "props", "builder"):
-                        page.screenshot(path=str(args.screenshots / f"{name}-mobile.png"), full_page=True)
+                        screenshot(page, args.screenshots / f"{name}-mobile.png")
             page.goto(base + "#/missing")
             page.get_by_role("heading", name="This route is not in the lab.").wait_for()
             assert not errors, errors
@@ -134,9 +179,48 @@ def main():
             page.get_by_role("alert").filter(has_text="WNBA update unavailable").wait_for()
             assert page.locator('input[name="sport"]').count() == 1
             assert page.locator('input[name="sport"]').input_value() == "NBA"
+
+            # Explicitly synthetic typed-v2 browser fixtures; never written to the artifact.
+            page.unroute("**/data/manifest.json")
+            repo = Path(__file__).resolve().parents[2]
+            synthetic = json.loads(subprocess.run(["node", "--input-type=module", "-e", "import {typedFixture} from './web/tests/fixtures.mjs'; console.log(JSON.stringify(typedFixture()));"], cwd=repo, text=True, capture_output=True, check=True).stdout)
+            canonical = lambda value: json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+            page.route("**/data/manifest.json", lambda route: route.fulfill(body=canonical(synthetic["manifest"]), content_type="application/json"))
+            page.route("**/data/nba.*.json", lambda route: route.fulfill(body=canonical(synthetic["sport"]), content_type="application/json"))
+            page.goto(base + "#/props")
+            page.reload()
+            page.get_by_text("No upcoming research forecasts", exact=True).wait_for()
+            assert page.get_by_role("alert").count() == 0
+            page.locator('[data-filter="view"]').select_option("history")
+            assert page.locator(".forecast-card").count() == 14
+            assert page.locator('.forecast-card[data-market="PA"]').count() == 1
+            page.locator('[data-filter="category"]').select_option("REB")
+            assert page.locator(".forecast-card").count() == 1
+            page.locator(".forecast-details summary").click()
+            assert "Actual issued time" in page.locator(".forecast-provenance").inner_text()
+            assert "not a pregame receipt" in page.locator(".forecast-details").inner_text()
+            assert "Synthetic fixture player" in page.locator(".forecast-card").inner_text()
+            assert page.get_by_text("No offers published in this scope", exact=True).count() == 1
+            if args.screenshots:
+                screenshot(page, args.screenshots / "synthetic-history-mobile.png")
+            page.get_by_role("link", name="Performance", exact=True).click()
+            assert page.locator(".grade-summary tbody tr").count() == 14
+            assert "No settled paper tickets published" in page.locator("main").inner_text()
+            page.locator(".grade-receipts>summary").click()
+            assert "Financial settlement: NOT_EVALUATED" in page.locator(".grade-receipt").inner_text()
+            if args.screenshots:
+                screenshot(page, args.screenshots / "synthetic-performance-mobile.png")
+            page.get_by_role("link", name="Props", exact=True).click()
+            page.locator('[data-filter="view"]').select_option("upcoming")
+            assert page.locator(".forecast-card").count() == 0
+            page.get_by_role("link", name="Paper Builder", exact=True).click()
+            assert "0 admitted candidates" in page.locator(".request-summary").inner_text()
+            assert "NO_ACTION" in page.locator(".decision-box").inner_text()
             assert not errors, errors
             browser.close()
-        print("PASS: Chromium desktop, 390px and 320px; seven routes and reloads; repository-prefix assets; all-13 inventory; shared scope and builder requests; NO_ACTION; unknown route; incompatible, corrupt, retained and first-failure snapshots. Local browser evidence only; no deployment/model/product claim.")
+        if nba_snapshot["forecasts"]:
+            print(f'PASS real retained research: {len(nba_snapshot["events"])} events, {len(nba_snapshot["forecasts"])} bundles, {len(nba_snapshot["forecasts"]) * 14} category PMFs and {len(nba_snapshot["performance"])} forecast grades; actual event/cutoff/issue/record IDs, all-category load-more, REB filter, finite support and separate NOT_EVALUATED financial state checked.')
+        print("PASS: Chromium desktop, 390px and 320px; seven routes and reloads; repository-prefix assets; all-13 inventory; shared scope and builder requests; NO_ACTION; unknown route; incompatible, corrupt, retained and first-failure snapshots; synthetic typed-v2 fourteen-category history, future exclusion, provenance and separate forecast grades. Local browser/software evidence only; no deployment/model/product claim.")
     finally:
         server.shutdown()
         server.server_close()
