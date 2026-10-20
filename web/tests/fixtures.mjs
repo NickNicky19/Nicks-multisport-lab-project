@@ -37,3 +37,24 @@ export function typedFixture() {
   sport.events = [event]; sport.forecasts = [forecast]; sport.performance = [grade];
   return reseal(sport);
 }
+
+/** Browser/software fixtures only. These records never enter the ledger or build. */
+export function mixedEvidenceFixture() {
+  const original = typedFixture(), sport = structuredClone(original.sport);
+  const capturedEvent = {...sport.events[0], event_id: 'synthetic-captured-event', label: 'Synthetic past captured event', status: 'SCHEDULED', schedule_basis: 'OBSERVED_CAPTURE'};
+  sport.events.push(capturedEvent);
+  sport.forecasts = []; sport.performance = [];
+  for (const [name, captured, commit] of [['reconstructed-a', false, 'a'], ['reconstructed-peer', false, 'a'], ['captured-a', true, 'a'], ['captured-revision', true, 'f']]) {
+    const forecast = structuredClone(original.sport.forecasts[0]);
+    forecast.player_id = name; forecast.player_label = `Synthetic ${name}`;
+    forecast.input_sha256 = hash({synthetic_input: name}); forecast.model_commit = commit.repeat(40);
+    if (captured) Object.assign(forecast, {event_id: capturedEvent.event_id, evidence_lane: 'REAL_TIME_CAPTURED', availability_basis: 'OBSERVED_INPUT_CAPTURE', issued_at: '1999-12-01T19:00:00.000000Z', input_capture_ids: [hash({synthetic_capture: name})]});
+    delete forecast.forecast_id; forecast.forecast_id = hash(forecast);
+    const grade = structuredClone(original.sport.performance[0]);
+    Object.assign(grade, {forecast_id: forecast.forecast_id, player_id: name, event_id: forecast.event_id, evidence_lane: forecast.evidence_lane, outcome_id: hash({synthetic_outcome: name})});
+    if (name === 'captured-a') for (const [code, crps] of [['PTS', '4'], ['PR', '4'], ['PA', '3.75'], ['PRA', '4.75']]) Object.assign(grade.categories.find(row => row.code === code), {observed: 13, crps, log_loss: null, log_loss_status: 'ZERO_SUPPORT'});
+    delete grade.grade_id; grade.grade_id = hash(grade);
+    sport.forecasts.push(forecast); sport.performance.push(grade);
+  }
+  return reseal(sport);
+}

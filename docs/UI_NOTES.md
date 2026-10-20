@@ -1,5 +1,68 @@
 # Research interface
 
+## Evidence groups and History correction, 2026-10-20
+
+Performance now summarizes grades separately by league, evidence lane, model
+version, full model commit, model code SHA-256, conditioning, period and overtime
+policy. The full identity is visible beside each category table. Different input
+hashes and player/event IDs remain observations within the same model cohort;
+they do not erase the lane/model boundary. DNP and unresolved records retain
+their counts without entering score means. A zero-support log-loss row makes
+only its own group's category loss infinite. Counts remain grade records, not
+independent trials, and no cross-category accuracy score or product qualification
+is introduced. Missing or mismatched forecast references fail closed.
+
+History now means past-event forecasts and reconstructed research. One shared
+classifier drives its rows and shortcut count, including `REAL_TIME_CAPTURED`
+records whose event start has passed. Passing that clock does not establish game
+completion. The selector, empty states and banner preserve this distinction;
+captured records retain their original lane and pregame issue time rather than
+being described as backfilled. Current retained records remain reconstructed-only;
+all mixed-lane examples are explicitly synthetic software/browser fixtures. This
+change creates no input receipt, real-time producer, forecast or outcome and admits
+no new evidence lane to the ledger.
+
+Verification commands on the branch based on
+`002a6b994c862c758f1d7c8199831c75eff761af`:
+
+```bash
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.publication --build-commit "$(git rev-parse HEAD)" \
+  --output /tmp/nml-recovery-groups-ui
+node web/tests/site-smoke.mjs /tmp/nml-recovery-groups-ui
+python3 web/tests/browser_smoke.py /tmp/nml-recovery-groups-ui \
+  --screenshots /tmp/nml-recovery-groups-ui-screenshots
+```
+
+All **31 Node checks** passed. Local Chromium checked the unchanged six real
+research bundles/84 PMFs/six grades and all seven routes at 1440px, 390px and
+320px, plus synthetic mixed-lane/model cohorts: four forecast records in History,
+three separate summary groups, isolated means and zero-support loss, exact lane
+labels and an empty selected scope hiding both forecasts and grade groups. The
+first 320px run exposed overflow from an unbroken lane heading; the heading now
+uses a readable label with the full lane code in metadata, and the repeated
+browser check passed. The synthetic 390px group screenshot received visual
+inspection. Offer, candidate and ticket arrays remain empty; all existing sport
+scope, direction and 2–6-leg semantics retain `NO_ACTION`. These are local checks
+of the correction, not deployment evidence for the new branch.
+
+Before these changes, the approved PR 3 deployment was independently checked at
+public build `002a6b994c862c758f1d7c8199831c75eff761af`, snapshot
+`45f9c2d7cf10baf00ace7b399f948e91d95c0e14fc5dbf494b8191af24ce7ae5`, from
+2026-10-20T01:01:39.714719Z to 2026-10-20T01:02:10.831386Z. System-verified HTTPS
+and Chromium public readback passed all seven routes/reloads at 1440px, 390px and
+320px, all 84 PMFs and fourteen category filters, six grade receipts and all
+45 sport-scope × 2–6-size × direction readiness combinations. There were no page
+errors or failed HTTP responses; nine requested assets stayed inside the Pages
+repository prefix. The 151,222-byte NBA asset and manifest/forecast/grade hashes
+matched. The browser used only a process-local SPKI trust pin for the configured
+environment proxy CA; urllib independently used normal verified TLS. No persistent
+trust store, repository or existing receipt changed during that public check.
+The aggregate and screenshots are `/tmp/nml-public-typed-qa/`; the integration
+owner's deployment receipt retains the durable evidence. That deployment readback
+establishes website delivery for the approved commit, not model accuracy, genuine
+prospective outcomes or product qualification.
+
 ## Typed research update, 2026-10-20
 
 The client now accepts publication manifests v1/v2 and retained sport snapshots

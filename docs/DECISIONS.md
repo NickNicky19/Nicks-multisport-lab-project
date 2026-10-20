@@ -118,3 +118,44 @@ start+24h completion bound. 2,000 paired whole-week bootstrap draws, fixed seed
 multiplicity-adjusted promotion or confirmatory claim. No tuning. Full exact
 pre-scoring inventory and protocol receipts bind the fixed game list and hashes.
 The old R0 pilot and separate proposed REB B0/B1/C1 protocol are unchanged.
+
+## 2026-10-20 — post-deployment clocks, evidence groups and DEV003
+
+PR #3's exact approved2d30ae9 head merged as002a6b9 and its typed site passed
+main workflow/public HTTP/hash/desktop/mobile verification. Follow-up work starts
+from that main on implementation/recovery-and-evidence-groups; no approved-head
+rewrite, forced push, external NFL/MLB write or inherited scheduler.
+
+An interrupted historical publication may retain outcomes whose original source
+clock predates the resumed batch's local read. New v2 summaries copy each
+referenced record's actual metadata/clocks and supply a common source clock only
+when all outcomes agree. Existing v1/eighteen original receipts remain unchanged.
+Recovery validates exact references, identities, source/model/clock metadata and
+grade dependencies. Source observations after a retained historical forecast's
+issue time remain valid for reconstructed grading; they never imply pregame
+availability. Publication and source receipt clocks retain separate meanings.
+
+Performance summaries partition by sport, evidence lane, model version/full
+commit/code hash, conditioning and period/overtime. History retains past captured
+forecasts without calling them reconstructions or assuming a game is complete
+solely because its start clock has passed. Record counts are not independent
+trials. No new prospective producer or product qualification is admitted.
+
+The offline readiness pilot binds exact event/version/player/team/source hashes,
+supplied source clocks, coverage and lagged complete inputs, while explicitly
+refusing authenticity/permission/real-time admission claims. A retained archive
+alone lacks a prospective bundle, but old statistics observed before a later
+future cutoff are not inherently invalid features. Historical late-fetch clocks
+block historical as-of claims; future-event-specific timing must be assessed
+separately. The20k/8MiB pilot limits do not silently truncate full R0 history.
+
+DEV003 is one untuned coherent K0 workload-prior challenger versus unchanged R0
+and L0. Its donor contexts use the donor's own lagged cutoff history, never its
+outcome minutes. Fix latest≤5 arithmetic reported-minute mean,8-minute kernel,
+0.25 league floor, unchanged R0 personal28day weights/5-prior strength, exact n0
+fallback. All14 outputs retain complete stat-line atoms. Hashed identity-only
+selection across12 full UTC weeks gives24 games/517 rows; source/cohort/code
+fingerprints, one-trial/no-search budgets900sec/512MiB and paired week-bootstrap
+metrics are frozen in dev003-protocol.json before scoring. This exposed
+development is neither the blocked precise-duration REB experiment nor later
+confirmation/promotion/model selection. No post-score parameter/cohort changes.

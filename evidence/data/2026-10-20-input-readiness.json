@@ -1,0 +1,49 @@
+{
+  "schema_version": "nba-archive-input-diagnostic-v1",
+  "checked_at": "2026-10-20T01:05:50.879136Z",
+  "status": "BLOCKED_FOR_FUTURE_INPUT",
+  "evidence_lane": "RECONSTRUCTED_RESEARCH",
+  "future_issuance_admitted": false,
+  "qualification": "UNAVAILABLE",
+  "no_capture_or_forecast_created": true,
+  "panel_sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c",
+  "panel_bytes": 14720351,
+  "total_file_rows": 26645,
+  "inspected_prefix_rows": 20000,
+  "inspection_limit": 20000,
+  "inspected_rows_with_source_observed_at": 0,
+  "inspected_rows_with_source_version": 0,
+  "inspected_rows_with_event_version": 0,
+  "inspected_rows_with_candidate_universe": 0,
+  "receipts_sha256": "53fd92d5d6f4c7c1f648834c6bbb19bf746cce4f4a7d05f23f8753f3f6b3a739",
+  "archive_observations": [
+    {
+      "source": "sdv_player_box_2026",
+      "observed_at": "2026-10-19T22:53:58.496791+00:00",
+      "source_version": null,
+      "source_updated_at": "2026-09-09T05:17:36Z",
+      "github_asset_id": 552052712,
+      "raw_sha256": "29a29dc9efd055a93e069a0382ac830d98a13274bee655beba69d95cff099713"
+    },
+    {
+      "source": "sdv_schedule_2026",
+      "observed_at": "2026-10-19T22:58:04.960091+00:00",
+      "source_version": null,
+      "source_updated_at": "2026-09-09T05:18:08Z",
+      "github_asset_id": 552053438,
+      "raw_sha256": "b3884aa4aa276d1fcafc71b69394675904a968902068bff634932e5d7afacae4"
+    }
+  ],
+  "known_post_event_archive_sources": [
+    "sdv_player_box_2026",
+    "sdv_schedule_2026"
+  ],
+  "blockers": [
+    "RETAINED_ARCHIVE_IS_NOT_A_PREGAME_INPUT_SNAPSHOT",
+    "NO_OBSERVED_PREGAME_SELECTED_PLAYER_UNIVERSE",
+    "NO_EVENT_VERSION_OR_ROW_SOURCE_CAPTURE_REFERENCES",
+    "CURRENT_R0_REAL_TIME_ISSUANCE_DISABLED",
+    "KNOWN_ARCHIVE_FETCH_AFTER_HISTORICAL_EVENT_CUTOFFS",
+    "WHOLE_ARCHIVE_EXCEEDS_20000_PRIOR_ROW_SNAPSHOT_BUDGET"
+  ]
+}

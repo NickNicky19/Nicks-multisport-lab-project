@@ -14,9 +14,9 @@ implementation roadmap. The implementation owner is now working from that handof
 in [HANDOFF_STATUS.md](HANDOFF_STATUS.md). The initial work adds audited NBA source
 normalization, a coherent all-category empirical research reference, authorized
 offline offer import, conservative paper-draft contracts, and a mobile static
-research interface. The initial site is deployed at
-https://nicknicky19.github.io/Nicks-multisport-lab-project/ . The next implementation
-adds typed fourteen-category historical research distributions and immutable
+research interface. The deployed site at
+https://nicknicky19.github.io/Nicks-multisport-lab-project/ includes typed
+fourteen-category historical research distributions and immutable
 Git-backed issuance/outcome/grade records. See the handoff for exact branch,
 publication and durability evidence; these do not establish a validated model,
 qualified ticket or genuine future result.

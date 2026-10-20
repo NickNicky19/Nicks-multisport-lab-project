@@ -1,0 +1,999 @@
+{
+  "branch": "implementation/recovery-and-evidence-groups",
+  "clone": {
+    "command": [
+      "git",
+      "clone",
+      "--branch",
+      "implementation/recovery-and-evidence-groups",
+      "--single-branch",
+      "--no-tags",
+      "https://github.com/NickNicky19/Nicks-multisport-lab-project",
+      "/tmp/nml-followup-remote-check-yfeEcc/checkout"
+    ],
+    "exit_code": 0,
+    "head": "73dd8a5a15fd5ffa2e49513daa19546cdba91b13",
+    "network_access": "explicit execution-tool network permission; inherited proxy and normal HTTPS verification",
+    "operation": "fresh HTTPS read-only checkout of the same existing repository",
+    "origin": "https://github.com/NickNicky19/Nicks-multisport-lab-project",
+    "path": "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+    "prior_default_sandbox_attempt": {
+      "git_clone_exit_code": null,
+      "result": "Git clone failed: unable to connect to proxy port8080; the compound shell printed the temporary path and returned0. No checkout was created; authorized retry succeeded.",
+      "separate_git_exit_code_captured": false,
+      "shell_exit_code": 0
+    },
+    "working_tree_clean_before_and_after": true
+  },
+  "commands": [
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "rev-parse",
+        "--abbrev-ref",
+        "HEAD"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "remote",
+        "get-url",
+        "origin"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-B",
+        "/tmp/nml-followup-remote-check-yfeEcc/verify_fresh_process.py",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout_format": "JSON aggregate only"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "ls-tree",
+        "-r",
+        "--name-only",
+        "73dd8a5a15fd5ffa2e49513daa19546cdba91b13",
+        "--",
+        "evidence/data",
+        "evidence/research"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "ls-tree",
+        "-r",
+        "--name-only",
+        "002a6b994c862c758f1d7c8199831c75eff761af",
+        "--",
+        "evidence/research",
+        "records"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:evidence/research/2026-10-20-remote-ledger.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:evidence/research/dev002-inventory.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:evidence/research/dev002-protocol.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:evidence/research/dev002-results.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:evidence/research/r0-pilot.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:evidence/research/r0-protocol.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:evidence/research/reference-publication-002.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "002a6b994c862c758f1d7c8199831c75eff761af:records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "2b58ac45c7ec29fa0cba2c41facd3862c137a961:multisport_lab/baseline.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "2b58ac45c7ec29fa0cba2c41facd3862c137a961:multisport_lab/basketball.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "2b58ac45c7ec29fa0cba2c41facd3862c137a961:multisport_lab/development_002.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "2b58ac45c7ec29fa0cba2c41facd3862c137a961:multisport_lab/development_003.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "2b58ac45c7ec29fa0cba2c41facd3862c137a961:multisport_lab/integrity.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "2b58ac45c7ec29fa0cba2c41facd3862c137a961:multisport_lab/nba_data.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "2b58ac45c7ec29fa0cba2c41facd3862c137a961:multisport_lab/research_pilot.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "show",
+        "2b58ac45c7ec29fa0cba2c41facd3862c137a961:tests/test_development_003.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/tmp/nml-followup-remote-check-yfeEcc/checkout",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "dev003_execution_commit": "2b58ac45c7ec29fa0cba2c41facd3862c137a961",
+  "evidence_meaning": {
+    "financial_settlement_or_product_qualification_established": false,
+    "genuine_future_forecasts_or_paper_evidence_created": false,
+    "github_mutations_performed": false,
+    "local_receipt_label": "LOCAL_RECEIPT_ONLY remains unchanged in original records",
+    "new_model_evaluation_performed": false,
+    "raw_panel_present_in_clone": false,
+    "separate_remote_git_retention_observed": true,
+    "source_HTTP_requests_performed": false,
+    "upstream_authenticity_or_historical_asof_proved": false,
+    "website_deployment_verified_by_this_check": false
+  },
+  "file_hashes": [
+    {
+      "bytes": 1075,
+      "matches_integration_bytes": true,
+      "path": "evidence/data/2026-10-19-nba_primary_audit_summary.json",
+      "sha256": "e0427937818c8c2d2c2d55835fbf77f939710c4c3b87a51ad72236d3d8508e85"
+    },
+    {
+      "bytes": 2272,
+      "matches_integration_bytes": true,
+      "path": "evidence/data/2026-10-19-panel_preparation_summary.json",
+      "sha256": "74c85da1381f668c47b4abcb686069bb21009f69b93f00aa370d71a1ea7fc2a0"
+    },
+    {
+      "bytes": 11423,
+      "matches_integration_bytes": true,
+      "path": "evidence/data/2026-10-19-primary_reconciliation_summary.json",
+      "sha256": "c3c093b14f3d7f0ca8176b27a26c93d2f9aff5d0821e80b793d53e1792a373b0"
+    },
+    {
+      "bytes": 1872,
+      "matches_integration_bytes": true,
+      "path": "evidence/data/2026-10-19-sdv_audit_summary.json",
+      "sha256": "800b31190241ce6fc68d372144bd88e639c2b3e53edbc73186b34670eff8c0d6"
+    },
+    {
+      "bytes": 4354,
+      "matches_integration_bytes": true,
+      "path": "evidence/data/2026-10-19-sdv_schedule_join_summary.json",
+      "sha256": "6e90ed64a753426da9cad9b4f46ba8144e8586750288d7b58c5b2366b28b04a1"
+    },
+    {
+      "bytes": 8263,
+      "matches_integration_bytes": true,
+      "path": "evidence/data/2026-10-19-source-receipts.json",
+      "sha256": "53fd92d5d6f4c7c1f648834c6bbb19bf746cce4f4a7d05f23f8753f3f6b3a739"
+    },
+    {
+      "bytes": 11032,
+      "matches_integration_bytes": true,
+      "path": "evidence/data/2026-10-20-future-history-timing.json",
+      "sha256": "d69d9bef65f959e7c0debe421b0ccb5bf60dd46efc2ea356cc9956be052f4179"
+    },
+    {
+      "bytes": 2965,
+      "matches_integration_bytes": true,
+      "path": "evidence/data/2026-10-20-input-readiness-v2.json",
+      "sha256": "e4b1599558f4a55b8367c7e1da2b86afae95f180e504a5da5af45082a4d4d4b5"
+    },
+    {
+      "bytes": 1877,
+      "matches_integration_bytes": true,
+      "path": "evidence/data/2026-10-20-input-readiness.json",
+      "sha256": "f7871df4d967fd19c71c57e45381c65e3890a4aa46733775ec8ffd6bec35c26c"
+    },
+    {
+      "bytes": 9163,
+      "matches_integration_bytes": true,
+      "path": "evidence/data/2026-10-20-pregame-discovery.json",
+      "sha256": "5286b07db62a4cf5730dcbe15ec3d4ba6606ace3214909a3e2947e36e4ab3c90"
+    },
+    {
+      "bytes": 17688,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "evidence/research/2026-10-20-remote-ledger.json",
+      "sha256": "cc2ad621efddd4c6cb733571ef115f5054af28ddd5785327c9943e0680009bae"
+    },
+    {
+      "bytes": 8361,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "evidence/research/dev002-inventory.json",
+      "sha256": "e0938cde67ba488946911267d1988537e2edb7d8e02873d0b7d56db2170ab38f"
+    },
+    {
+      "bytes": 4793,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "evidence/research/dev002-protocol.json",
+      "sha256": "7fe212db8ee34b6e58a212f7e7bb1b15ee423ebebe21e8e9217ba4c502aabb1d"
+    },
+    {
+      "bytes": 245894,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "evidence/research/dev002-results.json",
+      "sha256": "caf2ca34cf210da8f8b967bc18a06eb553548d7bed2ba9174a7f6fcc0b3f8a63"
+    },
+    {
+      "bytes": 18074,
+      "matches_integration_bytes": true,
+      "path": "evidence/research/dev003-inventory.json",
+      "sha256": "ab7509ad203336edfa5ef02d25344d898e083062891c405348774191993cc75a"
+    },
+    {
+      "bytes": 10890,
+      "matches_integration_bytes": true,
+      "path": "evidence/research/dev003-protocol.json",
+      "sha256": "503a40d31532e89e8b4becd385f9867b7f5f51439eb383439803d9803d56dc08"
+    },
+    {
+      "bytes": 735616,
+      "matches_integration_bytes": true,
+      "path": "evidence/research/dev003-results.json",
+      "sha256": "76b3c2e988d845deef233868cf84cf5cd08d96c97cc71025bc69b6cf846d796e"
+    },
+    {
+      "bytes": 21902,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "evidence/research/r0-pilot.json",
+      "sha256": "8594245a6f7a9369c1c211567477229ceb83579ad60f29e1533003021b6b9aaa"
+    },
+    {
+      "bytes": 1797,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "evidence/research/r0-protocol.json",
+      "sha256": "12f9c2ace25c9975748e519fec13d878484756b0257261ddacb7274cf767d939"
+    },
+    {
+      "bytes": 4875,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "evidence/research/reference-publication-002.json",
+      "sha256": "dbfffdb4c98b0d33ff7e6b9f40ec1b447d739f2864dd62687931ed2e247bc393"
+    },
+    {
+      "bytes": 21422,
+      "matches_integration_bytes": true,
+      "path": "multisport_lab/baseline.py",
+      "sha256": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689"
+    },
+    {
+      "bytes": 2119,
+      "matches_integration_bytes": true,
+      "path": "multisport_lab/basketball.py",
+      "sha256": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75"
+    },
+    {
+      "bytes": 20818,
+      "matches_integration_bytes": true,
+      "path": "multisport_lab/development_002.py",
+      "sha256": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022"
+    },
+    {
+      "bytes": 27136,
+      "matches_integration_bytes": true,
+      "path": "multisport_lab/development_003.py",
+      "sha256": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"
+    },
+    {
+      "bytes": 6219,
+      "matches_integration_bytes": true,
+      "path": "multisport_lab/integrity.py",
+      "sha256": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2"
+    },
+    {
+      "bytes": 19703,
+      "matches_integration_bytes": true,
+      "path": "multisport_lab/nba_data.py",
+      "sha256": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b"
+    },
+    {
+      "bytes": 19681,
+      "matches_integration_bytes": true,
+      "path": "multisport_lab/research_pilot.py",
+      "sha256": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6"
+    },
+    {
+      "bytes": 22838,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json",
+      "sha256": "499b358129adde25134d5ba6243b372b1937915f7a0f2245750a057d40c4b8c6"
+    },
+    {
+      "bytes": 22747,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json",
+      "sha256": "507344a333f5218039e39b1201e1f203f6045bf8e04375a7a19740ddea337967"
+    },
+    {
+      "bytes": 22813,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json",
+      "sha256": "e35af6116e8151aacb23d21465c2744324501a92d0f83cf7e780066677df74fa"
+    },
+    {
+      "bytes": 22815,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json",
+      "sha256": "1748dce54d24cc583deb3e102d08680142307c3c784ddfc728abc02f78e82f0f"
+    },
+    {
+      "bytes": 22826,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json",
+      "sha256": "d74070a12aa144b4bc917de930e6527f4bd5bdeb84db693a215bec1513562f7b"
+    },
+    {
+      "bytes": 22830,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json",
+      "sha256": "bf3aa0b6fab62f64a03070fc6775db1bec8b0654e89ae93b3c42133e94649894"
+    },
+    {
+      "bytes": 4375,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json",
+      "sha256": "cf519c4238f641724d81040f8cdee82b693aa3f98e4ae8db772fbadc480fd6a0"
+    },
+    {
+      "bytes": 4357,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json",
+      "sha256": "73b72a5ed145708157052c269d25c0dd72467a002e26efac41e1136839fa0f60"
+    },
+    {
+      "bytes": 4365,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json",
+      "sha256": "c691398d641af291bcd3c2a9d7427ff59ab953606ee9388bc2c202642d80947c"
+    },
+    {
+      "bytes": 4370,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json",
+      "sha256": "41e3453b89b97c160d56e932f1389ac90b451142dcda3cff27629b1448bc77dd"
+    },
+    {
+      "bytes": 4369,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json",
+      "sha256": "1297f91dc9154d2b6111e60a1505f4a08e911dd3c99b919431833df76dbe40b5"
+    },
+    {
+      "bytes": 4368,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json",
+      "sha256": "2a343e191af2f809baf91ab4d6f9de8d09f593c9f6b088d9740238982107237b"
+    },
+    {
+      "bytes": 2023,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json",
+      "sha256": "a9474a89403e3aa87f44adb014eee6e10b09761002e5a4deabc198022ea88ce3"
+    },
+    {
+      "bytes": 2018,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json",
+      "sha256": "c9938334da0fbfb3032558df23d5e69588fdf6ca7f0b9eb562fb271c090ef93e"
+    },
+    {
+      "bytes": 2019,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json",
+      "sha256": "e94d071bf65e5f4815400a0e334b81529d6fd71147fb467584fc0aa1bb7e4f9c"
+    },
+    {
+      "bytes": 2018,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json",
+      "sha256": "74bd3778ce79875bb6f238cabda878ab88789df928b3b7804494c3e94f346b54"
+    },
+    {
+      "bytes": 2018,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json",
+      "sha256": "f4787faceff42cc52a2c446b03fc6ee7b8b2103643dff937b411193c75994bc5"
+    },
+    {
+      "bytes": 2021,
+      "matches_integration_bytes": true,
+      "matches_prior_main_002a_bytes": true,
+      "path": "records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json",
+      "sha256": "1332e892946d072d1500bdd693a877cbefb1ee54b51c3eb657e3c7af6393ee63"
+    },
+    {
+      "bytes": 12297,
+      "matches_integration_bytes": true,
+      "path": "tests/test_development_003.py",
+      "sha256": "430960aa9cb2133f29123d844a4a7f00b5e625a4b52f8491e42e53d2c4500e1c"
+    }
+  ],
+  "fresh_process_program": "from datetime import datetime,timezone\nfrom pathlib import Path\nimport hashlib,json,os,sys\nrepo=Path(sys.argv[1]).resolve()\nblocked_roots=(Path('/workspace/Nicks-multisport-lab-project'),Path('/tmp/nml-nba-audit'))\nblocked_attempts=[]\ndef guard(event,args):\n    if event=='open' and args and isinstance(args[0],(str,bytes,os.PathLike)):\n        path=Path(os.fsdecode(args[0])).absolute()\n        if any(path==root or root in path.parents for root in blocked_roots):\n            blocked_attempts.append(str(path))\n            raise PermissionError('verification process cannot read integration or raw inputs')\nsys.addaudithook(guard)\nsys.path.insert(0,str(repo))\nfrom multisport_lab import baseline,research_pilot,record_reference,ledger\nfrom multisport_lab.development_003 import implementation_hashes,validate_protocol\nfrom multisport_lab.integrity import read_receipt,digest,utc\nassert Path(ledger.__file__).resolve()==repo/'multisport_lab/ledger.py'\ndef forbidden(*args,**kwargs):\n    raise AssertionError('forecast generation/raw panel import forbidden during readback')\nbaseline.forecast_reference=forbidden\nresearch_pilot.forecast_reference=forbidden\nresearch_pilot.read_normalized_panel=forbidden\nrecord_reference.forecast_reference=forbidden\nrecord_reference.read_normalized_panel=forbidden\n# Prove the read guard is active without inspecting either target file.\nfor root in blocked_roots:\n    try:\n        (root/'guard-probe-never-read').open('rb')\n    except PermissionError:\n        pass\n    else:\n        raise AssertionError('read guard failed')\nfiles=sorted(repo.glob('records/*/*.json'))\nbefore={str(path.relative_to(repo)):hashlib.sha256(path.read_bytes()).hexdigest() for path in files}\nassert len(before)==18\nstore=ledger.Ledger(repo)\nscan=store.scan()\ncounts={kind:len(records) for kind,records in scan.items()}\nassert counts=={'forecasts':6,'outcomes':6,'grades':6,'input_captures':0,'corrections':0}\nsummary_path=repo/record_reference.SUMMARY_PATH\nsummary_bytes=summary_path.read_bytes()\nsummary=record_reference.recover_summary(repo,summary_path)\nassert summary['schema_version']=='reference-publication-002-v1'\nassert len(summary['examples'])==6 and summary['genuine_future_issuances']==0\nassert summary['recorded_at']=='2026-10-20T00:21:49.746072Z'\nassert not (repo/'absent-normalized.jsonl').exists() and not (repo/'.local-data').exists()\nassert record_reference.record_examples(repo,repo/'absent-normalized.jsonl','unused-during-recovery')==summary\nassert summary_path.read_bytes()==summary_bytes\nassert len(list(store.iter_active_forecasts()))==6\nassert len(list(store.iter_active_grades()))==6\nclocks=[]\nfor kind in ('forecasts','outcomes','grades'):\n    name={'forecasts':'bundle','outcomes':'outcome','grades':'grade'}[kind]\n    for identity,payload in sorted(scan[kind].items()):\n        body=payload['data'][name]\n        assert body.get('evidence_lane','RECONSTRUCTED_RESEARCH')=='RECONSTRUCTED_RESEARCH'\n        if kind=='forecasts': assert len(body['categories'])==14 and body['qualification']=='UNAVAILABLE'\n        if kind=='grades': assert len(body['categories'])==14 and body['financial_settlement']=='NOT_EVALUATED'\n        clocks.append({'kind':kind,'record_id':identity,'received_at':payload['received_at'],\n            **{key:body[key] for key in ('event_id','player_id','event_starts_at','cutoff_at','history_freeze','trained_through','issued_at','observed_at','graded_at') if key in body}})\nprotocol=read_receipt(repo/'evidence/research/dev003-protocol.json',max_bytes=8*1024*1024)\ninventory=read_receipt(repo/'evidence/research/dev003-inventory.json',max_bytes=8*1024*1024)\nresult=read_receipt(repo/'evidence/research/dev003-results.json',max_bytes=8*1024*1024)\nvalidate_protocol(protocol,inventory['inventory'])\nassert result['inventory']==protocol['inventory']==inventory['inventory']\nassert result['protocol_payload_sha256']==digest(protocol)=='06600825f5c64f396315c29251516da72133f659efca6e3f72a7a2ab7c3322db'\nassert digest(result)=='e02454af951c9af4efb3491a23329e1d78574805e7b2f108172205ed850b3fb7'\nassert result['implementation_source_sha256']==protocol['implementation_source_sha256']==implementation_hashes()\nassert result['scored_appearances_per_model']==517 and result['post_score_exclusions']==0\nassert result['K0_fallback_counts']=={'KERNEL_PRIOR':508,'N0_EXACT_R0':9}\nassert result['repository_head_at_execution']=='2b58ac45c7ec29fa0cba2c41facd3862c137a961'\nassert utc(protocol['recorded_at'])<utc(result['run_started_at'])<utc(result['run_finished_at'])\nfor model in result['models'].values():\n    assert len(model['categories'])==14 and all(c['scored_count']==517 for c in model['categories'].values())\ntiming=json.loads((repo/'evidence/data/2026-10-20-future-history-timing.json').read_bytes())\ndiscovery=json.loads((repo/'evidence/data/2026-10-20-pregame-discovery.json').read_bytes())\nassert timing['full_panel_import_eligible_rows']==26645 and len(timing['events'])==3\nassert timing['status']=='REPORTED_CLOCK_CONSISTENCY_PASS' and timing['future_issuance_admitted'] is False\nassert timing['pregame_discovery_sha256']==hashlib.sha256((repo/'evidence/data/2026-10-20-pregame-discovery.json').read_bytes()).hexdigest()\nassert discovery['event_count']==3\nassert before=={str(path.relative_to(repo)):hashlib.sha256(path.read_bytes()).hexdigest() for path in files}\nassert len(blocked_attempts)==2\nprint(json.dumps({'checked_at':datetime.now(timezone.utc).isoformat(timespec='microseconds').replace('+00:00','Z'),\n    'module_loaded_from_clone':str(Path(ledger.__file__).resolve()),'fresh_process_record_counts':counts,\n    'record_file_count':18,'record_bytes_total':sum(path.stat().st_size for path in files),\n    'recovered_summary_schema':summary['schema_version'],'recovered_summary_recorded_at':summary['recorded_at'],\n    'recovered_summary_examples':len(summary['examples']),'summary_bytes_preserved':True,\n    'all18_record_bytes_preserved':True,'all84_pmfs_and6grades_revalidated':True,\n    'integration_and_raw_reads_denied':True,'explicit_guard_probe_denials':len(blocked_attempts),\n    'local_data_directory_present':False,'missing_raw_path_recovery_passed':True,\n    'forecast_and_raw_panel_calls_forbidden':True,'original_clocks':clocks,\n    'dev003_protocol_payload_sha256':digest(protocol),'dev003_results_payload_sha256':digest(result),\n    'dev003_source_hashes_verified':len(implementation_hashes()),'dev003_scored_rows_read_not_rescored':517,\n    'future_timing_report_read_only':True,'new_forecasts_or_outcomes_created':0,\n    'model_evaluation_rerun':False,'network_requests_in_verification_process':0},sort_keys=True))\n",
+  "fresh_process_program_sha256": "0549183f4f145ae1dd04fb36d8a1e5cd972e951c40ae9ea93187d23759bdf026",
+  "matched_evidence_files": 20,
+  "matched_executed_source_test_files": 8,
+  "matched_original_record_bytes": 175190,
+  "matched_original_record_files": 18,
+  "previous_main_immutable_comparison_commit": "002a6b994c862c758f1d7c8199831c75eff761af",
+  "prior_main_research_evidence_unchanged": [
+    "evidence/research/2026-10-20-remote-ledger.json",
+    "evidence/research/dev002-inventory.json",
+    "evidence/research/dev002-protocol.json",
+    "evidence/research/dev002-results.json",
+    "evidence/research/r0-pilot.json",
+    "evidence/research/r0-protocol.json",
+    "evidence/research/reference-publication-002.json"
+  ],
+  "recovery": {
+    "all18_record_bytes_preserved": true,
+    "all84_pmfs_and6grades_revalidated": true,
+    "checked_at": "2026-10-20T01:22:22.686202Z",
+    "dev003_protocol_payload_sha256": "06600825f5c64f396315c29251516da72133f659efca6e3f72a7a2ab7c3322db",
+    "dev003_results_payload_sha256": "e02454af951c9af4efb3491a23329e1d78574805e7b2f108172205ed850b3fb7",
+    "dev003_scored_rows_read_not_rescored": 517,
+    "dev003_source_hashes_verified": 8,
+    "explicit_guard_probe_denials": 2,
+    "forecast_and_raw_panel_calls_forbidden": true,
+    "fresh_process_record_counts": {
+      "corrections": 0,
+      "forecasts": 6,
+      "grades": 6,
+      "input_captures": 0,
+      "outcomes": 6
+    },
+    "future_timing_report_read_only": true,
+    "integration_and_raw_reads_denied": true,
+    "local_data_directory_present": false,
+    "missing_raw_path_recovery_passed": true,
+    "model_evaluation_rerun": false,
+    "module_loaded_from_clone": "/tmp/nml-followup-remote-check-yfeEcc/checkout/multisport_lab/ledger.py",
+    "network_requests_in_verification_process": 0,
+    "new_forecasts_or_outcomes_created": 0,
+    "original_clocks": [
+      {
+        "cutoff_at": "2025-11-23T23:30:00.000000Z",
+        "event_id": "401810136",
+        "event_starts_at": "2025-11-24T01:00:00.000000Z",
+        "history_freeze": "2025-11-23T00:00:00.000000Z",
+        "issued_at": "2026-10-20T00:21:46.411304Z",
+        "kind": "forecasts",
+        "player_id": "2583632",
+        "received_at": "2026-10-20T00:21:47.582605Z",
+        "record_id": "33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118",
+        "trained_through": "2025-11-23T00:00:00.000000Z"
+      },
+      {
+        "cutoff_at": "2025-11-23T23:30:00.000000Z",
+        "event_id": "401810137",
+        "event_starts_at": "2025-11-24T01:00:00.000000Z",
+        "history_freeze": "2025-11-23T00:00:00.000000Z",
+        "issued_at": "2026-10-20T00:21:47.650558Z",
+        "kind": "forecasts",
+        "player_id": "1966",
+        "received_at": "2026-10-20T00:21:48.697024Z",
+        "record_id": "3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b",
+        "trained_through": "2025-11-23T00:00:00.000000Z"
+      },
+      {
+        "cutoff_at": "2025-11-23T23:30:00.000000Z",
+        "event_id": "401810136",
+        "event_starts_at": "2025-11-24T01:00:00.000000Z",
+        "history_freeze": "2025-11-23T00:00:00.000000Z",
+        "issued_at": "2026-10-20T00:21:45.129342Z",
+        "kind": "forecasts",
+        "player_id": "2489663",
+        "received_at": "2026-10-20T00:21:46.211934Z",
+        "record_id": "8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88",
+        "trained_through": "2025-11-23T00:00:00.000000Z"
+      },
+      {
+        "cutoff_at": "2025-11-23T23:30:00.000000Z",
+        "event_id": "401810137",
+        "event_starts_at": "2025-11-24T01:00:00.000000Z",
+        "history_freeze": "2025-11-23T00:00:00.000000Z",
+        "issued_at": "2026-10-20T00:21:48.758578Z",
+        "kind": "forecasts",
+        "player_id": "2960236",
+        "received_at": "2026-10-20T00:21:49.685650Z",
+        "record_id": "905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8",
+        "trained_through": "2025-11-23T00:00:00.000000Z"
+      },
+      {
+        "cutoff_at": "2025-11-23T22:30:00.000000Z",
+        "event_id": "401810135",
+        "event_starts_at": "2025-11-24T00:00:00.000000Z",
+        "history_freeze": "2025-11-23T00:00:00.000000Z",
+        "issued_at": "2026-10-20T00:21:42.792328Z",
+        "kind": "forecasts",
+        "player_id": "2991070",
+        "received_at": "2026-10-20T00:21:43.878898Z",
+        "record_id": "c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef",
+        "trained_through": "2025-11-23T00:00:00.000000Z"
+      },
+      {
+        "cutoff_at": "2025-11-23T22:30:00.000000Z",
+        "event_id": "401810135",
+        "event_starts_at": "2025-11-24T00:00:00.000000Z",
+        "history_freeze": "2025-11-23T00:00:00.000000Z",
+        "issued_at": "2026-10-20T00:21:43.935231Z",
+        "kind": "forecasts",
+        "player_id": "2991350",
+        "received_at": "2026-10-20T00:21:45.073255Z",
+        "record_id": "ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9",
+        "trained_through": "2025-11-23T00:00:00.000000Z"
+      },
+      {
+        "event_id": "401810135",
+        "event_starts_at": "2025-11-24T00:00:00.000000Z",
+        "kind": "outcomes",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "player_id": "2991070",
+        "received_at": "2026-10-20T00:21:43.886371Z",
+        "record_id": "31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60"
+      },
+      {
+        "event_id": "401810136",
+        "event_starts_at": "2025-11-24T01:00:00.000000Z",
+        "kind": "outcomes",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "player_id": "2489663",
+        "received_at": "2026-10-20T00:21:46.219274Z",
+        "record_id": "3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363"
+      },
+      {
+        "event_id": "401810135",
+        "event_starts_at": "2025-11-24T00:00:00.000000Z",
+        "kind": "outcomes",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "player_id": "2991350",
+        "received_at": "2026-10-20T00:21:45.078970Z",
+        "record_id": "635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5"
+      },
+      {
+        "event_id": "401810137",
+        "event_starts_at": "2025-11-24T01:00:00.000000Z",
+        "kind": "outcomes",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "player_id": "1966",
+        "received_at": "2026-10-20T00:21:48.704528Z",
+        "record_id": "6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4"
+      },
+      {
+        "event_id": "401810137",
+        "event_starts_at": "2025-11-24T01:00:00.000000Z",
+        "kind": "outcomes",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "player_id": "2960236",
+        "received_at": "2026-10-20T00:21:49.692829Z",
+        "record_id": "90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a"
+      },
+      {
+        "event_id": "401810136",
+        "event_starts_at": "2025-11-24T01:00:00.000000Z",
+        "kind": "outcomes",
+        "observed_at": "2026-10-20T00:21:42.791985Z",
+        "player_id": "2583632",
+        "received_at": "2026-10-20T00:21:47.592018Z",
+        "record_id": "ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f"
+      },
+      {
+        "event_id": "401810135",
+        "graded_at": "2026-10-20T00:21:43.894039Z",
+        "kind": "grades",
+        "player_id": "2991070",
+        "received_at": "2026-10-20T00:21:43.907710Z",
+        "record_id": "636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7"
+      },
+      {
+        "event_id": "401810137",
+        "graded_at": "2026-10-20T00:21:48.712058Z",
+        "kind": "grades",
+        "player_id": "1966",
+        "received_at": "2026-10-20T00:21:48.726183Z",
+        "record_id": "6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4"
+      },
+      {
+        "event_id": "401810136",
+        "graded_at": "2026-10-20T00:21:46.226264Z",
+        "kind": "grades",
+        "player_id": "2489663",
+        "received_at": "2026-10-20T00:21:46.264475Z",
+        "record_id": "7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae"
+      },
+      {
+        "event_id": "401810136",
+        "graded_at": "2026-10-20T00:21:47.600717Z",
+        "kind": "grades",
+        "player_id": "2583632",
+        "received_at": "2026-10-20T00:21:47.615384Z",
+        "record_id": "a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3"
+      },
+      {
+        "event_id": "401810137",
+        "graded_at": "2026-10-20T00:21:49.700328Z",
+        "kind": "grades",
+        "player_id": "2960236",
+        "received_at": "2026-10-20T00:21:49.716054Z",
+        "record_id": "c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370"
+      },
+      {
+        "event_id": "401810135",
+        "graded_at": "2026-10-20T00:21:45.084938Z",
+        "kind": "grades",
+        "player_id": "2991350",
+        "received_at": "2026-10-20T00:21:45.098717Z",
+        "record_id": "f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907"
+      }
+    ],
+    "record_bytes_total": 175190,
+    "record_file_count": 18,
+    "recovered_summary_examples": 6,
+    "recovered_summary_recorded_at": "2026-10-20T00:21:49.746072Z",
+    "recovered_summary_schema": "reference-publication-002-v1",
+    "summary_bytes_preserved": true
+  },
+  "repository": "https://github.com/NickNicky19/Nicks-multisport-lab-project.git",
+  "schema_version": "followup-remote-verification-v1",
+  "verification_finished_at": "2026-10-20T01:22:22.917014Z",
+  "verification_started_at": "2026-10-20T01:22:21.674501Z",
+  "verified_commit": "73dd8a5a15fd5ffa2e49513daa19546cdba91b13"
+}

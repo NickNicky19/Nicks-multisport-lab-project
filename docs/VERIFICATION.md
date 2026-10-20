@@ -1,5 +1,39 @@
 # Verification history and delivery status
 
+## Post-deployment continuation — 2026-10-20
+
+177 Python tests and31frontend tests pass; demo and artifact/desktop/mobile
+Chromium checks pass. New interruption tests preserve old/new source clocks and
+original v1/eighteen receipts. Mixed synthetic lane/model cases remain separate
+in Performance and keep past captured records in History without relabeling.
+These follow-up UI changes are branch-only; deployed main remains002a6b9.
+
+One precommitted frozen DEV003 run scored517 appearances/24games/12weeks under
+R0/L0/K0, zero post-score exclusions. K0 rawCRPS lowered13categories but TD
+worsened; TD/DD/BLK intervals cross zero, BLK/PRA log losses remain infinite,
+and minute95% coverage worsened. Independent verification reproduced3,018 saved
+aggregate/bootstrap checks without rerunning models. No qualification follows.
+
+Offline source discovery/history timing confirms three as-captured future games
+and consistent reported old-history observation clocks, not current event status,
+rosters, freshness, lineage, permission or an admitted future producer. No new
+source requests, prospective captures/forecasts, tickets or financial settlements
+were created. Full results/hashes/commands are in the current handoff and linked
+DEV003/input-readiness reports.
+
+## Public typed v2 deployment — 2026-10-20
+
+PR #3's approved head2d30ae98b20918bc97ea9eda4578ef0c8d509d71 merged unchanged
+as main002a6b994c862c758f1d7c8199831c75eff761af. Workflow39350851916 build/deploy
+succeeded, deployment completed00:59:52 UTC. Public system-verified HTTPS and
+manifest/asset/module hashes matched exact main. Independent Chromium154 passed
+all7routes/reloads at1440/390/320px, six historical bundles/all84 PMFs/all14
+filters, six statistical grades and exact saved clocks, Upcoming's three
+missing-input reasons, and45 scope×size×direction builder cases with NO_ACTION.
+Zero page/HTTP/prefix errors; all18 immutable ledger bytes unchanged. Exact
+evidence: `evidence/deployment/2026-10-20-pr3-pages.json`. No new model evaluation,
+genuine future issuance, financial settlement or product qualification follows.
+
 ## Typed research checkpoint — 2026-10-20
 
 142 Python tests, offline synthetic demo and 25 frontend tests passed. Typed v2
