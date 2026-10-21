@@ -1,0 +1,385 @@
+{
+  "contract": {
+    "bindings": [
+      {
+        "evidence_id": "market",
+        "field": "player.source_label",
+        "pointer": "/question",
+        "transform": "question_player"
+      },
+      {
+        "evidence_id": "identity",
+        "field": "player.canonical_identity",
+        "pointer": "/entities/Q90000001",
+        "transform": "wikidata_identity"
+      },
+      {
+        "evidence_id": "event",
+        "field": "event.id",
+        "pointer": "/id",
+        "transform": "string"
+      },
+      {
+        "evidence_id": "event",
+        "field": "event.label",
+        "pointer": "/title",
+        "transform": "direct"
+      },
+      {
+        "evidence_id": "event",
+        "field": "event.starts_at",
+        "pointer": "/startTime",
+        "transform": "utc"
+      },
+      {
+        "evidence_id": "event",
+        "field": "event.participants",
+        "pointer": "/teams",
+        "transform": "gamma_teams"
+      },
+      {
+        "evidence_id": "event",
+        "field": "event.source_version_literal",
+        "pointer": "/version",
+        "transform": "source_version_literal"
+      },
+      {
+        "evidence_id": "event",
+        "field": "event.event_version",
+        "pointer": "",
+        "transform": "observed_snapshot_version"
+      },
+      {
+        "evidence_id": "affiliation",
+        "field": "event.player_team_id",
+        "pointer": "",
+        "transform": "affiliation_team"
+      },
+      {
+        "evidence_id": "affiliation",
+        "field": "event.opponent_id",
+        "pointer": "",
+        "transform": "affiliation_opponent"
+      },
+      {
+        "evidence_id": "market",
+        "field": "selection.market_id",
+        "pointer": "/id",
+        "transform": "string"
+      },
+      {
+        "evidence_id": "market",
+        "field": "selection.condition_id",
+        "pointer": "/conditionId",
+        "transform": "direct"
+      },
+      {
+        "evidence_id": "market",
+        "field": "selection.outcome_label",
+        "pointer": "/outcomes",
+        "transform": "outcome_label"
+      },
+      {
+        "evidence_id": "market",
+        "field": "predicate.category",
+        "pointer": "/sportsMarketType",
+        "transform": "category"
+      },
+      {
+        "evidence_id": "market",
+        "field": "predicate.units",
+        "pointer": "/sportsMarketType",
+        "transform": "units"
+      },
+      {
+        "evidence_id": "market",
+        "field": "predicate.operator",
+        "pointer": "/description",
+        "transform": "yes_operator"
+      },
+      {
+        "evidence_id": "market",
+        "field": "predicate.threshold",
+        "pointer": "/question",
+        "transform": "question_threshold"
+      },
+      {
+        "evidence_id": "market",
+        "field": "predicate.period",
+        "pointer": "/description",
+        "transform": "full_game"
+      },
+      {
+        "evidence_id": "market",
+        "field": "predicate.extra_time_policy",
+        "pointer": "/description",
+        "transform": "overtime"
+      },
+      {
+        "evidence_id": "market",
+        "field": "settlement.participation",
+        "pointer": "/settlement/participation",
+        "transform": "direct"
+      },
+      {
+        "evidence_id": "market",
+        "field": "settlement.dnp",
+        "pointer": "/settlement/dnp",
+        "transform": "direct"
+      },
+      {
+        "evidence_id": "market",
+        "field": "settlement.postponement",
+        "pointer": "/settlement/postponement",
+        "transform": "direct"
+      },
+      {
+        "evidence_id": "market",
+        "field": "settlement.ties",
+        "pointer": "/settlement/ties",
+        "transform": "direct"
+      },
+      {
+        "evidence_id": "market",
+        "field": "settlement.official_stat_source",
+        "pointer": "/settlement/official_stat_source",
+        "transform": "direct"
+      },
+      {
+        "evidence_id": "market",
+        "field": "settlement.stat_corrections",
+        "pointer": "/settlement/stat_corrections",
+        "transform": "direct"
+      },
+      {
+        "evidence_id": "market",
+        "field": "unassigned_source_economics.outcomes",
+        "pointer": "/outcomes",
+        "transform": "json_array"
+      }
+    ],
+    "category_inventory": [
+      "PTS",
+      "PRA",
+      "REB",
+      "3PM",
+      "AST",
+      "RA",
+      "PR",
+      "TOV",
+      "TD",
+      "DD",
+      "BLK",
+      "STL",
+      "BLK+STL",
+      "PA"
+    ],
+    "completed_at": "2026-10-21T12:01:00.000000Z",
+    "contract_id": "529d229d5c63648a0ad53249d00c20c93a72e9231deb4a7f00d12f0a607a800d",
+    "contract_observed_at": "2026-10-21T12:00:00.000000Z",
+    "event": {
+      "event_version": {
+        "kind": "OBSERVED_SNAPSHOT_SHA256",
+        "value": "c1fefdcc3d58f2b9a4c6df2a74c1078aaa5a73cb9e3ae3959276fc5f5d7ea329"
+      },
+      "id": "fictional-event",
+      "label": "Fictional Away vs. Fictional Home",
+      "namespace": "polymarket_gamma",
+      "opponent_id": "fictional-home",
+      "participants": [
+        {
+          "id": "fictional-away",
+          "label": "Fictional Away",
+          "role": "away"
+        },
+        {
+          "id": "fictional-home",
+          "label": "Fictional Home",
+          "role": "home"
+        }
+      ],
+      "player_team_id": "fictional-away",
+      "source_version_literal": "fictional-v1",
+      "starts_at": "2026-10-21T23:30:00.000000Z"
+    },
+    "evidence": [
+      {
+        "content_type": "application/json",
+        "id": "market",
+        "observed_at": "2026-10-21T12:00:00.000000Z",
+        "raw_bytes": 954,
+        "raw_sha256": "c7d8b05f42e79314fe05ec26e491853715421921ed9e08cdefd4af4dcee66341",
+        "request_started_at": "2026-10-21T12:00:00.000000Z",
+        "source_updated_at": null,
+        "url": "https://gamma-api.polymarket.com/markets/fictional-market"
+      },
+      {
+        "content_type": "application/json",
+        "id": "event",
+        "observed_at": "2026-10-21T12:00:05.000000Z",
+        "raw_bytes": 300,
+        "raw_sha256": "c1fefdcc3d58f2b9a4c6df2a74c1078aaa5a73cb9e3ae3959276fc5f5d7ea329",
+        "request_started_at": "2026-10-21T12:00:05.000000Z",
+        "source_updated_at": null,
+        "url": "https://gamma-api.polymarket.com/events/fictional-event"
+      },
+      {
+        "content_type": "application/json",
+        "id": "identity",
+        "observed_at": "2026-10-21T12:00:10.000000Z",
+        "raw_bytes": 152,
+        "raw_sha256": "b9002d621e82b10839fbc73a421cf9a09d2c2582732b0b583ad7c09fc6a74c99",
+        "request_started_at": "2026-10-21T12:00:10.000000Z",
+        "source_updated_at": null,
+        "url": "https://www.wikidata.org/wiki/Special:EntityData/Q90000001.json"
+      },
+      {
+        "content_type": "application/json",
+        "id": "affiliation",
+        "observed_at": "2026-10-21T12:00:15.000000Z",
+        "raw_bytes": 142,
+        "raw_sha256": "a3eefb8088d7850d175667d08df681959495dcbe7966fc2b36eb59337b63380d",
+        "request_started_at": "2026-10-21T12:00:15.000000Z",
+        "source_updated_at": null,
+        "url": "https://gamma-api.polymarket.com/fictional-player-affiliation"
+      }
+    ],
+    "evidence_lane": "SYNTHETIC",
+    "execution_review": {
+      "eligible": false,
+      "flags": {
+        "accepting_orders": null,
+        "context_requires_regen": null,
+        "funded": null,
+        "ready": null,
+        "restricted": null
+      }
+    },
+    "knowledge_observed_at": "2026-10-21T12:00:15.000000Z",
+    "normalized_at": "2026-10-21T12:01:00.000000Z",
+    "player": {
+      "canonical_identity": {
+        "id": "Q90000001",
+        "label": "Fictional Player",
+        "namespace": "wikidata"
+      },
+      "native_provider_id": null,
+      "source_label": "Fictional Player"
+    },
+    "predicate": {
+      "category": "PTS",
+      "extra_time_policy": "includes_overtime",
+      "operator": ">",
+      "period": "full_game",
+      "threshold": "19.5",
+      "units": "points",
+      "variant": "binary_player_stat_threshold"
+    },
+    "price": {
+      "status": "PRICE_UNAVAILABLE",
+      "value": null
+    },
+    "price_binding_gaps": [
+      "PRICE_TO_SELECTION_UNVERIFIED"
+    ],
+    "primary_evidence_id": "market",
+    "public_admission": false,
+    "qualification": "UNAVAILABLE",
+    "required_gaps": [],
+    "schema_version": "nba-local-semantic-offer-v2",
+    "scope": "LOCAL_REVIEW_ONLY",
+    "selection": {
+      "condition_id": "0xabababababababababababababababababababababababababababababababab",
+      "kind": "MARKET_OUTCOME_LABEL",
+      "market_id": "fictional-market",
+      "native_token_id": null,
+      "outcome_label": "Yes"
+    },
+    "semantic_status": "COMPLETE_LOCAL",
+    "settlement": {
+      "dnp": "Fictional no participation resolves No.",
+      "official_stat_source": "Fictional official NBA statistics source.",
+      "participation": "Fictional participation policy.",
+      "postponement": "Fictional postponement/cancellation policy.",
+      "stat_corrections": "Fictional NBA player-stat corrections are accepted before this market resolves; corrections after final market resolution do not regrade it.",
+      "ties": "Fictional threshold equality resolves No."
+    },
+    "source": {
+      "name": "Polymarket",
+      "product": "binary_event_contract",
+      "venue": "Polymarket"
+    },
+    "ticket_eligibility": false,
+    "unassigned_source_economics": {
+      "best_ask": null,
+      "best_bid": null,
+      "outcome_prices": null,
+      "outcomes": [
+        "Yes",
+        "No"
+      ]
+    }
+  },
+  "originals": {
+    "affiliation": {
+      "event_id": "fictional-event",
+      "opponent_id": "fictional-home",
+      "player_id": "Q90000001",
+      "player_namespace": "wikidata",
+      "team_id": "fictional-away"
+    },
+    "event": {
+      "id": "fictional-event",
+      "startTime": "2026-10-21T23:30:00Z",
+      "teams": [
+        {
+          "id": "fictional-away",
+          "league": "nba",
+          "name": "Fictional Away",
+          "ordering": "away"
+        },
+        {
+          "id": "fictional-home",
+          "league": "nba",
+          "name": "Fictional Home",
+          "ordering": "home"
+        }
+      ],
+      "title": "Fictional Away vs. Fictional Home",
+      "version": "fictional-v1"
+    },
+    "identity": {
+      "entities": {
+        "Q90000001": {
+          "descriptions": {
+            "en": {
+              "value": "Fictional basketball player"
+            }
+          },
+          "id": "Q90000001",
+          "labels": {
+            "en": {
+              "value": "Fictional Player"
+            }
+          }
+        }
+      }
+    },
+    "market": {
+      "conditionId": "0xabababababababababababababababababababababababababababababababab",
+      "description": "This market will resolve to \"Yes\" if Fictional Player scores more than 19.5 points during the game.\nThis market will resolve to \"No\" if Fictional Player scores 19.5 points or fewer during the game.\nThe entire game including all overtime periods will be considered.",
+      "id": "fictional-market",
+      "outcomes": "[\"Yes\",\"No\"]",
+      "question": "Fictional Player: Points O/U 19.5",
+      "settlement": {
+        "dnp": "Fictional no participation resolves No.",
+        "official_stat_source": "Fictional official NBA statistics source.",
+        "participation": "Fictional participation policy.",
+        "postponement": "Fictional postponement/cancellation policy.",
+        "stat_corrections": "Fictional NBA player-stat corrections are accepted before this market resolves; corrections after final market resolution do not regrade it.",
+        "ties": "Fictional threshold equality resolves No."
+      },
+      "sportsMarketType": "points"
+    }
+  }
+}
