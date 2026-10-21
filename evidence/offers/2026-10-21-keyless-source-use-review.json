@@ -1,0 +1,501 @@
+{
+  "hash_format": "sha256-canonical-decoded-json-v1",
+  "payload": {
+    "boundaries": {
+      "activation": false,
+      "deployment": false,
+      "forecasts_issued": 0,
+      "key_backup_decision_needed_for_this_review": false,
+      "merge": false,
+      "model_evaluations": 0,
+      "offers_published": 0,
+      "provider_contacts": 0,
+      "provider_credentials_required": false,
+      "provider_data_gets": 0,
+      "schedulers_created": 0,
+      "signups_or_logins": 0
+    },
+    "candidates": [
+      {
+        "coverage_status": "NOT_INSPECTED_SOURCE_USE_GATE",
+        "decision": "NO_DATA_GET; source-use scope unresolved/restrictive for this software/parser-and-retained-evidence use. Public API guide is not treated as blanket data license. Website Data Terms and API guide have different framing; this review does not claim to adjudicate all API uses.",
+        "documented_keyless_read": true,
+        "keyless_evidence": {
+          "quotes": [
+            "Kalshi provides several public endpoints that don’t require API keys.",
+            "No authentication headers are required for the endpoints in this guide. You can start making requests immediately!",
+            "Build real-time market monitoring tools",
+            "Create market analysis dashboards"
+          ],
+          "request_label": "kalshi-market-data",
+          "section": "Making Unauthenticated Requests / Next Steps"
+        },
+        "nba_player_contracts_observed": 0,
+        "product": "binary event-contract exchange; distinct from sportsbook/pick’em",
+        "provider": "Kalshi",
+        "restriction_evidence": {
+          "quotes": [
+            "Non-commercial use does not include the use of Kalshi Data without prior written consent from Kalshi in connection with: (1) the development of any software program, including, but not limited to, training a machine learning or artificial intelligence system; or (2) providing archived or cached data sets containing Kalshi Data to another person or entity.",
+            "For the avoidance of doubt and to the fullest extent permitted by law, use of any Kalshi Data (including associated metadata) in any manner for any machine learning and/or artificial intelligence, including without limitation for the purposes of training, coding, or development of artificial intelligence technologies, tools, or solutions or machine learning language models, or otherwise for the purposes of using or in connection with the use of such technologies, tools, or models to generate any information, material, data, derived works, content, or output is expressly prohibited."
+          ],
+          "request_label": "kalshi-data-terms",
+          "sections": [
+            "I. PERMITTED USES",
+            "II. PROHIBITED USES"
+          ]
+        },
+        "smallest_next_step": "Identify an applicable published API-specific allowance/exception covering this one-off software/parser inspection and retained evidence. No provider contact or new account/key is authorized or required by this review."
+      },
+      {
+        "coverage_status": "NOT_INSPECTED_SOURCE_USE_GATE",
+        "decision": "NO_DATA_GET; explicit public-read invitation is promising, but retained parser-proof/data-use scope has not been reconciled with extraction/copying and distributor restrictions. No account/trading path is proposed.",
+        "documented_keyless_read": true,
+        "geography_evidence": {
+          "no_universal_us_read_ban_claim": true,
+          "request_label": "polymarket-availability",
+          "scope": "Official documentation frames geoblock restrictions as order placement; United States appears in its regulatory-restricted list. Official terms and front-end explicitly distinguish informational/view-only access. No trading, wallet, order or geoblock-bypass request was made."
+        },
+        "keyless_evidence": {
+          "nba_example": "The official documentation uses tag ID 745 as its NBA example. This is documentation, not an observed market or a verified stable player identity.",
+          "quotes": [
+            "Find the events and markets your integration needs, from a specific Polymarket link to a broader view of what is active. This data is public and does not require authentication.",
+            "A sports game’s markets can be split across a main event and companion events. Depending on the game, companion events may cover player props, half-time and second-half results, exact score, or additional lines grouped under a more-markets event."
+          ],
+          "request_label": "polymarket-discover",
+          "sections": [
+            "Discover Markets",
+            "List Events for a Game"
+          ]
+        },
+        "nba_player_contracts_observed": 0,
+        "product": "binary prediction contracts; not DraftKings, Sleeper or Polymarket US",
+        "provider": "Polymarket / Adventure One QSS, Inc. international platform",
+        "restriction_evidence": {
+          "additional_data_use_gate": "Terms separately restrict Capital Market Clients and market data distributors from API/raw/derived data access absent written agreement; do not assume a future public data display is exempt.",
+          "delivered_via": "Google Docs preview embedded by the official polymarket.com/tos page; no login used",
+          "effective_date": "2026-08-11",
+          "quotes": [
+            "If you are in a Restricted Jurisdiction (as defined below), you are only permitted to use the Content Features on the Site or any other Interface and may not use the Site or any other Interface for any other purpose and you may not access the Technology Features, including and in particular the Platform.",
+            "Use any data mining tools, robots, crawlers, or similar data gathering and extraction tools to scrape or otherwise remove data from the Site, any other Interface, or Features;",
+            "Use any manual process to monitor or copy any of the material on the Site, any other Interface, or Features or for any other unauthorized purpose without our prior written consent;"
+          ],
+          "request_label": "polymarket-terms-original",
+          "sections": [
+            "Introduction",
+            "Your Responsibilities & Prohibited Conduct",
+            "Intellectual Property Rights / Ownership & License"
+          ]
+        },
+        "smallest_next_step": "Resolve whether the documented unauthenticated Gamma informational API allowance covers a single bounded read plus local original-byte retention/parser proof, under the applicable US informational-use terms; review public redistribution separately. Preserve this explicit uncertainty instead of treating a 200 or generic scraper license as permission."
+      }
+    ],
+    "category_inventory": [
+      {
+        "code": "PTS",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "PRA",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "REB",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "3PM",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "AST",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "RA",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "PR",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "TOV",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "TD",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "DD",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "BLK",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "STL",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "BLK+STL",
+        "optional": false,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      },
+      {
+        "code": "PA",
+        "optional": true,
+        "sources": {
+          "kalshi": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          },
+          "polymarket": {
+            "observed": null,
+            "parsed": 0,
+            "status": "NOT_INSPECTED_SOURCE_USE_GATE",
+            "unsupported": false
+          }
+        }
+      }
+    ],
+    "conclusion": "No additional complete keyless NBA player contract was established by this bounded documentation review. Both sources explicitly document unauthenticated public market reads; their applicable software/retention/data-use scope remains unresolved or restrictive here. This is not evidence that every keyless source is unavailable. Continue the separately scoped offline parser work against retained actual ESPN originals and preserve incomplete semantics.",
+    "original_document_evidence": {
+      "body_count": 8,
+      "durable_recovery_verified": false,
+      "limitations": "Original documentation bodies and per-request receipts are local temporary review evidence with exact hashes, not a durable admitted raw-offer backend. They contain no captured NBA player offer.",
+      "location": "/tmp/nml-keyless-source-basis-20261021"
+    },
+    "recorded_at": "2026-10-21T10:44:48.532857Z",
+    "rejected_unexecuted_documentation_requests": {
+      "effect": "No third-candidate assessment; retained two-candidate review is complete. Further review requires resolving the bounded-request authorization, not a provider credential.",
+      "executed": false,
+      "receipt_count_note": "Task-specific successful/HTTP-error request receipts contain eight initial URLs and one redirect (nine HTTP GETs). The proposed two-document command was rejected before execution. No retry, alternative transport or indirect execution followed.",
+      "reviewer_reason": "The requested two documentation GETs would exceed the explicit maximum of 12 documentation GETs once prior requests and the recorded redirect are counted; stop the bounded review rather than expanding its authorized scope.",
+      "urls": [
+        "https://docs.manifold.markets/api",
+        "https://manifold.markets/terms"
+      ]
+    },
+    "repository": "NickNicky19/Nicks-multisport-lab-project",
+    "request_budget": {
+      "actual_documentation_http_gets": 9,
+      "automatic_reviewer_stopped_additional_requests": true,
+      "documentation_http_get_ceiling": 12,
+      "provider_data_gets": 0,
+      "redirect_http_gets": 1,
+      "requested_documentation_urls": 8
+    },
+    "requests": [
+      {
+        "body_path": "/tmp/nml-keyless-source-basis-20261021/kalshi-market-data.body",
+        "bytes": 403678,
+        "completed_at": "2026-10-21T10:41:19.696925+00:00",
+        "final_url": "https://docs.kalshi.com/getting_started/quick_start_market_data",
+        "label": "kalshi-market-data",
+        "provider_data_request": false,
+        "redirects": [],
+        "request_class": "documentation_only",
+        "requested_url": "https://docs.kalshi.com/getting_started/quick_start_market_data",
+        "sha256": "f5f864c0335fa1071912027ce850d03e127f8a170162227b39b4454ed383c57e",
+        "started_at": "2026-10-21T10:41:19.367063+00:00",
+        "status": 200
+      },
+      {
+        "body_path": "/tmp/nml-keyless-source-basis-20261021/kalshi-api-agreement.body",
+        "bytes": 166253,
+        "completed_at": "2026-10-21T10:41:27.004859+00:00",
+        "final_url": "https://kalshi.com/api-agreement",
+        "label": "kalshi-api-agreement",
+        "provider_data_request": false,
+        "redirects": [],
+        "request_class": "documentation_only",
+        "requested_url": "https://kalshi.com/api-agreement",
+        "sha256": "e6593eb36df9c91f2953ad62824ccc3d3a9078b90a9346687f36cf9c128c582e",
+        "started_at": "2026-10-21T10:41:26.794212+00:00",
+        "status": 404
+      },
+      {
+        "body_path": "/tmp/nml-keyless-source-basis-20261021/polymarket-overview.body",
+        "bytes": 380212,
+        "completed_at": "2026-10-21T10:41:27.663368+00:00",
+        "final_url": "https://docs.polymarket.com/market-data/overview",
+        "label": "polymarket-overview",
+        "provider_data_request": false,
+        "redirects": [
+          {
+            "location": "https://docs.polymarket.com/market-data/overview",
+            "observed_at": "2026-10-21T10:41:27.320415+00:00",
+            "status": 308,
+            "url": "https://docs.polymarket.com/developers/gamma-markets-api/overview"
+          }
+        ],
+        "request_class": "documentation_only",
+        "requested_url": "https://docs.polymarket.com/developers/gamma-markets-api/overview",
+        "sha256": "2ba0154f7104a42cd5adcd287bf67a0f4c3734cdacac522538882173d82f3ee5",
+        "started_at": "2026-10-21T10:41:27.053327+00:00",
+        "status": 200
+      },
+      {
+        "body_path": "/tmp/nml-keyless-source-basis-20261021/kalshi-data-terms.body",
+        "bytes": 52287,
+        "completed_at": "2026-10-21T10:41:48.804687+00:00",
+        "final_url": "https://kalshi-public-docs.s3.amazonaws.com/kalshi-data-terms-of-service.pdf",
+        "label": "kalshi-data-terms",
+        "provider_data_request": false,
+        "redirects": [],
+        "request_class": "documentation_only",
+        "requested_url": "https://kalshi-public-docs.s3.amazonaws.com/kalshi-data-terms-of-service.pdf",
+        "sha256": "d19a0f94ffd65aa51eccb80cc8c9a06fb842478c5bf4cbd5a31ec51dd0a3966f",
+        "started_at": "2026-10-21T10:41:48.463742+00:00",
+        "status": 200
+      },
+      {
+        "body_path": "/tmp/nml-keyless-source-basis-20261021/polymarket-tos.body",
+        "bytes": 342692,
+        "completed_at": "2026-10-21T10:41:49.112179+00:00",
+        "final_url": "https://polymarket.com/tos",
+        "label": "polymarket-tos",
+        "provider_data_request": false,
+        "redirects": [],
+        "request_class": "documentation_only",
+        "requested_url": "https://polymarket.com/tos",
+        "sha256": "9c5d678dde50ac096e856258a36427f045b147361571c4f08324c074d09e5aed",
+        "started_at": "2026-10-21T10:41:48.859473+00:00",
+        "status": 200
+      },
+      {
+        "body_path": "/tmp/nml-keyless-source-basis-20261021/polymarket-discover.body",
+        "bytes": 1715123,
+        "completed_at": "2026-10-21T10:41:49.559239+00:00",
+        "final_url": "https://docs.polymarket.com/market-data/discover-markets",
+        "label": "polymarket-discover",
+        "provider_data_request": false,
+        "redirects": [],
+        "request_class": "documentation_only",
+        "requested_url": "https://docs.polymarket.com/market-data/discover-markets",
+        "sha256": "3a170102c8d08b503a6e40943edb32d29b030582870eb49183c06f4693dbd092",
+        "started_at": "2026-10-21T10:41:49.161748+00:00",
+        "status": 200
+      },
+      {
+        "body_path": "/tmp/nml-keyless-source-basis-20261021/polymarket-terms-original.body",
+        "bytes": 385492,
+        "completed_at": "2026-10-21T10:42:16.784823+00:00",
+        "final_url": "https://docs.google.com/document/d/1N4aYlRcqaWCeKMID7vUSWJ1UPMvw_v6SP4cOFN8ZxR4/preview",
+        "label": "polymarket-terms-original",
+        "provider_data_request": false,
+        "redirects": [],
+        "request_class": "documentation_only",
+        "requested_url": "https://docs.google.com/document/d/1N4aYlRcqaWCeKMID7vUSWJ1UPMvw_v6SP4cOFN8ZxR4/preview",
+        "sha256": "b7240b3332a3d759c528f7f651485248f28bbfdca1ed8595cf043e3124ac1715",
+        "started_at": "2026-10-21T10:42:16.056952+00:00",
+        "status": 200
+      },
+      {
+        "body_path": "/tmp/nml-keyless-source-basis-20261021/polymarket-availability.body",
+        "bytes": 552595,
+        "completed_at": "2026-10-21T10:42:17.134982+00:00",
+        "final_url": "https://docs.polymarket.com/api-reference/geoblock",
+        "label": "polymarket-availability",
+        "provider_data_request": false,
+        "redirects": [],
+        "request_class": "documentation_only",
+        "requested_url": "https://docs.polymarket.com/api-reference/geoblock",
+        "sha256": "f0a5387a99d95bcdddff3f0f36e3dd707fc91e5cd53a7cd98d2e48c5aafbac6d",
+        "started_at": "2026-10-21T10:42:16.843138+00:00",
+        "status": 200
+      }
+    ],
+    "reviewed_head": "74a7914ab7499cfb6963e326bf9c3c4543a0c8c0",
+    "schema_version": "keyless-source-use-review-v1",
+    "scope": "Two additional public-market API documentation reviews; no provider-data endpoint requested. Existing ESPN/Sleeper review retained unchanged.",
+    "status": "ADDITIONAL_SOURCES_NOT_ADMITTED_FOR_THIS_PARSER_PROOF"
+  },
+  "payload_sha256": "8ea23ba909aa9a685c2084b97dbdc9da80faceddbe12c11645c877c5c9ec7b7e",
+  "schema_version": "decoded-json-receipt-v1"
+}

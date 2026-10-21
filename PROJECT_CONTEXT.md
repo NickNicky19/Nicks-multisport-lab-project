@@ -2,6 +2,21 @@
 
 Updated: October 21, 2026.
 
+## Current clarification — credentialless player-offer feasibility
+
+Player-prop collection must remain completely free: no provider API key, signup,
+account login, subscription or trial. A private evidence-encryption key is a
+separate storage dependency and does not block independent offline parser/source
+research. The bounded October 21 package added a native offline ESPN original-byte
+inspector and read-only NFL code/source-use/category reviews. No new sports-data
+request or complete actual player contract was established. The surviving ESPN
+004 snapshot replays six team/overtime rows and zero player rows; older player
+summaries do not replace their missing originals. See
+`docs/KEYLESS_PARSER_READINESS.md` and the latest handoff for actual counts,
+commands, evidence locations and exact next source-use/contract requirements.
+No credentials or new service were introduced, and no public offer, activation,
+issuance, merge or deployment follows. PR #10/#12 remain draft; PROS004 inactive.
+
 ## Current checkpoint — website released; operating preparation remains inactive
 
 PR #11 was merged through the guarded exact-head workflow after Nick approved
