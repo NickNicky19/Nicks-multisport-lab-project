@@ -2,6 +2,147 @@
 
 Updated: October 21, 2026 (UTC).
 
+## October 21 — bounded credentialless NBA offer feasibility and offline parser
+
+Branch: `implementation/one-event-paired-pilot`; new parser implementation source
+**71527c59753f2f1a6c1c42c359048d33165320bc**. Starting local/remote HEAD was
+**74a7914ab7499cfb6963e326bf9c3c4543a0c8c0**, clean before this package; a normal
+fetch preserved all newer legitimate work and the earlier ChatGPT commits.
+This is a forward, independent parser package, not an operating producer revision.
+The reviewed operating source remains **6777025deca7c03636f5cb6739cfcc77cb0b5e49**;
+no 31-file source binding, clock/window or mathematical law was changed.
+PR #12 and its PR #10 base remain draft; PROS004 and S0 remain inactive.
+
+The clarified collection requirement is **free, with no provider API key,
+signup, account login, subscription or trial**. The native inspector has no
+HTTP client, credential or private-key prerequisite. The operational private
+encryption-key backup/recovery decision remains separate and unchanged; it did
+not block this source review, retained-byte replay or parser implementation.
+
+### Actual sources and request accounting
+
+- **New sports-data requests: 0.** Replayed retained ESPN OFFER-PILOT-004 originals
+  from `/tmp/nml-offer-pilot-004/`, without refreshing their capture clocks.
+  The exact inherited NBA `propBets` route for event 401909094 yielded six rows:
+  four Team Total Points, two Will There Be Overtime?, zero athletes. Bound
+  provider-100 original explicitly names DraftKings. ESPN is the data source;
+  provider attribution is response-backed, not inferred from ESPN or ID 100.
+- The 4,167-byte offer body SHA is
+  `dcee4d4f8fb16617f6ff46e52489165101e02fe1fc532d3a9e2886056e6ccb29`,
+  capture completed `2026-10-21T01:39:45.791491Z`. The 160-byte provider body SHA is
+  `101448a5e2bf365ae79efff5e7355e8e1193324014386df04b66afa82e974fa2`,
+  capture completed `2026-10-21T01:40:19.564083Z`. Their exact metadata and URLs
+  remain in the sidecars. Local originals are not claimed remotely archived.
+- **Nine official-document HTTP GETs**, including one redirect, reviewed Kalshi
+  and Polymarket. Both explicitly document unauthenticated market APIs. Reviewed
+  extraction/software/retention restrictions remain unreconciled; no new source
+  admitted and no data GET made. Polymarket's US informational Content Features
+  allowance is distinguished from trading restrictions. This is not a conclusion
+  that all keyless sources are unavailable. ESPN/Sleeper keep their prior scoped
+  source-use blockers; Sleeper's fantasy API allowance is not a Picks-feed grant.
+- **Six read-only NFL GitHub GETs** pinned main
+  `57c84dea3e7211356e04e201e11cd7090e14adaa`, tree and three immutable code blobs.
+  No provider request, inherited collector copy, active checkout/session contact,
+  workflow or NFL write. Reuse lessons concern HTTP bounds, explicit exceptions,
+  provenance and stable IDs; they do not establish NBA access or contracts.
+- Separate read-only NML administration queries confirmed PR #10/#12 draft and
+  main **411f904e4f9d577f97ca3a4ae6ba52fdb81ee130**. Git fetch/push/readback are
+  repository transport, not sports-provider collection.
+
+### Implementation, real replay and full-category distinctions
+
+`multisport_lab/offer_feasibility.py` adds an offline native ESPN original-byte
+inspector. It enforces bounded bodies/rows, raw count/hash matching, strict JSON,
+NBA event/competition/provider/athlete identities, source/capture/import clocks,
+exact `propBets` casing and pagination metadata. A separate matching provider
+original is required for a provider name. Original numeric line/price lexemes
+avoid float rounding. Unknown subjects, invalid identities and contradictory
+thresholds remain diagnoses. Side is never inferred by row order. Missing price
+is **PRICE_UNAVAILABLE**, separately from missing contract terms. This inspector
+emits partial observations only; existing normalized/offer-only validation still
+allows an otherwise complete price-free contract. No quote, EV or admission is
+created from an incomplete row.
+
+Actual CLI replay: **0 player observations / 6 nonplayer rows / 0 diagnostics /
+0 complete player contracts / 0 usable quotes**, all fourteen player categories
+UNOBSERVED_IN_SAMPLE. Earlier 002/003 raw directories and local Sleeper import
+report are absent. Historical 003 summary counts remain evidence of observations,
+not reproducible individual contracts: ESPN thirteen primary families including
+PA, TOV absent; Sleeper 2,472 recognized partial side observations plus 248
+unmapped quarter options, TD absent. Native ESPN player handlers are synthetic-
+tested only; Total Turnovers is an expected, unobserved alias. No Sleeper TD alias
+is invented. Milestone/quarter variants remain unsupported by primary mappings.
+Kalshi/Polymarket categories are NOT_INSPECTED_SOURCE_USE_GATE, not sample zeros.
+The complete fourteen-category table is in `docs/KEYLESS_PARSER_READINESS.md`.
+
+Files added: `multisport_lab/offer_feasibility.py`,
+`tests/test_offer_feasibility.py`, `docs/KEYLESS_PARSER_READINESS.md`,
+`docs/KEYLESS_SOURCE_FEASIBILITY.md`, `docs/NFL_KEYLESS_REFERENCE.md`,
+`evidence/offers/2026-10-21-keyless-retained-inventory.json`,
+`evidence/offers/2026-10-21-keyless-source-use-review.json`,
+`evidence/verification/nfl-readonly-keyless-reference-20261021.json`, and
+`evidence/verification/keyless-parser-independent-20261021{,-v2}.json`.
+`PROJECT_CONTEXT.md`, this handoff and MANIFEST document the clarification/status.
+No original research/ledger/protocol/producer/workflow/frontend file changed.
+
+### Commands and actual verification
+
+```bash
+python3 -m unittest discover -s tests -p test_offer_feasibility.py -v
+python3 -O -m unittest discover -s tests -p test_offer_feasibility.py -v
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+sha256sum --check MANIFEST.sha256
+git diff --check
+```
+
+The exact four-file actual CLI invocation and existing local report path appear
+in `docs/KEYLESS_PARSER_READINESS.md`; report readback passed. It is create-only,
+with its actual import clock, not an idempotent recapture command. Independent
+replay matched every field except each verifier's actual import clock.
+Eleven final focused tests passed normally and under optimized Python. The
+initial full run passed 641 tests / 357.620 s before the last missing-subject
+classification guard; its measurement is preserved, not relabeled as final.
+Final source full run: **642 tests passed / 352.482 s**. The exact parser/test
+bytes match source 71527c5; the integrated check receipt is
+`evidence/verification/keyless-integrated-checkpoint-20261021.json`.
+Frontend **78 tests passed**, demo exit 0, and checksum/whitespace checks passed.
+The independent initial receipt and appended v2 receipt preserve both reviewed
+source hashes and checks; v2 SHA is
+`322406a5a28d0fb1dd460986c0fa66a8862743f003258a25845946e1d8595bcb`.
+Eight document originals, three NFL source blobs, 37 reviewed execution/helper
+paths and 40 frozen research/diagnostic paths matched their pins. Final subject
+classification review distinguishes missing identity from verified nonplayers.
+No full-history timing diagnostic or frozen model comparison was rerun.
+
+### Publication, limits and next concrete task
+
+No merge, deployment, scheduler, activation, source admission, genuine issuance,
+new outcome/grade or public offer occurred. Last verified public release remains
+**411f904e**, Pages run **39573648815**: six historical bundles / six historical
+grades; genuine forecasts **0**, published offers **0**, prospective outcomes
+**0**, prospective grades **0**, qualified tickets **0**, financial settlements
+**0**. Existing scopes, 2–6 legs, three directions, smaller tickets and NO_ACTION
+are unchanged. NFL, separate MLB, original expired pilot/PR #8, DEV005 and all
+other frozen experiments/receipts are preserved.
+
+Next: resolve one documented public informational API's exact allowance for one
+credentialless NBA player-market inspection and local original-byte retention,
+separately from public redistribution. Then register a tiny request/byte budget
+and inspect one actual player contract plus necessary linked identity/event/rules
+references. Required gaps remain a recoverable original **player** row, verified
+name/stable IDs/event, exact side/line/period/OT/variant/product and applicable
+settlement meaning. No API key or signup is proposed. Odds can remain
+PRICE_UNAVAILABLE; neither absent offers nor odds block independent statistical
+forecast preparation. Source retention/operational private-key recovery remain
+separate future operating dependencies, not prerequisites for this local parser.
+
+Automatic approval review rejected two proposed additional documentation GETs
+on its stated request-budget concern. Neither ran; no alternate transport/retry
+followed. The task ledger records nine actual documentation GETs and makes no
+claim about the uninspected third source.
+
 ## October 21 — exact forward source remotely recovered; preparation stays blocked
 
 Implementation source: **6777025deca7c03636f5cb6739cfcc77cb0b5e49**. Branch:

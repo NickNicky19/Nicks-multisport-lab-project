@@ -11,7 +11,9 @@ research. The bounded October 21 package added a native offline ESPN original-by
 inspector and read-only NFL code/source-use/category reviews. No new sports-data
 request or complete actual player contract was established. The surviving ESPN
 004 snapshot replays six team/overtime rows and zero player rows; older player
-summaries do not replace their missing originals. See
+summaries do not replace their missing originals. Parser implementation source:
+`71527c59753f2f1a6c1c42c359048d33165320bc`, independent of the unchanged operating
+producer pin below. See
 `docs/KEYLESS_PARSER_READINESS.md` and the latest handoff for actual counts,
 commands, evidence locations and exact next source-use/contract requirements.
 No credentials or new service were introduced, and no public offer, activation,
