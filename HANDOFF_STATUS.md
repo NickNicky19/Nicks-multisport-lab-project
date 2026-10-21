@@ -2,6 +2,62 @@
 
 Updated: October 21, 2026 (UTC).
 
+## October 21 — exact forward source remotely recovered; preparation stays blocked
+
+Implementation source: **6777025deca7c03636f5cb6739cfcc77cb0b5e49**. Branch:
+`implementation/one-event-paired-pilot`; PR #12 stays draft, based on unchanged
+draft PR #10. This following checkpoint changes documentation/evidence only.
+Its eventual Git HEAD does not replace the source pin above. Both e5eb1a2 and
+714630dd remain ancestors. Source and mathematical laws are frozen for review,
+not approved for operating use.
+
+Independent fresh-Git recovery matched the exact pushed source: MANIFEST covered
+367 files, all 37 reviewed source/helper hashes matched, all nine original pilot
+files and 19 original records/1,817,800 bytes matched, and all 40 prior frozen
+research/protocol/diagnostic paths matched the original 06dbb492 Git objects.
+Actual GitHub readback confirms main 411f904e, approved PR #11 merged, PR #10/#12
+draft and expired workflow 390126745 disabled. No capture, issuance, key or workflow
+mutation was performed by the verifier. Receipt:
+`evidence/verification/ops002-forward-exact-source-6777025.json`, 22,623 bytes,
+raw SHA256 `7c17635e2fce14e70934307100f4878d43746c3008dbca537ad802f1451f2405`.
+
+Both actual read-only CLI commands at the fixed source returned expected exit 2:
+
+```bash
+python3 -m multisport_lab.operational_delivery \
+  --source-root . \
+  --producer-commit 6777025deca7c03636f5cb6739cfcc77cb0b5e49 \
+  --records-branch records/nba-paired-ops-002-20261022
+
+python3 -m multisport_lab.operational_preflight \
+  --plan evidence/operational/ops002-plan.json \
+  --producer-commit 6777025deca7c03636f5cb6739cfcc77cb0b5e49 \
+  --output /tmp/nml-ops002-reviewed-forward-preflight-6777025.json
+```
+
+The delivery binding verifies 31 exact files; binding ID
+`f0dbf50e0ae1f509b9e4bf17e0e1954b124f08fc201d95ac7776e355222ccca0`.
+Status remains BLOCKED_NOT_ACTIVATED with local preparation integrity PASS.
+No actual raw/backend/key admission or genuine execution follows. Actual CLI
+outputs/clocks and capacity 124 / 4,848,840 are retained in the two new source
+preparation/CLI receipts. The preflight output path above already exists in this
+workspace; use a distinct path when deliberately recording another read-only
+preparation check, preserving its original contents.
+
+Required local 631 Python/78 frontend/demo and focused optimized checks passed;
+source/test hashes stayed unchanged. The subsequent metadata-head GitHub check
+and exact final HEAD are reported in PR #12 after completion, avoiding a circular
+self-referential commit pin. This source's initial automatic software CI may be
+superseded by that metadata-only head; no frozen diagnostic is rerun or cancelled.
+
+Public release remains **411f904e4f9d577f97ca3a4ae6ba52fdb81ee130**, Pages
+39573648815, verified manifest/hash/live-response UI. Historical 6 bundles/6 grades
+are distinct from genuine forecasts 0, published offers 0, prospective outcomes 0,
+prospective grades 0, qualified tickets 0 and financial settlements 0. The original
+06dbb492 timing does not apply to this new candidate. All blockers, unchanged
+windows and next tasks are in the detailed checkpoint below and
+`docs/OPS002_ACTIVATION_PACKAGE.md`. No scheduler or activation was installed.
+
 ## October 21 — approved website deployed; connected candidate reviewed and corrected
 
 The implementation owner verified a clean local PR #12 branch at fe09956 and

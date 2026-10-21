@@ -7,8 +7,8 @@ is independent and confers none of those permissions.
 
 ## Exact candidate and preservation
 
-The latest HANDOFF_STATUS.md pins the forward implementation source and the later
-documentation head. Freeze that candidate SHA for review; do not substitute a
+The forward implementation source is **6777025deca7c03636f5cb6739cfcc77cb0b5e49**.
+HANDOFF_STATUS.md distinguishes its later documentation head. Freeze that candidate SHA for review; do not substitute a
 later records/documentation HEAD. `operational_delivery.execution_binding()`
 verifies all 31 execution-file bytes against that exact candidate. The separate
 offline key-recovery helper identifies its own executed file hash. Neither hash
@@ -18,7 +18,7 @@ The ChatGPT implementation e5eb1a24ee779cdec819bd239ccbc5a9d33e93f7 and its
 714630dd2b99e04ac5574d5c56f7cadbd934c126 checkpoint are preserved ancestors. They
 were reviewed before reliance; forward fixes and new verification are recorded
 without rewriting them. The previously measured producer remains
-06dbb492dda5d0043ec7a3a6c97ce9c46201edc8. Its hosted diagnostic39536525048,
+06dbb492dda5d0043ec7a3a6c97ce9c46201edc8. Its hosted diagnostic 39536525048,
 eight synthetic originals and T90+289.817868s result remain frozen. That result
 **does not time the later connected encrypted-source/key/delivery components**.
 No further full-history measurement was performed in this review.

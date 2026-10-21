@@ -1,0 +1,439 @@
+{
+  "hash_format": "sha256-canonical-decoded-json-v1",
+  "payload": {
+    "activation": "INACTIVE",
+    "actual_completed_at": "2026-10-21T09:21:50.468671Z",
+    "actual_started_at": "2026-10-21T09:21:48.361158Z",
+    "branch": "implementation/one-event-paired-pilot",
+    "commands": [
+      {
+        "argv": [
+          "git",
+          "init",
+          "--quiet",
+          "/tmp/nml-independent-exact-6777025-6doykpps"
+        ],
+        "completed_at": "2026-10-21T09:21:48.364225Z",
+        "cwd": null,
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:48.361301Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "argv": [
+          "git",
+          "remote",
+          "add",
+          "origin",
+          "https://github.com/NickNicky19/Nicks-multisport-lab-project.git"
+        ],
+        "completed_at": "2026-10-21T09:21:48.366319Z",
+        "cwd": "/tmp/nml-independent-exact-6777025-6doykpps",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:48.364249Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "argv": [
+          "git",
+          "fetch",
+          "--no-tags",
+          "--depth=4",
+          "origin",
+          "6777025deca7c03636f5cb6739cfcc77cb0b5e49"
+        ],
+        "completed_at": "2026-10-21T09:21:49.302472Z",
+        "cwd": "/tmp/nml-independent-exact-6777025-6doykpps",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:48.366329Z",
+        "stderr_bytes": 141,
+        "stderr_sha256": "7311fe2f5e19730d8e1b998fbb4615397b1596bb989706513aba15004292ce85",
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "FETCH_HEAD"
+        ],
+        "completed_at": "2026-10-21T09:21:49.304234Z",
+        "cwd": "/tmp/nml-independent-exact-6777025-6doykpps",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.302500Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 41,
+        "stdout_sha256": "08e191c5a05bc22245866f05c067aa917a0aba390912f2a866fc3fcc190e4c28"
+      },
+      {
+        "argv": [
+          "git",
+          "checkout",
+          "--quiet",
+          "--detach",
+          "FETCH_HEAD"
+        ],
+        "completed_at": "2026-10-21T09:21:49.340756Z",
+        "cwd": "/tmp/nml-independent-exact-6777025-6doykpps",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.304245Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "argv": [
+          "git",
+          "rev-parse",
+          "HEAD"
+        ],
+        "completed_at": "2026-10-21T09:21:49.342779Z",
+        "cwd": "/tmp/nml-independent-exact-6777025-6doykpps",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.340899Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 41,
+        "stdout_sha256": "08e191c5a05bc22245866f05c067aa917a0aba390912f2a866fc3fcc190e4c28"
+      },
+      {
+        "argv": [
+          "git",
+          "ls-remote",
+          "--heads",
+          "origin",
+          "refs/heads/implementation/one-event-paired-pilot"
+        ],
+        "completed_at": "2026-10-21T09:21:49.826707Z",
+        "cwd": "/tmp/nml-independent-exact-6777025-6doykpps",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.342791Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 90,
+        "stdout_sha256": "b6f14f85b508c4759d1b0aafdcad5995d63dc76c701ccd82598496db50d3b0bc"
+      },
+      {
+        "argv": [
+          "git",
+          "merge-base",
+          "--is-ancestor",
+          "e5eb1a24ee779cdec819bd239ccbc5a9d33e93f7",
+          "6777025deca7c03636f5cb6739cfcc77cb0b5e49"
+        ],
+        "completed_at": "2026-10-21T09:21:49.828698Z",
+        "cwd": "/tmp/nml-independent-exact-6777025-6doykpps",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.826735Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "argv": [
+          "git",
+          "merge-base",
+          "--is-ancestor",
+          "714630dd2b99e04ac5574d5c56f7cadbd934c126",
+          "6777025deca7c03636f5cb6739cfcc77cb0b5e49"
+        ],
+        "completed_at": "2026-10-21T09:21:49.830579Z",
+        "cwd": "/tmp/nml-independent-exact-6777025-6doykpps",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.828707Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "argv": [
+          "git",
+          "ls-files",
+          "-z"
+        ],
+        "completed_at": "2026-10-21T09:21:49.832403Z",
+        "cwd": "/tmp/nml-independent-exact-6777025-6doykpps",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.830590Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 16149,
+        "stdout_sha256": "bf876ce6ca6285ce3f883ffc7f858ef8970232d0312f5614b181120119e27786"
+      },
+      {
+        "argv": [
+          "/tmp/nml-gh-2.102.1/bin/gh",
+          "pr",
+          "view",
+          "11",
+          "--repo",
+          "NickNicky19/Nicks-multisport-lab-project",
+          "--json",
+          "headRefOid,state,mergedAt,mergeCommit,url"
+        ],
+        "completed_at": "2026-10-21T09:21:50.397424Z",
+        "cwd": "/workspace/nml-one-event-pilot",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.865240Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 250,
+        "stdout_sha256": "bdde649ebcacf5001cf6f5355e4ea61fa063ae4362a0124268ae806c1559ac4e"
+      },
+      {
+        "argv": [
+          "/tmp/nml-gh-2.102.1/bin/gh",
+          "api",
+          "repos/NickNicky19/Nicks-multisport-lab-project/branches/main",
+          "--jq",
+          "{name:.name,commit:.commit.sha}"
+        ],
+        "completed_at": "2026-10-21T09:21:50.420009Z",
+        "cwd": "/workspace/nml-one-event-pilot",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.865684Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 68,
+        "stdout_sha256": "308ee99c17cb2eeee213ed456745b82694f1a4d36c6e004109ef005e65fbea2e"
+      },
+      {
+        "argv": [
+          "/tmp/nml-gh-2.102.1/bin/gh",
+          "api",
+          "repos/NickNicky19/Nicks-multisport-lab-project/actions/workflows/390126745",
+          "--jq",
+          "{id,state,path,updated_at}"
+        ],
+        "completed_at": "2026-10-21T09:21:50.427968Z",
+        "cwd": "/workspace/nml-one-event-pilot",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.865889Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 135,
+        "stdout_sha256": "038051ccd5b94ed66a568264e4d6c8dd1d8f260a45e5de417c798cc3fe3c5a9a"
+      },
+      {
+        "argv": [
+          "/tmp/nml-gh-2.102.1/bin/gh",
+          "pr",
+          "view",
+          "12",
+          "--repo",
+          "NickNicky19/Nicks-multisport-lab-project",
+          "--json",
+          "headRefOid,isDraft,state,baseRefName,url"
+        ],
+        "completed_at": "2026-10-21T09:21:50.440685Z",
+        "cwd": "/workspace/nml-one-event-pilot",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.864901Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 220,
+        "stdout_sha256": "b30c8f93b8a9ee4acc23d70d737e4264f3e585ead7cb0e1ea8699e7af1e84033"
+      },
+      {
+        "argv": [
+          "/tmp/nml-gh-2.102.1/bin/gh",
+          "pr",
+          "view",
+          "10",
+          "--repo",
+          "NickNicky19/Nicks-multisport-lab-project",
+          "--json",
+          "headRefOid,isDraft,state,baseRefName,url"
+        ],
+        "completed_at": "2026-10-21T09:21:50.446302Z",
+        "cwd": "/workspace/nml-one-event-pilot",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:49.864651Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 185,
+        "stdout_sha256": "6899b419b98276e6fabe19ba073f1b28b8e9feb48a42166bc3f4156017790c7b"
+      },
+      {
+        "argv": [
+          "git",
+          "status",
+          "--porcelain"
+        ],
+        "completed_at": "2026-10-21T09:21:50.468655Z",
+        "cwd": "/tmp/nml-independent-exact-6777025-6doykpps",
+        "exit_code": 0,
+        "started_at": "2026-10-21T09:21:50.446911Z",
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "exact_source_commit": "6777025deca7c03636f5cb6739cfcc77cb0b5e49",
+    "fresh_git_object_database": true,
+    "frozen_nine_producer_files_match": true,
+    "full_history_or_model_evaluations": 0,
+    "genuine_issuance": 0,
+    "github_states": {
+      "PR10": {
+        "baseRefName": "main",
+        "headRefOid": "c0a7b4bc3205d723b13d0f70baf66f3806e731ee",
+        "isDraft": true,
+        "state": "OPEN",
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/10"
+      },
+      "PR11": {
+        "headRefOid": "326e354650aef57c3b965711abf071b2fc4205eb",
+        "mergeCommit": {
+          "oid": "411f904e4f9d577f97ca3a4ae6ba52fdb81ee130"
+        },
+        "mergedAt": "2026-10-21T09:00:46Z",
+        "state": "MERGED",
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/11"
+      },
+      "PR12": {
+        "baseRefName": "implementation/pros004-paired-readiness",
+        "headRefOid": "6777025deca7c03636f5cb6739cfcc77cb0b5e49",
+        "isDraft": true,
+        "state": "OPEN",
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/12"
+      },
+      "expired_pilot_workflow": {
+        "id": 390126745,
+        "path": ".github/workflows/nba-20261020-pilot.yml",
+        "state": "disabled_manually",
+        "updated_at": "2026-10-20T20:33:43.000Z"
+      },
+      "main": {
+        "commit": "411f904e4f9d577f97ca3a4ae6ba52fdb81ee130",
+        "name": "main"
+      }
+    },
+    "independent_checkout": "/tmp/nml-independent-exact-6777025-6doykpps",
+    "keys_installed_or_recovered": 0,
+    "limitations": [
+      "Source/repository integrity verification only; no source-use admission, operational private backup/host recovery, genuine issuance or new hosted timing is established.",
+      "No statistical law or test suite was rerun for exact-head recovery."
+    ],
+    "manifest": {
+      "all_bytes_match": true,
+      "covered_files": 367,
+      "sha256": "e0baa1079914006796979955b85d9476d9462e154e14dd18abe0dcf94e56f8c6",
+      "tracked_files": 368
+    },
+    "original_ledger_records": {
+      "all_bytes_match": true,
+      "bytes": 1817800,
+      "count": 19
+    },
+    "pre_review_receipt": {
+      "path": "/tmp/nml-independent-forward-source-review.json",
+      "sha256": "0f8f5fb581aca5d38e2b1c1c5c7dd5c52a1979fd0f0f57b10d35564278c3a093"
+    },
+    "pre_reviewed_source_file_sha256": {
+      "docs/OPS002_KEY_RECOVERY.md": "ceaca1d7e90ef2c515863246af1a217161bc065b5a2feafbfca13f1981b50025",
+      "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+      "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+      "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+      "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+      "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+      "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2",
+      "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+      "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+      "multisport_lab/offer_publication.py": "43a6f8d4afecf27a0bc2984cc7df08144a9d6cd327c0ea3e325e29cfb43e7e52",
+      "multisport_lab/operating_diagnostic.py": "b4ac0d0a1cd29e4dd24f6095feb2b67ff4733ac83f75953d553fefcd39482df0",
+      "multisport_lab/operational_admission.py": "99a6632d7b80f58011f200a90b87d921d8b783b0b67d3d03520601c56c62a1e0",
+      "multisport_lab/operational_delivery.py": "5521b73b145727875d6eef157f855675fbff62990bd68d6df8e465001a186fa2",
+      "multisport_lab/operational_key_recovery.py": "660bdd14b172a45ae62ee235c6d2739fbafb700af64fb9df8973cfe3c59aa72f",
+      "multisport_lab/operational_pilot.py": "b9c5092b7d64bd9cdadf08a47a765ef49d11d8c95d532b60083204d9c8122f80",
+      "multisport_lab/operational_preflight.py": "f306b7484da27f86b0a89f5349c839fe3b44a6c0d08d2df22eb04d9b63a37e47",
+      "multisport_lab/operational_publication.py": "106faec29a1550e70121ec2f37d47ef352a65493c41bb914d4677d9e1838830c",
+      "multisport_lab/operational_raw.py": "9aedabba3fceba39aad76ea3a44659853c08e668a31f0f575245d94dae529b17",
+      "multisport_lab/operational_remote.py": "9aa46a9d82deeaecd3521d6bb22b973eee9db64ee4c9fc3029847dba55467f77",
+      "multisport_lab/operational_source_links.py": "f16f91ed34267fb1f1a82bcd26ac0712cda25709bdb34c4b9c932135c6c4e7a7",
+      "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+      "multisport_lab/pros004_completion.py": "444e339740c687604d6e591b87600bda08fe16550aa23f63d2daf6a5cdcd5719",
+      "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+      "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+      "multisport_lab/pros004_publication.py": "9370338133e0dcfe53d9782f7ec87755551bacc9444786911d7bebba6e03dcce",
+      "multisport_lab/pros004_records.py": "fe17065cddc534cca6bfe8812594c008ceba586933f1cf9d4fc9391f044f0e86",
+      "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+      "multisport_lab/pros004_snapshot.py": "743ba0ac4721ccc17ac3113b8348a57d08f5e6696805bba201ef61a247d108bc",
+      "multisport_lab/prospective_outcomes.py": "8d22da881bcae0e0e213e314f0181bc727edd4116361fa2b7413f01f154919bf",
+      "multisport_lab/publication_ledger.py": "3d88f0581568693d3c6fbdd600e0e8d248e7a0f315c7e2b19c6c207335108c8d",
+      "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+      "multisport_lab/source_evidence.py": "464df6b8866bb69dd3bc32503bc5740448847ec2f17cf4032a845226943b2c6b",
+      "scripts/verify_pros004_readiness.py": "71bfbd8d8c1d749103902aef87e2efcc75f6f7667a55324f3b5995605d99182b",
+      "tests/test_operational_delivery.py": "80001d74f679ae7f0c706a5fe60e98b90d418189694777d98017ef306d6db86c",
+      "tests/test_operational_key_recovery.py": "1161ade34805ac7d1102ed14ff0e487e389a5d0231ad7af40d9757363a2543db",
+      "tests/test_operational_raw.py": "7018e5968a0753698868967acc1b25c8de5a424f86f5aac8b2c5c070ddebdc3b",
+      "tests/test_operational_source_links.py": "0cf4c5f58fe9aa6a3bacfe76a63e3fd0ac5a7e59993a1f298098cbc2c50dc47f"
+    },
+    "preserved_old_research_and_diagnostic_sha256": {
+      "docs/NBA_PROSPECTIVE_004.md": "daae439a39537c8a96760ef353ca66460fd4dc26967b1b226caff175d34b2545",
+      "evidence/operational/hosted-diagnostic-39533281196.json": "5d6ec82564922760559186e1972d6099c36ee3ae791967ed1832ef5eda2fb8c4",
+      "evidence/research/2026-10-20-followup-remote-check.json": "2cacf6cc4e09aa11794d7753121271579db9fe02e73d1d82a376c7930193d355",
+      "evidence/research/2026-10-20-outcome-independent-check.json": "901a38c842aa3e79d3ccaa0ce99fe941583b92ac27847a9516fa056334809361",
+      "evidence/research/2026-10-20-pregame-cycle-checkpoint.json": "3b3436d0d89ea5b369afd797db0f383cbc012a0869314ee735055d734922030a",
+      "evidence/research/2026-10-20-remote-ledger.json": "cc2ad621efddd4c6cb733571ef115f5054af28ddd5785327c9943e0680009bae",
+      "evidence/research/2026-10-21-checkpoint-profile.json": "52566a56b298b701c9f330436072387641fb7342d09fecc0f81505dc97c6e40f",
+      "evidence/research/2026-10-21-checkpoint-profile.py": "db004f9e0674d82db8f28f6e4c7c3377dd58f6169460fb4fa3b1ed278b0f3d6f",
+      "evidence/research/2026-10-21-checkpoint-transport-profile.json": "eccda18c20e48a7f21682224cf7cc99361e9844ff73adbbd6052dce6aa4dcbe1",
+      "evidence/research/2026-10-21-checkpoint-transport-profile.py": "cdff06b0570140b80b4828fd48bdfcee5186744fc0b57fc5b4972c001c49db48",
+      "evidence/research/dev002-inventory.json": "e0938cde67ba488946911267d1988537e2edb7d8e02873d0b7d56db2170ab38f",
+      "evidence/research/dev002-protocol.json": "7fe212db8ee34b6e58a212f7e7bb1b15ee423ebebe21e8e9217ba4c502aabb1d",
+      "evidence/research/dev002-results.json": "caf2ca34cf210da8f8b967bc18a06eb553548d7bed2ba9174a7f6fcc0b3f8a63",
+      "evidence/research/dev003-inventory.json": "ab7509ad203336edfa5ef02d25344d898e083062891c405348774191993cc75a",
+      "evidence/research/dev003-protocol.json": "503a40d31532e89e8b4becd385f9867b7f5f51439eb383439803d9803d56dc08",
+      "evidence/research/dev003-results.json": "76b3c2e988d845deef233868cf84cf5cd08d96c97cc71025bc69b6cf846d796e",
+      "evidence/research/pros004-actual-github-checkpoint-20261020-v2.json": "03189b901592c35b08d4e0c2bfd7bfc6c6b251aac64b96fa860f096a4a76bf80",
+      "evidence/research/pros004-github-idempotent-restart-v3.json": "72869784a70ea0fd5dde71c8c43db200b9eeda6568fb3d0baef941d9c67a4883",
+      "evidence/research/pros004-github-idempotent-restart-v4.json": "62fa7fe5f4a3a5db13e1a52c08502134e11ed9a3b7d6bb39c9367c9fc5621717",
+      "evidence/research/pros004-readiness-attempt-01.json": "adde0613d41119074c80a5f2767b032bdbc53b8dbc9ad7150f0b6f3840696cd4",
+      "evidence/research/pros004-readiness-attempt-02.json": "9f42912b939306cd77a65d0403317e2a6e424059b9bc74d07a682d723179cb65",
+      "evidence/research/pros004-readiness-delivery-checkpoint.json": "ad1dd5b72e6336fc08ffc2831b8047786bac6676b14398d5aa16bf053a94ae16",
+      "evidence/research/pros004-readiness-full-pmf-size.json": "47e13f86182668842eb0db0d94ce2ec8a02641dbea57872cfb1f48938003e9c5",
+      "evidence/research/pros004-readiness-independent-size-stress.json": "b4471a8b81d90b49239210fd6fbcb19c21c17a211d9e03762b3f523b539547bb",
+      "evidence/research/pros004-readiness-independent-verification.json": "a2244a7e7b25b31194955d49b23a415109f8a807ea22067a6171e68485e99c17",
+      "evidence/research/pros004-readiness-lineage.json": "90ff58e7d62a33ccd6628c48916f4285ba95480e0da05fc3be0aed9aa5786cce",
+      "evidence/research/pros004-readiness-measurement-v2.json": "69c28125b34ae4cf17e8656262b413ebcf37d20ecb5f5131c469751cfdfa3fc0",
+      "evidence/research/pros004-readiness-measurement-v3.json": "88a53b7d849256f89164270094eb9e6756583b8c76d3323447f007fca0aa9ca2",
+      "evidence/research/pros004-readiness-measurement-v4.json": "ed798e8000f0e4c2836f8a7a78e7d338d00a3d719b1029f4529daa70b8becc5c",
+      "evidence/research/pros004-readiness-measurement.json": "76cc9c0e9fb00d2786fc8cab7bfdb7dda79f5bf7c0953becab94dc55c175188c",
+      "evidence/research/pros004-readiness-pin-preflight-rejection.json": "457aefac2de7db2e95042fdcf195f33f95c00a9a547afa50a01fbecff36a49c0",
+      "evidence/research/pros004-readiness-size-stress.py": "8765c5d6f9e26352a68c2e3910bdf8bde3dc9d39d6be5b5c2e24068da3a09586",
+      "evidence/research/pros004-readiness-source-readback-commands.json": "19aef6f641560593595693f29def1eca69e0e07d3b06fd8382fb6002e661e146",
+      "evidence/research/pros004-readiness-source-recovery.json": "76f819ac4f0d277547ff35ed6474791184dcead22111cde2eef9f6197418de43",
+      "evidence/research/pros004-transport-load-20261020-v1.json": "337b86072e54645cd6bae01f789d3bed17d937ff4326972027a1bd19cded66da",
+      "evidence/research/pros004-transport-load-20261020-v2.json": "77dea8d84a469bc6db2a6ec8edbefd39baec927843f9777811e3a811b0e1b331",
+      "evidence/research/prospective004-protocol.json": "8302bf5455d48c9c0f6ccd40296b971955822ee09edaa9d9af94ad205d06e752",
+      "evidence/research/r0-pilot.json": "8594245a6f7a9369c1c211567477229ceb83579ad60f29e1533003021b6b9aaa",
+      "evidence/research/r0-protocol.json": "12f9c2ace25c9975748e519fec13d878484756b0257261ddacb7274cf767d939",
+      "evidence/research/reference-publication-002.json": "dbfffdb4c98b0d33ff7e6b9f40ec1b447d739f2864dd62687931ed2e247bc393"
+    },
+    "provider_requests": 0,
+    "qualification": "UNAVAILABLE",
+    "remote_head_matches": true,
+    "repository": "NickNicky19/Nicks-multisport-lab-project",
+    "retained_added_commit_ancestry": {
+      "714630dd2b99e04ac5574d5c56f7cadbd934c126": true,
+      "e5eb1a24ee779cdec819bd239ccbc5a9d33e93f7": true
+    },
+    "schema_version": "nba-ops002-independent-exact-source-readback-v1",
+    "source_edits": 0,
+    "status": "PASS_EXACT_REMOTE_SOURCE_NOT_ACTIVATION"
+  },
+  "payload_sha256": "44412e83179d5d3ffcacca4c85bd0fe90105ebe869872f4f1f0272fbf9d09fcf",
+  "schema_version": "decoded-json-receipt-v1"
+}

@@ -18,6 +18,7 @@ The latest handoff identifies the exact implementation commit and check results.
 | Statistical scope | Unchanged R0 and K0 laws, four subjects each, all 13 requested categories plus PA; no new model qualification |
 | Historical input | Exact retained 26,645-row panel, SHA256 `489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c`; earlier availability/role limitations remain |
 | Previously measured producer | `06dbb492dda5d0043ec7a3a6c97ce9c46201edc8`, synthetic run `39536525048`, eight originals, final proof T90+289.817868s |
+| Current forward candidate | `6777025deca7c03636f5cb6739cfcc77cb0b5e49`; exact 31-file binding verified; software reviewed, NOT approved/activated; see latest handoff and OPS002_ACTIVATION_PACKAGE.md |
 | Original connected candidate, before owner review | `e5eb1a24ee779cdec819bd239ccbc5a9d33e93f7`, with `execution_binding()` verifying all 31 execution files against that exact commit. Binding ID `f2778e8baf81b28043fd939c1578dcaf920c1e82382a6393bfe907f279b8ca52`. It is an unapproved candidate; the previous timing result does not measure these new components. |
 | Proposed destination | `NickNicky19/Nicks-multisport-lab-project`, branch `records/nba-paired-ops-002-20261022`, `encrypted-raw/` plus the bounded ledger and completion metadata |
 | Publication | Independently admitted forecast and offer-only channels; an absent price or offer is not a statistical-forecast requirement |

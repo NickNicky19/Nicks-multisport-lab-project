@@ -21,7 +21,8 @@ reference-clock, capture-manifest identity and public-certificate bundle defects
 A separate offline local key-recovery helper checks supplied original/restored
 keys and a public canary; it does not generate or install an operational key,
 prove backup origin, admit source use or activate anything. The exact forward
-implementation pin/checks are in the latest HANDOFF_STATUS.md. Old06dbb492
+implementation is 6777025deca7c03636f5cb6739cfcc77cb0b5e49; checks and the later
+metadata HEAD are distinguished in HANDOFF_STATUS.md. Old06dbb492
 synthetic timing remains frozen and does not measure these newer components.
 
 PR #10 / PR #12 remain draft, PROS004 inactive, and no scheduler, pilot activation,
