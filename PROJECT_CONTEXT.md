@@ -10,10 +10,13 @@ six historical forecast bundles, six statistical grades, all 14 categories, zero
 offers/candidates/tickets and no genuine upcoming issuance. This is a static-site
 readback, not a new deployment or source capture.
 
-Website PR #11 is separately ready for review at
-`326e354650aef57c3b965711abf071b2fc4205eb`; its exact-head landing approval is
-pending. It improves verified names/matchups and independent empty states without
-changing the 19 original research records. It has not been merged/deployed.
+Website PR #11 has Nick's explicit landing/deployment approval at
+`326e354650aef57c3b965711abf071b2fc4205eb`; the head is unchanged. It improves
+verified names/matchups and independent empty states without changing the 19
+original research records. It has not been merged/deployed: the required PR
+Completion watcher is blocked in this environment by unavailable GitHub CLI and
+CLI authentication. Do not request a second approval for the unchanged head or
+substitute a different merge method for the skill's guarded helper.
 
 Draft PR #10 remains at `c0a7b4bc3205d723b13d0f70baf66f3806e731ee`.
 The separate branch `implementation/one-event-paired-pilot` builds on that reviewed
@@ -28,7 +31,7 @@ The named-game plan fixes Denver at Oklahoma City, ESPN 401909094, start
 Preparation identities were cross-checked before forecasts/outcomes. Actual
 capture would be October 22, 23:40–23:50 UTC and generation/persistence
 October 23, 00:00–00:05 UTC. Preparation bytes are not timely future inputs.
-Genuine writes remain hard disabled. The current exact producer source is
+Genuine writes remain hard disabled. The previously measured exact producer is
 `06dbb492dda5d0043ec7a3a6c97ce9c46201edc8` in draft PR #12, stacked on PR #10.
 Its paired hosted diagnostic 39536525048 retained and replayed all eight
 synthetic originals, with all eight timely after independent optimized recovery.
@@ -36,9 +39,14 @@ Final required readback completed at T90+289.817868; maximum individual latency
 was 66.372487s. This is one software timing run with only 10.182132s global
 margin. Previous source C, `c535c7851382eb3d7a8701229bc4dd7094086c70`, and its
 failed diagnostic 39533281196 remain unchanged with seven timely originals. Source
-admission, installed primary private raw/key retention, actual four-input linkage,
-genuine destination/entrypoint and reviewed activation remain unmet. No scheduler
-is installed and no genuine future forecast has been issued.
+admission, installed primary private raw/key retention, genuine hosted operation
+and reviewed activation remain unmet. The later connected-component checkpoint
+adds authenticated four-input links, encrypted archive/record transport and
+retained admission-reference resolution, verified with invented local fixtures
+only. Its expanded execution binding is a new unapproved source candidate; do not
+apply the old timing result to it. No scheduler is installed and no genuine future
+forecast has been issued. See docs/OPS002_DELIVERY_READINESS.md and the latest
+handoff for the exact package, key custody procedure and remaining requirements.
 
 The expired October 20 pilot actually ran late and guardedly aborted:
 `ACTUAL_PARTIAL_EXECUTION / LATE_GUARDED_ABORT`, run 39493005199, provider requests 0,

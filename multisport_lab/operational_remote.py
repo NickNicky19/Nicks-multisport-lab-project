@@ -34,6 +34,12 @@ class OperatingDiagnosticWriter(git_transport.GitCheckpointWriter):
     and ends with a fresh object database/fetch and full typed verification.
     Only exact identical local bytes reuse the source's checked meanings.
     """
+    _commit_message = 'Retain non-issuance OP002 timing diagnostic'
+
+    @staticmethod
+    def _snapshot(root):
+        return op.snapshot_manifest(root)
+
     def __init__(self,source_root,writer_root,*,base_commit,branch=DIAGNOSTIC_BRANCH,
                  remote_url=git_transport.REMOTE_URL,diagnostic=True,
                  allow_local_test_remote=False,command_seconds=60):
@@ -179,13 +185,13 @@ class OperatingDiagnosticWriter(git_transport.GitCheckpointWriter):
                     descriptor=os.open(target.parent,os.O_RDONLY)
                     try:os.fsync(descriptor)
                     finally:os.close(descriptor)
-                op.require(op.snapshot_manifest(self.root) == manifest and
-                    op.snapshot_manifest(self.source_root) == manifest and self._context(self.source_root) == context,
+                op.require(self._snapshot(self.root) == manifest and
+                    self._snapshot(self.source_root) == manifest and self._context(self.source_root) == context,
                     "OP002 exact source/copy inventory changed")
                 self._git('add','--',*[entry['path'] for entry in manifest['files']])
                 if self._git('diff','--cached','--quiet',check=False).returncode:
                     self._git('-c',"user.name=Nick's Multisport Lab",'-c','user.email=research@users.noreply.github.com',
-                              'commit','--quiet','-m','Retain non-issuance OP002 timing diagnostic')
+                              'commit','--quiet','-m',self._commit_message)
                 commit=git_transport._sha(self._git('rev-parse','HEAD').stdout.strip(),'checkpoint commit',40)
                 self._head=commit
                 self._git('push','origin','HEAD:refs/heads/'+self.branch)

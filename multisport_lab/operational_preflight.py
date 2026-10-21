@@ -48,25 +48,32 @@ def combined_capacity(root):
     bounded archive; its public ledger links count here. No cap is increased.
     """
     capacity = pilot.capacity_report(root)
-    # One <=64KiB offer envelope; <=8 source links of <=8KiB; seven <=16KiB
-    # registration/admission receipts; one complete <=1MiB hosted report; and
-    # two independent <=64KiB source/recovery audits. The actual audits are
-    # larger than 16 KiB and must not consume that smaller admission allocation.
+    # One <=64KiB offer envelope; <=8 offer source links plus four event source
+    # links and their one binding, all <=8KiB; eight <=16KiB registration,
+    # admission and execution-binding receipts; a <=32KiB reference inventory;
+    # one complete <=1MiB hosted report; and two independent <=64KiB audits.
+    # Neither the inventory nor the actual audits may consume a smaller slot.
     # Publication maximum 32 does not expand this one-off allocation.
-    extra_files = 1+8+7+1+2
-    extra_bytes = 64*1024+8*8*1024+7*16*1024+1024*1024+2*64*1024
+    extra_files = 1+8+4+1+8+1+1+2
+    extra_bytes = (64*1024+(8+4+1)*8*1024+8*16*1024+32*1024
+                   +1024*1024+2*64*1024)
     count = capacity["maximum_records"]+extra_files
     size = capacity["maximum_bytes"]+extra_bytes
     pilot.require(count <= pilot.MAX_LEDGER_RECORDS and size <= pilot.MAX_LEDGER_BYTES,
                   "complete one-event/one-offer allocation exceeds unchanged shared ledger capacity")
     return {
-        "schema_version": "nba-operational002-combined-capacity-v3",
+        "schema_version": "nba-operational002-combined-capacity-v4",
         "base_operation": capacity,
         "reserved_offer_envelopes": 1,
         "reserved_offer_raw_link_envelopes": 8,
-        "reserved_additional_metadata_files": 10,
-        "reserved_small_metadata_files": 7,
+        "reserved_event_raw_link_envelopes": 4,
+        "reserved_event_source_binding_envelopes": 1,
+        "raw_link_or_binding_encoded_ceiling": 8*1024,
+        "reserved_additional_metadata_files": 12,
+        "reserved_small_metadata_files": 8,
         "small_metadata_encoded_ceiling": 16*1024,
+        "reserved_reference_inventory_files": 1,
+        "reference_inventory_encoded_ceiling": 32*1024,
         "reserved_hosted_report_files": 1,
         "hosted_report_encoded_ceiling": 1024*1024,
         "reserved_independent_audit_files": 2,
@@ -77,7 +84,14 @@ def combined_capacity(root):
         "global_byte_limit": pilot.MAX_LEDGER_BYTES,
         "raw_archive_separate_maximum_bytes": 64*1024*1024,
         "raw_archive_separate_maximum_captures": 128,
-        "raw_archive_eight_capture_reserve_bytes": 8*(2*1024*1024+16*1024+16*1024),
+        "reserved_event_raw_captures": 4,
+        "reserved_offer_raw_captures": 8,
+        "reserved_final_summary_raw_captures": 1,
+        "reserved_correction_raw_captures": 8,
+        "raw_archive_twelve_capture_reserve_bytes": 12*(2*1024*1024+16*1024+16*1024),
+        "raw_archive_complete_cycle_reserve_bytes": 21*(2*1024*1024+16*1024+16*1024),
+        "outcome_raw_reference_embedded_in_existing_outcome_envelope": True,
+        "raw_reservation_is_an_admitted_source_inventory": False,
         "raw_plaintext_publication": False,
         "inactive_PROS004_full_study_stacked_with_new_pilot": False,
         "future_reservations_must_recalculate_against_actual_records": True,

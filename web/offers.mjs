@@ -14,6 +14,8 @@ const boundFields = ['id_namespace','event_id','event_version','event_starts_at'
 const offerFields = ['schema_version','offer_id','sport','league','id_namespace','event_id','event_version','event_starts_at','player_id','player_label','team_id','opponent_id','stat','units','period','extra_time_policy','line','side','variant','venue','product','settlement_version','settlement_terms','stat_definition','provider','observed_at','source_updated_at','imported_at','market_status','evidence_lane','source_evidence','admission_id','price_status','price','quote','qualification'];
 const admissionFields = ['schema_version','admission_id','subject_sha256','reviewed_at','reviewer','decision','scope','basis','raw_redistribution','scheduled_collection'];
 const evidenceFields = ['evidence_id','kind','source_url','raw_sha256','raw_bytes','raw_record_id','request_started_at','observed_at','source_updated_at','bindings'];
+const textReplayFields = ['schema_version','media_type','encoding','extractor','text_sha256','text_bytes'];
+const textExtractors = Object.freeze({'text/html':'html-static-text-v1','text/plain':'utf8-text-v1'});
 const evidenceKinds = ['CONTRACT_VIEW','EVENT_IDENTITY','PLAYER_IDENTITY','RULES','CROSSWALK'];
 const kindBindings = {
   CONTRACT_VIEW:['provider.selection_id','provider.market_id','provider.event_id','provider.player_id','stat','line','side','market_status'],
@@ -27,6 +29,24 @@ const same = (a,b) => canonicalOffer(a) === canonicalOffer(b);
 const target = (offer,path) => path.includes('.') ? offer[path.split('.')[0]][path.split('.')[1]] : offer[path];
 const decimal = value => typeof value === 'string' && value.length <= 32 && /^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(value) && Number.isFinite(Number(value)) && Number(value)<=1000000;
 const url = value => {try {const u=new URL(value);return text(value,2048)&&u.protocol==='https:'&&!!u.hostname&&!u.username&&!u.password&&!u.hash;} catch{return false;}};
+
+// Public validation checks the reviewed descriptor and exact quotation span.
+// Only backend replay against privately recovered original bytes proves a quote.
+function validateTextReplay(replay){
+  require(fields(replay,textReplayFields)&&replay.schema_version==='source-evidence-text-v1'&&replay.encoding==='utf-8'
+    &&typeof replay.media_type==='string'&&Object.hasOwn(textExtractors,replay.media_type)&&replay.extractor===textExtractors[replay.media_type]
+    &&typeof replay.text_sha256==='string'&&SHA.test(replay.text_sha256)
+    &&Number.isSafeInteger(replay.text_bytes)&&replay.text_bytes>0&&replay.text_bytes<=512*1024,
+    'Unsupported text replay descriptor/version/format.');
+}
+function validateTextBinding(binding,replay){
+  require(fields(binding,['start','end','source_value','meaning'])&&Number.isSafeInteger(binding.start)&&Number.isSafeInteger(binding.end)
+    &&binding.start>=0&&binding.end>binding.start&&binding.end<=replay.text_bytes
+    &&typeof binding.source_value==='string'&&binding.source_value.length>0&&!/[\uD800-\uDFFF]/u.test(binding.source_value),
+    'Invalid exact text quotation or UTF-8 byte span.');
+  const length=new TextEncoder().encode(binding.source_value).byteLength;
+  require(length<=4096&&length===binding.end-binding.start,'Quotation and UTF-8 byte span disagree.');
+}
 
 export function canonicalOffer(value) {
   if (value && typeof value === 'object') return Array.isArray(value) ? `[${value.map(canonicalOffer).join(',')}]` : `{${Object.keys(value).sort().map(key=>`${JSON.stringify(key)}:${canonicalOffer(value[key])}`).join(',')}}`;
@@ -75,8 +95,10 @@ export function validateOffer(offer,admission,now,{allowSynthetic=false}={}) {
   if(offer.price!==null)require(fields(offer.price,['kind','value','evidence_id']),'Malformed observed price.');
   const ids=new Set(),covered=new Set(),kinds=new Set();
   for(const e of offer.source_evidence){
-    require(fields(e,evidenceFields)&&text(e.evidence_id)&&!ids.has(e.evidence_id)&&evidenceKinds.includes(e.kind)
+    const textRules=!!e&&typeof e==='object'&&Object.hasOwn(e,'text_replay');
+    require(fields(e,textRules?[...evidenceFields,'text_replay']:evidenceFields)&&text(e.evidence_id)&&!ids.has(e.evidence_id)&&evidenceKinds.includes(e.kind)
       &&url(e.source_url)&&SHA.test(e.raw_sha256)&&SHA.test(e.raw_record_id)&&Number.isSafeInteger(e.raw_bytes)&&e.raw_bytes>0&&e.raw_bytes<=2*1024*1024,'Invalid offer source evidence.');
+    if(textRules){require(e.kind==='RULES','Text replay is restricted to RULES evidence.');validateTextReplay(e.text_replay);}
     ids.add(e.evidence_id);kinds.add(e.kind);
     const at=utcMicros(e.observed_at);
     require(utcMicros(e.request_started_at)<=at&&at<=imported,'Evidence observation clocks disagree.');
@@ -85,8 +107,10 @@ export function validateOffer(offer,admission,now,{allowSynthetic=false}={}) {
     require(kindBindings[e.kind].every(key=>Object.hasOwn(e.bindings,key)),'Source evidence lacks the fields required for its claimed role.');
     if(e.kind==='CONTRACT_VIEW')require(e.observed_at===offer.observed_at&&e.source_updated_at===offer.source_updated_at,'Contract observation/update clocks differ from offer.');
     for(const [key,binding]of Object.entries(e.bindings)){
-      require(required.includes(key)&&fields(binding,['pointer','source_value','meaning'])&&text(binding.pointer,512)
-        &&binding.pointer.startsWith('/')&&same(binding.meaning,target(offer,key)),'Source binding contradicts normalized offer.');
+      require(required.includes(key),'Unknown normalized source binding.');
+      if(textRules)validateTextBinding(binding,e.text_replay);
+      else require(fields(binding,['pointer','source_value','meaning'])&&text(binding.pointer,512)&&binding.pointer.startsWith('/'),'Source binding requires a JSON pointer.');
+      require(same(binding.meaning,target(offer,key)),'Source binding contradicts normalized offer.');
       covered.add(key);
     }
   }

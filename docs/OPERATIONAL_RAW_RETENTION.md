@@ -47,8 +47,10 @@ The format uses OpenSSL CMS AuthEnvelopedData, AES-256-GCM, RSA-OAEP with SHA256
 and MGF1SHA256, and RSA of at least 3072 bits. Readback inspects the actual CMS
 algorithm identifiers, rejecting CBC, alternate OAEP digests and multiple
 recipients even if metadata checksums match. The recipient certificate's exact
-bytes are pinned and rechecked around operations. The existing runtime has
-OpenSSL 3.5.7; this is a software prerequisite for the eventual hosted runner.
+bytes are pinned and rechecked around operations. An earlier runtime used
+OpenSSL 3.5.7; the October 21 connected-component checks also pass with system
+OpenSSL 3.0.13. The actual hosted runtime must support and pass this exact CMS
+suite; the earlier version string is not itself a required minimum or a proof.
 
 The capture identity commits to pilot, evidence lane, event, source URL,
 request/observation/source-update clocks, exact plaintext hash/length,
@@ -82,16 +84,23 @@ The original 512-record/32-MiB ledger cap remains separate and unchanged. The
 archive adds **no** ledger records itself. Each source needed by an offer or
 input may need one small `input_captures` link containing the encrypted raw
 reference; these links must be included in the integration capacity plan.
-The offer reader can resolve such a link through `archive.read(ref)` and expose
-`source_observed_at` as `observed_at`, preserving all original clocks.
+The new `operational_source_links.EncryptedSourceLinks` implements this link and
+its authenticated offer reader, exposing `source_observed_at` as `observed_at`
+while preserving original clocks. Four event links and a separate event binding
+also replay exact event/roster normalization. Local fixture verification does
+not establish an actual provider capture or admitted operating backend.
 
 The unchanged bounded raw allowance is enforced over **ciphertext plus receipt
 envelopes**, including orphan ciphertext: at most128captures/128cipher objects,
 64MiB total, and8MiB per encoded encrypted object. A manifest is at most16KiB;
 CMS overhead is at most16KiB. A2MiB source therefore reserves at most2,129,920B
 including maximum metadata. Eight such source captures reserve17,039,360B
-(16.25MiB); this is a capacity example, **not** an admitted source inventory.
-The exact operating inventory and remaining ledger/raw budget still need review.
+(16.25MiB); this earlier example remains factual. The connected capacity-v4
+proposal reserves four pregame captures plus up to eight offer captures:
+25,559,040B. Adding one final summary and eight correction captures gives
+44,728,320B for the complete cycle, still within64MiB. None of these counts is
+an admitted source inventory. Exact source use, actual partial objects and
+remaining budget still need operating review.
 
 Writes use create-only hard links, fsync and readback. A crash before manifest
 publication can leave an orphan encrypted object, which remains counted and

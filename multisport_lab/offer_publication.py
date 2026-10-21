@@ -20,6 +20,8 @@ import zlib
 from .integrity import (HASH_FORMAT, RECEIPT_SCHEMA, IntegrityError, canonical,
                         digest, load_json, read_receipt, stamp, utc)
 from .offer_import import UNITS
+from .source_evidence import (replay_text_evidence, validate_text_binding,
+                              validate_text_replay)
 
 ASSET_SCHEMA = "nba-player-offers-v1"
 OFFER_SCHEMA = "nba-player-offer-v1"
@@ -207,7 +209,11 @@ def validate_offer(offer, admission, *, now, allow_synthetic=False):
         _fields(offer["price"], {"kind", "value", "evidence_id"}, "observed price")
     ids, covered, kinds = set(), set(), set()
     for evidence in offer["source_evidence"]:
-        _fields(evidence, EVIDENCE_FIELDS, "source evidence")
+        text_rules = type(evidence) is dict and "text_replay" in evidence
+        _fields(evidence, EVIDENCE_FIELDS | ({"text_replay"} if text_rules else set()), "source evidence")
+        if text_rules:
+            _require(evidence["kind"] == "RULES", "Text replay is restricted to RULES evidence")
+            validate_text_replay(evidence["text_replay"])
         _text(evidence["evidence_id"], "evidence ID")
         _require(evidence["evidence_id"] not in ids and evidence["kind"] in KINDS, "Duplicate or unknown evidence")
         ids.add(evidence["evidence_id"]); kinds.add(evidence["kind"])
@@ -229,9 +235,13 @@ def validate_offer(offer, admission, *, now, allow_synthetic=False):
                      and evidence["source_updated_at"] == offer["source_updated_at"],
                      "Contract source observation/update clocks differ from the offer")
         for field, binding in evidence["bindings"].items():
-            _fields(binding, {"pointer", "source_value", "meaning"}, "source binding")
-            _text(binding["pointer"], "JSON pointer", 512)
-            _require(binding["pointer"].startswith("/") and canonical(binding["meaning"]) == canonical(_target(offer, field)),
+            if text_rules:
+                validate_text_binding(binding, evidence["text_replay"])
+            else:
+                _fields(binding, {"pointer", "source_value", "meaning"}, "source binding")
+                _text(binding["pointer"], "JSON pointer", 512)
+                _require(binding["pointer"].startswith("/"), "Source binding requires a JSON pointer")
+            _require(canonical(binding["meaning"]) == canonical(_target(offer, field)),
                      "Source binding contradicts normalized offer")
             covered.add(field)
     _require(covered == required and {"CONTRACT_VIEW", "EVENT_IDENTITY", "PLAYER_IDENTITY", "RULES", "CROSSWALK"} <= kinds,
@@ -426,8 +436,11 @@ class OfferStore:
         for evidence in offer["source_evidence"]:
             reference = refs[evidence["raw_record_id"]]
             source = self.ledger.read(reference)["data"].get("offer_raw_capture")
+            text_rules = "text_replay" in evidence
+            raw = None
             if source is not None:
                 _require(offer["evidence_lane"] == "SYNTHETIC_TEST", "Real provider raw bodies must not enter the public ledger")
+                _require(not text_rules, "Text RULES require original bytes through the verified raw reader; the legacy helper is JSON-only")
                 decoded = validate_raw_capture(source)
             else:
                 _require(self.raw_reader is not None, "A verified private raw reader is required for real source evidence")
@@ -439,14 +452,18 @@ class OfferStore:
                          "Invalid private source readback")
                 _require(len(raw) == evidence["raw_bytes"] and hashlib.sha256(raw).hexdigest() == evidence["raw_sha256"],
                          "Private raw bytes/hash mismatch")
-                from .integrity import _decode
-                decoded = _decode(raw)
+                if not text_rules:
+                    from .integrity import _decode
+                    decoded = _decode(raw)
             for field in ("source_url", "raw_sha256", "raw_bytes", "request_started_at", "observed_at", "source_updated_at"):
                 _require(source[field] == evidence[field], "Retained raw metadata differs from evidence")
             _require(_clock(source["imported_at"]) <= _clock(offer["imported_at"]), "Raw source imported after contract import")
-            for binding in evidence["bindings"].values():
-                _require(canonical(_pointer(decoded, binding["pointer"])) == canonical(binding["source_value"]),
-                         "Retained raw value contradicts source binding")
+            if text_rules:
+                replay_text_evidence(raw, evidence)
+            else:
+                for binding in evidence["bindings"].values():
+                    _require(canonical(_pointer(decoded, binding["pointer"])) == canonical(binding["source_value"]),
+                             "Retained raw value contradicts source binding")
 
     @staticmethod
     def _identity(offer):

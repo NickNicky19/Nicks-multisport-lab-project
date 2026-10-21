@@ -44,6 +44,18 @@ function fixture({priced=false}={}){
   return finish(offer,admission);
 }
 function assetFixture(){const {offer,admission}=fixture();return seal({schema_version:'nba-player-offers-v1',league:'NBA',generated_at:now,status:'OFFER_ONLY_RESEARCH',category_inventory:ALL_NBA_CATEGORIES,offers:[offer],admissions:[admission],unavailable_reasons:[]},'asset_id');}
+function textRulesFixture(mediaType='text/html'){
+  let {offer,admission}=fixture();const e=offer.source_evidence.find(e=>e.kind==='RULES');
+  const quotes=Object.fromEntries(roles.RULES.map(key=>[key,`Synthetic café source ${key}: ${target(offer,key)}`]));
+  const text=Buffer.from(Object.values(quotes).join(mediaType==='text/plain'?'\r\n':' '),'utf8');
+  const raw=mediaType==='text/plain'?text:Buffer.from(`<main>${Object.values(quotes).map(quote=>`<p>${quote}</p>`).join('')}</main>`,'utf8');
+  Object.assign(e,{source_url:'https://source.example.test/rules',raw_record_id:'b'.repeat(64),raw_bytes:raw.byteLength,
+    raw_sha256:createHash('sha256').update(raw).digest('hex'),text_replay:{schema_version:'source-evidence-text-v1',media_type:mediaType,encoding:'utf-8',
+      extractor:mediaType==='text/plain'?'utf8-text-v1':'html-static-text-v1',text_sha256:createHash('sha256').update(text).digest('hex'),text_bytes:text.byteLength},
+    bindings:Object.fromEntries(Object.entries(quotes).map(([key,quote])=>{const encoded=Buffer.from(quote,'utf8'),start=text.indexOf(encoded);
+      return [key,{start,end:start+encoded.byteLength,source_value:quote,meaning:target(offer,key)}];}))});
+  return finish(offer,admission);
+}
 function forecastFixture(offer){return {...Object.fromEntries(['league','id_namespace','event_id','event_version','player_id','team_id','opponent_id','event_starts_at','period','extra_time_policy'].map(key=>[key,offer[key]])),
   cutoff_at:'2026-10-20T18:00:00.000000Z',issued_at:'2026-10-20T18:00:05.000000Z',evidence_lane:'REAL_TIME_CAPTURED',conditioning:'CONDITIONAL_ON_APPEARANCE',categories:[{code:'PTS',units:'points'}]};}
 
@@ -51,6 +63,29 @@ test('complete price-unavailable contract is distinct from a partial observation
   const asset=assetFixture();validateOfferAsset(asset,now,{allowSynthetic:true});await verifyOfferAssetHashes(asset,webcrypto);
   assert.equal(asset.offers[0].price,null);assert.equal(asset.offers[0].quote,null);assert.equal(asset.offers[0].qualification,'UNAVAILABLE');
   assert.throws(()=>validateOfferAsset(asset,now),/publicly admitted/);
+});
+test('explicit HTML/plain RULES quotation descriptors preserve coherent offer-only validation',async()=>{
+  for(const mediaType of ['text/html','text/plain']){
+    const {offer,admission}=textRulesFixture(mediaType);validateOffer(offer,admission,now,{allowSynthetic:true});
+    const asset=seal({schema_version:'nba-player-offers-v1',league:'NBA',generated_at:now,status:'OFFER_ONLY_RESEARCH',category_inventory:ALL_NBA_CATEGORIES,
+      offers:[offer],admissions:[admission],unavailable_reasons:[]},'asset_id');
+    validateOfferAsset(asset,now,{allowSynthetic:true});await verifyOfferAssetHashes(asset,webcrypto);
+    assert.equal(offer.price,null);assert.equal(offer.qualification,'UNAVAILABLE');
+    assert.throws(()=>validateOffer(offer,admission,now),/publicly admitted/);
+    const binding=offer.source_evidence.find(e=>e.kind==='RULES').bindings.period;
+    assert.equal(binding.end-binding.start,Buffer.byteLength(binding.source_value,'utf8'));
+    assert.notEqual(binding.end-binding.start,binding.source_value.length);
+  }
+});
+test('text RULES versions, byte spans and meanings cannot be silently reinterpreted',()=>{
+  const mutations=[e=>e.text_replay.extractor='json-summary-v1',e=>e.text_replay.media_type=['text/html'],e=>e.text_replay.encoding='latin-1',
+    e=>e.text_replay.text_bytes=true,e=>e.text_replay.text_bytes=0,e=>e.text_replay.text_sha256='bad',
+    e=>e.bindings.period.pointer='/period',e=>e.bindings.period.start=true,e=>e.bindings.period.end++,
+    e=>e.bindings.period.source_value='\ud800',e=>e.bindings.period.meaning='first_quarter'];
+  for(const change of mutations){let {offer,admission}=textRulesFixture();change(offer.source_evidence.find(e=>e.kind==='RULES'));
+    ({offer,admission}=finish(offer,admission));assert.throws(()=>validateOffer(offer,admission,now,{allowSynthetic:true}));}
+  let {offer,admission}=textRulesFixture();offer.source_evidence.find(e=>e.kind==='CONTRACT_VIEW').text_replay=offer.source_evidence.find(e=>e.kind==='RULES').text_replay;
+  ({offer,admission}=finish(offer,admission));assert.throws(()=>validateOffer(offer,admission,now,{allowSynthetic:true}),/restricted to RULES/);
 });
 test('actual permission review cannot self-admit and the reviewed registry is empty',()=>{
   let {offer,admission}=fixture();offer.evidence_lane='REAL_TIME_CAPTURED';admission.decision='ADMITTED_DERIVED_FACTS';admission.basis.kind='PUBLIC_SOURCE_SCOPED_REVIEW';

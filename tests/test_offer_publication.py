@@ -2,6 +2,7 @@
 from copy import deepcopy
 from datetime import datetime, timezone
 import hashlib
+from html import escape
 import json
 from pathlib import Path
 import subprocess
@@ -12,6 +13,7 @@ from unittest.mock import patch
 
 from multisport_lab.integrity import IntegrityError, canonical, digest, utc, write_receipt
 from multisport_lab import offer_publication as offers
+from multisport_lab import source_evidence
 
 NOW = "2026-10-20T18:01:00.000000Z"
 
@@ -73,7 +75,97 @@ def asset_fixture():
         "offers": [offer], "admissions": [admission], "unavailable_reasons": []}, "asset_id")
 
 
+def text_rules_fixture(raw_record_id="a" * 64, text_record_id="b" * 64, *, media_type="text/html"):
+    """Fictional source quotation mapping; never an actual rules interpretation."""
+    offer, admission, capture = fixture(raw_record_id)
+    rules = next(item for item in offer["source_evidence"] if item["kind"] == "RULES")
+    quotes = {key: "Synthetic café source " + key + ": " + offers._target(offer, key)
+              for key in sorted(offers.KIND_BINDINGS["RULES"])}
+    raw = ("<main>" + "".join("<p>" + escape(quote) + "</p>" for quote in quotes.values()) + "</main>"
+           if media_type == "text/html" else "\r\n".join(quotes.values())).encode("utf-8")
+    text = source_evidence.extract_source_text(raw, media_type)
+    rules.update(source_url="https://source.example.test/rules", raw_record_id=text_record_id,
+                 raw_bytes=len(raw), raw_sha256=hashlib.sha256(raw).hexdigest(),
+                 text_replay=source_evidence.make_text_replay(raw, media_type))
+    rules["bindings"] = {}
+    for key, quote in quotes.items():
+        encoded = quote.encode("utf-8"); start = text.index(encoded)
+        rules["bindings"][key] = {"start": start, "end": start + len(encoded),
+                                   "source_value": quote, "meaning": offers._target(offer, key)}
+    metadata = {key: rules[key] for key in ("source_url", "raw_sha256", "raw_bytes", "request_started_at", "observed_at", "source_updated_at")}
+    metadata["imported_at"] = capture["imported_at"]
+    offer, admission = finish(offer, admission)
+    return offer, admission, capture, {"metadata": metadata, "raw": raw}
+
+
 class OfferPublicationTests(unittest.TestCase):
+    def test_html_and_plain_rules_replay_through_original_byte_reader_and_restart(self):
+        for media_type in ("text/html", "text/plain"):
+            with self.subTest(media_type=media_type), tempfile.TemporaryDirectory() as tmp:
+                store = offers.OfferStore(tmp, allow_synthetic=True)
+                _, _, capture, retained = text_rules_fixture(media_type=media_type)
+                json_ref = store.retain_raw(capture)
+                # Only a fictional reference enters the ledger. The supplied
+                # test reader holds original fixture bytes outside that ledger.
+                text_ref = store.ledger.append("input_captures", "synthetic-text-source",
+                    {"synthetic_source_link": {"raw_sha256": retained["metadata"]["raw_sha256"]}})
+                offer, admission, _, retained = text_rules_fixture(json_ref.record_id, text_ref.record_id, media_type=media_type)
+                def reader(reference):
+                    self.assertEqual(reference, text_ref)
+                    return retained
+                store.raw_reader = reader
+                ref = store.persist(offer, admission, raw_references=(json_ref, text_ref))
+                original = store.ledger._path(ref.kind, ref.record_id).read_bytes()
+                self.assertEqual(store.persist(offer, admission, raw_references=(json_ref, text_ref)), ref)
+                recovered = offers.OfferStore(tmp, allow_synthetic=True, raw_reader=reader).active()
+                self.assertEqual(recovered[0][1]["offer"], offer)
+                self.assertEqual(store.ledger._path(ref.kind, ref.record_id).read_bytes(), original)
+                with self.assertRaisesRegex(IntegrityError, "raw reader"):
+                    offers.OfferStore(tmp, allow_synthetic=True).active()
+                damaged = deepcopy(retained); damaged["raw"] += b" "
+                with self.assertRaisesRegex(IntegrityError, "bytes/hash mismatch"):
+                    offers.OfferStore(tmp, allow_synthetic=True, raw_reader=lambda _: damaged).active()
+                bad = deepcopy(offer)
+                binding = next(iter(next(e for e in bad["source_evidence"] if e["kind"] == "RULES")["bindings"].values()))
+                binding["source_value"] = binding["source_value"].replace("Synthetic", "Fabricate", 1)
+                bad, changed = finish(bad, admission)
+                with self.assertRaisesRegex(IntegrityError, "quotation contradicts"):
+                    store.persist(bad, changed, raw_references=(json_ref, text_ref))
+
+    def test_text_rules_are_explicit_and_cannot_relabel_json_or_change_meanings(self):
+        for mutation in (lambda e: e["text_replay"].update(extractor="invented-summary"),
+                         lambda e: e["text_replay"].update(media_type=["text/html"]),
+                         lambda e: e["bindings"]["period"].update(pointer="/period"),
+                         lambda e: e["bindings"]["period"].update(meaning="first_quarter"),
+                         lambda e: e["bindings"]["period"].update(start=True)):
+            offer, admission, _, _ = text_rules_fixture()
+            mutation(next(e for e in offer["source_evidence"] if e["kind"] == "RULES"))
+            offer, admission = finish(offer, admission)
+            with self.assertRaises(IntegrityError):
+                offers.validate_offer(offer, admission, now=NOW, allow_synthetic=True)
+        offer, admission, _, _ = text_rules_fixture()
+        rules = next(e for e in offer["source_evidence"] if e["kind"] == "RULES")
+        next(e for e in offer["source_evidence"] if e["kind"] == "CONTRACT_VIEW")["text_replay"] = rules["text_replay"]
+        offer, admission = finish(offer, admission)
+        with self.assertRaisesRegex(IntegrityError, "restricted to RULES"):
+            offers.validate_offer(offer, admission, now=NOW, allow_synthetic=True)
+        with tempfile.TemporaryDirectory() as tmp:
+            store = offers.OfferStore(tmp, allow_synthetic=True)
+            _, _, capture, _ = text_rules_fixture(); ref = store.retain_raw(capture)
+            offer, admission, _, _ = text_rules_fixture(ref.record_id, ref.record_id)
+            with self.assertRaisesRegex(IntegrityError, "legacy helper is JSON-only"):
+                store.persist(offer, admission, raw_references=(ref,))
+
+    def test_python_text_rules_contract_matches_frontend_validation(self):
+        offer, admission, _, _ = text_rules_fixture()
+        code = ("import fs from 'node:fs'; import {validateOffer} from './web/offers.mjs'; "
+                "const x=JSON.parse(fs.readFileSync(0,'utf8')); "
+                "validateOffer(x.offer,x.admission,x.now,{allowSynthetic:true});")
+        result = subprocess.run(["node", "--input-type=module", "-e", code],
+            input=json.dumps({"offer": offer, "admission": admission, "now": NOW}), capture_output=True,
+            text=True, cwd=Path(__file__).resolve().parents[1])
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_complete_priceless_contract_is_distinct_from_partial_and_usable_quote(self):
         offer, admission, _ = fixture()
         self.assertEqual(offers.validate_offer(offer, admission, now=NOW, allow_synthetic=True), offer)
