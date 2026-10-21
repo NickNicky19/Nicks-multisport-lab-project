@@ -2,6 +2,188 @@
 
 Updated: October 21, 2026 (UTC).
 
+## October 21 — bounded exact-condition CLOB inspection and semantic offer v2
+
+**Actual result: one retained NBA contract enriched into a typed, incomplete
+local semantic record; zero complete contracts.** Native YES/NO token mapping is
+now verified. No NBA correction/regrading rule was established. The private
+single-card preview is updated, with all fourteen categories retained as scope.
+The original 28 partial player-stat rows remain PTS10/REB10/AST8; no new event or
+player cohort was collected and no previous incomplete observation was backdated.
+
+Branch: `implementation/one-event-paired-pilot`. Starting local/remote HEAD:
+**9a7bdcb019697d972990f81ff31913b75dd44e24**, clean; normal fetch confirmed the
+same remote and main **411f904e4f9d577f97ca3a4ae6ba52fdb81ee130**. Implementation:
+**b8347b152e6e0bd07e18cba38d4e4fb93fd2f0d3**. Later metadata HEAD does not replace this source pin. PR #10/#12
+remain draft, PROS004/S0 inactive. The prior exact-head recovery and successful CI
+39596602230 are preserved in the archived prior PR body. Final pushed-head
+readback and configured CI results are retained in the current PR #12 description
+rather than changing an already-verified head to insert its own hash.
+
+### Actual four-request result
+
+Nick authorized four additional read-only source/documentation GETs, redirects
+and retries included, for the exact retained condition. ROOT was the only HTTP
+requester; all agents used zero requests. The separate supplement pins the earlier
+12-request ledger's exact bytes. **4/4 used, 651,274 bytes, one counted 302 and
+its separately counted follow, zero retries or automatic-approval rejections**;
+each response remained below the unchanged 2 MiB cap. No source request followed
+exhaustion. Earlier originals and their clocks/ledger are unchanged.
+
+1. Official Get CLOB market info documentation: 200 / 578,287 bytes, observed
+   **12:36:02.581777 UTC**; exact production `GET /clob-markets/{condition_id}`,
+   `security: []`, credentialless examples, token ID/outcome-label meanings.
+2. Official Help Center root: 302 / zero bytes, **12:36:38.940819 UTC**; automatic
+   follow disabled; returned `/en/` location retained.
+3. Returned English Help Center: 200 / 72,511 bytes, **12:36:50.030627 UTC**;
+   category links, without an applicable NBA player-stat correction rule.
+4. Exact retained-condition CLOB response: 200 / 476 bytes,
+   **12:39:13.542467 UTC**; condition/start/token set agree with retained Gamma,
+   with explicit YES/NO token associations.
+
+The pre-data CLOB decision is separate from the Gamma decision. Its API-specific
+basis combines the newly inspected exact no-auth operation, retained official
+Market Data Overview application/read workflow and personal informational-use/
+copy terms. It is a narrow interpretation for one personal/local informational
+read/retention/private review, not a blanket API, trading, recurring/bulk collector,
+account/wallet or public data-distribution admission. HTTP 200 and checksum claims
+are not substitutes for that review or provider authenticity. No provider key,
+signup, payment, trial, subscription or operational encryption key was needed.
+
+The CLOB response describes tokens/order-book parameters, without NBA statistical
+correction/regrading meaning. Generic NBA correction documentation, generic
+oracle challenge/finality and an uninterpreted `customLiveness` literal do not fill
+that field. No claim is made that every venue policy/clarification is absent.
+**Recommendation: retain this source as partial; its currently retained routes
+cannot satisfy the complete-contract requirement. Do not request more events or
+prices to solve a settlement gap.** The exact next returned documentary lead is
+`https://help.polymarket.com/en/collections/17859586-markets`; any later review
+must find a correction statement applicable to this same international
+Polymarket/A1 NBA player-stat contract. Polymarket US, another sport or generic
+oracle language is insufficient. ESPN/DraftKings and Sleeper remain preferred.
+No further source request is authorized by this exhausted allowance.
+
+### Offline implementation and actual replay
+
+New **`nba-local-semantic-offer-v2`** preserves existing v1 files/contracts and
+original records. It represents the independently verified external canonical
+player without fabricating a native provider person ID, and declares selection
+identity as `(market ID, outcome label)`. Native IDs/tokens, prices and execution
+flags are not universal semantic-completeness requirements. The actual native
+token is populated only from the new labeled CLOB witness. Earlier price arrays
+remain literal/unassigned; **PRICE_UNAVAILABLE** and a separate price-binding gap
+remain. No sportsbook odds, multiplier, probability, EV or compatible parlay leg
+is inferred.
+
+Actual computed semantic gaps: **PLAYER_TEAM, PLAYER_OPPONENT, EVENT_VERSION,
+SETTLEMENT_STAT_CORRECTIONS**. Source teams establish a matchup, not the player's
+affiliation. The source version literal is preserved without becoming a verified
+event revision/snapshot. `semantic_status: INCOMPLETE`, `completed_at: null`;
+execution, public and ticket admission remain false. The complete price-free,
+null-native-ID control is explicitly **synthetic**.
+
+The original contract was observed **11:26:31.749940 UTC**; latest linked knowledge
+**12:39:13.542467 UTC**; actual initial v2 normalization **12:50:08.291254 UTC**.
+The retained record independently replays **eight originals / 31 bindings**.
+Retries recover that same receipt and clock without regeneration; interrupted
+persistence finishes missing local artifacts and rejects conflicts. Subsequent
+draft validation fixes were verified against the same unchanged record.
+No prospective issuance or new historical reconstruction is claimed.
+
+Private originals: `.local-data/keyless-contract-007/originals/` (ten create-only
+files). Earlier source-use witnesses copied without requests:
+`.local-data/keyless-contract-007/source-use/`. Original package006 remains intact.
+Private preview: **`.local-data/keyless-contract-007/preview-v2/standalone.html`**.
+This is **local recovery, not verified durable remote raw archival**. Operating
+key backup/recovery and authenticated production retention remain separate,
+unchanged dependencies; they do not block this offline parser.
+
+The card shows the readable player/matchup/date, canonical/composite/native IDs,
+separate clocks, known settlement rules and four explicit semantic gaps. Price,
+execution and public admission are separate; all fourteen categories are visible
+as scope and the builder remains **NO_ACTION**. Provided-HTML-byte rendering
+passed **1440/390/320px**, details expanded, no overflow/errors and zero HTTP.
+Root visually reviewed desktop/mobile screenshots. Direct managed `file://`
+navigation returned **net::ERR_BLOCKED_BY_ADMINISTRATOR** and stopped without
+policy changes. The successful receipt explicitly says
+`rendering_mode: PROVIDED_LOCAL_HTML_BYTES`, `file_url_navigation_verified: false`.
+This is rendering verification, not a claimed successful file route. The initial
+failure is retained under qa-v2; successful private evidence is under qa-v3.
+
+### Files, review and actual commands/results
+
+New software: `multisport_lab/semantic_offer.py`, `gamma_semantic_review.py`,
+`web/semantic-offer-review.mjs`, `scripts/render_semantic_offer_review.mjs`,
+`tests/test_semantic_offer.py`, `test_gamma_semantic_review.py`,
+`tests/fixtures/semantic_offer_v2.json`, `web/tests/semantic-offer-review.test.mjs`
+and `semantic-offer-browser.py`. New docs: `docs/OFFER_SEMANTIC_V2.md`,
+`KEYLESS_CONTRACT_007.md`. Sanitized evidence: source result007, independent
+review, integrated checks and archived prior PR description under `evidence/`.
+Context, this handoff and MANIFEST are metadata updates. Actual source bodies,
+individual offer facts, private cards and screenshots are not committed.
+
+Independent review reproduced/fixed generic source alias/field-role bypasses,
+event-membership/coherence gaps, a generic-correction-word false positive,
+query-bearing CLOB route acceptance and Python/JS ASCII/numeric/URL-bound parity.
+Known source pointers/transforms are strict; actual settlement quotes bind to
+primary market meaning. A lexical policy guard never establishes applicability.
+New integrity code uses explicit exceptions under `python -O`.
+
+```bash
+python3 -m unittest discover -s tests -p 'test*semantic*.py' -v
+python3 -O -m unittest discover -s tests -p 'test*semantic*.py' -v
+node --test --test-isolation=none web/tests/semantic-offer-review.test.mjs
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.gamma_semantic_review --prior-bundle .local-data/keyless-contract-006/originals --supplement .local-data/keyless-contract-007/originals --output .local-data/keyless-contract-007/preview-v2
+node scripts/render_semantic_offer_review.mjs .local-data/keyless-contract-007/preview-v2/contract.json .local-data/keyless-contract-007/preview-v2/standalone.html
+python3 -O web/tests/semantic-offer-browser.py .local-data/keyless-contract-007/preview-v2/standalone.html .local-data/keyless-contract-007/qa-v3
+python3 -m multisport_lab.publication --build-commit b8347b152e6e0bd07e18cba38d4e4fb93fd2f0d3 --output /tmp/nml-gamma007-public-artifact
+node web/tests/site-smoke.mjs /tmp/nml-gamma007-public-artifact
+sha256sum --check MANIFEST.sha256
+git diff --check
+```
+
+Final full Python: **670 tests / 344.352 s, PASS** on the nine frozen software/
+fixture pins. All **93 frontend tests** and demo passed. Focused **20 Python
+normal / 20 optimized / 7 frontend** passed; independent **14 Python and 7 JS**
+negative cases reject, with the synthetic complete price-free control passing.
+An earlier full **670 / 378.151 s** passed before the final ASCII-policy/URL guards;
+its log is preserved separately, without representing it as final-source proof.
+No frozen comparison or full-history diagnostic was run.
+
+Local public artifact build/smoke passed: six historical bundles/six grades,
+zero offers/qualified tickets, no selected private source facts/tokens. This is
+an offline artifact, not publication/deployment. Receipts:
+`evidence/verification/gamma007-independent-review-20261021.json` and
+`gamma007-integrated-checks-20261021.json`. Independent raw review SHA256:
+**f176fc0a86c5af70573d54ae38a1ff11a64bcced40940e0ec49fca23291efa5b**.
+At review all **396 parent tracked files** were byte-identical; only later allowed
+handoff/context/manifest metadata changes differ. All v1 software, **37 reviewed
+sources, 40 frozen research files and 19 ledger records / 1,817,800 bytes** remain
+unchanged. Final exact-head GitHub recovery and required CI are separately
+recorded in the PR description after push, not anticipated here.
+
+### Publication, operation and next concrete task
+
+Public main remains **411f904e4f9d577f97ca3a4ae6ba52fdb81ee130**, last verified
+Pages **39573648815**, six historical bundles/six historical grades. Genuine
+forecasts **0**, published offers **0**, prospective outcomes/grades **0**,
+qualified tickets **0**, financial settlements **0**. There is no merge,
+deployment, scheduler, activation, trading or comparative evaluation.
+PR #10/#12 stay draft, PROS004/S0 inactive. Operating source6777025, frozen
+producer/experiments, full-history protocol, expired pilot/PR #8, all categories,
+2–6-leg/scope/direction/smaller-ticket/NO_ACTION behavior, NFL and MLB are preserved.
+
+The next source task is the **specific applicable NBA correction rule** and its
+venue/product applicability, followed by actual affiliation/version evidence;
+keep Gamma partial if unavailable. No more event/price collection should be
+substituted for that rule. Public offer admission and durable private raw archival
+remain separate. Price-independent statistical-forecast preparation remains
+usable under its existing input/activation gates; missing offers/odds introduce
+no new forecast requirement. This package does not activate or issue that path.
+
 ## October 21 — final identity/selection clarification and remote recovery
 
 This forward documentation checkpoint follows **8b46608dcbab4b9487db6922b6aaf6ab3ddb2a35**;

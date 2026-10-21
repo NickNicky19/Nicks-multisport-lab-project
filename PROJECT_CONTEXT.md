@@ -2,6 +2,41 @@
 
 Updated: October 21, 2026.
 
+## Current checkpoint — exact-condition CLOB linkage and semantic offer v2
+
+KEYLESS-CONTRACT-007 implementation source is
+`b8347b152e6e0bd07e18cba38d4e4fb93fd2f0d3`, a forward addition to 9a7bdcb.
+Four authorized additional GETs (including one counted redirect/follow) verified
+the documented public no-auth CLOB operation and the exact retained condition's
+YES/NO token mapping. A separate API-specific personal/local source-use review
+preceded data access. No NBA correction/regrading rule was established by the
+Help landing page or CLOB parameters. The source remains **partial**; do not
+collect more events/prices as a substitute for applicable settlement meaning.
+
+New isolated `nba-local-semantic-offer-v2` supports external canonical-player
+identity and declared market/outcome selection with native IDs optional. Prices
+stay unassigned/PRICE_UNAVAILABLE. One actual retained record replays eight originals /
+31 bindings; four required gaps remain: player team/opponent, event version and
+NBA statistical corrections. Old 11:26 capture, new 12:39 knowledge and actual 12:50
+normalization clocks remain distinct; no earlier observation became complete.
+Existing v1 software and all original/frozen records remain unchanged.
+
+The private single-card preview is
+`.local-data/keyless-contract-007/preview-v2/standalone.html`. Provided-HTML-byte
+rendering passed 1440/390/320 with zero HTTP; managed file:// navigation was
+blocked and is explicitly unverified. Originals/sidecars/ledger/scope decision remain local;
+no durable remote raw archive or new encryption-key arrangement is claimed.
+Final required 670 Python / 93 frontend / demo and focused normal / -O checks passed.
+Details, exact commands/clocks/results and source limitations are in the latest
+handoff, docs/KEYLESS_CONTRACT_007.md and sanitized review receipts.
+
+Public six historical bundles/six grades are unchanged. Genuine forecasts,
+published offers, prospective outcomes/grades, qualified tickets and settlements
+remain zero. PR #10/#12 remain draft; PROS004/S0 inactive. No merge, deployment,
+activation, scheduler, trading, model comparison or full-history diagnostic.
+Missing offers/prices do not gate otherwise valid statistical forecasts; their
+existing genuine-input/activation safeguards and operating source6777025 remain.
+
 ## Current checkpoint — actual keyless NBA observations and local review
 
 KEYLESS-CONTRACT-006 source is `730f4ea58c7e3c3a08eb44d8d7f33d6f5108d501`.
