@@ -2,6 +2,18 @@
 
 Updated: October 21, 2026.
 
+## Current alternate-source result — real schedule/cohort verification passed
+
+The bounded SportsDataverse sample now verifies 1,206 schedule rows, 517 roster
+rows, the registered upcoming event and all four preselected player/team
+identities, with matching publisher-file hashes and separate local replay.
+This ESPN-derived public-release route required no provider key/signup/payment.
+Its daily content was about twelve hours old when downloaded; no operational
+freshness, genuine input or forecast is claimed. The next task is a source-specific
+normalizer and explicit daily-source plan/freshness version. Preserve the original
+OPS002 reservation and all inactive guards. Exact evidence is in the newest
+handoff and `evidence/data/2026-10-21-sdv-current-input-audit.json`.
+
 ## Current source choice — inspect public SportsDataverse releases next
 
 The October 21 bounded Covers/alternative check found Covers' public-product

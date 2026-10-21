@@ -2,6 +2,46 @@
 
 Updated: October 21, 2026 (UTC).
 
+## October 21 — actual alternate-source schedule and cohort audit passed
+
+Following the Covers decision, the owner inspected one SportsDataverse schedule
+and roster CSV under the scoped publisher-CC-BY release basis. **Five sample
+GETs of a six-request ceiling**, including two counted GitHub 302 responses and
+their manual follows, produced one release-metadata body and two CSV bodies.
+Combined with the preceding four-document check: **nine GETs / 3,425,016 bytes**,
+zero retries/rejections, unchanged 2-MiB per-response ceiling. No provider key,
+signup, payment, private endpoint, sportsbook request or new source was added.
+
+Actual schedule: **1,206 rows / 1,206 unique event IDs**. Actual roster: **517 rows /
+517 unique player IDs**. The selected event matches the registered ID, start,
+teams and scheduled status. All four fixed player IDs/names/team assignments
+match; the original two-lowest-numeric-active-IDs-per-team rule independently
+reproduces that cohort. Active roster status is not an appearance guarantee.
+Both CSV sizes/SHA256 match GitHub's separately retrieved publisher metadata.
+An explicit-exception offline audit passed under `python -O`, followed by a
+separate-process replay from a fresh local directory with identical semantic
+results. This is actual-source row verification, not a synthetic forecast test.
+
+The CSV observations were **23:12:58.588035** and **23:13:10.246987 UTC**. Publisher
+file ages were **42,123.588035** and **42,075.246987 seconds**. The documented update
+cadence is daily. Do not promote a new download into a newer publisher update,
+claim T90-live inputs or bind these preparations to the existing OPS002 cycle.
+No provider event revision was inferred from these different source files.
+
+The concrete next implementation task is a small CSV-to-shared-input normalizer
+and a separately reviewed daily-source input/plan version, including explicit
+publisher-age/freshness semantics. Preserve unchanged R0/K0 laws, the full fixed
+history, original OPS002 reservation/windows and current operating-key safeguards.
+Missing offers/prices are not prerequisites. Current source observation is still
+preparation: no activation, issuance, public website output, outcome or grade.
+
+Exact source clocks, request inventory, hashes, audit-code hash and replay facts:
+`evidence/data/2026-10-21-sdv-current-input-audit.json`. Original bytes, ledger,
+scope decision and audit helper are locally retained under
+`.local-data/sdv-input-audit-20261021/originals/`; remote durable raw recovery is
+unverified. No application code/model changed or frozen evaluation/diagnostic
+was rerun. PR #10/#12 and all inactive/project boundaries remain unchanged.
+
 ## October 21 — Covers assessed; alternate forecast-input route identified
 
 At clean integration HEAD **00ed62a341ead7693c6d62bd162c42a7630c3313**, Nick asked

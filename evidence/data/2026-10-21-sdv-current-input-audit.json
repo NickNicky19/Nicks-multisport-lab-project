@@ -1,0 +1,270 @@
+{
+  "hash_format": "sha256-canonical-decoded-json-v1",
+  "payload": {
+    "assets": {
+      "roster": {
+        "asset": "rosters_2027.csv",
+        "bytes": 222565,
+        "observed_at": "2026-10-21T23:13:10.246987Z",
+        "publisher_age_seconds_at_download": 42075.246987,
+        "publisher_asset_updated_at": "2026-10-21T11:31:55Z",
+        "sha256": "d89bad22d5dc9ebc3b2b78ecf4a90a9f2166c4eff4df9ad90ed98af586e1d7e3",
+        "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_rosters/rosters_2027.csv"
+      },
+      "schedule": {
+        "asset": "nba_schedule_2027.csv",
+        "bytes": 2079131,
+        "observed_at": "2026-10-21T23:12:58.588035Z",
+        "publisher_age_seconds_at_download": 42123.588035,
+        "publisher_asset_updated_at": "2026-10-21T11:30:55Z",
+        "sha256": "51f9024f57871019b07d10349d62817caa55a6a4e8180db9b8822b2ba42ff7e5",
+        "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_schedules/nba_schedule_2027.csv"
+      }
+    },
+    "audit": {
+      "all_four_registered_ids_names_teams_match": true,
+      "audit_script_sha256": "e2dba2089c04e48810d8422902c9c1ddd4a3294feff9138ee5978272fbb788a1",
+      "original_plan_changed": false,
+      "original_plan_id": "41b219cb141824131166b0b50a5f08d5942a56bf63c8670a2143b2cad8a57410",
+      "original_two_lowest_numeric_active_ids_per_team_rule_reproduced": true,
+      "public_individual_source_rows": false,
+      "roster_active_does_not_guarantee_appearance": true,
+      "roster_rows": 517,
+      "schedule_rows": 1206,
+      "selected_event_matches_registered_event_start_status_and_teams": true,
+      "source_revision": "Whole-file CSV digests; no provider event revision inferred.",
+      "unique_event_ids": 1206,
+      "unique_player_ids": 517
+    },
+    "basis": "Publisher-labelled CC BY4.0 public data releases, scoped prior source-use decision retained; attribution/modification notice required. No software-license inference or blanket direct-ESPN clearance claim.",
+    "boundaries": {
+      "NFL_MLB_untouched": true,
+      "PR10_PR12_draft_unchanged": true,
+      "PROS004_S0_inactive": true,
+      "all_13_categories_plus_PA_retained": true,
+      "new_signups_provider_keys_paid_services": false,
+      "no_scheduler_issuance_publication_or_deployment": true,
+      "old_OPS002_not_rebound_or_activated": true,
+      "private_operating_key_arrangement_changed": false
+    },
+    "freshness": {
+      "actual_download_clocks_preserved": true,
+      "documented_cadence": "Daily, late Oct-mid Jul",
+      "metadata_observation_or_download_does_not_refresh_publisher_content": true,
+      "operational_freshness_admitted": false,
+      "publisher_asset_age_at_download_seconds": {
+        "roster": 42075.246987,
+        "schedule": 42123.588035
+      },
+      "required_followup": "Register explicit daily-source age/update limitations, input/normalizer/plan version and complete reviewed operating path; do not assign old ESPN event version or weaken old gates."
+    },
+    "local_recovery": {
+      "create_only_copy_readback": true,
+      "explicit_integrity_exceptions": true,
+      "originals_path": ".local-data/sdv-input-audit-20261021/originals",
+      "remote_durable_raw_archive_verified": false,
+      "replay_changes_only_verification_clock": true,
+      "separate_process_fresh_directory_replay_under_python_O": true,
+      "witnesses": [
+        {
+          "bytes": 2550,
+          "name": "get_once.py",
+          "sha256": "f9e45afa57837320aca1a81ecb3023efd22978360e4df2119df15ca2e9a1ef35"
+        },
+        {
+          "bytes": 576,
+          "name": "source-use-decision.json",
+          "sha256": "999af4e603b4be46ba295fde535deac631324b16d31b970a885d9e9912b10a84"
+        },
+        {
+          "bytes": 7205,
+          "name": "requests.json",
+          "sha256": "f029f1eeaf7f23586888d07efa4b51892ae408a56f89d8bb6cf4d9db61f6e665"
+        },
+        {
+          "bytes": 5689,
+          "name": "audit.py",
+          "sha256": "e2dba2089c04e48810d8422902c9c1ddd4a3294feff9138ee5978272fbb788a1"
+        },
+        {
+          "bytes": 2958,
+          "name": "audit-result.json",
+          "sha256": "123f43fe6d4f9a434b86922ee6e0f10b8f537b0519de7231ba34106ab7b58b42"
+        },
+        {
+          "bytes": 30610,
+          "name": "request-01.body",
+          "sha256": "b411961670fabcc5f36a6bcac5a5a434c763aeed94e3d6c2a8443358616fee88"
+        },
+        {
+          "bytes": 0,
+          "name": "request-02.body",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "bytes": 2079131,
+          "name": "request-03.body",
+          "sha256": "51f9024f57871019b07d10349d62817caa55a6a4e8180db9b8822b2ba42ff7e5"
+        },
+        {
+          "bytes": 0,
+          "name": "request-04.body",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "bytes": 222565,
+          "name": "request-05.body",
+          "sha256": "d89bad22d5dc9ebc3b2b78ecf4a90a9f2166c4eff4df9ad90ed98af586e1d7e3"
+        },
+        {
+          "bytes": 183832,
+          "name": "schedule-release-metadata.json",
+          "sha256": "eed78f4efad1648d2438b535d00eed6cf04cfa6300ef06492470d9bf1d471717"
+        }
+      ]
+    },
+    "mode": "PREPARATION_SOURCE_FEASIBILITY_NOT_ISSUANCE",
+    "next_concrete_task": "Implement/review the small source-specific CSV-to-shared-input normalizer and a separately versioned daily-source proposal using these exact source-byte identities. Preserve unchanged R0/K0 laws, full history and existing inactive reservation.",
+    "publisher": "SportsDataverse",
+    "recorded_at": "2026-10-21T23:16:02.351718Z",
+    "request_budget": {
+      "actual_sample_gets": 5,
+      "approval_rejections": 0,
+      "automatic_retries": 0,
+      "combined_documentation_and_sample_gets": 9,
+      "combined_response_bytes": 3425016,
+      "max_sample_gets": 6,
+      "per_response_limit_bytes": 2097152,
+      "sample_asset_body_responses": 2,
+      "sample_metadata_responses": 1,
+      "sample_redirect_responses_counted": 2,
+      "sample_response_bytes": 2332306
+    },
+    "requests": [
+      {
+        "automatic_redirects": false,
+        "automatic_retries": 0,
+        "bytes": 30610,
+        "content_type": "application/json; charset=utf-8",
+        "etag": "\"833c1a21a2e8425b02f5f0a84ddf7ed56a3f1d5fc0655d2ce741c54bf4f2c44a\"",
+        "kind": "PUBLISHER_RELEASE_INPUT_SAMPLE",
+        "last_modified": "Wed, 21 Oct 2026 11:32:07 GMT",
+        "location": null,
+        "observed_at": "2026-10-21T23:12:29.028927Z",
+        "request_number": 1,
+        "request_started_at": "2026-10-21T23:12:28.552856Z",
+        "response_limit_bytes": 2097152,
+        "sha256": "b411961670fabcc5f36a6bcac5a5a434c763aeed94e3d6c2a8443358616fee88",
+        "status": 200,
+        "url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/espn_nba_rosters"
+      },
+      {
+        "automatic_redirects": false,
+        "automatic_retries": 0,
+        "bytes": 0,
+        "content_type": "text/html; charset=utf-8",
+        "etag": null,
+        "kind": "PUBLISHER_RELEASE_INPUT_SAMPLE",
+        "last_modified": null,
+        "location": {
+          "host": "release-assets.githubusercontent.com",
+          "path": "/github-production-release-asset/609614414/55f12439-1f9f-4a36-bd5c-b7431fa5de8f",
+          "query_sha256": "944e8c55b247a38ad7b6a5b35171536b032497ddf5c70ee23a7190010286324c",
+          "scheme": "https",
+          "signed_public_asset_query_not_published": true
+        },
+        "observed_at": "2026-10-21T23:12:50.796215Z",
+        "request_number": 2,
+        "request_started_at": "2026-10-21T23:12:50.556310Z",
+        "response_limit_bytes": 2097152,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": 302,
+        "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_schedules/nba_schedule_2027.csv"
+      },
+      {
+        "automatic_redirects": false,
+        "automatic_retries": 0,
+        "bytes": 2079131,
+        "content_type": "application/octet-stream",
+        "etag": "\"0x8DF2F66C4F096AD\"",
+        "kind": "PUBLISHER_RELEASE_INPUT_SAMPLE",
+        "last_modified": "Wed, 21 Oct 2026 11:30:54 GMT",
+        "location": null,
+        "observed_at": "2026-10-21T23:12:58.588035Z",
+        "request_number": 3,
+        "request_started_at": "2026-10-21T23:12:58.410993Z",
+        "response_limit_bytes": 2097152,
+        "sha256": "51f9024f57871019b07d10349d62817caa55a6a4e8180db9b8822b2ba42ff7e5",
+        "status": 200,
+        "url": {
+          "host": "release-assets.githubusercontent.com",
+          "path": "/github-production-release-asset/609614414/55f12439-1f9f-4a36-bd5c-b7431fa5de8f",
+          "query_sha256": "944e8c55b247a38ad7b6a5b35171536b032497ddf5c70ee23a7190010286324c",
+          "scheme": "https",
+          "signed_public_asset_query_not_published": true
+        }
+      },
+      {
+        "automatic_redirects": false,
+        "automatic_retries": 0,
+        "bytes": 0,
+        "content_type": "text/html; charset=utf-8",
+        "etag": null,
+        "kind": "PUBLISHER_RELEASE_INPUT_SAMPLE",
+        "last_modified": null,
+        "location": {
+          "host": "release-assets.githubusercontent.com",
+          "path": "/github-production-release-asset/609614414/deda17d5-d17d-4a02-aa1c-3683320fc9ee",
+          "query_sha256": "e28884f2f64b5f1824a60acdb0d469a3d2f2add7f5333daa751fb780a2ef4c48",
+          "scheme": "https",
+          "signed_public_asset_query_not_published": true
+        },
+        "observed_at": "2026-10-21T23:13:03.823296Z",
+        "request_number": 4,
+        "request_started_at": "2026-10-21T23:13:03.567946Z",
+        "response_limit_bytes": 2097152,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": 302,
+        "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_rosters/rosters_2027.csv"
+      },
+      {
+        "automatic_redirects": false,
+        "automatic_retries": 0,
+        "bytes": 222565,
+        "content_type": "application/octet-stream",
+        "etag": "\"0x8DF2F66E8A0AB8E\"",
+        "kind": "PUBLISHER_RELEASE_INPUT_SAMPLE",
+        "last_modified": "Wed, 21 Oct 2026 11:31:54 GMT",
+        "location": null,
+        "observed_at": "2026-10-21T23:13:10.246987Z",
+        "request_number": 5,
+        "request_started_at": "2026-10-21T23:13:10.101766Z",
+        "response_limit_bytes": 2097152,
+        "sha256": "d89bad22d5dc9ebc3b2b78ecf4a90a9f2166c4eff4df9ad90ed98af586e1d7e3",
+        "status": 200,
+        "url": {
+          "host": "release-assets.githubusercontent.com",
+          "path": "/github-production-release-asset/609614414/deda17d5-d17d-4a02-aa1c-3683320fc9ee",
+          "query_sha256": "e28884f2f64b5f1824a60acdb0d469a3d2f2add7f5333daa751fb780a2ef4c48",
+          "scheme": "https",
+          "signed_public_asset_query_not_published": true
+        }
+      }
+    ],
+    "schema_version": "sdv-current-input-source-evidence-v1",
+    "separate_counts": {
+      "actual_player_offers": 0,
+      "financial_settlements": 0,
+      "genuine_forecasts": 0,
+      "model_runs": 0,
+      "prospective_outcomes_or_grades": 0,
+      "published_offers": 0,
+      "qualified_tickets": 0
+    },
+    "source_choice_checkpoint": "44e1434d0fd1b0ee9db8c23e4b3c31f9a8de1b84",
+    "status": "BOUNDED_ACTUAL_SOURCE_ROW_AUDIT_PASS_NOT_OPERATIONAL_INPUT",
+    "upstream_lineage": "ESPN NBA via hoopR-nba-raw and hoopR-nba-data; alternative publisher/download route, not independent upstream."
+  },
+  "payload_sha256": "b94896d7c288a4167f56270719bfd7dfcc8413fb1ca51e76552e98a369ebc96c",
+  "schema_version": "decoded-json-receipt-v1"
+}
