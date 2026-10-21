@@ -15,6 +15,13 @@ Earlier observations, failures, source pins and original receipts below remain
 unchanged. No activation, scheduler, genuine capture, issuance, merge or deployment
 has occurred.
 
+The independent final metadata review found one ambiguous current-source sentence
+in PROJECT_CONTEXT.md that still named source C. It now explicitly names E as the
+current producer and C as the prior failed source. This documentation correction
+changes no executed source, measurement or record. Exact checkpoint commits are
+`47e8d34a3b60a5ebc2ad8ed133bae3e652606ec4` plus the following documentation-only
+clarification; resolve branch HEAD for the final review commit.
+
 **Software correctness.** Source E GitHub CI run **39536260329** passed; build
 03:01:30–03:06:41 UTC, diagnostic/deploy skipped. Required local commands against
 the same source passed: `python3 -m unittest discover -s tests -v` **555 tests**

@@ -28,13 +28,14 @@ The named-game plan fixes Denver at Oklahoma City, ESPN 401909094, start
 Preparation identities were cross-checked before forecasts/outcomes. Actual
 capture would be October 22, 23:40–23:50 UTC and generation/persistence
 October 23, 00:00–00:05 UTC. Preparation bytes are not timely future inputs.
-Genuine writes remain hard disabled. Exact source
-`c535c7851382eb3d7a8701229bc4dd7094086c70` is in draft PR #12, stacked on PR #10.
-The later paired hosted diagnostic39536525048 retained/replayed all eight
+Genuine writes remain hard disabled. The current exact producer source is
+`06dbb492dda5d0043ec7a3a6c97ce9c46201edc8` in draft PR #12, stacked on PR #10.
+Its paired hosted diagnostic 39536525048 retained and replayed all eight
 synthetic originals, with all eight timely after independent optimized recovery.
-Final required readback completed atT90+289.817868; max individual66.372487s.
-This is one software timing run with only10.182132s global margin. The earlier
-failed source-C diagnostic39533281196 remains unchanged/seven timely. Source
+Final required readback completed at T90+289.817868; maximum individual latency
+was 66.372487s. This is one software timing run with only 10.182132s global
+margin. Previous source C, `c535c7851382eb3d7a8701229bc4dd7094086c70`, and its
+failed diagnostic 39533281196 remain unchanged with seven timely originals. Source
 admission, installed primary private raw/key retention, actual four-input linkage,
 genuine destination/entrypoint and reviewed activation remain unmet. No scheduler
 is installed and no genuine future forecast has been issued.
