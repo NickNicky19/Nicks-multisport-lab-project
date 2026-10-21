@@ -1,0 +1,211 @@
+{
+  "actual_completed_at": "2026-10-21T09:13:45.025731Z",
+  "base_commit": "714630dd2b99e04ac5574d5c56f7cadbd934c126",
+  "frozen_original_producer_files": {
+    "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+    "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+    "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+    "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2",
+    "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+    "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+    "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+    "multisport_lab/prospective.py": "d7094982dd1c186b2fe17b5e2992ed97a730e4ef369581679fa43fe1649bc1b5",
+    "scripts/prepare_nba_panel.py": "d0864c3d399768624e25b3c278d0a3238653d422ed2a87c3c25fcea2dad2038e"
+  },
+  "frozen_research_and_old_diagnostic_paths_unchanged": [
+    "docs/NBA_PROSPECTIVE_004.md",
+    "evidence/operational/hosted-diagnostic-39533281196.json",
+    "evidence/research/2026-10-20-followup-remote-check.json",
+    "evidence/research/2026-10-20-outcome-independent-check.json",
+    "evidence/research/2026-10-20-pregame-cycle-checkpoint.json",
+    "evidence/research/2026-10-20-remote-ledger.json",
+    "evidence/research/2026-10-21-checkpoint-profile.json",
+    "evidence/research/2026-10-21-checkpoint-profile.py",
+    "evidence/research/2026-10-21-checkpoint-transport-profile.json",
+    "evidence/research/2026-10-21-checkpoint-transport-profile.py",
+    "evidence/research/dev002-inventory.json",
+    "evidence/research/dev002-protocol.json",
+    "evidence/research/dev002-results.json",
+    "evidence/research/dev003-inventory.json",
+    "evidence/research/dev003-protocol.json",
+    "evidence/research/dev003-results.json",
+    "evidence/research/pros004-actual-github-checkpoint-20261020-v2.json",
+    "evidence/research/pros004-github-idempotent-restart-v3.json",
+    "evidence/research/pros004-github-idempotent-restart-v4.json",
+    "evidence/research/pros004-readiness-attempt-01.json",
+    "evidence/research/pros004-readiness-attempt-02.json",
+    "evidence/research/pros004-readiness-delivery-checkpoint.json",
+    "evidence/research/pros004-readiness-full-pmf-size.json",
+    "evidence/research/pros004-readiness-independent-size-stress.json",
+    "evidence/research/pros004-readiness-independent-verification.json",
+    "evidence/research/pros004-readiness-lineage.json",
+    "evidence/research/pros004-readiness-measurement-v2.json",
+    "evidence/research/pros004-readiness-measurement-v3.json",
+    "evidence/research/pros004-readiness-measurement-v4.json",
+    "evidence/research/pros004-readiness-measurement.json",
+    "evidence/research/pros004-readiness-pin-preflight-rejection.json",
+    "evidence/research/pros004-readiness-size-stress.py",
+    "evidence/research/pros004-readiness-source-readback-commands.json",
+    "evidence/research/pros004-readiness-source-recovery.json",
+    "evidence/research/pros004-transport-load-20261020-v1.json",
+    "evidence/research/pros004-transport-load-20261020-v2.json",
+    "evidence/research/prospective004-protocol.json",
+    "evidence/research/r0-pilot.json",
+    "evidence/research/r0-protocol.json",
+    "evidence/research/reference-publication-002.json"
+  ],
+  "limitations": [
+    "This is source/software verification, not source-use admission, real operational key/backup recovery, hosted delivery timing or activation.",
+    "Exact new committed remote source readback remains pending root source commit/push."
+  ],
+  "optimized_checks": {
+    "command_description": "python3 -O unittest explicit19-test suite:10 keyproof + strictcert/rawidentity/bindingclock/deliveryrestart/activation/admission checks",
+    "count": 19,
+    "log_bytes": 3849,
+    "log_path": "/tmp/nml-independent-focused-review.log",
+    "log_sha256": "2a4d3c5f5cd810cf01114502a9df508a54e6afccf8059cbe91820537b6c4d762",
+    "result": "PASS",
+    "wall_seconds_reported": 6.952
+  },
+  "original_record_bytes": 1817800,
+  "original_record_count": 19,
+  "original_records": {
+    "records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json": {
+      "bytes": 22838,
+      "sha256": "499b358129adde25134d5ba6243b372b1937915f7a0f2245750a057d40c4b8c6"
+    },
+    "records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json": {
+      "bytes": 22747,
+      "sha256": "507344a333f5218039e39b1201e1f203f6045bf8e04375a7a19740ddea337967"
+    },
+    "records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json": {
+      "bytes": 22813,
+      "sha256": "e35af6116e8151aacb23d21465c2744324501a92d0f83cf7e780066677df74fa"
+    },
+    "records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json": {
+      "bytes": 22815,
+      "sha256": "1748dce54d24cc583deb3e102d08680142307c3c784ddfc728abc02f78e82f0f"
+    },
+    "records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json": {
+      "bytes": 22826,
+      "sha256": "d74070a12aa144b4bc917de930e6527f4bd5bdeb84db693a215bec1513562f7b"
+    },
+    "records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json": {
+      "bytes": 22830,
+      "sha256": "bf3aa0b6fab62f64a03070fc6775db1bec8b0654e89ae93b3c42133e94649894"
+    },
+    "records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json": {
+      "bytes": 4375,
+      "sha256": "cf519c4238f641724d81040f8cdee82b693aa3f98e4ae8db772fbadc480fd6a0"
+    },
+    "records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json": {
+      "bytes": 4357,
+      "sha256": "73b72a5ed145708157052c269d25c0dd72467a002e26efac41e1136839fa0f60"
+    },
+    "records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json": {
+      "bytes": 4365,
+      "sha256": "c691398d641af291bcd3c2a9d7427ff59ab953606ee9388bc2c202642d80947c"
+    },
+    "records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json": {
+      "bytes": 4370,
+      "sha256": "41e3453b89b97c160d56e932f1389ac90b451142dcda3cff27629b1448bc77dd"
+    },
+    "records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json": {
+      "bytes": 4369,
+      "sha256": "1297f91dc9154d2b6111e60a1505f4a08e911dd3c99b919431833df76dbe40b5"
+    },
+    "records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json": {
+      "bytes": 4368,
+      "sha256": "2a343e191af2f809baf91ab4d6f9de8d09f593c9f6b088d9740238982107237b"
+    },
+    "records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json": {
+      "bytes": 2023,
+      "sha256": "a9474a89403e3aa87f44adb014eee6e10b09761002e5a4deabc198022ea88ce3"
+    },
+    "records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json": {
+      "bytes": 2018,
+      "sha256": "c9938334da0fbfb3032558df23d5e69588fdf6ca7f0b9eb562fb271c090ef93e"
+    },
+    "records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json": {
+      "bytes": 2019,
+      "sha256": "e94d071bf65e5f4815400a0e334b81529d6fd71147fb467584fc0aa1bb7e4f9c"
+    },
+    "records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json": {
+      "bytes": 2018,
+      "sha256": "74bd3778ce79875bb6f238cabda878ab88789df928b3b7804494c3e94f346b54"
+    },
+    "records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json": {
+      "bytes": 2018,
+      "sha256": "f4787faceff42cc52a2c446b03fc6ee7b8b2103643dff937b411193c75994bc5"
+    },
+    "records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json": {
+      "bytes": 2021,
+      "sha256": "1332e892946d072d1500bdd693a877cbefb1ee54b51c3eb657e3c7af6393ee63"
+    },
+    "records/research_inputs/dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc.json": {
+      "bytes": 1642610,
+      "sha256": "db9a682099e28ce087edf430e9aa52f9be8e060ebf4b4cf8deb53d1317c8b122"
+    }
+  },
+  "reviewed_worktree_head": "714630dd2b99e04ac5574d5c56f7cadbd934c126",
+  "schema_version": "nba-ops002-independent-forward-source-review-v1",
+  "scope": {
+    "full_history_or_statistical_comparisons_executed": 0,
+    "genuine_issuance": 0,
+    "operational_keys_generated_or_read": 0,
+    "provider_requests": 0,
+    "schedulers_or_workflows_changed": 0,
+    "source_edits": 0,
+    "writes": "/tmp review/log only"
+  },
+  "source_and_contract_findings": {
+    "admission_authority": "successful reference consistency remains NOT_ACTIVATED; all real authority/rights/host/key/timing flags false",
+    "binding_receipt_chronology": "explicit check against all five original references",
+    "capture_manifest_identity": "both standalone raw recovery and delivery reject filename/body mismatches",
+    "certificate_content": "strict single public certificate; standalone PEM LF/CRLF/whitespace and DER compatibility retained",
+    "genuine_writer": "hard activation guard rejects before file/transport operations",
+    "key_recovery": "pinned no-follow descriptors; distinct owner-only originals/restores outside Git; public canary; only safe fingerprints/clocks",
+    "new_verifier_assert_statements": 0,
+    "remaining_verified_defects": []
+  },
+  "source_file_sha256": {
+    "docs/OPS002_KEY_RECOVERY.md": "ceaca1d7e90ef2c515863246af1a217161bc065b5a2feafbfca13f1981b50025",
+    "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+    "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+    "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+    "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+    "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+    "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2",
+    "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+    "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+    "multisport_lab/offer_publication.py": "43a6f8d4afecf27a0bc2984cc7df08144a9d6cd327c0ea3e325e29cfb43e7e52",
+    "multisport_lab/operating_diagnostic.py": "b4ac0d0a1cd29e4dd24f6095feb2b67ff4733ac83f75953d553fefcd39482df0",
+    "multisport_lab/operational_admission.py": "99a6632d7b80f58011f200a90b87d921d8b783b0b67d3d03520601c56c62a1e0",
+    "multisport_lab/operational_delivery.py": "5521b73b145727875d6eef157f855675fbff62990bd68d6df8e465001a186fa2",
+    "multisport_lab/operational_key_recovery.py": "660bdd14b172a45ae62ee235c6d2739fbafb700af64fb9df8973cfe3c59aa72f",
+    "multisport_lab/operational_pilot.py": "b9c5092b7d64bd9cdadf08a47a765ef49d11d8c95d532b60083204d9c8122f80",
+    "multisport_lab/operational_preflight.py": "f306b7484da27f86b0a89f5349c839fe3b44a6c0d08d2df22eb04d9b63a37e47",
+    "multisport_lab/operational_publication.py": "106faec29a1550e70121ec2f37d47ef352a65493c41bb914d4677d9e1838830c",
+    "multisport_lab/operational_raw.py": "9aedabba3fceba39aad76ea3a44659853c08e668a31f0f575245d94dae529b17",
+    "multisport_lab/operational_remote.py": "9aa46a9d82deeaecd3521d6bb22b973eee9db64ee4c9fc3029847dba55467f77",
+    "multisport_lab/operational_source_links.py": "f16f91ed34267fb1f1a82bcd26ac0712cda25709bdb34c4b9c932135c6c4e7a7",
+    "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+    "multisport_lab/pros004_completion.py": "444e339740c687604d6e591b87600bda08fe16550aa23f63d2daf6a5cdcd5719",
+    "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+    "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+    "multisport_lab/pros004_publication.py": "9370338133e0dcfe53d9782f7ec87755551bacc9444786911d7bebba6e03dcce",
+    "multisport_lab/pros004_records.py": "fe17065cddc534cca6bfe8812594c008ceba586933f1cf9d4fc9391f044f0e86",
+    "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+    "multisport_lab/pros004_snapshot.py": "743ba0ac4721ccc17ac3113b8348a57d08f5e6696805bba201ef61a247d108bc",
+    "multisport_lab/prospective_outcomes.py": "8d22da881bcae0e0e213e314f0181bc727edd4116361fa2b7413f01f154919bf",
+    "multisport_lab/publication_ledger.py": "3d88f0581568693d3c6fbdd600e0e8d248e7a0f315c7e2b19c6c207335108c8d",
+    "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+    "multisport_lab/source_evidence.py": "464df6b8866bb69dd3bc32503bc5740448847ec2f17cf4032a845226943b2c6b",
+    "scripts/verify_pros004_readiness.py": "71bfbd8d8c1d749103902aef87e2efcc75f6f7667a55324f3b5995605d99182b",
+    "tests/test_operational_delivery.py": "80001d74f679ae7f0c706a5fe60e98b90d418189694777d98017ef306d6db86c",
+    "tests/test_operational_key_recovery.py": "1161ade34805ac7d1102ed14ff0e487e389a5d0231ad7af40d9757363a2543db",
+    "tests/test_operational_raw.py": "7018e5968a0753698868967acc1b25c8de5a424f86f5aac8b2c5c070ddebdc3b",
+    "tests/test_operational_source_links.py": "0cf4c5f58fe9aa6a3bacfe76a63e3fd0ac5a7e59993a1f298098cbc2c50dc47f"
+  },
+  "status": "PASS_SOURCE_REVIEW_PENDING_COMMITTED_READBACK"
+}

@@ -173,25 +173,6 @@ class GitCheckpointWriter:
         return {"repository": REPOSITORY, "branch": self.branch, "local_head": self._head,
                 "remote_head": remote, "genuine_issuance": 0, "activation": False}
 
-    @staticmethod
-    def _entries(manifest):
-        return {entry["path"]:entry for entry in manifest["entries"]}
-
-    def _preserve_originals(self, source_manifest):
-        if not (self.root/"records").exists():
-            return
-        retained = snapshots.snapshot_manifest(self.root)
-        current = self._entries(source_manifest)
-        for path, entry in self._entries(retained).items():
-            _require(path in current, "checkpoint source is missing a retained remote original")
-            if entry.get("entry_type") == "COMPLETION_JOURNAL" or path.endswith("completion-journal.jsonl"):
-                old = (self.root/path).read_bytes()
-                _require((self.source_root/path).read_bytes().startswith(old),
-                         "completion journal cannot truncate or replace an acknowledged prefix")
-            else:
-                _require(entry["raw_sha256"] == current[path]["raw_sha256"],
-                         "checkpoint would replace a retained original receipt")
-
     def _readback(self, expected, manifest, reference):
         """Fresh Git initialization/fetch; no shared local object store or cache."""
         with tempfile.TemporaryDirectory(prefix="nml-pros004-independent-checkpoint-") as folder:
@@ -230,13 +211,17 @@ class GitCheckpointWriter:
                              "another writer advanced remote state")
                 with tempfile.TemporaryDirectory(prefix="nml-pros004-checkpoint-export-") as folder:
                     snapshot_root = Path(folder)/"snapshot"
-                    manifest = snapshots.export_snapshot(self.source_root, snapshot_root)
+                    # One full source pass, then single-operation exact local
+                    # copies. The independent fetched tree below always gets a
+                    # second full strict typed pass, never a transferred proof.
+                    transfer = snapshots._begin_exact_transfer(self.source_root)
+                    manifest = transfer.export(snapshot_root)
                     source_path = self.source_root/"records"/reference.kind/(reference.record_id+".json")
                     _require(source_path.is_file() and not source_path.is_symlink(),
                              "checkpoint reference is missing from the retained source")
                     _require(digest(read_receipt(source_path, max_bytes=4*1024*1024)) == reference.payload_sha256,
                              "checkpoint reference differs from retained source bytes")
-                    self._preserve_originals(manifest)
+                    transfer.preserve_writer(self.root)
                     for entry in manifest["entries"]:
                         path = self.root/entry["path"]
                         path.parent.mkdir(parents=True, exist_ok=True)
@@ -246,7 +231,7 @@ class GitCheckpointWriter:
                             continue
                         with path.open("wb") as handle:
                             handle.write(raw);handle.flush();os.fsync(handle.fileno())
-                    _require(snapshots.snapshot_manifest(self.root) == manifest,
+                    _require(transfer.verify_writer(self.root) == manifest,
                              "writer snapshot did not preserve the admitted source")
                     self._git("add", "--", *[entry["path"] for entry in manifest["entries"]])
                     if self._git("diff", "--cached", "--quiet", check=False).returncode:

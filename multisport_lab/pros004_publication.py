@@ -251,7 +251,9 @@ def validate_grade_projection(row, forecasts, *, now):
 def collect_public_records(root: Path, *, now):
     """Read all strict originals; never generate, score an aggregate or activate."""
     from .pros004_records import Pros004Store
+    from .publication_ledger import CompositeEnvelopeLedger
     store = Pros004Store(root)
+    store.ledger = CompositeEnvelopeLedger(root)
     index, _ = store._inventory()
     corrections = store.ledger._correction_map(index)
     forecasts = []

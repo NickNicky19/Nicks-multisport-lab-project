@@ -1,0 +1,511 @@
+{
+  "hash_format": "sha256-canonical-decoded-json-v1",
+  "payload": {
+    "boundaries": {
+      "NFL_MLB_untouched": true,
+      "PROS004_inactive": true,
+      "S0_inactive": true,
+      "activation": false,
+      "deployed": false,
+      "financial_settlement": "NOT_EVALUATED",
+      "frozen_experiments_unchanged": true,
+      "genuine_issuance": 0,
+      "live_source_captures": 0,
+      "merged": false,
+      "original_expired_pilot_unchanged": true,
+      "qualification": "UNAVAILABLE",
+      "qualified_tickets": 0,
+      "scheduler_armed": false,
+      "statistical_evaluation": 0,
+      "workflow_dispatched_or_rerun_by_reviewer": false
+    },
+    "bounded_performance_finding": {
+      "causal_limit": "Telemetry combines local strict semantic validation, preservation checks, fresh typed readback and Git transfer in each operation. It does not separately time these inner steps and does not establish network latency as the sole cause.",
+      "next_task": "Separately instrument and profile source validation, retained-writer validation, semantic graph/reference scans, byte/hash inventory, Git push/fresh-fetch and fetched typed validation. Improve repeated immutable-prefix work or transfer only while preserving full typed/hash/clock checks and an independent exact-byte readback. Any source revision requires a new exact-source review and separately authorized diagnostic; do not rerun or retime this preserved failed diagnostic.",
+      "observations": "Input checkpoint completed in 23.417549s. Generation phase began at T90+5s; cohort including last independent retention consumed338.647366s, beyond the global300s. Eight originals survive but only seven are admission-eligible. Paired mathematical generation/verification is44.329389s; nineteen typed snapshot/transport operations consume300.380874s wall and243.910460s CPU; total process358.121491s CPU versus417.165566s wall. Memory238188KiB stays below524288KiB, and total wall stays below900s, but those do not override issuance gates.",
+      "severity": "BLOCKING_OPERATING_READINESS"
+    },
+    "capacity": {
+      "actual_encoded_bytes": 2123201,
+      "actual_files": 41,
+      "capacity_pass_is_not_timing_pass": true,
+      "global_limits_unchanged": true,
+      "planned_combined_bytes": 4627656,
+      "planned_combined_files": 115
+    },
+    "completion_metadata": {
+      "encoded_bytes": 32463,
+      "entries": 29,
+      "entry_kinds": {
+        "LOCAL": 11,
+        "PROOF_LOCAL": 9,
+        "REMOTE": 9
+      },
+      "files": 10
+    },
+    "disposition": "PASS_INDEPENDENT_TYPED_RECOVERY_WITH_CONFIRMED_OPERATING_TIMING_FAILURE",
+    "event_input_admission": {
+      "eligible": true,
+      "final_recovery_completed_at": "2026-10-21T22:45:24.882330Z",
+      "local_persistence_completed_at": "2026-10-21T22:45:02.674546Z",
+      "reasons": [],
+      "remote_checkpoint_completed_at": "2026-10-21T22:45:13.704402Z",
+      "retained": true
+    },
+    "failure_records": [
+      {
+        "body": {
+          "event_ref": {
+            "kind": "research_inputs",
+            "payload_sha256": "ef83109aa58774b3767a10777c719c5d768a60a5288a617e9cacd7303e939a39",
+            "record_id": "18622e31c97f3cb31b17d03f93f4edd66dda471f1f90df7b9975b7901b37ad1b"
+          },
+          "failure_id": "e86443d98fc91bc761a8b406b305616dc835f5a42b61ada8bcb95f1a686c1029",
+          "mode": "SYNTHETIC_DIAGNOSTIC",
+          "model_key": "K0",
+          "player_id": "3195",
+          "protocol_id": "NBA-PAIRED-OPS-002",
+          "reason": "IntegrityError: retained original is late/unacknowledged and cannot count as timely issuance",
+          "recorded_at": "2026-10-21T23:05:11.264337Z",
+          "schema_version": "nba-operational002-failure-v1",
+          "status": "PARTIAL"
+        },
+        "reference": {
+          "kind": "input_captures",
+          "payload_sha256": "017edbe730dfc11c040f3d86f0cde34afe5baffccef901a78ebf061eb2a94452",
+          "record_id": "2c4df8c4eeae02edf9f43bf73b9dba7fee1fab319c56571f0f1b6a3c7e5089b2"
+        }
+      }
+    ],
+    "forecast_admissions": [
+      {
+        "admission": {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:01:08.062381Z",
+          "local_persistence_completed_at": "2026-10-21T23:00:44.216325Z",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:00:56.036822Z",
+          "retained": true
+        },
+        "category_count": 14,
+        "generation_completed_at": "2026-10-21T23:00:18.487751Z",
+        "generation_started_at": "2026-10-21T23:00:09.405147Z",
+        "issued_at": "2026-10-21T23:00:20.314792Z",
+        "joint_atoms": 26645,
+        "mode": "SYNTHETIC_DIAGNOSTIC",
+        "model_key": "K0",
+        "player_id": "1966",
+        "reference": {
+          "kind": "forecasts",
+          "payload_sha256": "e66ce1075759c370be7b6d8cf9571ddf43e55f5fec7ad0e781fe7785f58634be",
+          "record_id": "a9cbe7ef9d1e8d09c840cfcc1db2861b7416df265d3eb0d9a406d62e0d88b733"
+        },
+        "verified_at": "2026-10-21T23:00:20.314792Z"
+      },
+      {
+        "admission": {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:00:43.949682Z",
+          "local_persistence_completed_at": "2026-10-21T23:00:20.538785Z",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:00:32.084289Z",
+          "retained": true
+        },
+        "category_count": 14,
+        "generation_completed_at": "2026-10-21T23:00:14.804039Z",
+        "generation_started_at": "2026-10-21T23:00:09.405147Z",
+        "issued_at": "2026-10-21T23:00:20.314792Z",
+        "joint_atoms": 26645,
+        "mode": "SYNTHETIC_DIAGNOSTIC",
+        "model_key": "R0",
+        "player_id": "1966",
+        "reference": {
+          "kind": "forecasts",
+          "payload_sha256": "dca69ce36e1a5678678f923e5564c0863ba1402be02d058695696dbc97754515",
+          "record_id": "76577bf237f74731b639cebd76985a4b6c41df2101a08d92cbd9798372e866f0"
+        },
+        "verified_at": "2026-10-21T23:00:20.314792Z"
+      },
+      {
+        "admission": {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:02:12.440735Z",
+          "local_persistence_completed_at": "2026-10-21T23:01:45.027987Z",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:01:58.568067Z",
+          "retained": true
+        },
+        "category_count": 14,
+        "generation_completed_at": "2026-10-21T23:01:17.469687Z",
+        "generation_started_at": "2026-10-21T23:01:08.162006Z",
+        "issued_at": "2026-10-21T23:01:19.301165Z",
+        "joint_atoms": 26645,
+        "mode": "SYNTHETIC_DIAGNOSTIC",
+        "model_key": "K0",
+        "player_id": "2779",
+        "reference": {
+          "kind": "forecasts",
+          "payload_sha256": "db3d63ea5c804ac3806cac2ca56a6593cdbbb3662a6d7f43ef6c922f39fa601e",
+          "record_id": "8c8c91ca0f4a84f072c75adb8912a45103bcd9b91f67e54e0fd719ccedae2f42"
+        },
+        "verified_at": "2026-10-21T23:01:19.301165Z"
+      },
+      {
+        "admission": {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:01:44.650970Z",
+          "local_persistence_completed_at": "2026-10-21T23:01:19.534458Z",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:01:31.985577Z",
+          "retained": true
+        },
+        "category_count": 14,
+        "generation_completed_at": "2026-10-21T23:01:13.753273Z",
+        "generation_started_at": "2026-10-21T23:01:08.162006Z",
+        "issued_at": "2026-10-21T23:01:19.301165Z",
+        "joint_atoms": 26645,
+        "mode": "SYNTHETIC_DIAGNOSTIC",
+        "model_key": "R0",
+        "player_id": "2779",
+        "reference": {
+          "kind": "forecasts",
+          "payload_sha256": "11d2ed54d250db1da8401acdd3a70ec2a530c3994cda9f68a38737993d3e1e8d",
+          "record_id": "6f21936500e3d19cb9d2a48cebf294dd337208ab2141783a1985f32abf3ceb62"
+        },
+        "verified_at": "2026-10-21T23:01:19.301165Z"
+      },
+      {
+        "admission": {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:03:29.707681Z",
+          "local_persistence_completed_at": "2026-10-21T23:02:55.005515Z",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:03:11.890479Z",
+          "retained": true
+        },
+        "category_count": 14,
+        "generation_completed_at": "2026-10-21T23:02:21.875897Z",
+        "generation_started_at": "2026-10-21T23:02:12.666779Z",
+        "issued_at": "2026-10-21T23:02:23.689830Z",
+        "joint_atoms": 26645,
+        "mode": "SYNTHETIC_DIAGNOSTIC",
+        "model_key": "K0",
+        "player_id": "3012",
+        "reference": {
+          "kind": "forecasts",
+          "payload_sha256": "49ddbec44c200d069671ca415220879bcc5249f20c7dbf56407f9c8689101555",
+          "record_id": "f1c04b22ee4d695c7dfd0c950d6445b337b850e471e29d72f731155ad45b7860"
+        },
+        "verified_at": "2026-10-21T23:02:23.689830Z"
+      },
+      {
+        "admission": {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:02:54.470460Z",
+          "local_persistence_completed_at": "2026-10-21T23:02:23.928603Z",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:02:38.869393Z",
+          "retained": true
+        },
+        "category_count": 14,
+        "generation_completed_at": "2026-10-21T23:02:18.193727Z",
+        "generation_started_at": "2026-10-21T23:02:12.666779Z",
+        "issued_at": "2026-10-21T23:02:23.689830Z",
+        "joint_atoms": 26645,
+        "mode": "SYNTHETIC_DIAGNOSTIC",
+        "model_key": "R0",
+        "player_id": "3012",
+        "reference": {
+          "kind": "forecasts",
+          "payload_sha256": "7b5a386d3b1506ad56f22d86188ca03837cd860bcba852cd55cfe11897b8b820",
+          "record_id": "be3133459aff9845b9e3cf1a6a689fb369e73d880fd876c6da229943ebd435a1"
+        },
+        "verified_at": "2026-10-21T23:02:23.689830Z"
+      },
+      {
+        "admission": {
+          "eligible": false,
+          "final_recovery_completed_at": "2026-10-21T23:05:10.633119Z",
+          "local_persistence_completed_at": "2026-10-21T23:04:22.832813Z",
+          "reasons": [
+            "Actual persistence or required independent recovery completed after its registered deadline."
+          ],
+          "remote_checkpoint_completed_at": "2026-10-21T23:04:45.859028Z",
+          "retained": true
+        },
+        "category_count": 14,
+        "generation_completed_at": "2026-10-21T23:03:39.490178Z",
+        "generation_started_at": "2026-10-21T23:03:30.109660Z",
+        "issued_at": "2026-10-21T23:03:41.293746Z",
+        "joint_atoms": 26645,
+        "mode": "SYNTHETIC_DIAGNOSTIC",
+        "model_key": "K0",
+        "player_id": "3195",
+        "reference": {
+          "kind": "forecasts",
+          "payload_sha256": "09fc80933ecd18b141c07e01e601433106afa1034ae92e251c5e81123c5c99bf",
+          "record_id": "683167c6195bde71077ebcc7df29033a064307ecfc96b678aad102eef5eb8a2a"
+        },
+        "verified_at": "2026-10-21T23:03:41.293746Z"
+      },
+      {
+        "admission": {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:04:22.080034Z",
+          "local_persistence_completed_at": "2026-10-21T23:03:41.539878Z",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:04:01.324414Z",
+          "retained": true
+        },
+        "category_count": 14,
+        "generation_completed_at": "2026-10-21T23:03:35.797793Z",
+        "generation_started_at": "2026-10-21T23:03:30.109660Z",
+        "issued_at": "2026-10-21T23:03:41.293746Z",
+        "joint_atoms": 26645,
+        "mode": "SYNTHETIC_DIAGNOSTIC",
+        "model_key": "R0",
+        "player_id": "3195",
+        "reference": {
+          "kind": "forecasts",
+          "payload_sha256": "4f5dc5fd7ad4bf302c311ebc9ed2fc531323e3dcb438cdad59ea286e5347f069",
+          "record_id": "580ad6c4178adabc4bb07bbb19a93ae253fa019edd344dfa6ef06e8506849d0b"
+        },
+        "verified_at": "2026-10-21T23:03:41.293746Z"
+      }
+    ],
+    "host_report": {
+      "artifact_download_performed_by": "integration owner, existing GitHub connector; reviewer independently checked retained decoded report hash and source/record relationship",
+      "artifact_id": 12316387426,
+      "artifact_zip_sha256": "2a2dd0f1f42cd3e488e8569bfb7d03af102fb581da41fd64b908c964e82c2b79",
+      "completion_failures": [
+        "All eight originals and their original timely required acknowledgments were not independently recovered.",
+        "Complete cohort including last proof persistence and independent retention/readback exceeded T90+300 seconds."
+      ],
+      "exact_remote_snapshot": true,
+      "path": "evidence/operational/hosted-diagnostic-39533281196.json",
+      "payload_sha256": "16a346bffad5b2a5504a91184fe01ff126547155602df841e6f71e110040ad26",
+      "performance": {
+        "cohort_including_last_retention_seconds": 338.647365572,
+        "independent_full_replay_restart_seconds": 41.58928934300002,
+        "paired_generation_and_verification": [
+          {
+            "player_id": "1966",
+            "process_cpu_seconds": 10.926429685999999,
+            "wall_seconds": 10.927459017999993
+          },
+          {
+            "player_id": "2779",
+            "process_cpu_seconds": 11.156255986000005,
+            "wall_seconds": 11.157546265999997
+          },
+          {
+            "player_id": "3012",
+            "process_cpu_seconds": 11.039814678999988,
+            "wall_seconds": 11.041465613000014
+          },
+          {
+            "player_id": "3195",
+            "process_cpu_seconds": 11.201556771999975,
+            "wall_seconds": 11.202917705999994
+          }
+        ],
+        "peak_process_rss_kib": 238188,
+        "phases": [
+          {
+            "phase": "INPUT_PERSIST_CHECKPOINT_FINAL_PREFIX",
+            "wall_seconds": 23.417548844000002
+          },
+          {
+            "phase": "EIGHT_ORIGINALS_AND_REQUIRED_ACK_PREFIXES",
+            "wall_seconds": 338.647365572
+          }
+        ],
+        "rss_limit_kib": 524288,
+        "total_process_cpu_seconds": 358.121490976,
+        "total_wall_seconds": 417.165565566,
+        "wall_limit_seconds": 900
+      },
+      "raw_sha256": "5d6ec82564922760559186e1972d6099c36ee3ae791967ed1832ef5eda2fb8c4",
+      "snapshot_matches_independent_recovery": true,
+      "transport_summary": {
+        "first_operation_snapshot_bytes": 1833725,
+        "first_operation_wall_seconds": 11.024030992,
+        "four_pairs_generation_and_verification_process_cpu_seconds": 44.32405712299997,
+        "four_pairs_generation_and_verification_wall_seconds": 44.329388603,
+        "last_operation_snapshot_bytes": 2123201,
+        "last_operation_wall_seconds": 26.436384997999994,
+        "operations": 19,
+        "sum_operation_process_cpu_seconds": 243.9104597839999,
+        "sum_operation_wall_seconds": 300.38087434
+      }
+    },
+    "immutable_legacy_verification": {
+      "all_27_source_binding_files_match_c535": true,
+      "all_original_raw_hashes_match": true,
+      "bytes": 1817800,
+      "count": 19,
+      "original_hash_inventory_sha256": "e97b5ac9c1933a08ab48b53affadd0402750c0ab0b4bd6b524fde33c8fd6f4ee",
+      "source_review_receipt": "evidence/verification/ops002-independent-source-review-c535c785.json"
+    },
+    "independent_fetch": {
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "init",
+            "--quiet"
+          ],
+          "exit_code": 0,
+          "observed_at": "2026-10-21T02:37:41.860705+00:00"
+        },
+        {
+          "argv": [
+            "git",
+            "remote",
+            "add",
+            "origin",
+            "https://github.com/NickNicky19/Nicks-multisport-lab-project.git"
+          ],
+          "exit_code": 0,
+          "observed_at": "2026-10-21T02:37:41.868684+00:00"
+        },
+        {
+          "argv": [
+            "git",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "origin",
+            "4c3e3eb4c0e4cfdaa36f10a84918ccbbd28921ee"
+          ],
+          "exit_code": 0,
+          "observed_at": "2026-10-21T02:37:41.877266+00:00"
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "FETCH_HEAD"
+          ],
+          "exit_code": 0,
+          "observed_at": "2026-10-21T02:37:43.089650+00:00"
+        },
+        {
+          "argv": [
+            "git",
+            "checkout",
+            "--quiet",
+            "--detach",
+            "FETCH_HEAD"
+          ],
+          "exit_code": 0,
+          "observed_at": "2026-10-21T02:37:43.092317+00:00"
+        },
+        {
+          "argv": [
+            "git",
+            "ls-remote",
+            "--heads",
+            "origin",
+            "refs/heads/diagnostics/ops002-timing-20261021"
+          ],
+          "exit_code": 0,
+          "observed_at": "2026-10-21T02:37:43.135834+00:00"
+        },
+        {
+          "argv": [
+            "git",
+            "status",
+            "--porcelain"
+          ],
+          "exit_code": 0,
+          "observed_at": "2026-10-21T02:37:43.613191+00:00"
+        }
+      ],
+      "observed_at": "2026-10-21T02:37:43.637839+00:00",
+      "observed_remote_ref": "4c3e3eb4c0e4cfdaa36f10a84918ccbbd28921ee\trefs/heads/diagnostics/ops002-timing-20261021",
+      "records_commit": "4c3e3eb4c0e4cfdaa36f10a84918ccbbd28921ee",
+      "remote_branch": "diagnostics/ops002-timing-20261021",
+      "repository": "https://github.com/NickNicky19/Nicks-multisport-lab-project.git",
+      "root": "/tmp/nml-independent-ops002-host-4c3e3eb4-29scm0un",
+      "source_commit": "c535c7851382eb3d7a8701229bc4dd7094086c70",
+      "working_tree": ""
+    },
+    "late_original": {
+      "eligible": false,
+      "final_recovery_completed_at": "2026-10-21T23:05:10.633119Z",
+      "generation_completed_at": "2026-10-21T23:03:39.490178Z",
+      "generation_started_at": "2026-10-21T23:03:30.109660Z",
+      "interpretation": "Original and R0 peer both survive. K0 meets its 120-second individual duration but its mandatory local proof/readback witness exceeds the global T90+300 deadline. A present original is distinct from eligible paired evidence; no original peer is missing.",
+      "issued_at": "2026-10-21T23:03:41.293746Z",
+      "local_persistence_completed_at": "2026-10-21T23:04:22.832813Z",
+      "model_key": "K0",
+      "player_id": "3195",
+      "reasons": [
+        "Actual persistence or required independent recovery completed after its registered deadline."
+      ],
+      "reference": {
+        "kind": "forecasts",
+        "payload_sha256": "09fc80933ecd18b141c07e01e601433106afa1034ae92e251c5e81123c5c99bf",
+        "record_id": "683167c6195bde71077ebcc7df29033a064307ecfc96b678aad102eef5eb8a2a"
+      },
+      "remote_checkpoint_completed_at": "2026-10-21T23:04:45.859028Z",
+      "required_completion_elapsed_from_T90_seconds": 310.633119,
+      "required_completion_elapsed_from_generation_start_seconds": 100.523459,
+      "retained": true,
+      "seconds_late_to_T90_plus_300": 10.633119000000022,
+      "verified_at": "2026-10-21T23:03:41.293746Z"
+    },
+    "operational_readiness": "BLOCKED_NOT_READY",
+    "optimized_recovery": {
+      "actual_completed_at": "2026-10-21T02:39:57.112600Z",
+      "actual_started_at": "2026-10-21T02:39:21.503253Z",
+      "all_category_counts": 14,
+      "all_joint_atom_counts": 26645,
+      "argv": [
+        "env",
+        "PYTHONPATH=.",
+        "python3",
+        "-O",
+        "/tmp/nml-independent-ops002-host-readback.py"
+      ],
+      "clock_policy": {
+        "all_new_originals_diagnostic": true,
+        "kind": "EXPLICIT_DIAGNOSTIC_READ_ONLY_NOT_ISSUANCE",
+        "unrelated_legacy_future_clocks_rejected": true,
+        "validation_clock": "2026-10-21T23:05:11.496930Z"
+      },
+      "cwd": "/tmp/nml-independent-ops002-host-4c3e3eb4-29scm0un",
+      "eligible_diagnostic_originals": 7,
+      "encoded_bytes": 2123201,
+      "exit_code": 0,
+      "file_count": 41,
+      "forecasts_generated_or_repaired": false,
+      "full_joint_laws_replayed": true,
+      "genuine_issued": 0,
+      "helper_sha256": "2f37e43cb5a2a6ca97c2dcf95d2cebef7d5ebaa4f7b2229e70926238f644e264",
+      "ledger_record_count": 31,
+      "method": "Independently fetched exact record head; all new records checked SYNTHETIC_DIAGNOSTIC/fake event; existing exact source binding checked; read-only verify_store(replay=True), then recover(replay=False). All issuance/persistence/correction entrypoints patched to raise. Actual wall clocks unpatched; explicit advanced diagnostic validation clock permits replay of the retained invented timeline only.",
+      "missing_original_peers": [],
+      "new_outcomes": 0,
+      "new_statistical_grades": 0,
+      "result_raw_sha256": "a1d64804743975c43dc1cb98bfc248510c5c078548587d52ecf5f3d6d29ae983",
+      "retained_originals": 8,
+      "snapshot_id": "7148c555dfdf6277c09bae355539c1bdecd287fcfa43a8b239a0cf9f2a0c366e",
+      "source_or_original_bytes_modified": false,
+      "wall_seconds": 35.60935044799771,
+      "working_tree_after": ""
+    },
+    "recorded_at": "2026-10-21T02:42:30.061573Z",
+    "records_branch": "diagnostics/ops002-timing-20261021",
+    "records_commit": "4c3e3eb4c0e4cfdaa36f10a84918ccbbd28921ee",
+    "repository": "NickNicky19/Nicks-multisport-lab-project",
+    "reviewer": "independent_ops_review",
+    "schema_version": "nba-operational002-independent-host-recovery-review-v1",
+    "source_commit": "c535c7851382eb3d7a8701229bc4dd7094086c70",
+    "workflow_result": "COMPLETED_FAILURE_EXIT_2_PARTIAL_OR_FAILED_DIAGNOSTIC",
+    "workflow_run_id": 39533281196
+  },
+  "payload_sha256": "fd3df049a19e48f50d6044902d5a414b360eb416a4485bd4d3ca4807c937db48",
+  "schema_version": "decoded-json-receipt-v1"
+}

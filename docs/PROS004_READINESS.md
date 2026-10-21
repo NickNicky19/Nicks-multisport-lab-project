@@ -9,6 +9,65 @@ activation flags. The proposed operational wrappers are
 `pros004-r0-producer-v3` and `pros004-k0-producer-v3`.
 The v3 completion policy is [PROS004_COMPLETION.md](PROS004_COMPLETION.md).
 
+## October 21 — inactive reservation and separately versioned operating preparation
+
+The later **separate OP002 synthetic diagnostic**, source
+`06dbb492dda5d0043ec7a3a6c97ce9c46201edc8`, run39536525048, passed one full
+eight-original hosted run and independent optimized-Python recovery. All26,645
+history rows and complete joint laws/14 marginals were retained. Final required
+readbackT90+289.817868 leaves10.182132s global margin; max original66.372487s.
+This does not establish timely real capture, private raw/key recovery, the
+genuine writer path, full512-record study timing, statistical quality or activation.
+The original PROS004 reservation remains inactive/not started; its complete
+admitted UTC inventory/actual first cutoff is still unestablished. Source C's
+failed measurement below remains unchanged, not repaired by this later result.
+
+PR #10 remains draft at `c0a7b4bc3205d723b13d0f70baf66f3806e731ee`.
+The later working branch prepares a separate `NBA-PAIRED-OPS-002` named-game
+operation and explicitly retains this reservation **inactive/not started**.
+Its mathematical protocol, original receipts, prior failed timing observations
+and evaluation gates are unchanged. Complete admitted UTC-date inventory and the
+actual first selected cutoff remain unestablished; no safe midnight deadline,
+backfill, shifted window or replacement subject is inferred.
+
+Before changing checkpoint implementation, bounded profiling of the retained
+30-file/3,680,132-byte full-history diagnostic showed six repeated whole-store
+checks consuming about 99% of a 31.125-second idempotent checkpoint. An exact local
+transfer proof removes redundant pure local semantic replays while preserving
+fresh bytes, hashes, references, actual clocks, journal prefixes, closed retained
+subsets, source/root identities and final inventory seals. Full typed source and
+independently fetched remote verification remain mandatory. Eleven new normal
+and optimized regressions reject changed meaning, missing originals, partial
+inventory, context/proof reuse and lost admission prefixes.
+
+The create-only after-profile measured 12.005 seconds on the same retained full
+history, with two full strict passes and fresh exact checks. Its receipt pins the
+actually measured revision; later prefix/layout hardening is distinguished. This
+is transport evidence, not a new full-cohort pass, a maximum 512-record benchmark,
+a provider capture, a model evaluation or activation. Earlier failed full-cohort
+receipts above/below are not overwritten by this profile.
+
+Separate operating producers, inputs, completion witnesses, raw-retention
+candidate, independent publication channels and bounded synthetic/recovery tests
+are described in [NBA_OPERATIONAL_002.md](NBA_OPERATIONAL_002.md) and
+[OPERATIONAL_RELEASE_CHECKLIST.md](OPERATIONAL_RELEASE_CHECKLIST.md). The new
+single-game plan has its own fixed identities and deadlines; it is not a later
+segment of this 21-date comparison. Actual hosted full-eight timing, source/raw
+admission and exact reviewed genuine activation remain separate requirements.
+All genuine-write guards remain closed. No new scheduler, comparison or genuine
+issuance is authorized by this readiness integration.
+
+The separate exact-source hosted OP002 diagnostic is now measured, not passed:
+source `c535c7851382eb3d7a8701229bc4dd7094086c70`, run 39533281196, actual
+02:29:23.735386–02:36:20.905863 UTC. Eight synthetic originals survive; seven
+are timely after fresh typed recovery. Cohort including final retention338.647s
+exceeds the five-minute cutoff (generation starts atT90+5s), total417.166s,
+CPU358.121s, peak238,188KiB. Full joint-law replay and exact remote bytes pass.
+The original failed receipt and the late eighth original remain unchanged.
+See `evidence/operational/hosted-diagnostic-39533281196.json`. This is not a
+PROS004 full-study timing pass, model evaluation or genuine issuance. The
+maximum512-record execution gate remains unmeasured and this reservation inactive.
+
 ## October 20, 23:10 UTC — new source pin, unchanged inactive gates
 
 Producer/driver source is now frozen at

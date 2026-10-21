@@ -1,0 +1,757 @@
+{
+  "hash_format": "sha256-canonical-decoded-json-v1",
+  "payload": {
+    "actual_retained_timing_contract": {
+      "complete_original_admission_does_not_imply_atomic_pair_writes": true,
+      "completion_metadata_entries": 24,
+      "completion_metadata_kinds": {
+        "LOCAL": 10,
+        "PROOF_LOCAL": 5,
+        "REMOTE": 9
+      },
+      "event_input_admission": {
+        "eligible": true,
+        "final_recovery_completed_at": "2026-10-21T22:45:28.844957Z",
+        "local_persistence_completed_at": "2026-10-21T22:45:02.895909Z",
+        "reasons": [],
+        "remote_checkpoint_completed_at": "2026-10-21T22:45:15.689191Z",
+        "retained": true
+      },
+      "final_independent_retention_elapsed_after_T90_seconds": 289.817868,
+      "global_deadline_elapsed_seconds": 300,
+      "global_deadline_margin_seconds": 10.182132000000024,
+      "individual_latency_limit_seconds": 120,
+      "interpretation": "These are advancing simulated non-issuance phase clocks with real elapsed operation time. They do not prove a real source capture or genuine pregame issuance.",
+      "maximum_original_proof_elapsed_after_T90_seconds": 213.520821,
+      "maximum_per_original_generation_to_required_proof_seconds": 66.372487,
+      "per_original_completion": [
+        {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:00:50.206901Z",
+          "generation_completed_at": "2026-10-21T23:00:20.622740Z",
+          "generation_started_at": "2026-10-21T23:00:10.294256Z",
+          "generation_through_required_final_proof_seconds": 39.912645,
+          "issued_at": "2026-10-21T23:00:22.797869Z",
+          "local_persistence_completed_at": "2026-10-21T23:00:23.340690Z",
+          "model_key": "K0",
+          "player_id": "1966",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:00:36.627007Z",
+          "required_final_proof_elapsed_after_T90_seconds": 50.206901,
+          "retained": true,
+          "verified_at": "2026-10-21T23:00:22.797869Z"
+        },
+        {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:00:50.206901Z",
+          "generation_completed_at": "2026-10-21T23:00:16.233859Z",
+          "generation_started_at": "2026-10-21T23:00:10.294256Z",
+          "generation_through_required_final_proof_seconds": 39.912645,
+          "issued_at": "2026-10-21T23:00:22.797869Z",
+          "local_persistence_completed_at": "2026-10-21T23:00:23.069845Z",
+          "model_key": "R0",
+          "player_id": "1966",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:00:36.608149Z",
+          "required_final_proof_elapsed_after_T90_seconds": 50.206901,
+          "retained": true,
+          "verified_at": "2026-10-21T23:00:22.797869Z"
+        },
+        {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:01:34.045621Z",
+          "generation_completed_at": "2026-10-21T23:01:00.673897Z",
+          "generation_started_at": "2026-10-21T23:00:50.482595Z",
+          "generation_through_required_final_proof_seconds": 43.563026,
+          "issued_at": "2026-10-21T23:01:02.836274Z",
+          "local_persistence_completed_at": "2026-10-21T23:01:03.437629Z",
+          "model_key": "K0",
+          "player_id": "2779",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:01:18.311590Z",
+          "required_final_proof_elapsed_after_T90_seconds": 94.045621,
+          "retained": true,
+          "verified_at": "2026-10-21T23:01:02.836274Z"
+        },
+        {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:01:34.045621Z",
+          "generation_completed_at": "2026-10-21T23:00:56.351000Z",
+          "generation_started_at": "2026-10-21T23:00:50.482595Z",
+          "generation_through_required_final_proof_seconds": 43.563026,
+          "issued_at": "2026-10-21T23:01:02.836274Z",
+          "local_persistence_completed_at": "2026-10-21T23:01:03.103696Z",
+          "model_key": "R0",
+          "player_id": "2779",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:01:18.236586Z",
+          "required_final_proof_elapsed_after_T90_seconds": 94.045621,
+          "retained": true,
+          "verified_at": "2026-10-21T23:01:02.836274Z"
+        },
+        {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:02:26.080635Z",
+          "generation_completed_at": "2026-10-21T23:01:44.810283Z",
+          "generation_started_at": "2026-10-21T23:01:34.660017Z",
+          "generation_through_required_final_proof_seconds": 51.420618,
+          "issued_at": "2026-10-21T23:01:46.969496Z",
+          "local_persistence_completed_at": "2026-10-21T23:01:47.609963Z",
+          "model_key": "K0",
+          "player_id": "3012",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:02:05.833352Z",
+          "required_final_proof_elapsed_after_T90_seconds": 146.080635,
+          "retained": true,
+          "verified_at": "2026-10-21T23:01:46.969496Z"
+        },
+        {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:02:26.080635Z",
+          "generation_completed_at": "2026-10-21T23:01:40.477817Z",
+          "generation_started_at": "2026-10-21T23:01:34.660017Z",
+          "generation_through_required_final_proof_seconds": 51.420618,
+          "issued_at": "2026-10-21T23:01:46.969496Z",
+          "local_persistence_completed_at": "2026-10-21T23:01:47.236424Z",
+          "model_key": "R0",
+          "player_id": "3012",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:02:05.701535Z",
+          "required_final_proof_elapsed_after_T90_seconds": 146.080635,
+          "retained": true,
+          "verified_at": "2026-10-21T23:01:46.969496Z"
+        },
+        {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:03:33.520821Z",
+          "generation_completed_at": "2026-10-21T23:02:37.367388Z",
+          "generation_started_at": "2026-10-21T23:02:27.148334Z",
+          "generation_through_required_final_proof_seconds": 66.372487,
+          "issued_at": "2026-10-21T23:02:39.523180Z",
+          "local_persistence_completed_at": "2026-10-21T23:02:40.240531Z",
+          "model_key": "K0",
+          "player_id": "3195",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:03:05.271299Z",
+          "required_final_proof_elapsed_after_T90_seconds": 213.520821,
+          "retained": true,
+          "verified_at": "2026-10-21T23:02:39.523180Z"
+        },
+        {
+          "eligible": true,
+          "final_recovery_completed_at": "2026-10-21T23:03:33.520821Z",
+          "generation_completed_at": "2026-10-21T23:02:33.049139Z",
+          "generation_started_at": "2026-10-21T23:02:27.148334Z",
+          "generation_through_required_final_proof_seconds": 66.372487,
+          "issued_at": "2026-10-21T23:02:39.523180Z",
+          "local_persistence_completed_at": "2026-10-21T23:02:39.796871Z",
+          "model_key": "R0",
+          "player_id": "3195",
+          "reasons": [],
+          "remote_checkpoint_completed_at": "2026-10-21T23:03:05.082736Z",
+          "required_final_proof_elapsed_after_T90_seconds": 213.520821,
+          "retained": true,
+          "verified_at": "2026-10-21T23:02:39.523180Z"
+        }
+      ]
+    },
+    "boundaries": {
+      "NFL_MLB_untouched": true,
+      "PROS004_inactive": true,
+      "S0_inactive": true,
+      "activation": false,
+      "comparative_study_evaluation": 0,
+      "deployed": false,
+      "financial_settlement": "NOT_EVALUATED",
+      "frozen_experiments_unchanged": true,
+      "genuine_issuance": 0,
+      "live_source_captures": 0,
+      "merged": false,
+      "original_expired_pilot_unchanged": true,
+      "outcomes_appended": 0,
+      "qualification": "UNAVAILABLE",
+      "qualified_tickets": 0,
+      "scheduler_armed": false,
+      "source_edits_by_reviewer": 0,
+      "statistical_grades_appended": 0,
+      "workflow_dispatches_or_reruns_by_reviewer": 0
+    },
+    "disposition": "PASS_INDEPENDENT_TYPED_FULL_LAW_RECOVERY_OF_SOFTWARE_DIAGNOSTIC_ONLY",
+    "encoded_record_and_metadata_limits": {
+      "all_individual_envelopes_and_metadata_below_existing_caps": true,
+      "global_byte_limit": 33554432,
+      "global_file_limit": 512,
+      "global_limits_unchanged": true,
+      "metadata_files": [
+        {
+          "bytes": 22648,
+          "ceiling": 262144,
+          "path": "evidence/operational002/completions.jsonl",
+          "raw_sha256": "bf8d08c6811c094ddd23107b03ac991dcd0c77d3730638d5ed87575b8d9e6138"
+        },
+        {
+          "bytes": 685,
+          "ceiling": 8192,
+          "path": "evidence/operational002/remote-recovery.08cdb49123bad2977c2b9bc6034e82daac98ea67e4f190844826ae69ff5eacd4.json",
+          "raw_sha256": "08cdb49123bad2977c2b9bc6034e82daac98ea67e4f190844826ae69ff5eacd4"
+        },
+        {
+          "bytes": 685,
+          "ceiling": 8192,
+          "path": "evidence/operational002/remote-recovery.15d26dc75b2bc5c2f291002381720eef374249f592c4a9160e1de8d1eef89a3b.json",
+          "raw_sha256": "15d26dc75b2bc5c2f291002381720eef374249f592c4a9160e1de8d1eef89a3b"
+        },
+        {
+          "bytes": 685,
+          "ceiling": 8192,
+          "path": "evidence/operational002/remote-recovery.6ec14d79f43a6df64897787691a8dccb998ab23d3d46de8aea417835df32e80d.json",
+          "raw_sha256": "6ec14d79f43a6df64897787691a8dccb998ab23d3d46de8aea417835df32e80d"
+        },
+        {
+          "bytes": 685,
+          "ceiling": 8192,
+          "path": "evidence/operational002/remote-recovery.87cdd8ae5d41f1e93810527b083414f73c54ac51585ec92b2a726c05e7a41982.json",
+          "raw_sha256": "87cdd8ae5d41f1e93810527b083414f73c54ac51585ec92b2a726c05e7a41982"
+        },
+        {
+          "bytes": 685,
+          "ceiling": 8192,
+          "path": "evidence/operational002/remote-recovery.json",
+          "raw_sha256": "145c4aed36a37fafdc57713b55bf0416261870d7e683e74021b131ffd7161311"
+        }
+      ],
+      "planned_combined_bytes": 4758728,
+      "planned_combined_files": 117,
+      "typed_envelope_summary": {
+        "event": {
+          "ceiling": 32768,
+          "count": 1,
+          "maximum_encoded_bytes": 6281
+        },
+        "forecast": {
+          "ceiling": 65536,
+          "count": 8,
+          "maximum_encoded_bytes": 32202
+        },
+        "history": {
+          "ceiling": 8192,
+          "count": 1,
+          "maximum_encoded_bytes": 3772
+        }
+      },
+      "typed_envelopes": [
+        {
+          "bytes": 32061,
+          "ceiling": 65536,
+          "path": "records/forecasts/580ad6c4178adabc4bb07bbb19a93ae253fa019edd344dfa6ef06e8506849d0b.json",
+          "type": "forecast"
+        },
+        {
+          "bytes": 32151,
+          "ceiling": 65536,
+          "path": "records/forecasts/683167c6195bde71077ebcc7df29033a064307ecfc96b678aad102eef5eb8a2a.json",
+          "type": "forecast"
+        },
+        {
+          "bytes": 32049,
+          "ceiling": 65536,
+          "path": "records/forecasts/6f21936500e3d19cb9d2a48cebf294dd337208ab2141783a1985f32abf3ceb62.json",
+          "type": "forecast"
+        },
+        {
+          "bytes": 32036,
+          "ceiling": 65536,
+          "path": "records/forecasts/76577bf237f74731b639cebd76985a4b6c41df2101a08d92cbd9798372e866f0.json",
+          "type": "forecast"
+        },
+        {
+          "bytes": 32178,
+          "ceiling": 65536,
+          "path": "records/forecasts/8c8c91ca0f4a84f072c75adb8912a45103bcd9b91f67e54e0fd719ccedae2f42.json",
+          "type": "forecast"
+        },
+        {
+          "bytes": 32076,
+          "ceiling": 65536,
+          "path": "records/forecasts/a9cbe7ef9d1e8d09c840cfcc1db2861b7416df265d3eb0d9a406d62e0d88b733.json",
+          "type": "forecast"
+        },
+        {
+          "bytes": 32043,
+          "ceiling": 65536,
+          "path": "records/forecasts/be3133459aff9845b9e3cf1a6a689fb369e73d880fd876c6da229943ebd435a1.json",
+          "type": "forecast"
+        },
+        {
+          "bytes": 32202,
+          "ceiling": 65536,
+          "path": "records/forecasts/f1c04b22ee4d695c7dfd0c950d6445b337b850e471e29d72f731155ad45b7860.json",
+          "type": "forecast"
+        },
+        {
+          "bytes": 3772,
+          "ceiling": 8192,
+          "path": "records/research_inputs/107bf22abaaf4b4a84b02253c4ee16f35161e28a115c840d034e35a9c27831f7.json",
+          "type": "history"
+        },
+        {
+          "bytes": 6281,
+          "ceiling": 32768,
+          "path": "records/research_inputs/18622e31c97f3cb31b17d03f93f4edd66dda471f1f90df7b9975b7901b37ad1b.json",
+          "type": "event"
+        }
+      ]
+    },
+    "genuine_operational_readiness": "INACTIVE_BLOCKED_BY_SOURCE_RETENTION_WRITER_AND_ACTIVATION_REQUIREMENTS",
+    "host_report": {
+      "actual_completed_at": "2026-10-21T03:10:44.443233Z",
+      "actual_started_at": "2026-10-21T03:04:29.208809Z",
+      "artifact_download": "Integration owner used existing GitHub connector; reviewer independently byte-compared report to extracted artifact and verified canonical decoded payload hash.",
+      "artifact_zip_sha256": "b3cf565bacb7cad4842345e3d08931f3e6121562be6de6fa87d5fe9204870224",
+      "atomic_pair_issuance": false,
+      "completion_failures": [],
+      "exact_report_snapshot_agreement": true,
+      "failure": null,
+      "four_pair_generation_verification_wall_seconds": 49.61222456400003,
+      "independent_restart": {
+        "eligible_originals": 8,
+        "full_joint_laws_replayed": true,
+        "genuine_issued": 0,
+        "missing_peers": [],
+        "remote_commit": "e2d4ef41c3262d4733b8a64223171224b801bb73",
+        "retained_originals": 8,
+        "snapshot_id": "4218e65a078e104338929f52785de1eb2e61daaa3ae7173f80ab5219b245fcc0"
+      },
+      "path": "evidence/operational/hosted-diagnostic-39536525048.json",
+      "payload_sha256": "fe7dd9414eb1242b62507caa68d0cce263864a5185b024a891e4cee9c5cb9443",
+      "performance": {
+        "cohort_including_last_retention_seconds": 284.81827539100004,
+        "independent_full_replay_restart_seconds": 47.09797363900009,
+        "paired_generation_and_verification": [
+          {
+            "player_id": "1966",
+            "process_cpu_seconds": 12.521032335000001,
+            "wall_seconds": 12.521282822999979
+          },
+          {
+            "player_id": "2779",
+            "process_cpu_seconds": 12.370744977000001,
+            "wall_seconds": 12.37091495499999
+          },
+          {
+            "player_id": "3012",
+            "process_cpu_seconds": 12.326835930000001,
+            "wall_seconds": 12.32689434200006
+          },
+          {
+            "player_id": "3195",
+            "process_cpu_seconds": 12.392561278000017,
+            "wall_seconds": 12.393132444000003
+          }
+        ],
+        "peak_process_rss_kib": 263712,
+        "phases": [
+          {
+            "phase": "INPUT_PERSIST_CHECKPOINT_FINAL_PREFIX",
+            "wall_seconds": 27.31863552499999
+          },
+          {
+            "phase": "EIGHT_ORIGINALS_AND_REQUIRED_ACK_PREFIXES",
+            "wall_seconds": 284.81827539100004
+          }
+        ],
+        "rss_limit_kib": 524288,
+        "total_process_cpu_seconds": 339.140536906,
+        "total_wall_seconds": 375.229279679,
+        "wall_limit_seconds": 900
+      },
+      "raw_bytes": 24666,
+      "raw_sha256": "1837fd8b6db179189da9c211d6ad6abb21887492b8df3ca1d46967c12acf4dc2",
+      "same_subject_paired_transfers": 4,
+      "sum_transport_operation_cpu_seconds": 170.46981702799994,
+      "sum_transport_operation_wall_seconds": 204.096246721,
+      "transport_operations": 11
+    },
+    "immutable_originals": {
+      "R0_K0_mathematical_laws_and_fixed_history_unchanged": true,
+      "all_original_nineteen_hashes_and_bytes_equal_independent_source_E": true,
+      "nine_frozen_original_producer_files_preserved": true,
+      "original_record_bytes": 1817800,
+      "original_record_count": 19,
+      "source_review_receipt": "evidence/verification/ops002-independent-source-review-06dbb492.json"
+    },
+    "independent_fetch": {
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "init",
+            "--quiet"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:12:37.443044+00:00",
+          "stderr": "",
+          "stdout": "",
+          "wall_seconds": 0.0025653659977251664
+        },
+        {
+          "argv": [
+            "git",
+            "remote",
+            "add",
+            "origin",
+            "https://github.com/NickNicky19/Nicks-multisport-lab-project.git"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:12:37.445624+00:00",
+          "stderr": "",
+          "stdout": "",
+          "wall_seconds": 0.0020960609981557354
+        },
+        {
+          "argv": [
+            "git",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "origin",
+            "e2d4ef41c3262d4733b8a64223171224b801bb73"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:12:37.447730+00:00",
+          "stderr": "From https://github.com/NickNicky19/Nicks-multisport-lab-project\n * branch            e2d4ef41c3262d4733b8a64223171224b801bb73 -> FETCH_HEAD",
+          "stdout": "",
+          "wall_seconds": 0.700842541999009
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "FETCH_HEAD"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:12:38.148583+00:00",
+          "stderr": "",
+          "stdout": "e2d4ef41c3262d4733b8a64223171224b801bb73",
+          "wall_seconds": 0.0023689100016781595
+        },
+        {
+          "argv": [
+            "git",
+            "checkout",
+            "--quiet",
+            "--detach",
+            "FETCH_HEAD"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:12:38.150968+00:00",
+          "stderr": "",
+          "stdout": "",
+          "wall_seconds": 0.03551252399847726
+        },
+        {
+          "argv": [
+            "git",
+            "ls-remote",
+            "--heads",
+            "origin",
+            "refs/heads/diagnostics/ops002-paired-batch-20261021"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:12:38.186493+00:00",
+          "stderr": "",
+          "stdout": "e2d4ef41c3262d4733b8a64223171224b801bb73\trefs/heads/diagnostics/ops002-paired-batch-20261021",
+          "wall_seconds": 0.48211083999922266
+        },
+        {
+          "argv": [
+            "git",
+            "ls-remote",
+            "--heads",
+            "origin",
+            "refs/heads/diagnostics/ops002-timing-20261021"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:12:38.668618+00:00",
+          "stderr": "",
+          "stdout": "4c3e3eb4c0e4cfdaa36f10a84918ccbbd28921ee\trefs/heads/diagnostics/ops002-timing-20261021",
+          "wall_seconds": 0.4616176480012655
+        },
+        {
+          "argv": [
+            "git",
+            "status",
+            "--porcelain"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:12:39.130250+00:00",
+          "stderr": "",
+          "stdout": "",
+          "wall_seconds": 0.021881829998164903
+        }
+      ],
+      "observed_at": "2026-10-21T03:12:39.152148+00:00",
+      "records_commit": "e2d4ef41c3262d4733b8a64223171224b801bb73",
+      "remote_branch": "diagnostics/ops002-paired-batch-20261021",
+      "repository": "https://github.com/NickNicky19/Nicks-multisport-lab-project.git",
+      "root": "/tmp/nml-independent-ops002-host-e2d4ef41-ri1sjq4z",
+      "source_commit": "06dbb492dda5d0043ec7a3a6c97ce9c46201edc8"
+    },
+    "optimized_recovery": {
+      "actual_completed_at": "2026-10-21T03:13:45.475778Z",
+      "actual_started_at": "2026-10-21T03:13:05.099214Z",
+      "all_eight_category_counts": 14,
+      "all_eight_joint_support_counts": 26645,
+      "argv": [
+        "env",
+        "PYTHONPATH=.",
+        "python3",
+        "-O",
+        "/tmp/nml-independent-ops002-host-39536525048-readback.py"
+      ],
+      "clock_policy": {
+        "all_new_originals_diagnostic": true,
+        "kind": "EXPLICIT_DIAGNOSTIC_READ_ONLY_NOT_ISSUANCE",
+        "unrelated_legacy_future_clocks_rejected": true,
+        "validation_clock": "2026-10-21T23:03:33.520821Z"
+      },
+      "cwd": "/tmp/nml-independent-ops002-host-e2d4ef41-ri1sjq4z",
+      "eligible_diagnostic_originals": 8,
+      "exit_code": 0,
+      "forecasts_generated_or_repaired": false,
+      "full_joint_laws_replayed": true,
+      "genuine_issued": 0,
+      "helper_sha256": "984046a7815c735f9bfb38ac94e998653fe00218d8e0fd4a70e0b7337c088219",
+      "ledger_record_count": 30,
+      "method": "Fresh separate Git object database fetched exact diagnostic head. Every new typed original is SYNTHETIC_DIAGNOSTIC for invented event999002001; exact27source hashes match independently recovered source06dbb492. Python-O verify_store(replay=True), then recover(replay=False), checks all bytes, typed meanings, references, identities, clocks, proof admission and full original joint laws. All mutation/issuance/correction entrypoints are patched to raise. Actual wall timestamps remain unpatched; the bounded explicit advanced diagnostic validation clock interprets only the retained invented timeline.",
+      "missing_original_peers": [],
+      "new_outcomes": 0,
+      "new_statistical_grades": 0,
+      "result_raw_sha256": "6849769966d53310109a4ab48937a0266113ac6147656cfeedcd6b94cedc3b63",
+      "retained_originals": 8,
+      "snapshot_encoded_bytes": 2115350,
+      "snapshot_files": 36,
+      "snapshot_id": "4218e65a078e104338929f52785de1eb2e61daaa3ae7173f80ab5219b245fcc0",
+      "source_or_original_bytes_modified": false,
+      "wall_seconds": 40.376568751999,
+      "working_tree_after": ""
+    },
+    "prior_failed_checkpoint_preserved": {
+      "all_41_previously_recovered_snapshot_files_still_exact_raw_hashes": true,
+      "count_provenance": "Old exact head was independently recovered with current source E before this measurement and returned8retained/7eligible/0genuine; same remote head and41 exact file hashes remain unchanged after new measurement. No old record or failure status is replaced.",
+      "disposition": "FAILED_TIMING_EIGHT_RETAINED_SEVEN_ELIGIBLE",
+      "old_remote_head_unchanged_in_fresh_query": true,
+      "records_branch": "diagnostics/ops002-timing-20261021",
+      "records_commit": "4c3e3eb4c0e4cfdaa36f10a84918ccbbd28921ee",
+      "report_payload_sha256": "16a346bffad5b2a5504a91184fe01ff126547155602df841e6f71e110040ad26",
+      "source_commit": "c535c7851382eb3d7a8701229bc4dd7094086c70",
+      "workflow_run_id": 39533281196
+    },
+    "readiness_limits_and_next_task": [
+      "This confirms one full-cohort software diagnostic at exact reviewed source and intended hosted Git path. It is not a genuine source capture, prospective issuance, statistical accuracy comparison, qualification, ticket or deployment.",
+      "The measured final independent retention has10.182132seconds of margin to the300-second global gate. One passing run does not establish robustness to later host/network variation, and no timing gate may be relaxed.",
+      "Before genuine execution, resolve permitted source operation/public derived-fact admission, primary encrypted raw retention and authenticated key recovery, actual genuine writer/checkpoint destination, and separate reviewed activation with independent recovery before the named capture window.",
+      "Retain both original diagnostic measurements. No further measurement, scheduler, late issuance or PROS004 activation is authorized by this receipt."
+    ],
+    "recorded_at": "2026-10-21T03:15:42.507547Z",
+    "records_branch": "diagnostics/ops002-paired-batch-20261021",
+    "records_commit": "e2d4ef41c3262d4733b8a64223171224b801bb73",
+    "repository": "NickNicky19/Nicks-multisport-lab-project",
+    "reviewer": "independent_ops_review",
+    "schema_version": "nba-operational002-independent-host-recovery-review-v2",
+    "snapshot": {
+      "file_count": 36,
+      "files": [
+        {
+          "bytes": 22648,
+          "path": "evidence/operational002/completions.jsonl",
+          "raw_sha256": "bf8d08c6811c094ddd23107b03ac991dcd0c77d3730638d5ed87575b8d9e6138"
+        },
+        {
+          "bytes": 685,
+          "path": "evidence/operational002/remote-recovery.08cdb49123bad2977c2b9bc6034e82daac98ea67e4f190844826ae69ff5eacd4.json",
+          "raw_sha256": "08cdb49123bad2977c2b9bc6034e82daac98ea67e4f190844826ae69ff5eacd4"
+        },
+        {
+          "bytes": 685,
+          "path": "evidence/operational002/remote-recovery.15d26dc75b2bc5c2f291002381720eef374249f592c4a9160e1de8d1eef89a3b.json",
+          "raw_sha256": "15d26dc75b2bc5c2f291002381720eef374249f592c4a9160e1de8d1eef89a3b"
+        },
+        {
+          "bytes": 685,
+          "path": "evidence/operational002/remote-recovery.6ec14d79f43a6df64897787691a8dccb998ab23d3d46de8aea417835df32e80d.json",
+          "raw_sha256": "6ec14d79f43a6df64897787691a8dccb998ab23d3d46de8aea417835df32e80d"
+        },
+        {
+          "bytes": 685,
+          "path": "evidence/operational002/remote-recovery.87cdd8ae5d41f1e93810527b083414f73c54ac51585ec92b2a726c05e7a41982.json",
+          "raw_sha256": "87cdd8ae5d41f1e93810527b083414f73c54ac51585ec92b2a726c05e7a41982"
+        },
+        {
+          "bytes": 685,
+          "path": "evidence/operational002/remote-recovery.json",
+          "raw_sha256": "145c4aed36a37fafdc57713b55bf0416261870d7e683e74021b131ffd7161311"
+        },
+        {
+          "bytes": 22838,
+          "path": "records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json",
+          "raw_sha256": "499b358129adde25134d5ba6243b372b1937915f7a0f2245750a057d40c4b8c6"
+        },
+        {
+          "bytes": 22747,
+          "path": "records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json",
+          "raw_sha256": "507344a333f5218039e39b1201e1f203f6045bf8e04375a7a19740ddea337967"
+        },
+        {
+          "bytes": 32061,
+          "path": "records/forecasts/580ad6c4178adabc4bb07bbb19a93ae253fa019edd344dfa6ef06e8506849d0b.json",
+          "raw_sha256": "95c2955689431df603c62027f630602664e9fee2dcad3b0636fd7518abbd6266"
+        },
+        {
+          "bytes": 32151,
+          "path": "records/forecasts/683167c6195bde71077ebcc7df29033a064307ecfc96b678aad102eef5eb8a2a.json",
+          "raw_sha256": "6ab841cd930829a7f5662e57cc51c24796a965f6b1688c51f36ad409ca6ce53d"
+        },
+        {
+          "bytes": 32049,
+          "path": "records/forecasts/6f21936500e3d19cb9d2a48cebf294dd337208ab2141783a1985f32abf3ceb62.json",
+          "raw_sha256": "c54de7e4a5fab6325fd42b23463f798f9fae86a3683b04b04ae0e175c291f3a5"
+        },
+        {
+          "bytes": 32036,
+          "path": "records/forecasts/76577bf237f74731b639cebd76985a4b6c41df2101a08d92cbd9798372e866f0.json",
+          "raw_sha256": "55f018cfca50610478a12bd115d9e7c289d8d939b5c8319f88e2b22ea1077160"
+        },
+        {
+          "bytes": 32178,
+          "path": "records/forecasts/8c8c91ca0f4a84f072c75adb8912a45103bcd9b91f67e54e0fd719ccedae2f42.json",
+          "raw_sha256": "c04f1b45af4a4b8e81fe7c37990319caba423493dd01bd3fb7e6dc4a5cd1e010"
+        },
+        {
+          "bytes": 22813,
+          "path": "records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json",
+          "raw_sha256": "e35af6116e8151aacb23d21465c2744324501a92d0f83cf7e780066677df74fa"
+        },
+        {
+          "bytes": 22815,
+          "path": "records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json",
+          "raw_sha256": "1748dce54d24cc583deb3e102d08680142307c3c784ddfc728abc02f78e82f0f"
+        },
+        {
+          "bytes": 32076,
+          "path": "records/forecasts/a9cbe7ef9d1e8d09c840cfcc1db2861b7416df265d3eb0d9a406d62e0d88b733.json",
+          "raw_sha256": "2653ef6d47887e18da5c4254d2e49a78c4daf24f3a74ba11027520c5c90c3817"
+        },
+        {
+          "bytes": 32043,
+          "path": "records/forecasts/be3133459aff9845b9e3cf1a6a689fb369e73d880fd876c6da229943ebd435a1.json",
+          "raw_sha256": "bfe4e8cfd35954eaa031e1696fc78d47974e1bb8a157ee70ebe7309b177b58c2"
+        },
+        {
+          "bytes": 22826,
+          "path": "records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json",
+          "raw_sha256": "d74070a12aa144b4bc917de930e6527f4bd5bdeb84db693a215bec1513562f7b"
+        },
+        {
+          "bytes": 22830,
+          "path": "records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json",
+          "raw_sha256": "bf3aa0b6fab62f64a03070fc6775db1bec8b0654e89ae93b3c42133e94649894"
+        },
+        {
+          "bytes": 32202,
+          "path": "records/forecasts/f1c04b22ee4d695c7dfd0c950d6445b337b850e471e29d72f731155ad45b7860.json",
+          "raw_sha256": "54368a78f8db25671452a5299ae98396ff94b81686c121c804aee4db07aa7c0f"
+        },
+        {
+          "bytes": 4375,
+          "path": "records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json",
+          "raw_sha256": "cf519c4238f641724d81040f8cdee82b693aa3f98e4ae8db772fbadc480fd6a0"
+        },
+        {
+          "bytes": 4357,
+          "path": "records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json",
+          "raw_sha256": "73b72a5ed145708157052c269d25c0dd72467a002e26efac41e1136839fa0f60"
+        },
+        {
+          "bytes": 4365,
+          "path": "records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json",
+          "raw_sha256": "c691398d641af291bcd3c2a9d7427ff59ab953606ee9388bc2c202642d80947c"
+        },
+        {
+          "bytes": 4370,
+          "path": "records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json",
+          "raw_sha256": "41e3453b89b97c160d56e932f1389ac90b451142dcda3cff27629b1448bc77dd"
+        },
+        {
+          "bytes": 4369,
+          "path": "records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json",
+          "raw_sha256": "1297f91dc9154d2b6111e60a1505f4a08e911dd3c99b919431833df76dbe40b5"
+        },
+        {
+          "bytes": 4368,
+          "path": "records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json",
+          "raw_sha256": "2a343e191af2f809baf91ab4d6f9de8d09f593c9f6b088d9740238982107237b"
+        },
+        {
+          "bytes": 4628,
+          "path": "records/input_captures/8583094cdb234837e7663a1f315519b665fac6a7d4e8713419e004840cfe725c.json",
+          "raw_sha256": "b4239f3e50153bc7ecaad1a30c244bc595c70df808f8c8fc97dd4e46e4b581f5"
+        },
+        {
+          "bytes": 2023,
+          "path": "records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json",
+          "raw_sha256": "a9474a89403e3aa87f44adb014eee6e10b09761002e5a4deabc198022ea88ce3"
+        },
+        {
+          "bytes": 2018,
+          "path": "records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json",
+          "raw_sha256": "c9938334da0fbfb3032558df23d5e69588fdf6ca7f0b9eb562fb271c090ef93e"
+        },
+        {
+          "bytes": 2019,
+          "path": "records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json",
+          "raw_sha256": "e94d071bf65e5f4815400a0e334b81529d6fd71147fb467584fc0aa1bb7e4f9c"
+        },
+        {
+          "bytes": 2018,
+          "path": "records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json",
+          "raw_sha256": "74bd3778ce79875bb6f238cabda878ab88789df928b3b7804494c3e94f346b54"
+        },
+        {
+          "bytes": 2018,
+          "path": "records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json",
+          "raw_sha256": "f4787faceff42cc52a2c446b03fc6ee7b8b2103643dff937b411193c75994bc5"
+        },
+        {
+          "bytes": 2021,
+          "path": "records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json",
+          "raw_sha256": "1332e892946d072d1500bdd693a877cbefb1ee54b51c3eb657e3c7af6393ee63"
+        },
+        {
+          "bytes": 3772,
+          "path": "records/research_inputs/107bf22abaaf4b4a84b02253c4ee16f35161e28a115c840d034e35a9c27831f7.json",
+          "raw_sha256": "25f37f1a54344e2a77b5b8e4aa10571ad59c6fb8171fe949e87270999a089a0b"
+        },
+        {
+          "bytes": 6281,
+          "path": "records/research_inputs/18622e31c97f3cb31b17d03f93f4edd66dda471f1f90df7b9975b7901b37ad1b.json",
+          "raw_sha256": "33a451b4e0545a15135c854d8579bda21ea659eb577e3fe6c686a26c1de30dd8"
+        },
+        {
+          "bytes": 1642610,
+          "path": "records/research_inputs/dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc.json",
+          "raw_sha256": "db9a682099e28ce087edf430e9aa52f9be8e060ebf4b4cf8deb53d1317c8b122"
+        }
+      ],
+      "protocol_id": "NBA-PAIRED-OPS-002",
+      "schema_version": "nba-operational002-snapshot-v1",
+      "snapshot_id": "4218e65a078e104338929f52785de1eb2e61daaa3ae7173f80ab5219b245fcc0",
+      "total_bytes": 2115350
+    },
+    "source_commit": "06dbb492dda5d0043ec7a3a6c97ce9c46201edc8",
+    "workflow_result": "COMPLETED_SUCCESS_PASS_FULL_COHORT_OPERATIONAL_DIAGNOSTIC",
+    "workflow_run_id": 39536525048
+  },
+  "payload_sha256": "7019f4a1ced48a2d81187d80d10d50399501c9e373526958aa7a45f4a24a43ab",
+  "schema_version": "decoded-json-receipt-v1"
+}

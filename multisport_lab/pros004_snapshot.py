@@ -19,6 +19,7 @@ from pathlib import Path
 import re
 import stat
 import subprocess
+from datetime import datetime, timezone
 
 from .integrity import IntegrityError, canonical, digest, read_receipt, write_receipt, utc
 from .pros004_completion import (JOURNAL_RELATIVE_PATH, MAX_JOURNAL_BYTES,
@@ -34,6 +35,7 @@ MODE = "READINESS_DIAGNOSTIC_NON_ISSUANCE"
 MANIFEST = "pros004-snapshot.json"
 MAX_MANIFEST_BYTES = 256*1024
 _CALLBACK_PROOF_KEY = object()
+_TRANSFER_PROOF_KEY = object()
 
 
 class SnapshotError(IntegrityError):
@@ -165,7 +167,7 @@ def _callback_context(root):
         'journal_byte_limit':MAX_JOURNAL_BYTES,'source_sha256':source_hashes()})
 
 
-def _fresh_identical_snapshot(root,expected,clock):
+def _fresh_identical_snapshot(root,expected,clock,*,_diagnostic_transport=False):
     """Recheck bytes, canonical hashes, references and clocks after a callback.
 
     Only pure typed semantics for exactly identical bytes are reused. No current
@@ -194,9 +196,21 @@ def _fresh_identical_snapshot(root,expected,clock):
                  "callback receipt identity changed")
         received=payload['received_at']
         _require(type(received) is str and re.fullmatch(
-            r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z',received) is not None and
-            utc(received)<=observed_at,"callback receipt clock exceeds the actual reread clock")
+            r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z',received) is not None,
+            "callback receipt clock is malformed")
         records[key]=payload;hashes[key]=entry['payload_sha256'];encoded[key]=raw_sha;sizes[key]=size
+    for (kind,_),payload in records.items():
+        # The independent verifier explicitly permits simulated PROS004 clocks
+        # in diagnostic stores. Transport must preserve that policy, without
+        # treating a simulation as an actual capture or persistence clock. The
+        # existing callback proof retains its stricter actual-clock policy.
+        simulated=_diagnostic_transport and 'pros004' in payload['data']
+        if _diagnostic_transport and kind=='corrections':
+            targets=[payload['supersedes'],payload['data']['replacement']]
+            simulated=all(records[(r['kind'],r['record_id'])]['data'].get('pros004',{}).get('mode')
+                          in {'READINESS_DIAGNOSTIC','SYNTHETIC_DIAGNOSTIC'} for r in targets)
+        _require(simulated or utc(payload['received_at'])<=observed_at,
+                 "callback receipt clock exceeds the actual reread clock")
     for payload in records.values():
         seen=set()
         for reference in payload['references']:
@@ -216,13 +230,15 @@ def _fresh_identical_snapshot(root,expected,clock):
         _require(journal['raw_sha256']==entry['raw_sha256'] and journal['bytes']==entry['encoded_bytes'],
                  "callback changed original completion-journal bytes")
         for observation in load_journal(root):
-            _require(utc(observation['recorded_at'])<=observed_at,
+            _require(_diagnostic_transport or utc(observation['recorded_at'])<=observed_at,
                      "callback completion observation exceeds the actual reread clock")
     _require(len(records)+journal['files']<=MAX_RECORDS and sum(sizes.values())+journal['bytes']<=MAX_BYTES,
              "callback proof exceeds unchanged ledger limits")
     _verify_original_bytes(root,encoded,sizes)
     _require(journal_inventory(root)==journal,"completion journal changed during callback verification")
+    _require(_strict_layout(root)==files,"receipt layout changed during callback verification")
     _require(utc(clock())>=observed_at,"actual callback verification clock moved backwards")
+    return records
 
 
 class _CallbackVerification:
@@ -266,6 +282,141 @@ def begin_callback_verification(source_root):
     manifest=snapshot_manifest(root)
     _require(_callback_context(root)==context,"root/source context changed during strict callback verification")
     return _CallbackVerification(root,manifest,context,_key=_CALLBACK_PROOF_KEY)
+
+
+def _transport_now():
+    return datetime.now(timezone.utc)
+
+
+class _ExactTransfer:
+    """One source verification and bounded, single-use local copy checks.
+
+    This object is private to one checkpoint operation. Only exactly identical
+    bytes reuse pure typed meanings. Every root gets fresh JSON/checksum,
+    reference, clock, correction, journal, inventory and final-byte checks.
+    Nothing here supplies admission, completion times or remote durability;
+    independent Git readback must still perform a full typed verification.
+    """
+    __slots__=('__source','__context','__manifest_bytes','__phase','__target','__writer','__last_clock',
+               '__source_clocks')
+
+    def __init__(self,source,manifest,context,*,_key=None):
+        _require(_key is _TRANSFER_PROOF_KEY,"transfer proofs must originate from strict verification")
+        self.__source=source;self.__context=context;self.__phase='NEW'
+        self.__target=None;self.__writer=None
+        self.__source_clocks={}
+        self.__last_clock=utc(_transport_now())
+        self.__manifest_bytes=canonical(manifest)
+        _require(len(self.__manifest_bytes)<=MAX_MANIFEST_BYTES,"transfer proof exceeds its memory bound")
+
+    @property
+    def manifest(self):
+        return json.loads(self.__manifest_bytes)
+
+    def _clock(self):
+        observed=utc(_transport_now())
+        _require(observed>=self.__last_clock,"actual transfer verification clock moved backwards")
+        self.__last_clock=observed
+        return observed
+
+    def _check(self,root,manifest,context):
+        try:
+            _require(_callback_context(self.__source)==self.__context,"transfer source context changed")
+            _require(_callback_context(root)==context,"transfer destination context changed")
+            records=_fresh_identical_snapshot(root,manifest,self._clock,_diagnostic_transport=True)
+            _require(_callback_context(root)==context,"transfer destination changed during verification")
+            _require(_callback_context(self.__source)==self.__context,"transfer source changed during verification")
+            return records
+        except (IntegrityError,VerificationError,OSError,KeyError,TypeError,ValueError) as error:
+            if isinstance(error,SnapshotError):raise
+            raise SnapshotError('exact transfer verification rejected: '+str(error)) from error
+
+    def export(self,snapshot_root):
+        _require(self.__phase=='NEW',"transfer export proof has already been consumed")
+        self.__phase='FAILED'
+        target=_path_root(snapshot_root)
+        _require(not target.is_relative_to(self.__source),"snapshot destination must not be inside source")
+        target=_new_root(target);(target/'records').mkdir(exist_ok=True)
+        context=_callback_context(target);manifest=self.manifest
+        for entry in manifest['entries']:
+            _copy_record(self.__source/entry['path'],target/entry['path'],entry)
+        self._check(target,manifest,context)
+        source_records=self._check(self.__source,manifest,self.__context)
+        self.__source_clocks={f'records/{kind}/{identifier}.json':payload['received_at']
+                              for (kind,identifier),payload in source_records.items()}
+        write_receipt(target/MANIFEST,manifest,max_bytes=MAX_MANIFEST_BYTES)
+        self.__target=(target,context);self.__phase='EXPORTED'
+        return manifest
+
+    def preserve_writer(self,writer_root):
+        """Check the retained writer's exact closed subset and journal prefix."""
+        _require(self.__phase=='EXPORTED',"transfer writer proof has already been consumed")
+        self.__phase='FAILED'
+        root=_path_root(writer_root)
+        _require(root!=self.__source and not root.is_relative_to(self.__source) and
+                 not self.__source.is_relative_to(root),"transfer writer and source roots overlap")
+        (root/'records').mkdir(exist_ok=True)
+        context=_callback_context(root);manifest=self.manifest
+        current={entry['path']:entry for entry in manifest['entries']}
+        retained=[]
+        for path in _strict_layout(root):
+            relative=path.relative_to(root).as_posix()
+            _require(relative in current,"checkpoint source is missing a retained remote original")
+            retained.append(current[relative])
+        journal=journal_inventory(root)
+        if journal['files']:
+            _require(JOURNAL_RELATIVE_PATH in current,"completion journal cannot truncate an acknowledged prefix")
+            old=(root/JOURNAL_RELATIVE_PATH).read_bytes()
+            source=self.__target[0]/JOURNAL_RELATIVE_PATH
+            _require(source.read_bytes().startswith(old),
+                     "completion journal cannot truncate or replace an acknowledged prefix")
+            retained.append({'entry_type':'COMPLETION_JOURNAL','path':JOURNAL_RELATIVE_PATH,
+                'encoded_bytes':journal['bytes'],'raw_sha256':journal['raw_sha256'],
+                'payload_sha256':digest(load_journal(root))})
+        retained.sort(key=lambda entry:entry['path'])
+        body={k:v for k,v in manifest.items() if k!='manifest_id'}
+        body.update(entries=retained,record_count=len(retained),
+            ledger_record_count=len(retained)-journal['files'],completion_journal_count=journal['files'],
+            encoded_bytes=sum(entry['encoded_bytes'] for entry in retained))
+        # This transient inventory is derived solely from the full strict source
+        # proof. It is never published as an independently typed subset snapshot.
+        subset={**body,'manifest_id':digest(body)}
+        records=self._check(root,subset,context)
+        # An unreferenced original can still belong to a durable admission's
+        # older input snapshot. Full strict SOURCE verification already checked
+        # that prefix; exact retained bytes must keep its complete membership.
+        retained_paths={entry['path'] for entry in retained}
+        prefix_hashes=set();prefix=hashlib.sha256()
+        for entry in load_journal(root):
+            prefix.update(canonical(entry)+b'\n');prefix_hashes.add(prefix.hexdigest())
+        for payload in records.values():
+            body=payload['data'].get('pros004',{})
+            if body.get('schema_version')!='nba-pros004-event-claim-v2':continue
+            original=body['input_final_checkpoint'];started=utc(original['operation_started_at'])
+            required={path for path,clock in self.__source_clocks.items() if utc(clock)<=started}
+            _require(required<=retained_paths and original['journal_raw_sha256'] in prefix_hashes,
+                     "retained input-admission snapshot prefix is incomplete; do not repair originals")
+        self.__writer=(root,context);self.__phase='WRITER_BOUND'
+
+    def verify_writer(self,writer_root):
+        _require(self.__phase=='WRITER_BOUND',"transfer completion proof has already been consumed")
+        self.__phase='FAILED'
+        root=_path_root(writer_root)
+        _require(root==self.__writer[0],"transfer completion belongs to another writer")
+        # Recheck the exported raw source as well as the final writer. This also
+        # rejects changes between export and the writer's actual copy operation.
+        self._check(self.__target[0],self.manifest,self.__target[1])
+        self._check(root,self.manifest,self.__writer[1])
+        self.__phase='COMPLETE'
+        return self.manifest
+
+
+def _begin_exact_transfer(source_root):
+    """No caller manifest: every operation starts with a fresh full typed pass."""
+    root=_path_root(source_root);context=_callback_context(root)
+    manifest=snapshot_manifest(root)
+    _require(_callback_context(root)==context,"root/source changed during strict transfer verification")
+    return _ExactTransfer(root,manifest,context,_key=_TRANSFER_PROOF_KEY)
 
 
 def recover_manifest_prefix(source_root, journal_raw_sha256, operation_started_at):
@@ -435,18 +586,7 @@ def _copy_record(source, destination, entry):
 
 def export_snapshot(source_root, snapshot_root):
     """Create a fresh verified snapshot; retain any interrupted destination."""
-    source = _path_root(source_root)
-    manifest = snapshot_manifest(source)
-    target = _path_root(snapshot_root)
-    _require(not target.is_relative_to(source), "snapshot destination must not be inside source")
-    target = _new_root(target)
-    (target/"records").mkdir(exist_ok=True)
-    for entry in manifest["entries"]:
-        _copy_record(source/entry["path"], target/entry["path"], entry)
-    _require(snapshot_manifest(target) == manifest and snapshot_manifest(source) == manifest,
-             "source or copied diagnostic snapshot changed")
-    write_receipt(target/MANIFEST, manifest, max_bytes=MAX_MANIFEST_BYTES)
-    return manifest
+    return _begin_exact_transfer(source_root).export(snapshot_root)
 
 
 def recover_snapshot(snapshot_root, destination_root):

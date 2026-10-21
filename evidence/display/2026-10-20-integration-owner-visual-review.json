@@ -1,0 +1,28 @@
+{
+  "artifact_build_commit": "d7273144bdf75dc93866cb8ef770373f2bccd359",
+  "artifact_snapshot_id": "13a10ce90ee726a5ebcd27292af9c1d8c8bb6b83882167e5d2058ed48bfe7284",
+  "deployment": false,
+  "environment_retry": "Initial screenshot server binding failed with sandbox EPERM; rerun allowed loopback network permission, no code change or provider GET.",
+  "genuine_issuance": 0,
+  "model_evaluation": false,
+  "original19_records_unchanged": true,
+  "original_bytes": 1817800,
+  "review": "Root visually inspected desktop1440/mobile390 Chromium History screenshots: prominent readable verified names, retained historical team/opponent, full matchup/date, historical reconstruction label, legible PMF and source details control. Mobile wraps without horizontal page overflow. Independent automated review additionally covers320px.",
+  "reviewed_at": "2026-10-20T23:16:23.929753+00:00",
+  "schema_version": "website-integration-owner-visual-review-v1",
+  "screenshots": [
+    {
+      "bytes": 116854,
+      "path": "/tmp/nml-website-history-cards-1440.png",
+      "sha256": "f1cf15fe52e35edfbe5fbc62e0b54ed72cb22e8c9361be98c821e3206cadd6a8",
+      "viewport_width": 1440
+    },
+    {
+      "bytes": 51573,
+      "path": "/tmp/nml-website-history-cards-390.png",
+      "sha256": "91d90b3a84a5cbcab6626b4fedd2ce2ddf001170c020f4953e197039e745a55d",
+      "viewport_width": 390
+    }
+  ],
+  "source_commit": "d7273144bdf75dc93866cb8ef770373f2bccd359"
+}

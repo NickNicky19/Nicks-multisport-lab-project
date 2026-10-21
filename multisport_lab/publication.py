@@ -207,14 +207,14 @@ def empty_nba(root: Path, *, now: datetime) -> dict:
 
 def research_nba(root: Path, *, now: datetime) -> dict:
     """Read the durable repository ledger; build never regenerates forecasts."""
-    from .pros004_records import Pros004Store
+    from .publication_ledger import CompositeEnvelopeLedger
     from .forecast_contract import EVENT_SCHEMA
     result = empty_nba(root, now=now)
     result["schema_version"] = 2
     # The versioned facade validates the new shared-input kinds while inherited
     # legacy iterators continue to expose only unchanged historical/R1 bundles.
     # New PROS004 records have a separate paginated public contract below.
-    ledger = Pros004Store(root).ledger
+    ledger = CompositeEnvelopeLedger(root)
     # Recovery checks every checksum and reference before anything is published.
     ledger.scan()
     result["forecasts"] = list(ledger.iter_active_forecasts())
@@ -258,58 +258,103 @@ def _write_atomic(path: Path, raw: bytes):
         Path(name).unlink(missing_ok=True)
 
 
-def read_manifest(data_dir: Path, *, now: datetime) -> dict:
+AUXILIARY_CHANNELS = ("pros004", "display", "offers", "paired_research")
+REJECTED_UPDATE = (ValueError, KeyError, TypeError, OSError, ImportError)
+
+
+def _channel_names(version: int) -> tuple[str, ...]:
+    if type(version) is not int:
+        return ()
+    return {3: ("pros004",), 4: ("display",), 5: AUXILIARY_CHANNELS}.get(version, ())
+
+
+def _read_channel(data_dir: Path, channel: str, descriptor: dict, snapshots: list[dict], *, now: datetime):
+    """Each independent channel validates its own paths before opening any asset."""
+    if channel == "pros004":
+        from .pros004_publication import read_publication
+        return read_publication(data_dir, descriptor, now=now)
+    if channel == "display":
+        from .display_metadata import read_asset
+        return read_asset(data_dir, descriptor, snapshots, now=now)
+    if channel == "offers":
+        from .offer_publication import read_asset
+        return read_asset(data_dir, descriptor, now=now)
+    if channel == "paired_research":
+        from .operational_publication import read_asset
+        return read_asset(data_dir, descriptor, now=now)
+    raise IntegrityError("Unsupported publication channel")
+
+
+def read_manifest(data_dir: Path, *, now: datetime, validate_display: bool = True,
+                  validate_auxiliary: bool = True) -> dict:
+    """Read legacy manifests exactly; v5 composes independently typed channels.
+
+    Builders can recover the verified core before separately inspecting optional
+    channels. Public artifact verification uses the strict default.
+    """
     manifest = load_json(data_dir / "manifest.json", max_bytes=MAX_ASSET_BYTES)
+    version = manifest.get("schema_version") if type(manifest) is dict else None
     fields = {"schema_version", "snapshot_id", "build_commit", "published_at", "publication_status", "supported_sports", "sports", "errors"}
-    if type(manifest) is dict and manifest.get("schema_version") == 3:
-        fields |= {"pros004", "pros004_error"}
+    fields |= {field for channel in _channel_names(version) for field in (channel, channel + "_error")}
     if (type(manifest) is not dict or set(manifest) != fields
-            or type(manifest["schema_version"]) is not int or manifest["schema_version"] not in {1, 2, 3}
+            or type(version) is not int or version not in {1, 2, 3, 4, 5}
             or manifest["publication_status"] != "RESEARCH_ONLY"
             or not re.fullmatch(r"[a-f0-9]{40}", manifest["build_commit"])
             or utc(manifest["published_at"]) > utc(now)):
         raise IntegrityError("Invalid publication manifest")
     if manifest["snapshot_id"] != digest({k: v for k, v in manifest.items() if k != "snapshot_id"}):
         raise IntegrityError("Manifest checksum mismatch")
-    seen = set()
+    if (type(manifest["sports"]) is not list or not manifest["sports"]
+            or type(manifest["supported_sports"]) is not list
+            or type(manifest["errors"]) is not dict):
+        raise IntegrityError("Invalid publication collections")
+    for league, error in manifest["errors"].items():
+        if not isinstance(league, str) or not re.fullmatch(r"[A-Z]+", league):
+            raise IntegrityError("Invalid publication error league")
+        _text(error, "publication error")
+    seen, snapshots = set(), []
     for entry in manifest["sports"]:
-        if set(entry) != {"league", "path", "sha256", "generated_at", "status", "retained", "error"}:
+        if type(entry) is not dict or set(entry) != {"league", "path", "sha256", "generated_at", "status", "retained", "error"}:
             raise IntegrityError("Invalid manifest sport entry")
         league = entry["league"]
-        if league in seen or not re.fullmatch(r"[A-Z]+", league):
+        if not isinstance(league, str) or league in seen or not re.fullmatch(r"[A-Z]+", league):
             raise IntegrityError("Duplicate/invalid league")
         seen.add(league)
-        if (entry["path"] != f"{league.lower()}.{entry['sha256']}.json"
-                or not re.fullmatch(r"[a-f0-9]{64}", entry["sha256"])
+        if (not isinstance(entry["sha256"], str) or not re.fullmatch(r"[a-f0-9]{64}", entry["sha256"])
+                or entry["path"] != f"{league.lower()}.{entry['sha256']}.json"
                 or type(entry["retained"]) is not bool or entry["status"] != "RESEARCH_ONLY"):
             raise IntegrityError("Invalid sport path/hash/status")
+        if entry["error"] is not None:
+            _text(entry["error"], "sport publication error")
         snapshot = load_json(data_dir / entry["path"], max_bytes=MAX_ASSET_BYTES)
         if hashlib.sha256((data_dir / entry["path"]).read_bytes()).hexdigest() != entry["sha256"]:
             raise IntegrityError("Sport asset checksum mismatch")
         validate_sport(snapshot, league=league, now=utc(manifest["published_at"]))
         if snapshot["generated_at"] != entry["generated_at"]:
             raise IntegrityError("Generation clock mismatch")
+        snapshots.append(snapshot)
     if sorted(seen) != manifest["supported_sports"]:
         raise IntegrityError("Sport references do not match supported scope")
-    if manifest["schema_version"] == 3:
-        from .pros004_publication import read_publication
-        error = manifest["pros004_error"]
+    for channel in _channel_names(version):
+        if not validate_auxiliary or channel == "display" and not validate_display:
+            continue
+        error, descriptor = manifest[channel + "_error"], manifest[channel]
         if error is not None:
-            _text(error, "PROS004 publication error")
-        if manifest["pros004"] is None:
+            _text(error, channel + " publication error")
+        if descriptor is None:
             if error is None:
-                raise IntegrityError("A missing PROS004 collection needs an explicit error")
+                raise IntegrityError("Missing publication channel requires an explanation")
         else:
-            read_publication(data_dir, manifest["pros004"], now=utc(manifest["published_at"]))
+            _read_channel(data_dir, channel, descriptor, snapshots, now=utc(manifest["published_at"]))
     return manifest
 
 
 def publish(data_dir: Path, snapshots: dict[str, dict | Exception], *, build_commit: str, now: datetime) -> dict:
-    """Publish admitted catalogs, retaining validated previous sports on failure."""
+    """Publish core catalogs, retaining validated previous sports on failure."""
     now = utc(now)
     if not re.fullmatch(r"[a-f0-9]{40}", build_commit):
         raise IntegrityError("Full build commit SHA required")
-    previous = read_manifest(data_dir, now=now) if (data_dir / "manifest.json").exists() else None
+    previous = read_manifest(data_dir, now=now, validate_auxiliary=False) if (data_dir / "manifest.json").exists() else None
     entries = {item["league"]: dict(item) for item in previous["sports"]} if previous else {}
     errors = {}
     for league, snapshot in snapshots.items():
@@ -325,7 +370,6 @@ def publish(data_dir: Path, snapshots: dict[str, dict | Exception], *, build_com
                               "generated_at": snapshot["generated_at"], "status": "RESEARCH_ONLY",
                               "retained": False, "error": None}
         except (ValueError, TypeError, KeyError, OSError) as error:
-            # Never publish exception bodies: they may contain private upstream URLs/data.
             errors[league] = f"{type(error).__name__}: sport update rejected"
             if league in entries:
                 entries[league].update(retained=True, error=errors[league])
@@ -339,51 +383,114 @@ def publish(data_dir: Path, snapshots: dict[str, dict | Exception], *, build_com
     return result
 
 
+def _emit_asset(data_dir: Path, asset: dict, *, prefix: str, status: str) -> dict:
+    raw = canonical(asset)
+    sha = hashlib.sha256(raw).hexdigest()
+    descriptor = {"path": f"{prefix}.{sha}.json", "sha256": sha,
+                  "generated_at": asset["generated_at"], "status": status, "retained": False, "error": None}
+    _write_atomic(data_dir / descriptor["path"], raw)
+    return descriptor
+
+
 def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) -> dict:
-    # Assemble from an allowlist into a fresh tree, never upload arbitrary stale
-    # files left in a previous output directory. Carry only verified assets.
+    """Allowlisted artifact; each publication channel fails independently."""
     output = output.resolve() if not output.is_symlink() else output
     if output.is_symlink() or output == root.resolve() or root.resolve().is_relative_to(output):
         raise IntegrityError("Output must be a separate non-symlink artifact directory")
     output.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix=".site-build-", dir=output.parent))
-    backup = None
-    old = None
+    backup, old, retained = None, None, {}
     try:
         if (output / "data/manifest.json").exists():
-            old = read_manifest(output / "data", now=now)
+            old = read_manifest(output / "data", now=now, validate_auxiliary=False)
             (staging / "data").mkdir()
             for name in ("manifest.json", *(item["path"] for item in old["sports"])):
                 shutil.copyfile(output / "data" / name, staging / "data" / name)
-            if old.get("pros004") is not None:
-                from .pros004_publication import publication_asset_paths
-                for name in publication_asset_paths(output / "data", old["pros004"], now=now):
-                    shutil.copyfile(output / "data" / name, staging / "data" / name)
+            old_sports = [load_json(output / "data" / ref["path"], max_bytes=MAX_ASSET_BYTES) for ref in old["sports"]]
+            for channel in AUXILIARY_CHANNELS:
+                descriptor = old.get(channel)
+                if descriptor is None:
+                    continue
+                try:
+                    _read_channel(output / "data", channel, descriptor, old_sports, now=now)
+                    names = [descriptor["path"]]
+                    if channel == "pros004":
+                        from .pros004_publication import publication_asset_paths
+                        names = publication_asset_paths(output / "data", descriptor, now=now)
+                    for name in names:
+                        shutil.copyfile(output / "data" / name, staging / "data" / name)
+                    retained[channel] = descriptor
+                except REJECTED_UPDATE:
+                    # Never copy a descriptor path until its strict reader admits it.
+                    pass
         for source in (root / "web").iterdir():
             if source.is_file() and not source.is_symlink() and source.suffix in {".html", ".css", ".js", ".mjs", ".svg", ".webmanifest"}:
                 shutil.copyfile(source, staging / source.name)
         if not (staging / "index.html").is_file():
             raise IntegrityError("Site artifact requires index.html at its root")
+        research_error = None
         try:
             nba_snapshot = research_nba(root, now=now)
         except (ValueError, KeyError, TypeError, OSError) as error:
             nba_snapshot = error
+            if not old or not any(ref["league"] == "NBA" for ref in old["sports"]):
+                # A new category-only catalog permits independent admitted offers.
+                # It is explicitly an unavailable research channel, never success.
+                nba_snapshot = empty_nba(root, now=now)
+                research_error = f"{type(error).__name__}: research records unavailable; category catalog only"
         result = publish(staging / "data", {"NBA": nba_snapshot}, build_commit=build_commit, now=now)
-        from .pros004_publication import emit_publication
-        try:
-            descriptor = emit_publication(staging / "data", root, now=now)
-            collection_error = None
-        except (ValueError, KeyError, TypeError, OSError) as error:
-            # Preserve a validated prior collection without refreshing its clocks.
-            # Never replace failed semantic recovery with an apparently empty run.
-            descriptor = old.get("pros004") if old else None
-            collection_error = f"{type(error).__name__}: PROS004 update rejected"
-            if descriptor is not None:
-                descriptor = {**descriptor, "retained": True, "error": collection_error}
-        result.update(schema_version=3, pros004=descriptor, pros004_error=collection_error)
+        if research_error:
+            result["errors"]["NBA"] = research_error
+            next(ref for ref in result["sports"] if ref["league"] == "NBA")["error"] = research_error
+        snapshots = [load_json(staging / "data" / ref["path"], max_bytes=MAX_ASSET_BYTES) for ref in result["sports"]]
+        for channel in AUXILIARY_CHANNELS:
+            descriptor, error_text = None, None
+            try:
+                if channel == "pros004":
+                    from .pros004_publication import emit_publication
+                    descriptor = emit_publication(staging / "data", root, now=now)
+                elif channel == "display":
+                    from .display_metadata import make_asset
+                    descriptor = _emit_asset(staging / "data", make_asset(root, snapshots, now=now), prefix="display", status="DISPLAY_METADATA_ONLY")
+                elif channel == "offers":
+                    from .offer_publication import make_asset
+                    descriptor = _emit_asset(staging / "data", make_asset(root, now=now), prefix="nba-offers", status="OFFER_ONLY_RESEARCH")
+                else:
+                    from .operational_publication import make_asset
+                    descriptor = _emit_asset(staging / "data", make_asset(root, now=now), prefix="paired-research", status="RESEARCH_ONLY")
+                _read_channel(staging / "data", channel, descriptor, snapshots, now=now)
+            except REJECTED_UPDATE as error:
+                error_text = f"{type(error).__name__}: {channel} update unavailable"
+                if channel == "display":
+                    error_text += "; source IDs remain visible"
+                previous = retained.get(channel)
+                if previous is not None:
+                    try:
+                        _read_channel(staging / "data", channel, previous, snapshots, now=now)
+                        descriptor = {**previous, "retained": True, "error": error_text}
+                    except REJECTED_UPDATE:
+                        descriptor = None
+                else:
+                    descriptor = None
+            result[channel], result[channel + "_error"] = descriptor, error_text
+        result["schema_version"] = 5
         result["snapshot_id"] = digest({k: v for k, v in result.items() if k != "snapshot_id"})
         _write_atomic(staging / "data/manifest.json", canonical(result))
         read_manifest(staging / "data", now=now)
+        allowed = {"manifest.json", *(ref["path"] for ref in result["sports"])}
+        for channel in AUXILIARY_CHANNELS:
+            descriptor = result[channel]
+            if descriptor is None:
+                continue
+            allowed.add(descriptor["path"])
+            if channel == "pros004":
+                from .pros004_publication import publication_asset_paths
+                allowed.update(publication_asset_paths(staging / "data", descriptor, now=now))
+        # Failed publishers may have written intermediate assets. Only admitted,
+        # manifest-referenced bytes belong in the public artifact.
+        for asset_path in (staging / "data").iterdir():
+            if asset_path.name not in allowed:
+                asset_path.unlink()
         if output.exists():
             backup = Path(tempfile.mkdtemp(prefix=".site-old-", dir=output.parent))
             backup.rmdir()

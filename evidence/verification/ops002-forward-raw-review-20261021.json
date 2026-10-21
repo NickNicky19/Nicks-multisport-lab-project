@@ -1,0 +1,53 @@
+{
+  "actual_completed_at": "2026-10-21T09:05:46.166631+00:00",
+  "budget_limits_changed": false,
+  "checks": [
+    {
+      "command": "PYTHONPATH=tests python3 -m unittest -v test_operational_raw test_operational_delivery",
+      "result": "PASS",
+      "seconds": 20.762,
+      "tests": 31
+    },
+    {
+      "command": "PYTHONPATH=tests python3 -O -m unittest -v test_operational_raw test_operational_delivery",
+      "result": "PASS",
+      "seconds": 20.691,
+      "tests": 31
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "fix": "Compare every actual captures filename to body.capture_id before deriving its reference and authenticated recovery. Keep original/duplicate bytes for diagnosis rather than deleting or rewriting.",
+  "full_history_or_model_experiment_executed": false,
+  "genuine_issuance": 0,
+  "metadata_records_added": 0,
+  "prior_source_06_git_objects_or_reports_modified": false,
+  "raw_logs": {
+    "/tmp/nml-connected-raw-followup-normal.log": {
+      "bytes": 5756,
+      "sha256": "6cfa49473c28de5c473b140d192a13ba7f91eddc127b58b69b58147df60ad9b0"
+    },
+    "/tmp/nml-connected-raw-followup-optimized.log": {
+      "bytes": 5756,
+      "sha256": "0a869325292e5e53b7413bafbc52b190c00d483732d6b9b9770e27f2d3ea3b06"
+    }
+  },
+  "schema_version": "nba-ops002-connected-raw-followup-review-v1",
+  "source_requests": 0,
+  "stable_files": {
+    "multisport_lab/operational_delivery.py": "5521b73b145727875d6eef157f855675fbff62990bd68d6df8e465001a186fa2",
+    "multisport_lab/operational_raw.py": "c0576d2800ff9468f3a5518b5b40826f0b3556f35b051914092b8a820d1b3246",
+    "multisport_lab/operational_source_links.py": "f16f91ed34267fb1f1a82bcd26ac0712cda25709bdb34c4b9c932135c6c4e7a7",
+    "tests/test_operational_delivery.py": "80001d74f679ae7f0c706a5fe60e98b90d418189694777d98017ef306d6db86c",
+    "tests/test_operational_raw.py": "cbcf9062a4e335bc07639d2a516ed6aaf3f617c4c98c1b0c27495287e20209a0",
+    "tests/test_operational_source_links.py": "0cf4c5f58fe9aa6a3bacfe76a63e3fd0ac5a7e59993a1f298098cbc2c50dc47f"
+  },
+  "standalone_reproduction": {
+    "after_fix": "PASS",
+    "before_fix": "FAIL: RawRetentionError not raised; duplicated manifest accepted by standalone archive.recover",
+    "command": "PYTHONPATH=tests python3 -m unittest -v test_operational_raw.EncryptedRawTests.test_standalone_recovery_rejects_duplicate_manifest_with_foreign_filename"
+  },
+  "status": "PASS_FOCUSED_FIXES_PENDING_INTEGRATION"
+}
