@@ -2,6 +2,63 @@
 
 Updated: October 21, 2026 (UTC).
 
+## October 21 — final identity/selection clarification and remote recovery
+
+This forward documentation checkpoint follows **8b46608dcbab4b9487db6922b6aaf6ab3ddb2a35**;
+implementation remains **730f4ea58c7e3c3a08eb44d8d7f33d6f5108d501**. No producer,
+parser, original response, frozen receipt or preview was changed by this addendum.
+The factual result remains **28 observed / 28 parsed / zero complete contracts**.
+
+The source already explicitly binds YES and NO to their threshold predicates.
+A missing token-to-outcome mapping does **not** inherently make a price-free
+semantic offer incomplete. A separately versioned adapter could declare the
+source selection as `(market ID, outcome label)` and retain the independently
+verified canonical player crosswalk, without inventing a native player/token ID.
+The existing v1 normalized contract requires provider player and selection IDs,
+player team/opponent bindings and an event-version binding; that representation
+has not been extended here. Source event teams verify the matchup, but do not
+by themselves bind a player to either team. No player affiliation is inferred. Assigning a reported price requires
+verified price-to-selection correspondence; an executable token quote additionally
+requires token binding. Neither array correspondence is established here.
+Restricted/readiness/context flags are preserved; they do not prove permanent
+contract absence. None of these facts supplies the still-missing applicable
+**NBA statistical correction/regrading rule**. This canonical crosswalk is verified for four selected-subject observations;
+the other 24 observations still lack independent player identity enrichment.
+The private preview remains partial.
+
+The precise retained next documentation lead is **Get CLOB market info**:
+`https://docs.polymarket.com/api-reference/markets/get-clob-market-info`,
+registered in the retained official navigation as
+`/api-spec/clob-openapi.yaml get /clob-markets/{condition_id}`. Verify its stated
+server/auth/response contract before any later data request. The often-assumed
+`/markets/{condition_id}` token shape is not established by our retained documents.
+This is a next request, **not a request already performed**. The shared 12-GET
+allowance remains exhausted. A further bounded investigation must also locate an
+official correction/finality rule applicable to this exact NBA market; generic
+oracle challenge durations cannot fill that settlement field. No new provider
+credentials or private-key decision are required for the local source task.
+
+Independent fresh GitHub clone/readback recovered exact **8b46608d** with all
+**394 manifest entries**, seven code pins, four new public receipts and archived
+prior PR-description hash verified. All **37 reviewed sources, 40 frozen research
+files and 19 original records / 1,817,800 bytes** matched. The checkout was clean;
+no actual private raw response, individual offer facts or preview was tracked.
+Receipt: `evidence/verification/gamma-final-remote-recovery-20261021.json`, raw SHA256
+**47af0cf84ec12f74fea44112fc74eace8dfd6b9b16e46ad2f1076de0f59bf1ee**.
+This verifies committed code/evidence recovery, not remote archival of the twelve
+private originals. No source requests, new model diagnostics or issuance occurred.
+
+GitHub check **39595640216** was in progress for 8b46608d at this checkpoint;
+its actual final result and this documentation head's independent recovery/check
+result will be retained in PR #12's concise review description. The previous
+near-limit description is preserved byte-for-byte in the committed archive.
+Local required checks remain the measured **650 Python / 86 frontend**, demo,
+focused normal/optimized checks and six Chromium route/viewport checks below.
+Documentation-only verification: manifest coverage/hashes, new receipt seal,
+whitespace and exact source-byte preservation. Public deployment remains unchanged.
+No activation, scheduler, forecast, grade, public offer, qualified ticket,
+financial settlement, merge or deployment is authorized or performed.
+
 ## October 21 — actual keyless Gamma source replay and private website preview
 
 **Actual result: 28 player rows observed, 28 parsed, zero complete contracts.**

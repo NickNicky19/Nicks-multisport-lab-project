@@ -104,6 +104,34 @@ crosswalk representation can preserve a verified canonical player without
 inventing a native provider ID, but it cannot resolve missing settlement or
 selection meaning.
 
+## Final semantic clarification
+
+The actual source description establishes the YES/NO predicates independently of
+exchange token IDs. A price-free offer-only adapter may use a clearly declared
+`(market ID, outcome label)` source selection and the separately verified canonical
+player crosswalk, provided a new contract version describes those identities.
+It must not claim that either is an upstream person or token ID. The current v1
+normalized representation has not been extended. It also requires player-team/
+opponent and event-version bindings. Source event teams verify the matchup,
+not player affiliation; this package does not infer either player team. Those
+representation/evidence dependencies must be resolved explicitly. Assigning a reported
+price requires verified price-to-selection correspondence; an executable token
+quote additionally requires token binding. Neither is a universal prerequisite
+for understanding an unpriced offer. The actual missing NBA correction/regrading
+meaning remains a substantive settlement gap even with that representation.
+Only four selected-subject observations have this verified canonical crosswalk;
+the other 24 still lack independent player identity enrichment.
+Restricted/context/readiness flags do not establish permanent source absence.
+
+The retained official navigation provides the concrete next document:
+[Get CLOB market info](https://docs.polymarket.com/api-reference/markets/get-clob-market-info),
+OpenAPI `/api-spec/clob-openapi.yaml get /clob-markets/{condition_id}`. Its server,
+auth requirements and response meanings remain uninspected; no undocumented
+`/markets/{condition_id}` shape is assumed. Requesting that document, then a
+bounded exact-condition response if admitted, requires a new request allowance.
+An applicable NBA correction/finality rule is a separate necessary evidence
+lookup. No source request was added for this clarification.
+
 ## All-category inventory
 
 | Category | Observed player rows | Parsed partial rows | This event sample |
