@@ -137,12 +137,15 @@ The exact final source SHA must be frozen once and reused after any record or
 handoff commits. Source binding verifies executed bytes against that commit;
 `git rev-parse HEAD` on a later records commit must not repin the producer.
 
-Offline preparation, after replacing `EXACT_SOURCE_SHA` with the reviewed source:
+The current reviewed software source is
+`c535c7851382eb3d7a8701229bc4dd7094086c70`. Later evidence/documentation commits
+do not replace that producer pin. This is a software review pin, not activation.
+Offline preparation is runnable as follows:
 
 ```bash
 python3 -m multisport_lab.operational_preflight \
   --plan evidence/operational/ops002-plan.json \
-  --producer-commit EXACT_SOURCE_SHA \
+  --producer-commit c535c7851382eb3d7a8701229bc4dd7094086c70 \
   --output /tmp/ops002-reviewed-preflight.json
 ```
 

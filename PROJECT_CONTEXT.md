@@ -28,9 +28,13 @@ The named-game plan fixes Denver at Oklahoma City, ESPN 401909094, start
 Preparation identities were cross-checked before forecasts/outcomes. Actual
 capture would be October 22, 23:40–23:50 UTC and generation/persistence
 October 23, 00:00–00:05 UTC. Preparation bytes are not timely future inputs.
-Genuine writes remain hard disabled. Source admission, primary private raw
-retention, exact-source hosted full-cohort timing and reviewed genuine activation
-are separate unmet requirements; no scheduler is installed.
+Genuine writes remain hard disabled. Exact source
+`c535c7851382eb3d7a8701229bc4dd7094086c70` is in draft PR #12, stacked on PR #10.
+Hosted diagnostic39533281196 retained/replayed all eight synthetic originals but
+only seven are timing-eligible after independent restart;338.647s cohort completion
+exceeds the registered gate. Source admission, primary private raw retention,
+genuine destination/entrypoint and reviewed activation also remain unmet. No
+scheduler is installed and no genuine future forecast has been issued.
 
 The expired October 20 pilot actually ran late and guardedly aborted:
 `ACTUAL_PARTIAL_EXECUTION / LATE_GUARDED_ABORT`, run 39493005199, provider requests 0,

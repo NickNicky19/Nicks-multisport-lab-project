@@ -15,7 +15,7 @@ issuance is inferred from a website landing decision.
 | Current event/player preparation | Nine bounded actual source GETs; scheduled event identity agrees between scoreboard and summary; all four roster/profile identity checks agree. Preparation bytes are not timely future inputs or primary remote raw retention. |
 | Full historical input | Original 26,645-row retained panel, complete provenance/exclusions and reconstructed-availability limitations preserved. Referenced once; no 20,000-row truncation and no repeated full history per event. |
 | Local persistence/restart contracts | New separate typed originals, post-write completion chain, remote acknowledgment-prefix proofs, preserved late/unacknowledged originals and missing peers. Focused normal/optimized and negative recovery checks must pass at exact source. |
-| Hosted full eight-original execution | Pending exact-source operating diagnostic on the intended host. Local checkpoint improvement or green software CI does not satisfy this gate. No activation from a partial/late run. |
+| Hosted full eight-original execution | **FAILED TIMING**, exact source c535c7851382eb3d7a8701229bc4dd7094086c70, run 39533281196. Eight synthetic originals retained and fully replayed; seven timing-eligible after independent restart. Cohort including final retention 338.647s, generation starts T90+5s; this exceeds T90+300. Exact final remote 4c3e3eb4c0e4cfdaa36f10a84918ccbbd28921ee. No original is erased or retimed. Green source CI is separate. |
 | Global capacity | Same 512-file/32-MiB ledger limit, encoded type ceilings and bounded completion/proof metadata. One-event operation plus one offer/source links has an explicit allocation. Actual final measured capacity is retained in preflight/host receipts. |
 | Raw-source primary retention | Encrypted candidate backend is synthetic-tested with fresh Git-clone recovery. No operational key/certificate/secret/backend is installed. Source permission, reviewed admission, hosted authenticated key recovery and backup policy remain required. Encryption does not supply source rights. |
 | Permitted operating sources | Unresolved. Existing Disney/Sleeper terms findings are retained. Bounded session-authorized inspection and HTTP 200 are not grants for automated collection or public redistribution. No live adapter is admitted. |
@@ -29,7 +29,8 @@ issuance is inferred from a website landing decision.
 | Statistical quality/settlement | No new predictive qualification, comparative study aggregate, profitable-ticket claim or financial settlement. Software tests and a synthetic operating diagnostic do not establish these. |
 
 The next public forecast task is to close the source/retention/genuine-entrypoint
-dependencies, review the exact passing hosted producer package, independently
+dependencies and the measured hosted timing failure, review an exact passing
+hosted producer package, independently
 recover the approved activation before **October 22, 23:40 UTC**, then capture fresh
 inputs in the actual window and preserve all timely or partial originals. If
 activation or either phase cannot complete correctly, keep this pilot inactive or

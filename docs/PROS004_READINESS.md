@@ -46,6 +46,17 @@ admission and exact reviewed genuine activation remain separate requirements.
 All genuine-write guards remain closed. No new scheduler, comparison or genuine
 issuance is authorized by this readiness integration.
 
+The separate exact-source hosted OP002 diagnostic is now measured, not passed:
+source `c535c7851382eb3d7a8701229bc4dd7094086c70`, run 39533281196, actual
+02:29:23.735386–02:36:20.905863 UTC. Eight synthetic originals survive; seven
+are timely after fresh typed recovery. Cohort including final retention338.647s
+exceeds the five-minute cutoff (generation starts atT90+5s), total417.166s,
+CPU358.121s, peak238,188KiB. Full joint-law replay and exact remote bytes pass.
+The original failed receipt and the late eighth original remain unchanged.
+See `evidence/operational/hosted-diagnostic-39533281196.json`. This is not a
+PROS004 full-study timing pass, model evaluation or genuine issuance. The
+maximum512-record execution gate remains unmeasured and this reservation inactive.
+
 ## October 20, 23:10 UTC — new source pin, unchanged inactive gates
 
 Producer/driver source is now frozen at
