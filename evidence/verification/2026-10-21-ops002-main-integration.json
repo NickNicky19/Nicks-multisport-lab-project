@@ -1,0 +1,162 @@
+{
+  "boundaries": {
+    "deployment": false,
+    "nfl_mlb_untouched": true,
+    "pilot_activated": false,
+    "pr10_draft_unchanged": true,
+    "pr12_draft_unchanged": true,
+    "pros004": "INACTIVE",
+    "public_publication": false,
+    "s0": "INACTIVE",
+    "scheduler_installed": false
+  },
+  "branch": "implementation/ops002-site-integration",
+  "code_and_fixtures_identical_to": "709c39e6ce3312663f2bd98457f5f46d63ae2124",
+  "commands": [
+    "git fetch origin",
+    "git merge --no-commit --no-ff origin/main (isolated review worktree)",
+    "python3 -m unittest discover -s tests -p 'test_publication_channels.py' -v",
+    "python3 -m unittest discover -s tests -p 'test_display_metadata.py' -v",
+    "node --test --test-isolation=none web/tests/publication-channels.test.mjs web/tests/display.test.mjs web/tests/snapshot.test.mjs web/tests/paired-research.test.mjs",
+    "python3 -m multisport_lab.demo",
+    "python3 -m multisport_lab.publication --build-commit 709c39e6ce3312663f2bd98457f5f46d63ae2124 --output /tmp/nml-ops002-main-integrated-site",
+    "node web/tests/site-smoke.mjs /tmp/nml-ops002-main-integrated-site",
+    "python3 -O web/tests/display_browser_smoke.py /tmp/nml-ops002-main-integrated-site",
+    "python3 -m multisport_lab.operational_delivery --source-root . --producer-commit 6777025deca7c03636f5cb6739cfcc77cb0b5e49 --records-branch records/nba-paired-ops-002-20261022 (exit2: BLOCKED_NOT_ACTIVATED)"
+  ],
+  "counts": {
+    "financial_settlements": 0,
+    "historical_bundles": 6,
+    "historical_grades": 6,
+    "hosted_full_history_diagnostics": 0,
+    "model_evaluations": 0,
+    "new_genuine_forecasts": 0,
+    "prospective_grades": 0,
+    "prospective_outcomes": 0,
+    "provider_gets": 0,
+    "published_offers": 0,
+    "qualified_tickets": 0
+  },
+  "critical_dependency": "EXACT_EXISTING_SOURCE_ALLOWANCE_REFERENCE_PENDING",
+  "focused_results": {
+    "browser": {
+      "initial_default_sandbox_bind": "PermissionError: [Errno 1] Operation not permitted",
+      "public_deployment_verified": false,
+      "same_command_with_supported_network_permission": "PASS",
+      "source": "LOCAL_LOOPBACK_ARTIFACT",
+      "status": "PASS",
+      "widths": [
+        1440,
+        390,
+        320
+      ]
+    },
+    "demo": "PASS",
+    "frontend": {
+      "status": "PASS",
+      "tests": 31
+    },
+    "python_display": {
+      "seconds": 62.885,
+      "status": "PASS",
+      "tests": 11
+    },
+    "python_publication_channels": {
+      "seconds": 75.384,
+      "status": "PASS",
+      "tests": 8
+    },
+    "static_artifact": "PASS"
+  },
+  "historical_catalog_identical_to_main": true,
+  "logs": {
+    "artifact_build": {
+      "bytes": 123,
+      "path": "nml-ops002-main-integrated-build.log",
+      "sha256": "d7635df342789451ec5f17a278c645a8bafeab70d701a7a68dce5024f2321759"
+    },
+    "browser_loopback_success": {
+      "bytes": 245,
+      "path": "nml-ops002-main-integrated-browser-with-network.log",
+      "sha256": "3c4658bd0cc8ea0eead4d36692886e870e63d3dad5a2452c62415b363a389bf1"
+    },
+    "demo": {
+      "bytes": 1632,
+      "path": "nml-ops002-integration-demo.json",
+      "sha256": "3d965ae542f5a7473441bf976bbcf695952c9eebb009953d26693820d48d0428"
+    },
+    "frontend": {
+      "bytes": 3071,
+      "path": "nml-ops002-integration-node.log",
+      "sha256": "978c2e0d6f30cb2a367415f6b829a0c27cbf7c17f704e7f44deffaa6905a8f1a"
+    },
+    "inactive_delivery_readback": {
+      "bytes": 4242,
+      "path": "nml-ops002-integrated-closed-guard.json",
+      "sha256": "9f11d4b97f2a5252f737d521df2fa7401113c9d6445db746da956bfe39586d6b"
+    },
+    "initial_browser_sandbox_failure": {
+      "bytes": 946,
+      "path": "nml-ops002-main-integrated-browser.log",
+      "sha256": "9fde20d49d627947f582d70cb81548b9162b3c23c2d2e390d7ad345005903333"
+    },
+    "python_display": {
+      "bytes": 2300,
+      "path": "nml-ops002-integration-python-display.log",
+      "sha256": "4c0795a2742cce0b020e33265bfc0f4ae68656e9a09895dd0f164072f00ddcd1"
+    },
+    "python_publication_channels": {
+      "bytes": 1735,
+      "path": "nml-ops002-integration-python-channels.log",
+      "sha256": "fdba7e96f595aeafa73981ecb37167a9d64529929f1f36148bc0ada6e05c96b5"
+    }
+  },
+  "main_integration": "NORMAL_MERGE_NO_HISTORY_REWRITE",
+  "operating_binding_id": "f0dbf50e0ae1f509b9e4bf17e0e1954b124f08fc201d95ac7776e355222ccca0",
+  "operating_file_count": 31,
+  "operating_source_commit": "6777025deca7c03636f5cb6739cfcc77cb0b5e49",
+  "original_ledger": {
+    "all_bytes_unchanged": true,
+    "bytes": 1817800,
+    "records": 19
+  },
+  "owner_affirmative_reply": "Continuation received; no exact provider authorization/document reference supplied or admitted.",
+  "parents": [
+    "709c39e6ce3312663f2bd98457f5f46d63ae2124",
+    "411f904e4f9d577f97ca3a4ae6ba52fdb81ee130"
+  ],
+  "polymarket": "PARKED; later negative documentary review user-reported only, not a new admitted source receipt.",
+  "preserved_parent_paths": 408,
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "required_full_checks_reused": {
+    "conclusion": "success",
+    "frontend_tests": 93,
+    "head": "709c39e6ce3312663f2bd98457f5f46d63ae2124",
+    "python_tests": 670,
+    "reason": "No executable code, tests or fixture changed; no repeated full-history diagnostic or frozen evaluation.",
+    "run_id": 39606717365
+  },
+  "reserved_activation_deadline_exclusive": "2026-10-22T23:40:00Z",
+  "resolved_paths": [
+    "MANIFEST.sha256",
+    "docs/PUBLICATION_SCHEMA.md",
+    "multisport_lab/display_metadata.py",
+    "multisport_lab/publication.py",
+    "tests/test_display_metadata.py",
+    "web/app.mjs",
+    "web/snapshot.mjs",
+    "web/tests/display_browser_smoke.py"
+  ],
+  "schema_version": "nba-ops002-deployed-main-integration-v1",
+  "secret_presence": "UNKNOWN",
+  "source_admission": "NO_OPERATIONAL_ADMISSION",
+  "status": "SOFTWARE_INTEGRATION_ONLY_NOT_ACTIVATED",
+  "subsequent_dependencies": [
+    "owner original-key durable backup/retrieval",
+    "actual trusted hosted key/raw recovery",
+    "reviewed genuine entrypoint",
+    "source-bound activation and eligible publication bridge",
+    "reviewed records-to-main publication"
+  ],
+  "verified_at": "2026-10-21T21:18:35.073402Z"
+}

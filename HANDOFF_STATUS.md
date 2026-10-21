@@ -2,6 +2,68 @@
 
 Updated: October 21, 2026 (UTC).
 
+## October 21 — forecast-delivery focus and deployed-main integration
+
+The executor recovered. Existing PR #12 local/remote HEAD was verified clean at
+**709c39e6ce3312663f2bd98457f5f46d63ae2124**; normal fetch confirmed main
+**411f904e4f9d577f97ca3a4ae6ba52fdb81ee130** and draft PR #10
+**c0a7b4bc3205d723b13d0f70baf66f3806e731ee** unchanged. A separate review branch,
+**implementation/ops002-site-integration**, integrates that main with PR #12 by
+normal merge ancestry. Its commit is the ordinary merge commit containing this
+checkpoint; neither PR is landed or activated by it.
+
+Eight publication/display/manifest overlaps were resolved by retaining the
+already-integrated manifest-v5 implementation from 709c. All executable code,
+tests, fixtures, frozen research and 19 original records (1,817,800 bytes) remain
+byte-identical. The deployed historical display catalog is also byte-identical
+to main. The merge preserves main's deployment checkpoint in this handoff.
+This removes the candidate's main-integration conflict, without claiming new
+forecast capability, a new operating producer or a deployed website change.
+
+Focused checks: **8 publication-channel Python tests / 75.384 s**, **11 display
+Python tests / 62.885 s**, **31 frontend tests**, demo and static artifact smoke
+passed. Optimized-Python Chromium passed 1440/390/320, six names/matchups/dates,
+direct History/refresh, all 14 categories, separate clocks, safe display fallback,
+scopes and 2–6-leg/direction/NO_ACTION behavior. The first browser attempt could
+not bind loopback in the default sandbox; the same command passed with supported
+network permission. No automatic-approval rejection, provider GET or alternative
+source transport occurred. Exact commands/log hashes and scope are recorded in
+`evidence/verification/2026-10-21-ops002-main-integration.json`. The unchanged full
+670-Python/93-frontend source checks and successful CI 39606717365 are reused;
+there was no behavior change requiring another full run or model diagnostic.
+
+The read-only delivery preparation command retained its **31-file verified
+6777025deca7c03636f5cb6739cfcc77cb0b5e49** binding and returned exit 2,
+**BLOCKED_NOT_ACTIVATED**. The existing paired exporter and browser deliberately
+reject activated eligibility; merging inactive software alone cannot populate
+Upcoming. A valid future release must connect actual reviewed activation and
+timely recoverable originals, then explicitly include them in the main build.
+Offers/prices are not prerequisites for that statistical path.
+
+**The first operating blocker remains source admission.** The retained review
+does not establish an allowance for the four fixed ESPN reads, public-repository
+ciphertext retention/location/duration and necessary derived publication. Nick's
+affirmative continuation reply is retained as such; the requested exact existing
+authorization/document reference has not yet been supplied or admitted. No key,
+secret, provider permission or activation is inferred. Owner backup/recovery,
+authenticated hosted raw/key readback and trusted entrypoint remain subsequent
+dependencies. Secret presence remains UNKNOWN. The next concrete action is to
+review that exact existing source-use evidence before more downstream work.
+If it cannot cover this plan, keep OPS002 inactive and version a later permitted
+source/import reservation separately. The October 22 23:40 UTC activation deadline
+and capture/generation windows remain unchanged.
+
+Polymarket is parked. Nick reports that a subsequent Markets/resolution review
+still found no applicable NBA correction rule. That is a user-reported documentary
+finding, not a new source-body receipt or admitted rule. Originals, partial v2,
+private preview and missing fields remain unchanged; no further search/capture.
+
+Public main still contains six historical bundles/six historical grades, with
+zero genuine forecasts, published offers, prospective outcomes/grades, qualified
+tickets or financial settlements. This checkpoint does not deploy or publish
+anything. PR #10/#12 remain draft; PROS004/S0, the expired pilot and its records,
+frozen experiments, NFL and MLB remain untouched.
+
 ## October 21 — bounded exact-condition CLOB inspection and semantic offer v2
 
 **Actual result: one retained NBA contract enriched into a typed, incomplete
@@ -2099,6 +2161,141 @@ source/operational/publication dependencies before any separately authorized
 activation. If they cannot be completed before the actual first selected cutoff,
 retain PROS004's original reservation as inactive. A later window needs a new
 reservation; do not replace subjects, backfill or relax gates.
+
+## October 20, 23:21 UTC — website source independently verified; draft PR #11
+
+Implemented source is **7e33da5af7037008b2cee92ae2a5f51dfd8edf14**, following
+original display source d7273144bdf75dc93866cb8ef770373f2bccd359. Branch
+`website/readable-history-status`, base main735a464e9e8718303ef481abf711a8969de56694,
+[draft PR #11](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/11).
+The subsequent evidence/handoff commit changes no runtime behavior. Final branch
+HEAD, exact-head CI and independent remote readback are reported in the PR after
+push; these source pins never follow later documentation HEAD.
+
+Actual final local commands on7e33da5,23:19:24.894187–23:20:27.908396 UTC:
+
+| Command | Observed result |
+| --- | --- |
+| `python3 -m unittest discover -s tests -v` |289 PASS,57.224s |
+| `python3 -m multisport_lab.demo` |PASS |
+| `node --test --test-isolation=none web/tests/*.test.mjs` |43 PASS |
+| `python3 -m multisport_lab.publication --build-commit 7e33da5af7037008b2cee92ae2a5f51dfd8edf14` |PASS; local manifest4/display asset6565bytes |
+| `node web/tests/site-smoke.mjs output` |PASS;3validated data files |
+
+Independent final source7e33da5 build/hash/readback and
+`python3 -O web/tests/display_browser_smoke.py <independent-artifact>` passed
+desktop1440/mobile390/320: all6readable names,3historical matchups/dates,
+all14categories, original IDs/issue clocks, separate publication/preparation/
+genuine-issuance clocks, keyboard/bookmark History, missing metadata IDfallback,
+retained metadata's older dates, scopes and2–6/all directions/NO_ACTION.
+The final offer-copy assertions explicitly separate complete permitted contracts,
+missing checked export, optional offer-only prices, observed source prices and
+further quote/value/ticket gates. No actual offer is admitted.
+
+The review found and fixed two real display issues: invalid optional descriptor
+semantics could hide valid forecasts; retained valid labels could be described
+as unavailable. Metadata errors are now isolated before any unsafe fetch, valid
+sports remain visible, and retained labels keep their original clocks/warning.
+Final root integration also removed ambiguous price-as-offer-blocker wording.
+The initial synthetic fixture ordering failure and loopback sandbox EPERM/retry
+are documented separately; neither was evidence of invalid source records.
+
+Runtime/config files: `multisport_lab/display_metadata.py`, `publication.py`,
+`config/display_metadata_nba_v1.json`, `web/display.mjs`, `app.mjs`, `snapshot.mjs`,
+`styles.css`. Verification files: `tests/test_display_metadata.py`,
+`web/tests/display.test.mjs`, `web/tests/display_browser_smoke.py`. Docs:
+`PUBLICATION_SCHEMA.md`, `WEBSITE_DISPLAY_READINESS.md`,
+`OFFER_PUBLICATION_READINESS.md` and this handoff; MANIFEST is refreshed.
+Evidence under`evidence/display/` retains the original public readback, all19
+original byte hashes, three raw-source verification bindings, initial/final
+implementation checks, independent review v1/v2/v3, root visual inspection and
+fresh remote recovery of the earlier d727 source. All earlier receipts remain.
+Full final command evidence is`2026-10-20-full-integration-checks-v2.json`;
+final independent code/asset proof is`2026-10-20-independent-display-review-v3.json`.
+
+What a visitor can see in the checked preview: six historical bundles and six
+statistical grades, verified player/matchup labels and dates, accessible IDs,
+all13requested categories plusPA, independent plain-language empty states and
+clear clocks. Upcoming has no genuine record; offers0/candidates0/tickets0,
+builderNO_ACTION. The public site still serves735a464 with the older labels;
+**none of these website changes is merged or deployed**. Prior d727 CI
+39514006977 succeeded23:19:20 UTC; that validates the earlier source only.
+Current final-head CI is a separate post-push observation, never assumed here.
+
+Next genuine-forecast task: establish the admitted complete UTC-date inventory
+and actual firstT90, resolve PR #10's failed full-cohort timing and remaining
+input/retention/activation gates, and obtain separately reviewed timely
+activation for an eligible reservation. Do not reuse/replace the expired pilot,
+shift PROS004, backfill or issue early. Prices do not gate statistical research.
+Next offer task: independently verify one complete permitted player contract,
+then add a separate jointly validated Python/JS offer-only export/rendering path
+with explicit price-null handling. See`OFFER_PUBLICATION_READINESS.md` for exact
+identity/clock/rule and subsequent quote/value/ticket gates.
+
+PR #10 stays draft/inactive; its manifest3 and this manifest4 require a reviewed
+combined integration before both can land. The latest actual pilot result and
+all original records, PR #9/DEV005, R0/K0, S0inactive, NFL and MLB remain untouched.
+No new genuine issuance, outcome grading, model evaluation, financial settlement,
+qualified ticket, source scheduler, merge or deployment occurred.
+
+## October 20, 23:08 UTC — isolated website readability checkpoint
+
+This new dated checkpoint preserves the earlier observations below. Work is on
+`website/readable-history-status`, based on current main
+`735a464e9e8718303ef481abf711a8969de56694`, in
+`/workspace/nml-website-readability`. It is separate from draft PR #10, whose
+PROS004 reservation remains inactive. No merge or deployment is authorized here.
+
+Implemented source-backed display lookup for all six published historical
+subjects and three matchups, preserving exact historical team/opponent/start
+identities. Archived FINAL ESPN summaries support every name; an independent
+raw-byte replay verified all six mappings and nineteen unchanged original ledger
+files. No forecast, outcome, grade, probability or original timestamp was replaced.
+The all-thirteen-plus-PA category inventory remains unchanged.
+
+Props/History and Performance now resolve readable names and matchup/date labels,
+with source IDs still in details and explicit fallback labels. Overview/Props
+separate upcoming research, published offers and qualified tickets, with direct
+History access and distinct site-publication, retained-input-preparation and
+genuine-issuance clocks. Metadata failure cannot hide valid research or trigger
+an unsafe path fetch. Prices do not gate valid future research display.
+
+The optional bounded display asset uses manifest 4 over unchanged research sport
+2. Draft PR #10 independently reserves manifest 3. Their overlapping publication
+paths need a reviewed combined integration and both test suites before both can
+coexist on main; neither shape may silently overwrite/reinterpret the other.
+
+Actual public readback on October 20 still serves main735a464, published
+05:59:32.398269 UTC, schema2, six historical bundles/six statistical grades and
+zero offers/candidates/tickets. This package has not changed that live site.
+Current retained forecast-input preparation capture is01:51:55.889290 UTC;
+it establishes no timely October20 pilot capture. Last genuine issuance is null.
+Display-source observations at22:54:53.663885–22:54:54.387521 UTC do not refresh
+those forecast inputs. See the new `evidence/display/` receipts.
+
+The expired original pilot was actually observed later: scheduled run39493005199
+started20:33:35 UTC, guarded EXPIRED_INCOMPLETE after its17:20–17:35 windows,
+provider requests0/forecasts0/no fresh binding. Current original records/draft
+PR #8 headdec5cc9fa397332244985bea8815bd9a89ea264e retains factual failure
+metadata and unchanged19records. Workflow390126745 is observed disabled.
+This website branch does not alter the pilot, workflow, records branch or paused
+native task. Why GitHub created that run late remains unestablished. Earlier
+scheduling/preflight observations below retain their original meaning and clocks.
+
+Independent source/offer review confirms two separate offer blockers: current
+actual captures remain incomplete/unadmitted, and Python/JS research sport-v2
+exports explicitly reject nonempty offers/candidates/tickets. The offline
+normalized importer can retain a supplied complete price-null contract, without
+a quote or qualification. Missing price alone need not bar a complete permitted
+offer-only display. The separate validated publication task is specified in
+`docs/OFFER_PUBLICATION_READINESS.md`; this package does not admit any offers.
+
+Changed behavior and schema are documented in `docs/WEBSITE_DISPLAY_READINESS.md`
+and `docs/PUBLICATION_SCHEMA.md`. Focused and full integration verification,
+exact implementation commits and final draft-PR status are recorded in the
+following completed checkpoint once observed. Statistical model evaluation,
+genuine future issuance, new outcome grades, financial settlement and qualified
+tickets remain zero. NFL/MLB and frozen experiments are untouched.
 
 **Checkpoint: BOOTSTRAP complete; bounded Milestone 0 audit and full-category
 reference implemented; early research website deployed and publicly verified.

@@ -2,6 +2,29 @@
 
 Updated: October 21, 2026.
 
+## Current priority — genuine forecast delivery; source evidence pending
+
+The separate `implementation/ops002-site-integration` review branch integrates
+deployed main 411f904 with PR #12 head 709c39e by normal merge ancestry. Eight
+overlaps retain the existing combined publication implementation; executable
+code, source pins, original records and historical display facts are unchanged.
+Focused channel/display/browser checks passed. No new producer, capture,
+forecast, public output, deployment or activation was created. PR #10/#12 stay
+draft and PROS004/S0 stay inactive. See the latest handoff for exact evidence.
+
+The shortest path remains admitted fresh inputs, unchanged R0/K0 issuance,
+recoverable originals, reviewed forecast publication and later statistical grades.
+The fixed ESPN operation still lacks applicable access/retention/publication
+evidence. An exact reference was requested following Nick's affirmative reply;
+no provider authority or installed operational key is inferred. Stop additional
+downstream diagnostics until this first dependency is resolved. Offers, prices
+and ticket qualification remain independent. Preserve all 14 NBA categories.
+
+Polymarket is parked. Nick reports that a later official Markets/resolution review
+did not establish the missing applicable NBA correction rule. This is not a newly
+admitted source receipt. Do not repeat general searches or collect more events/
+prices; preserve the local partial record, preview, originals and missing fields.
+
 ## Current checkpoint — exact-condition CLOB linkage and semantic offer v2
 
 KEYLESS-CONTRACT-007 implementation source is
