@@ -1,4 +1,42 @@
-# Static publication v2
+# Static publication: display metadata v4 over research sport v2
+
+The separately reviewable website package adds manifest **4**, retaining the
+unchanged NBA research sport schema 2 and original forecast/outcome/grade records.
+Manifest versions 1 and 2 remain readable. Version 3 is reserved by the separate,
+unmerged PROS004 draft PR #10 and is deliberately not interpreted as this shape.
+Before both branches can land, integrate their overlapping publication modules
+with one reviewed combined contract and repeat both sets of tests. Neither draft
+implicitly activates PROS004 or publishes unreviewed code.
+
+Manifest 4 adds nullable `display` and `display_error`. A display descriptor binds
+`display.<sha256>.json` by raw SHA-256, generation time, `DISPLAY_METADATA_ONLY`,
+retention flag and nullable error. The at-most-128-KiB asset uses
+`multisport-display-metadata-v1`, with its own canonical `metadata_id`, a source-
+backed `nba-display-catalog-v1` and `multisport-display-status-v1`. Players use
+`(league, id_namespace, player_id)`; events use the corresponding namespaced
+event ID and exact retained start/team identities. Historical appearances bind
+the original team/opponent, not a current roster. Bounded archived FINAL
+boxscore excerpts, source URLs, raw hashes, actual request/observation clocks and
+unknown source-update clocks support the labels. They are display verification,
+never historical model inputs or new forecasts.
+
+Python and JavaScript validate names, matchups, dates and memberships against
+those excerpts and immutable published forecast identities. The browser also
+checks asset/catalog canonical checksums and byte hashes. Missing/unverifiable
+metadata leaves research visible with an explicit source-ID fallback and warning;
+it cannot rewrite research records. A failed update can retain previously valid
+metadata with its original clocks, provided it still matches the sport records.
+
+Status counts come from published research collections. Capture metadata comes
+from retained forecast-input records and is explicitly preparation with timeliness
+unestablished. Site publication, display verification, retained input capture and
+genuine pregame issuance clocks remain distinct. Current viewing time controls
+Upcoming independently of prices; zero offers and NO_ACTION have separate
+explanations. See [OFFER_PUBLICATION_READINESS.md](OFFER_PUBLICATION_READINESS.md)
+for the still-unimplemented offer publication path. The new display contract
+does not admit nonempty offers, candidates or tickets.
+
+The sections below describe the underlying v2 research contract and its history.
 
 Build: `python3 -m multisport_lab.publication --build-commit "$(git rev-parse HEAD)"`.
 Source `web/` → artifact `output/`, with `index.html` at artifact root.
