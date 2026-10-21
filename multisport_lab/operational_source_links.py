@@ -273,6 +273,13 @@ class EncryptedSourceLinks:
         op.require(payload["logical_id"] == "op002-event-source-links:" + body["binding_id"]
                    and payload["references"] == [ref.to_record() for ref in (event_ref, *refs)]
                    and payload["supersedes"] is None, "event source binding envelope conflicts")
+        # This method is also a standalone recovery surface. Do not rely on a
+        # separate whole-ledger scan to reject a checksum-consistent binding
+        # that claims to have existed before one of its original references.
+        binding_clock = op.clock(payload["received_at"])
+        op.require(all(op.clock(self.ledger.read(ref)["received_at"]) <= binding_clock
+                       for ref in (event_ref, *refs)),
+                   "event binding reference creation clock follows the binding receipt")
         event = self.store.body(event_ref)
         op.require(body["event_input_id"] == event["event_input_id"], "binding names a different original event")
         observations = self.verify_event(event, refs, expected_routes=body["source_inventory"])

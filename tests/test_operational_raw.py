@@ -1,6 +1,7 @@
 """Synthetic authenticated retention/restart tests; no provider or GitHub I/O."""
 from __future__ import annotations
 
+import base64
 from datetime import datetime, timedelta, timezone
 import hashlib
 from pathlib import Path
@@ -83,6 +84,16 @@ class EncryptedRawTests(unittest.TestCase):
         with self.assertRaisesRegex(raw.RawRetentionError, "integer encoded byte"):
             self.archive.read({**reference, "raw_bytes": float(reference["raw_bytes"])})
 
+    def test_standalone_recovery_rejects_duplicate_manifest_with_foreign_filename(self):
+        reference = self.retain()
+        original = self.archive._manifest(reference["capture_id"])
+        foreign_id = ("a" if reference["capture_id"][0] != "a" else "b") + reference["capture_id"][1:]
+        duplicate = self.archive._manifest(foreign_id)
+        duplicate.write_bytes(original.read_bytes())
+        with self.assertRaisesRegex(raw.RawRetentionError, "capture manifest.*identity"):
+            self.archive.recover()
+        self.assertEqual(duplicate.read_bytes(), original.read_bytes())
+
     def test_wrong_key_and_tampered_ciphertext_reject(self):
         reference = self.retain()
         with self.assertRaisesRegex(raw.RawRetentionError, "authentication or operation"):
@@ -138,6 +149,33 @@ class EncryptedRawTests(unittest.TestCase):
         shutil.copy(self.other_cert, cert)
         with self.assertRaisesRegex(raw.RawRetentionError, "certificate bytes changed"):
             archive.retain(self.payload, **self.arguments)
+
+    def test_recipient_accepts_standalone_pem_whitespace_crlf_and_der_formats(self):
+        pem = self.cert.read_bytes()
+        der = raw._openssl(["x509", "-in", str(self.cert), "-outform", "DER"])
+        for label, encoded in (("pem", pem), ("pem-crlf", pem.replace(b"\n", b"\r\n")),
+                               ("pem-space", b" \n" + pem + b"\n\t"), ("der", der)):
+            with self.subTest(label=label):
+                path = Path(self.tmp.name) / (label + ".cert")
+                path.write_bytes(encoded)
+                archive = raw.EncryptedRawArchive(self.root, path, private_key=self.key)
+                self.assertEqual(archive.certificate_sha256, hashlib.sha256(encoded).hexdigest())
+
+    def test_recipient_certificate_rejects_keys_bundles_and_unparsed_extra_material(self):
+        pem = self.cert.read_bytes()
+        der = raw._openssl(["x509", "-in", str(self.cert), "-outform", "DER"])
+        for label, encoded in (("pem-key", pem + self.key.read_bytes()),
+                               ("pem-bundle", pem + self.other_cert.read_bytes()),
+                               ("pem-prefix", b"unreviewed material\n" + pem),
+                               ("pem-encoded-trailer", b"-----BEGIN CERTIFICATE-----\n"
+                                + base64.b64encode(der + der) + b"\n-----END CERTIFICATE-----\n"),
+                               ("der-key", der + self.key.read_bytes()),
+                               ("der-bundle", der + der)):
+            with self.subTest(label=label):
+                path = Path(self.tmp.name) / (label + ".cert")
+                path.write_bytes(encoded)
+                with self.assertRaisesRegex(raw.RawRetentionError, "exactly one.*certificate"):
+                    raw.EncryptedRawArchive(self.root, path, private_key=self.key)
 
     def test_corrections_append_and_preserve_original_identity(self):
         original = self.retain()

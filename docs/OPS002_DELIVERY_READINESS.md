@@ -18,7 +18,7 @@ The latest handoff identifies the exact implementation commit and check results.
 | Statistical scope | Unchanged R0 and K0 laws, four subjects each, all 13 requested categories plus PA; no new model qualification |
 | Historical input | Exact retained 26,645-row panel, SHA256 `489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c`; earlier availability/role limitations remain |
 | Previously measured producer | `06dbb492dda5d0043ec7a3a6c97ce9c46201edc8`, synthetic run `39536525048`, eight originals, final proof T90+289.817868s |
-| New delivery producer | `e5eb1a24ee779cdec819bd239ccbc5a9d33e93f7`, with `execution_binding()` verifying all 31 execution files against that exact commit. Binding ID `f2778e8baf81b28043fd939c1578dcaf920c1e82382a6393bfe907f279b8ca52`. It is an unapproved candidate; the previous timing result does not measure these new components. |
+| Original connected candidate, before owner review | `e5eb1a24ee779cdec819bd239ccbc5a9d33e93f7`, with `execution_binding()` verifying all 31 execution files against that exact commit. Binding ID `f2778e8baf81b28043fd939c1578dcaf920c1e82382a6393bfe907f279b8ca52`. It is an unapproved candidate; the previous timing result does not measure these new components. |
 | Proposed destination | `NickNicky19/Nicks-multisport-lab-project`, branch `records/nba-paired-ops-002-20261022`, `encrypted-raw/` plus the bounded ledger and completion metadata |
 | Publication | Independently admitted forecast and offer-only channels; an absent price or offer is not a statistical-forecast requirement |
 
@@ -217,3 +217,26 @@ otherwise admitted statistical forecast cycle.
 Preserve the six historical bundles/grades, all 19 original ledger records, all
 frozen experiments, NBA category scope and builder behavior. NFL, MLB and the
 expired pilot remain separate and untouched.
+
+## Forward owner review and remaining activation evidence
+
+The integration owner preserved and reviewed the e5eb1a2 / 714630dd additions before
+reliance. Reproduced recovery defects received ordinary forward fixes: standalone
+binding reference clocks, capture-manifest filename/body identity in both archive
+and delivery, and strict standalone public certificates. The latest handoff pins
+the resulting source; its original old 06dbb492 timing receipt remains unchanged.
+
+The new offline key helper/runbook is [OPS002_KEY_RECOVERY.md](OPS002_KEY_RECOVERY.md).
+It verifies supplied original/restored keys and a fixed public canary, identifying
+its executed source bytes while leaving durable-backup origin and hosted-secret
+proof false. No operating key was generated, installed or recovered in this
+review. The existing secret inventory could not be inspected: GitHub returned 403;
+its current presence is unknown, not established absent. The proposed records
+branch did not exist at the read-only matching-ref query.
+
+[OPS002_ACTIVATION_PACKAGE.md](OPS002_ACTIVATION_PACKAGE.md) lists the exact target,
+unchanged windows, proposed runner/destination, complete recovery sequence and
+remaining admissions. No genuine operating entrypoint or scheduler is installed.
+The existing synthetic diagnostic workflow is not a genuine worker. Complete the
+permitted source/retention and owner key-custody evidence, then review the actual
+trusted path and its timing; local fixtures cannot close those requirements.

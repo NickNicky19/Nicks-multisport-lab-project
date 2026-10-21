@@ -50,3 +50,25 @@ Only approved changes merged to main and independently recovered from a successf
 Pages deployment can be called public. Source commits, draft PRs, diagnostic
 branches and locally built artifacts are not deployments. NFL, the separate MLB
 project, the paused native task and the disabled October 20 workflow stay untouched.
+
+## October 21 forward review checkpoint
+
+PR #11 is publicly deployed, independently of this inactive operating package. The
+source/records constraints, PROS004 inactivity and draft PR #10 / PR #12 are unchanged.
+ChatGPT's connected implementation was preserved and reviewed; verified forward
+fixes reject conflicting binding-reference clocks, copied/misnamed capture
+manifests and certificate files containing non-certificate material. The offline
+key helper verifies supplied copies/canary only. No real key/backend/activation
+was installed. See OPS002_ACTIVATION_PACKAGE.md for exact remaining evidence.
+
+The current v4 capacity proposal is 124 files / 4,848,840 bytes with no cap increase;
+raw complete-cycle reserve is 44,728,320 bytes / 21 captures. The earlier v3 row above
+is historical evidence for the old measured path. Owner key-canary evidence uses
+one existing bounded metadata slot; it does not add per-original records.
+
+No new full-history hosted measurement was run: old 06dbb492 timing does not cover
+the new connected inputs/key/delivery components. Any later measurement needs a
+specific admitted-path overhead risk, exact source and a bounded registered run.
+Source-use basis, actual owner backup retrieval, trusted hosted key/raw recovery
+and the genuine entrypoint remain unresolved. Secret inventory was inaccessible
+(403), so current installation state is unknown. No new scheduler or issuance.

@@ -12,7 +12,7 @@ HTTP request and has no GitHub credential. Proposed durability uses ciphertext
 on this repository's single records branch, a reviewed public recipient
 certificate, and a separately held RSA private key in the existing repository's
 Actions secret `NML_OP002_RAW_PRIVATE_KEY`. This is an encryption key, not a new
-API key or external service. **That secret is not installed or verified.**
+API key or external service. **No installation or authenticated hosted recovery is verified by this package.**
 
 This design needs review before use. Encrypted source copies may still be
 subject to source retention terms. Encryption establishes neither collection
@@ -161,3 +161,19 @@ Local encryption, persistence and authenticated readback measured0.025023s and
 0.670358s respectively. The later request-start field adds metadata bytes; these
 earlier measurements remain factual and are not rewritten. They are not hosted
 transport latency, source verification or production activation evidence.
+
+## Forward certificate and recovery checks
+
+Owner review now enforces capture-manifest filename/body identity both in direct
+archive recovery and the connected delivery path. Public certificate acceptance
+requires exactly one standalone PEM or DER certificate, rejecting appended keys,
+bundles, prefixes and hidden trailing DER. Existing standalone formats remain
+supported; no actual recipient certificate or original record was changed.
+
+The separately prepared local key-canary verifier requires a single PEM public
+certificate, two distinct owner-only key copies outside Git and authenticated
+recovery with both. It pins executed verifier bytes and leaves backup-origin,
+hosted-secret and source-admission conclusions unavailable. See
+[OPS002_KEY_RECOVERY.md](OPS002_KEY_RECOVERY.md). Current GitHub secret existence
+is unknown from this executor because metadata access returned 403; no secret was
+changed. The source-use and genuine-host requirements above remain open.

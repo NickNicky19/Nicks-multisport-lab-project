@@ -127,6 +127,15 @@ class DeliveryTests(unittest.TestCase):
         with self.assertRaisesRegex(IntegrityError, "unexpected archive content"):
             delivery.delivery_snapshot(self.f.root, self.cert)
 
+    def test_misnamed_checksum_consistent_capture_manifest_cannot_count_as_recovered_capture(self):
+        original = next((self.archive.root / "captures").glob("*.json"))
+        duplicate = original.with_name("a" * 64 + ".json")
+        self.assertNotEqual(duplicate, original)
+        duplicate.write_bytes(original.read_bytes())
+        with self.assertRaisesRegex(IntegrityError, "capture manifest.*identity"):
+            delivery.verify_delivery(self.f.root, self.cert, self.key, diagnostic=True)
+        self.assertEqual(duplicate.read_bytes(), original.read_bytes())
+
     def test_interrupted_readback_preserves_remote_commit_and_retry_originals(self):
         transport, writer = self.writer()
         before = delivery.delivery_snapshot(self.f.root, self.cert)

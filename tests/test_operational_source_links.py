@@ -10,7 +10,8 @@ from unittest.mock import patch
 
 from multisport_lab import operational_pilot as op
 from multisport_lab import operational_raw as raw
-from multisport_lab.integrity import IntegrityError, digest
+from multisport_lab.integrity import IntegrityError, digest, stamp, write_receipt
+from multisport_lab.ledger import LedgerRef
 from multisport_lab.operational_source_links import EncryptedSourceLinks, canonical_source_inventory, _source_route
 from test_operational_pilot import OperationalFixture
 from test_pros004_inputs import NOW
@@ -205,11 +206,21 @@ class OperationalSourceLinksTests(unittest.TestCase):
         names = sorted(body["source_refs"])
         body["source_refs"][names[0]], body["source_refs"][names[1]] = body["source_refs"][names[1]], body["source_refs"][names[0]]
         body = op.seal({key: value for key, value in body.items() if key != "binding_id"}, "binding_id")
-        from multisport_lab.ledger import LedgerRef
         refs = (self.fixture.event_ref, *(LedgerRef.from_record(body["source_refs"][name]) for name in names))
         forged = self.links.ledger.append("input_captures", "op002-event-source-links:" + body["binding_id"],
                                          {"event_source_links": body}, references=refs)
         with self.assertRaisesRegex(IntegrityError, "source names"):
+            self.links.recover_binding(forged)
+
+    def test_standalone_binding_recovery_rejects_resealed_reference_clock_conflict(self):
+        binding = self.links.bind_event(self.fixture.event_ref, self.all_links())
+        path = self.links.ledger._path(binding.kind, binding.record_id)
+        payload = self.links.ledger.read(binding)
+        payload["received_at"] = stamp(NOW - timedelta(seconds=1))
+        path.unlink()  # Only this invented test receipt, never a retained original.
+        write_receipt(path, payload)
+        forged = LedgerRef(binding.kind, binding.record_id, digest(payload))
+        with self.assertRaisesRegex(IntegrityError, "binding.*reference.*clock"):
             self.links.recover_binding(forged)
 
     def test_offer_reader_preserves_original_metadata_and_requires_explicit_lane(self):

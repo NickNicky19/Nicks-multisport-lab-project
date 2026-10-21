@@ -154,3 +154,21 @@ requirements are not satisfied in time.
 This documentation review changes no model, category inventory, forecast,
 outcome, grade, ticket, frozen receipt, historical record, NFL/MLB project or
 activation state. It is not a runtime or hosted-timing test.
+
+## October 21 integration-owner follow-up
+
+The e5eb1a2 / 714630dd review and forward software fixes do not supply the missing
+source-use allowance. Reused official-document findings above remain scoped to
+the four exact proposed input routes, public-repository ciphertext retention,
+necessary research facts and a separate first-offer contract. No new provider GET
+was performed by this follow-up. An independent offline replay of the surviving
+ESPN originals matched their retained hashes: six team/overtime items and no
+complete player contract. Earlier partial Sleeper summaries do not recover their
+missing originals or contract rules. No permanent source-absence conclusion.
+
+The smallest source task remains an applicable existing documented allowance or
+authorization for this exact import/access, retention and derived publication,
+then original-byte recovery through the admitted backend. Another blanket owner
+approval, HTTP200, synthetic offer or encryption test cannot fill that gap. Price
+may remain unavailable for an otherwise complete admitted offer. Forecast delivery
+requires its own valid statistical inputs, not an offer or sportsbook price.

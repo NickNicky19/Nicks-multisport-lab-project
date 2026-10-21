@@ -2,7 +2,38 @@
 
 Updated: October 21, 2026.
 
-## Current integration package — separate one-game operating readiness
+## Current checkpoint — website released; operating preparation remains inactive
+
+PR #11 was merged through the guarded exact-head workflow after Nick approved
+326e354650aef57c3b965711abf071b2fc4205eb. Public Pages now serves merge commit
+411f904e4f9d577f97ca3a4ae6ba52fdb81ee130; run 39573648815 deployed successfully
+October 21 at 09:03 UTC. Public manifest, all referenced assets, six verified names,
+historical matchups/dates, IDs, clocks, direct History/reload and responsive
+layouts were verified. Browser rendering used actual live responses through the
+existing system-TLS-validating transport; native Chromium TLS was blocked by its
+proxy-CA trust. No TLS bypass or trust-store change occurred. All19 original
+records remain identical. Six historical bundles/six historical grades and zero
+genuine future issuance/offers/qualified tickets remain the public facts.
+
+The existing PR #12 branch fast-forwarded to714630dd, preserving ChatGPT's e5eb1a2
+implementation and later documentation. Owner review reproduced and fixed
+reference-clock, capture-manifest identity and public-certificate bundle defects.
+A separate offline local key-recovery helper checks supplied original/restored
+keys and a public canary; it does not generate or install an operational key,
+prove backup origin, admit source use or activate anything. The exact forward
+implementation pin/checks are in the latest HANDOFF_STATUS.md. Old06dbb492
+synthetic timing remains frozen and does not measure these newer components.
+
+PR #10 / PR #12 remain draft, PROS004 inactive, and no scheduler, pilot activation,
+genuine forecast, actual offer, new prospective grade or settlement is created.
+See OPS002_ACTIVATION_PACKAGE.md under docs/ for completed and unresolved items.
+The exact source-use basis, actual owner backup/retrieval, authenticated hosted
+key/raw recovery and genuine entrypoint remain unresolved. Secret metadata is
+UNKNOWN from this executor after GitHub403; that response does not prove absence.
+The fixed capture/generation windows are unchanged, and missed gates cannot be
+shifted or backfilled. NFL, MLB, original pilot and frozen experiments are intact.
+
+## Earlier integration package — separate one-game operating readiness
 
 The latest handoff remains the status authority. The public site was independently
 observed at main `735a464e9e8718303ef481abf711a8969de56694` on October 21, 01:59 UTC:

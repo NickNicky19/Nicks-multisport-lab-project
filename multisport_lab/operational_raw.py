@@ -8,6 +8,8 @@ requires the guarded runner to resolve the reviewed admission references.
 """
 from __future__ import annotations
 
+import base64
+import binascii
 from datetime import datetime, timezone
 import hashlib
 import os
@@ -126,6 +128,21 @@ def _certificate(path):
     raw = path.read_bytes()
     der = _openssl(["x509", "-in", str(path), "-outform", "DER"])
     _require(len(der) > 0, "recipient certificate is invalid")
+    # OpenSSL accepts a first certificate while ignoring appended material,
+    # including a private key. Keep the existing standalone PEM/DER formats,
+    # but require every supplied non-whitespace PEM byte (or every DER byte)
+    # to encode exactly that one public certificate.
+    pem = re.fullmatch(rb"\s*-----BEGIN CERTIFICATE-----\r?\n"
+                       rb"([A-Za-z0-9+/=\r\n]+)-----END CERTIFICATE-----\s*", raw)
+    if pem is not None:
+        try:
+            encoded = base64.b64decode(pem.group(1).replace(b"\r", b"").replace(b"\n", b""),
+                                       validate=True)
+        except (binascii.Error, ValueError):
+            raise RawRetentionError("recipient requires exactly one standalone public certificate") from None
+        _require(encoded == der, "recipient requires exactly one standalone public certificate")
+    else:
+        _require(raw == der, "recipient requires exactly one standalone public certificate")
     public = _openssl(["x509", "-in", str(path), "-pubkey", "-noout"])
     details = _openssl(["pkey", "-pubin", "-text", "-noout"], public)
     sizes = re.findall(rb"Public-Key: \((\d+) bit\)", details)
@@ -448,6 +465,8 @@ class EncryptedRawArchive:
         references = []
         for path in sorted((self.root / "captures").glob("*.json")):
             body = read_receipt(path, max_bytes=MAX_METADATA_BYTES)
+            _require(type(body) is dict and body.get("capture_id") == path.stem,
+                     "capture manifest filename differs from its original identity")
             reference = _reference(body)
             self.read(reference, private_key=private_key)
             references.append(reference)

@@ -107,6 +107,14 @@ capture or silently deleted to make the snapshot fit.
                 # transported. This proves envelope format, not source meaning
                 # or a complete capture; referenced objects are decrypted below.
                 raw._inspect_cipher(content)
+            else:
+                # Archive recovery derives a reference from the manifest body.
+                # Bind that body to this actual filename as well, so a copied
+                # manifest cannot appear as another independently recovered
+                # capture merely by choosing a different valid-looking name.
+                body = read_receipt(path, max_bytes=raw.MAX_METADATA_BYTES)
+                op.require(type(body) is dict and body.get("capture_id") == path.stem,
+                           "capture manifest filename differs from its original identity")
             entries.append({"path": path.relative_to(root).as_posix(), "bytes": len(content),
                             "raw_sha256": checksum})
     op.require(sum(item["bytes"] for item in entries) == inventory["encoded_bytes"],
