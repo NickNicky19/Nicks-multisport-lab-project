@@ -1,0 +1,91 @@
+{
+  "schema_version": "nba-joint-publication-integration-checkpoint-v1",
+  "observed_at": "2026-10-21T02:08:27.180946Z",
+  "mode": "LOCAL_SOFTWARE_VERIFICATION_NON_ISSUANCE",
+  "branch": "implementation/one-event-paired-pilot",
+  "base_commit": "c0a7b4bc3205d723b13d0f70baf66f3806e731ee",
+  "source_commit": null,
+  "source_state": "Uncommitted reviewed integration; local artifact build_commit identifies its base only, not these executed modified bytes. Final source commit and independent exact-head evidence remain integration-owner work.",
+  "source_sha256": {
+    "multisport_lab/publication.py": "4ca38efeed233d5f6296b985e7530c350bb94c853325841aa7ee3521b7fd9405",
+    "multisport_lab/publication_ledger.py": "3d88f0581568693d3c6fbdd600e0e8d248e7a0f315c7e2b19c6c207335108c8d",
+    "multisport_lab/display_metadata.py": "8bc6eb2c066da253c7f4aa9bcf1b38685b17e68e9cfc1af55ae9fbe4788456c2",
+    "multisport_lab/pros004_publication.py": "9370338133e0dcfe53d9782f7ec87755551bacc9444786911d7bebba6e03dcce",
+    "web/snapshot.mjs": "c163deeb99eae592d6a5f10dd73eb44ee913c432163599e27921c5e2ee96c38f",
+    "web/app.mjs": "a5b211c7e95d0228033ee18fed99193075c8e91dec2a87606c102e8d50cbaa7e",
+    "tests/test_publication_channels.py": "4d73ee2ca964b4c0669ca424c89c5f90b6c031714a25d4d3a5fa256b0e76758b",
+    "web/tests/publication-channels.test.mjs": "ccff9959b5eab6b29b886be7cf8449822a23e580aaccb1b68d6a42fc3285888c",
+    "tests/test_display_metadata.py": "98886377ea9ba7a2583c307eb17736b0837cc87aaebb394f317343d4a3cc113d",
+    "web/tests/display_browser_smoke.py": "8b9b2e7a9b1fd843a3d648b30620120d2924ace80a73b52272b459af0957fc4e"
+  },
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s tests -p test_publication_channels.py -q",
+      "result": "PASS",
+      "tests": 8,
+      "seconds": 73.929
+    },
+    {
+      "command": "PYTHONPATH=tests python3 -O -m unittest test_publication_channels.PublicationChannelsTests.test_valid_nonempty_both_input_protocols_coexist_with_original_history_and_display test_publication_channels.PublicationChannelsTests.test_nonempty_foreign_semantic_failure_does_not_hide_original_research_or_names -q",
+      "result": "PASS",
+      "tests": 2,
+      "seconds": 36.354
+    },
+    {
+      "command": "node --test --test-isolation=none --test-reporter=spec web/tests/*.test.mjs",
+      "result": "PASS",
+      "tests_at_execution": 67,
+      "seconds": 0.73562409
+    },
+    {
+      "command": "python3 web/tests/display_browser_smoke.py /tmp/nml-joint-site",
+      "result": "PASS",
+      "viewports": [
+        1440,
+        390,
+        320
+      ],
+      "coverage": [
+        "four typed channels recovered",
+        "six verified historical player names and three matchups",
+        "14 NBA categories",
+        "independent publication/source/input/issuance clocks",
+        "keyboard History",
+        "metadata404 fallback",
+        "2\u20136 legs",
+        "OVER_ONLY/UNDER_ONLY/MIXED",
+        "scope filters",
+        "NO_ACTION"
+      ]
+    }
+  ],
+  "original_records": {
+    "count": 19,
+    "bytes": 1817800,
+    "changed_from_base": []
+  },
+  "artifact": {
+    "manifest_schema": 5,
+    "snapshot_id": "5137959a4ad627d838bb091949dd5d387bf366fb63ebd24fa182665317df0693",
+    "declared_build_commit": "c0a7b4bc3205d723b13d0f70baf66f3806e731ee",
+    "channel_errors": {
+      "pros004": null,
+      "display": null,
+      "offers": null,
+      "paired_research": null
+    },
+    "data_files": 6,
+    "data_bytes": 161894
+  },
+  "integrity_boundary": "Frozen legacy semantic validation remains global for complete-store integrity. Malformed legacy meaning can block paired-store recovery. Separately referenced offer recovery and optional channel failure isolation remain independent. No generic envelope acceptance admits a foreign typed body: each strict source exporter proves its own supported typed records and references.",
+  "evidence_dimensions": {
+    "software_correctness": "Focused checks passed; repository-wide checks and exact-head independent recovery remain integration-owner work.",
+    "real_data": "Existing retained history and display evidence only; no new source requests.",
+    "genuine_prospective_issuance": 0,
+    "statistical_study_evaluation": "NOT_RUN",
+    "financial_settlement": "NOT_EVALUATED",
+    "qualified_tickets": 0,
+    "website_deployment": "NOT_PERFORMED"
+  },
+  "pr11": "Unchanged exact head 326e354650aef57c3b965711abf071b2fc4205eb; ready for guarded release, unmerged with exact-head approval pending."
+}

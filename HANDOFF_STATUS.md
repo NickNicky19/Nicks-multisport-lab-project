@@ -1,6 +1,129 @@
 # Implementation handoff status
 
-Updated: October 20, 2026 (UTC).
+Updated: October 21, 2026 (UTC).
+
+## October 21 — separate operating package; first integrated check retained
+
+Work continues in the existing repository on isolated branch
+`implementation/one-event-paired-pilot`, based on draft PR #10 head
+`c0a7b4bc3205d723b13d0f70baf66f3806e731ee`. Main was independently observed as
+`735a464e9e8718303ef481abf711a8969de56694`; no branch reset, unrelated worktree
+write, merge or deployment occurred. PR #10 remains draft and unchanged.
+PR #11 remains independently ready at
+`326e354650aef57c3b965711abf071b2fc4205eb`, awaiting its exact-head landing
+approval. Its source records and approved implementation are untouched.
+
+This source-preparation checkpoint precedes the final producer commit and hosted
+measurement. The executed worktree hashes are in the create-only command and
+integration receipts; a base SHA is not relabeled as these modified source bytes.
+The following completed checkpoint will record the frozen exact new source pin.
+
+The bounded before-edit checkpoint profile found six strict whole-store passes
+consuming about 99% of a 31.125-second repeated checkpoint. The after-profile
+measured 12.005 seconds with two mandatory strict passes plus scoped fresh exact
+local transfer checks. Both use the retained 30-file / 3,680,132-byte full-history
+diagnostic state. The receipts distinguish final prefix/layout hardening from the
+actually measured source. Eleven new normal/-O transfer tests and existing strict
+snapshot/record/remote tests pass. This is transport profiling, not a full eight
+original hosted operating pass or a maximum 512-record timing proof.
+
+New separate `NBA-PAIRED-OPS-002` producers preserve unchanged R0/K0 and the
+complete 26,645-row history, all 13 categories plus PA, causal cutoffs, complete
+joint-law replay and original marginal probabilities. Both laws are preflighted
+before a pair starts. Typed event/input/forecast/outcome/grade/correction records,
+actual local/remote/post-fsync proof completions, missing peers and finite
+completion witnesses preserve late and unacknowledged originals across restart.
+Independent verification reproduced and closed 299→301-second,121-second original
+latency and input-close delayed-proof admission errors. Unknown/contradictory
+known typed records fail even with repaired checksums. Public counts, clocks,
+fixed input/cohort, active corrections and missing-peer sets cross-check in
+Python and JavaScript. Genuine writes remain unconditional
+`NO_REVIEWED_ACTIVATION_INSTALLED`; arbitrary activation dictionaries cannot
+enable or qualify forecasts.
+
+The create-only new preparation policy preceded nine bounded manual GETs.
+Scoreboard and summary agree on DEN at OKC, ESPN 401909094, start
+2026-10-23T01:30Z, version
+`698609650c6e8d5cf87e19933d4ae5fc6808aa006a023ef0d91617a5738f0a90`.
+Two lowest numeric active roster IDs per team were frozen before forecasts or
+outcomes, then independently cross-checked through ESPN athlete profiles:
+Alex Caruso 2991350 and Kenrich Williams 3133626 (OKC 25), DeMar DeRozan 3978 and
+Aaron Gordon 3064290 (DEN 7). These source facts are not corrected using a familiar
+past roster; the routes are not independent upstream providers. Actual request/
+observation clocks/hashes remain separate from unknown source update clocks.
+These early preparation bodies are not timely future input records or primary
+remote raw retention.
+
+The new inactive plan 41b219cb141824131166b0b50a5f08d5942a56bf63c8670a2143b2cad8a57410
+requires reviewed activation before October 22, 23:40 UTC; actual capture/input
+remote admission 23:40–23:50UTC and generation/verification/persistence
+October 23, 00:00–00:05 UTC. Each original remains bounded by 120 seconds. The original
+PROS004 reservation is inactive/not started with unknown complete UTC inventory/
+actual first cutoff; no midnight assumption, shift, backfill or replacement was
+made. It is not reactivated by the new one-game registration.
+
+The offer-only contract is separate from sport-v2's still-empty restricted
+offer/candidate/ticket arrays. It permits a missing price only after explicit
+player/event/side/line/period/OT/statistical/settlement meanings and source
+admission. Actual admission registries are empty. Retained Sleeper partial rows
+remain incomplete contracts. Two bounded new ESPN GETs found six non-player
+markets (four team totals, two overtime) and independently verified provider 100
+as DraftKings; no athlete/detail/rules reference was returned. Absence applies
+to that snapshot only. No prices, permission, usable quote, EV or ticket was
+invented. Software 15 normal/-O tests, 8 frontend cases and synthetic card browser
+checks 1440/390/320 passed; actual source receipts are separate.
+
+Manifest 5 integrates strict independent legacy research/PROS004, verified display,
+offer-only and separate paired channels, keeping legacy 1–4 readers and scoped
+NO_ACTION behavior. A composite envelope bridge fixes valid mixed-input ledgers
+without editing frozen Ledger. Full remote recovery still validates every known
+typed lane; publication isolates foreign new-channel semantic failure. Frozen
+legacy semantic validation remains global for complete-store integrity.
+Focused joint tests preserve six historical bundles/grades/names/all 14 over full
+shared-history inputs, separate clocks and 2–6 directions/scopes. They also check
+invalid asset paths/hashes, optional metadata failure and independent offer/
+research errors. All 19 original receipts remain byte-identical, 1,817,800 bytes.
+
+The encrypted raw archive candidate is bounded and tested under normal/-O with
+fresh independent Git-clone decrypt recovery. No operational key, certificate,
+secret or backend is installed. Encryption does not establish source rights.
+Actual four-input raw linkage, source/retention admission, genuine destination/
+entrypoint, hosted complete eight-original timing and exact reviewed activation
+remain unmet. Combined capacity v2 reserves 115 files / 4,627,656 bytes including one
+complete 1-MiB hosted report, one offer and source links, under unchanged 512-file / 32-MiB
+ledger limits. The older initial preflight v1's smaller metadata allocation is
+retained and explicitly superseded by v2. Raw archive limits remain separate and
+unchanged; no raw provider body is committed or copied to Pages.
+
+First required integrated command, actual 02:10:36–02:15:41 UTC:
+`python3 -m unittest discover -s tests -v` ran 536 tests, 535 passed / 1 error. The error
+was a display regression fixture reusing a predecessor manifest after intentional
+asset pruning, reaching a missing old sport asset before the intended optional
+metadata check. Root changed that fixture to use the currently admitted manifest;
+the exact targeted test passed in 27.843 seconds. The first log/raw hash and source
+map are retained in `evidence/verification/ops002-software-checks-v1.json`.
+This was a software-test failure, not altered or corrupted original research.
+Final required integrated checks are running against the subsequently held source;
+no final PASS or hosted timing is claimed here.
+
+Current public HTTP/readback at 01:59 UTC still served main 735a464, manifest 2,
+sport SHA256 22e04b7a68fde0a9a639af9a71512a5a149fd3326e5ee1491a0f5f26f7a46f2b:
+six historical bundles, six grades, all 14, 0 offers/candidates/tickets and no
+genuine issuance. The site has not deployed these new changes.
+The expired pilot remains `ACTUAL_PARTIAL_EXECUTION / LATE_GUARDED_ABORT`,
+run 39493005199, PR #8/records dec5cc9fa397332244985bea8815bd9a89ea264e,
+provider requests 0 / forecasts 0/no fresh binding. Workflow 390126745 was re-observed
+disabled; the native task was not modified. The cause of GitHub's late creation
+remains unestablished. No retry, re-enable, dispatch or rebind of that pilot.
+
+Next concrete task: finish held-source software checks, freeze/push the exact
+source commit, independently recover it, then dispatch the explicitly guarded
+non-issuance full-history operating diagnostic on the intended host. The prepared
+Pages workflow diagnostic mode skips build/deploy, adds no cron and enables only
+the diagnostic writer. Afterwards retain actual complete/partial results and
+update this handoff with the exact source and publication states. No real model
+comparison, future forecast/outcome/grade, financial settlement, qualification,+activation or scheduler is created. NFL/MLB, PR #9/DEV005 and all frozen evidence
+remain untouched.
 
 ## October 20, 23:19 UTC — strict callback proof verified; full cohort still blocked
 

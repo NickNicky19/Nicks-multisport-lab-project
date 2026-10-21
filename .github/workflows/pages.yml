@@ -5,6 +5,12 @@ on:
   push:
     branches: [main, implementation/nba-foundation]
   workflow_dispatch:
+    inputs:
+      operating_diagnostic:
+        description: Run the separately guarded synthetic eight-forecast timing diagnostic (no source capture, issuance, or deployment)
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -15,6 +21,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name != 'workflow_dispatch' || !inputs.operating_diagnostic
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -43,6 +50,50 @@ jobs:
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: output
+
+  operating-diagnostic:
+    if: >-
+      github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
+      github.event_name == 'workflow_dispatch' && inputs.operating_diagnostic
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    concurrency:
+      group: nba-ops002-diagnostic-writer
+      cancel-in-progress: false
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - name: Prepare existing GitHub authentication for the isolated diagnostic writer
+        run: gh auth setup-git
+      - name: Measure actual host execution, durable checkpointing and independent recovery
+        run: |
+          python3 -m multisport_lab.operating_diagnostic \
+            --producer-commit "$GITHUB_SHA" \
+            --store-root "$RUNNER_TEMP/nml-ops002-diagnostic-store" \
+            --writer-root "$RUNNER_TEMP/nml-ops002-diagnostic-writer" \
+            --output "evidence/operational/hosted-diagnostic-$GITHUB_RUN_ID.json" \
+            --authorize-diagnostic-push
+      - name: Preserve factual diagnostic receipt and exact partial store
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nba-ops002-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: error
+          include-hidden-files: false
+          path: |
+            evidence/operational/hosted-diagnostic-*.json
+            ${{ runner.temp }}/nml-ops002-diagnostic-store/records/
+            ${{ runner.temp }}/nml-ops002-diagnostic-store/evidence/operational002/
 
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

@@ -1,0 +1,142 @@
+{
+  "actual_completed_at": "2026-10-20T23:20:27.908396Z",
+  "actual_started_at": "2026-10-20T23:19:24.894187Z",
+  "commands": [
+    {
+      "actual_completed_at": "2026-10-20T23:20:22.302012Z",
+      "actual_started_at": "2026-10-20T23:19:24.894215Z",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "elapsed_seconds": 57.40781049799989,
+      "exit_code": 0,
+      "log_bytes": 50279,
+      "log_path": "/tmp/nml-website-integration-7e33da5af703-0.log",
+      "log_sha256": "3d43c5f95096bde677f8ef32b94e9a97c60af3c55e282e2ebb25e04a320834ad",
+      "tail": [
+        "test_intent_checkpoint_failure_and_lost_original_never_regenerate (test_scheduled_cycle.ScheduledCycleTests.test_intent_checkpoint_failure_and_lost_original_never_regenerate) ... ok",
+        "test_late_partial_is_read_only_and_complete_late_can_recover (test_scheduled_cycle.ScheduledCycleTests.test_late_partial_is_read_only_and_complete_late_can_recover) ... ok",
+        "test_late_valid_input_is_retained_diagnostically_never_bound_or_issued (test_scheduled_cycle.ScheduledCycleTests.test_late_valid_input_is_retained_diagnostically_never_bound_or_issued) ... ok",
+        "test_ordered_input_remote_checkpoint_then_per_subject_intent_and_original (test_scheduled_cycle.ScheduledCycleTests.test_ordered_input_remote_checkpoint_then_per_subject_intent_and_original) ... ok",
+        "test_per_original_checkpoint_failure_stops_before_second_generation (test_scheduled_cycle.ScheduledCycleTests.test_per_original_checkpoint_failure_stops_before_second_generation) ... ok",
+        "test_slow_capture_intent_checkpoint_cannot_start_late_http (test_scheduled_cycle.ScheduledCycleTests.test_slow_capture_intent_checkpoint_cannot_start_late_http) ... ok",
+        "test_source_failure_preserves_failure_without_input_or_math (test_scheduled_cycle.ScheduledCycleTests.test_source_failure_preserves_failure_without_input_or_math) ... ok",
+        "",
+        "----------------------------------------------------------------------",
+        "Ran 289 tests in 57.224s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "actual_completed_at": "2026-10-20T23:20:22.356939Z",
+      "actual_started_at": "2026-10-20T23:20:22.302401Z",
+      "command": [
+        "python3",
+        "-m",
+        "multisport_lab.demo"
+      ],
+      "elapsed_seconds": 0.05454679499962367,
+      "exit_code": 0,
+      "log_bytes": 1632,
+      "log_path": "/tmp/nml-website-integration-7e33da5af703-1.log",
+      "log_sha256": "3d965ae542f5a7473441bf976bbcf695952c9eebb009953d26693820d48d0428",
+      "tail": [
+        "    \"PA\": 40,",
+        "    \"PR\": 38,",
+        "    \"PRA\": 50,",
+        "    \"PTS\": 28,",
+        "    \"RA\": 22,",
+        "    \"REB\": 10,",
+        "    \"STL\": 2,",
+        "    \"TD\": 1,",
+        "    \"TOV\": 3",
+        "  },",
+        "  \"supplied_joint_law_is_not_a_forecast\": true",
+        "}"
+      ]
+    },
+    {
+      "actual_completed_at": "2026-10-20T23:20:22.632411Z",
+      "actual_started_at": "2026-10-20T23:20:22.357637Z",
+      "command": [
+        "node",
+        "--test",
+        "--test-isolation=none",
+        "web/tests/display.test.mjs",
+        "web/tests/evidence-groups.test.mjs",
+        "web/tests/research.test.mjs",
+        "web/tests/scope.test.mjs",
+        "web/tests/snapshot.test.mjs"
+      ],
+      "elapsed_seconds": 0.27484667700082355,
+      "exit_code": 0,
+      "log_bytes": 4184,
+      "log_path": "/tmp/nml-website-integration-7e33da5af703-2.log",
+      "log_sha256": "2e39c65a8e2f81b87163661451cca2eb9bf4438065ae390e2b138c6a1eeef9f1",
+      "tail": [
+        "\u2714 loader verifies manifest and sport hashes using repository-relative paths (1.210243ms)",
+        "\u2714 corrupted sport bytes are isolated; manifest corruption rejects the publication (1.041981ms)",
+        "\u2714 retained publication preserves original generation time and failure metadata (0.869246ms)",
+        "\u2714 HTTP failure and oversized publication are errors rather than empty boards (1.375365ms)",
+        "\u2139 tests 43",
+        "\u2139 suites 0",
+        "\u2139 pass 43",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 223.072275"
+      ]
+    },
+    {
+      "actual_completed_at": "2026-10-20T23:20:27.805891Z",
+      "actual_started_at": "2026-10-20T23:20:22.632784Z",
+      "command": [
+        "python3",
+        "-m",
+        "multisport_lab.publication",
+        "--build-commit",
+        "7e33da5af7037008b2cee92ae2a5f51dfd8edf14"
+      ],
+      "elapsed_seconds": 5.173116467,
+      "exit_code": 0,
+      "log_bytes": 123,
+      "log_path": "/tmp/nml-website-integration-7e33da5af703-3.log",
+      "log_sha256": "e4f32d9b848b87f43610edc7f32fc6e7c6f1c547600f8d0376d5e387ff03476b",
+      "tail": [
+        "Built research-only snapshot c18426c0b6084b01e51d4140dcbf9ddb981e4365518c9ca038282fa0bde507fb (1 sport); no qualified rows"
+      ]
+    },
+    {
+      "actual_completed_at": "2026-10-20T23:20:27.908320Z",
+      "actual_started_at": "2026-10-20T23:20:27.806024Z",
+      "command": [
+        "node",
+        "web/tests/site-smoke.mjs",
+        "output"
+      ],
+      "elapsed_seconds": 0.10230822400080797,
+      "exit_code": 0,
+      "log_bytes": 170,
+      "log_path": "/tmp/nml-website-integration-7e33da5af703-4.log",
+      "log_sha256": "f8fb899a4e16ab982b34d48832b622946af02195d4620285d5f4a5627f7c2e3c",
+      "tail": [
+        "PASS: artifact root, 4 relative assets, 3 validated data files, all-13 NBA inventory and research-only NO_ACTION. Browser/deployment not established by this smoke check."
+      ]
+    }
+  ],
+  "deployment": false,
+  "head": "7e33da5af7037008b2cee92ae2a5f51dfd8edf14",
+  "label": "website",
+  "model_evaluation": false,
+  "new_genuine_issuance": 0,
+  "schema_version": "integration-command-checks-v1",
+  "status": "PASS"
+}

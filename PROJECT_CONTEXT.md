@@ -1,8 +1,53 @@
 # Nick's Multisport Lab — project context
 
-Updated: October 20, 2026.
+Updated: October 21, 2026.
 
-## Current implementation package — PROS004 readiness
+## Current integration package — separate one-game operating readiness
+
+The latest handoff remains the status authority. The public site was independently
+observed at main `735a464e9e8718303ef481abf711a8969de56694` on October 21, 01:59 UTC:
+six historical forecast bundles, six statistical grades, all 14 categories, zero
+offers/candidates/tickets and no genuine upcoming issuance. This is a static-site
+readback, not a new deployment or source capture.
+
+Website PR #11 is separately ready for review at
+`326e354650aef57c3b965711abf071b2fc4205eb`; its exact-head landing approval is
+pending. It improves verified names/matchups and independent empty states without
+changing the 19 original research records. It has not been merged/deployed.
+
+Draft PR #10 remains at `c0a7b4bc3205d723b13d0f70baf66f3806e731ee`.
+The separate branch `implementation/one-event-paired-pilot` builds on that reviewed
+readiness checkpoint, preserving the pending PR. It integrates independent typed
+display/offer/paired channels and a new inactive named-game operating pilot,
+`NBA-PAIRED-OPS-002`. PROS004 is retained inactive/not started with its original
+protocol/receipts/windows unchanged; complete admitted UTC inventory and actual
+first selected cutoff remain unestablished. There is no backfill or shift.
+
+The named-game plan fixes Denver at Oklahoma City, ESPN 401909094, start
+2026-10-23T01:30Z, four source-selected roster subjects and unchanged R0/K0 laws.
+Preparation identities were cross-checked before forecasts/outcomes. Actual
+capture would be October 22, 23:40–23:50 UTC and generation/persistence
+October 23, 00:00–00:05 UTC. Preparation bytes are not timely future inputs.
+Genuine writes remain hard disabled. Source admission, primary private raw
+retention, exact-source hosted full-cohort timing and reviewed genuine activation
+are separate unmet requirements; no scheduler is installed.
+
+The expired October 20 pilot actually ran late and guardedly aborted:
+`ACTUAL_PARTIAL_EXECUTION / LATE_GUARDED_ABORT`, run 39493005199, provider requests 0,
+forecasts 0 and no fresh binding. Its legitimate records/PR #8 head is
+`dec5cc9fa397332244985bea8815bd9a89ea264e`. The workflow was observed disabled;
+the native task remains untouched (last observed paused). Why GitHub created the
+scheduled run late is not established. Never retry, re-enable, rebind or replace
+that expired cycle.
+
+Actual player-offer admission remains empty: a bounded current ESPN response
+contained only team/overtime markets; earlier Sleeper observations are incomplete
+contracts. A separate offer-only typed path permits a missing price after full
+contract/source admission, without conferring quotes, EV or ticket eligibility.
+The builder retains 2–6 legs, directions, sport scopes and NO_ACTION. S0/DEV005,
+all frozen comparisons, NFL and the separate MLB model stay untouched.
+
+## Earlier October 20 implementation checkpoint — PROS004 readiness
 
 The isolated branch `implementation/pros004-paired-readiness` starts from current
 main `735a464e9e8718303ef481abf711a8969de56694`. PR #7 has merged; its approved
@@ -38,10 +83,10 @@ independently recovered activation evidence exist before its actual first T90.
 
 - Repository: [NickNicky19/Nicks-multisport-lab-project](https://github.com/NickNicky19/Nicks-multisport-lab-project).
 - Default branch observed before starter import: `main`.
-- Current operating task: ONE unattended October 20 pilot is expressly authorized, replacing manual-only operation for this cycle only. Setup is on `automation/nba-20261020-pilot`, carrying documentation `b498867a03b7c2d583383ff94d887ddd18cb2e42`. Native task `6ad6e46f754c81918f190eff2fdc248c` is paused after an unavailable executor diagnostic. Actual hosted preflight passed four source routes, retained history, push/readback, own expiry and existing draft PR #8 update/Pages validation. Setup PR #7 still requires guarded merge and default-branch readback before scheduling; a temporary managed-shell HTTP401 interruption recovered without a credential change. The final exact-head setup approval is still required. See `docs/SCHEDULED_PILOT.md` and the latest handoff; no early capture/issuance or new grades occurred.
+- Earlier operating task: ONE unattended October 20 pilot is expressly authorized, replacing manual-only operation for this cycle only. Setup is on `automation/nba-20261020-pilot`, carrying documentation `b498867a03b7c2d583383ff94d887ddd18cb2e42`. Native task `6ad6e46f754c81918f190eff2fdc248c` is paused after an unavailable executor diagnostic. Actual hosted preflight passed four source routes, retained history, push/readback, own expiry and existing draft PR #8 update/Pages validation. Setup PR #7 still requires guarded merge and default-branch readback before scheduling; a temporary managed-shell HTTP401 interruption recovered without a credential change. The final exact-head setup approval is still required. See `docs/SCHEDULED_PILOT.md` and the latest handoff; no early capture/issuance or new grades occurred.
 - Initial remote commit observed: `c82225cf893b16de70ebbbcd476774f043360d24`.
-- Current checkpoint: **PR #6 merged/deployed as main `cde77cbaa0908c2ed49d26140110dea5493b54b7` after exact-head approval of `0a20c2a752e6d5475e46feadee08c87e01846d6d`.** The manual pilot still pins reviewed producer `58530309cf384425e15f02fd9fa980899a4dc0bc`; all nine producer files, 19 records and 34 frozen files are unchanged. The guard/plan/runbook are published; actual phase is capture-not-yet-open, with no fresh binding or genuine issuance. K0/prior experiments stay frozen and PROS004 activation remains separate. Exact evidence and next manual commands are in the handoff/runbook.
-- Deployed research site: https://nicknicky19.github.io/Nicks-multisport-lab-project/ ; exact main cde77cb, workflow 39363727977 build/deploy passed 234 Python/35 frontend tests, demo/artifact and exact-pin fetch checks. Public manifest/hash and desktop/mobile verification passed six historical bundles/84 PMFs/six grades/all 14 categories and 45 scoped NO_ACTION cases. Post-deployment status/receipt is retained on `docs/pr6-deployment`. Publication created no future forecasts, prospective grades, financial settlements or qualified tickets.
+- Earlier checkpoint: **PR #6 merged/deployed as main `cde77cbaa0908c2ed49d26140110dea5493b54b7` after exact-head approval of `0a20c2a752e6d5475e46feadee08c87e01846d6d`.** The manual pilot still pins reviewed producer `58530309cf384425e15f02fd9fa980899a4dc0bc`; all nine producer files, 19 records and 34 frozen files are unchanged. The guard/plan/runbook are published; actual phase is capture-not-yet-open, with no fresh binding or genuine issuance. K0/prior experiments stay frozen and PROS004 activation remains separate. Exact evidence and next manual commands are in the handoff/runbook.
+- Earlier deployed-site checkpoint: https://nicknicky19.github.io/Nicks-multisport-lab-project/ ; exact main cde77cb, workflow 39363727977 build/deploy passed 234 Python/35 frontend tests, demo/artifact and exact-pin fetch checks. Public manifest/hash and desktop/mobile verification passed six historical bundles/84 PMFs/six grades/all 14 categories and 45 scoped NO_ACTION cases. Post-deployment status/receipt is retained on `docs/pr6-deployment`. Publication created no future forecasts, prospective grades, financial settlements or qualified tickets.
 
 - First implementation commit: `243bc9e495f25906216f1a438cb060ec64de3f7c`, based on reviewed handoff `de86e92352f0fb5a76831275f6de6b256ce05434`; no branch reset or older ZIP import.
 - Status authority for the next session: [`HANDOFF_STATUS.md`](HANDOFF_STATUS.md), supplemented by the actual checked-out commit and observed repository state.

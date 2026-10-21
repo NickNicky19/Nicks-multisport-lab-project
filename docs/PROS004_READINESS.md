@@ -9,6 +9,43 @@ activation flags. The proposed operational wrappers are
 `pros004-r0-producer-v3` and `pros004-k0-producer-v3`.
 The v3 completion policy is [PROS004_COMPLETION.md](PROS004_COMPLETION.md).
 
+## October 21 — inactive reservation and separately versioned operating preparation
+
+PR #10 remains draft at `c0a7b4bc3205d723b13d0f70baf66f3806e731ee`.
+The later working branch prepares a separate `NBA-PAIRED-OPS-002` named-game
+operation and explicitly retains this reservation **inactive/not started**.
+Its mathematical protocol, original receipts, prior failed timing observations
+and evaluation gates are unchanged. Complete admitted UTC-date inventory and the
+actual first selected cutoff remain unestablished; no safe midnight deadline,
+backfill, shifted window or replacement subject is inferred.
+
+Before changing checkpoint implementation, bounded profiling of the retained
+30-file/3,680,132-byte full-history diagnostic showed six repeated whole-store
+checks consuming about 99% of a 31.125-second idempotent checkpoint. An exact local
+transfer proof removes redundant pure local semantic replays while preserving
+fresh bytes, hashes, references, actual clocks, journal prefixes, closed retained
+subsets, source/root identities and final inventory seals. Full typed source and
+independently fetched remote verification remain mandatory. Eleven new normal
+and optimized regressions reject changed meaning, missing originals, partial
+inventory, context/proof reuse and lost admission prefixes.
+
+The create-only after-profile measured 12.005 seconds on the same retained full
+history, with two full strict passes and fresh exact checks. Its receipt pins the
+actually measured revision; later prefix/layout hardening is distinguished. This
+is transport evidence, not a new full-cohort pass, a maximum 512-record benchmark,
+a provider capture, a model evaluation or activation. Earlier failed full-cohort
+receipts above/below are not overwritten by this profile.
+
+Separate operating producers, inputs, completion witnesses, raw-retention
+candidate, independent publication channels and bounded synthetic/recovery tests
+are described in [NBA_OPERATIONAL_002.md](NBA_OPERATIONAL_002.md) and
+[OPERATIONAL_RELEASE_CHECKLIST.md](OPERATIONAL_RELEASE_CHECKLIST.md). The new
+single-game plan has its own fixed identities and deadlines; it is not a later
+segment of this 21-date comparison. Actual hosted full-eight timing, source/raw
+admission and exact reviewed genuine activation remain separate requirements.
+All genuine-write guards remain closed. No new scheduler, comparison or genuine
+issuance is authorized by this readiness integration.
+
 ## October 20, 23:10 UTC — new source pin, unchanged inactive gates
 
 Producer/driver source is now frozen at

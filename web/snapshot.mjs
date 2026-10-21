@@ -1,3 +1,4 @@
+import {validateDisplayDescriptor,validateDisplayMetadata} from './display.mjs';
 import {validatePros004Descriptor, validatePros004Index, validatePros004Page, validatePros004Forecast, validatePros004Grade, PROS004_MAX_TOTAL, pros004Original, validatePros004AdmissionContext} from './pros004.mjs';
 export const REQUIRED_MARKETS = ['PTS', 'PRA', 'REB', '3PM', 'AST', 'RA', 'PR', 'TOV', 'TD', 'DD', 'BLK', 'STL', 'BLK+STL'];
 const COLLECTIONS = ['events', 'offers', 'forecasts', 'candidates', 'tickets', 'performance'];
@@ -15,14 +16,17 @@ async function sha256(bytes, cryptoProvider) {
   return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-async function boundedBytes(response) {
+async function boundedBytes(response, limit = MAX_BYTES) {
   const bytes = await response.arrayBuffer();
-  if (bytes.byteLength > MAX_BYTES) throw new Error('Publication asset exceeds its byte budget.');
+  if (bytes.byteLength > limit) throw new Error('Publication asset exceeds its byte budget.');
   return bytes;
 }
 
+const channelNames = version => ({3:['pros004'],4:['display'],5:['pros004','display','offers','paired_research']}[version] || []);
+
 export function validateManifest(value) {
-  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors', ...(value?.schema_version === 3 ? ['pros004', 'pros004_error'] : [])]) || ![1, 2, 3].includes(value.schema_version) || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
+  const extra = channelNames(value?.schema_version).flatMap(channel=>[channel,`${channel}_error`]);
+  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors', ...extra]) || ![1, 2, 3, 4, 5].includes(value.schema_version) || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
   if (!SHA256.test(value.snapshot_id) || !COMMIT.test(value.build_commit) || !utc(value.published_at) || Date.parse(value.published_at) > Date.now()) throw new Error('Incomplete publication identity or invalid clock.');
   if (!Array.isArray(value.supported_sports) || !value.supported_sports.length || value.supported_sports.some(s => typeof s !== 'string' || !/^[A-Z]+$/.test(s)) || new Set(value.supported_sports).size !== value.supported_sports.length) throw new Error('Invalid sport coverage.');
   if (!value.errors || typeof value.errors !== 'object' || Array.isArray(value.errors) || Object.entries(value.errors).some(([league, error]) => !/^[A-Z]+$/.test(league) || !text(error))) throw new Error('Invalid publication errors.');
@@ -132,6 +136,15 @@ async function loadPros004(descriptor, fetcher, cryptoProvider) {
   return {index,forecasts,grades};
 }
 
+function validatePairedDescriptor(value,publishedAt) {
+  if (!keys(value,['path','sha256','generated_at','status','retained','error']) || !SHA256.test(value.sha256)
+      || value.path !== `paired-research.${value.sha256}.json` || value.status !== 'RESEARCH_ONLY'
+      || !utc(value.generated_at) || Date.parse(value.generated_at)>Date.parse(publishedAt)
+      || typeof value.retained !== 'boolean' || !(value.error===null || text(value.error))) {
+    throw new Error('Invalid paired research descriptor.');
+  }
+}
+
 export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.crypto) {
   const response = await fetcher('./data/manifest.json', {cache: 'no-store', signal: AbortSignal.timeout(12000)});
   if (!response.ok) throw new Error(`Publication manifest unavailable (HTTP ${response.status}).`);
@@ -153,10 +166,64 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
     }
     return sport;
   }));
-  let pros004 = null, pros004Error = manifest.schema_version === 3 ? manifest.pros004_error : null;
-  if (manifest.schema_version === 3 && manifest.pros004 !== null) {
-    try {pros004 = await loadPros004(manifest.pros004, fetcher, cryptoProvider);} catch (error) {pros004Error = error.message || 'PROS004 recovery failed.';}
-  }
-  return {manifest, pros004, pros004Error, sports: results.flatMap(result => result.status === 'fulfilled' ? [result.value] : []), errors: results.flatMap((result, index) => result.status === 'rejected' ? [{league: manifest.sports[index].league, message: result.reason.message}] : [])};
+  const sports = results.flatMap(result => result.status === 'fulfilled' ? [result.value] : []);
+  const channels = Object.fromEntries(['pros004','display','offers','paired_research'].map(channel=>[channel,{value:null,error:null}]));
+  await Promise.all(channelNames(manifest.schema_version).map(async channel => {
+    const state = channels[channel], descriptor = manifest[channel];
+    try {
+      const error = manifest[`${channel}_error`];
+      if (!(error === null || text(error))) throw new Error(`Invalid ${channel} publication error.`);
+      state.error = error;
+      if (descriptor === null) {
+        if (!text(error)) throw new Error(`Missing ${channel} collection needs an explicit explanation.`);
+        return;
+      }
+      if (channel === 'pros004') {
+        validatePros004Descriptor(descriptor, manifest.published_at);
+        state.value = await loadPros004(descriptor, fetcher, cryptoProvider);
+        return;
+      }
+      // Descriptor semantics run before any request, independently for each lane.
+      let module, maxBytes;
+      if (channel === 'display') {
+        validateDisplayDescriptor(descriptor, manifest.published_at);
+        maxBytes = 128 * 1024;
+      } else if (channel === 'offers') {
+        module = await import('./offers.mjs');
+        module.validateOfferDescriptor(descriptor, manifest.published_at);
+        maxBytes = 256 * 1024;
+      } else {
+        validatePairedDescriptor(descriptor, manifest.published_at);
+        module = await import('./paired-research.mjs');
+        module.validatePairedResearchDescriptor(descriptor,manifest.published_at);
+        maxBytes = 1024 * 1024;
+      }
+      const result = await fetcher(`./data/${descriptor.path}`, {cache:'no-store',signal:AbortSignal.timeout(12000)});
+      if (!result.ok) throw new Error(`${channel} asset unavailable (HTTP ${result.status}).`);
+      const raw = await boundedBytes(result, maxBytes);
+      if (await sha256(raw,cryptoProvider) !== descriptor.sha256) throw new Error(`${channel} asset checksum mismatch.`);
+      const asset = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));
+      if (asset.generated_at !== descriptor.generated_at) throw new Error(`${channel} generation clock mismatch.`);
+      if (channel === 'display') {
+        validateDisplayMetadata(asset,sports,manifest.published_at);
+        for (const [record,key] of [[asset,'metadata_id'],[asset.catalog,'catalog_id']]) {
+          const {[key]:id,...body}=record;
+          if (await sha256(new TextEncoder().encode(canonical(body)),cryptoProvider)!==id) throw new Error('Display record checksum mismatch.');
+        }
+      } else if (channel === 'offers') {
+        module.validateOfferAsset(asset,manifest.published_at);
+        await module.verifyOfferAssetHashes(asset,cryptoProvider);
+      } else {
+        module.validatePairedResearchAsset(asset,manifest.published_at);
+        await module.verifyPairedResearchHashes(asset,cryptoProvider);
+      }
+      state.value = asset;
+    } catch (error) {state.error = error.message || `${channel} recovery failed.`;}
+  }));
+  return {manifest,sports,pros004:channels.pros004.value,pros004Error:channels.pros004.error,
+    display:channels.display.value,displayError:channels.display.error,
+    offers:channels.offers.value,offersError:channels.offers.error,
+    pairedResearch:channels.paired_research.value,pairedResearchError:channels.paired_research.error,
+    errors:results.flatMap((result,index)=>result.status==='rejected'?[{league:manifest.sports[index].league,message:result.reason.message}]:[])};
 }
 import {validateResearchEvent, validateResearchForecast, validateResearchGrade, utcMicros} from './research.mjs';
