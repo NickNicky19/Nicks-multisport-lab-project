@@ -2,6 +2,171 @@
 
 Updated: October 21, 2026 (UTC).
 
+## October 21 — actual keyless Gamma source replay and private website preview
+
+**Actual result: 28 player rows observed, 28 parsed, zero complete contracts.**
+The private local preview works on desktop/mobile, displaying partial source
+observations with explicit gaps. Zero complete normalized offers or public offers
+were produced. This is real-source feasibility evidence, not synthetic-only
+success or a completed-contract claim.
+
+Branch: `implementation/one-event-paired-pilot`. Implementation source:
+**730f4ea58c7e3c3a08eb44d8d7f33d6f5108d501**. Starting local/remote HEAD was
+**d0f2da9a21bb0bd712cbe189bf5fe1d0e7b3bb9a**, clean; normal fetches preserved
+all work. GitHub run **39588803255** was actually rechecked: completed/success,
+exact head d0f2da9a, updated October 21 at **11:10:40 UTC**. This is the prior
+head's CI, not an anticipated result for this new implementation. PR #10/#12
+remain draft; no landing or activation approval applies. The operating producer
+source **6777025deca7c03636f5cb6739cfcc77cb0b5e49** and its bindings remain
+unchanged; this separate source-review module is not wired into genuine operation.
+
+### Source decision and actual bounded evidence
+
+The preferred ESPN/Sleeper routes keep their existing scoped source-use gaps.
+ESPN004's six nonplayer rows do not imply permanent absence. One alternative,
+**Polymarket Gamma API**, was selected under a new narrow published-allowance
+interpretation: documented unauthenticated integrations, informational Content
+Features and personal use/copy support this bounded API inspection, local original
+retention and private preview. No site scraping, bulk/recurring collection,
+trading/wallet/account, public raw/offer redistribution or broader production
+admission follows. No universal bespoke written consent was required. The earlier
+unresolved review remains frozen; this new decision and its exact retained
+document hashes were recorded before the first data request.
+
+**Exactly 12/12 additional GETs**, shared by all agents and executed by one owner:
+8 data/identity, 4 documentation/schema, **zero redirects/retries/rejections**.
+Source requests ran **11:24:44.695528–11:32:18.771983 UTC**, returning
+**1,591,978 bytes**; each response stayed below the existing **2 MiB** bound.
+No further source request was made after exhaustion. Prior rejected Manifold
+requests were not retried. GitHub repository-administration queries and the
+loopback browser's static-asset reads are separate from source collection.
+
+The documented NBA listing initially returned futures/roster propositions. A
+documented player-stat type filter led to an actual market and linked NBA event:
+60 total markets, **28 unique player-stat markets / 14 source name labels**.
+Current sample: **PTS 10, REB 10, AST 8**; the other eleven of thirteen+PA are
+unobserved here, not permanently unsupported. Recognized returned 3PM/PRA/DD
+families without rules parsers now count as observed/unsupported parser cases,
+rather than silently disappearing. All fourteen category rows are retained.
+One canonical basketball-player identity was independently disambiguated from
+Wikidata CC0 entity data; property definitions also verified NBA/ESPN ID meanings.
+It appears in four observations. No current roster affiliation was inferred.
+Wikidata identity is not substituted for a nonexistent Gamma player ID.
+
+Exact individual source facts, original URLs, rules, prices and raw bytes remain
+private/local. The public checkpoint contains structural counts/hashes/clocks:
+`evidence/offers/2026-10-21-keyless-contract-006.json`. Full method, actual request
+sequence, fourteen-category table and next field-specific task:
+`docs/KEYLESS_CONTRACT_006.md`.
+
+### Contract and normalization outcome
+
+The source supplies named-player/stat/threshold predicates, YES/NO labels,
+source event/market identity, matchup/start, full-game/overtime meaning, DNP,
+postponement/cancellation rules and official NBA box-score source. Supplied
+price arrays and bare bid/ask fields remain literal, without sportsbook odds,
+pick'em multiplier, model-probability, EV or executable-quote conversion.
+Standalone sportsbook status remains **PRICE_UNAVAILABLE**; missing prices alone
+are not a complete-contract blocker.
+
+Complete admission is blocked by **specific facts/representation**, not a generic
+permission question: native provider person ID is absent; outcome-to-token binding
+is not established by retained documentation; exact NBA stat-correction/regrading
+meaning remains unspecified. A literal `customLiveness` value is not assigned units
+or replaced by the generic documentation's two-hour period. Source context and
+executable-status flags are preserved without claiming availability. The local
+normalization readiness receipt stages verified facts against the existing
+settlement-field contract, with `BLOCKED_INCOMPLETE_CONTRACT`,
+`selection_id: null` and `normalized_capture: null`. No fake complete record or
+public-admission bypass was used to obtain a card.
+
+### Retention and local website verification
+
+Originals/sidecars/ledger/decision: **`.local-data/keyless-contract-006/originals/`**,
+26 create-only files, independently copied and replayed with all twelve hashes
+matching. Temporary capture originals also remain in `/tmp/nml-keyless-contract-006/`.
+This demonstrates **local recovery, not durable remote raw archival**. No private
+encryption key was generated/replaced/required; operating backup/retention remain
+separate and unchanged.
+
+Ready preview: **`.local-data/keyless-contract-006/preview-v3/standalone.html`**.
+It opens without scripts/server and renders 28 partial cards, readable player and
+matchup labels/dates, canonical/source IDs in details, separate source capture,
+update and review-generation clocks, literal price arrays, missing-price status,
+gaps, all fourteen categories and **NO_ACTION**. Actual source data and screenshots
+stay ignored locally. Public app/registries and the builder were not changed.
+
+Real Chromium passed **1440/390/320px**, standalone and module routes: six route/
+viewport checks, 28 cards, fourteen categories, accessible source details, visible
+gaps and no horizontal overflow. **External browser requests: 0**. Root visually
+reviewed desktop/320px screenshots. The optional harness needed loopback socket
+permission and corrected a CSS-capitalization check before its passing run;
+these initial failures are not represented as product/test passes. Private QA:
+`.local-data/keyless-contract-006/qa-v3/browser.receipt.json` and PNGs.
+
+### Source files, checks and review
+
+New code: `multisport_lab/gamma_offer_review.py`,
+`scripts/render_local_offer_review.mjs`, `web/local-offer-review.{mjs,css}`,
+`tests/test_gamma_offer_review.py`, `web/tests/local-offer-review.test.mjs`,
+`web/tests/local_offer_browser_smoke.py`. Documentation/evidence:
+`docs/KEYLESS_CONTRACT_006.md`, the source checkpoint above,
+`evidence/verification/gamma-local-review-independent-20261021.json`,
+and `evidence/verification/pr12-description-before-gamma-006.json`. The latter
+preserves the entire prior near-limit PR description and embedded exact-head
+evidence before a concise current description replaces it. Context, handoff and
+MANIFEST are updated separately after the implementation commit.
+
+```bash
+python3 -m unittest discover -s tests -p test_gamma_offer_review.py -v
+python3 -O -m unittest discover -s tests -p test_gamma_offer_review.py -v
+node --test --test-isolation=none web/tests/local-offer-review.test.mjs
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.gamma_offer_review --bundle .local-data/keyless-contract-006/originals --preview .local-data/keyless-contract-006/preview-v3
+node scripts/render_local_offer_review.mjs .local-data/keyless-contract-006/preview-v3/review.json .local-data/keyless-contract-006/preview-v3/standalone.html
+python3 -O web/tests/local_offer_browser_smoke.py .local-data/keyless-contract-006/preview-v3 --evidence .local-data/keyless-contract-006/qa-v3
+sha256sum --check MANIFEST.sha256
+git diff --check
+```
+
+Focused **8 Python normal / 8 optimized / 8 frontend** passed; all **86 frontend**
+tests and demo passed. Initial full local run **649 / 341.141 s** preceded the final
+unsupported-family regression and is preserved separately. Final implementation full run: **650 tests / 352.405 s**, PASS. Its exact seven
+code/verifier bytes match source730f4ea; integrated receipt:
+`evidence/verification/gamma-local-review-integrated-20261021.json`.
+The independent reviewer verified all twelve originals, fresh-copy replay,
+source flags/arrays, local static readback/public-path rejection, and unchanged
+**37 reviewed source/helper paths, 40 frozen research paths, 19 original records /
+1,817,800 bytes**. Receipt SHA:
+`80134e2fa9775947736efeb318501a2c1810a625edd87b8d7d3e6f2e8242db37`.
+Review fixed exact high-precision binary-price bounds, unsupported observed-family
+counting and symlink confinement. No statistical experiment or full-history
+diagnostic was rerun. New verifiers use explicit integrity exceptions under -O.
+
+### Public facts and next concrete task
+
+Public deployment remains **411f904e4f9d577f97ca3a4ae6ba52fdb81ee130**, last verified
+Pages **39573648815**, six historical bundles/six historical statistical grades.
+Genuine forecasts **0**, published offers **0**, prospective outcomes **0**,
+prospective grades **0**, qualified tickets **0**, financial settlements **0**.
+No scheduler, genuine operation, public offer, new grade, merge or deployment.
+PR #10/#12 stay draft; PROS004/S0, expired pilot/PR #8, model definitions, frozen
+experiments, all categories, scope/direction/2–6-leg policies, NFL and MLB remain
+unchanged. Missing offers/odds do not gate independent price-free forecasting;
+its existing genuine-input/activation requirements are unchanged.
+
+**Next task:** with a new bounded request allowance, obtain a documented response
+explicitly binding outcome labels to token/selection IDs for the selected
+condition and an applicable official NBA correction/finality rule for that same
+market. If the rule remains unspecified, keep Gamma partial for this contract.
+A versioned canonical-name identity crosswalk can preserve verified identity
+without forging a native provider ID; it must be reviewed separately. New linked
+evidence keeps its own capture clock: never backdate completion into today's
+earlier incomplete observation. No provider API key/signup or private-key backup
+decision is needed for that source investigation.
+
 ## October 21 — bounded credentialless NBA offer feasibility and offline parser
 
 Branch: `implementation/one-event-paired-pilot`; new parser implementation source

@@ -2,6 +2,33 @@
 
 Updated: October 21, 2026.
 
+## Current checkpoint — actual keyless NBA observations and local review
+
+KEYLESS-CONTRACT-006 source is `730f4ea58c7e3c3a08eb44d8d7f33d6f5108d501`.
+A scoped published Gamma API allowance supported one personal/local informational
+inspection, not trading, bulk/scheduled collection or public redistribution.
+Twelve additional GETs (8 data/identity, 4 documentation/schema; no redirects or
+retries) yielded 28 unique NBA player-stat rows: PTS10/REB10/AST8. All28 parsed as
+partial observations; **zero complete contracts/normalized offers**. Linked
+Wikidata CC0 evidence verified one canonical subject and NBA/ESPN identifier
+meanings, separately from Gamma's missing native person ID. Missing correction/
+regrading meaning and source-backed selection/token mapping remain field-level
+blockers. No synthetic fixture is represented as actual-source success.
+
+The private responsive preview is
+`.local-data/keyless-contract-006/preview-v3/standalone.html`, with readable
+labels, original source clocks/prices/gaps, 28 partial cards, all14categories and
+NO_ACTION. Real Chromium passed desktop/390/320, standalone/module routes,
+without external requests. All12 originals were copied/replayed locally under
+`.local-data/keyless-contract-006/originals`; this is not a durable remote archive.
+No encryption-key decision or provider credential was needed or changed.
+See `docs/KEYLESS_CONTRACT_006.md` and the latest handoff for exact evidence,
+commands/checks and the next bounded token-label/correction-rule lookup.
+Prior head d0f2da9a's GitHub run39588803255 was rechecked successful. PR #10/#12
+remain draft; PROS004/S0 and operating source6777025 are unchanged/inactive.
+No public website change, actual forecast issuance, model evaluation, grade,
+qualified ticket, financial settlement, merge or deployment follows.
+
 ## Current clarification — credentialless player-offer feasibility
 
 Player-prop collection must remain completely free: no provider API key, signup,
