@@ -19,7 +19,7 @@ from . import pros004_remote as git_transport
 from .integrity import IntegrityError, digest, read_receipt, stamp
 from .ledger import LedgerRef
 
-DIAGNOSTIC_BRANCH = "diagnostics/ops002-timing-20261021"
+DIAGNOSTIC_BRANCH = "diagnostics/ops002-paired-batch-20261021"
 
 
 def _actual_now():
@@ -110,20 +110,27 @@ class OperatingDiagnosticWriter(git_transport.GitCheckpointWriter):
                        "independent OP002 readback recovered another commit")
             self._git('checkout','--quiet','--detach','FETCH_HEAD',cwd=root)
             op.require(self._verified(root) == manifest,"independent OP002 typed snapshot changed")
-            raw_sha=None
-            if reference is not None:
-                path=root/'records'/reference.kind/(reference.record_id+'.json')
-                op.require(digest(read_receipt(path,max_bytes=4*1024*1024)) == reference.payload_sha256,
+            references=reference if type(reference) is tuple else (reference,) if reference is not None else ()
+            expected={entry['path']:entry for entry in manifest['files']};raw_hashes=[]
+            for original in references:
+                relative='records/'+original.kind+'/'+original.record_id+'.json';path=root/relative
+                op.require(digest(read_receipt(path,max_bytes=4*1024*1024)) == original.payload_sha256,
                            "independent OP002 reference payload changed")
                 raw_sha=hashlib.sha256(path.read_bytes()).hexdigest()
+                op.require(relative in expected and raw_sha == expected[relative]['raw_sha256'],
+                           "independent OP002 original bytes changed after typed verification")
+                raw_hashes.append(raw_sha)
             op.require(self._remote_head() == commit,"remote advanced during independent OP002 recovery")
-            return raw_sha
+            return tuple(raw_hashes) if type(reference) is tuple else raw_hashes[0] if raw_hashes else None
 
-    def _retain(self,reference=None,required_prefix=None):
+    def _retain(self,reference=None,required_prefix=None,*,references=None):
         op.require(self._head is not None,"prepare one retained diagnostic writer before checkpoint")
+        is_batch=references is not None
+        originals=references if is_batch else (reference,) if reference is not None else ()
         actual_started=_actual_now();wall=time.perf_counter();cpu=time.process_time()
         self._deadline=time.monotonic()+self.command_seconds
         operation={'actual_started_at':stamp(actual_started),'reference':reference.to_record() if reference else None}
+        if is_batch:operation['references']=[original.to_record() for original in originals]
         try:
             with self._writer_lock():
                 op.require(not self._git('status','--porcelain').stdout.strip(),"retain interrupted dirty writer; do not replace it")
@@ -139,10 +146,25 @@ class OperatingDiagnosticWriter(git_transport.GitCheckpointWriter):
                 journal=self.source_root/op.JOURNAL
                 prefix=hashlib.sha256(journal.read_bytes() if journal.exists() else b'').hexdigest()
                 op.require(required_prefix is None or required_prefix == prefix,"final journal prefix differs from actual source")
-                if reference is not None:
-                    source=self.source_root/'records'/reference.kind/(reference.record_id+'.json')
-                    op.require(digest(read_receipt(source,max_bytes=4*1024*1024)) == reference.payload_sha256,
+                bodies=[]
+                for original in originals:
+                    source=self.source_root/'records'/original.kind/(original.record_id+'.json')
+                    payload=read_receipt(source,max_bytes=4*1024*1024)
+                    op.require(digest(payload) == original.payload_sha256,
                                "OP002 checkpoint reference changed")
+                    if is_batch:
+                        body=payload['data'].get('operational')
+                        op.require(type(body) is dict and body.get('schema_version') == op._schema('forecast'),
+                                   "paired checkpoint requires original OP002 forecasts")
+                        bodies.append(body)
+                if is_batch:
+                    identity=('plan_id','event_id','event_version','event_starts_at','player_id','team_id','opponent_id',
+                              'event_ref','history_ref','producer_binding','mode')
+                    op.require(all(all(body[key] == bodies[0][key] for key in identity) for body in bodies),
+                               "paired checkpoint cannot combine different subjects, events or exact inputs/producers")
+                    models=[body['model_key'] for body in bodies]
+                    op.require(len(set(models)) == len(models) and set(models) <= {'R0','K0'},
+                               "paired checkpoint requires distinct unchanged R0/K0 originals")
                 self._preserve(manifest)
                 for entry in manifest['files']:
                     source=self.source_root/entry['path'];target=git_transport._safe_root(self.root/entry['path'])
@@ -167,15 +189,24 @@ class OperatingDiagnosticWriter(git_transport.GitCheckpointWriter):
                 commit=git_transport._sha(self._git('rev-parse','HEAD').stdout.strip(),'checkpoint commit',40)
                 self._head=commit
                 self._git('push','origin','HEAD:refs/heads/'+self.branch)
-                raw_sha=self._fresh_readback(commit,manifest,reference)
+                raw_sha=self._fresh_readback(commit,manifest,originals if is_batch else reference)
                 op.require(time.monotonic() <= self._deadline,"OP002 remote recovery exceeded its actual operation budget")
                 completed=stamp(op._now())  # Explicit diagnostic clock only.
-                result={'remote_repository':op.REPOSITORY,'remote_branch':self.branch,'remote_commit':commit,
+                common={'remote_repository':op.REPOSITORY,'remote_branch':self.branch,'remote_commit':commit,
                         'snapshot_sha256':digest(manifest)}
-                if reference is not None:
+                if is_batch:
+                    op.require(type(raw_sha) is tuple and len(raw_sha) == len(originals),
+                               "independent paired readback did not verify every original")
+                    result=tuple({**common,'schema_version':op._schema('remote-checkpoint'),
+                        'reference':original.to_record(),'readback_raw_sha256':raw,
+                        'journal_prefix_sha256':prefix,'remote_completed_at':completed}
+                        for original,raw in zip(originals,raw_sha))
+                elif reference is not None:
+                    result=dict(common)
                     result.update(schema_version=op._schema('remote-checkpoint'),reference=reference.to_record(),
                         readback_raw_sha256=raw_sha,journal_prefix_sha256=prefix,remote_completed_at=completed)
                 else:
+                    result=dict(common)
                     result.update(schema_version=op._schema('remote-recovery'),protocol_id=op.PROTOCOL_ID,
                         journal_sha256=prefix,independent_recovery_completed_at=completed)
                 operation.update(status='PASS_FULL_TYPED_FRESH_FETCH',remote_commit=commit,
@@ -193,6 +224,18 @@ class OperatingDiagnosticWriter(git_transport.GitCheckpointWriter):
     def checkpoint(self,reference):
         op.require(isinstance(reference,LedgerRef),"OP002 checkpoint requires original LedgerRef")
         return self._retain(reference=reference)
+
+    def checkpoint_many(self,references):
+        """One strict transfer for one/two existing same-subject originals.
+
+        All independently fetched original hashes and identities are checked
+        before returning the separate acknowledgments. This does not make the
+        caller's subsequent per-original witness writes atomic or timely.
+        """
+        op.require(type(references) is tuple and 1 <= len(references) <= 2 and
+            all(isinstance(ref,LedgerRef) and ref.kind == 'forecasts' for ref in references) and
+            len(set(references)) == len(references),"paired checkpoint requires one or two unique forecast references")
+        return self._retain(references=references)
 
     def final_checkpoint(self,prefix):
         op.sha(prefix)

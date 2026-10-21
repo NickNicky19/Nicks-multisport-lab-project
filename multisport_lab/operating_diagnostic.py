@@ -24,7 +24,7 @@ from .integrity import IntegrityError, canonical, digest, stamp, write_receipt
 from .ledger import Ledger, LedgerRef
 from .operational_remote import OperatingDiagnosticWriter, DIAGNOSTIC_BRANCH
 
-SCHEMA='nba-op002-hosted-operating-diagnostic-v1'
+SCHEMA='nba-op002-hosted-operating-diagnostic-v2'
 MODE='SOFTWARE_DIAGNOSTIC_NON_ISSUANCE'
 INPUT_CLOCK=datetime(2026,10,21,22,45,tzinfo=timezone.utc)
 CUTOFF=datetime(2026,10,21,23,0,tzinfo=timezone.utc)
@@ -200,7 +200,8 @@ def run_diagnostic(*,output,store_root,writer_root,producer_commit=None,
         phase_started=time.perf_counter()
         with diagnostic_clock(generation_clock),patch.object(op,'prepare_pair',side_effect=timed_prepare_pair):
             try:
-                recovery=op.issue_pair(store,event_ref,binding,checkpoint=writer.checkpoint,final_checkpoint=writer.final_checkpoint)
+                recovery=op.issue_pair(store,event_ref,binding,checkpoint=writer.checkpoint,
+                    checkpoint_many=writer.checkpoint_many,final_checkpoint=writer.final_checkpoint)
             except (IntegrityError,OSError) as error:
                 failure={'phase':'GENERATION_OR_REQUIRED_PERSISTENCE','type':type(error).__name__,'message':str(error)}
                 recovery=store.recover(replay=False)
@@ -264,7 +265,8 @@ def run_diagnostic(*,output,store_root,writer_root,producer_commit=None,
         'failure':failure,'completion_failures':failures,'independent_restart':restarted,'exact_remote_snapshot':exact_remote,
         'transport':{'type':'ISOLATED_LOCAL_BARE_GIT' if local_test_remote is not None else 'GITHUB_NORMAL_PUSH_AND_FRESH_FETCH',
             'repository':op.REPOSITORY,'branch':DIAGNOSTIC_BRANCH,'final_retention':final_retention,
-            'operations':writer.operations},
+            'original_checkpoint_strategy':'ONE_FULL_STRICT_TRANSFER_PER_EXISTING_SAME_SUBJECT_PAIR',
+            'atomic_pair_issuance':False,'operations':writer.operations},
         'retention':{'actual_file_count':manifest['file_count'],'actual_encoded_bytes':manifest['total_bytes'],
             'source_snapshot':manifest,'planned_one_event_capacity':planned_capacity,
             'pros004_maximum_512_record_timing':'NOT_MEASURED_NOT_ACTIVATED'},

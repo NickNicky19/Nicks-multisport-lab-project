@@ -91,6 +91,11 @@ class OperatingDiagnosticTests(unittest.TestCase):
         self.assertEqual(report['evidence']['genuine_issuance'],0)
         self.assertFalse(report['evidence']['activation'])
         self.assertEqual(len(report['performance']['paired_generation_and_verification']),4)
+        batches=[item for item in report['transport']['operations'] if 'references' in item]
+        self.assertEqual(len(batches),4)
+        self.assertTrue(all(len(item['references']) == 2 for item in batches))
+        self.assertEqual(len(report['transport']['operations']),11)
+        self.assertFalse(report['transport']['atomic_pair_issuance'])
 
 
 if __name__=='__main__':unittest.main()

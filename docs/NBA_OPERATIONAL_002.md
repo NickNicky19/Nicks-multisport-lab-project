@@ -137,10 +137,12 @@ The exact final source SHA must be frozen once and reused after any record or
 handoff commits. Source binding verifies executed bytes against that commit;
 `git rev-parse HEAD` on a later records commit must not repin the producer.
 
-The current reviewed software source is
-`c535c7851382eb3d7a8701229bc4dd7094086c70`. Later evidence/documentation commits
-do not replace that producer pin. This is a software review pin, not activation.
-Offline preparation is runnable as follows:
+The earlier source-C measurement is frozen at
+`c535c7851382eb3d7a8701229bc4dd7094086c70`. Its eight originals and late eighth
+proof remain unchanged on `diagnostics/ops002-timing-20261021`. The current
+reviewed source pin belongs in the newest handoff; a later documentation HEAD
+must never replace it. This is a software review pin, not activation. The earlier
+read-only preparation can be reproduced in an isolated checkout of exact source C:
 
 ```bash
 python3 -m multisport_lab.operational_preflight \
@@ -161,7 +163,24 @@ intended GitHub host. A green software build or partial diagnostic is insufficie
 The optional `operating_diagnostic=true` dispatch of the existing Pages workflow
 is diagnostic only: build/deploy are skipped and no provider capture occurs.
 There is no new cron. Diagnostics use only
-`diagnostics/ops002-timing-20261021`, never the expired pilot branch.
+their separately pinned destinations, never the expired pilot branch.
+The later paired-transfer diagnostic uses
+`diagnostics/ops002-paired-batch-20261021` and report schema v2. One full strict
+fresh readback can verify both already-persisted, same-player R0/K0 originals;
+each keeps its own immutable LOCAL/REMOTE witnesses. Both acknowledgments name
+the actual same pre-callback journal prefix containing their original LOCAL
+entries. One subsequent real final-prefix proof covers both. Recovery rejects
+contradictory common starts, readback clocks, subjects, inputs, sources and raw
+hashes. Partial witness writes remain partial; paired persistence is not atomic.
+Every original still needs actual post-proof persistence within its own 120
+seconds and T90+300. The separately retained policy permits at most one new
+full-history hosted diagnostic after exact-source software review and recovery;
+neither the four-row tests nor source C's failed result establishes its success.
+
+Combined capacity v3 explicitly adds two 64-KiB independent audit receipts to
+the seven 16-KiB registration/admission receipts and 1-MiB host report. Its
+one-event/one-offer maximum is 117 files / 4,758,728 bytes under the unchanged
+512-file / 32-MiB ledger cap. Earlier v1/v2 measurements remain unchanged.
 
 Actual activation still requires exact reviewed source and input identities,
 permitted source-operation/derived-publication admission, admitted private raw

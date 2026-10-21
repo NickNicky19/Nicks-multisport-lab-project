@@ -2,6 +2,44 @@
 
 Updated: October 21, 2026 (UTC).
 
+## October 21 — paired-transfer checks complete; new hosted measurement pending
+
+The same isolated PR #12 branch preserves source C and its actual failed host
+receipt in checkpoint commit `b014178`. The following source revision changes
+only four operating/preflight modules and their four regression files, plus
+documentation/evidence. It does not alter a mathematical law, category, input
+history, original record, registered window, genuine activation or public site.
+Its exact executed staged hashes are retained in
+`evidence/verification/ops002-software-checks-v3.json`; a subsequent commit freezes
+the new source SHA before independent remote recovery and measurement.
+
+The optional paired checkpoint verifies both same-player R0/K0 originals through
+one full strict source check and independently fetched strict snapshot. Separate
+immutable acknowledgments truthfully name the same original LOCAL prefix. A real
+subsequent final-prefix proof still completes each original separately. Recovery
+cross-checks exact references, raw hashes, inputs, producer, common commit/snapshot
+and actual operation/readback clocks. An interrupted second witness remains
+partial; retries do not regenerate originals or invent atomic success. Every new
+write has an actual window/120-second check. All post-write proof/300-second and
+input-admission gates remain in place. Genuine execution stays hard closed.
+
+Actual v3 checks, 02:51:51–03:00:22 UTC, passed against unchanged source:
+full Python555 tests/335.961s; optimized PROS004175/120.849s;
+optimized operating63/25.310s; optimized complete diagnostic5/24.996s;
+optimized offer15/0.432s; demo; frontend76 tests. Focused normal/optimized
+producer28 and actual temporary-Git transport14 tests also passed. The four-row
+driver recovers all eight originals using eleven transfers and four two-reference
+callbacks. These are software tests, not the full-history hosted timing result.
+
+Capacity v3 adds two independent 64-KiB audits to the seven small admissions and
+full 1-MiB host report: planned maximum117files/4,758,728bytes under the same
+512files/32MiB. Earlier capacity and failure receipts remain unchanged. The new
+host destination must be `diagnostics/ops002-paired-batch-20261021`, report v2;
+the first diagnostic branch must not be reused or replaced. At most one new
+full-history non-issuance measurement is registered. Next: freeze/push the source,
+independently fetch/check its exact bytes, then execute and retain that measurement.
+No new actual forecasts, outcomes, grades, offers or tickets are claimed.
+
 ## October 21 — exact-source recovery passes; hosted timing fails
 
 The separate draft is [PR #12](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/12),

@@ -48,26 +48,29 @@ def combined_capacity(root):
     bounded archive; its public ledger links count here. No cap is increased.
     """
     capacity = pilot.capacity_report(root)
-    # One <=64KiB offer envelope; <=8 source links of <=8KiB; eight <=16KiB
-    # registration/admission receipts plus one complete <=1MiB hosted timing
-    # report. Publication maximum32 does not
-    # silently expand this one-off operational allocation.
-    extra_files = 1+8+8
-    extra_bytes = 64*1024+8*8*1024+7*16*1024+1024*1024
+    # One <=64KiB offer envelope; <=8 source links of <=8KiB; seven <=16KiB
+    # registration/admission receipts; one complete <=1MiB hosted report; and
+    # two independent <=64KiB source/recovery audits. The actual audits are
+    # larger than 16 KiB and must not consume that smaller admission allocation.
+    # Publication maximum 32 does not expand this one-off allocation.
+    extra_files = 1+8+7+1+2
+    extra_bytes = 64*1024+8*8*1024+7*16*1024+1024*1024+2*64*1024
     count = capacity["maximum_records"]+extra_files
     size = capacity["maximum_bytes"]+extra_bytes
     pilot.require(count <= pilot.MAX_LEDGER_RECORDS and size <= pilot.MAX_LEDGER_BYTES,
                   "complete one-event/one-offer allocation exceeds unchanged shared ledger capacity")
     return {
-        "schema_version": "nba-operational002-combined-capacity-v2",
+        "schema_version": "nba-operational002-combined-capacity-v3",
         "base_operation": capacity,
         "reserved_offer_envelopes": 1,
         "reserved_offer_raw_link_envelopes": 8,
-        "reserved_additional_metadata_files": 8,
+        "reserved_additional_metadata_files": 10,
         "reserved_small_metadata_files": 7,
         "small_metadata_encoded_ceiling": 16*1024,
         "reserved_hosted_report_files": 1,
         "hosted_report_encoded_ceiling": 1024*1024,
+        "reserved_independent_audit_files": 2,
+        "independent_audit_encoded_ceiling": 64*1024,
         "maximum_files": count,
         "maximum_encoded_bytes": size,
         "global_file_limit": pilot.MAX_LEDGER_RECORDS,

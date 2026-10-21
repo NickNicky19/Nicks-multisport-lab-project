@@ -98,6 +98,9 @@ class OperationalFixture:
             'snapshot_sha256':digest(op.snapshot_manifest(self.root)),'journal_sha256':prefix,
             'independent_recovery_completed_at':stamp(self.clock.return_value)}
 
+    def ack_many(self,references):
+        return tuple(self.ack(reference) for reference in references)
+
     def generate(self,model='R0',player='10'):
         return op.generate_forecast(self.event,self.history,self.rows,event_ref=self.event_ref,
             history_ref=self.history_ref,player_id=player,model_key=model,producer_binding=self.binding)
@@ -391,6 +394,157 @@ class OperationalPilotTests(unittest.TestCase):
                     return result
                 with patch.object(op.os,'write',side_effect=delayed):f.store.finalize_checkpoint(f.final)
                 self.assertFalse(op.OperationalStore(f.root,diagnostic=True).admission(ref)['eligible'])
+
+    def test_batched_pairs_keep_eight_originals_and_separate_witnesses_on_one_readback(self):
+        f=OperationalFixture(self);batches=[];proofs=[]
+        def checkpoint(refs):batches.append(refs);return f.ack_many(refs)
+        def final(prefix):proofs.append(prefix);return f.final(prefix)
+        result=op.issue_pair(f.store,f.event_ref,f.binding,checkpoint=f.ack,final_checkpoint=final,checkpoint_many=checkpoint)
+        self.assertEqual(len(result['forecasts']),8);self.assertEqual(result['eligible_originals'],8)
+        self.assertEqual([len(refs) for refs in batches],[2,2,2,2]);self.assertEqual(len(proofs),4)
+        journal=f.store.journal();remotes=[row for row in journal if row['kind']=='REMOTE' and row['reference']['kind']=='forecasts']
+        self.assertEqual(len(remotes),8)
+        for at in range(0,8,2):
+            left,right=remotes[at:at+2]
+            self.assertEqual(left['acknowledgment']['journal_prefix_sha256'],right['acknowledgment']['journal_prefix_sha256'])
+            self.assertEqual(left['acknowledgment']['snapshot_sha256'],right['acknowledgment']['snapshot_sha256'])
+            # The second ACK truthfully names the original LOCAL prefix; it
+            # does not pretend the remote fetch contained the first new ACK.
+            preceding=journal[:right['sequence']-1]
+            immediate=hashlib.sha256(b''.join(canonical(row)+b'\n' for row in preceding)).hexdigest()
+            self.assertNotEqual(immediate,right['acknowledgment']['journal_prefix_sha256'])
+        before=op.snapshot_manifest(f.root)
+        self.assertEqual(op.OperationalStore(f.root,diagnostic=True).recover()['eligible_originals'],8)
+        repeated=f.store.checkpoint_many(batches[0],lambda _:self.fail('duplicate callback'))
+        self.assertEqual([row['reference'] for row in repeated],[ref.to_record() for ref in batches[0]])
+        self.assertEqual(before,op.snapshot_manifest(f.root))
+
+    def test_batched_second_delayed_persistence_never_admits_late_originals(self):
+        f=OperationalFixture(self);original=f.store.ledger.append
+        def delayed(kind,logical,data,**kwargs):
+            value=original(kind,logical,data,**kwargs)
+            body=data.get('operational',{})
+            if body.get('schema_version')==op._schema('forecast'):
+                f.at(CUTOFF+timedelta(seconds=120 if body['model_key']=='R0' else 301))
+            return value
+        with patch.object(f.store.ledger,'append',side_effect=delayed):
+            with self.assertRaisesRegex(IntegrityError,'late/unacknowledged'):
+                op.issue_pair(f.store,f.event_ref,f.binding,checkpoint=f.ack,final_checkpoint=f.final,checkpoint_many=f.ack_many)
+        recovered=f.store.recover(replay=False)
+        self.assertEqual(len(recovered['forecasts']),2);self.assertEqual(recovered['eligible_originals'],0)
+        local=[entry for entry in f.store.journal() if entry['kind']=='LOCAL' and entry['reference']['kind']=='forecasts']
+        self.assertEqual([entry['completed_at'] for entry in local],[stamp(CUTOFF+timedelta(seconds=120)),stamp(CUTOFF+timedelta(seconds=301))])
+
+    def test_batched_checks_actual_window_before_second_new_original(self):
+        f=OperationalFixture(self);f.at(CUTOFF+timedelta(seconds=299));original=f.store.persist
+        written=[]
+        def delayed(body,**kwargs):
+            value=original(body,**kwargs)
+            if body['schema_version']==op._schema('forecast'):
+                written.append(body['model_key']);f.at(CUTOFF+timedelta(seconds=301))
+            return value
+        with patch.object(f.store,'persist',side_effect=delayed):
+            with self.assertRaisesRegex(IntegrityError,'window missed'):
+                op.issue_pair(f.store,f.event_ref,f.binding,checkpoint=f.ack,final_checkpoint=f.final,checkpoint_many=f.ack_many)
+        self.assertEqual(written,['R0'])
+        recovered=f.store.recover(replay=False)
+        self.assertEqual(len(recovered['forecasts']),1);self.assertEqual(recovered['eligible_originals'],0)
+
+    def test_batched_incomplete_reference_clock_or_snapshot_ack_has_no_remote_success(self):
+        f=OperationalFixture(self);refs=(f.persist(f.generate('R0')),f.persist(f.generate('K0')))
+        before=op.snapshot_manifest(f.root)
+        for mutation in ('partial','reference','clock','snapshot','prefix'):
+            with self.subTest(mutation=mutation):
+                def malformed(requested):
+                    result=[deepcopy(ack) for ack in f.ack_many(requested)]
+                    if mutation=='partial':return result[:1]
+                    if mutation=='reference':result[1]['reference']=result[0]['reference']
+                    if mutation=='clock':result[1]['remote_completed_at']=stamp(ISSUE+timedelta(seconds=1))
+                    if mutation=='snapshot':result[1]['snapshot_sha256']='c'*64
+                    if mutation=='prefix':result[1]['journal_prefix_sha256']=hashlib.sha256(b'').hexdigest()
+                    return result
+                with self.assertRaises(IntegrityError):f.store.checkpoint_many(refs,malformed)
+                self.assertEqual(before,op.snapshot_manifest(f.root))
+
+    def test_batched_ack_append_interruption_recovers_only_missing_witness(self):
+        f=OperationalFixture(self);refs=(f.persist(f.generate('R0')),f.persist(f.generate('K0')))
+        originals={ref:f.store.ledger._path(ref.kind,ref.record_id).read_bytes() for ref in refs}
+        append=f.store._append_completion
+        def interrupted(reference,**kwargs):
+            if reference==refs[1] and kwargs.get('acknowledgment') is not None:raise OSError('second REMOTE interrupted')
+            return append(reference,**kwargs)
+        with patch.object(f.store,'_append_completion',side_effect=interrupted):
+            with self.assertRaises(OSError):f.store.checkpoint_many(refs,f.ack_many)
+        remote=[entry for entry in f.store.journal() if entry['kind']=='REMOTE' and entry['reference']['kind']=='forecasts']
+        self.assertEqual(len(remote),1)
+        f.at(ISSUE+timedelta(seconds=1));restarted=op.OperationalStore(f.root,diagnostic=True);requested=[]
+        def acknowledge(pending):requested.append(pending);return f.ack_many(pending)
+        restarted.checkpoint_many(refs,acknowledge);restarted.finalize_checkpoint(f.final)
+        self.assertEqual(requested,[(refs[1],)])
+        self.assertTrue(all(restarted.admission(ref)['eligible'] for ref in refs))
+        self.assertTrue(all(originals[ref]==restarted.ledger._path(ref.kind,ref.record_id).read_bytes() for ref in refs))
+
+    def test_batched_recovery_keeps_original_peer_and_only_generates_missing_member(self):
+        f=OperationalFixture(self);original=f.persist(f.generate('R0'));raw=f.store.ledger._path(original.kind,original.record_id).read_bytes()
+        f.at(ISSUE+timedelta(seconds=1));persist=f.store.persist;written=[]
+        def observed(body,**kwargs):
+            if body['schema_version']==op._schema('forecast'):written.append((body['player_id'],body['model_key']))
+            return persist(body,**kwargs)
+        with patch.object(f.store,'persist',side_effect=observed):
+            result=op.issue_pair(f.store,f.event_ref,f.binding,checkpoint=f.ack,final_checkpoint=f.final,checkpoint_many=f.ack_many)
+        self.assertNotIn(('10','R0'),written);self.assertIn(('10','K0'),written);self.assertEqual(len(written),7)
+        self.assertEqual(result['eligible_originals'],8)
+        self.assertEqual(raw,f.store.ledger._path(original.kind,original.record_id).read_bytes())
+        missing=next(body for _,body,_ in result['forecasts'] if body['player_id']=='10' and body['model_key']=='K0')
+        self.assertEqual(missing['generation_started_at'],stamp(ISSUE+timedelta(seconds=1)))
+
+    def test_batched_duplicate_foreign_or_unacknowledged_local_cannot_be_repaired(self):
+        f=OperationalFixture(self);r0=f.persist(f.generate('R0'));wrong=f.persist(f.generate('K0','20'))
+        for refs in ((r0,r0),(r0,wrong)):
+            with self.subTest(refs=refs),self.assertRaises(IntegrityError):f.store.checkpoint_many(refs,lambda _:self.fail('invalid callback'))
+        with patch.object(f.store,'_append_completion',side_effect=OSError('LOCAL interrupted')):
+            with self.assertRaises(OSError):f.persist(f.generate('K0'))
+        missing=next(ref for ref,body,_ in f.store.recover(replay=False)['forecasts'] if body['player_id']=='10' and body['model_key']=='K0')
+        with self.assertRaisesRegex(IntegrityError,'local completion is unacknowledged'):
+            f.store.checkpoint_many((r0,missing),lambda _:self.fail('unacknowledged local callback'))
+        self.assertFalse(f.store.admission(missing)['eligible'])
+
+    def test_batched_late_final_proof_rejects_even_short_individual_latency(self):
+        f=OperationalFixture(self);f.at(CUTOFF+timedelta(seconds=210))
+        refs=(f.persist(f.generate('R0')),f.persist(f.generate('K0')))
+        f.at(CUTOFF+timedelta(seconds=299));f.store.checkpoint_many(refs,f.ack_many);write=op.os.write
+        def delayed(descriptor,raw):
+            result=write(descriptor,raw)
+            if b'"schema_version":"nba-operational002-remote-recovery-v1"' in raw:f.at(CUTOFF+timedelta(seconds=301))
+            return result
+        with patch.object(op.os,'write',side_effect=delayed):f.store.finalize_checkpoint(f.final)
+        self.assertTrue(all(not f.store.admission(ref)['eligible'] for ref in refs))
+        self.assertTrue(all((op.clock(f.store.admission(ref)['final_recovery_completed_at'])-op.clock(f.store.body(ref)['generation_started_at'])).total_seconds()<120 for ref in refs))
+
+    def test_batched_recovery_rejects_rehashed_stale_prefix_without_original_local(self):
+        f=OperationalFixture(self);refs=(f.persist(f.generate('R0')),f.persist(f.generate('K0')))
+        f.store.checkpoint_many(refs,f.ack_many);entries=f.store.journal()
+        target=next(row for row in entries if row['kind']=='REMOTE' and row['reference']==refs[1].to_record())
+        target['acknowledgment']['journal_prefix_sha256']=hashlib.sha256(b'').hexdigest()
+        previous='0'*64
+        for entry in entries:
+            entry['previous_sha256']=previous;entry['entry_id']=digest({k:v for k,v in entry.items() if k!='entry_id'});previous=entry['entry_id']
+        f.store._journal_path().write_bytes(b''.join(canonical(entry)+b'\n' for entry in entries))
+        with self.assertRaisesRegex(IntegrityError,'prefix does not cover'):
+            op.OperationalStore(f.root,diagnostic=True).recover(replay=False)
+
+    def test_batched_recovery_rejects_rehashed_different_common_operation_start(self):
+        f=OperationalFixture(self);refs=(f.persist(f.generate('R0')),f.persist(f.generate('K0')))
+        def complete(requested):f.at(ISSUE+timedelta(seconds=2));return f.ack_many(requested)
+        f.store.checkpoint_many(refs,complete);entries=f.store.journal()
+        target=next(row for row in entries if row['kind']=='REMOTE' and row['reference']==refs[1].to_record())
+        target['operation_started_at']=stamp(ISSUE+timedelta(seconds=1))
+        previous='0'*64
+        for entry in entries:
+            entry['previous_sha256']=previous;entry['entry_id']=digest({k:v for k,v in entry.items() if k!='entry_id'});previous=entry['entry_id']
+        f.store._journal_path().write_bytes(b''.join(canonical(entry)+b'\n' for entry in entries))
+        with self.assertRaisesRegex(IntegrityError,'common operation start'):
+            op.OperationalStore(f.root,diagnostic=True).recover(replay=False)
 
 
 if __name__=='__main__':unittest.main()

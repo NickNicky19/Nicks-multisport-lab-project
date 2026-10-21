@@ -536,6 +536,7 @@ class OperationalStore:
         path=self._journal_path();raw=path.read_bytes() if path.exists() else b""
         require(len(raw) <= MAX_JOURNAL_BYTES and (not raw or raw.endswith(b"\n")),"oversized/interrupted completion journal")
         result=[];previous="0"*64;seen=set();last=None
+        prefix_bytes=b"";prefixes={hashlib.sha256(prefix_bytes).hexdigest():0};remote_groups={}
         for line in raw.splitlines():
             try: entry=json.loads(line)
             except (ValueError,UnicodeDecodeError) as exc: raise IntegrityError("invalid completion JSON") from exc
@@ -551,7 +552,27 @@ class OperationalStore:
             key=(entry["kind"],ref.kind,ref.record_id,proof_id);require(key not in seen,"duplicate completion attempt")
             if entry["kind"] == "LOCAL":
                 require(entry["acknowledgment"] is None and entry["operation_started_at"] is None,"local completion cannot claim remote")
-            elif entry["kind"] == "REMOTE":self._validate_ack(entry["acknowledgment"],ref,entry["raw_sha256"],entry["operation_started_at"],entry["completed_at"])
+            elif entry["kind"] == "REMOTE":
+                ack=entry["acknowledgment"]
+                self._validate_ack(ack,ref,entry["raw_sha256"],entry["operation_started_at"],entry["completed_at"])
+                prefix_count=prefixes.get(ack["journal_prefix_sha256"])
+                require(prefix_count is not None,"remote acknowledgment names no earlier complete journal prefix")
+                local=next((row for row in result[:prefix_count] if row["kind"] == "LOCAL"
+                    and row["reference"] == ref.to_record() and row["raw_sha256"] == entry["raw_sha256"]),None)
+                require(local is not None,"remote readback prefix does not cover the exact original LOCAL witness")
+                require(clock(local["completed_at"]) <= clock(entry["operation_started_at"]),
+                    "remote operation began before original local persistence completed")
+                group=remote_groups.setdefault(ack["journal_prefix_sha256"],[])
+                if group:
+                    require(len(group) == 1,"one remote readback prefix supports at most two paired originals")
+                    self._paired_references((LedgerRef.from_record(group[0]["reference"]),ref))
+                    common=("remote_repository","remote_branch","remote_commit","snapshot_sha256",
+                            "journal_prefix_sha256","remote_completed_at")
+                    require(all(group[0]["acknowledgment"][key] == ack[key] for key in common),
+                        "paired remote witnesses disagree on their common independent readback")
+                    require(group[0]["operation_started_at"] == entry["operation_started_at"],
+                        "paired remote witnesses disagree on their common operation start")
+                group.append(entry)
             else:
                 exact(entry["acknowledgment"],{"proof_id","proof_raw_sha256"},"proof local completion")
                 sha(proof_id);sha(entry["acknowledgment"]["proof_raw_sha256"])
@@ -565,6 +586,7 @@ class OperationalStore:
                     "completion references changed original bytes")
             self.ledger.read(ref);check_seal(entry,"entry_id")
             seen.add(key);result.append(entry);previous=entry["entry_id"];last=observed
+            prefix_bytes+=line+b"\n";prefixes[hashlib.sha256(prefix_bytes).hexdigest()]=len(result)
         return result
 
     def _append_completion(self,reference,*,completed_at,acknowledgment=None,started_at=None,proof=None):
@@ -737,6 +759,56 @@ class OperationalStore:
         ack=callback(reference)
         completed=_now();require(ack.get("journal_prefix_sha256") == prefix,"remote readback did not retain exact local journal prefix")
         return self._append_completion(reference,completed_at=completed,acknowledgment=ack,started_at=started)
+
+    def _paired_references(self,references):
+        refs=tuple(references)
+        require(1 <= len(refs) <= 2 and all(isinstance(ref,LedgerRef) and ref.kind == "forecasts" for ref in refs)
+            and len(set(refs)) == len(refs),"paired checkpoint requires one or two distinct original forecasts")
+        bodies=[self.body(ref) for ref in refs]
+        require(all(body["schema_version"] == _schema("forecast") for body in bodies),"paired checkpoint references another typed contract")
+        if len(bodies) == 2:
+            common=("protocol_id","plan_id","mode","event_id","event_version","event_starts_at","player_id",
+                "team_id","opponent_id","cutoff_at","history_ref","event_ref","producer_binding")
+            require({body["model_key"] for body in bodies} == set(MODEL_VERSIONS)
+                and all(bodies[0][key] == bodies[1][key] for key in common),
+                "paired checkpoint originals differ on their fixed subject, inputs or producer")
+        return refs
+
+    def checkpoint_many(self,references,callback):
+        """One fresh readback, two separately retained original acknowledgments.
+
+        Both ACKs name the actual common pre-callback LOCAL prefix. Nothing
+        claims that this fetch contained subsequently appended REMOTE witnesses.
+        All returned meanings are checked before either witness is appended;
+        interrupted journal writes can still leave an honest one-witness state.
+        """
+        refs=self._paired_references(references);entries=self.journal()
+        retained={row["reference"]["record_id"]:row for row in entries if row["kind"] == "REMOTE"}
+        for ref in refs:
+            require(any(row["kind"] == "LOCAL" and row["reference"] == ref.to_record() for row in entries),
+                "original local completion is unacknowledged; cannot manufacture it on restart")
+        pending=tuple(ref for ref in refs if ref.record_id not in retained)
+        if not pending:return tuple(retained[ref.record_id] for ref in refs)
+        prefix=hashlib.sha256(self._journal_path().read_bytes()).hexdigest();started=_now()
+        acknowledgments=callback(pending);returned=_now()
+        require(type(acknowledgments) in (tuple,list) and len(acknowledgments) == len(pending),
+                "paired callback must acknowledge every requested original separately")
+        common=("remote_repository","remote_branch","remote_commit","snapshot_sha256",
+                "journal_prefix_sha256","remote_completed_at")
+        for ref,ack in zip(pending,acknowledgments,strict=True):
+            raw_sha=hashlib.sha256(self.ledger._path(ref.kind,ref.record_id).read_bytes()).hexdigest()
+            self._validate_ack(ack,ref,raw_sha,stamp(started),stamp(returned))
+            require(ack["journal_prefix_sha256"] == prefix,"paired readback did not retain its common original LOCAL prefix")
+            require(all(ack[key] == acknowledgments[0][key] for key in common),
+                    "paired acknowledgments disagree on their common independent readback")
+        require(hashlib.sha256(self._journal_path().read_bytes()).hexdigest() == prefix,
+                "source journal changed during paired remote readback")
+        checked=_now();require(started <= returned <= checked,"paired remote validation clock moved backwards")
+        for ref,ack in zip(pending,acknowledgments,strict=True):
+            completed=_now();require(checked <= completed,"paired remote witness clock moved backwards")
+            retained[ref.record_id]=self._append_completion(ref,completed_at=completed,
+                acknowledgment=ack,started_at=started)
+        return tuple(retained[ref.record_id] for ref in refs)
 
     def finalize_checkpoint(self,callback):
         """Independently recover all originals and this exact journal prefix."""
@@ -997,7 +1069,7 @@ def verify_store(root,*,replay=True,allow_synthetic_foreign=False,raw_reader=Non
         "statistical_scores_computed":0,"qualification":"UNAVAILABLE"},"verification_id")
 
 
-def issue_pair(store,event_ref,producer_binding,*,checkpoint,final_checkpoint):
+def issue_pair(store,event_ref,producer_binding,*,checkpoint,final_checkpoint,checkpoint_many=None):
     """Recover before generating; interruption never erases an original peer."""
     with store.single_writer():
         recovered=store.recover(replay=True);event=store.body(event_ref)
@@ -1010,15 +1082,45 @@ def issue_pair(store,event_ref,producer_binding,*,checkpoint,final_checkpoint):
         history_ref=LedgerRef.from_record(event["history_ref"]);history=store.body(history_ref);rows=history_rows(history,store.root)
         existing={(body["player_id"],body["model_key"]):(ref,body) for ref,body,_ in recovered["forecasts"]}
         for player in event["candidates"]:
+            complete=all((player["player_id"],model) in existing for model in MODEL_VERSIONS)
+            if complete and (checkpoint_many is None or all(store.admission(existing[(player["player_id"],model)][0])["eligible"]
+                for model in MODEL_VERSIONS)):continue
             target=_target(event["event"],player["player_id"]);_window(target,_now())
-            if all((player["player_id"],model) in existing for model in MODEL_VERSIONS):continue
-            prepared=prepare_pair(event,history,rows,event_ref=event_ref,history_ref=history_ref,
+            prepared={} if complete else prepare_pair(event,history,rows,event_ref=event_ref,history_ref=history_ref,
                 player_id=player["player_id"],producer_binding=producer_binding)
+            if checkpoint_many is not None:
+                active_model=None
+                try:
+                    pair_refs=[]
+                    for model in MODEL_VERSIONS:
+                        key=(player["player_id"],model)
+                        if key not in existing:
+                            active_model=model;body=prepared[model]
+                            # Generation preflight is not a persistence permit:
+                            # each later immutable write has its own actual gate.
+                            _window(target,_now(),clock(body["generation_started_at"]))
+                            ref=store.persist(body,references=(event_ref,history_ref))
+                            existing[key]=(ref,body)
+                        pair_refs.append(existing[key][0])
+                    active_model=None
+                    store.checkpoint_many(tuple(pair_refs),checkpoint_many)
+                    store.finalize_checkpoint(final_checkpoint)
+                    admissions=[store.admission(ref) for ref in pair_refs]
+                    require(all(item["eligible"] for item in admissions),
+                        "retained paired originals include late/unacknowledged evidence; individual eligibility remains separate")
+                except Exception as error:
+                    try:store.record_failure(event_ref,status="PARTIAL",reason=type(error).__name__+": "+str(error),
+                        player_id=player["player_id"],model_key=active_model)
+                    except Exception as metadata_error:
+                        raise IntegrityError("originals retained if written; paired failure metadata also blocked: "+str(metadata_error)) from error
+                    raise
+                continue
             for model in MODEL_VERSIONS:
                 key=(player["player_id"],model)
                 if key in existing:continue
                 body=prepared[model]
                 try:
+                    _window(target,_now(),clock(body["generation_started_at"]))
                     ref=store.persist(body,references=(event_ref,history_ref))
                     store.checkpoint(ref,checkpoint)
                     # Final proof per original makes a completed R0 durable even
