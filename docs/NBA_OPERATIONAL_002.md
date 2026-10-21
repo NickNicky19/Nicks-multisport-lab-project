@@ -137,6 +137,25 @@ The exact final source SHA must be frozen once and reused after any record or
 handoff commits. Source binding verifies executed bytes against that commit;
 `git rev-parse HEAD` on a later records commit must not repin the producer.
 
+The current reviewed **inactive software candidate** is
+`06dbb492dda5d0043ec7a3a6c97ce9c46201edc8`. Its full-history synthetic hosted
+run39536525048 passed all eight original timing/recovery gates, with final
+required readbackT90+289.817868. One10.182132s margin does not establish robust
+future execution or cover uninstalled real capture/encryption/key/entrypoint work.
+This exact read-only command remains available after documentation commits:
+
+```bash
+python3 -m multisport_lab.operational_preflight \
+  --plan evidence/operational/ops002-plan.json \
+  --producer-commit 06dbb492dda5d0043ec7a3a6c97ce9c46201edc8 \
+  --output /tmp/ops002-reviewed-preflight-v3.json
+```
+
+Expected exit2: `BLOCKED_NOT_ACTIVATED`, local integrityPASS. It creates no
+capture, binding, forecast, outcome, activation or scheduler. A genuine capture/
+issuance command remains unavailable pending the explicitly listed source/raw/
+writer/activation requirements; the expired manual_cycle is not reused here.
+
 The earlier source-C measurement is frozen at
 `c535c7851382eb3d7a8701229bc4dd7094086c70`. Its eight originals and late eighth
 proof remain unchanged on `diagnostics/ops002-timing-20261021`. The current

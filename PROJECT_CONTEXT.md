@@ -30,11 +30,14 @@ capture would be October 22, 23:40–23:50 UTC and generation/persistence
 October 23, 00:00–00:05 UTC. Preparation bytes are not timely future inputs.
 Genuine writes remain hard disabled. Exact source
 `c535c7851382eb3d7a8701229bc4dd7094086c70` is in draft PR #12, stacked on PR #10.
-Hosted diagnostic39533281196 retained/replayed all eight synthetic originals but
-only seven are timing-eligible after independent restart;338.647s cohort completion
-exceeds the registered gate. Source admission, primary private raw retention,
-genuine destination/entrypoint and reviewed activation also remain unmet. No
-scheduler is installed and no genuine future forecast has been issued.
+The later paired hosted diagnostic39536525048 retained/replayed all eight
+synthetic originals, with all eight timely after independent optimized recovery.
+Final required readback completed atT90+289.817868; max individual66.372487s.
+This is one software timing run with only10.182132s global margin. The earlier
+failed source-C diagnostic39533281196 remains unchanged/seven timely. Source
+admission, installed primary private raw/key retention, actual four-input linkage,
+genuine destination/entrypoint and reviewed activation remain unmet. No scheduler
+is installed and no genuine future forecast has been issued.
 
 The expired October 20 pilot actually ran late and guardedly aborted:
 `ACTUAL_PARTIAL_EXECUTION / LATE_GUARDED_ABORT`, run 39493005199, provider requests 0,

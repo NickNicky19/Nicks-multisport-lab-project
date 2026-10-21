@@ -2,6 +2,157 @@
 
 Updated: October 21, 2026 (UTC).
 
+## October 21 — paired hosted diagnostic and independent recovery complete; genuine operation blocked
+
+The current implementation remains separate draft [PR #12](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/12), branch
+`implementation/one-event-paired-pilot`, stacked on unchanged draft PR #10 at
+`c0a7b4bc3205d723b13d0f70baf66f3806e731ee`. The exact executed producer is
+**`06dbb492dda5d0043ec7a3a6c97ce9c46201edc8`** (source E). This following
+checkpoint changes documentation/evidence only; its HEAD must not replace that
+producer pin. `evidence/verification/ops002-checkpoint-file-inventory.json`
+lists the source-package and checkpoint files. MANIFEST covers their exact bytes.
+Earlier observations, failures, source pins and original receipts below remain
+unchanged. No activation, scheduler, genuine capture, issuance, merge or deployment
+has occurred.
+
+**Software correctness.** Source E GitHub CI run **39536260329** passed; build
+03:01:30–03:06:41 UTC, diagnostic/deploy skipped. Required local commands against
+the same source passed: `python3 -m unittest discover -s tests -v` **555 tests**
+(335.961s); `python3 -O -m unittest discover -s tests -p 'test_pros004*.py' -v`
+**175** (120.849s); optimized `test_operational*.py` **63** (25.310s);
+optimized `test_operating_diagnostic.py` **5** (24.996s); optimized offer tests
+**15** (0.432s); `python3 -m multisport_lab.demo`; and `node --test
+--test-isolation=none --test-reporter=spec web/tests/*.test.mjs` **76 actual tests**.
+The v3 software receipt retains command/log/source hashes. Independent fresh-Git
+exact-source review also passed focused optimized rejection/recovery checks,
+MANIFEST, all 27 bound helpers, the frozen nine producer files and all 19 original
+ledger receipts. See `ops002-independent-source-review-06dbb492.json`.
+
+**Actual hosted non-issuance diagnostic.** The single registered new measurement
+ran as **39536525048**, actual October 21 **03:04:29.208809–03:10:44.443233 UTC**,
+with build/deploy skipped. It used the complete 26,645-row retained history,
+invented event/rosters and advancing simulated admission clocks. Result:
+**PASS_FULL_COHORT_OPERATIONAL_DIAGNOSTIC**, eight retained synthetic originals,
+eight timing-eligible after fresh independent recovery, no missing peers,
+**zero genuine issuance**. All eight complete joint laws and all 13 requested
+categories plus PA replayed exactly. This is timing/recovery software evidence,
+not prospective capture, forecasting accuracy, model qualification or a study
+comparison.
+
+Input phase took 27.318636s. Cohort including final retention took 284.818275s
+from a simulated T90+5 start. Actual final retained proof clock was
+**T90+289.817868s**, leaving **10.182132s** under 300; maximum original generation
+through required proof was **66.372487s** under 120. Total run wall 375.229280s,
+CPU 339.140537s, peak RSS 263,712 KiB. Eleven actual Git transfer operations and
+four two-reference callbacks preserved separate original acknowledgments;
+`atomic_pair_issuance=false`. One run with this narrow margin does not establish
+a delivery guarantee or test actual selected-player capture/raw-key integration.
+No further full-history measurement is authorized by this completed one-shot
+policy.
+
+The durable branch is `diagnostics/ops002-paired-batch-20261021`, exact head
+**`e2d4ef41c3262d4733b8a64223171224b801bb73`**, snapshot
+`4218e65a078e104338929f52785de1eb2e61daaa3ae7173f80ab5219b245fcc0`:
+30 ledger JSON records / 36 total files / 2,115,350 encoded bytes. Final completion
+metadata has 24 entries (10 LOCAL, 9 REMOTE, 5 PROOF_LOCAL). Maximum forecast
+32,202 bytes, event pack 6,281, history pack 3,772; all individual ceilings pass.
+A separate fresh Git fetch and Python `-O` strict recovery replayed all eight
+laws in 40.377s with writer/generation paths disabled. Original 19 receipts are
+byte-identical. Independent receipt:
+`evidence/verification/ops002-independent-host-recovery-39536525048.json`
+(33,694 bytes, raw SHA256
+`c025563eb3d0611b3e0733feb7043ada9d2da1b011fe68bf68ffedaecefbe84c`).
+
+The original host report is retained without rewriting at
+`evidence/operational/hosted-diagnostic-39536525048.json` (24,666 bytes), raw
+SHA256 `1837fd8b6db179189da9c211d6ad6abb21887492b8df3ca1d46967c12acf4dc2`.
+Artifact 12318236501 ZIP SHA256
+`b3cf565bacb7cad4842345e3d08931f3e6121562be6de6fa87d5fe9204870224`
+was recovered through the existing authorized GitHub connector after CLI signed
+artifact downloads returned 403. No producer rerun, new service or permission
+change was needed. `ops002-paired-hosted-run-recovery.json` retains actual run,
+job, artifact and raw-log hashes. The earlier source-C failure (run39533281196,
+remote4c3e3eb4, eight retained/seven timely) remains frozen and still recovers its
+late original as ineligible under the new verifier.
+
+**Resource limits and readiness.** The exact-source read-only command is:
+
+```bash
+python3 -m multisport_lab.operational_preflight \
+  --plan evidence/operational/ops002-plan.json \
+  --producer-commit 06dbb492dda5d0043ec7a3a6c97ce9c46201edc8 \
+  --output /tmp/ops002-reviewed-preflight-v3.json
+```
+
+Observed exit 2 `BLOCKED_NOT_ACTIVATED`, local integrity PASS. Its immutable
+03:01:18 receipt predates the now-completed host measurement; the checklist
+records that dependency as satisfied for this synthetic path only. Planned
+maximum **117 files / 4,758,728 bytes**, including existing records, outcomes,
+grades, corrections, one offer, eight raw links, completion metadata, seven
+16-KiB admissions, one 1-MiB host report and two 64-KiB independent audits,
+remains below **512 files / 33,554,432 bytes**. No history truncation, probability
+atom removal, repeated full history or cap increase. The separately bounded
+private raw archive remains an uninstalled candidate, not durable source evidence.
+Full original PROS004-study timing and complete UTC inventory remain unestablished.
+
+**Current actual sources, not fresh operating inputs.** The preparation retains
+nine bounded scoreboard/summary/roster/profile GETs for the fixed future event
+401909094 DEN at OKC and four predeclared subjects. The two offer GETs retain the
+correct inherited ESPN `propBets` route and provider-100 evidence: six team or
+overtime markets, zero complete player contracts; provider label DraftKings.
+No new source GET was made by either hosted diagnostic. These preparation clocks
+are not timely October 22 capture clocks. See fixed-event/cohort/player receipts
+and `evidence/offers/2026-10-21-offer-source-followup-v1.json`. Recognized source
+restrictions remain unresolved; HTTP 200 and encryption do not grant collection
+or redistribution permission. No new actual offers, price/EV claims or tickets.
+
+**Website and public delivery.** Exact-E artifact build, site smoke, and Chromium
+1440/390/320 checks passed; manifest5 snapshot
+`ca97ca8e3524f21df59b9c56cd8fe486659a44c45d3351577751217e9bb3a57e`.
+All web source bytes are unchanged from source C. The preview shows six verified
+player names, historical matchups/dates, IDs in details, all 14 categories and
+separate ordinary-language empty states with publication/capture/issuance clocks.
+Scopes, 2–6 legs, OVER_ONLY/UNDER_ONLY/MIXED and NO_ACTION pass. The separate
+main-based website PR #11 remains ready, reviewed, unmerged and undeployed at
+`326e354650aef57c3b965711abf071b2fc4205eb`, awaiting its exact-head landing approval.
+Last public readback at 02:41:13 UTC still served main
+`735a464e9e8718303ef481abf711a8969de56694`, manifest2, six historical bundles,
+six statistical grades, zero offers/candidates/tickets and no genuine issuance.
+Sport asset SHA256 remains
+`22e04b7a68fde0a9a639af9a71512a5a149fd3326e5ee1491a0f5f26f7a46f2b`.
+Local artifacts, diagnostic branches and successful CI are not deployments.
+
+A further read-only GitHub preservation check at 03:19:50–03:19:52 UTC confirms
+main735a464, PR #8 draft dec5cc9f, PR #9 draft d6801577, PR #10 draft c0a7b4bc,
+PR #11 ready/unmerged326e3546 and PR #12 draft at source E. Workflow390126745
+remains `disabled_manually`. Exact fields are retained in
+`evidence/verification/ops002-final-preservation-20261021.json`. No pilot
+workflow, records branch, native task or external project was written.
+
+**Remaining blockers and next concrete work.** Genuine source operation/admission,
+installed primary private raw retention with authenticated hosted key/readback,
+actual four-input raw linkage, and the reviewed genuine destination/entrypoint
+remain unresolved. The current genuine path is hard closed. Close those concrete
+dependencies and verify the complete admitted execution path within unchanged
+120/300-second gates before asking for separate activation. Reviewed activation
+must be independently recovered **strictly before October 22, 23:40 UTC**
+(6:40 p.m. CDT); fresh capture/persistence/readback is 23:40–23:50 UTC, generation
+and all required persistence/readback October 23 00:00–00:05 UTC. No scheduler is
+armed. Preparation bytes cannot substitute for the same fresh input ID. If a
+requirement or window is missed, retain inactive/actual partial evidence and use
+a new reservation for any later event. Original PROS004 remains inactive/not
+started, without shifting its reservation or inventing its unknown first cutoff.
+
+For one verified published offer, obtain a permitted exact player/event/side/line
+contract and its actual period/OT, participation/DNP, postponement, tie/push and
+correction rules, durably recover original bytes and pin reviewed derived-fact
+admission in both validators. Price may stay unavailable for offer-only display;
+quotes, value and ticket qualification require additional evidence. Actual new
+outcomes/statistical grades remain zero and pending genuine originals plus
+verified final evidence. No financial settlement or predictive qualification.
+Expired pilot, PR #8, draft PR #10, PR #9/DEV005, K0/S0 and all frozen research
+remain untouched. NFL, separate MLB and paused native automation are untouched.
+
 ## October 21 — paired-transfer checks complete; new hosted measurement pending
 
 The same isolated PR #12 branch preserves source C and its actual failed host

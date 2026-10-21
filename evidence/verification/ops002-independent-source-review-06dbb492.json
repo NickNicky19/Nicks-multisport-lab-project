@@ -1,0 +1,580 @@
+{
+  "hash_format": "sha256-canonical-decoded-json-v1",
+  "payload": {
+    "branch": "implementation/one-event-paired-pilot",
+    "commands": [
+      {
+        "argv": [
+          "sha256sum",
+          "--check",
+          "MANIFEST.sha256"
+        ],
+        "completed_at": "2026-10-21T03:02:29.025431+00:00",
+        "exit_code": 0,
+        "output_path": "/tmp/nml-independent-ops002-06dbb492-results/command-0.log",
+        "output_sha256": "9ff29556dc1e79fac9386007140c228a9b1f424cf47265e7e47d3eb0c06f53d7",
+        "started_at": "2026-10-21T03:02:29.013156+00:00",
+        "summary": [
+          "web/tests/pros004.test.mjs: OK",
+          "web/tests/pros004_browser_smoke.py: OK",
+          "web/tests/publication-channels.test.mjs: OK",
+          "web/tests/research.test.mjs: OK",
+          "web/tests/scope.test.mjs: OK",
+          "web/tests/site-smoke.mjs: OK",
+          "web/tests/snapshot.test.mjs: OK"
+        ],
+        "wall_seconds": 0.012273424999875715
+      },
+      {
+        "argv": [
+          "python3",
+          "-O",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_operational_pilot.py",
+          "-v"
+        ],
+        "completed_at": "2026-10-21T03:02:50.688079+00:00",
+        "exit_code": 0,
+        "output_path": "/tmp/nml-independent-ops002-06dbb492-results/command-1.log",
+        "output_sha256": "072b4f9220fcffe87fa0a489d526d52994ee697563e985534203227060415c5b",
+        "started_at": "2026-10-21T03:02:29.025744+00:00",
+        "summary": [
+          "test_public_missing_peers_are_exact_fixed_input_cohort_minus_originals (test_operational_pilot.OperationalPilotTests.test_public_missing_peers_are_exact_fixed_input_cohort_minus_originals) ... ok",
+          "test_remote_interruption_retains_original_missing_peer_and_late_repair_fails (test_operational_pilot.OperationalPilotTests.test_remote_interruption_retains_original_missing_peer_and_late_repair_fails) ... ok",
+          "",
+          "----------------------------------------------------------------------",
+          "Ran 28 tests in 21.110s",
+          "",
+          "OK"
+        ],
+        "wall_seconds": 21.662341575000028
+      },
+      {
+        "argv": [
+          "python3",
+          "-O",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_operational_remote.py",
+          "-v"
+        ],
+        "completed_at": "2026-10-21T03:02:58.360465+00:00",
+        "exit_code": 0,
+        "output_path": "/tmp/nml-independent-ops002-06dbb492-results/command-2.log",
+        "output_sha256": "20d7c65905e4a12b6cc48b93ee929065ed184fe032b0b825f84a793a487f2469",
+        "started_at": "2026-10-21T03:02:50.688194+00:00",
+        "summary": [
+          "test_partial_per_original_ack_write_recovers_only_missing_remote_witness (test_operational_remote.OperationalRemoteTests.test_partial_per_original_ack_write_recovers_only_missing_remote_witness) ... ok",
+          "test_real_git_fresh_typed_readback_restart_and_actual_telemetry (test_operational_remote.OperationalRemoteTests.test_real_git_fresh_typed_readback_restart_and_actual_telemetry) ... ok",
+          "",
+          "----------------------------------------------------------------------",
+          "Ran 14 tests in 7.199s",
+          "",
+          "OK"
+        ],
+        "wall_seconds": 7.6722776610004075
+      },
+      {
+        "argv": [
+          "python3",
+          "-O",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_operating_diagnostic.py",
+          "-v"
+        ],
+        "completed_at": "2026-10-21T03:03:23.871468+00:00",
+        "exit_code": 0,
+        "output_path": "/tmp/nml-independent-ops002-06dbb492-results/command-3.log",
+        "output_sha256": "20a77cef6c6343e7ff0fb416ec080c409e7cf20382e66811156049b30d80ce17",
+        "started_at": "2026-10-21T03:02:58.360569+00:00",
+        "summary": [
+          "test_full_toy_driver_uses_real_git_and_new_operating_path_without_sources_or_scores (test_operating_diagnostic.OperatingDiagnosticTests.test_full_toy_driver_uses_real_git_and_new_operating_path_without_sources_or_scores) ... ok",
+          "",
+          "----------------------------------------------------------------------",
+          "Ran 5 tests in 24.962s",
+          "",
+          "OK",
+          "{\"activation\":false,\"genuine_issuance\":0,\"output\":\"/tmp/tmp06kvtgja/receipt.json\",\"payload_sha256\":\"80341f43eea0f220a07ac8cdc5708607b30e3953bffe1999473ad1ab514c47a6\",\"status\":\"PARTIAL_OR_FAILED_DIAGNOSTIC\"}"
+        ],
+        "wall_seconds": 25.510908838998148
+      },
+      {
+        "argv": [
+          "python3",
+          "-O",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_operational_preflight.py",
+          "-v"
+        ],
+        "completed_at": "2026-10-21T03:03:24.331159+00:00",
+        "exit_code": 0,
+        "output_path": "/tmp/nml-independent-ops002-06dbb492-results/command-4.log",
+        "output_sha256": "5c2566588d5678d0f2a95ec557cce941823d64c273b02e0e1fa1613ba168c2af",
+        "started_at": "2026-10-21T03:03:23.871543+00:00",
+        "summary": [
+          "test_one_event_plus_one_offer_counts_all_allocations (test_operational_preflight.PreparationGuards.test_one_event_plus_one_offer_counts_all_allocations) ... ok",
+          "test_reviewed_original_pilot_bytes_still_exact (test_operational_preflight.PreparationGuards.test_reviewed_original_pilot_bytes_still_exact) ... ok",
+          "",
+          "----------------------------------------------------------------------",
+          "Ran 5 tests in 0.022s",
+          "",
+          "OK"
+        ],
+        "wall_seconds": 0.4596273450006265
+      }
+    ],
+    "disposition": "PASS_BOUNDED_SOFTWARE_SOURCE_REVIEW_FOR_ONE_REGISTERED_SYNTHETIC_HOST_DIAGNOSTIC",
+    "exact_source_and_preservation": {
+      "complete_capacity": {
+        "base_operation": {
+          "activation": "INACTIVE",
+          "complete_history_rows": 26645,
+          "correction_link_records": 8,
+          "correction_replacement_records": 8,
+          "existing_bytes": 1817800,
+          "existing_records": 19,
+          "global_byte_limit": 33554432,
+          "global_record_limit": 512,
+          "history_repeated_per_event": false,
+          "maximum_bytes": 3333320,
+          "maximum_records": 98,
+          "metadata_file_reserve": 33,
+          "planned_record_counts": {
+            "event": 1,
+            "failure": 8,
+            "forecast": 8,
+            "grade": 8,
+            "history": 1,
+            "outcome": 4
+          },
+          "protocol_id": "NBA-PAIRED-OPS-002",
+          "qualification": "UNAVAILABLE",
+          "schema_version": "nba-operational002-capacity-v1"
+        },
+        "future_reservations_must_recalculate_against_actual_records": true,
+        "global_byte_limit": 33554432,
+        "global_file_limit": 512,
+        "hosted_report_encoded_ceiling": 1048576,
+        "inactive_PROS004_full_study_stacked_with_new_pilot": false,
+        "independent_audit_encoded_ceiling": 65536,
+        "maximum_encoded_bytes": 4758728,
+        "maximum_files": 117,
+        "raw_archive_eight_capture_reserve_bytes": 17039360,
+        "raw_archive_separate_maximum_bytes": 67108864,
+        "raw_archive_separate_maximum_captures": 128,
+        "raw_plaintext_publication": false,
+        "reserved_additional_metadata_files": 10,
+        "reserved_hosted_report_files": 1,
+        "reserved_independent_audit_files": 2,
+        "reserved_offer_envelopes": 1,
+        "reserved_offer_raw_link_envelopes": 8,
+        "reserved_small_metadata_files": 7,
+        "schema_version": "nba-operational002-combined-capacity-v3",
+        "small_metadata_encoded_ceiling": 16384
+      },
+      "frozen_nine_sha256": {
+        "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+        "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+        "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+        "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2",
+        "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+        "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+        "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+        "multisport_lab/prospective.py": "d7094982dd1c186b2fe17b5e2992ed97a730e4ef369581679fa43fe1649bc1b5",
+        "scripts/prepare_nba_panel.py": "d0864c3d399768624e25b3c278d0a3238653d422ed2a87c3c25fcea2dad2038e"
+      },
+      "frozen_research_sha256": {
+        "docs/NBA_DEVELOPMENT_002.md": "36793a4a1e788dcbf73e08815b4f9a5b6f1732f06426e2a09cb42ca8483a1c33",
+        "docs/NBA_DEVELOPMENT_003.md": "b1b468cff88af4fec4fb439b0ef1aef179535284bcb712014bbcbd3ecbab96b4",
+        "docs/NBA_PROSPECTIVE_004.md": "daae439a39537c8a96760ef353ca66460fd4dc26967b1b226caff175d34b2545",
+        "docs/NBA_REBOUNDS_EXPERIMENT.md": "a585344d8809be1565898f6794a5768231193b1985edff9ec2f55fec26a5a914",
+        "docs/PREGAME_RESEARCH_CYCLE.md": "26d796aea9cc621ac5e849c786d7f88431191f9006381d5689d242956afe25dd",
+        "evidence/research/dev002-inventory.json": "e0938cde67ba488946911267d1988537e2edb7d8e02873d0b7d56db2170ab38f",
+        "evidence/research/dev002-protocol.json": "7fe212db8ee34b6e58a212f7e7bb1b15ee423ebebe21e8e9217ba4c502aabb1d",
+        "evidence/research/dev002-results.json": "caf2ca34cf210da8f8b967bc18a06eb553548d7bed2ba9174a7f6fcc0b3f8a63",
+        "evidence/research/dev003-inventory.json": "ab7509ad203336edfa5ef02d25344d898e083062891c405348774191993cc75a",
+        "evidence/research/dev003-protocol.json": "503a40d31532e89e8b4becd385f9867b7f5f51439eb383439803d9803d56dc08",
+        "evidence/research/dev003-results.json": "76b3c2e988d845deef233868cf84cf5cd08d96c97cc71025bc69b6cf846d796e",
+        "evidence/research/prospective004-protocol.json": "8302bf5455d48c9c0f6ccd40296b971955822ee09edaa9d9af94ad205d06e752",
+        "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+        "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+        "tests/test_development_002.py": "0aa821d2694cc1fbf91d21dcfcba9fa65aba235f8387ad5942404a4695a46095",
+        "tests/test_development_003.py": "430960aa9cb2133f29123d844a4a7f00b5e625a4b52f8491e42e53d2c4500e1c"
+      },
+      "inactive_gate": "NO_REVIEWED_ACTIVATION_INSTALLED: OP002 genuine writes remain inactive",
+      "new_runtime_assert_nodes": {
+        "multisport_lab/operating_diagnostic.py": 0,
+        "multisport_lab/operational_pilot.py": 0,
+        "multisport_lab/operational_preflight.py": 0,
+        "multisport_lab/operational_remote.py": 0
+      },
+      "original_record_bytes": 1817800,
+      "original_record_count": 19,
+      "original_records": {
+        "records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json": "499b358129adde25134d5ba6243b372b1937915f7a0f2245750a057d40c4b8c6",
+        "records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json": "507344a333f5218039e39b1201e1f203f6045bf8e04375a7a19740ddea337967",
+        "records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json": "e35af6116e8151aacb23d21465c2744324501a92d0f83cf7e780066677df74fa",
+        "records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json": "1748dce54d24cc583deb3e102d08680142307c3c784ddfc728abc02f78e82f0f",
+        "records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json": "d74070a12aa144b4bc917de930e6527f4bd5bdeb84db693a215bec1513562f7b",
+        "records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json": "bf3aa0b6fab62f64a03070fc6775db1bec8b0654e89ae93b3c42133e94649894",
+        "records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json": "cf519c4238f641724d81040f8cdee82b693aa3f98e4ae8db772fbadc480fd6a0",
+        "records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json": "73b72a5ed145708157052c269d25c0dd72467a002e26efac41e1136839fa0f60",
+        "records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json": "c691398d641af291bcd3c2a9d7427ff59ab953606ee9388bc2c202642d80947c",
+        "records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json": "41e3453b89b97c160d56e932f1389ac90b451142dcda3cff27629b1448bc77dd",
+        "records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json": "1297f91dc9154d2b6111e60a1505f4a08e911dd3c99b919431833df76dbe40b5",
+        "records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json": "2a343e191af2f809baf91ab4d6f9de8d09f593c9f6b088d9740238982107237b",
+        "records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json": "a9474a89403e3aa87f44adb014eee6e10b09761002e5a4deabc198022ea88ce3",
+        "records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json": "c9938334da0fbfb3032558df23d5e69588fdf6ca7f0b9eb562fb271c090ef93e",
+        "records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json": "e94d071bf65e5f4815400a0e334b81529d6fd71147fb467584fc0aa1bb7e4f9c",
+        "records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json": "74bd3778ce79875bb6f238cabda878ab88789df928b3b7804494c3e94f346b54",
+        "records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json": "f4787faceff42cc52a2c446b03fc6ee7b8b2103643dff937b411193c75994bc5",
+        "records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json": "1332e892946d072d1500bdd693a877cbefb1ee54b51c3eb657e3c7af6393ee63",
+        "records/research_inputs/dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc.json": "db9a682099e28ce087edf430e9aa52f9be8e060ebf4b4cf8deb53d1317c8b122"
+      },
+      "policy": {
+        "activation": false,
+        "change_under_review": "One actual strict snapshot/fresh Git readback may verify up to two distinct R0/K0 references for one player and identical event/input/producer. Each original keeps its own LOCAL and REMOTE completion; one real final-prefix proof covers both. No atomic-success claim.",
+        "comparative_statistical_evaluation": false,
+        "generation_start_offset_seconds": 5,
+        "genuine_issuance": 0,
+        "grades": 0,
+        "maximum_new_full_history_hosted_diagnostics": 1,
+        "maximum_peak_rss_kib": 524288,
+        "maximum_wall_seconds": 900,
+        "merge_or_deployment": false,
+        "mode": "SOFTWARE_DIAGNOSTIC_NON_ISSUANCE",
+        "new_diagnostic_branch": "diagnostics/ops002-paired-batch-20261021",
+        "outcomes": 0,
+        "prior_original_report_payload_sha256": "16a346bffad5b2a5504a91184fe01ff126547155602df841e6f71e110040ad26",
+        "prior_records_branch": "diagnostics/ops002-timing-20261021",
+        "prior_records_head": "4c3e3eb4c0e4cfdaa36f10a84918ccbbd28921ee",
+        "prior_run": 39533281196,
+        "prior_source": "c535c7851382eb3d7a8701229bc4dd7094086c70",
+        "provider_captures": 0,
+        "reason": "Nineteen actual strict transfer operations consumed300.380874s wall/243.910460s CPU; one same-subject two-model fresh readback may attest both exact originals without separate repeated transfers.",
+        "registered_at": "2026-10-21T02:45:33.378474Z",
+        "required_invariants": [
+          "Unchanged R0/K0 laws, parameters, causal history, complete26645row panel and all14categories",
+          "Both laws preflight before first pair write; actual clock before every missing original write",
+          "Per-original generation through actual post-fsync proof completion <=120seconds and <=T90+300seconds",
+          "Both ACKs truthfully reference the same actual pre-callback prefix containing both original LOCAL entries; no invented second prefix",
+          "Late, interrupted, unacknowledged and partial originals retained; original probabilities and clocks never rewritten",
+          "Full independent typed meanings, bytes/hashes/references and source bindings remain mandatory",
+          "Exact reviewed new source SHA must be frozen before one further hosted measurement; retain sourceC failure unchanged"
+        ],
+        "scheduler": false,
+        "schema_version": "nba-ops002-paired-checkpoint-diagnostic-policy-v1",
+        "status": "IMPLEMENTATION_PREPARATION_NOT_EXECUTED"
+      },
+      "policy_payload_sha256": "d753fe637f23f1f15527f91d4854c239992e663ed9a17da7eb13156a37ac6f87",
+      "source_C_failed_report_payload_sha256": "16a346bffad5b2a5504a91184fe01ff126547155602df841e6f71e110040ad26",
+      "source_C_failed_report_raw_sha256": "5d6ec82564922760559186e1972d6099c36ee3ae791967ed1832ef5eda2fb8c4",
+      "source_C_report_bytes_equal_recovered_host_artifact": true,
+      "source_binding": {
+        "binding_id": "a9082fbf1ce7e346b0b0042347bfc0534bd574ab2e7c7aca7dd61b379c2b5ea3",
+        "commit": "06dbb492dda5d0043ec7a3a6c97ce9c46201edc8",
+        "files": {
+          "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+          "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+          "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+          "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+          "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+          "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2",
+          "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+          "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+          "multisport_lab/offer_publication.py": "ae14f3202e13b2a482d00abf143e33216439b304832e6b3a2a3a1687455337ee",
+          "multisport_lab/operating_diagnostic.py": "b4ac0d0a1cd29e4dd24f6095feb2b67ff4733ac83f75953d553fefcd39482df0",
+          "multisport_lab/operational_pilot.py": "b9c5092b7d64bd9cdadf08a47a765ef49d11d8c95d532b60083204d9c8122f80",
+          "multisport_lab/operational_preflight.py": "e0a5a1e893d1414966879c64d69245157d339a142929d8a6b6250cf0694ab288",
+          "multisport_lab/operational_publication.py": "106faec29a1550e70121ec2f37d47ef352a65493c41bb914d4677d9e1838830c",
+          "multisport_lab/operational_raw.py": "25a5e6e4fcf86e21d264b9b6aff002c2d150d4a1142fbdc15ec8d969ad7e79e1",
+          "multisport_lab/operational_remote.py": "1acd2dcd418cc538f2ad2f6da91ce4c39247e04e895dc08514590a7c402811e6",
+          "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+          "multisport_lab/pros004_completion.py": "444e339740c687604d6e591b87600bda08fe16550aa23f63d2daf6a5cdcd5719",
+          "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+          "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+          "multisport_lab/pros004_publication.py": "9370338133e0dcfe53d9782f7ec87755551bacc9444786911d7bebba6e03dcce",
+          "multisport_lab/pros004_records.py": "fe17065cddc534cca6bfe8812594c008ceba586933f1cf9d4fc9391f044f0e86",
+          "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+          "multisport_lab/pros004_snapshot.py": "743ba0ac4721ccc17ac3113b8348a57d08f5e6696805bba201ef61a247d108bc",
+          "multisport_lab/prospective_outcomes.py": "8d22da881bcae0e0e213e314f0181bc727edd4116361fa2b7413f01f154919bf",
+          "multisport_lab/publication_ledger.py": "3d88f0581568693d3c6fbdd600e0e8d248e7a0f315c7e2b19c6c207335108c8d",
+          "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+          "scripts/verify_pros004_readiness.py": "71bfbd8d8c1d749103902aef87e2efcc75f6f7667a55324f3b5995605d99182b"
+        },
+        "law_sha256": {
+          "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+          "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689"
+        },
+        "model_versions": {
+          "K0": "nba_joint_lagged_workload_prior_k0_v1",
+          "R0": "nba_joint_empirical_r0_v1"
+        },
+        "producer_versions": {
+          "K0": "operational002-k0-producer-v1",
+          "R0": "operational002-r0-producer-v1"
+        },
+        "protocol_id": "NBA-PAIRED-OPS-002",
+        "schema_version": "nba-operational002-source-binding-v1",
+        "verification": "VERIFIED_COMMIT"
+      },
+      "source_commit": "06dbb492dda5d0043ec7a3a6c97ce9c46201edc8",
+      "verified_at": "2026-10-21T03:03:44.280088+00:00",
+      "working_tree": ""
+    },
+    "findings": [
+      {
+        "finding": "A paired shared-prefix recovery could previously accept contradictory operation_started_at fields even though the actual callback had one start clock.",
+        "id": "BATCH-01",
+        "resolution": "Journal validation now requires same operation_started_at for the two paired REMOTE entries, in addition to matching exact source prefix, commit, snapshot and remote completion. Checksum-consistent re-chained contradictory-start negative passes under optimized Python.",
+        "status": "FIXED_RETESTED"
+      },
+      {
+        "finding": "The second REMOTE witness legitimately refers to the actual shared pre-callback LOCAL prefix, not the later prefix after appending the first REMOTE entry.",
+        "id": "BATCH-02",
+        "resolution": "Recovery recognizes complete earlier retained prefixes and requires the exact original LOCAL witness inside that prefix. Same-prefix grouping admits at most two different R0/K0 originals with identical subject, event version, exact event/history input and producer binding. Re-chained empty/stale prefix negatives reject.",
+        "status": "VERIFIED"
+      },
+      {
+        "finding": "One shared transport call must not claim atomic pair persistence.",
+        "id": "BATCH-03",
+        "resolution": "Both original LOCAL entries persist separately before the strict fresh fetch. Return values bind each original payload and raw hash separately. REMOTE entries and post-fsync proof witnesses remain separate durable observations; interrupted second-witness persistence recovers only the missing acknowledgment. No original or receipt clock is replaced.",
+        "status": "VERIFIED"
+      },
+      {
+        "finding": "Batching must retain actual deadline enforcement for each original and final required proof.",
+        "id": "BATCH-04",
+        "resolution": "Both laws preflight before writing the pair. Every missing original checks its actual issuance window immediately before persistence. Delayed original persistence, late shared acknowledgment, interrupted proof, late global completion and short individual duration with late global deadline all remain unadmitted after restart.",
+        "status": "VERIFIED"
+      },
+      {
+        "finding": "Independent source/recovery audit receipts exceed the sixteen-KiB registration/admission allowance.",
+        "id": "BATCH-05",
+        "resolution": "Capacity v3 reserves two independent sixty-four-KiB audit files in addition to seven sixteen-KiB metadata files and one complete one-MiB host report. Total one-event/one-offer allocation is117files/4,758,728bytes against unchanged512file/32MiBlimits. Boundary regression passes.",
+        "status": "FIXED_RETESTED"
+      },
+      {
+        "finding": "A new implementation must not rewrite or reclassify the prior failed source C hosted diagnostic.",
+        "id": "BATCH-06",
+        "resolution": "New source retains the exact old report bytes recovered from the artifact and source C payload16a346bf… . Old remote diagnostic branch remains4c3e3eb4… . Read-only optimized current-code typed recovery of that exact old snapshot returns eight retained/seven eligible/zero genuine with the same snapshot7148c555… .",
+        "status": "VERIFIED"
+      }
+    ],
+    "fresh_independent_git_readback": {
+      "commands": [
+        {
+          "argv": [
+            "git",
+            "init",
+            "--quiet"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:02:04.480137+00:00",
+          "stderr": "",
+          "stdout": "",
+          "wall_seconds": 0.002915057000791421
+        },
+        {
+          "argv": [
+            "git",
+            "remote",
+            "add",
+            "origin",
+            "https://github.com/NickNicky19/Nicks-multisport-lab-project.git"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:02:04.483052+00:00",
+          "stderr": "",
+          "stdout": "",
+          "wall_seconds": 0.001970930003153626
+        },
+        {
+          "argv": [
+            "git",
+            "fetch",
+            "--no-tags",
+            "--depth=1",
+            "origin",
+            "06dbb492dda5d0043ec7a3a6c97ce9c46201edc8"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:02:04.485025+00:00",
+          "stderr": "From https://github.com/NickNicky19/Nicks-multisport-lab-project\n * branch            06dbb492dda5d0043ec7a3a6c97ce9c46201edc8 -> FETCH_HEAD",
+          "stdout": "",
+          "wall_seconds": 0.9563563360025
+        },
+        {
+          "argv": [
+            "git",
+            "rev-parse",
+            "FETCH_HEAD"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:02:05.441388+00:00",
+          "stderr": "",
+          "stdout": "06dbb492dda5d0043ec7a3a6c97ce9c46201edc8",
+          "wall_seconds": 0.0023921980027807876
+        },
+        {
+          "argv": [
+            "git",
+            "checkout",
+            "--quiet",
+            "--detach",
+            "FETCH_HEAD"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:02:05.443781+00:00",
+          "stderr": "",
+          "stdout": "",
+          "wall_seconds": 0.03529739999794401
+        },
+        {
+          "argv": [
+            "git",
+            "ls-remote",
+            "--heads",
+            "origin",
+            "refs/heads/implementation/one-event-paired-pilot"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:02:05.479081+00:00",
+          "stderr": "",
+          "stdout": "06dbb492dda5d0043ec7a3a6c97ce9c46201edc8\trefs/heads/implementation/one-event-paired-pilot",
+          "wall_seconds": 0.4817413349992421
+        },
+        {
+          "argv": [
+            "git",
+            "status",
+            "--porcelain"
+          ],
+          "exit_code": 0,
+          "started_at": "2026-10-21T03:02:05.960827+00:00",
+          "stderr": "",
+          "stdout": "",
+          "wall_seconds": 0.0214737550013524
+        }
+      ],
+      "recorded_at": "2026-10-21T03:02:05.982303+00:00",
+      "root": "/tmp/nml-independent-ops002-06dbb492-5_vyuz3w",
+      "source_commit": "06dbb492dda5d0043ec7a3a6c97ce9c46201edc8"
+    },
+    "guard_review": {
+      "both_laws_preflight_before_first_missing_original_write": true,
+      "categories": 14,
+      "complete_history_rows": 26645,
+      "frozen_R0_K0_laws_parameters_history_and_categories_unchanged": true,
+      "full_history_hosted_timing_at_new_source": "PENDING_OWNER_SINGLE_REGISTERED_MEASUREMENT_NOT_ESTABLISHED_BY_THIS_REVIEW",
+      "genuine_activation_hard_closed": true,
+      "new_diagnostic_branch": "diagnostics/ops002-paired-batch-20261021",
+      "new_runtime_disappearing_assert_nodes": 0,
+      "old_failed_branch_accepted_for_new_writes": false,
+      "one_actual_shared_prefix_not_fabricated_post_append_prefix": true,
+      "original_nine_producer_files_equal_reviewed_58530309": true,
+      "original_nineteen_receipts_byte_identical": true,
+      "partial_original_and_missing_acknowledgment_recovery_preserved": true,
+      "per_original_window_check_before_each_write": true,
+      "post_fsync_deadline_admission_preserved": true,
+      "shared_callback_returns_separate_exact_original_acks": true,
+      "source_dependency_count": 27,
+      "strict_source_and_fresh_fetched_type_hash_reference_validation_preserved": true
+    },
+    "preservation_git_queries": [
+      {
+        "argv": [
+          "git",
+          "fetch",
+          "--no-tags",
+          "--depth=1",
+          "origin",
+          "58530309cf384425e15f02fd9fa980899a4dc0bc"
+        ],
+        "exit_code": 0,
+        "observed_at": "2026-10-21T03:03:00.151986+00:00",
+        "stderr": "From https://github.com/NickNicky19/Nicks-multisport-lab-project\n * branch            58530309cf384425e15f02fd9fa980899a4dc0bc -> FETCH_HEAD",
+        "stdout": ""
+      },
+      {
+        "argv": [
+          "git",
+          "ls-remote",
+          "--heads",
+          "origin",
+          "refs/heads/diagnostics/ops002-timing-20261021"
+        ],
+        "exit_code": 0,
+        "observed_at": "2026-10-21T03:03:00.545497+00:00",
+        "stderr": "",
+        "stdout": "4c3e3eb4c0e4cfdaa36f10a84918ccbbd28921ee\trefs/heads/diagnostics/ops002-timing-20261021"
+      }
+    ],
+    "recorded_at": "2026-10-21T03:05:14.651692Z",
+    "remaining_limitations": [
+      "Prior exact source C operating measurement failed; synthetic software regression success does not establish a passing new hosted timing result.",
+      "No operational source admission, primary raw key/backend recovery, genuine destination/activation or future issuance is installed.",
+      "Input/forecast publication eligibility, forecast grading, ticket financial settlement and predictive qualification remain separate.",
+      "No new PROS004 activation or comparative evaluation, S0 activation, expired-pilot retry, NFL/MLB change, merge or deployment is authorized by this receipt."
+    ],
+    "repository": "NickNicky19/Nicks-multisport-lab-project",
+    "reviewer": "independent_ops_review",
+    "reviewer_actions": {
+      "commits": 0,
+      "comparative_statistical_results": 0,
+      "deployed": false,
+      "genuine_issuance": 0,
+      "live_provider_requests": 0,
+      "merged": false,
+      "new_full_history_timing_diagnostics": 0,
+      "pushes": 0,
+      "source_edits": 0,
+      "workflow_dispatches": 0
+    },
+    "schema_version": "nba-operational002-independent-source-review-v2",
+    "scope": "Software source review and isolated small synthetic regression/recovery checks only. No full-history hosted operating measurement, live provider capture, comparative statistical scoring, genuine issuance, activation, merge or deployment by reviewer.",
+    "software_test_counts": {
+      "manifest": "PASS",
+      "optimized_core": 28,
+      "optimized_driver": 5,
+      "optimized_preflight": 5,
+      "optimized_remote": 14
+    },
+    "source_C_failure_compatibility": {
+      "eligible_originals": 7,
+      "genuine_issued": 0,
+      "missing_original_peers": [],
+      "records_commit": "4c3e3eb4c0e4cfdaa36f10a84918ccbbd28921ee",
+      "replay_complete_laws": false,
+      "retained_originals": 8,
+      "snapshot_id": "7148c555dfdf6277c09bae355539c1bdecd287fcfa43a8b239a0cf9f2a0c366e",
+      "source_commit": "06dbb492dda5d0043ec7a3a6c97ce9c46201edc8",
+      "source_or_record_mutation": false,
+      "status": "PASS_SOURCE_E_READS_UNMODIFIED_SOURCE_C_FAILED_SNAPSHOT",
+      "validation_clock": "2026-10-21T23:05:11.496930Z",
+      "validation_clock_policy": "EXPLICIT_RETAINED_SYNTHETIC_DIAGNOSTIC_READ_ONLY_NOT_ISSUANCE",
+      "wall_seconds": 5.520158540999546
+    },
+    "source_commit": "06dbb492dda5d0043ec7a3a6c97ce9c46201edc8"
+  },
+  "payload_sha256": "1612a71a3adeb110cec23480b9a81f971416563620b4ffc5b3edd6fcc7b2c12e",
+  "schema_version": "decoded-json-receipt-v1"
+}

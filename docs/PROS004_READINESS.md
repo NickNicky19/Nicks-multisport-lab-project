@@ -11,6 +11,17 @@ The v3 completion policy is [PROS004_COMPLETION.md](PROS004_COMPLETION.md).
 
 ## October 21 — inactive reservation and separately versioned operating preparation
 
+The later **separate OP002 synthetic diagnostic**, source
+`06dbb492dda5d0043ec7a3a6c97ce9c46201edc8`, run39536525048, passed one full
+eight-original hosted run and independent optimized-Python recovery. All26,645
+history rows and complete joint laws/14 marginals were retained. Final required
+readbackT90+289.817868 leaves10.182132s global margin; max original66.372487s.
+This does not establish timely real capture, private raw/key recovery, the
+genuine writer path, full512-record study timing, statistical quality or activation.
+The original PROS004 reservation remains inactive/not started; its complete
+admitted UTC inventory/actual first cutoff is still unestablished. Source C's
+failed measurement below remains unchanged, not repaired by this later result.
+
 PR #10 remains draft at `c0a7b4bc3205d723b13d0f70baf66f3806e731ee`.
 The later working branch prepares a separate `NBA-PAIRED-OPS-002` named-game
 operation and explicitly retains this reservation **inactive/not started**.
