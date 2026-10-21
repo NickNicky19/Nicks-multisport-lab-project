@@ -2,6 +2,76 @@
 
 Updated: October 21, 2026 (UTC).
 
+## October 21 — connected source committed; exact remote recovery and CI passed
+
+The new implementation source is **`e5eb1a24ee779cdec819bd239ccbc5a9d33e93f7`**
+on draft PR #12, `implementation/one-event-paired-pilot`. Its Git tree is
+`4949b8bd06926921a18d067df663d7f20a9a7133`, with sole parent
+`fe09956ac5708d3e2df65ebb6c833a3fbafdd73d`. This following checkpoint changes only
+documentation and verification evidence; it does not replace that source pin or
+the separately frozen old diagnostic producer. Resolve the branch HEAD for the
+final documentation review commit. Fetch this branch before resuming work from
+the older `fe09956` checkpoint; preserve the new legitimate commits.
+
+**GitHub CI [39568982026](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39568982026)
+passed for the implementation head.** The job log records **616 Python tests in
+339.702s**, **78 frontend tests**, the demo and artifact smoke check passing.
+The operating diagnostic and deployment jobs were skipped. This is software CI,
+not a new hosted full-history operating/timing measurement or website release.
+
+Independent authenticated GitHub readback verified the complete recursive tree:
+**376 entries, comprising 352 blobs and 24 directories**, with every path, mode,
+type and object hash equal to the committed local tree. All **24 changed blobs**
+were separately downloaded and compared byte-for-byte, by length, Git blob SHA1
+and SHA256. Their total was 543,594 bytes. Original 19-record and frozen
+nine-source-file preservation was checked against historical local Git objects,
+the remote blob identities and the independently retrieved verification receipt.
+Unchanged blobs were not unnecessarily downloaded again. This verifies repository
+source/evidence recovery; it does **not** demonstrate genuine provider-source or
+operating-record recovery.
+
+The read-only delivery preparation now verifies all **31 execution files** against
+that exact source commit. Its binding ID is
+`f2778e8baf81b28043fd939c1578dcaf920c1e82382a6393bfe907f279b8ca52`;
+`VERIFIED_COMMIT` still returns **`BLOCKED_NOT_ACTIVATED`**, expected exit 2.
+An exact-source local artifact build and smoke check passed with snapshot
+`3a496125703ffc3e0c8e9426225dedbbefc61e412b93f95455b4985f21f405b5`, one sport and
+no qualified rows. Neither check establishes a browser deployment or model
+accuracy. Machine-readable evidence is
+`evidence/verification/ops002-connected-remote-recovery-v1.json`; the earlier
+connected-components receipt and all original diagnostic results remain intact.
+
+The remote checkpoint again observed PR #11 open/unmerged at the approved
+`326e354650aef57c3b965711abf071b2fc4205eb`, PR #12 open/draft with unchanged PR #10
+base `c0a7b4bc3205d723b13d0f70baf66f3806e731ee`, and main
+`735a464e9e8718303ef481abf711a8969de56694`. **No merge or deployment occurred.**
+The PR Completion helper remains blocked by the missing authenticated GitHub CLI;
+Nick's already-given exact-head website approval remains valid. No alternative
+merge path was used. Complete that approved release in the existing authenticated
+Codex environment, then verify the public names, matchups, clocks, direct History
+route and mobile layout. Do not ask for the same approval again if the head is
+unchanged.
+
+Remaining operation requirements are unchanged: a permitted source-use basis,
+installed private raw/key retention with durable owner-controlled recovery,
+verified genuine hosted input/writer operation, and separate reviewed activation.
+The offered destination and key-custody procedure are concrete preparation, not
+an installed secret, created records branch or armed scheduler. One owner-only
+decision remains: identify an existing private durable backup/recovery location
+for the encryption key; an already-used secure-file password manager or encrypted
+offline backup is recommended. Selecting it does not resolve source admission or
+authorize activation. Never send the key in chat.
+
+The separate offer route still needs one permitted actual player contract, rules
+and original source bytes. Its synthetic complete `PRICE_UNAVAILABLE` fixture
+does not count as a published offer. Statistical forecast publication remains
+independent of missing offers or odds. **New genuine forecasts, published offers,
+prospective outcomes/grades, qualified tickets and financial settlements are all
+zero.** Six historical bundles and six historical grades remain the only public
+research records. PROS004 remains inactive; PR #10/#12 remain draft and unapproved;
+all 13 categories plus PA, 2–6 legs, directions and `NO_ACTION` remain intact.
+NFL, MLB, frozen experiments and the expired pilot were not changed.
+
 ## October 21 — authenticated source/delivery connections; website release blocked by local CLI
 
 Nick explicitly approved **only PR #11 at

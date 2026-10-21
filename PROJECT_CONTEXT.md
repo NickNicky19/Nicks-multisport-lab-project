@@ -43,8 +43,9 @@ admission, installed primary private raw/key retention, genuine hosted operation
 and reviewed activation remain unmet. The later connected-component checkpoint
 adds authenticated four-input links, encrypted archive/record transport and
 retained admission-reference resolution, verified with invented local fixtures
-only. Its expanded execution binding is a new unapproved source candidate; do not
-apply the old timing result to it. No scheduler is installed and no genuine future
+only. Its expanded execution binding verifies 31 execution files at source commit
+`e5eb1a24ee779cdec819bd239ccbc5a9d33e93f7`. This is a new unapproved source candidate;
+do not apply the old timing result to it. No scheduler is installed and no genuine future
 forecast has been issued. See docs/OPS002_DELIVERY_READINESS.md and the latest
 handoff for the exact package, key custody procedure and remaining requirements.
 
