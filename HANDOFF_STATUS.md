@@ -2,6 +2,50 @@
 
 Updated: October 21, 2026 (UTC).
 
+## October 21 — Covers assessed; alternate forecast-input route identified
+
+At clean integration HEAD **00ed62a341ead7693c6d62bd162c42a7630c3313**, Nick asked
+about Covers or another source. One owner performed a bounded **four GETs** for
+documentation/release metadata, **zero sports-data GETs**, zero redirects/retries,
+1,092,710 response bytes, unchanged 2-MiB per-response limit. The first guessed
+Covers terms URL returned 404; its footer supplied the actual `/terms` URL, which
+returned 200. No automatic-approval rejection or access bypass occurred.
+
+Covers' terms, marked August 5, 2026, sections 2/11.j/19, restrict modification,
+republication/distribution and public display absent prior written permission.
+No applicable public-data/API exception was established. **Do not select Covers
+as the current automated/public-product source** or assume its pages solve the
+ESPN admission problem. No Covers player row, offer or category coverage was read.
+
+**Prioritize SportsDataverse's public data releases for the next bounded input
+sample.** Its re-fetched data-store README retains the explicit publisher CC BY 4.0
+label and lists NBA schedules and rosters through season 2027. Public schedule
+release metadata independently lists `nba_schedule_2027.parquet`, 95,824 bytes,
+updated **2026-10-21 11:30:57 UTC**; this metadata was actually observed
+**23:09:14.603848 UTC**, not at the publisher's earlier update time. This is a
+publisher-documented keyless download route, still ESPN-derived, not a claim of
+independent original data or blanket upstream clearance. No account, provider
+key, signup, paid service or trial is required for the inspected public route.
+
+Next concrete task: inspect current schedule/roster Parquet bytes, verify the
+upcoming event/status/start and selected-player/team identities, and measure
+freshness/version coverage. Retain publisher attribution, modification notice,
+source hashes and distinct download/update clocks. The documented roster family
+is not yet verified roster rows; the schedule asset is not yet a verified event.
+Use a separately reviewed input/normalizer/plan version. The original four-ESPN-
+response OPS002 reservation/windows are unchanged; this is not its activation.
+This identifies a technical row-verification task under a published data-license
+basis rather than requiring a universal bespoke provider-permission request.
+
+Exact URLs/statuses/clocks/hashes and remaining fields are in
+`evidence/data/2026-10-21-covers-sdv-source-choice.json`. Original document bodies
+and request ledger have create-only local copy/readback under
+`.local-data/source-alternatives-20261021/originals/`; remote durable raw archival
+is not established. No behavior/model changes or diagnostic reruns; original
+records, all 14 categories, PR #10/#12 drafts, PROS004/S0, NFL/MLB and public website
+remain unchanged. Genuine issuance, published offers and new outcomes/grades
+remain zero. Prices/offers remain separate from statistical forecast inputs.
+
 ## October 21 — forecast-delivery focus and deployed-main integration
 
 The executor recovered. Existing PR #12 local/remote HEAD was verified clean at

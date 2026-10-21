@@ -1,0 +1,210 @@
+{
+  "hash_format": "sha256-canonical-decoded-json-v1",
+  "payload": {
+    "boundaries": {
+      "deployment": false,
+      "forecast_issuance": 0,
+      "model_runs": 0,
+      "new_paid_services_signups_or_trials": false,
+      "nfl_mlb": "UNTOUCHED",
+      "operational_key_changed": false,
+      "pilot_activation": false,
+      "pr10_pr12": "DRAFT_UNCHANGED",
+      "pros004": "INACTIVE",
+      "provider_credentials_created": false,
+      "publication": false,
+      "scheduler": false
+    },
+    "budget": {
+      "approval_rejections": 0,
+      "documentation_metadata_gets": 4,
+      "max_documentation_metadata_gets": 4,
+      "redirects": 0,
+      "response_limit_bytes": 2097152,
+      "retries": 0,
+      "sports_data_gets": 0,
+      "total_response_bytes": 1092710
+    },
+    "covers": {
+      "decision": "NOT_SELECTED_FOR_AUTOMATED_FORECAST_INPUT_OR_PUBLIC_OFFER_DELIVERY",
+      "finding": "Terms restrict modification, republication, distribution and public display absent prior written permission; no applicable published data/API exception established for this product.",
+      "first_document_guess": "404; supplied no terms; returned footer linked the actual /terms page.",
+      "scope_limits": "No data/API route, actual NBA row, player contract or category coverage inspected. This is not a permanent source-absence finding.",
+      "sections": [
+        "2. SERVICES AND CONTENT",
+        "11.j",
+        "19. PROPRIETARY RIGHTS"
+      ],
+      "terms_last_updated_text": "5 August 2026",
+      "terms_url": "https://www.covers.com/terms"
+    },
+    "independent_scope_review": {
+      "additional_gets": 0,
+      "basis": "Retained project evidence and supplied exact new document/metadata findings; no independent provider GET or remote raw-archive recovery.",
+      "result": "SCOPED_CONCLUSION_APPROVED"
+    },
+    "purpose": "Bounded Covers assessment and one alternative publisher/access route for price-independent forecast inputs; no player or offer-data collection.",
+    "recommended_alternative": {
+      "activation": "NOT_ACTIVATED",
+      "data_store_url": "https://raw.githubusercontent.com/sportsdataverse/sportsdataverse-data/main/README.md",
+      "documented_release_families": [
+        {
+          "README_through_season": 2027,
+          "tag": "espn_nba_schedules"
+        },
+        {
+          "README_through_season": 2027,
+          "tag": "espn_nba_rosters"
+        },
+        {
+          "README_through_season": 2026,
+          "tag": "espn_nba_player_boxscores"
+        }
+      ],
+      "existing_reservation_preserved": "Fixed four-ESPN-response OPS002 identity and windows unchanged; alternative route requires a separately reviewed version.",
+      "independent_original_provider": false,
+      "license_scope": "Publisher label applies to the data release store; not inferred from a scraper software license and not a claim of blanket upstream clearance.",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "metadata_observed_at": "2026-10-21T23:09:14.603848Z",
+      "next_bounded_task": "Verify a current schedule and roster Parquet snapshot: exact event/status/start/team fields, selected-player current membership, update/capture clocks and field coverage; retain publisher attribution and source bytes.",
+      "offer_or_price_feed_established": false,
+      "ops002_drop_in_replacement": false,
+      "publisher": "SportsDataverse",
+      "publisher_asset_update_is_actual_capture_clock": false,
+      "publisher_data_license_label": "CC BY 4.0",
+      "remaining_gaps": [
+        "roster asset metadata/bytes not inspected",
+        "upcoming selected event not row-verified",
+        "selected players/team membership not row-verified",
+        "source freshness/version semantics not normalized",
+        "new scoped input/normalizer/plan version before genuine use",
+        "explicit maximum publisher-age and future capture freshness policy"
+      ],
+      "requires_provider_key_or_signup": false,
+      "route": "PUBLIC_GITHUB_DATA_RELEASES",
+      "rows_downloaded": false,
+      "schedule_asset": {
+        "browser_download_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_schedules/nba_schedule_2027.parquet",
+        "content_type": "application/octet-stream",
+        "created_at": "2026-10-21T11:30:56Z",
+        "digest": "sha256:cce1b3aaed1badcf23c81021a39e0ddb8281f9081d27e8f71409f0e52f4730e6",
+        "name": "nba_schedule_2027.parquet",
+        "size": 95824,
+        "updated_at": "2026-10-21T11:30:57Z"
+      },
+      "schedule_metadata_url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/espn_nba_schedules",
+      "upstream_lineage": [
+        "ESPN NBA",
+        "hoopR-nba-raw",
+        "hoopR-nba-data",
+        "sportsdataverse-data"
+      ]
+    },
+    "recorded_at": "2026-10-21T23:10:18.448490Z",
+    "repository_checkpoint": "00ed62a341ead7693c6d62bd162c42a7630c3313",
+    "requests": [
+      {
+        "automatic_redirects": false,
+        "automatic_retries": 0,
+        "body_path": "/tmp/nml-alternative-source-20261021/request-01.body",
+        "bytes": 292531,
+        "content_type": "text/html; charset=utf-8",
+        "etag": null,
+        "kind": "DOCUMENTATION_OR_RELEASE_METADATA",
+        "last_modified": null,
+        "location": null,
+        "observed_at": "2026-10-21T23:08:39.355951Z",
+        "request_number": 1,
+        "request_started_at": "2026-10-21T23:08:38.662394Z",
+        "response_limit_bytes": 2097152,
+        "sha256": "a354acdcd51cc5188da0905e073ff94c54cab219f19937e87600803cab0e150f",
+        "status": 404,
+        "url": "https://www.covers.com/company/terms-of-use"
+      },
+      {
+        "automatic_redirects": false,
+        "automatic_retries": 0,
+        "body_path": "/tmp/nml-alternative-source-20261021/request-02.body",
+        "bytes": 323409,
+        "content_type": "text/html; charset=utf-8",
+        "etag": null,
+        "kind": "DOCUMENTATION_OR_RELEASE_METADATA",
+        "last_modified": null,
+        "location": null,
+        "observed_at": "2026-10-21T23:08:54.809269Z",
+        "request_number": 2,
+        "request_started_at": "2026-10-21T23:08:54.392306Z",
+        "response_limit_bytes": 2097152,
+        "sha256": "4ac41802453cfde27357031cc535c44d15a6916014f86d38fb297d146440cd43",
+        "status": 200,
+        "url": "https://www.covers.com/terms"
+      },
+      {
+        "automatic_redirects": false,
+        "automatic_retries": 0,
+        "body_path": "/tmp/nml-alternative-source-20261021/request-03.body",
+        "bytes": 292938,
+        "content_type": "text/plain; charset=utf-8",
+        "etag": "\"fc1bb215e12577b0c474bd765551d310d76b9fd2a7349a3928bdc13248c9174c\"",
+        "kind": "DOCUMENTATION_OR_RELEASE_METADATA",
+        "last_modified": null,
+        "location": null,
+        "observed_at": "2026-10-21T23:09:03.630520Z",
+        "request_number": 3,
+        "request_started_at": "2026-10-21T23:09:03.370262Z",
+        "response_limit_bytes": 2097152,
+        "sha256": "ab5be8c4c7a303883f6e8eea134b7737ff06eab884b8b6303e18d618ca4d9df9",
+        "status": 200,
+        "url": "https://raw.githubusercontent.com/sportsdataverse/sportsdataverse-data/main/README.md"
+      },
+      {
+        "automatic_redirects": false,
+        "automatic_retries": 0,
+        "body_path": "/tmp/nml-alternative-source-20261021/request-04.body",
+        "bytes": 183832,
+        "content_type": "application/json; charset=utf-8",
+        "etag": "\"563021a8aeb05f9d49c5a8055ea6a0a6cc2a3a503147decbc29f778246519931\"",
+        "kind": "DOCUMENTATION_OR_RELEASE_METADATA",
+        "last_modified": "Wed, 21 Oct 2026 11:31:28 GMT",
+        "location": null,
+        "observed_at": "2026-10-21T23:09:14.603848Z",
+        "request_number": 4,
+        "request_started_at": "2026-10-21T23:09:14.052745Z",
+        "response_limit_bytes": 2097152,
+        "sha256": "eed78f4efad1648d2438b535d00eed6cf04cfa6300ef06492470d9bf1d471717",
+        "status": 200,
+        "url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/espn_nba_schedules"
+      }
+    ],
+    "retention": {
+      "create_only_copy_readback_verified": true,
+      "ledger_original_bytes_preserved": true,
+      "originals_not_committed_or_published": true,
+      "path": ".local-data/source-alternatives-20261021/originals",
+      "remote_durable_original_archive_verified": false
+    },
+    "schema_version": "nba-alternative-source-choice-v1",
+    "scope": {
+      "all_category_source_coverage": "NOT_INSPECTED_IN_THIS_DOCUMENTATION_CHECK",
+      "categories": [
+        "PTS",
+        "PRA",
+        "REB",
+        "3PM",
+        "AST",
+        "RA",
+        "PR",
+        "TOV",
+        "TD",
+        "DD",
+        "BLK",
+        "STL",
+        "BLK+STL",
+        "PA"
+      ],
+      "offers_independent_of_forecasts": true
+    }
+  },
+  "payload_sha256": "383fb19a9710e46ed72d814825212fc0c99485af58915256eb1b5e8d7cecb39d",
+  "schema_version": "decoded-json-receipt-v1"
+}

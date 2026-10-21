@@ -2,6 +2,19 @@
 
 Updated: October 21, 2026.
 
+## Current source choice — inspect public SportsDataverse releases next
+
+The October 21 bounded Covers/alternative check found Covers' public-product
+copy/republication restrictions, but an explicit publisher CC BY 4.0 data-store
+label and documented season 2027 NBA schedule/roster releases at SportsDataverse.
+Current metadata verifies a 95,824-byte schedule Parquet asset updated today;
+actual upcoming-event and current-player rows remain uninspected. Prioritize one
+bounded schedule/roster row audit, with attribution and actual capture clocks,
+under a separately reviewed source/normalizer/plan version. This alternate access
+route remains ESPN-derived and is not a replacement or activation of fixed OPS002.
+No provider key/signup/payment is introduced. See the newest handoff and exact
+source-choice receipt; missing odds remain independent of forecast delivery.
+
 ## Current priority — genuine forecast delivery; source evidence pending
 
 The separate `implementation/ops002-site-integration` review branch integrates
