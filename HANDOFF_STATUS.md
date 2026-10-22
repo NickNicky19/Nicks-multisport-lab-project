@@ -2,6 +2,98 @@
 
 Updated: October 22, 2026 (UTC).
 
+## October 22 — recurring planning and exact-source recovery preparation
+
+This is continued implementation on **`implementation/sdv-recurring-pregame`**
+in `/workspace/nml-sdv-recurring`, based on reviewed PR #15 head
+`2640d90b833f2b6bd4afe88583609699bb72d8aa`. Implementation source commit:
+**`326390f7e229eb3a28b89a1c57fb45e2df1d2ee0`**. The following handoff/hash-index commit and exact resulting
+head are reported in the checkpoint response. PR #15 remains unchanged and draft;
+this branch does not reuse its pending landing confirmation or activate anything.
+
+**Actual public state remains main `af0456d` / PR #14 / Pages run 39720789962**,
+verified in the preceding deployment checkpoint. No new website build/deployment
+was requested here. Six historical bundles and six historical grades remain;
+genuine forecasts, admitted offers, prospective outcomes/grades, qualified tickets
+and financial settlements were zero at the verified public readback. Nothing in
+this preparation creates any of those records.
+
+The additive `sdv_recurring_plan.py` freezes a separate planning-only proposal,
+`NBA-SDV-DAILY-002`: October 24–30 UTC game dates, planning on the previous UTC
+date at 13:17–13:47. It reuses the unchanged daily normalizer, complete source
+identities and original publisher JSON, retains the full UTC-date event inventory
+and exclusions, and selects the first two chronological eligible events with the
+existing two-lowest-active-IDs-per-team rule. This allows up to eight player-event
+subjects across two games, without claiming that any forecasts or capacity exist.
+Separate fresh event/cohort revalidation preserves T150–T90 input and T90–T75
+proposed issuance windows, 36-hour publisher age and unknown injuries/upstream
+observation. It grants **`NONE_PLANNING_ONLY`** authority. It never fits R0/K0,
+issues a forecast or shifts an existing cycle. All 14 categories remain in scope.
+
+`sdv_recurring_store.py` uses the existing public create-only ledger APIs with a
+closed typed registry, exact source/release retention, original history references,
+immutable retries and semantic whole-plan replay. Its fixed planning-only pool is
+64 records / 2,097,152 encoded B, charged alongside max(actual original/daily
+usage, the protected first-cycle floor of 155 / 31,431,880 B). Conservative combined
+projection: **219 records / 33,529,032 B**, below unchanged 512 / 33,554,432 limits
+by **25,400 B**. Unknown/interrupted files remain charged; consumption is not
+reserved twice. The pool does not fund expanded forecasts. A larger complete
+source rejects rather than truncating or raising limits. Repeated bytes with new
+clock metadata cannot replace an original; a later operating extension needs a
+separate observation linked to shared bytes.
+
+Independent review found and corrected two real defects before this checkpoint:
+empty/excluded inventories lacked a release-asset/year cross-check; live planning
+and validation could preserve the entry clock after deadline overrun. Every path
+now binds the actual season and records separate start/completion clocks, rejects
+late completion/admission, and replays original clocks read-only. Receipt clocks
+remain distinct: delayed disk writes recover original bytes with
+`local_persistence_completion=NOT_ESTABLISHED_BY_RECEIPT_CLOCK`,
+`prospective_admission=False` and zero genuine forecasts. An actual local bare-Git
+push followed by fetch into a fresh object database verifies independent typed and
+byte recovery of invented fixtures, without claiming real remote archival.
+
+Commands/results on completed behavior:
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+python3 -m unittest discover -s tests -p 'test_sdv_recurring*.py' -v
+python3 -O -m unittest discover -s tests -p 'test_sdv_recurring*.py' -v
+git diff --cached --check
+```
+
+Observed: **867 required Python tests passed in 503.089 s**, demo exit 0,
+all **36 new tests** passed normally (0.971 s) and optimized (0.949 s).
+Independent review reran 18 planner tests normally and all 36 optimized tests,
+found no remaining material issue and verified the 23 protected producer files.
+No source HTTP, model comparison, full-history operating diagnostic, scheduler,
+genuine issuance or real grade was created. The unchanged frontend/public checks
+from PR #14 and configured exact-head CI for PR #15 remain separate evidence;
+this incomplete operating branch has not received a new CI or deployment claim.
+Exact reviewed hashes, resource policy and test results are retained in
+`evidence/operational/sdv-recurring-planning-20261022.json`; definitions and
+remaining integration seams are in `docs/SDV_RECURRING_PLANNING.md`.
+
+The approved first producer remains `0c37b30060c2dffb20226bd3efbedc65a75d04e3`;
+all original records, frozen laws/experiments and first-cycle windows remain
+unchanged. The next actual product action is owner-authenticated manual dispatch
+**October 22, 22:00–strictly before22:30 UTC / 5:00–before5:30 p.m. CDT** using
+`docs/SDV_DAILY_ACTIVATION_PACKAGE.md`. The source capture and issuance windows
+are still 23:00–00:00 and October23 00:00–00:15 UTC. There is no installed future
+first dispatch; a bot cannot impersonate the required owner. Hosted execution
+runs independently after a successful valid launch. PR #15's bounded recovery fix
+still needs its already-requested exact-head landing confirmation.
+
+Broader completion remains outstanding: genuine timely inputs/issuance/publication,
+verified real final grades, a subsequent scheduled run, and the remaining v2
+producer/intent/completion, remote checkpoint, paginated publication and single
+trusted recurring coordinator integrations. Those cannot be inferred from this
+planning-only component. Do not activate it or promote its development source
+interpretations into genuine forecasts. OPS002/PROS004/S0, the expired pilot, NFL
+and MLB remain untouched. The postgame coordinator installed by PR #14 remains
+the only active new scheduler; recurring pregame issuance is not installed.
+
 ## October 22 — PR #14 merged and public; pending-boxscore forward fix
 
 The owner approved exact PR #14 head
