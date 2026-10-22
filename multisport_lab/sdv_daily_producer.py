@@ -324,6 +324,48 @@ def prepare_intent(store, input_ref, cycle, binding, *, authorization_ref=None):
     return store.append_body("input_captures",intent,references=tuple(refs),logical_id="daily-intent:"+cycle["cycle_id"])
 
 
+def _development_laws(history,target):
+    """Pure non-issuance calculation of the frozen laws for an early preview.
+
+    The R0 calculation below preserves baseline.forecast_reference's exact
+    eligibility, ordering, arithmetic and input recipe. It does not call or
+    bypass its genuine T90 execution guard. No JointForecast.to_record() from
+    this path is issued; the wrapper only permits DEVELOPMENT_ONLY records with
+    null issued_at. Tiny synthetic equivalence tests compare both calculations.
+    """
+    from .baseline import (HistoricalAppearance, HALF_LIFE_DAYS, PRIOR_APPEARANCES,
+                           WeightedOutcome, JointForecast, PROTOCOL_ID as R0_PROTOCOL,
+                           MODEL_VERSION as R0_VERSION)
+    from .development_003 import WorkloadPrior
+    eligible=[];identities=set();event_starts={}
+    for row in history:
+        require(isinstance(row,HistoricalAppearance),"Development history must contain resolved appearances")
+        identity=(row.id_namespace,row.event_id,row.player_id)
+        require(identity not in identities and row.id_namespace == target.id_namespace,"Duplicate or foreign development identity")
+        identities.add(identity)
+        require(row.event_id not in event_starts or event_starts[row.event_id] == row.event_start,"Conflicting development event clocks")
+        event_starts[row.event_id]=row.event_start
+        if row.event_id != target.event_id and row.event_start < target.history_freeze and row.outcome_available_at <= target.history_freeze:
+            eligible.append(row)
+    eligible.sort(key=lambda row:(row.event_start,row.event_id,row.player_id))
+    require(bool(eligible),"No eligible completed development history")
+    latest=max(row.event_start for row in eligible)
+    pool_weights=[2**(-(latest-row.event_start).total_seconds()/86400/HALF_LIFE_DAYS) for row in eligible]
+    pool_total=math.fsum(pool_weights)
+    own_weights=[2**(-(target.cutoff-row.event_start).total_seconds()/86400/HALF_LIFE_DAYS)
+                 if row.player_id == target.player_id else 0.0 for row in eligible]
+    denominator=PRIOR_APPEARANCES+math.fsum(own_weights)
+    support=tuple(WeightedOutcome(source_event_id=row.event_id,source_player_id=row.player_id,
+        line=row.primitive_line(),weight=(own+PRIOR_APPEARANCES*pool/pool_total)/denominator)
+        for row,own,pool in zip(eligible,own_weights,pool_weights) if own+pool > 0)
+    reference=JointForecast(target=target,issued_at=_now(),
+        trained_through=max(row.outcome_available_at for row in eligible),
+        input_sha256=digest({"protocol_id":R0_PROTOCOL,"model_version":R0_VERSION,
+            "target":target.to_record(),"history_freeze":stamp(target.history_freeze),"rows":[row.to_record() for row in eligible]}),
+        support=support,player_history_count=sum(row.player_id == target.player_id for row in eligible),pool_history_count=len(eligible))
+    return {"R0":reference,"K0":WorkloadPrior(history).forecast(target,reference)}
+
+
 def generate_pair(input_body, input_ref, cycle, binding, history_ref, history, *, player_id):
     """Compute both unchanged complete laws before persisting either model."""
     inputs.validate_input(input_body);validate_binding(binding,current=True);validate_cycle(cycle)
@@ -335,7 +377,7 @@ def generate_pair(input_body, input_ref, cycle, binding, history_ref, history, *
     candidate=candidates[0];target=ForecastTarget(input_body["event"]["event_id"],player_id,clock(input_body["event"]["event_starts_at"]))
     started=_now();inputs.freshness(input_body,at=started,require_retrieval_window=input_body["mode"] == "PROSPECTIVE_RESEARCH")
     require(len(history) == HISTORY_ROWS,"Daily generation requires the complete fixed history")
-    laws=_fit_laws(history,target)
+    laws=(_development_laws if input_body["mode"] == "DEVELOPMENT_ONLY" else _fit_laws)(history,target)
     result=[]
     for key in MODEL_VERSIONS:
         reference=laws[key]

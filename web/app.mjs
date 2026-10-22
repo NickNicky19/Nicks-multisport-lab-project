@@ -146,7 +146,7 @@ function forecastCard({forecast, category}) {
 
 function forecastBoard(rows) {
   if (!resolveSportScope(state.scope, supported()).length) return empty('No sport selected', 'Choose a published sport or group. The research universe remains empty until you select coverage.');
-  if (state.filters.view === 'upcoming' && !rows.length && (pairedForecasts().some(({row,forecast})=>row.admission.eligible && Date.parse(forecast.event_starts_at)>Date.now()) || dailyForecasts().some(row=>row.admission.eligible && Date.parse(row.body.event_starts_at)>Date.now()))) return empty('Reference forecast view', 'The admitted pregame research forecasts appear below. Their delivery is independent of prices, ticket qualification and the inactive reserved comparison.');
+  if (state.filters.view === 'upcoming' && !rows.length && ['ALL','RESEARCH'].includes(state.filters.evidence) && (pairedForecasts().some(({row,forecast})=>row.admission.eligible && Date.parse(forecast.event_starts_at)>Date.now()) || dailyForecasts().some(row=>row.admission.eligible && Date.parse(row.body.event_starts_at)>Date.now()))) return empty('Reference forecast view', 'The admitted pregame research forecasts appear below. Their delivery is independent of prices, ticket qualification and the inactive reserved comparison.');
   if (state.filters.view === 'upcoming' && !rows.length) {
     const reasons = upcomingEmptyReasons(scopedSports());
     const historyCount = scopedRows('forecasts').filter(row => isHistoryForecast(row)).length;
