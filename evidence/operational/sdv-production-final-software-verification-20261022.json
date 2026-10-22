@@ -1,0 +1,82 @@
+{
+  "demo": {
+    "command": "python3 -m multisport_lab.demo",
+    "exit_code": 0,
+    "log": {
+      "bytes": 1632,
+      "path": "/tmp/nml-production-demo-post-recovery.log",
+      "scope": "TEMPORARY_LOCAL_LOG",
+      "sha256": "3d965ae542f5a7473441bf976bbcf695952c9eebb009953d26693820d48d0428"
+    }
+  },
+  "evidence_lane": "SOFTWARE_ONLY_NOT_GENUINE_ISSUANCE",
+  "financial_settlements": 0,
+  "frontend": {
+    "command": "node --test --test-isolation=none web/tests/*.test.mjs",
+    "exit_code": 0,
+    "failures": 0,
+    "log": {
+      "bytes": 13834,
+      "path": "/tmp/nml-production-frontend-post-recovery.log",
+      "scope": "TEMPORARY_LOCAL_LOG",
+      "sha256": "8d3289f72b00a169cf2d07d17e4aae2f3dda9e3619a9c139d7ecb201b53e0889"
+    },
+    "reported_duration_ms": 7999.294559,
+    "tests": 137
+  },
+  "frozen_comparative_experiments_rerun": 0,
+  "genuine_forecasts": 0,
+  "implementation_source_commit": "4fe1dbeb964b9870b7e8e38ea67a37a4c8871557",
+  "interrupted_unfinished_run": {
+    "command": "python3 -m unittest discover -s tests -v",
+    "completed_at": "2026-10-22T09:58:01.262944+00:00",
+    "exit_code": -2,
+    "files_changed_during_test": [],
+    "log": "/tmp/nml-production-required-python-post-recovery.log",
+    "log_sha256": "217ce2d225ba7b1ce0019c16cfb20efd32b3b04311e07bcc81da1a4261b3bd51",
+    "reason": "Owner deliberately interrupted this unfinished suite when independent review reproduced SIGINT status poisoning; it is not a pass or final validation.",
+    "seconds": 99.88507406099234,
+    "started_at": "2026-10-22T09:56:21.377874+00:00",
+    "tested_files": 215
+  },
+  "optimized_independent_checks": "evidence/operational/sdv-production-independent-interruption-review-20261022.json",
+  "prospective_grades": 0,
+  "prospective_outcomes": 0,
+  "public_deployments_from_these_checks": 0,
+  "published_offers": 0,
+  "python": {
+    "command": "python3 -m unittest discover -s tests -v",
+    "completed_at": "2026-10-22T10:11:44.200006+00:00",
+    "exit_code": 0,
+    "files_changed_during_test": [],
+    "log": "/tmp/nml-production-required-python-final-recovery.log",
+    "log_sha256": "98fc17a70ee625ec27483d0d9528123412dea663e05037cfebb777b6030c303b",
+    "reported_test_seconds": 607.646,
+    "seconds": 607.9687221539789,
+    "started_at": "2026-10-22T10:01:36.231326+00:00",
+    "tested_files": 215,
+    "tests": 1001
+  },
+  "qualified_tickets": 0,
+  "recorded_at": "2026-10-22T10:12:19.703145+00:00",
+  "schema_version": "nba-sdv-production-final-software-verification-v1",
+  "source_binding_id": "cacbba32e237c2841ac75001141a676601a72fb3a2ecafc8659365b726401171",
+  "source_parent": "e5da30977fc9dd0745154854ddbfeb712307cfde",
+  "source_pin_status": "EXACT_TESTED_SOURCE_BYTES_COMMITTED_AND_INDEPENDENTLY_VERIFIED",
+  "sports_source_http_requests": 0,
+  "static_build": {
+    "command": "python3 -m multisport_lab.publication --build-commit 4fe1dbeb964b9870b7e8e38ea67a37a4c8871557 --output /tmp/nml-production-release-artifact-4fe1dbe",
+    "deployment": false,
+    "exit_code": 0,
+    "snapshot_id": "4518f678387c08ae1a9043acf4645739bae11b1c3494400805f39e6717533d1c"
+  },
+  "static_smoke": {
+    "NO_ACTION": true,
+    "all13_plus_optional_PA": "COVERED_BY_FRONTEND_AND_CONTRACT_TESTS",
+    "browser_or_deployment_established": false,
+    "command": "node web/tests/site-smoke.mjs /tmp/nml-production-release-artifact-4fe1dbe",
+    "exit_code": 0,
+    "relative_assets": 4,
+    "validated_data_files": 8
+  }
+}
