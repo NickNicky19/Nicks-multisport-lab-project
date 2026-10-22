@@ -407,6 +407,10 @@ def _proof_for_sources(store,schedule_ref,boxscore_ref):
     return proof,config,pairs,rows
 
 
+class FinalEvidencePending(IntegrityError):
+    """A valid final event has no published player boxscore evidence yet."""
+
+
 def _complete_event(rows,forecast,config):
     events=rows["schedule"]
     require(len({row["game_id"] for row in events}) == len(events),"Duplicate final schedule event IDs")
@@ -428,6 +432,8 @@ def _complete_event(rows,forecast,config):
     require(event["status_type_name"] == "STATUS_FINAL" and event["status_type_state"] == "post","Contradictory final schedule state")
     scores={event["home_id"]:outcomes._count(event["home_score"]),event["away_id"]:outcomes._count(event["away_score"])}
     require(all(type(v) is int and v >= 0 for v in scores.values()),"Missing final schedule scores")
+    if not any(row["game_id"] == forecast["event_id"] for row in all_rows):
+        raise FinalEvidencePending("Final schedule event has no target-event player boxscore rows; retain pending state")
     totals={team:0 for team in scores};seen=set()
     schedule=event.copy();schedule["season"]=outcomes._count(event["season"]);schedule["status_type_completed"]=True
     for original in all_rows:
@@ -480,7 +486,11 @@ def _normalize_and_grade(store,forecast_refs,schedule_ref,boxscore_ref):
     with store.lock():
         by_player={body["player_id"]:body for _,body in pairs}
         for player,forecast in by_player.items():
-            state=_complete_event(rows,forecast,config)
+            try:state=_complete_event(rows,forecast,config)
+            except FinalEvidencePending:
+                result["pending"].append(player)
+                result["unresolved_event_state"]="FINAL_BOXSCORE_UNAVAILABLE"
+                continue
             if state in {"CANCELLED_UNSUPPORTED_BY_V1_OUTCOME","UNRESOLVED_EVENT_STATE_UNSUPPORTED_BY_V1_OUTCOME"}:
                 result["pending"].append(player);result["unresolved_event_state"]=state;continue
             retained=[(ref,body) for ref,body in store.records() if body["schema_version"] == producer.OUTCOME_SCHEMA

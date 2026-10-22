@@ -398,6 +398,59 @@ class PostgameTests(unittest.TestCase):
         self.assertTrue(all(path.read_bytes() == raw for path, raw in retained.items()))
         self.assertEqual(len(post.grading.normalize_and_grade(fixture.store, fixture.refs, sr, br)["grades"]), 2)
 
+    def test_pending_retained_event_does_not_block_second_capture_or_reset_two_attempt_bound(self):
+        fixture = self.grading_fixture()
+        complete_rows = fixture.rows
+        fixture.rows = []
+        fixture.capture()  # Complete original source bytes, not final player evidence.
+        preserved = {path: path.read_bytes() for path in fixture.store.project_root.rglob("*.json")}
+        first_day = fixture.now.date().isoformat()
+        fixture.now += timedelta(days=1)
+        fixture.now = fixture.now.replace(hour=13, minute=17)
+        fixture.rows = complete_rows
+        # Prepare exactly one later synthetic observation without retaining it;
+        # the real controller/retainer below must consume this allowed attempt.
+        with patch.object(post.grading, "retain_source_with_proof", return_value=(AUTH, AUTH)):
+            fixture.capture()
+        triples, requests = fixture.last_capture
+        captured = {"schedule": triples[0], "boxscore": triples[1]}
+        originals = [(ref, fixture.store.read(ref)["data"]["daily"]) for ref in fixture.refs]
+        writer = Mock(); writer.prepare.return_value = {}; writer.flush.return_value = {"commit": "2" * 40}
+        capture = Mock(requests=requests, root=self.root / "mock-source-originals")
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(post, "_now", side_effect=lambda: fixture.now))
+            stack.enter_context(patch.object(post, "authorize_current_run",
+                side_effect=lambda: {"verified_at": stamp(fixture.now), "head_sha": "1" * 40}))
+            stack.enter_context(patch.object(post, "fetch_existing_branch", return_value={"commit": "1" * 40}))
+            stack.enter_context(patch.object(post.prior, "copy_records"))
+            stack.enter_context(patch.object(post, "DailyStore", return_value=fixture.store))
+            stack.enter_context(patch.object(post, "_eligible", return_value=originals))
+            stack.enter_context(patch.object(post, "_authority_record", return_value=AUTH))
+            stack.enter_context(patch.object(post, "DailyGitCheckpointWriter", return_value=writer))
+            stack.enter_context(patch.object(post.prior, "_records_pr", return_value="SYNTHETIC_PR"))
+            stack.enter_context(patch.object(post, "reconcile_publication",
+                return_value={"status": "PUBLICATION_REQUESTED_UNVERIFIED"}))
+            stack.enter_context(patch.object(post, "failure_alert", return_value={"status": "SYNTHETIC_NO_EXTERNAL_WRITE"}))
+            factory = stack.enter_context(patch.object(post.prior, "BoundedCapture", return_value=capture))
+            collector = stack.enter_context(patch.object(post, "collect_final", return_value=captured))
+            result = post.run(work_root=self.root / "second-observation")
+            self.assertEqual(result["status"], "STATISTICAL_GRADING_RETAINED")
+            self.assertEqual(result["statistical_grades"], 2)
+            self.assertEqual(result["outcome_records"], 1)
+            factory.assert_called_once(); collector.assert_called_once()
+            self.assertEqual(len(post._retained_sources(fixture.store)), 2)
+            self.assertTrue(all(path.read_bytes() == raw for path, raw in preserved.items()))
+            self.assertEqual(post._retained_sources(fixture.store)[0][1]["created_at"][:10], first_day)
+            # A third UTC day can replay/grade already retained evidence, but
+            # cannot create another capture or treat the pending first one as free.
+            fixture.now += timedelta(days=1)
+            factory.reset_mock(); collector.reset_mock()
+            again = post.run(work_root=self.root / "second-observation")
+            self.assertEqual(again["status"], "POSTGAME_OBSERVATION_BUDGET_EXHAUSTED")
+            factory.assert_not_called(); collector.assert_not_called()
+            self.assertEqual(len(post._retained_sources(fixture.store)), 2)
+            self.assertTrue(all(path.read_bytes() == raw for path, raw in preserved.items()))
+
     def test_same_day_incomplete_proof_is_not_reported_as_completed(self):
         store, _ = self.prepare_controller()
         store.rows.append((AUTH, {"schema_version": post.prior.OPERATION_SCHEMA,
