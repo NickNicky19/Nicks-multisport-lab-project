@@ -240,9 +240,10 @@ python3 scripts/diagnose_sdv_production.py \
 It uses the full retained history, invented inputs, sixteen labeled diagnostic
 aliases, a filesystem archive and a temporary bare Git repository. It cannot issue
 genuine records or evaluate accuracy. Hosted diagnostic mode additionally requires
-explicit authorization and the diagnostic workflow input; it remains blocked by
-the recorded automatic-review rejection until the owner authorizes the additional
-archive mutation. Its archive client enforces at most **32 MiB / 64 new immutable
+explicit authorization for its exact head and the diagnostic workflow input.
+The one authorized execution at `2b8bcd4767fd85d19148dea5587e7da28290a988`
+is consumed by run 39768069169; it is not permission to rerun a changed head.
+Its archive client enforces at most **32 MiB / 64 new immutable
 objects** before mutation. It makes zero sports-source requests, performs no
 public publication, and includes the same OPEN/CLOSED checkpoints as operation.
 Local timing is not hosted timing or genuine pregame evidence.
@@ -262,10 +263,35 @@ the explicit length header is fixed. That local finding does not prove the cause
 of the original server failure or establish successful GitHub recovery. See both
 dated archive diagnostic receipts in `evidence/operational/`.
 
-Before recurring activation: finish exact-head checks/review, obtain the required
-approval for the blocked diagnostic archive mutation, verify real hosted upload,
-independent readback and connected timing, then obtain the exact-head release/
+The subsequently approved hosted diagnostic ran on October 22 at 11:06 UTC.
+It uploaded eight immutable objects (17,611 compressed bytes) and committed
+pointer `edfec1ce4bc20f66a7f58f32a006c2ed92a7d39a` on
+`diagnostics/sdv-production-load-20261022T110633`, then failed before generation:
+the authenticated draft existed but its by-tag endpoint returned 404. The
+corrected diagnostic-only lookup checks the bounded authenticated release list;
+it does not change public production lookup or treat 403 as absence. Independent
+GET-only recovery verified all eight objects and the three original plan/input/
+local-completion records at 11:11 UTC. No forecast or genuine issuance resulted.
+An additional offline reproduction found that a reader retaining an older
+decoded draft-asset inventory could miss later checkpoint objects. The reader
+now refreshes that inventory once on an exact-name miss from an already-cached
+list. Size/hash/identity mismatches, ambiguity and 403 still fail; this is not a
+write retry. Separate decoded-reader tests cover original and later objects.
+This establishes partial-input archive recovery, not full hosted generation or
+the 300-second original-delivery latency. The actual failed run and readback are
+retained in `sdv-production-hosted-diagnostic-39768069169-20261022.json`.
+
+Before recurring activation: finish exact-head checks/review, obtain a new
+exact-head authorization for one corrected hosted development diagnostic,
+verify connected generation/checkpoint timing, then obtain the exact-head release/
 operating decision. Do not claim recurring readiness from local tests, a draft
 release or an accepted dispatch. Completion of the overall goal still requires
 public genuine forecasts, verified real final grades, a subsequent scheduled run,
 tested recovery and the operating evidence described above.
+
+Research cards now expose each unchanged model's retained reported-minutes mean
+and 80% interval. These history-based estimates are conditional on appearance;
+they are not confirmed playing time or current injury/lineup/blowout adjustments.
+The first-cycle producer and its website channel remain unchanged. SportsLine
+is not admitted for automated collection or website redistribution by this
+release; its public lines and subscription terms were reviewed separately.

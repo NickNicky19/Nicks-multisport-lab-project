@@ -1,0 +1,150 @@
+{
+  "schema_version": "nba-sdv-production-draft-recovery-independent-review-v1",
+  "recorded_at": "2026-10-22T11:13:44.507855+00:00",
+  "reviewer": "/root/diagnostic_fix_verify",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "worktree": "/workspace/nml-sdv-recurring",
+  "reviewed_state": "Four uncommitted working-tree corrections relative to 2b8bcd4767fd85d19148dea5587e7da28290a988; hashes identify the reviewed bytes independently of later commits.",
+  "reviewed_base_head": "2b8bcd4767fd85d19148dea5587e7da28290a988",
+  "reviewed_sha256": {
+    "multisport_lab/sdv_production_archive.py": "2ec8080dfafd0717119f2084915bf57f95811a4805caa7f2f6ad89307c2a9370",
+    "tests/test_sdv_production_archive.py": "c785101b19ed21689ac25c32957cf281a71cf5874f321835c88f23ce20a7375d",
+    "web/production.mjs": "caf2eaf4fc18b09634d2186651fc65dcf6f46456aa4a4a66a692bd9b58832abc",
+    "web/tests/production.test.mjs": "c303511f9f40c3e87b9baeddc4dea637ce0cbcb08956eb18aabd7b92be0a7877"
+  },
+  "material_findings_remaining": [],
+  "review_findings": [
+    "Diagnostic draft fallback requires explicit diagnostic scope, scans at most twelve pages of one hundred authenticated release entries, and requires a unique exact tag and positive non-boolean integer ID with draft=true.",
+    "Malformed, ambiguous or incomplete inventories fail before creation. HTTP 403 remains an immediate error; it does not trigger the missing-tag fallback. Published production lookup remains unchanged.",
+    "Fresh-reader and unacknowledged-create regressions preserve immutable originals; exact duplicate recovery/write attempts incur no new archive objects or bytes and do not create another release.",
+    "Minutes cards render the already-validated mean and 80 percent interval as history-based, conditional on appearance and not confirmed playing time. Escaping, category filtering, all fourteen retained categories and original record non-mutation are covered."
+  ],
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s tests -p test_sdv_production_archive.py -v",
+      "exit_code": 0,
+      "tests": 24,
+      "seconds": 0.053,
+      "result": "PASS"
+    },
+    {
+      "command": "python3 -O -m unittest discover -s tests -p test_sdv_production_archive.py -v",
+      "exit_code": 0,
+      "tests": 24,
+      "seconds": 0.046,
+      "result": "PASS"
+    },
+    {
+      "command": "node --test --test-isolation=none web/tests/production.test.mjs",
+      "exit_code": 0,
+      "tests": 27,
+      "duration_ms": 7624.966047,
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "duration_seconds": null
+    }
+  ],
+  "test_execution_clock_note": "Exact start/end clocks were not retained by this independent test pass; durations above come from its actual unittest/Node stdout. recorded_at is receipt creation, not a backdated test time.",
+  "preservation": {
+    "comparison_performed_during_review": true,
+    "comparison_method": "Computed SHA-256 of every current path below and compared with the retained frozen-source receipt; explicit IntegrityError on mismatch.",
+    "reference_path": "evidence/operational/sdv-production-independent-exact-source-4fe1dbe-20261022.json",
+    "reference_sha256": "80ff624aa2d7c0b6b2bf3116f7be65e9982dacf826da56c974991c428b0acc4c",
+    "frozen_source": "0c37b30060c2dffb20226bd3efbedc65a75d04e3",
+    "protected_files": 23,
+    "original_records": 19,
+    "all_byte_identical": true,
+    "protected_sha256": {
+      ".github/workflows/sdv-daily.yml": "fb39ce1e9bf0b32632d314b11e391043a89806a446bfee453f92468e790c0b47",
+      "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+      "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+      "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+      "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+      "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+      "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+      "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2",
+      "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+      "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+      "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+      "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+      "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+      "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+      "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+      "multisport_lab/sdv_daily_cycle.py": "5a40fd1bc6cdf6ebf75af52a6171641ee79d0d4bfbf9581c9e5b14dc8b3daef0",
+      "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+      "multisport_lab/sdv_daily_outcomes.py": "d84a9c2dd6cd7097e6f12d3170b7b914aa17a0876f32054c03d40036510adac6",
+      "multisport_lab/sdv_daily_producer.py": "eb793c94a2473f7210158b60aaf98fd8e215bc7f62ecf260bb11b301e72a334b",
+      "multisport_lab/sdv_daily_publication.py": "ce2bd99c7b1193af328d39cf33fd36b7400626becde4c656e658bb763fd7e425",
+      "multisport_lab/sdv_daily_remote.py": "c3e70fea9d4da6434703706b4f51bf4edf7320834dcc6a10c9456f3ddbc3b763",
+      "multisport_lab/sdv_daily_runner.py": "cf8d7ba3d65bc354029ee9fc1c54b8d9f110c3036204a4bd690fcc7943fd50ef",
+      "multisport_lab/sdv_daily_store.py": "fd508c0459519f54f0faf9009438632755c64b31227105794109d326c8ecf045"
+    },
+    "original_record_sha256": {
+      "records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json": "499b358129adde25134d5ba6243b372b1937915f7a0f2245750a057d40c4b8c6",
+      "records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json": "507344a333f5218039e39b1201e1f203f6045bf8e04375a7a19740ddea337967",
+      "records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json": "e35af6116e8151aacb23d21465c2744324501a92d0f83cf7e780066677df74fa",
+      "records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json": "1748dce54d24cc583deb3e102d08680142307c3c784ddfc728abc02f78e82f0f",
+      "records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json": "d74070a12aa144b4bc917de930e6527f4bd5bdeb84db693a215bec1513562f7b",
+      "records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json": "bf3aa0b6fab62f64a03070fc6775db1bec8b0654e89ae93b3c42133e94649894",
+      "records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json": "cf519c4238f641724d81040f8cdee82b693aa3f98e4ae8db772fbadc480fd6a0",
+      "records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json": "73b72a5ed145708157052c269d25c0dd72467a002e26efac41e1136839fa0f60",
+      "records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json": "c691398d641af291bcd3c2a9d7427ff59ab953606ee9388bc2c202642d80947c",
+      "records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json": "41e3453b89b97c160d56e932f1389ac90b451142dcda3cff27629b1448bc77dd",
+      "records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json": "1297f91dc9154d2b6111e60a1505f4a08e911dd3c99b919431833df76dbe40b5",
+      "records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json": "2a343e191af2f809baf91ab4d6f9de8d09f593c9f6b088d9740238982107237b",
+      "records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json": "a9474a89403e3aa87f44adb014eee6e10b09761002e5a4deabc198022ea88ce3",
+      "records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json": "c9938334da0fbfb3032558df23d5e69588fdf6ca7f0b9eb562fb271c090ef93e",
+      "records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json": "e94d071bf65e5f4815400a0e334b81529d6fd71147fb467584fc0aa1bb7e4f9c",
+      "records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json": "74bd3778ce79875bb6f238cabda878ab88789df928b3b7804494c3e94f346b54",
+      "records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json": "f4787faceff42cc52a2c446b03fc6ee7b8b2103643dff937b411193c75994bc5",
+      "records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json": "1332e892946d072d1500bdd693a877cbefb1ee54b51c3eb657e3c7af6393ee63",
+      "records/research_inputs/dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc.json": "db9a682099e28ce087edf430e9aa52f9be8e060ebf4b4cf8deb53d1317c8b122"
+    }
+  },
+  "root_network_recovery_receipt_inspected": {
+    "path": "/tmp/nml-pr16-existing-diagnostic-readback/recovery-report.json",
+    "sha256": "6a5ba4492eb3cb580f4336f43d468ff8458f08a7597f3429cf74ca44e0fa4445",
+    "evidence_owner": "/root; independently executed by the integration owner, not by this reviewer",
+    "inspection_only": true,
+    "run_id": 39768069169,
+    "executed_head": "2b8bcd4767fd85d19148dea5587e7da28290a988",
+    "release_id": 420618037,
+    "tag": "diagnostics-nml-nba-production-load-20261022t110633",
+    "records_branch": "diagnostics/sdv-production-load-20261022T110633",
+    "records_commit": "edfec1ce4bc20f66a7f58f32a006c2ed92a7d39a",
+    "status": "RECOVERED_ORIGINAL_PARTIAL_INPUT_STATE",
+    "typed_recovery": true,
+    "recovered_assets": 8,
+    "verified_wire_bytes": 17611,
+    "get_api_actions": 11,
+    "new_archive_objects": 0,
+    "new_archive_bytes": 0,
+    "forecasts": 0,
+    "outcomes": 0,
+    "grades": 0,
+    "genuine_issued": 0,
+    "seconds": 9.191969670006074,
+    "hosted_latency_test_completed": false,
+    "retention_note": "The cited report and its local copies are temporary local recovery artifacts. It identifies original authenticated GitHub draft-release objects and the committed Git pointer; this reviewer did not make network requests."
+  },
+  "reviewer_actions": {
+    "network_requests": 0,
+    "remote_mutations": 0,
+    "hosted_reruns": 0,
+    "model_experiments": 0,
+    "code_edits": 0,
+    "test_edits": 0,
+    "commits": 0,
+    "receipt_files_created": 1
+  },
+  "limitations": [
+    "This receipt records already-completed independent checks; none was rerun merely to write it.",
+    "No browser layout, genuine prospective issuance, statistical model quality or public deployment is established by these focused checks.",
+    "The root read-only recovery proves recovery of the original partial input state, not a successful hosted full-history generation/checkpoint timing run.",
+    "The failed original hosted run and original probabilities/timestamps/records remain evidence; no missing forecasts were generated or relabeled."
+  ]
+}

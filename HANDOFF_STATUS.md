@@ -2,6 +2,121 @@
 
 Updated: October 22, 2026 (UTC).
 
+
+## October 22 — approved hosted diagnostic; recovery corrections and minutes display
+
+Branch `implementation/sdv-recurring-pregame`. The user approved one hosted
+DEVELOPMENT_ONLY diagnostic at exact PR #16 head
+`2b8bcd4767fd85d19148dea5587e7da28290a988`. That execution is consumed; it is not
+an approval for another run, a changed head, landing, activation or publication.
+The new corrected implementation source is
+**`caecac74d120f27536a347ebdfe2b51675c7df39`**. The following documentation/evidence
+commit and its actual CI result are identified in the checkpoint response.
+
+Actual run **39768069169** started at **11:06:14 UTC** and failed at 11:06:53.
+Only its diagnostic job executed. Capture, genuine issuance, first-cycle postgame,
+grading and publication jobs were skipped. It uploaded eight objects totaling
+**17,611 compressed bytes**, and committed the original partial-input snapshot
+pointer at **`edfec1ce4bc20f66a7f58f32a006c2ed92a7d39a`** on
+`diagnostics/sdv-production-load-20261022T110633`. It failed before generation with
+`Archived release is missing`: actual GET-by-tag returned 404, while the
+bounded authenticated inventory and GET-by-ID showed draft release **420618037**.
+The first upload problem is not repeated or inferred as this failure's cause.
+
+The correction checks the exact diagnostic draft in a bounded authenticated
+inventory before declaring absence or creating anything. An additional offline
+reproduction found that a reused reader's decoded asset list could miss a later
+checkpoint object. A single read refresh on an exact-name cache miss fixes that;
+size/hash/identity mismatches, ambiguity and 403 remain fatal. Public production
+recovery, immutable originals, models, source scope and budgets are unchanged.
+There was no second dispatch or hidden write retry.
+
+Independent read-only recovery at **11:11:23–11:11:33 UTC** fetched the records
+branch into a fresh bare Git object database and verified **all eight objects**,
+the snapshot and the exact **three plan/input/local-completion records**. It used
+11 authenticated API GET actions, zero POSTs and zero sports-source requests.
+No intent, OPEN attempt, forecast, outcome or grade had been issued. The exact
+snapshot ID is `7fd2baa8abdad4cbddf8c79f55895223f489cd7946ef4b59b2041f39b67950a3`.
+This proves durable recovery of partial test inputs, not hosted full-history
+forecast latency or genuine issuance. The temporary Actions artifact download
+returned 403; no alternate artifact transport was used. Recovery used its
+independently retained original release objects and Git pointer. Local copies
+are temporary; remote originals remain in the authenticated draft release.
+
+The read-only NFL comparison reused retained `pull/books.py` at reviewed head
+`57c84dea3e7211356e04e201e11cd7090e14adaa`: prop thresholds and game spreads/totals
+are parsed separately from odds. NBA-specific coverage and applicable source-use
+scope still require admission. A bounded documentary SportsLine review found
+public game lines, a join-to-export projections link and terms restricting
+redistribution/public display. No SportsLine collector, account, provider key,
+raw-source admission or public offer was introduced. These findings do not block
+price-independent forecasts.
+
+Recurring research cards now display the **existing history-based reported-minutes
+mean and 80% interval**, conditional on appearance and explicitly not confirmed
+playing time. Current injury/lineup/blowout adjustment remains unavailable. No
+forecast was regenerated to add the display. Private Chromium checks passed at
+1440/390/320 px with unchanged synthetic records/probabilities/clocks, all fourteen
+categories, readable identities, History refresh, Performance exclusion and the
+complete scope/direction/2–6-leg NO_ACTION matrix. The old preview's obsolete
+8-GiB policy correctly rejected; its originals remain untouched. The compatible
+new temporary preview uses existing current-policy fixtures and an explicitly
+synthetic test clock, with actual browser verification clocks retained.
+
+Focused checks passed **28 archive tests normally and under -O**, and **138
+frontend tests**. The first lookup-only correction also passed the required
+1,008 Python tests (627.691 s) and demo before the independently reproduced cache
+issue; that dated receipt is preserved as earlier software evidence, not final
+validation of the later correction. The completed candidate then passed
+**1,012 required Python tests (594.721 s), demo exit 0**, with all tested bytes
+unchanged throughout the run. Commands:
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+python3 -m unittest discover -s tests -p test_sdv_production_archive.py -v
+python3 -O -m unittest discover -s tests -p test_sdv_production_archive.py -v
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.publication --build-commit caecac74d120f27536a347ebdfe2b51675c7df39 --output /tmp/nml-pr16-corrected-static-artifact
+node web/tests/site-smoke.mjs /tmp/nml-pr16-corrected-static-artifact
+```
+
+The local artifact passed eight data-file/relative-asset/inventory/NO_ACTION
+checks; snapshot `51fa1141d4672f819357a82bd2f234c78dba73204d5c00455a71788627f3e75f`
+is a local build, not public deployment. Independent real local-Git checkpoint
+integration passed normally (5.492 s) and under -O (3.330 s): successive input,
+intent, R0 and K0 original/proof readbacks used genuinely separate decoded API
+caches, then an idempotent fresh-writer restore added no writes. That test used
+a tiny invented law and zero network/full-history evaluation, producing two DEV
+records and no genuine issuance. Exact commands, hashes and the initial fixture
+mode mismatch are retained in the independent cache/checkpoint receipt. The
+completed candidate and source bytes are ready for CI; the actual resulting CI
+run and exact review head are reported in the checkpoint response.
+
+Source binding: `d7b02ae3f7d718de8218e47313fe2da262466e7a8bb8d20d519f42a0823ec87e`.
+Only `multisport_lab/sdv_production_archive.py` changed among the 34 bound producer
+files; the other 33, both mathematical laws, 23 protected first-cycle files and
+19 original records are unchanged. No new record type or budget increase is
+needed. The unchanged full-history measurements remain evidence for their
+original sources; no frozen experiment or full-history load diagnostic was rerun.
+
+**Next concrete action:** after final exact-head checks/review, obtain one new
+exact-head approval for the corrected hosted DEVELOPMENT_ONLY generation/archive/
+readback diagnostic (32 MiB / 64 new objects, zero sports GETs, genuine issuance,
+public publication or activation). The real unresolved risk is connected hosted
+forecast generation and original/proof checkpoint timing, not provider keys.
+The subsequent exact-head recurring release/activation decision remains separate.
+
+PR #15 remains publicly deployed at `377a3e4e69749efeee912a75c51673144f9fc27f`,
+Pages run 39741220070. PR #16 remains draft/unmerged and its new cron uninstalled.
+Public counts remain six historical bundles/six historical grades and **zero**
+genuine forecasts, prospective outcomes/grades, published offers, qualified
+tickets and financial settlements. No current public deployment was repeated.
+The approved first cycle, frozen producer `0c37b30060c2dffb20226bd3efbedc65a75d04e3`
+and owner-manual 22:00–strictly-before22:30 UTC / 5:00–before5:30 p.m. CDT launch
+remain unchanged. No future dispatch is installed. OPS002, PROS004, S0, frozen
+research, expired pilot evidence and the separate NFL/MLB projects are untouched.
+
 ## October 22, 10:34 UTC — hosted CI test isolation corrected
 
 Draft PR **#16**: https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/16
