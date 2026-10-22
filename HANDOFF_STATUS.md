@@ -187,6 +187,21 @@ editing and read-only checks continued independently.
 
 ### Commands and actual verification
 
+- Hosted CI at `786a506` exposed a local-test origin defect: the depth-one PR
+  checkout was bare-cloned as a shallow server. A tiny two-commit reproduction
+  confirmed that Git can return zero from fetch while rejecting that shallow
+  root, leaving `FETCH_HEAD` empty and the next checkout failing. The final
+  typed-import fixture now seeds a complete, explicitly synthetic one-commit
+  origin with the exact 23 current source files and original 19 receipts/README.
+  It checks source-byte equality and non-shallowness; all production transport,
+  typed validation and independent readback code remain real and unchanged.
+  The proposed genuine producer remains `0c37b30060c2dffb20226bd3efbedc65a75d04e3`.
+  The operating workflow already uses a full checkout. This test-only correction
+  neither replays a model nor supplies operating admission. Final exact-head
+  hosted checks are reported separately after this checkpoint is committed.
+  Corrected real typed-import fixture: normal **1 passed / 98.490s**; optimized
+  **1 passed / 94.712s**. The independent verifier rechecked the unchanged
+  23-file producer binding and `git diff --check`.
 - `python3 -m unittest discover -s tests -v`: **782 passed / 530.033s**, stable
   completed candidate; log `/tmp/nml-sdv-final-0c37b30-python.log`.
 - `node --test --test-isolation=none web/tests/*.test.mjs`: **103 passed**.

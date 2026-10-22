@@ -44,20 +44,39 @@ class DailyFullTypedImportTests(unittest.TestCase):
         stack = ExitStack(); self.addCleanup(stack.close)
         for module in (cycles, inputs, producer, storage, ledger, remote):
             stack.enter_context(patch.object(module, "_now", side_effect=lambda: self.now))
-        self.source_commit = self.git("rev-parse", "HEAD", cwd=ROOT).stdout.strip()
-        self.binding = producer.make_source_binding(self.source_commit)
+        current_binding = producer.make_source_binding()
         self.cycle = cycles.load_cycle()
         self.branch = self.cycle["records_branch"]
         for destination in (self.state, self.root):
             shutil.copytree(ROOT / "records", destination / "records")
+        # CI checks out a depth-one synthetic merge. Bare-cloning that checkout
+        # would also create a shallow server: an ordinary fetch can return zero
+        # while rejecting its shallow root and leaving FETCH_HEAD empty. Seed a
+        # complete, one-commit SOFTWARE FIXTURE instead. Its source bytes and all
+        # original receipts (including records/README.md) remain exact copies.
+        # This synthetic commit is not an approved operating producer revision.
+        seed = self.folder / "synthetic-source"
+        seed.mkdir()
+        shutil.copytree(ROOT / "records", seed / "records")
         for filename in producer.SOURCE_FILES:
-            target = self.root / filename
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes((ROOT / filename).read_bytes())
+            raw = (ROOT / filename).read_bytes()
+            for destination in (self.root, seed):
+                target = destination / filename
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(raw)
+        self.git("init", "--quiet", cwd=seed)
+        self.git("add", "--all", cwd=seed)
+        self.git("-c", "user.name=Synthetic Typed Import Test",
+            "-c", "user.email=software-fixture@example.invalid", "commit", "--quiet",
+            "-m", "Complete synthetic source fixture with exact current bytes", cwd=seed)
+        self.source_commit = self.git("rev-parse", "HEAD", cwd=seed).stdout.strip()
+        self.binding = producer.make_source_binding(self.source_commit, root=seed)
+        self.assertEqual(self.binding["files"], current_binding["files"])
+        self.assertEqual(self.git("rev-parse", "--is-shallow-repository", cwd=seed).stdout.strip(), "false")
         self.originals = self.inventory(self.root / "records")
         self.remote = self.folder / "local-only.git"
         # --no-hardlinks supplies an independent object database, without HTTP.
-        self.git("clone", "--bare", "--no-hardlinks", "--quiet", str(ROOT), str(self.remote), cwd=self.folder)
+        self.git("clone", "--bare", "--no-hardlinks", "--quiet", str(seed), str(self.remote), cwd=self.folder)
         self.store = storage.DailyStore(self.state)
         self.writer = remote.DailyGitCheckpointWriter(self.state, self.folder / "writer",
             base_commit=self.source_commit, branch=self.branch, remote_url=str(self.remote),
