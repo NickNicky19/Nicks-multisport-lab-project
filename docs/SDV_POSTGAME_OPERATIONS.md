@@ -1,6 +1,6 @@
 # First daily cycle: final-statistics recovery
 
-This additive release prepares postgame processing for
+This additive release installs postgame processing for
 `NBA-SDV-DAILY-001-20261023-401909094`. It does not launch the original forecast
 producer. Recurring pregame issuance is **not implemented** by this coordinator.
 OPS002, PROS004, S0 and the expired October 20 pilot remain inactive.
@@ -16,14 +16,23 @@ strictly before 22:30 UTC; capture is 23:00–00:00 and issuance/readback is Oct
 23, 00:00–00:15 UTC. Approval is not a scheduled launch. A bot must not impersonate
 the owner or change that producer's guards.
 
-## Proposed hosted postgame execution
+## Installed hosted postgame execution
 
-After this separate release is reviewed, approved at its exact head and merged,
-`.github/workflows/nba-operations.yml` becomes the one GitHub-hosted postgame
-coordinator. Its cron is **13:17 UTC daily (8:17 a.m. CDT)**. The code permits work
+The owner-approved PR #14 head `c7862040063c4bc6088aeb8978839dff54b90eb9`
+merged as `af0456d29b2922a400340c998502e963bf85d6e8` on October 22.
+GitHub reports workflow **392458906** active at
+`.github/workflows/nba-operations.yml`; the retained deployment checkpoint is
+[evidence/deployment/2026-10-22-pr14-pages.json](../evidence/deployment/2026-10-22-pr14-pages.json).
+It is the one GitHub-hosted postgame coordinator. Its cron is
+**13:17 UTC daily (8:17 a.m. CDT)**. The code permits work
 only October 23–30 inclusive, between 13:00 and 14:30 UTC, then expires without
 source collection. GitHub scheduled delivery can be delayed or omitted; cron is
-not proof of execution. No local computer or app needs to stay open.
+not proof of execution. No local computer or app needs to stay open. The next configured cron occurrence
+is October 22 at 13:17 UTC, which the date guard treats as a no-op before the
+postgame window. The first eligible occurrence is October 23 at 13:17 UTC.
+After October 30 the code refuses source collection; this does not automatically
+disable the GitHub cron. Neither a calculated occurrence nor active workflow
+status proves that GitHub will actually deliver a run.
 
 The main-only workflow verifies the actual GitHub run, event, actor, attempt,
 checked-out source and frozen producer binding. Owner-manual catch-up is available
@@ -100,7 +109,7 @@ allow it; a failed alert is reported rather than claimed successful. A missing r
 or branch cannot establish why the original launch failed. Workflow reports and
 emergency originals also have the explicit 14-day artifact limitation.
 
-Pause the proposed coordinator with `gh workflow disable nba-operations.yml`
+Pause the installed coordinator with `gh workflow disable nba-operations.yml`
 if needed; preserve existing Git records and inspect the report before any manual
 catch-up. Do not disable, rerun or rewrite the frozen first cycle to repair grading.
 
