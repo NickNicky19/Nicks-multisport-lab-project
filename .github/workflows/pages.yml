@@ -29,6 +29,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          # Final evidence may cite an earlier reviewed source-admission commit.
+          # Preserve ancestry so later builds can authenticate that exact review.
+          fetch-depth: 0
       - name: Fetch frozen manual-cycle provenance for source-byte checks
         run: |
           git fetch --no-tags --depth=1 origin \

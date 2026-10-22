@@ -216,6 +216,8 @@ def main():
             if args.screenshots:
                 screenshot(page, args.screenshots / "synthetic-history-mobile.png")
             page.get_by_role("link", name="Performance", exact=True).click()
+            page.get_by_role("heading", name="Performance", exact=True).wait_for()
+            page.locator(".grade-summary tbody tr").first.wait_for()
             assert page.locator(".grade-summary tbody tr").count() == 14
             assert "No settled paper tickets published" in page.locator("main").inner_text()
             page.locator(".grade-receipts>summary").click()
@@ -239,8 +241,10 @@ def main():
             page.reload()
             page.get_by_text("No upcoming research forecasts", exact=True).wait_for()
             assert not page.get_by_role("alert").count()
-            assert "Explore 4 forecast records in History" in page.locator("#view-history").inner_text()
-            page.locator("#view-history").click()
+            history_link = page.get_by_role("link", name="Explore 4 forecast records in History", exact=False)
+            history_link.wait_for()
+            history_link.click()
+            page.locator('.forecast-card').first.wait_for()
             while page.locator("#more-forecasts").count():
                 page.locator("#more-forecasts").click()
             assert page.locator(".forecast-card").count() == 56
@@ -254,6 +258,8 @@ def main():
             assert "REAL_TIME_CAPTURED" in captured.locator(".forecast-details").inner_text()
             assert "not a pregame receipt" not in captured.locator(".forecast-details").inner_text()
             page.get_by_role("link", name="Performance", exact=True).click()
+            page.get_by_role("heading", name="Performance", exact=True).wait_for()
+            page.locator(".grade-group").first.wait_for()
             assert page.locator(".grade-group").count() == 3
             assert page.locator(".grade-summary tbody tr").count() == 42
             reconstructed = page.locator('.grade-group[data-evidence-lane="RECONSTRUCTED_RESEARCH"]')

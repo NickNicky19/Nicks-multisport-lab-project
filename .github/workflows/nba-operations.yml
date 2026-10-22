@@ -1,0 +1,66 @@
+name: NBA research postgame coordinator
+
+# First-cycle final statistics and catch-up only. Recurring pregame issuance is
+# NOT_IMPLEMENTED. This never dispatches or changes the frozen first producer.
+on:
+  schedule:
+    - cron: '17 13 * * *'
+  workflow_dispatch:
+    inputs:
+      cycle_id:
+        description: Fixed first-cycle identifier for owner catch-up
+        required: true
+        type: string
+        default: NBA-SDV-DAILY-001-20261023-401909094
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nba-sdv-daily-001-20261023-401909094-writer
+  cancel-in-progress: false
+
+jobs:
+  postgame:
+    if: >-
+      github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'schedule' ||
+       (github.event_name == 'workflow_dispatch' && github.actor == 'NickNicky19'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      actions: write
+      pull-requests: write
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - name: Prepare existing repository authentication
+        run: gh auth setup-git
+      - name: Recover first-cycle originals and process admitted final evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m multisport_lab.sdv_postgame_runner run \
+            --work-root "$RUNNER_TEMP/nml-nba-operations"
+      - name: Preserve factual report and bounded emergency originals
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nba-postgame-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          include-hidden-files: false
+          path: |
+            ${{ runner.temp }}/nml-nba-operations/execution-report.json
+            ${{ runner.temp }}/nml-nba-operations/state/
+            ${{ runner.temp }}/nml-nba-operations/originals/

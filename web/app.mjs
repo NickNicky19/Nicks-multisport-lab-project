@@ -14,7 +14,7 @@ const routes = [
   ['overview', 'Overview', '◫'], ['props', 'Props', '≡'], ['value', 'Value Research', '⇄'],
   ['builder', 'Paper Builder', '⊞'], ['performance', 'Performance', '▥'], ['sources', 'Source Health', '◉'], ['specials', 'Specials', '✧'],
 ];
-const state = {snapshot: null, error: null, scope: {mode: 'SINGLE', sports: ['NBA']}, filters: {view: location.hash === '#/props/history' ? 'history' : 'upcoming', category: 'ALL', side: 'ALL', period: 'full_game', window: 'upcoming', venue: 'ALL', evidence: 'ALL'}, visibleForecasts: 28, visiblePros004: 28, visiblePaired: 28, visibleDaily: 28, builder: {legs: 6, mode: 'MIXED', checked: false}};
+const state = {snapshot: null, error: null, scope: {mode: 'SINGLE', sports: ['NBA']}, filters: {view: location.hash === '#/props/history' ? 'history' : 'upcoming', category: 'ALL', side: 'ALL', period: 'full_game', window: 'upcoming', venue: 'ALL', evidence: 'ALL', dailyModel: 'ALL', dailyDateFrom: '', dailyDateTo: '', dailyLead: 'ALL'}, visibleForecasts: 28, visiblePros004: 28, visiblePaired: 28, visibleDaily: 28, builder: {legs: 6, mode: 'MIXED', checked: false}};
 const main = document.querySelector('#main');
 const escape = value => String(value).replace(/[&<>"']/g, char => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[char]));
 const pill = (text, tone = '') => `<span class="pill ${tone}">${escape(text)}</span>`;
@@ -29,7 +29,7 @@ const nbaSelected = () => resolveSportScope(state.scope,supported()).includes('N
 const pairedForecasts = (respectScope = true) => originalPairedRecord && (!respectScope || nbaSelected()) ? (state.snapshot?.pairedResearch?.forecasts || []).map(row=>({row,forecast:originalPairedRecord(row)})) : [];
 const pairedPanel = (performance = false) => renderPairedResearch(state.snapshot?.pairedResearch,{performance});
 const dailyForecasts = (respectScope = true) => !respectScope || nbaSelected() ? state.snapshot?.dailyResearch?.forecasts || [] : [];
-const dailyPanel = (performance = false) => renderDailyResearch(state.snapshot?.dailyResearch,{view:state.filters.view,category:state.filters.category,window:state.filters.window,nbaSelected:nbaSelected() && (performance || ['ALL','RESEARCH'].includes(state.filters.evidence)),performance,limit:state.visibleDaily});
+const dailyPanel = (performance = false) => renderDailyResearch(state.snapshot?.dailyResearch,{view:state.filters.view,category:state.filters.category,window:state.filters.window,nbaSelected:nbaSelected() && (performance || ['ALL','RESEARCH'].includes(state.filters.evidence)),performance,limit:state.visibleDaily,model:state.filters.dailyModel,dateFrom:state.filters.dailyDateFrom,dateTo:state.filters.dailyDateTo,leadTime:state.filters.dailyLead});
 const reservedPanel = (performance = false) => renderPros004(state.snapshot?.pros004,{view:state.filters.view,category:state.filters.category,nbaSelected:nbaSelected() && (performance || ['ALL','RESEARCH'].includes(state.filters.evidence)),performance,limit:state.visiblePros004});
 const number = value => Number(value).toLocaleString('en-GB', {maximumSignificantDigits: 5});
 const percent = value => (100 * Number(value)).toLocaleString('en-GB', {maximumSignificantDigits: 4}) + '%';

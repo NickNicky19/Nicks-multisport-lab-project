@@ -144,3 +144,31 @@ complete required selected-player counts; preserve DNP/missing/nonfinal states;
 recover grades by original forecast/outcome identity before writing; and append
 correction evidence and revisions without replacing original records. The first
 cycle's protected producer files and dated windows remain unchanged.
+
+## October 22, 2026 — scoped final-statistical admission and remote recovery
+
+The later create-only
+[`2026-10-22-sdv-final-statistical-admission-v1.json`](../evidence/data/2026-10-22-sdv-final-statistical-admission-v1.json)
+registers this source family's narrow final-statistical scope. The implementation
+uses sealed `config/sdv_final_admission_v1.json`, exact original release/asset
+bytes and hashes, the original eligible daily forecasts, explicit final schedule
+and player-count checks. This does not grant direct ESPN access, betting
+settlement, unlimited collection or future-result admission without the required
+evidence. The additive worker's limits and recovery procedure are in
+[SDV_POSTGAME_OPERATIONS.md](SDV_POSTGAME_OPERATIONS.md).
+
+At **03:19:39.461250 UTC**, an independent fresh Git object database fetched
+`implementation/sdv-recurring-operations` at
+`1f567e473dda779eddbaf62d0dc73217bb256013`. No alternates, copied objects or shared
+index were used. Seven evidence/document files (126,449 bytes) matched exact
+committed bytes, snapshot SHA
+`6e1a119cc6d3695ed9bef6edaa08ec01bb82abe42a476a3da6cd596e22bc4653`.
+Receipt seals, decompressed CSV, release metadata and the previously retained
+publisher README reproduced their original hashes. This is verified durable
+GitHub recovery of those originals, replacing the earlier local-only limitation
+for these exact receipts. It does not change their capture times, refresh content,
+add a source GET or supply a final outcome for event `401909094`.
+
+Actual investigation requests remain **3/3**, with no retries. New source requests
+can occur only under the separately reviewed bounded operating path; no scheduled
+postgame worker is installed by a branch or local test.
