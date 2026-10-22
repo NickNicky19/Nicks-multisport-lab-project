@@ -2,6 +2,258 @@
 
 Updated: October 22, 2026 (UTC).
 
+## October 22 — bounded postgame recovery and descriptive reporting candidate
+
+**Implemented and independently reviewed; this follow-up is not merged,
+deployed or installed.** Branch `implementation/sdv-recurring-operations` in
+`/workspace/nml-sdv-operations` preserves merged main
+`4400be06183ac86082aa0b77dd2d93a0ac6ab88c`. Implementation source commit:
+**`bd18e0af64048576489d3283b002452655aa8a31`**. The subsequent handoff/hash-index
+commit and resulting exact PR head are reported in the checkpoint response.
+Earlier source-admission commits and deployment evidence remain in this branch.
+
+The owner-approved PR #13 release is actually public, as recorded below. A fresh
+GitHub readback still reports exact approved head `d67bd6c`, merged as `4400be0`,
+and Pages run **39713282201** completed successfully. GitHub now reports PR #10
+MERGED at 02:47:12 UTC, with original head/merge field `c0a7b4b`, following the
+approved ancestry landing; no separate PR #10 landing command was issued here.
+Its operating reservation remains inactive. PR #12 is still OPEN and draft at
+`709c39e6ce3312663f2bd98457f5f46d63ae2124`. No PROS004/OPS002/S0 activation occurred.
+
+### Concrete implementation and corrections
+
+`multisport_lab/sdv_daily_grading.py` authenticates the exact committed source-use
+review/config, original publisher release metadata, CSV bytes/hashes, capture
+requests/clocks, shared input and eligible original forecast identities. It
+requires explicit final schedule/count/score evidence and appends one shared
+outcome per subject plus separate R0/K0 statistical grades. DNP, missing,
+postponed and nonfinal states remain distinct; unsupported cancelled semantics
+remain unresolved. Corrections append links and new grades; original forecasts,
+outcomes, grades and clocks are never replaced. The publication admission hook in
+`publication.py` validates the recovered graph independently of the writer.
+
+`multisport_lab/sdv_postgame_runner.py` and `nba-operations.yml` prepare one
+main-only hosted **postgame** coordinator, with actual API/runtime/source proof,
+a single writer, fresh Git recovery and bounded failure reporting. Proposed cron:
+13:17 UTC on October 23–30, working only 13:00–14:30 UTC. It permits at most two
+started captures total, one per UTC day, six source GETs each including redirects,
+no retries, 256-KiB metadata and 2-MiB CSV limits. It persists a start marker before
+collection. It never generates a forecast or dispatches the first producer.
+Recurring pregame issuance is **NOT_IMPLEMENTED** by this workflow.
+
+Independent and central review reproduced and fixed these concrete risks:
+
+- A failed PR or Pages request could strand publication after records already
+  existed. Publication now retries without new sources/grades, independently of
+  PR creation and exhausted collection budgets. It checks actual public manifest,
+  build, typed IDs/bodies and asset hash. Dispatch acceptance is not deployment.
+  A factual acknowledgment is appended only after verified served-byte recovery,
+  preserving the exact records head until Pages has imported it. Known advanced
+  main revisions fail explicitly before a mismatched dispatch.
+- Later Pages builds lacked the Git ancestry needed to authenticate earlier
+  reviewed source commits. The Pages checkout now retains full history; a local
+  shallow/fail-closed/unshallow-recovery regression preserves the exact byte pins.
+- Recovery could admit three validly checksummed proof observations despite the
+  two-observation cap. The standalone publication hook now counts and semantically
+  validates all proofs, including partial proofs with no outcomes, before its
+  no-outcome fast path.
+- Capacity added the full reserve repeatedly to already-consumed slots. Collection
+  and grading now share actual-bytes-plus-unused-slots accounting. Exact metadata
+  embedded in a valid proof is retained once; covered CSV originals are persisted
+  directly in their canonical proof-linked records. Unknown originals remain part
+  of actual usage. No history or probability atom is removed.
+- An interrupted retainer could leave a proof and one CSV, then block every
+  restart. Recovery fills only exact missing bytes already durably retained, keeps
+  their original clocks, and otherwise records an explicitly incomplete state
+  while permitting a later separately bounded attempt. It does not recapture an
+  interrupted UTC-day observation or fabricate successful completion.
+
+`web/daily-performance.mjs`, its `sdv-daily.mjs` connection and small `app.mjs`
+filter wiring add model/category/UTC-date/issuance-lead filtering, distinct player
+and event counts, mean-based MAE/bias, existing proper scores, zero-support counts,
+DD/TD Brier, interval coverage and discrete-CDF calibration. Exact model revisions,
+history identities and evidence lanes remain separate. DNP/pending are not zeros;
+paired models are not independent subjects. Definitions in
+`docs/DAILY_PERFORMANCE.md` precede all genuine daily outcomes. The existing
+historical scorecards, readable names, routes and NO_ACTION are preserved.
+
+### Actual verification
+
+Required commands executed on the completed behavior candidate:
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -O -m unittest discover -s tests -p test_sdv_daily_grading.py -v
+python3 -O -m unittest discover -s tests -p test_sdv_postgame_runner.py -v
+python3 -m multisport_lab.publication --build-commit 1f567e473dda779eddbaf62d0dc73217bb256013
+node web/tests/site-smoke.mjs output
+python3 web/tests/browser_smoke.py output --screenshots /tmp/nml-operations-browser
+git diff --check
+```
+
+Observed results: **827 Python tests passed in 504.580 s**, **111 frontend tests**,
+demo exit 0, both optimized integrity suites **21/21**, artifact smoke and Chromium
+1440/390/320 checks passed. The browser harness now waits for route rendering and
+uses the existing direct History link instead of its obsolete button selector.
+Its first attempt exposed those harness defects; corrected full checks passed.
+Invented Performance inputs separately passed all 14 category rows and
+model/category/date/lead filters without page overflow or JS errors at all three
+widths. These are local software/browser checks, not another public deployment.
+
+The extended existing typed test uses the complete original 26,645-row history
+and real `DailyStore`, local Git writer, independent fetch/import and publication
+validators, with explicit invented clock/producer-trust/source fixtures. It does
+not fit a model or send HTTP. It produced **one shared outcome / two SCORED grades
+/ 14 categories**, preserving both original forecast bytes and all 19 parent
+receipts; later-clock restart wrote nothing. Actual final-candidate measurements:
+retention 2.062 s, normalization/grading 1.655 s, Git flush/readback **7.585 s**
+(unchanged 60-s limit), fresh publication import 7.957 s, graded site build 12.098 s.
+This is local synthetic timing, not timing of a genuine hosted operating cycle.
+The final independent reviewer found no remaining material issue and reproduced
+both optimized suites, diff checks and all 23 frozen source pins.
+
+The full conservative plan is **155 records / 31,431,880 encoded bytes**:
+19 original / 1,817,800 B, 60 first-cycle slots / 9,658,368 B, and 76 postgame slots
+/ 19,955,712 B. Limits remain **512 / 33,554,432 B**. Runtime uses the actual recovered
+ledger plus remaining postgame slots; the static plan is not a claim that those
+records exist. New code/tests/measurements and source hashes are retained in
+`evidence/operational/sdv-postgame-candidate-20261022.json`.
+
+Source inspection remains **3/3 actual GETs**, 84 rows / 57 fields / 68 appearances
+/ 16 explicit DNP across three earlier games, zero target-event rows and no model
+scores. Independent fresh GitHub readback of exact source-evidence commit
+`1f567e473dda779eddbaf62d0dc73217bb256013` passed at 03:19:39.461250 UTC; originals
+are now durably recovered, as detailed in `docs/SDV_FINAL_SOURCE_REVIEW.md`.
+No further sports-data request occurred during implementation/tests. The hash
+index is refreshed separately for this completed checkpoint; its earlier stale
+entries did not authorize restoring or changing newer source files.
+
+### Actual operation, dependencies and next action
+
+All 23 first-cycle producer files remain identical to reviewed producer
+`0c37b30060c2dffb20226bd3efbedc65a75d04e3`, binding
+`002419f25184496ccead9cf92556116872550e6f29ad6edfc60cc5846a00f733`.
+The fixed four-player cohort, 36-hour publisher-age policy and windows are intact.
+First workflow 392407623 remains installed/manual-only with **zero runs** on the
+fresh readback. No future dispatch is installed, no native task was reactivated,
+and first-cycle source usage remains **0/6**. Its separately approved owner launch
+remains October 22, 22:00–strictly before22:30 UTC; capture 23:00–00:00, issuance
+October 23 00:00–00:15. Use the exact command in the activation package only then.
+Late/missing/stale/changed input must retain an inactive or partial result.
+
+Current public counts remain **6 historical bundles / 6 historical grades**;
+**0 genuine forecasts, 0 prospective outcomes/grades, 0 published offers,
+0 qualified tickets and 0 financial settlements**. Actual final evidence stays
+pending. No statistical comparison, qualification, return or future result was
+manufactured. Finality remains provisional and future corrections are append-only.
+
+Next concrete release step: push this separate candidate, independently recover
+its exact head, open a review PR and run configured CI. Per-PR/current-head approval
+is required before landing/deploying it and installing its bounded postgame
+schedule/final-source path. This does not block the already-approved first manual
+cycle. Its public publisher originals need no encryption-key installation or new
+provider credentials. A hosted run and actual served grades remain unverified
+until they occur. Later recurring pregame operation and broader coverage require
+a separately versioned cycle after the protected first run; complete player-offer,
+ticket and financial-settlement work also remains open. NFL/MLB and frozen
+experiments were untouched.
+
+
+## October 22 — PR #13 landed and public daily-snapshot release verified
+
+Owner explicitly approved exact PR #13 head
+`d67bd6c5486f1d6e76c5f396b7be515ab78f87c2`, its inactive PR #10/#12 dependency
+ancestry, merge-commit landing and deployment. Fresh PR Completion readback
+confirmed the same head, all checks green, no unresolved review threads, unchanged
+all-checks policy and allowed merge method. Marked ready and used only the shipped
+`pr_land.py`, with policy digest
+`70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df`.
+The exact-head watcher observed MERGED. Actual main merge commit:
+**`4400be06183ac86082aa0b77dd2d93a0ac6ab88c`**, merged at 02:47:10 UTC.
+No override, bypass or force push was used.
+
+Pages run **39713282201** completed successfully, including actual deploy job
+119612887201 at **02:59:45 UTC**. Public URL:
+https://nicknicky19.github.io/Nicks-multisport-lab-project/ . Independent served-byte
+verification confirmed build `4400be0`, manifest version 6, publication time
+`2026-10-22T02:59:14.696547Z`, manifest SHA
+`b5d5de2f1c0f7d8baa6cdef18be35402b90782c8160d511982a2cc7e0474f175`
+and snapshot ID
+`f93797bdb3bd570669361748ae47bf864957016609cfb7c35f334f2a20cebd33`.
+All six referenced data assets matched their hashes; all 15 served static files
+matched exact merge blobs. The original six forecast and grade bodies matched
+retained records. Names, historical matchups/dates, source IDs, independent clocks,
+History direct refresh, all 14 categories, and the 2–6-leg/direction/scope NO_ACTION
+checks passed at desktop 1440 and mobile 390/320, without overflow or JS errors.
+
+Browser limitation is explicit: direct Chromium HTTPS encountered the environment
+proxy's untrusted CA. Browser rendering used TLS-verified public responses at the
+public URL through a bounded request bridge; no certificate verification was
+disabled. This is served-data/rendering evidence with that transport limit, not a
+claim that native Chromium TLS succeeded. Complete deployment/readback facts:
+`evidence/deployment/2026-10-22-pr13-pages.json`; local screenshots and original
+readback report: `/tmp/nml-public-verification-4400be0/`.
+
+Actual public counts: six historical bundles / six historical grades; **zero**
+genuine forecasts, published offers, prospective outcomes, prospective grades,
+qualified tickets, financial settlements or published DEV bundles. The daily
+channel accurately remains INACTIVE. Offers do not block future research issuance.
+OPS002, PROS004, S0, the expired pilot and frozen experiments remain unchanged.
+
+### First-cycle approval is retained; it is not a schedule
+
+The separately approved cycle remains
+`NBA-SDV-DAILY-001-20261023-401909094`, producer
+`0c37b30060c2dffb20226bd3efbedc65a75d04e3`. All 23 protected files match that
+source across approved PR/main/working state. Actual installed GitHub workflow
+**392407623** is active, manual-only, with zero runs at 02:53:31 UTC; main YAML
+contains no cron. Nothing was dispatched or armed. First-cycle source usage is
+**0/6**. The exact documented owner-authenticated command remains the launch path.
+Start October 22 **22:00 through strictly before 22:30 UTC** (5:00–before5:30 p.m.
+CDT), capture 23:00–00:00 UTC, issue/read back October 23 00:00–00:15 UTC.
+No early dispatch, shifted window, new player or late partner is permitted.
+
+A scheduled dispatcher with GITHUB_TOKEN would dispatch as github-actions[bot]
+and fail the frozen owner-only workflow and independent API/runtime guards. Do
+not spoof that actor or silently alter the first producer. The historical native
+task remains paused. Later scheduling requires a separately reviewed trusted
+scheduled entrypoint; an approved manual cycle is not an installed future job.
+
+### Broader goal: isolated postgame work in progress
+
+Created normal worktree `/workspace/nml-sdv-operations`, branch
+`implementation/sdv-recurring-operations`, from actual merged main. The current
+source-admission checkpoint is `5ab020a`; no later branch changes have landed.
+Protected first-cycle files are unchanged. New source work used a **separate three
+GET budget**, fully consumed: one release metadata request and one CSV request
+with one explicit public-asset redirect; no retries, credentials or broader source
+requests. Exact originals, clocks and audit receipts are retained under
+`evidence/data/2026-10-22-sdv-final-*`. Metadata and CSV hash replay passed.
+
+Actual final-source CSV: **43,806 bytes / 84 rows / 57 fields**; existing normalizer
+and retained FINAL schedule join accepted all rows: **68 appearances / 16 explicit
+DNP**, zero duplicate keys or rejected joins. All six team scores and player point
+sums reconcile across three past games. Independent verification reproduced those
+facts and admission references. This does not independently verify every non-scoring
+count or all participants. Publisher/upstream/retrieval clocks remain separate;
+upstream observation is UNKNOWN, finality provisional and corrections append.
+Target event 401909094 is absent and remains pending. No outcome or grade was
+appended and no model comparison was scored.
+
+New source admission is narrow: this publisher-release CSV family, exact original
+release binding, explicit finality/count/completeness checks and at most two bounded
+postgame observations for the first cycle. It neither inherits direct ESPN access
+nor silently grants unlimited league-wide storage/collection. Public licensed
+originals need no encryption-key setup; old ESPN encryption remains untouched.
+
+Next concrete implementation: additive genuine grading/provenance/restart wrapper,
+publication admission gate and one coordinated postgame catch-up workflow on this
+future branch, with focused failure-path tests and separate review before landing.
+The broader project's recurring pregame issuance, league expansion, later grading,
+future results and complete offer/ticket delivery are **not completed** by PR #13.
+
 ## October 22 — functioning daily-snapshot candidate; release and cycle approval pending
 
 **Implemented and independently verified; no activation, merge or deployment.**

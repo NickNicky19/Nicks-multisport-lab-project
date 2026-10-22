@@ -463,7 +463,9 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
                     from .operational_publication import make_asset
                     descriptor = _emit_asset(staging / "data", make_asset(root, now=now), prefix="paired-research", status="RESEARCH_ONLY")
                 else:
+                    from .sdv_daily_grading import validate_stored_admissions
                     from .sdv_daily_publication import make_asset
+                    validate_stored_admissions(root)
                     descriptor = _emit_asset(staging / "data", make_asset(root, now=now), prefix="sdv-daily", status="DAILY_SNAPSHOT_RESEARCH")
                 _read_channel(staging / "data", channel, descriptor, snapshots, now=now)
             except REJECTED_UPDATE as error:

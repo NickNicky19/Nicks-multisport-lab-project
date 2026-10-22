@@ -4,15 +4,18 @@ No producer is activated or fitted. Invented clocks, CSVs, probabilities and
 dispatch evidence live only in a temporary local bare Git repository. The real
 parent receipts/source bytes are copied read-only to test the publication trust
 boundary; these fixture records must never be pushed to GitHub or called genuine
-operating evidence. Only private clock boundaries are patched.
+operating evidence. Clocks and the explicitly synthetic producer/material trust
+fixture are patched; source semantics, ledger validation and Git recovery run.
 """
 from contextlib import ExitStack
 from copy import deepcopy
+from datetime import timedelta
 import hashlib
 from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
@@ -22,7 +25,11 @@ from multisport_lab import sdv_daily_producer as producer
 from multisport_lab import sdv_daily_publication as publication
 from multisport_lab import sdv_daily_remote as remote
 from multisport_lab import sdv_daily_store as storage
-from multisport_lab.integrity import IntegrityError, canonical, digest, load_json, read_receipt, utc
+from multisport_lab import sdv_daily_grading as grading
+from multisport_lab import sdv_daily_outcomes as outcomes
+from multisport_lab import sdv_daily_runner as runner
+from multisport_lab import publication as site_publication
+from multisport_lab.integrity import IntegrityError, canonical, digest, load_json, read_receipt, stamp, utc
 from multisport_lab.ledger import LedgerRef
 from test_sdv_daily_cycle import proof
 from test_sdv_daily_inputs import csv_bytes, fixtures, metadata
@@ -42,7 +49,7 @@ class DailyFullTypedImportTests(unittest.TestCase):
         self.state.mkdir(); self.root.mkdir()
         self.now = NORMALIZED
         stack = ExitStack(); self.addCleanup(stack.close)
-        for module in (cycles, inputs, producer, storage, ledger, remote):
+        for module in (cycles, inputs, producer, storage, ledger, remote, grading, outcomes, runner):
             stack.enter_context(patch.object(module, "_now", side_effect=lambda: self.now))
         current_binding = producer.make_source_binding()
         self.cycle = cycles.load_cycle()
@@ -182,6 +189,167 @@ class DailyFullTypedImportTests(unittest.TestCase):
         self.assertEqual({len(row["body"]["categories"]) for row in asset["forecasts"]}, {14})
         self.assertEqual(self.inventory(self.root / "records"), self.originals)
         self.assertEqual(self.inventory(self.root / "daily/records"), self.inventory(self.state / "daily/records"))
+
+        # Continue this same pair/history fixture through the actual final-source
+        # path. All CSV rows, publisher JSON, requests and clocks below are
+        # INVENTED SOFTWARE INPUTS, never real player results or source captures.
+        # The one trusted-material boundary is explicit because this complete
+        # synthetic producer commit is deliberately not the approved live SHA.
+        config = deepcopy(load_json(ROOT / grading.DEFAULT_CONFIG_PATH))
+        review = deepcopy(load_json(ROOT / config["source_review_receipt_path"]))
+        review["payload"]["software_fixture_only"] = (
+            "Invented CSV/request evidence for typed grading and Git recovery; "
+            "not provider observation, operating approval or real forecast results.")
+        review["payload_sha256"] = digest(review["payload"])
+        review_raw = canonical(review)
+        config.update(supported_producer_commit=self.source_commit,
+            source_review_receipt_sha256=hashlib.sha256(review_raw).hexdigest(),
+            source_review_payload_sha256=review["payload_sha256"])
+        config["attribution"].append("SOFTWARE FIXTURE ONLY: all final rows and source requests are invented.")
+        config = grading.sealed({key: value for key, value in config.items() if key != "config_id"}, "config_id")
+        config_raw = canonical(config)
+
+        def synthetic_trusted_materials(commit=None):
+            self.assertIn(commit, (None, self.source_commit))
+            grading.validate_config(config)
+            grading._review(review_raw, config)
+            return deepcopy(config), config_raw, review_raw, self.source_commit
+
+        original_forecasts = {ref: (self.state / "daily/records/forecasts" / (ref.record_id + ".json")).read_bytes()
+                              for ref in self.forecast_refs}
+        originals = [self.store.ledger.read(ref)["data"]["daily"] for ref in self.forecast_refs]
+        self.assertEqual(len({row["player_id"] for row in originals}), 1)
+        self.assertEqual({row["model_key"] for row in originals}, {"R0", "K0"})
+        forecast = originals[0]
+        self.now = utc("2026-10-24T12:00:00.000000Z")
+        event = {key: "" for key in config["roles"]["schedule"]["required_headers"]}
+        event.update(game_id=forecast["event_id"], home_id="25", away_id="7", season="2027", season_type="2",
+            game_date_time=forecast["event_starts_at"], status_type_completed="true", status_type_name="STATUS_FINAL",
+            status_type_state="post", home_score="12", away_score="11")
+
+        def final_line(player_id, team_id, opponent_id):
+            points = 12 if team_id == "25" else 11
+            line = {key: "" for key in config["roles"]["boxscore"]["required_headers"]}
+            line.update(game_id=forecast["event_id"], athlete_id=player_id, team_id=team_id,
+                opponent_team_id=opponent_id, season="2027", season_type="2", game_date="2026-10-23",
+                game_date_time=forecast["event_starts_at"], athlete_display_name=(forecast["player_label"]
+                    if player_id == forecast["player_id"] else "Synthetic opposing player"),
+                did_not_play="false", active="true", starter="false", ejected="false", minutes="20.0",
+                field_goals_made="4", field_goals_attempted="10", three_point_field_goals_made="2",
+                three_point_field_goals_attempted="5", free_throws_made=str(points - 10),
+                free_throws_attempted=str(points - 10), points=str(points), offensive_rebounds="1",
+                defensive_rebounds="3", rebounds="4", assists="3", steals="1", blocks="0", turnovers="1",
+                fouls="0", plus_minus="1" if team_id == "25" else "-1",
+                home_away="home" if team_id == "25" else "away", team_winner="true" if team_id == "25" else "false",
+                team_score=str(points), opponent_team_score="11" if team_id == "25" else "12")
+            return line
+
+        lines = [final_line(forecast["player_id"], forecast["team_id"], forecast["opponent_id"]),
+                 final_line("9000001", forecast["opponent_id"], forecast["team_id"])]
+        self.assertEqual(len(lines[0]), 57)
+        captures, requests = [], []
+        for index, (role, rows) in enumerate((("schedule", [event]), ("boxscore", lines))):
+            rule = config["roles"][role]
+            raw = csv_bytes(rows)
+            publisher_raw = canonical({"tag_name": rule["release_tag"], "assets": [{"id": 90001 + index,
+                "name": rule["asset_name"], "size": len(raw), "browser_download_url": rule["asset_url"],
+                "digest": "sha256:" + hashlib.sha256(raw).hexdigest(),
+                "updated_at": "2026-10-23T04:00:00.000000Z"}]})
+            start = self.now - timedelta(seconds=8 - 4 * index)
+            clocks = {key: stamp(start + timedelta(seconds=offset)) for offset, key in enumerate((
+                "metadata_retrieval_started_at", "metadata_retrieved_at", "asset_retrieval_started_at", "asset_retrieved_at"))}
+            captures.append((raw, publisher_raw, clocks))
+            for label, url, body, first, last, limit in (
+                    (role + "_metadata", rule["metadata_url"], publisher_raw, start, start + timedelta(seconds=1), config["max_metadata_bytes"]),
+                    (role + "_asset", rule["asset_url"], raw, start + timedelta(seconds=2), start + timedelta(seconds=3), rule["max_asset_bytes"])):
+                requests.append({"request_number": len(requests) + 1, "label": label, "route": url,
+                    "retrieval_started_at": stamp(first), "response_limit_bytes": limit,
+                    "automatic_redirects": False, "automatic_retries": 0, "status": 200,
+                    "retrieved_at": stamp(last), "response_read_completed_at": stamp(last),
+                    "bytes": len(body), "bytes_read": len(body), "response_exceeded_limit": False,
+                    "sha256": hashlib.sha256(body).hexdigest()})
+        self.assertEqual(len(requests), 4)  # Only invented rows; no HTTP client is invoked.
+        timings = {}
+        with patch.object(grading, "FIRST_PRODUCER", self.source_commit), \
+                patch.object(grading, "_trusted_materials", side_effect=synthetic_trusted_materials):
+            started = time.perf_counter()
+            source_refs = grading.retain_source_with_proof(self.store, self.forecast_refs,
+                schedule=captures[0], boxscore=captures[1], requests=requests)
+            timings["retain_source_seconds"] = time.perf_counter() - started
+            started = time.perf_counter()
+            graded = grading.normalize_and_grade(self.store, self.forecast_refs, *source_refs)
+            timings["normalize_and_grade_seconds"] = time.perf_counter() - started
+            self.assertEqual(len(graded["outcomes"]), 1)
+            self.assertEqual(len(graded["grades"]), 2)
+            self.assertEqual(graded["pending"], [])
+            self.assertEqual(graded["corrections"], [])
+            for ref in self.forecast_refs:
+                self.assertEqual((self.state / "daily/records/forecasts" / (ref.record_id + ".json")).read_bytes(), original_forecasts[ref])
+
+            # The real writer persists all proof/CSV/outcome/grade originals and
+            # independently fetches them. No semantic validator/store is mocked.
+            started = time.perf_counter()
+            try:
+                flushed = self.writer.flush()
+            finally:
+                timings["grading_flush_seconds"] = time.perf_counter() - started
+                print("SYNTHETIC grading integration timings (no source/model execution):", timings, flush=True)
+            self.assertLessEqual(timings["grading_flush_seconds"], remote.MAX_COMMAND_SECONDS)
+            started = time.perf_counter()
+            with patch.object(publication, "REMOTE_URL", str(self.remote)):
+                imported = publication.prepare_published_records(self.root, flushed["commit"], now=self.now)
+            timings["fresh_publication_import_seconds"] = time.perf_counter() - started
+            self.assertEqual(imported["eligible_forecasts"], 2)
+            recovered = storage.DailyStore(self.root)
+            admissions = grading.validate_stored_admissions(recovered)
+            self.assertEqual((admissions["genuine_outcomes"], admissions["genuine_grades"]), (1, 2))
+
+            # Exercise the actual independently admitted publication branch,
+            # alongside the unchanged historical sport collection. Other optional
+            # source channels may remain unavailable in this compact test root.
+            shutil.copytree(ROOT / "web", self.root / "web")
+            for filename in ("config/capabilities.json", "config/nba_markets.json"):
+                target = self.root / filename
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes((ROOT / filename).read_bytes())
+            started = time.perf_counter()
+            manifest = site_publication.build_site(self.root, self.folder / "graded-public-preview",
+                build_commit=self.source_commit, now=self.now)
+            timings["graded_publication_build_seconds"] = time.perf_counter() - started
+            self.assertIsNone(manifest["daily_research_error"])
+            self.assertIsNotNone(manifest["daily_research"])
+            public = load_json(self.folder / "graded-public-preview/data" / manifest["daily_research"]["path"])
+            publication.validate_asset(public, now=self.now)
+            self.assertEqual(len(public["outcomes"]), 1)
+            self.assertEqual(len(public["grades"]), 2)
+            self.assertEqual(public["counts"]["pending_grades"], 0)
+            self.assertEqual({row["body"]["status"] for row in public["grades"]}, {"SCORED"})
+            self.assertEqual({len(row["body"]["categories"]) for row in public["grades"]}, {14})
+            self.assertEqual({row["body"]["outcome_id"] for row in public["grades"]},
+                             {public["outcomes"][0]["body"]["outcome_id"]})
+            self.assertEqual({row["body"]["forecast_id"] for row in public["grades"]},
+                             {body["forecast_id"] for body in originals})
+            historical = load_json(self.folder / "graded-public-preview/data" / manifest["sports"][0]["path"])
+            self.assertEqual((len(historical["forecasts"]), len(historical["performance"])), (6, 6))
+            self.assertEqual(self.inventory(self.root / "records"), self.originals)
+
+            # Restart with an independent store, then retry the SAME retained
+            # capture at a later test clock. No new issuance, outcome, proof,
+            # grade timestamp or receipt may be minted by successful recovery.
+            before_retry = self.inventory(self.root / "daily/records")
+            self.now += timedelta(seconds=30)
+            restarted = storage.DailyStore(self.root)
+            same_sources = grading.retain_source_with_proof(restarted, self.forecast_refs,
+                schedule=captures[0], boxscore=captures[1], requests=requests)
+            repeated = grading.normalize_and_grade(restarted, self.forecast_refs, *same_sources)
+            self.assertEqual(same_sources, source_refs)
+            self.assertEqual(repeated["outcomes"], graded["outcomes"])
+            self.assertEqual(repeated["grades"], graded["grades"])
+            self.assertEqual(self.inventory(self.root / "daily/records"), before_retry)
+            self.assertEqual(self.inventory(self.root / "records"), self.originals)
+            for ref in self.forecast_refs:
+                self.assertEqual((self.root / "daily/records/forecasts" / (ref.record_id + ".json")).read_bytes(), original_forecasts[ref])
+            print("SYNTHETIC complete grading/recovery/publication timings:", timings, flush=True)
 
 if __name__ == "__main__":
     unittest.main()
