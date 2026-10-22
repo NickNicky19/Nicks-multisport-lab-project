@@ -1,5 +1,7 @@
 # NBA final-source metadata inspection
 
+## Initial scope, before the metadata request
+
 This package admits **one bounded inspection of SportsDataverse release
 metadata**. It does not yet admit a player-boxscore download, a final outcome,
 genuine grading or a recurring collector. No new HTTP request has occurred.
@@ -50,3 +52,38 @@ The broader owner goal permits preparing a recurring permitted forecast/grading
 path. Actual source-family verification, bounded operating rules and durable
 retention still precede operation. This receipt creates no scheduler, changes
 no first-cycle producer file and activates no collection.
+
+## October 22, 2026 — one metadata response retained
+
+The one authorized credentialless GET completed at **02:51:46.408272 UTC**
+(started 02:51:45.763476 UTC): HTTP **200**, **174,922 bytes**, **0.646378
+seconds**. Redirects and retries were disabled. The complete original metadata,
+safe response headers, actual clocks and seasonal inventory are retained in
+[`2026-10-22-sdv-final-source-release-inspection-v1.json`](../evidence/data/2026-10-22-sdv-final-source-release-inspection-v1.json).
+Raw-body SHA256 is
+`d1de79ac784cc5f0247b3578828bd467992b204ab549bd49b0105ba73e993d11`.
+An independent local decompression/reparse reproduced its bytes/hash and every
+retained inventory entry. Remote durable recovery remains a later checkpoint.
+
+The actual release now advertises 102 seasonal assets covering 1994–2027 in
+CSV, Parquet and RDS formats. The retained README's through-season label lagged
+this release inventory. Actual advertised 2027 assets are:
+
+| Name | GitHub asset ID | Bytes | Publisher updated (UTC) | Advertised SHA256 |
+| --- | --- | --- | --- | --- |
+| `player_box_2027.csv` | 662283964 | 43,806 | 2026-10-21 11:30:15 | `697c67283cac7d1af7b0f7a579aa0f60dd3fd76520a9940526d93c4ea7df4029` |
+| `player_box_2027.parquet` | 662284035 | 27,731 | 2026-10-21 11:30:16 | `768b3cc20e38d4b134a1395938f1123b8b8635adf12c28d51c6fbb6b2f09580a` |
+| `player_box_2027.rds` | 662283872 | 5,829 | 2026-10-21 11:30:13 | `7ae8577f2445a736669b900126a9276f559e3f88a8066c7fe64e72c10a15e1a3` |
+
+**Request count: 1/1 metadata GET; zero asset GETs, player rows or outcomes.**
+These advertised hashes and formats have not yet been checked against downloaded
+asset bytes. They establish neither finality nor complete target-player coverage.
+No further request remains within this inspection allowance.
+
+The smallest useful next step is a separately bounded inspection of the actual
+advertised 43,806-byte CSV, retaining its original bytes and checking the existing
+offline normalizer's required columns, event/player identities, DNP encoding,
+count arithmetic and source update limitations. Later genuine grading also needs
+an independently retained final schedule observation and explicit completeness
+criteria. Missing/nonfinal data remains pending; no outcome is inferred from
+this metadata or publisher upload time.
