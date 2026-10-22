@@ -220,6 +220,7 @@ class _ScopedParentLedger(Ledger):
         self.owner=owner
 
     def _validate_payload(self,payload,*,kind,record_id):
+        require(clock(payload["received_at"]) <= _now(),"future retained parent receipt")
         key=(kind,record_id,digest(payload))
         cache=self.owner._parent_payload_cache
         if key not in cache:
@@ -230,6 +231,7 @@ class _ScopedParentLedger(Ledger):
         with self.owner.validation_scope():
             cache=self.owner._parent_read_cache
             if reference not in cache:cache[reference]=super().read(reference)
+            require(clock(cache[reference]["received_at"]) <= _now(),"future retained parent receipt")
             return cache[reference]
 
     def scan(self):
@@ -278,6 +280,7 @@ class DailyLedger(Ledger):
     def read(self,reference):
         with self.validation_scope():
             if reference not in self._read_cache:self._read_cache[reference]=super().read(reference)
+            require(clock(self._read_cache[reference]["received_at"]) <= _now(),"future retained daily receipt")
             return self._read_cache[reference]
 
     def scan(self):
