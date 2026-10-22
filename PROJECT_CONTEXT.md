@@ -1,6 +1,34 @@
 # Nick's Multisport Lab — project context
 
-Updated: October 21, 2026.
+Updated: October 22, 2026.
+
+## Current delivery candidate — SportsDataverse daily-snapshot path implemented
+
+PR #13 / `implementation/sdv-daily-forecast` now connects actual licensed public
+schedule/roster assets through a separate shared-input version, unchanged R0/K0,
+exact Git retention/recovery and manifest-6 website delivery. Eight completed
+DEVELOPMENT_ONLY bundles cover all 14 categories and the full 26,645-row panel;
+all have null issuance. Independent GitHub archive recovery and actual-data
+desktop/mobile preview passed. This is operational software/input evidence,
+not prospective issuance or forecasting qualification. Current public main
+remains411f904 with six historical bundles/grades and no genuine forecasts/offers.
+
+Freeze proposed genuine producer `0c37b30060c2dffb20226bd3efbedc65a75d04e3`.
+The unchanged development records remain pinned to86cbb614, archived at14d4dab3;
+subsequent genuine-capture/publication fixes were tested separately without
+rerunning completed model calculations. Initial daily publisher-age limits are
+36h for schedule and roster; upstream observation stays UNKNOWN. This differs
+from the original fresh-observation T90 protocol. Retain conditional-on-appearance
+meaning, missing injury/lineup information and panel cutoff April14,2026.
+
+See `docs/SDV_DAILY_RESEARCH.md`, `docs/SDV_DAILY_ACTIVATION_PACKAGE.md` and the
+newest handoff/e2e receipt for full results and the exact first-cycle decision.
+One separately registered October22 manual cycle is proposed; nothing is armed,
+activated, merged or deployed. The release/cycle needs one consolidated exact-head
+approval. No new encryption key, provider key, signup or paid service is required
+for these publisher-licensed public assets. Preserve the old encrypted ESPN scope.
+PR #10/#12 remain draft; OPS002/PROS004/S0 and expired/frozen studies stay unchanged.
+Offers, prices and ticket qualification remain independent; NO_ACTION persists.
 
 ## Current alternate-source result — real schedule/cohort verification passed
 

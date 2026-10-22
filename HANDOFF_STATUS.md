@@ -1,6 +1,248 @@
 # Implementation handoff status
 
-Updated: October 21, 2026 (UTC).
+Updated: October 22, 2026 (UTC).
+
+## October 22 — functioning daily-snapshot candidate; release and cycle approval pending
+
+**Implemented and independently verified; no activation, merge or deployment.**
+Review PR #13: https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/13 .
+Branch `implementation/sdv-daily-forecast` began from retained evidence commit
+`998840972bd21c5fd62a7491d3d2c9eb3af4d77d`. Re-fetched main remains
+`411f904e4f9d577f97ca3a4ae6ba52fdb81ee130`. PR #10 remains draft at
+`c0a7b4bc3205d723b13d0f70baf66f3806e731ee`; PR #12 remains draft at
+`709c39e6ce3312663f2bd98457f5f46d63ae2124`. This main-targeted release includes
+their existing inactive dependency ancestry; it requires approval of that
+integration, not merely approval of one new adapter. Their branches were not
+reset, rewritten, merged or activated. The final PR-head SHA is reported in the
+PR/checkpoint response after committing this handoff; do not confuse it with the
+fixed producer source below.
+
+Fixed proposed genuine producer source:
+**`0c37b30060c2dffb20226bd3efbedc65a75d04e3`**, 23 matching executed files,
+binding `002419f25184496ccead9cf92556116872550e6f29ad6edfc60cc5846a00f733`.
+UI wrapping correction is `797c69f0a007cb1f6c3270e0ad24414df8029af8`; later
+documentation/preview-tool commits do not change those producer files. Freeze
+this producer SHA for all retries; never substitute dynamic HEAD after writing
+records. The exact first-cycle proposal and runnable dispatch command are in
+[SDV_DAILY_ACTIVATION_PACKAGE.md](docs/SDV_DAILY_ACTIVATION_PACKAGE.md).
+
+### Actual delivered implementation
+
+`sdv_daily_inputs.py` normalizes the two real SportsDataverse CSV schemas, with
+strict event/player/team/season/status/cohort and duplicate/missing-field checks.
+It binds exact release identities, CSV/metadata bytes/hashes and separate source
+clocks. It fabricates neither ESPN JSON responses nor an ESPN event revision.
+`sdv_daily_cycle.py`, registered config and manual-only `sdv-daily.yml` establish
+one separately versioned owner-dispatched cycle. Actual GitHub run/attempt/actor,
+source bytes, common input and actual clocks are checked; a caller-created
+authorization dictionary cannot activate the producer.
+
+`sdv_daily_producer.py` uses unchanged R0/K0 laws and the complete 26,645-row
+history. Every model has all 13 requested categories plus PA from its coherent
+complete joint law. The historical availability/cutoff limitations remain;
+the panel ends at `2026-04-14T00:30:00.000000Z`. Active roster membership does
+not establish participation, health, starting status or minutes. Outputs remain
+conditional on appearance; qualification is unavailable for every category.
+
+Genuine issuance uses the original R0 T90 guard. The first early DEV attempt
+correctly stopped at that guard before producing a forecast. A separate explicitly
+non-issuing distribution carrier now supports early development calculation;
+tiny synthetic checks prove exact R0/K0 input hashes, training counts, every
+weighted atom and all 14 marginals against the frozen calculation. Development
+records have null issue times and cannot serialize as original R0 issuance.
+No clock was patched or target retimed for the actual-source preview.
+
+`sdv_daily_store.py` / `sdv_daily_remote.py` provide exact compressed licensed
+original retention, typed graph recovery, one-writer guards and real Git
+checkpoint/readback. Parent history is authenticated and shared once. Local
+persistence, remote checkpoint, independent recovery and eligibility are distinct.
+Late/unacknowledged originals remain ineligible after restart. Existing peers
+survive; missing peers are generated only while timely. Private exact-request
+write/completion contexts prevent generic calls from asserting genuine issuance
+or remote acknowledgments. A durable capture-start marker precedes source GETs;
+fresh-host recovery cannot reset an uncertain/used request budget or silently
+replace a partial input. Required windows are checked before each GET.
+
+Full-path execution exposed repeated validation of the same original history.
+The interrupted five-record DEV attempt remains at
+`/tmp/nml-sdv-real-preview-6f36b98`, unchanged and ineligible. Scoped authenticated
+memoization now clears after each operation and still checks changed/missing
+bytes and clocks on the next operation. One profiled forecast read improved
+11.671→3.902 seconds; five-forecast recovery took 1.540 seconds. No model parameter,
+ledger ceiling, original byte or experiment was changed to solve this runtime risk.
+
+`sdv_daily_publication.py`, manifest 6, `web/sdv-daily.mjs`, existing renderer and
+Pages workflow connect the independent research channel. Development, genuine
+daily snapshots, historical research, stale sources and missing data have distinct
+labels. Readable identities, conditional meaning, model, issue/generation/input
+clocks, source ages, forecast horizon and panel cutoff are visible; source IDs and
+hashes remain in details. Raw sources stay outside Pages. Genuine eligible records
+can be imported from the fixed records branch and published through the existing
+Pages workflow without waiting for a future records PR to merge. Source/activation
+checks remain specific to this protocol; OPS002/PROS004 guards are unchanged.
+
+The real typed-import test caught a universal transport defect hidden by tiny
+fixtures: an actual branch includes `records/README.md`. The import now selects
+only configured ledger-kind subtrees while preserving strict JSON/path/size/byte
+checks. The real-data mobile preview also caught long admission-reason overflow;
+the renderer reuses existing wrapping styles. Both defects have focused regressions
+and passed actual integrated verification.
+
+`sdv_daily_outcomes.py` supplies offline final-CSV normalization and shared-outcome /
+separate-statistical-grade linkage, with source-byte replay, DNP/missing/nonfinal/
+postponed/unresolved handling and append-only corrections. Its final-source route
+is tested synthetically. Genuine final-source admission must be reviewed when
+actual final evidence exists; it is not inferred from this schedule/roster review.
+Nothing here creates an outcome, financial settlement or qualified ticket.
+
+### Actual-source development and durable recovery
+
+Completed model/data run source was
+**`86cbb6142e2ee24f3d8e5c9dc5043aca7b9f565a`**. Its immutable originals retain
+that exact producer binding. Later candidate changes are genuine-capture controls
+and the publication import fix; focused tests verify those changes without
+repeating the completed model calculation.
+
+The retained two actual CSVs and release metadata produced **eight DEV bundles**,
+four selected players × unchanged R0/K0, all 14 categories and **26,645 joint atoms
+per model**. Own-history counts: Caruso 56, Williams 56, DeRozan 77, Gordon 36.
+No model comparison or outcome was scored. Full calculation/local persistence
+took **80.946938 seconds**, peak **150,512 KiB**, while required tests also ran.
+This is local non-issuance execution evidence, not hosted future-timing proof.
+
+Normal Git push + independent fresh-object-database readback took **11.526203s**:
+
+- Branch `diagnostics/sdv-daily-001-20261022-dev-86cbb61`.
+- Archive commit `14d4dab3f6fc8a4125e472f8b1f7461f007a73e3`.
+- Independent second fetch: `/tmp/nml-sdv-independent-14d4dab`.
+- Snapshot SHA `c19780c085d900434db1c8153e501ec1f469f1f05294024c8689df7529ee5fdb`.
+- **40 records / 2,295,625 bytes**, including all original 19 byte-identical
+  receipts; both exact CSV bodies and exact release JSON independently recovered.
+- Eight null-issuance DEVELOPMENT_ONLY bundles; **zero genuine forecasts,
+  new outcomes or new grades**. This diagnostics branch cannot enter automatic
+  genuine publication. The archive flush added no genuine issuance acknowledgments.
+
+Actual private preview: `/tmp/nml-sdv-real-site`; asset SHA
+`ecbc367310a651bde0b590a9d23c09e7481efb8c36487747b9050dc6f8ee566c`,
+249,405 bytes. Largest forecast envelope 30,766 bytes (<64 KiB). Desktop/mobile
+1440/390/320 passed all four names/matchup, 14 rows per bundle, expanded real
+provenance without overflow, conditional participation, clocks/source age/history
+cutoff, zero genuine Upcoming, six historical bundles/grades, direct History
+refresh, sport scopes and every 2–6-leg/direction NO_ACTION check. No JS errors.
+All 40 original records remained unchanged. `scripts/preview_sdv_daily.py` rebuilds
+the current UI against independently recovered DEV originals without generation;
+its successful real-data build/smoke and repository-overwrite rejection were checked.
+
+The scoped publisher-release source-use receipt retains the actual README and
+attribution/modification notice. CC BY applies here as the publisher's data-store
+label, not a software-license inference or direct ESPN permission. This route
+needs no private encryption key; the original ESPN encryption design is unchanged.
+**Zero additional provider-source GETs** were made. The earlier retained source
+audit's request ledger and observation clocks remain unchanged. Four read-only
+requests to our own deployed website verified current public data; the first
+local reporting attempt used the wrong grade-field name and the corrected report
+reads `performance`, without changing any site or data.
+
+### Operating policy, capacity and exact next action
+
+Initial daily policy: **schedule and roster publisher ages ≤129,600s (36h)**;
+24-hour documented cadence + 12-hour delay tolerance, not an optimized scientific
+freshness claim. Publisher update, UNKNOWN upstream observation, retrieval,
+normalization, actual generation/issue, game and historical-panel clocks stay
+separate. Re-downloading old bytes cannot refresh content. Retrieve/normalize/
+recover input and intent T150–T90; generate/persist/recover T90–T75, with ≤300s
+per original. This does not satisfy the old fresh-observation T90 protocol.
+
+Capacity includes current 19 / 1,817,800 bytes plus conservative **112 records /
+27,615,232 bytes** for all planned source/input/auth/intent/forecast/completion,
+outcome/grade revisions, correction links and bounded operational metadata:
+**131 records / 29,433,032 bytes**, within unchanged **512 / 33,554,432** limits.
+No repeated history or omitted probability atom is used to fit that budget.
+
+Proposed cycle `NBA-SDV-DAILY-001-20261023-401909094` is registered separately,
+digest `eab839d53f26623f1256ef09d64b617f6b6bbb96dd36a1ea65d534c3e1590f92`.
+Fixed event/cohort/source routes are in the activation package. Manual hosted
+start: **October 22, 22:00 through strictly before 22:30 UTC (5–before5:30 p.m.
+CDT)**. Capture/input recovery: **23:00–00:00 UTC (6–7 p.m. CDT)**. Generation/
+original recovery: **October 23, 00:00–00:15 UTC (7–7:15 p.m. CDT)**. Six source
+GETs maximum, including redirects; no retries. Exact new asset revisions and
+freshness remain unknown until that approved capture. A stale publisher file,
+changed cohort or missed window must fail/retain partial state, never backfill.
+
+The authenticated CLI identifies `NickNicky19`. Existing GitHub access supports
+branch push/recovery and PR creation. Administrative workflow-setting inventory
+returned HTTP403 and remains UNKNOWN; no secret inventory or hosted genuine-run
+success is inferred. No new secret/key/signup/service is required by this route.
+The new genuine entrypoint has not run. **No scheduler or task is armed.** A manual
+dispatch must actually occur during the stated start window after approval; code
+merge alone will not populate Upcoming. Owner-controlled next decision is one
+consolidated exact-head PR/release plus this specific operating/publication cycle.
+
+### Commands and actual verification
+
+- `python3 -m unittest discover -s tests -v`: **782 passed / 530.033s**, stable
+  completed candidate; log `/tmp/nml-sdv-final-0c37b30-python.log`.
+- `node --test --test-isolation=none web/tests/*.test.mjs`: **103 passed**.
+- `python3 -m multisport_lab.demo`: **PASS**.
+- Focused normal/optimized cycle/input/producer/runner/store/remote checks: **PASS**.
+  Real typed local-Git import (no semantic-helper mock): **1 passed**, normal
+  114.986s / optimized 99.604s; explicitly synthetic prospective wire fixtures,
+  no source collection or model fit. Independent review found no remaining blocker.
+- `python3 -m multisport_lab.sdv_daily_runner preview --store-root
+  /tmp/nml-sdv-real-preview-86cbb61 --sample-root
+  .local-data/sdv-input-audit-20261021/originals --producer-commit
+  86cbb6142e2ee24f3d8e5c9dc5043aca7b9f565a`: completed through the equivalent
+  Python resource/timing wrapper; **8 DEV / 0 genuine**. `/usr/bin/time` was absent;
+  that wrapper launch exited127 before model execution and was replaced, not
+  misclassified as a source/model failure.
+- `DailyGitCheckpointWriter(... diagnostics/sdv-daily-001-20261022-dev-86cbb61).
+  prepare(); flush()`: actual GitHub push/fresh recovery **PASS**; separate verifier
+  independently fetched exact `14d4dab...` and matched all bytes.
+- `python3 -m multisport_lab.publication --output /tmp/nml-sdv-inactive-release
+  --build-commit 797c69f0a007cb1f6c3270e0ad24414df8029af8` and
+  `node web/tests/site-smoke.mjs /tmp/nml-sdv-inactive-release`: **PASS**.
+- `python3 scripts/preview_sdv_daily.py --records-root
+  /tmp/nml-sdv-independent-14d4dab --output /tmp/nml-sdv-reproducible-preview`,
+  followed by artifact smoke: **PASS**; original-data snapshot unchanged.
+- `python3 /tmp/verify_sdv_daily_preview.py /tmp/nml-sdv-real-site`: actual-data
+  Chromium desktop/mobile checks **PASS**, loopback only.
+- `git diff --check`: **PASS**. GitHub PR checks are observed separately through
+  the PR Completion watcher at the final pushed head; they are not a deployment.
+
+Initial required-suite failures were three old synthetic-clock fixtures whose
+real import clocks exceeded simulated October 21 phases after the calendar
+changed. Only `tests/test_operating_diagnostic.py` and
+`tests/test_pros004_readiness.py` fixture clocks changed; all three targeted cases
+then passed. Intermediate overlapping source-pin checks correctly rejected
+uncommitted file changes; the stable final suite above passed. No frozen runtime,
+statistical comparison, pilot receipt or result was rewritten.
+
+Changed implementation files are the eight `sdv_daily_*.py` modules, new manual
+workflow/config, existing publication/Pages wiring and daily frontend module/app/
+snapshot integration; focused new tests/fixture plus legacy manifest compatibility
+and clock-fixture tests; current preview script and new source/e2e receipts,
+protocol/activation docs, context and this handoff. `git diff
+998840972bd21c5fd62a7491d3d2c9eb3af4d77d --name-only` provides the exact file list.
+
+Public verification at `2026-10-22T01:59:24.416454Z` still serves **main411f904**,
+manifest4 SHA `a9d38753fa721528e30fb7c4df8d9d43bec7bbf93baf221b8a17ea4f95d344c8`,
+NBA asset SHA `2747629ef1bb9736f0dba4b75f94ea665368bb7b8758e4a31d1b82df6c48ad67`:
+six RECONSTRUCTED_RESEARCH bundles, six historical grades, zero offers/candidates.
+No new Pages deployment was attempted. **Genuine forecasts0; published offers0;
+prospective outcomes/grades0; qualified tickets0; financial settlements0.**
+DEV8 are separate software/real-input evidence, not future issuance or model
+accuracy. PROS004/S0, OPS002, expired pilot and DEV005 remain inactive/frozen;
+NFL and the separate MLB project remain untouched.
+
+Next concrete action: review PR #13 and the activation package, then approve or
+defer the single exact-head release and fixed manual cycle/publication actions.
+After approval, merge through guarded PR Completion, verify the existing Pages
+release, and dispatch only in the registered start window. Genuine outcomes stay
+pending until verified final evidence is available and its source admission is
+resolved; no odds, offer, settlement rule or ticket EV is a forecasting prerequisite.
+
+Exact machine-readable evidence:
+`evidence/operational/2026-10-22-sdv-daily-development-checkpoint.json`.
 
 ## October 21 — actual alternate-source schedule and cohort audit passed
 
