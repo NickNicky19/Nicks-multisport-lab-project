@@ -71,7 +71,12 @@ class OperatingDiagnosticTests(unittest.TestCase):
         pack['sourcepack_id']=digest({k:v for k,v in pack.items() if k!='sourcepack_id'})
         original_copy=diagnostic._copy_baseline;original_check=diagnostic._baseline_unchanged;original_git=diagnostic._git
         code=Path(diagnostic.__file__).resolve().parents[1]
-        with patch.object(source,'PANEL_SHA',p['normalized_panel_sha256']):
+        # This invented history/receipt belongs to the frozen simulated input
+        # phase, even when the test runs on a later actual calendar day. The
+        # driver's advancing phase clocks and actual resource clocks remain as-is.
+        with (patch.object(source,'PANEL_SHA',p['normalized_panel_sha256']),
+              patch.object(op,'_now',return_value=diagnostic.INPUT_CLOCK),
+              patch('multisport_lab.ledger._now',return_value=diagnostic.INPUT_CLOCK)):
             ref=Ledger(seed).append('research_inputs','research-inputs:'+digest(pack),{'source_pack':pack})
             with (patch.object(op,'PANEL_ROWS',len(rows)),patch.object(op,'PANEL_BYTES',len(panel)),
                   patch.object(op,'PANEL_SHA256',hashlib.sha256(panel).hexdigest()),

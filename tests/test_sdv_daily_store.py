@@ -258,6 +258,44 @@ class DailyStorageTests(unittest.TestCase):
         body=self.store.ledger.read(ref)["data"]["daily"]
         self.assertEqual(body["source_use_status"],"REQUIRES_SEPARATE_ADMISSION")
 
+    def test_authenticated_parent_memo_lasts_only_one_operation_and_failure_clears_it(self):
+        parent=ledger.Ledger(self.root)
+        ref=parent.append("input_captures","retained history stand-in",{"identity":{"source":"synthetic"}})
+        original_validator=ledger.Ledger._validate_payload
+        validations=[]
+        def counted(payload,*,kind,record_id):
+            validations.append((kind,record_id))
+            return original_validator(payload,kind=kind,record_id=record_id)
+        with patch.object(ledger.Ledger,"_validate_payload",side_effect=counted):
+            with self.store.ledger.validation_scope():
+                self.store.ledger.parent.read(ref)
+                self.store.ledger.parent.scan()
+                self.store.ledger.parent.read(ref)
+            self.assertEqual(validations,[(ref.kind,ref.record_id)])
+            self.store.ledger.parent.read(ref)
+            self.assertEqual(len(validations),2)
+        self.assertEqual(self.store.ledger._parent_read_cache,{})
+        self.assertEqual(self.store.ledger._read_cache,{})
+        path=parent._path(ref.kind,ref.record_id)
+        payload=read_receipt(path);payload["data"]["identity"]["source"]="changed between operations"
+        envelope={"schema_version":daily.RECEIPT_SCHEMA,"hash_format":daily.HASH_FORMAT,
+            "payload_sha256":digest(payload),"payload":payload}
+        path.write_bytes(canonical(envelope)+b"\n")
+        with self.assertRaisesRegex(IntegrityError,"payload hash mismatch"):
+            self.store.ledger.parent.read(ref)
+        self.assertEqual(self.store.ledger._parent_read_cache,{})
+        self.assertEqual(self.store.ledger._parent_payload_cache,set())
+        path.unlink()
+        with self.assertRaises(OSError):self.store.ledger.parent.read(ref)
+
+    def test_daily_memo_is_not_reused_after_receipt_changes_between_operations(self):
+        ref=self.store.retain_asset(*self.source())
+        self.store.ledger.read(ref)
+        path=self.store.ledger._path(ref.kind,ref.record_id)
+        original=path.read_bytes();path.write_bytes(original+b"corruption")
+        with self.assertRaises(IntegrityError):self.store.ledger.read(ref)
+        self.assertEqual(self.store.ledger._read_cache,{})
+
     def test_symlinked_store_is_rejected(self):
         alias=self.root/"alias";alias.symlink_to(self.root,target_is_directory=True)
         with self.assertRaisesRegex(IntegrityError,"symlink"):

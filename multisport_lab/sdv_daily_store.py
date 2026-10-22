@@ -213,6 +213,34 @@ def validate_body(body, *, kind=None):
     return body
 
 
+class _ScopedParentLedger(Ledger):
+    """Reuse only validation completed during the owner's current operation."""
+    def __init__(self,owner):
+        super().__init__(owner.project_root)
+        self.owner=owner
+
+    def _validate_payload(self,payload,*,kind,record_id):
+        key=(kind,record_id,digest(payload))
+        cache=self.owner._parent_payload_cache
+        if key not in cache:
+            Ledger._validate_payload(payload,kind=kind,record_id=record_id)
+            cache.add(key)
+
+    def read(self,reference):
+        with self.owner.validation_scope():
+            cache=self.owner._parent_read_cache
+            if reference not in cache:cache[reference]=super().read(reference)
+            return cache[reference]
+
+    def scan(self):
+        with self.owner.validation_scope():
+            result=super().scan()
+            for kind,records in result.items():
+                for rid,payload in records.items():
+                    self.owner._parent_read_cache[LedgerRef(kind,rid,digest(payload))]=payload
+            return result
+
+
 class DailyLedger(Ledger):
     """Known daily envelopes under a separate namespace, original code unchanged."""
     def __init__(self, project_root):
@@ -223,8 +251,48 @@ class DailyLedger(Ledger):
         self._verified_daily_forecast = None
         self._verified_daily_completion = None
         self._verified_remote_stage = None
+        self._validation_depth=0
+        self._read_cache={}
+        self._parent_read_cache={}
+        self._parent_payload_cache=set()
+        self.parent=_ScopedParentLedger(self)
+
+    @contextmanager
+    def validation_scope(self):
+        """Discard all authenticated memoization after this read/write/scan.
+
+        Original receipts are create-only and one writer owns an operation.
+        A later operation always reopens and authenticates the bytes again;
+        neither successful validation nor a failed attempt persists a cache.
+        """
+        outer=self._validation_depth == 0
+        if outer:
+            self._read_cache={};self._parent_read_cache={};self._parent_payload_cache=set()
+        self._validation_depth+=1
+        try:yield
+        finally:
+            self._validation_depth-=1
+            if outer:
+                self._read_cache={};self._parent_read_cache={};self._parent_payload_cache=set()
+
+    def read(self,reference):
+        with self.validation_scope():
+            if reference not in self._read_cache:self._read_cache[reference]=super().read(reference)
+            return self._read_cache[reference]
+
+    def scan(self):
+        with self.validation_scope():
+            result=super().scan()
+            for kind,records in result.items():
+                for rid,payload in records.items():
+                    self._read_cache[LedgerRef(kind,rid,digest(payload))]=payload
+            return result
 
     def append(self,kind,logical_id,data,*,references=(),supersedes=None):
+        with self.validation_scope():
+            return self._append(kind,logical_id,data,references=references,supersedes=supersedes)
+
+    def _append(self,kind,logical_id,data,*,references=(),supersedes=None):
         rid=digest({"kind":kind,"logical_id":logical_id})
         body=data.get("daily",{}) if type(data) is dict else {}
         if kind == "forecasts" and body.get("mode") == "PROSPECTIVE_RESEARCH" and not self._path(kind,rid).exists():
@@ -299,7 +367,7 @@ class DailyLedger(Ledger):
         if body["schema_version"] in {"nba-sdv-daily-intent-v1","nba-sdv-daily-forecast-v1"}:
             history=LedgerRef.from_record(body["history_ref"])
             require(history.kind == "research_inputs","daily producer history reference kind differs")
-            try:Ledger(self.project_root).read(history)
+            try:self.parent.read(history)
             except OSError as exc:raise IntegrityError("daily retained parent history is missing") from exc
         if body["schema_version"] == "nba-sdv-daily-input-v1":
             require(len(refs) == 2 and all(ref.kind == "research_inputs" for ref in refs),
@@ -470,6 +538,11 @@ class DailyStore:
         finally:self.ledger._verified_remote_stage=old
 
     def record_completion(self,ref,*,started_at,completed_at=None,stage="LOCAL_PERSISTENCE",remote_commit=None):
+        with self.ledger.validation_scope():
+            return self._record_completion(ref,started_at=started_at,completed_at=completed_at,
+                stage=stage,remote_commit=remote_commit)
+
+    def _record_completion(self,ref,*,started_at,completed_at=None,stage="LOCAL_PERSISTENCE",remote_commit=None):
         original=self.ledger.read(ref)["data"]["daily"]
         require(original.get("mode") != "PROSPECTIVE_RESEARCH" or completed_at is None,
                 "genuine completion cannot accept a caller-supplied clock")
@@ -510,7 +583,7 @@ class DailyStore:
                 for rid,payload in sorted(index["corrections"].items())]
 
     def admission(self,ref):
-        return self._admission(ref,self.records())
+        with self.ledger.validation_scope():return self._admission(ref,self.records())
 
     def _admission(self,ref,records):
         indexed={item:body for item,body in records}
@@ -561,6 +634,9 @@ class DailyStore:
                 "remote_recovery_completed_at":final["completed_at"] if final else None,"reasons":reasons}
 
     def recover(self):
+        with self.ledger.validation_scope():return self._recover()
+
+    def _recover(self):
         records=self.records()
         forecasts=[(ref,body) for ref,body in records if body["schema_version"] == "nba-sdv-daily-forecast-v1"]
         inputs=[(ref,body) for ref,body in records if body["schema_version"] == "nba-sdv-daily-input-v1"]

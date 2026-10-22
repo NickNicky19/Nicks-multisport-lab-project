@@ -41,20 +41,23 @@ def _sha(value):
     return value
 
 
-def snapshot_manifest(root):
+def snapshot_manifest(root,*,store=None):
     """Validate before returning exact retained bytes; never trusts a hash alone."""
     root=_safe_root(root)
-    store=DailyStore(root);store.recover();Ledger(root).scan()
-    old,_,_=Ledger(root)._inventory();new,_,_=store.ledger._inventory()
-    entries=[]
-    for prefix,inventory in ((Path("records"),old),(Path("daily/records"),new)):
-        for kind,files in inventory.items():
-            for path,size in files:
-                raw=path.read_bytes()
-                require(len(raw) == size,"daily snapshot changed while reading")
-                entries.append({"path":str(prefix/kind/path.name),"bytes":size,
-                    "sha256":hashlib.sha256(raw).hexdigest()})
-    return {"schema_version":"nba-sdv-daily-snapshot-v1","entries":sorted(entries,key=lambda row:row["path"])}
+    store=DailyStore(root) if store is None else store
+    require(store.project_root == root,"snapshot verifier store root differs")
+    with store.ledger.validation_scope():
+        store.recover();store.ledger.parent.scan()
+        old,_,_=store.ledger.parent._inventory();new,_,_=store.ledger._inventory()
+        entries=[]
+        for prefix,inventory in ((Path("records"),old),(Path("daily/records"),new)):
+            for kind,files in inventory.items():
+                for path,size in files:
+                    raw=path.read_bytes()
+                    require(len(raw) == size,"daily snapshot changed while reading")
+                    entries.append({"path":str(prefix/kind/path.name),"bytes":size,
+                        "sha256":hashlib.sha256(raw).hexdigest()})
+        return {"schema_version":"nba-sdv-daily-snapshot-v1","entries":sorted(entries,key=lambda row:row["path"])}
 
 
 class DailyGitCheckpointWriter:
@@ -182,13 +185,14 @@ class DailyGitCheckpointWriter:
             require(self._git("rev-parse","FETCH_HEAD",cwd=root).stdout.strip() == commit,
                     "independent daily fetched commit differs")
             self._git("checkout","--quiet","--detach","FETCH_HEAD",cwd=root)
-            actual=snapshot_manifest(root)
-            if manifest is not None:require(actual == manifest,"independent daily snapshot differs")
             recovered=DailyStore(root)
-            for ref in references:recovered.ledger.read(ref)
-            report=recovered.recover()
-            return {"snapshot_sha256":digest(actual),"recovered_records":len(report["records"]),
-                    "recovery_completed_at":stamp(_now())}
+            with recovered.ledger.validation_scope():
+                actual=snapshot_manifest(root,store=recovered)
+                if manifest is not None:require(actual == manifest,"independent daily snapshot differs")
+                for ref in references:recovered.ledger.read(ref)
+                report=recovered.recover()
+                return {"snapshot_sha256":digest(actual),"recovered_records":len(report["records"]),
+                        "recovery_completed_at":stamp(_now())}
 
     def flush(self):
         """Preserve partial/failure metadata without inventing issuance acks."""

@@ -48,6 +48,9 @@ class Pros004ReadinessDriverTests(unittest.TestCase):
                     ('PANEL_SHA256',hashlib.sha256(raw).hexdigest())]:
                 stack.enter_context(patch.object(inputs,name,value))
             stack.enter_context(patch.object(inputs,'_original_provenance',return_value=source))
+            # Invented history is imported in this test's fixed input phase;
+            # actual-day import would be future-dated inside that simulation.
+            stack.enter_context(patch.object(inputs,'_now',return_value=readiness.INPUT_CLOCK))
             stack.enter_context(patch.object(pregame_sources,'history_from_input_record',
                 return_value=(pregame_sources.compact_history(rows),source)))
             stack.enter_context(patch.object(readiness.records.Pros004Store,'finalize_checkpoint',
@@ -73,6 +76,7 @@ class Pros004ReadinessDriverTests(unittest.TestCase):
                     ('PANEL_SHA256',hashlib.sha256(raw).hexdigest())]:
                 stack.enter_context(patch.object(inputs,name,value))
             stack.enter_context(patch.object(inputs,'_original_provenance',return_value=source))
+            stack.enter_context(patch.object(inputs,'_now',return_value=readiness.INPUT_CLOCK))
             stack.enter_context(patch.object(pregame_sources,'history_from_input_record',
                 return_value=(pregame_sources.compact_history(rows),source)))
             report=readiness.run_diagnostic(output=root/'report.json',store_root=root/'retained')

@@ -5,6 +5,7 @@ historical panel is fitted, scored, changed or treated as a model evaluation.
 """
 from contextlib import ExitStack, nullcontext
 from copy import deepcopy
+from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
@@ -14,7 +15,9 @@ from unittest.mock import patch
 from multisport_lab import sdv_daily_cycle as cycles
 from multisport_lab import sdv_daily_inputs as inputs
 from multisport_lab import sdv_daily_producer as daily
-from multisport_lab.baseline import ForecastTarget, JointForecast, PrimitiveLine, WeightedOutcome
+from multisport_lab.baseline import (ForecastTarget, HistoricalAppearance, JointForecast,
+    PrimitiveLine, WeightedOutcome, forecast_reference)
+from multisport_lab.development_003 import WorkloadPrior
 from multisport_lab.integrity import IntegrityError, canonical, digest, stamp, utc
 from multisport_lab.ledger import LedgerRef
 from test_sdv_daily_cycle import proof
@@ -93,6 +96,8 @@ class DailyProducerFixture(unittest.TestCase):
         self.stack.enter_context(patch.object(daily, "retained_history",
             return_value=(self.history_ref, self.history, {})))
         self.fit = self.stack.enter_context(patch.object(daily, "_fit_laws", side_effect=self.laws))
+        self.development_fit = self.stack.enter_context(patch.object(daily, "_development_laws",
+            side_effect=self.laws, create=True))
         self.store = MemoryStore()
 
     def input_body(self, mode="DEVELOPMENT_ONLY", *, normalized_at=NORMALIZED):
@@ -160,6 +165,8 @@ class DailyProducerTests(DailyProducerFixture):
 
     def test_dev_generation_never_has_genuine_issue_time(self):
         _, pair = self.generate()
+        self.development_fit.assert_called_once()
+        self.fit.assert_not_called()
         for body in pair:
             self.assertEqual(body["evidence_lane"], "DEVELOPMENT_ONLY")
             self.assertIsNone(body["issued_at"])
@@ -171,6 +178,8 @@ class DailyProducerTests(DailyProducerFixture):
 
     def test_tiny_synthetic_prospective_generation_requires_actual_window_and_latency(self):
         _, pair = self.generate("PROSPECTIVE_RESEARCH")
+        self.fit.assert_called_once()
+        self.development_fit.assert_not_called()
         self.assertTrue(all(body["issued_at"] == stamp(ISSUE) for body in pair))
         self.now = utc(self.cycle["cutoff_at"]) - timedelta(microseconds=1)
         with self.assertRaises(IntegrityError):
@@ -231,8 +240,10 @@ class DailyProducerTests(DailyProducerFixture):
         self.assertEqual(len(result["forecasts"]), 8)
         self.assertEqual(canonical(self.store.read(original_ref)["data"]["daily"]), original_bytes)
         self.fit.reset_mock()
+        self.development_fit.reset_mock()
         self.assertEqual(len(daily.issue_cycle(self.store, ref, self.cycle, self.binding)["forecasts"]), 8)
         self.fit.assert_not_called()
+        self.development_fit.assert_not_called()
 
     def test_partial_peer_recovery_rejects_different_input_and_source_revision(self):
         body = self.input_body()
@@ -310,6 +321,79 @@ class DailyProducerTests(DailyProducerFixture):
             daily.generate_pair(body, ref, self.cycle, self.binding, self.history_ref,
                 self.history[:-1], player_id=self.cycle["candidates"][0]["player_id"])
         self.fit.assert_not_called()
+        self.development_fit.assert_not_called()
+
+
+class DailyDevelopmentLawEquivalenceTests(unittest.TestCase):
+    def history(self):
+        """Five invented lines, no retained panel or observed target result."""
+        base = datetime(2026, 10, 1, 1, tzinfo=timezone.utc)
+        rows = []
+        for index, (player, minutes) in enumerate([("11", 20), ("12", 10), ("11", 35), ("12", 40)]):
+            event_start = base + timedelta(days=index * 2)
+            rows.append(HistoricalAppearance("SYNTHETIC-" + str(index), player, "25", "7",
+                event_start, event_start + timedelta(hours=4), minutes, 4 + index, index % 3,
+                2, 5 + index, 3 + index, index, index % 2, 1))
+        # An appearance after the past target's midnight freeze is excluded by
+        # both original laws and the development-only calculation.
+        later = datetime(2026, 10, 20, 1, tzinfo=timezone.utc)
+        rows.append(HistoricalAppearance("SYNTHETIC-AFTER-FREEZE", "11", "25", "7",
+            later, later + timedelta(hours=4), 24, 5, 1, 2, 9, 4, 1, 0, 1))
+        return rows
+
+    def test_development_distribution_is_exact_original_r0_k0_on_synthetic_past_target(self):
+        target = ForecastTarget("SYNTHETIC-ALREADY-PAST", "11",
+            datetime(2026, 10, 20, 19, tzinfo=timezone.utc))
+        history = self.history()
+        original_r0 = forecast_reference(history, target)
+        original = {"R0": original_r0, "K0": WorkloadPrior(history).forecast(target, original_r0)}
+        development = daily._development_laws(history, target)
+        self.assertEqual(set(development), {"R0", "K0"})
+        self.assertEqual(development["R0"].pool_history_count, 4)
+        for model in ("R0", "K0"):
+            with self.subTest(model=model):
+                expected, actual = original[model], development[model]
+                self.assertEqual(actual.target, target)
+                self.assertEqual(actual.input_sha256, expected.input_sha256)
+                self.assertEqual(actual.trained_through, expected.trained_through)
+                self.assertEqual(actual.player_history_count, expected.player_history_count)
+                self.assertEqual(actual.pool_history_count, expected.pool_history_count)
+                self.assertEqual([atom.to_record() for atom in actual.support],
+                    [atom.to_record() for atom in expected.support])
+                self.assertEqual(daily.joint_fingerprint(actual), daily.joint_fingerprint(expected))
+                for category in daily.MARKETS:
+                    self.assertEqual(actual.marginal(category), expected.marginal(category))
+        self.assertIsNone(development["R0"].issued_at)
+        with self.assertRaisesRegex(IntegrityError, "cannot create original"):
+            development["R0"].to_record()
+
+    def test_nonissuance_helper_handles_future_target_without_changing_frozen_genuine_guard(self):
+        # Choose an invented future target relative to the actual execution
+        # clock. No model clock, event time or original model is monkeypatched.
+        actual = datetime.now(timezone.utc)
+        target = ForecastTarget("SYNTHETIC-FUTURE-NONISSUANCE", "11", actual + timedelta(days=2))
+        with self.assertRaisesRegex(ValueError, "T90 cutoff has not occurred"):
+            forecast_reference(self.history(), target)
+        development = daily._development_laws(self.history(), target)
+        self.assertEqual(set(development), {"R0", "K0"})
+        self.assertTrue(all(reference.target == target for reference in development.values()))
+        self.assertIsNone(development["R0"].issued_at)
+
+    def test_development_rejects_same_target_history_and_duplicate_identity_like_originals(self):
+        target = ForecastTarget("SYNTHETIC-ALREADY-PAST", "11",
+            datetime(2026, 10, 20, 19, tzinfo=timezone.utc))
+        same_target = self.history()
+        same_target[0] = replace(same_target[0], event_id=target.event_id)
+        original_r0 = forecast_reference(same_target, target)
+        with self.assertRaisesRegex(ValueError, "target event entered"):
+            WorkloadPrior(same_target).forecast(target, original_r0)
+        with self.assertRaisesRegex(ValueError, "target event entered"):
+            daily._development_laws(same_target, target)
+        duplicates = self.history()
+        duplicates.append(duplicates[0])
+        for method in (forecast_reference, daily._development_laws):
+            with self.subTest(method=method.__name__), self.assertRaises(ValueError):
+                method(duplicates, target)
 
 
 if __name__ == "__main__":
