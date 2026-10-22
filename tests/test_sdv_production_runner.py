@@ -120,13 +120,18 @@ class ProductionRunnerTests(unittest.TestCase):
             runner.require_execution_context(auth,body,self.binding)
         runner._CAPABILITIES[auth["authorization_id"]]=auth["head_sha"]
         self.addCleanup(runner._CAPABILITIES.clear)
-        with patch("multisport_lab.sdv_production_forecasts.validate_binding"):
+        original_run_id=os.environ.get("GITHUB_RUN_ID")
+        with patch.dict(os.environ,{"GITHUB_RUN_ID":str(auth["run_id"])}),patch("multisport_lab.sdv_production_forecasts.validate_binding"):
             self.assertTrue(runner.require_execution_context(deepcopy(auth),body,self.binding))
+            with patch.dict(os.environ,{"GITHUB_RUN_ID":str(auth["run_id"]+1)}):
+                with self.assertRaisesRegex(IntegrityError,"Actual executing run changed"):
+                    runner.require_execution_context(auth,body,self.binding)
             with self.assertRaisesRegex(IntegrityError,"PREPARE window"):
                 runner.require_execution_context(auth,body,self.binding,phase="PREPARE")
             with patch.object(common,"now",return_value=self.now+timedelta(minutes=14)):
                 with self.assertRaisesRegex(IntegrityError,"ISSUE window"):
                     runner.require_execution_context(auth,body,self.binding)
+        self.assertEqual(os.environ.get("GITHUB_RUN_ID"),original_run_id)
 
     def test_index_survives_new_object_database_and_refuses_conflicting_writers(self):
         with tempfile.TemporaryDirectory(prefix="nml-prod-registry-test-") as directory:

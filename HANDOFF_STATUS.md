@@ -2,6 +2,54 @@
 
 Updated: October 22, 2026 (UTC).
 
+## October 22, 10:34 UTC — hosted CI test isolation corrected
+
+Draft PR **#16**: https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/16
+on `implementation/sdv-recurring-pregame`. Frozen production source remains
+**`4fe1dbeb964b9870b7e8e38ea67a37a4c8871557`**; all 34 bound production files,
+23 protected first-cycle files and 19 original records remain unchanged.
+
+Actual CI run **39762525600**, head `b5036bac76db1edf4906cda136596a01120ca8c7`,
+failed one of 1,001 Python tests after 548.544 s. The test created synthetic run
+123, then inherited the real hosted GITHUB_RUN_ID on leaving its setup context.
+The unchanged production guard correctly rejected that mismatch. This was not
+a source, model or genuine-operation failure. The original failed run/log hash
+and local reproduction are preserved in
+`evidence/operational/sdv-production-ci-environment-fix-20261022.json`.
+
+Only `tests/test_sdv_production_runner.py` changes behavior in this follow-up:
+the test isolates synthetic run 123, explicitly verifies run 124 still rejects,
+and verifies the caller's original environment is restored. Reproduced with
+`GITHUB_RUN_ID=39762525600`; all sixteen runner tests then passed normally
+(0.585 s) and under `-O` (0.586 s) with that foreign hosted environment. Commands:
+
+```bash
+GITHUB_RUN_ID=39762525600 PYTHONPATH=tests python3 -m unittest test_sdv_production_runner -q
+GITHUB_RUN_ID=39762525600 PYTHONPATH=tests python3 -O -m unittest test_sdv_production_runner -q
+```
+
+The existing 1,001-test local result, 137 frontend result and exact-source
+full-history diagnostic remain valid for the unchanged production bytes. No
+model/full-history measurement is repeated for this test-only fix. Configured
+CI will recheck the completed candidate on its ordinary forward commit; the
+exact resulting head and actual CI result are reported in the checkpoint
+response. PR #16 stays draft and unapproved for landing/activation. All previous
+receipts remain unchanged. The new exact changed-file list is
+`evidence/operational/sdv-production-change-inventory-post-ci-20261022.json`.
+
+Independent GitHub recovery of the earlier exact PR head verified all 518
+manifest entries, all 34 bound files and its then-67-file change inventory;
+source-code recovery is separate from the still-blocked GitHub archive upload.
+The additional hosted DEVELOPMENT_ONLY diagnostic remains the next owner
+permission gate, with 32 MiB / 64 new-object caps, zero sports GETs, no public
+publication or activation. The first cycle remains owner-manual in its original
+22:00–strictly before22:30 UTC / 5:00–before5:30 p.m. CDT launch window.
+Public main is still `377a3e4e69749efeee912a75c51673144f9fc27f`; Pages run
+39741220070 remains the verified deployment. Six historical bundles/grades
+remain distinct from zero genuine forecasts, prospective outcomes/grades,
+offers, qualified tickets and financial settlements. Broader completion remains
+outstanding. This is not a completed forecast operating cycle.
+
 ## October 22, 10:18 UTC — completed recurring candidate; hosted archive gate remains
 
 Branch: **`implementation/sdv-recurring-pregame`**. Baseline implementation:

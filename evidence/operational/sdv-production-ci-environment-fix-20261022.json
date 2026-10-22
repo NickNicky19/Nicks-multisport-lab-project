@@ -1,0 +1,64 @@
+{
+  "cause": "Test mints synthetic authorization but does not isolate GITHUB_RUN_ID after leaving mocked authorization creation. Real CI job ID differs. Runtime guard correctly rejects mismatched actual run.",
+  "error": "IntegrityError: Actual executing run changed",
+  "errors": 1,
+  "failed_head": "b5036bac76db1edf4906cda136596a01120ca8c7",
+  "failed_step": "Verify software contracts",
+  "fix_and_recheck": "TEST_ONLY_FIX_FOCUSED_NORMAL_AND_OPTIMIZED_PASS_COMPLETE_CI_RECHECK_NEXT",
+  "focused_fix": {
+    "branch": "implementation/sdv-recurring-pregame",
+    "changed_file": "tests/test_sdv_production_runner.py",
+    "changed_file_sha256": "78f562f3cf92417c47c6bc1cd3bfc3a001417e451912bd8517048f46b3e7e3b6",
+    "checks": [
+      {
+        "command": "GITHUB_RUN_ID=39762525600 PYTHONPATH=tests python3 -m unittest test_sdv_production_runner -q",
+        "result": "PASS",
+        "seconds": 0.585,
+        "tests": 16
+      },
+      {
+        "command": "GITHUB_RUN_ID=39762525600 PYTHONPATH=tests python3 -O -m unittest test_sdv_production_runner -q",
+        "result": "PASS",
+        "seconds": 0.586,
+        "tests": 16
+      },
+      {
+        "command": "git diff --check",
+        "result": "PASS"
+      },
+      {
+        "command": "git diff 4fe1 -- multisport_lab config .github",
+        "result": "EMPTY: production files byte-for-byte unchanged"
+      }
+    ],
+    "fix": "Test scopes GITHUB_RUN_ID to synthetic run123, explicitly verifies124 is rejected, then checks original host environment restoration. Production guard unchanged.",
+    "head_before_commit": "b5036bac76db1edf4906cda136596a01120ca8c7",
+    "no_network_or_models": true,
+    "production_source_commit_unchanged": "4fe1dbeb964b9870b7e8e38ea67a37a4c8871557",
+    "purpose": "TEST_ENVIRONMENT_ISOLATION_ONLY",
+    "reproduction": {
+      "before_fix": "ERROR Actual executing run changed; 1 test, 0.002s",
+      "command": "GITHUB_RUN_ID=39762525600 PYTHONPATH=tests python3 -m unittest test_sdv_production_runner.ProductionRunnerTests.test_recovered_auth_is_not_execution_capability_and_each_phase_uses_its_window -v"
+    }
+  },
+  "genuine_forecasts": 0,
+  "job_id": 119769940365,
+  "log": {
+    "bytes": 253401,
+    "path": "/tmp/nml-pr16-ci-failure-39762525600.log",
+    "scope": "TEMPORARY_LOCAL_DOWNLOADED_ACTUAL_CI_LOG",
+    "sha256": "7630e5a82e2b411305f459df4b061d26cc9c2ac7d14ee86f08fd87cfcc40d998"
+  },
+  "new_deployment": false,
+  "pr": 16,
+  "production_fix_required": false,
+  "production_source_commit": "4fe1dbeb964b9870b7e8e38ea67a37a4c8871557",
+  "python_seconds": 548.544,
+  "python_tests": 1001,
+  "recorded_at": "2026-10-22T10:33:32.907954+00:00",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "run_id": 39762525600,
+  "schema_version": "nba-sdv-production-ci-fixture-failure-v1",
+  "sports_source_requests": 0,
+  "test": "test_recovered_auth_is_not_execution_capability_and_each_phase_uses_its_window"
+}
