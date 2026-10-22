@@ -1,0 +1,76 @@
+{
+  "captured_at": "2026-10-22T10:00:59.404456+00:00",
+  "earlier_guard_checkpoint": "/tmp/nml-production-attempt-guard-owned-final.json",
+  "files": {
+    ".github/workflows/nba-operations.yml": {
+      "bytes": 10828,
+      "sha256": "017536d67acc3b7d598b3ba7288e59fa5ad2494e33e72e95e9536676df4548a5"
+    },
+    "docs/SDV_PRODUCTION_ARCHIVE_LIMITS.md": {
+      "bytes": 6519,
+      "sha256": "bf23b72f1738530e61a0e04f2fbecaf7c473fe045e6b70a19f675ceb70bd2128"
+    },
+    "multisport_lab/sdv_production_coordinator.py": {
+      "bytes": 57392,
+      "sha256": "e866efd7e59ec51bdf9c5db2d28d07322f261d5dccb709fe0b72ca814093ece1"
+    },
+    "multisport_lab/sdv_production_inputs.py": {
+      "bytes": 38919,
+      "sha256": "bb79d3eb4643cf419a677db09393aed3d682395aa5dc685644cc90519ded8511"
+    },
+    "multisport_lab/sdv_production_runner.py": {
+      "bytes": 62247,
+      "sha256": "85a526d4cfd171ebbfaaa4e918cea059a2cdfab9872a8dc552c905782dd8df78"
+    },
+    "tests/test_sdv_production_coordinator.py": {
+      "bytes": 34654,
+      "sha256": "cfafdb15910d61ed24902f07a31a46e8ad62eefe2ba7aa0fdccb7c9d5c97d064"
+    },
+    "tests/test_sdv_production_inputs.py": {
+      "bytes": 16545,
+      "sha256": "bfebf1d50a364265c88c2e8531a4dce3ca3b0ab0fdb8db6a36dac48e7944928c"
+    },
+    "tests/test_sdv_production_runner.py": {
+      "bytes": 25519,
+      "sha256": "f522bd973663675e3498921a1987db22f0dbb4cdd3af5296459f2354ccf3aabf"
+    }
+  },
+  "notes": [
+    "Earlier guard35-test receipt predates the cancellation fix and is preserved separately.",
+    "No source collection, remote archive mutation, model fitting, genuine issuance, scheduling, publication or deployment.",
+    "Final independent review, required full integration suite and new purposeful same-helper timing measurement are owned by root."
+  ],
+  "purpose": "SYNTHETIC_CANCELLATION_AND_GUARD_SOFTWARE_ONLY",
+  "results": [
+    {
+      "command": "PYTHONPATH=tests python3 -m unittest test_sdv_production_coordinator.ProductionCoordinatorTests.test_keyboard_interrupt_retains_incomplete_grade_status_that_public_recovery_accepts -v",
+      "result": "PASS",
+      "seconds": 6.928,
+      "tests": 1
+    },
+    {
+      "command": "PYTHONPATH=tests python3 -O -m unittest test_sdv_production_coordinator.ProductionCoordinatorTests.test_keyboard_interrupt_retains_incomplete_grade_status_that_public_recovery_accepts -v",
+      "result": "PASS",
+      "seconds": 7.291,
+      "tests": 1
+    },
+    {
+      "command": "PYTHONPATH=tests python3 -m unittest test_sdv_production_runner -q",
+      "result": "PASS",
+      "seconds": 0.553,
+      "tests": 16
+    },
+    {
+      "command": "PYTHONPATH=tests python3 -O -m unittest test_sdv_production_runner -q",
+      "result": "PASS",
+      "seconds": 0.587,
+      "tests": 16
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "schema_version": "nml-owned-source-software-checkpoint-v1",
+  "source_parent_commit": "e5da30977fc9dd0745154854ddbfeb712307cfde"
+}

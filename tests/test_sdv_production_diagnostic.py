@@ -14,6 +14,14 @@ from multisport_lab.integrity import IntegrityError, _decode, utc
 
 
 class ProductionDiagnosticTests(unittest.TestCase):
+    def test_diagnostic_archive_has_identical_pre_mutation_bounds_for_local_and_hosted(self):
+        limits={"allow_diagnostics":True,"write_budget_bytes":32*1024*1024,"write_budget_objects":64}
+        with patch.object(diagnostic,"GitHubReleaseArchive") as remote,patch.object(diagnostic,"FileArchive") as local:
+            diagnostic.diagnostic_archive(Path("/tmp/isolated-diagnostic"),hosted=True)
+            remote.assert_called_once_with(**limits);local.assert_not_called()
+            diagnostic.diagnostic_archive(Path("/tmp/isolated-diagnostic"),hosted=False)
+            local.assert_called_once_with(Path("/tmp/isolated-diagnostic/archive"),**limits)
+
     def test_synthetic_sources_have_sixteen_unique_aliases_and_explicit_invented_metadata(self):
         history=[SimpleNamespace(player_id=str(pid)) for pid in range(1,17) for _ in range(2)]
         assets,start=diagnostic.synthetic_assets(history,at=utc("2030-01-01T00:00:00.000000Z"))

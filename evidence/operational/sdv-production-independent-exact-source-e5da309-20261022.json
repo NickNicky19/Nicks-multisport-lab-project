@@ -1,0 +1,100 @@
+{
+  "actions": {
+    "activation_or_dispatch": 0,
+    "github_http_requests": 0,
+    "hosted_writes": 0,
+    "model_or_test_runs": 0,
+    "source_http_requests": 0
+  },
+  "binding": {
+    "binding_id": "fd43f9e5f5d09e463d33a205001f4d797ccae023b1721f76af9e38cb817b33b6",
+    "commit": "e5da30977fc9dd0745154854ddbfeb712307cfde",
+    "files": {
+      ".github/workflows/nba-operations.yml": "d8dfc54cc0c73962625115755ea1905c141e700a744f28776a8cd38b3a304b38",
+      ".github/workflows/sdv-daily.yml": "fb39ce1e9bf0b32632d314b11e391043a89806a446bfee453f92468e790c0b47",
+      "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+      "config/sdv_production_policy_v1.json": "f1ff3563c172c6989a74d75249c9d26bac3c44c1912acd1a4e62485ad0808711",
+      "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+      "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+      "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+      "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+      "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+      "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2",
+      "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+      "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+      "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+      "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+      "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+      "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+      "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+      "multisport_lab/sdv_daily_cycle.py": "5a40fd1bc6cdf6ebf75af52a6171641ee79d0d4bfbf9581c9e5b14dc8b3daef0",
+      "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+      "multisport_lab/sdv_daily_outcomes.py": "d84a9c2dd6cd7097e6f12d3170b7b914aa17a0876f32054c03d40036510adac6",
+      "multisport_lab/sdv_daily_producer.py": "eb793c94a2473f7210158b60aaf98fd8e215bc7f62ecf260bb11b301e72a334b",
+      "multisport_lab/sdv_daily_publication.py": "ce2bd99c7b1193af328d39cf33fd36b7400626becde4c656e658bb763fd7e425",
+      "multisport_lab/sdv_daily_remote.py": "c3e70fea9d4da6434703706b4f51bf4edf7320834dcc6a10c9456f3ddbc3b763",
+      "multisport_lab/sdv_daily_runner.py": "cf8d7ba3d65bc354029ee9fc1c54b8d9f110c3036204a4bd690fcc7943fd50ef",
+      "multisport_lab/sdv_daily_store.py": "fd508c0459519f54f0faf9009438632755c64b31227105794109d326c8ecf045",
+      "multisport_lab/sdv_production_archive.py": "a0637fb2c73b6a1041397985f1996ba1e555525586a209b862ddc275f38a25f4",
+      "multisport_lab/sdv_production_common.py": "e0641b9c46e423510b9cda6a5423da0c54cf38e7e55a35a7ed7248c428a12709",
+      "multisport_lab/sdv_production_coordinator.py": "2b519705462ec99858c6915d519d221803b41b1ca6c98a0c96840f77fdc65efe",
+      "multisport_lab/sdv_production_forecasts.py": "a1ea04c33b5ff714f99aaf2f2dd1a52bc9a7039b3dae4e0e0e8dfc92c776c2aa",
+      "multisport_lab/sdv_production_inputs.py": "bb79d3eb4643cf419a677db09393aed3d682395aa5dc685644cc90519ded8511",
+      "multisport_lab/sdv_production_publication.py": "fd9509756245f6ffbaaeeb6aed7fb610b1179f9c916e511e12a5180c3f16f26e",
+      "multisport_lab/sdv_production_remote.py": "d779dbce00f14081c6347fa887de289bd0ce8dedb0d3a692e241e634f5adfbc9",
+      "multisport_lab/sdv_production_runner.py": "58e6d478e37910fea94e7380a4dd257a88d592127c26be568dff114e08bc5f2f",
+      "multisport_lab/sdv_production_store.py": "061d8c304527e452388eae2c39d9603cc9f72c4b199b5dd72ffe852f3d694abb"
+    },
+    "law_sha256": {
+      "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+      "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689"
+    },
+    "schema_version": "nba-sdv-production-producer-binding-v1"
+  },
+  "binding_canonical_sha256": "46a4c6d35c49401888a3c98c77e027e1e678d8372993c8eb40ba7d5a71936b62",
+  "branch": "implementation/sdv-recurring-pregame",
+  "changed_files_since_prior_capacity_review": [],
+  "head": "e5da30977fc9dd0745154854ddbfeb712307cfde",
+  "independent_commands": [
+    "git branch --show-current",
+    "git rev-parse HEAD",
+    "git status --porcelain=v1",
+    "make_source_binding(e5da30977fc9dd0745154854ddbfeb712307cfde) + validate_binding(current=True)",
+    "Compare working bytes against git show for all34 bound producer paths",
+    "Compare all23 frozen producer files and19 original JSON receipts against0c37b30060c2dffb20226bd3efbedc65a75d04e3",
+    "Compare final committed source hashes against the preserved independent capacity review receipt"
+  ],
+  "limits": [
+    "No concurrent heavy/model checks were run.",
+    "Root-owned full-history diagnostic is separate evidence and still in progress; this receipt does not attest its result.",
+    "No remote Git push/readback or hosted archive success is established by this local exact-head check.",
+    "No merge, deployment, genuine issuance, predictive qualification or activation approval is implied."
+  ],
+  "matches_prior_capacity_review_files": true,
+  "material_findings_remaining": [],
+  "policy": {
+    "monthly_bytes": 34359738368,
+    "policy_id": "2a2543c981c23c6c09b0af8eb598fc5eaeae4a6278233acef1c59e265acedf43",
+    "runtime_ledger_bytes": 33554432,
+    "runtime_ledger_records": 512,
+    "total_bytes": 68719476736
+  },
+  "preservation": {
+    "changed_original_records": [],
+    "changed_protected_source_files": [],
+    "original_records": 19,
+    "producer_pin": "0c37b30060c2dffb20226bd3efbedc65a75d04e3",
+    "protected_source_files": 23
+  },
+  "prior_capacity_receipt": {
+    "path": "/tmp/nml-independent-production-capacity-review-20261022.json",
+    "sha256": "843bd587f6f9fa067c792aaf608dc82f161ac9e949ceca5d55c4766cba42b987"
+  },
+  "results": "PASS",
+  "reviewed_at": "2026-10-22T09:31:23.014770+00:00",
+  "reviewer": "/root/sdv_independent_verify",
+  "schema_version": "nml-independent-production-exact-source-review-v1",
+  "source_file_count": 34,
+  "working_tree_clean": true,
+  "worktree": "/workspace/nml-sdv-recurring"
+}

@@ -1,0 +1,165 @@
+{
+  "base_head": "e5da30977fc9dd0745154854ddbfeb712307cfde",
+  "baseline_reproduction": {
+    "path": "/tmp/nml-production-fresh-host-crash-repro-e5da309/reproduction.json",
+    "sha256": "fba5ec45bae4bda7bf44064069049ad94f4a63dd9a5e5b46ed88df1841413601",
+    "summary": {
+      "code_commit": "e5da30977fc9dd0745154854ddbfeb712307cfde",
+      "duplicate_logical_subject_recreated": true,
+      "evidence_lane": "SYNTHETIC_DEVELOPMENT_ONLY_NO_ACTUAL_ISSUANCE",
+      "first_generation_started_at": "2026-10-23T22:30:01.000000Z",
+      "first_issued_at": null,
+      "first_local_bytes_preserved": true,
+      "first_original_id": "46d804a7d1f7146d8d5d180c9bd95a7f3a0599087ca9c08515cca8271fe10d13",
+      "first_work_root": "/tmp/tmpmjtfi865/worker-1",
+      "fresh_counts": {
+        "forecasts": 4,
+        "grades": 0,
+        "outcomes": 0
+      },
+      "fresh_generation_started_at": "2026-10-23T22:30:15.000000Z",
+      "fresh_issued_at": null,
+      "fresh_original_id": "c42eb92c0eb56296bcf6b33e88e96ce2959b8e4b1772cdb6c043153deb48aa73",
+      "fresh_status": "ISSUED_PENDING_OUTCOMES",
+      "genuine_forecasts": 0,
+      "hard_kill_exit": 77,
+      "http_requests": 0,
+      "model_fit": "EXPLICIT_TINY_TEST_DOUBLE",
+      "prepared_remote_commit": "eadcab832eda80f602ec9a4661053b66a855339d",
+      "remote_commit_after_hardkill": "eadcab832eda80f602ec9a4661053b66a855339d",
+      "remote_had_no_first_r0": true,
+      "retained_artifacts": "/tmp/nml-production-fresh-host-crash-repro-e5da309",
+      "same_input": true,
+      "same_model": true,
+      "same_player": true,
+      "same_producer": true,
+      "schema_version": "nml-synthetic-fresh-host-hardkill-reproduction-v1",
+      "second_work_root": "/tmp/tmpmjtfi865/worker-2"
+    }
+  },
+  "branch": "implementation/sdv-recurring-pregame",
+  "external_actions": {
+    "activation_dispatch_or_deployment": 0,
+    "frozen_experiments": 0,
+    "genuine_forecasts": 0,
+    "hosted_archive_writes": 0,
+    "hosted_git_pushes": 0,
+    "http_gets": 0,
+    "real_history_model_fits": 0
+  },
+  "findings": [
+    {
+      "baseline": "Actual fork os._exit77 after first local R0 left remote at prepared snapshot; fresh root generated a different original ID for the same input/player/model/producer while old local original still existed.",
+      "fix": "OPEN is independently retained before any fitting. An unresolved recovered OPEN permits exact existing-original acknowledgment only; it cannot authorize missing generation or mint closure. Caught completion can CLOSED only after the exact full original/forensic footprint independently recovers.",
+      "id": "fresh-host-hidden-original-duplication",
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "fix": "Private process-owned attempt handle plus exact Store prewrite recovered-footprint permit is required for each new CLOSED. Recovery checks unique OPEN, run/task/input/shard/ordinal/clock, exact source bytes/dependencies/capacity and nonforking closure; retained records alone never mint a live capability.",
+      "id": "generic-fresh-writer-closure-capability",
+      "risk": "Knowing OPEN and an old OPEN-only snapshot cannot establish that no hidden local original exists.",
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "baseline_reproduction": {
+        "error": null,
+        "grading": {},
+        "interruption_propagated": true,
+        "lane": "SYNTHETIC_ONLY",
+        "processing_complete": true,
+        "public_recovery_error": "Invalid production completed grading status",
+        "retained_grade_status": "STARTED"
+      },
+      "fix": "Explicit KeyboardInterrupt/SystemExit become FAILED_OR_PARTIAL reports after cleanup, preserving actual retained counts. Completion uses an explicit successful-status whitelist; early uncaught interruption is reported partial. Incomplete grading status remains valid public evidence and carries no scores.",
+      "id": "sigint-grade-status-poison",
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    }
+  ],
+  "fixed_reproduction": {
+    "note": "Fixed actual fork reproduction preceded subsequent interrupt-only reporting hardening; final integrated targeted tests cover that hardening and original-recovery guard together.",
+    "path": "/tmp/nml-production-fresh-host-crash-fixed-working-20261022/reproduction.json",
+    "sha256": "614535107ba92e001ac26305ebab650917011953ec6ba0a1877ca880f5c8ad45",
+    "summary": {
+      "base_commit": "e5da30977fc9dd0745154854ddbfeb712307cfde",
+      "evidence_lane": "SYNTHETIC_DEVELOPMENT_ONLY",
+      "first_generation_started_at": "2026-10-23T22:30:01.000000Z",
+      "first_issued_at": null,
+      "first_local_original_preserved": true,
+      "first_original_id": "46d804a7d1f7146d8d5d180c9bd95a7f3a0599087ca9c08515cca8271fe10d13",
+      "forged_handle_rejected": "Only this process's original issuance handle can close its attempt",
+      "fresh_closed_attempts": 0,
+      "fresh_error": "Earlier issuance attempt remains OPEN; recover original emergency bytes before generating missing forecasts",
+      "fresh_forecasts": 0,
+      "fresh_status": "FAILED_OR_PARTIAL",
+      "genuine_forecasts": 0,
+      "guard_source_sha256": {
+        "multisport_lab/sdv_production_coordinator.py": "cc959e25682e68c99939527808826e5a6574523d18933d4ef83e10478a4b72a5",
+        "multisport_lab/sdv_production_runner.py": "85a526d4cfd171ebbfaaa4e918cea059a2cdfab9872a8dc552c905782dd8df78",
+        "multisport_lab/sdv_production_store.py": "ed478f947eec607e6e7baa0b5d7255d197c2cc26347dc99562e56ce2ca460d5e"
+      },
+      "hard_exit": 77,
+      "http_requests": 0,
+      "open_retained_before_generation": true,
+      "prepared_remote_commit": "4379b088c1e113c084b51d63b9e07a91a7751d2e",
+      "real_model_fits": 0,
+      "remote_commit_after_hardkill": "8f3bce350e1f743c347b0be967a575ed9650e716",
+      "retained_open_attempts": 1,
+      "revision": "WORKING_FIX_AFTER_BASELINE",
+      "schema_version": "nml-synthetic-fresh-host-hardkill-fixed-v1",
+      "source_captures_in_fixture": 2
+    }
+  },
+  "independent_commands": [
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_issue_status test_sdv_production_coordinator.ProductionCoordinatorTests.test_interrupted_peer_is_preserved_and_restart_generates_only_missing_originals test_sdv_production_coordinator.ProductionCoordinatorTests.test_complete_recovered_open_attempt_needs_no_generation_or_fabricated_closure -v",
+      "result": "PASS",
+      "seconds": 18.607,
+      "tests": 12
+    },
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_coordinator.ProductionCoordinatorTests.test_process_death_after_local_original_blocks_fresh_host_regeneration test_sdv_production_coordinator.ProductionCoordinatorTests.test_keyboard_interrupt_retains_incomplete_grade_status_that_public_recovery_accepts -v",
+      "result": "PASS",
+      "seconds": 11.562,
+      "tests": 2
+    },
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_runner.ProductionRunnerTests.test_early_interruption_report_never_claims_completed_operating_state test_sdv_production_runner.ProductionRunnerTests.test_production_emergency_artifacts_are_failure_only_narrow_and_temporary -v",
+      "result": "PASS",
+      "seconds": 0.023,
+      "tests": 2
+    },
+    "Actual separate forked os._exit77 reproduction on baseline and fixed worktrees; originals/reproduction metadata retained in the two directories above.",
+    "Read-only helper/Store graph/finally control-flow review; no repository edits."
+  ],
+  "limitations": [
+    "Working-source review requires a new exact committed-head receipt after source freeze.",
+    "The e5da full-history measurement remains frozen baseline evidence; its timing does not establish new OPEN/CLOSED connected-path timing.",
+    "No hosted archive write/readback success or hosted timing is established here; no blocked action was retried.",
+    "Synthetic development receipts have issued_at=null and establish no actual prospective issuance or predictive qualification.",
+    "Required final integration suite and independent remote recovery remain integration-owner tasks."
+  ],
+  "material_findings_remaining": [],
+  "preservation": {
+    "changed_original_json_records": [],
+    "changed_protected_source_files": [],
+    "original_json_records": 19,
+    "pin": "0c37b30060c2dffb20226bd3efbedc65a75d04e3",
+    "prior_capacity_receipt_preserved": "/tmp/nml-independent-production-capacity-review-20261022.json",
+    "prior_exact_source_receipt_preserved": "/tmp/nml-independent-production-exact-source-e5da309-20261022.json",
+    "protected_source_files": 23
+  },
+  "reviewed_at": "2026-10-22T10:01:51.965072+00:00",
+  "reviewer": "/root/sdv_independent_verify",
+  "revision_status": "FINAL_WORKING_SOURCE_REVIEW_BEFORE_FORWARD_SOURCE_COMMIT",
+  "schema_version": "nml-independent-production-interruption-review-v1",
+  "source_sha256": {
+    ".github/workflows/nba-operations.yml": "017536d67acc3b7d598b3ba7288e59fa5ad2494e33e72e95e9536676df4548a5",
+    "multisport_lab/sdv_production_coordinator.py": "e866efd7e59ec51bdf9c5db2d28d07322f261d5dccb709fe0b72ca814093ece1",
+    "multisport_lab/sdv_production_publication.py": "436bf40ac7797fb61fa5185141582e10c1c455529c4f3717079e59e9c849f494",
+    "multisport_lab/sdv_production_runner.py": "85a526d4cfd171ebbfaaa4e918cea059a2cdfab9872a8dc552c905782dd8df78",
+    "multisport_lab/sdv_production_store.py": "ed478f947eec607e6e7baa0b5d7255d197c2cc26347dc99562e56ce2ca460d5e",
+    "scripts/diagnose_sdv_production.py": "5865828a2a333e7024ebdabe38173ad0e472f1dc9b1a263453fbf168077e6bde",
+    "web/production.mjs": "ea5849f1def2e222ec058c1e85d3f3b6d63aa998606eb27d0da2b0f47212364a"
+  },
+  "worktree": "/workspace/nml-sdv-recurring"
+}

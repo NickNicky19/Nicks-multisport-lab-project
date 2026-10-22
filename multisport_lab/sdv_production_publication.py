@@ -92,6 +92,60 @@ def active_grades(records):
             and body["grade_id"] not in old_grades and body["outcome_id"] not in old_outcomes]
 
 
+def _validate_issuance_attempts(records):
+    """Validate public peer relations; full footprint recovery stays server-side."""
+    from . import sdv_production_runner as runner
+    bodies = {row["original_id"]: original_record(row) for row in records}
+    inputs = {body["input_id"]: body for body in bodies.values() if body["schema_version"] == common.INPUT_SCHEMA}
+    opens, closes, tasks, scopes = {}, {}, {}, {}
+    statuses = [body for body in bodies.values() if body["schema_version"] == common.STATUS_SCHEMA
+                and body["phase"] in {"PREPARE", "ISSUE", "GRADE"}]
+    for body in statuses:
+        details = body["details"]
+        common.sha(details.get("task_id"))
+        matching = [value for value in inputs.values()
+                    if value["plan_id"] == body["plan_id"] and value["cycle_id"] == body["cycle_id"]]
+        index = details.get("shard_index")
+        common.require(len(matching) == 1 and type(index) is int and 0 <= index < len(matching[0]["shards"])
+                       and details.get("player_ids") == matching[0]["shards"][index],
+                       "Public issuance attempt lacks its exact input shard")
+        scope = (body["plan_id"], body["cycle_id"], matching[0]["input_id"], index, tuple(details["player_ids"]))
+        common.require(details["task_id"] not in tasks or tasks[details["task_id"]] == scope,
+                       "Public issuance task changed its immutable input shard")
+        common.require(scope not in scopes or scopes[scope] == details["task_id"],
+                       "Public issuance shard changed its immutable task")
+        tasks[details["task_id"]], scopes[scope] = scope, details["task_id"]
+        if body["status"] not in {runner.ISSUE_OPEN, runner.ISSUE_CLOSED}:
+            continue
+        runner.validate_body(body)
+        if body["status"] == runner.ISSUE_OPEN:
+            opens[body["status_id"]] = body
+        else:
+            original = details["issuance_attempt"]["open_status_id"]
+            common.require(original not in closes, "Public issuance attempt has multiple closures")
+            closes[original] = body
+    for original, body in closes.items():
+        opened = opens.get(original)
+        common.require(opened is not None, "Public issuance closure lost its original OPEN status")
+        common.require(all(body[key] == opened[key] for key in ("plan_id", "cycle_id", "phase", "run_id"))
+            and all(body["details"][key] == opened["details"][key] for key in ("task_id", "shard_index", "player_ids"))
+            and all(body["details"]["issuance_attempt"][key] == opened["details"]["issuance_attempt"][key]
+                    for key in ("attempt_id", "attempt_number", "run_attempt", "opened_at")),
+            "Public issuance closure changed its original attempt identity")
+    per_task = {}
+    for opened in opens.values():
+        per_task.setdefault(opened["details"]["task_id"], []).append(opened)
+    for attempts in per_task.values():
+        attempts.sort(key=lambda body: body["details"]["issuance_attempt"]["attempt_number"])
+        for number, opened in enumerate(attempts, 1):
+            common.require(opened["details"]["issuance_attempt"]["attempt_number"] == number,
+                           "Public issuance attempt sequence is incomplete or duplicated")
+            if number > 1:
+                previous = closes.get(attempts[number-2]["status_id"])
+                common.require(previous is not None and common.clock(previous["observed_at"]) <= common.clock(opened["observed_at"]),
+                               "Public issuance attempt started before its prior footprint closed")
+
+
 def unresolved_grading(records):
     """A newer failed run cannot erase a known later-statistics conflict."""
     latest, task_bindings, shard_tasks = {}, {}, {}
@@ -298,6 +352,7 @@ def validate_records(records, *, generated_at, allow_development=True):
     active = active_grades(records)
     common.require(len({body["forecast_id"] for body in active}) == len(active),
                    "Multiple active public statistical grades for an original")
+    _validate_issuance_attempts(records)
     unresolved_grading(records)
     return records
 

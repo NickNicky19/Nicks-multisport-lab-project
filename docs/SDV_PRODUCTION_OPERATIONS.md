@@ -172,9 +172,21 @@ GitHub transport has its separate bounded limits; it is not a provider-request
 budget. No request bypasses an access denial or automatic approval rejection.
 
 Both laws preflight before writing a player pair. Checkpoints batch at most four
-subjects/eight forecast references. On interruption, recover originals first,
-acknowledge still-timely retained writes, and generate only missing peers while
-timely. Partial success is retained. A late peer is not regenerated or erased.
+subjects/eight forecast references. Before generation, an OPEN attempt is
+independently checkpointed. The original executing process can close it only
+after independent recovery of its complete current footprint, including any
+unpublished forensic receipt. These two status records use the existing
+64-status reserve; they are not extra per-forecast records.
+
+On interruption, recover originals first. A caught failure with a durably CLOSED
+complete footprint permits missing peers to continue only while timely. A fresh
+host finding an unresolved OPEN refuses generation: unseen local originals may
+have existed before the previous host died. It cannot close that old attempt
+using its incomplete inventory. Recover the emergency artifact's original bytes
+and review the uncertain attempt; if those bytes are unavailable, retain the
+partial/unrecoverable result rather than creating another original. An
+unpublished receipt likewise blocks generation until addressed. A late peer is
+never regenerated or erased.
 Failures appear in the actual workflow, bounded retained status/report, and one
 project failure issue per UTC date. They never become a fabricated atomic success.
 
@@ -230,7 +242,10 @@ aliases, a filesystem archive and a temporary bare Git repository. It cannot iss
 genuine records or evaluate accuracy. Hosted diagnostic mode additionally requires
 explicit authorization and the diagnostic workflow input; it remains blocked by
 the recorded automatic-review rejection until the owner authorizes the additional
-archive mutation. Local timing is not hosted timing or genuine pregame evidence.
+archive mutation. Its archive client enforces at most **32 MiB / 64 new immutable
+objects** before mutation. It makes zero sports-source requests, performs no
+public publication, and includes the same OPEN/CLOSED checkpoints as operation.
+Local timing is not hosted timing or genuine pregame evidence.
 
 ## Current release and remaining operating gate
 

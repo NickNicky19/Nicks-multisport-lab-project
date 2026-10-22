@@ -28,6 +28,7 @@ from multisport_lab.integrity import IntegrityError, canonical, stamp, utc
 from multisport_lab import sdv_production_common as common
 from multisport_lab import sdv_production_inputs as inputs
 from multisport_lab import sdv_production_forecasts as forecasts
+from multisport_lab.sdv_production_coordinator import open_issuance_attempt, close_issuance_attempt
 from multisport_lab.sdv_production_archive import FileArchive, GitHubReleaseArchive
 from multisport_lab.sdv_production_remote import ProductionGitCheckpointWriter
 from multisport_lab.sdv_production_store import ProductionStore
@@ -35,6 +36,15 @@ from multisport_lab.sdv_production_store import ProductionStore
 PURPOSE="full-26645-history-16-player-original-checkpoint-latency"
 EVENT_ID="999999999"
 PLAYER_COUNT=16
+MAX_NEW_ARCHIVE_BYTES=32*1024*1024
+MAX_NEW_ARCHIVE_OBJECTS=64
+
+
+def diagnostic_archive(work,*,hosted):
+    """Bound the separately authorized diagnostic before any remote mutation."""
+    limits={"allow_diagnostics":True,"write_budget_bytes":MAX_NEW_ARCHIVE_BYTES,
+        "write_budget_objects":MAX_NEW_ARCHIVE_OBJECTS}
+    return GitHubReleaseArchive(**limits) if hosted else FileArchive(Path(work)/"archive",**limits)
 
 
 def _csv(rows):
@@ -114,7 +124,7 @@ def run_diagnostic(work_dir,*,model_commit=None,hosted=False,authorize_diagnosti
     stages["synthetic_input_and_binding_seconds"]=time.monotonic()-timer
     token=common.now().strftime("%Y%m%dT%H%M%S");tag="diagnostics-nml-nba-production-load-"+token.lower()
     branch="diagnostics/sdv-production-load-"+token
-    archive=GitHubReleaseArchive(allow_diagnostics=True) if hosted else FileArchive(work/"archive",allow_diagnostics=True)
+    archive=diagnostic_archive(work,hosted=hosted)
     timer=time.monotonic();source_refs=tuple(archive.retain_source(*assets[role],tag=tag) for role in ("schedule","roster"))
     stages["raw_source_archive_and_recovery_seconds"]=time.monotonic()-timer
     store=ProductionStore(work/"state",source_root=ROOT,source_resolver=archive.recover_source,
@@ -134,7 +144,17 @@ def run_diagnostic(work_dir,*,model_commit=None,hosted=False,authorize_diagnosti
         return proof
     checkpoint((input_ref,))
     forecasts.prepare_intent(store,input_ref,binding,input_body["shards"][0],plan_ref=plan_ref,checkpoint=checkpoint,mode="DEVELOPMENT_ONLY")
-    timer=time.monotonic();forecasts.issue_shard(store,input_ref,binding,input_body["shards"][0],plan_ref=plan_ref,checkpoint=checkpoint,mode="DEVELOPMENT_ONLY")
+    timer=time.monotonic()
+    task_id=hashlib.sha256(canonical({"purpose":PURPOSE,"plan_id":plan["plan_id"],"shard_index":0})).hexdigest()
+    handle=open_issuance_attempt(store,input_body=input_body,task_id=task_id,shard_index=0,
+        authorization=None,checkpoint=checkpoint)
+    try:
+        forecasts.issue_shard(store,input_ref,binding,input_body["shards"][0],plan_ref=plan_ref,checkpoint=checkpoint,mode="DEVELOPMENT_ONLY")
+    except Exception as error:
+        try:close_issuance_attempt(store,handle,checkpoint=checkpoint,error=type(error).__name__)
+        except Exception:pass  # Keep the original failure and uncertain OPEN; never fabricate closure.
+        raise
+    close_issuance_attempt(store,handle,checkpoint=checkpoint)
     stages["complete_shard_generation_persistence_checkpoint_seconds"]=time.monotonic()-timer
     pairs=[(ref,body) for ref,body in store.records() if body["schema_version"] == common.FORECAST_SCHEMA]
     common.require(len(pairs) == 2*PLAYER_COUNT and all(body["mode"] == "DEVELOPMENT_ONLY" and body["issued_at"] is None for _,body in pairs),"Diagnostic produced an incomplete or genuine record")
@@ -157,7 +177,8 @@ def run_diagnostic(work_dir,*,model_commit=None,hosted=False,authorize_diagnosti
             timing[key].append(value.total_seconds())
     maxima={key:max(values) for key,values in timing.items()};capacity=store.capacity()
     envelopes=[(Path(store.root)/"records/forecasts"/(ref.record_id+".json")).stat().st_size for ref,_ in pairs]
-    report={"schema_version":"nba-sdv-production-load-diagnostic-v1","purpose":PURPOSE,"evidence_lane":"DEVELOPMENT_ONLY",
+    inventory=archive.inventory()
+    report={"schema_version":"nba-sdv-production-load-diagnostic-v2","purpose":PURPOSE,"evidence_lane":"DEVELOPMENT_ONLY",
         "synthetic_source_metadata":True,"sports_data_requests":0,"genuine_forecasts":0,"published_offers":0,"public_publication":False,
         "prospective_outcomes":0,"prospective_grades":0,"qualified_tickets":0,"financial_settlements":0,
         "started_at":started,"completed_at":stamp(common.now()),"total_seconds":time.monotonic()-overall,"stages":stages,
@@ -167,6 +188,10 @@ def run_diagnostic(work_dir,*,model_commit=None,hosted=False,authorize_diagnosti
         "maximum_actual_stage_seconds":maxima,"within_300_second_original_latency":maxima["generation_to_original_readback_seconds"] <= 300,
         "within_900_second_generation_window_duration":stages["complete_shard_generation_persistence_checkpoint_seconds"] <= 900,
         "actual_T90_issuance_tested":False,"capacity":capacity,"independent_restart_verified":True,"hosted":hosted,
+        "durable_open_and_closed_attempt_checkpoints_included":True,
+        "new_archive_write_limits":{"bytes":MAX_NEW_ARCHIVE_BYTES,"objects":MAX_NEW_ARCHIVE_OBJECTS},
+        "archive_usage":{"total_objects":len(inventory),"total_bytes":sum(row[2] for row in inventory),
+            "new_bytes_reserved":archive.new_bytes_reserved,"new_objects_reserved":archive.new_objects_reserved},
         "archive_tag":tag,"records_branch":branch,"retained_work_dir":str(work),"checkpoints":checkpoints,
         "outcome_fixture_note":"No future result was manufactured. APPEARED/DNP/correction semantics have separate invented-source unit tests; this diagnostic measures original delivery only.",
         "limitations":["No model accuracy or comparative aggregate evaluated.","Synthetic future schedule/roster with retained IDs used only as aliases.",

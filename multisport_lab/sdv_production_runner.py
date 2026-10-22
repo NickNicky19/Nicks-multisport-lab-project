@@ -18,6 +18,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import sys
 import tempfile
 import urllib.parse
 import urllib.request
@@ -176,14 +177,45 @@ def validate_body(body):
     if schema == common.AUTH_SCHEMA:return validate_authorization(body)
     if schema == common.STATUS_SCHEMA:
         common.exact(body,{"schema_version","protocol_id","plan_id","cycle_id","phase","status","details","observed_at","run_id","status_id"},"status")
+        common.require(body["protocol_id"] == common.PROTOCOL_ID,"Wrong production status protocol")
         for key in ("phase","status"):common.text(body[key],128)
         common.require(type(body["details"]) is dict and len(canonical(body["details"])) <= 4096,"Unbounded production failure details")
         common.require(common.clock(body["observed_at"]) <= common.now(),"Production status is future-dated")
         common.require(type(body["run_id"]) is int and body["run_id"] >= 0,"Invalid status run")
         common.sha(body["plan_id"])
         common.require(type(body["cycle_id"]) is str and re.fullmatch(r"prod-[0-9]{8}-[1-9][0-9]*-[a-f0-9]{12}",body["cycle_id"]),"Invalid status cycle identity")
+        if body["status"] in {ISSUE_OPEN,ISSUE_CLOSED}:
+            common.require(body["phase"] == "ISSUE","Issuance guard cannot represent another operating phase")
+            details=body["details"];common.exact(details,{"task_id","shard_index","player_ids","error","final_source_pack_ref","processing_complete","issuance_attempt"},"issuance attempt details")
+            common.sha(details["task_id"])
+            common.require(type(details["shard_index"]) is int and 0 <= details["shard_index"] <= 3
+                and type(details["player_ids"]) is list and 0 < len(details["player_ids"]) <= 16
+                and len(set(details["player_ids"])) == len(details["player_ids"])
+                and all(type(pid) is str and re.fullmatch(r"[1-9][0-9]*",pid) for pid in details["player_ids"])
+                and details["processing_complete"] is False and details["final_source_pack_ref"] is None,
+                "Issuance guard changed its exact shard or completion meaning")
+            common.require(details["error"] is None or type(details["error"]) is str and len(details["error"]) <= 1000,"Unbounded issuance error")
+            attempt=details["issuance_attempt"];common.exact(attempt,ISSUE_ATTEMPT_FIELDS,"issuance attempt")
+            common.require(type(attempt["attempt_number"]) is int and attempt["attempt_number"] >= 1
+                and type(attempt["run_attempt"]) is int and attempt["run_attempt"] >= 1
+                and common.clock(attempt["opened_at"]) <= common.clock(body["observed_at"]),"Issuance attempt clocks differ")
+            expected=digest({key:details[key] for key in ("task_id","shard_index","player_ids")}|{
+                "run_id":body["run_id"],"run_attempt":attempt["run_attempt"],"opened_at":attempt["opened_at"],"attempt_number":attempt["attempt_number"]})
+            common.require(attempt["attempt_id"] == expected,"Issuance attempt identity differs")
+            if body["status"] == ISSUE_OPEN:
+                common.require(body["observed_at"] == attempt["opened_at"] and all(attempt[key] is None for key in (
+                    "open_status_id","footprint_snapshot_ref","footprint_snapshot_id","footprint_recovered_at")),"Open issuance attempt invents closure")
+            else:
+                common.sha(attempt["open_status_id"]);common.sha(attempt["footprint_snapshot_id"]);common.archive_ref(attempt["footprint_snapshot_ref"],diagnostic=True)
+                common.require(common.clock(attempt["opened_at"]) <= common.clock(attempt["footprint_recovered_at"])
+                    <= common.clock(body["observed_at"]),"Issuance closure precedes its independently recovered footprint")
         common.check_seal(body,"status_id");return body
     raise IntegrityError("Unsupported production runner record")
+
+
+ISSUE_OPEN="ISSUANCE_ATTEMPT_OPEN"
+ISSUE_CLOSED="ISSUANCE_ATTEMPT_CLOSED"
+ISSUE_ATTEMPT_FIELDS={"attempt_id","attempt_number","run_attempt","opened_at","open_status_id","footprint_snapshot_ref","footprint_snapshot_id","footprint_recovered_at"}
 
 
 ARCHIVE_BUDGET_SCHEMA="nba-sdv-production-global-archive-budget-v1"
@@ -838,6 +870,9 @@ def execute(action,*,work_root,task=None):
                 try:report["alert"]=failure_alert(report,work)
                 except (IntegrityError,OSError,subprocess.SubprocessError) as alert_error:report["alert_error"]=safe_error(alert_error)
         finally:
+            interrupted=sys.exc_info()[1]
+            if interrupted is not None and report["status"] == "STARTED":
+                report.update(status="PARTIAL_OR_FAILED",error=type(interrupted).__name__+": "+safe_error(interrupted))
             report["completed_at"]=stamp(common.now());_write_json(work/"execution-report.json",report)
     return report
 

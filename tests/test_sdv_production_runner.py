@@ -9,6 +9,7 @@ import unittest
 from unittest.mock import patch
 from types import SimpleNamespace
 import hashlib
+import re
 
 from multisport_lab import sdv_production_common as common
 from multisport_lab import sdv_production_runner as runner
@@ -39,6 +40,59 @@ class ProductionRunnerTests(unittest.TestCase):
             "run_original":runner._encoded(canonical(run)),"executed_files":self.binding["files"]},"authorization_id")
 
     def reseal(self,body):return common.seal({k:v for k,v in body.items() if k != "authorization_id"},"authorization_id")
+
+    def test_issuance_attempt_status_rejects_checksum_consistent_wrong_meaning(self):
+        details={"task_id":"a"*64,"shard_index":0,"player_ids":["1000"],"error":None,"final_source_pack_ref":None,"processing_complete":False}
+        opened=stamp(self.now);attempt={"run_attempt":1,"attempt_number":1,"opened_at":opened,"open_status_id":None,
+            "footprint_snapshot_ref":None,"footprint_snapshot_id":None,"footprint_recovered_at":None}
+        attempt["attempt_id"]=hashlib.sha256(canonical({key:details[key] for key in ("task_id","shard_index","player_ids")}|{
+            "run_id":123,"run_attempt":1,"attempt_number":1,"opened_at":opened})).hexdigest()
+        details["issuance_attempt"]=attempt
+        body=common.seal({"schema_version":common.STATUS_SCHEMA,"protocol_id":common.PROTOCOL_ID,"plan_id":"b"*64,
+            "cycle_id":"prod-20261024-900-"+"c"*12,"phase":"ISSUE","status":runner.ISSUE_OPEN,"details":details,"observed_at":opened,"run_id":123},"status_id")
+        runner.validate_body(body)
+        for mutate in (lambda b:b.update(protocol_id="different"),lambda b:b.update(phase="GRADE"),
+                lambda b:b["details"].update(processing_complete=True),lambda b:b["details"]["issuance_attempt"].update(attempt_number=2),
+                lambda b:b["details"]["issuance_attempt"].update(open_status_id="f"*64),lambda b:b.update(status=runner.ISSUE_CLOSED)):
+            wrong=deepcopy(body);mutate(wrong)
+            wrong=common.seal({key:value for key,value in wrong.items() if key != "status_id"},"status_id")
+            with self.subTest(wrong=wrong["status"]),self.assertRaises(IntegrityError):runner.validate_body(wrong)
+
+    def test_production_emergency_artifacts_are_failure_only_narrow_and_temporary(self):
+        text=(Path(__file__).resolve().parents[1]/".github/workflows/nba-operations.yml").read_text(encoding="utf-8")
+        def job(name):
+            start=text.index("\n  "+name+":\n")+1
+            following=re.search(r"\n  [a-z][a-z-]*:\n",text[start+len(name)+4:])
+            end=start+len(name)+4+following.start() if following else len(text)
+            return text[start:end]
+        for name in ("prepare","work","grade","finish"):
+            with self.subTest(job=name):
+                block=job(name);upload=block.split("uses: actions/upload-artifact@",1)[1]
+                condition=block.split("uses: actions/upload-artifact@",1)[0].split("- name:")[-1]
+                expected=("if: failure() || steps.prepare.outputs.has_failures == 'true'" if name == "prepare" else "if: failure()")
+                self.assertIn(expected,condition)
+                self.assertNotIn("if: always()",condition)
+                self.assertIn("retention-days: 1\n",upload)
+                self.assertNotIn("retention-days: 14",upload)
+                paths=[line.strip() for line in upload.splitlines() if line.strip().startswith("${{ runner.temp }}")]
+                if name == "finish":
+                    self.assertEqual(paths,[])
+                    self.assertIn("path: ${{ runner.temp }}/nml-production-finish/execution-report.json",upload)
+                else:
+                    prefix="${{ runner.temp }}/nml-production-"+name
+                    self.assertEqual(paths,[prefix+"/execution-report.json",prefix+"/phases/originals/",prefix+"/phases/shards/*/records/"])
+                    self.assertIn("include-hidden-files: true",upload)
+                self.assertNotIn("/writers/",upload);self.assertNotIn("/.git",upload);self.assertNotIn("/archive/",upload)
+        self.assertIn("if: always() && needs.prepare.result == 'success' && needs.prepare.outputs.has_grade_tasks == 'true'",job("grade"))
+        self.assertIn("if: always() && needs.prepare.result == 'success'",job("finish"))
+        diagnostic=job("diagnostic");self.assertIn("retention-days: 1\n",diagnostic)
+        self.assertIn("DEVELOPMENT_ONLY",diagnostic);self.assertIn("include-hidden-files: true",diagnostic)
+        self.assertIn("/nml-production-diagnostic/state/records/",diagnostic)
+        self.assertNotIn("path: ${{ runner.temp }}/nml-production-diagnostic/\n",diagnostic)
+        # Protect the original first-cycle job byte-for-byte: its separate
+        # emergency path and fourteen-day retention were not part of this fix.
+        first=text.split("  first-cycle-postgame:\n",1)[1].split("\n  diagnostic:",1)[0]
+        self.assertEqual(hashlib.sha256(first.encode()).hexdigest(),"7fc9504dd80dcdf3e503ae3f224652a9fe782a7a7d31d3177e8c2a722182aef0")
 
     def test_stored_authority_requires_actual_run_semantics_with_valid_checksums(self):
         body=self.authority();self.assertIs(runner.validate_authorization(body),body)
@@ -229,6 +283,16 @@ class ProductionRunnerTests(unittest.TestCase):
             retained["attempts"][0].update(status="CAPTURED",used_gets=4,source_pack_ref=ref)
             runner.reconcile_publication(retained,writer,None)
             self.assertEqual(dispatch.call_count,2)
+
+    def test_early_interruption_report_never_claims_completed_operating_state(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            with patch.object(runner,"authorize_current_run",side_effect=KeyboardInterrupt("invented early SIGINT")):
+                with self.assertRaises(KeyboardInterrupt):runner.execute("prepare",work_root=root/"work")
+            report=runner._decode((root/"work/execution-report.json").read_bytes())
+            self.assertEqual(report["status"],"PARTIAL_OR_FAILED")
+            self.assertIn("KeyboardInterrupt",report["error"])
+            self.assertEqual(report["qualified_tickets"],0)
 
     def test_source_request_chain_must_authenticate_exact_consumed_bodies(self):
         from multisport_lab import sdv_production_inputs as inputs

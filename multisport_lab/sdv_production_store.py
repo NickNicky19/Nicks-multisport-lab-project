@@ -236,6 +236,7 @@ class ProductionStore:
         self._permit = None
         self._remote_permit = None
         self._local_permit = None
+        self._issue_closure_permit = None
         self._cache = None
         # Only successful semantic validation is reused. Every top-level
         # operation still reads/authenticates the actual parent receipt bytes.
@@ -519,7 +520,112 @@ class ProductionStore:
             previous_key = "previous_outcome_id" if old["schema_version"] == common.OUTCOME_SCHEMA else "previous_grade_id"
             id_key = common.ID_KEYS[old["schema_version"]]
             common.require(new[previous_key] == old[id_key] and _identity(new) == _identity(old),"Production correction changed its original subject or chain")
+        self._validate_issue_attempts(rows)
         return contexts
+
+    def _validate_issue_attempts(self, rows):
+        """Validate retained attempt evidence without minting execution authority."""
+        from . import sdv_production_runner as runner
+        statuses=[(ref,payload,body) for ref,(payload,body,_) in rows.items()
+            if body is not None and body["schema_version"] == common.STATUS_SCHEMA]
+        guards=[item for item in statuses if item[2]["status"] in {runner.ISSUE_OPEN,runner.ISSUE_CLOSED}]
+        groups={}
+        for item in guards:
+            body=item[2];details=body["details"]
+            key=(body["plan_id"],body["cycle_id"],details["shard_index"])
+            groups.setdefault(key,[]).append(item)
+        for key,group in groups.items():
+            linked=[(ref,body) for ref,(_,body,_) in rows.items() if body is not None
+                and body["schema_version"] == common.INPUT_SCHEMA
+                and (body["plan_id"],body["cycle_id"]) == key[:2]]
+            common.require(len(linked) == 1,"Issuance attempt lost its exact original input")
+            input_ref,input_body=linked[0]
+            same_shard=[body for _,_,body in statuses
+                if (body["plan_id"],body["cycle_id"],body["details"].get("shard_index")) == key]
+            common.require(len({body["details"]["task_id"] for body in same_shard}) == 1,
+                           "Issuance attempt changed its original task identity")
+            opened=sorted([item for item in group if item[2]["status"] == runner.ISSUE_OPEN],
+                          key=lambda item:item[2]["details"]["issuance_attempt"]["attempt_number"])
+            numbers=[item[2]["details"]["issuance_attempt"]["attempt_number"] for item in opened]
+            common.require(numbers == list(range(1,len(opened)+1)),"Issuance OPEN ordinals repeat or skip an original")
+            openings={body["status_id"]:(ref,payload,body) for ref,payload,body in opened}
+            closures={}
+            for item in group:
+                body=item[2]
+                if body["status"] == runner.ISSUE_CLOSED:
+                    parent=body["details"]["issuance_attempt"]["open_status_id"]
+                    common.require(parent in openings and parent not in closures,
+                                   "Issuance CLOSED lacks its unique retained OPEN original")
+                    closures[parent]=item
+            for index,(open_ref,open_payload,original) in enumerate(opened):
+                attempt=original["details"]["issuance_attempt"]
+                if index:
+                    previous=opened[index-1][2]["status_id"]
+                    common.require(previous in closures and common.clock(closures[previous][2]["observed_at"])
+                        <= common.clock(attempt["opened_at"]),"A new issuance attempt overlaps an unresolved OPEN")
+                common.require(common.clock(input_body["normalized_at"]) <= common.clock(attempt["opened_at"]),
+                               "Issuance OPEN precedes its exact input")
+                if input_body["mode"] == "PROSPECTIVE_RESEARCH":
+                    authorizations=[body for _,body,_ in rows.values() if body is not None
+                        and body["schema_version"] == common.AUTH_SCHEMA and body["run_id"] == original["run_id"]
+                        and body["run_attempt"] == attempt["run_attempt"]
+                        and body["executed_files"] == input_body["producer_binding"]["files"]
+                        and common.clock(body["verified_at"]) <= common.clock(attempt["opened_at"])]
+                    cutoff=common.clock(input_body["event"]["event_starts_at"])-timedelta(minutes=90)
+                    common.require(bool(authorizations) and cutoff <= common.clock(attempt["opened_at"])
+                        <= cutoff+timedelta(seconds=common.make_policy()["generation_window_seconds"]),
+                        "Issuance OPEN lacks matching authority or its registered window")
+                else:
+                    common.require(original["run_id"] == 0,"Development OPEN borrows a genuine run identity")
+                if original["status_id"] not in closures:continue
+                closed_ref,closed_payload,closed=closures[original["status_id"]]
+                closing=closed["details"]["issuance_attempt"]
+                common.require(closed["run_id"] == original["run_id"]
+                    and all(closed["details"][field] == original["details"][field]
+                            for field in ("task_id","shard_index","player_ids"))
+                    and all(closing[field] == attempt[field]
+                            for field in ("attempt_id","attempt_number","run_attempt","opened_at")),
+                    "Issuance CLOSED changed its original OPEN scope")
+                common.archive_ref(closing["footprint_snapshot_ref"],diagnostic=self.allow_diagnostics
+                    and input_body["mode"] == "DEVELOPMENT_ONLY")
+                snapshot=self._snapshot(closing["footprint_snapshot_ref"])
+                common.require(snapshot["snapshot_id"] == closing["footprint_snapshot_id"],
+                               "Issuance closure changed its recovered snapshot identity")
+                indexed={row["path"]:row for row in snapshot["entries"]}
+                by_path={"records/"+ref.kind+"/"+ref.record_id+".json":(ref,payload,body)
+                         for ref,(payload,body,_) in rows.items()}
+                common.require("records/"+closed_ref.kind+"/"+closed_ref.record_id+".json" not in indexed,
+                               "Issuance closure footprint includes its own later metadata")
+                counts={role:0 for role in SLOTS}
+                for entry in snapshot["entries"]+snapshot["unpublished_entries"]:
+                    path=self.root/entry["path"]
+                    common.require(path.is_file() and not path.is_symlink(),"Issuance footprint contains unavailable originals")
+                    raw=path.read_bytes()
+                    common.require(len(raw) == entry["bytes"] and hashlib.sha256(raw).hexdigest() == entry["sha256"],
+                                   "Issuance footprint changed retained original bytes")
+                    if entry["path"] in indexed:
+                        common.require(entry["path"] in by_path,"Issuance footprint contains a foreign typed original")
+                        _,payload,body=by_path[entry["path"]]
+                        common.require(utc(payload["received_at"]) <= common.clock(closing["footprint_recovered_at"]),
+                                       "Issuance footprint includes originals after its recovery clock")
+                        counts["corrections" if body is None else body["schema_version"]]+=1
+                        common.require(all("records/"+item["kind"]+"/"+item["record_id"]+".json" in indexed
+                            for item in payload["references"]),"Issuance footprint omits an original dependency")
+                for target in (input_ref,open_ref):
+                    common.require("records/"+target.kind+"/"+target.record_id+".json" in indexed,
+                                   "Issuance footprint omits its exact input or OPEN original")
+                forensic=snapshot["unpublished_entries"]
+                expected=_capacity_summary(snapshot["records"]+len(forensic),snapshot["bytes"]+
+                    sum(row["bytes"] for row in forensic),counts,sum(row["bytes"] for row in forensic),
+                    sum(row["bytes"] > MAX_FORENSIC_FILE_BYTES for row in forensic))
+                common.require(snapshot["capacity"] == expected,"Issuance footprint capacity contradicts its typed originals")
+                later=opened[index+1:]
+                for path,(_,_,body) in by_path.items():
+                    if (body is not None and body["schema_version"] == common.FORECAST_SCHEMA
+                        and (body["plan_id"],body["cycle_id"]) == key[:2]
+                        and body["player_id"] in original["details"]["player_ids"]):
+                        if not later or common.clock(body["generation_started_at"]) < common.clock(later[0][2]["observed_at"]):
+                            common.require(path in indexed,"Issuance closure omits a retained original forecast")
 
     @staticmethod
     def _revision(body, previous, id_key, previous_key):
@@ -655,6 +761,14 @@ class ProductionStore:
         try: yield
         finally: self._remote_permit = previous
 
+    @contextmanager
+    def _verified_issue_closure(self, body, archive_ref, recovered_at):
+        """Internal capability for the owned writer's independently read footprint."""
+        previous=self._issue_closure_permit
+        self._issue_closure_permit=(digest(body),digest(archive_ref),recovered_at)
+        try:yield
+        finally:self._issue_closure_permit=previous
+
     def append_body(self, body, *, references=(), archive_refs=(), logical_id=None):
         with self.lock(),self._operation():
             _checked(common.validate_body,body)
@@ -679,6 +793,13 @@ class ProductionStore:
                         and any(item.record_id == body["target"] for item in self._remote_permit[0]),"Remote completion requires actual independent archive recovery")
                 if schema == common.FORECAST_SCHEMA and body["mode"] == "PROSPECTIVE_RESEARCH":
                     common.require(self._permit == (digest(body),refs),"Genuine forecast append requires verified production generation")
+                if schema == common.STATUS_SCHEMA:
+                    from . import sdv_production_runner as runner
+                    if body["status"] == runner.ISSUE_CLOSED:
+                        attempt=body["details"]["issuance_attempt"]
+                        common.require(self._issue_closure_permit == (digest(body),
+                            digest(attempt["footprint_snapshot_ref"]),attempt["footprint_recovered_at"]),
+                            "Issuance CLOSED requires the actual owned attempt's recovered-footprint capability")
             size = _size(kind,logical,data,refs)
             common.require(size <= CEILINGS[schema],"Production envelope exceeds its typed byte ceiling")
             rows = self._rows()
@@ -692,6 +813,16 @@ class ProductionStore:
                 prospective = {**rows,prospective_ref:(synthetic,body,archives)}
                 common.require(all(ref in rows for ref in refs),"Production append references missing originals")
                 contexts = self._validate_graph(prospective)
+                if schema == common.STATUS_SCHEMA:
+                    from . import sdv_production_runner as runner
+                    if body["status"] == runner.ISSUE_CLOSED:
+                        snapshot=self._snapshot(body["details"]["issuance_attempt"]["footprint_snapshot_ref"])
+                        entries,unpublished=self._snapshot_entries()
+                        current=common.seal({"schema_version":SNAPSHOT_SCHEMA,"protocol_id":common.PROTOCOL_ID,
+                            "entries":entries,"unpublished_entries":unpublished,"records":len(entries),
+                            "bytes":sum(item["bytes"] for item in entries),"capacity":self._capacity(rows)},"snapshot_id")
+                        common.require(snapshot == current,
+                                       "Issuance closure did not independently recover the complete current footprint")
                 if schema == common.GRADE_SCHEMA and body["mode"] == "PROSPECTIVE_RESEARCH":
                     forecast_ref = next(ref for ref in refs if rows[ref][1]["schema_version"] == common.FORECAST_SCHEMA)
                     common.require(self._admission(forecast_ref,prospective,contexts)["eligible"],

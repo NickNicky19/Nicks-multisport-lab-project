@@ -218,3 +218,33 @@ test('configured cron check before the first enabled game date is the next actua
   const b=repack(copy(),[],'2026-10-23T13:17:00.000000Z');assert.equal(b.index.policy.enabled_after,'2026-10-24T00:00:00.000000Z');assert.equal(b.index.operations.next_configured_check_at,'2026-10-23T13:32:00.000000Z');validate(b);
   b.index.operations.next_configured_check_at='2026-10-24T00:02:00.000000Z';b.index=seal(b.index,'index_id');assert.throws(()=>validate(b),/configured next check/);
 });
+
+function issuanceStatuses(bundle,{number=1,openedOffset=1000,closedOffset=60000,shard=0,task=null}={}) {
+  const f=originalProduction(of(bundle,'forecast')[0]),input=originalProduction(of(bundle,'input')[0]),opened=Date.parse(f.cutoff_at)+openedOffset,details={task_id:task??hash('SYNTHETIC ISSUE TASK '+f.cycle_id+' '+shard),shard_index:shard,player_ids:input.shards[shard],error:null,final_source_pack_ref:null,processing_complete:false},identity={...details,run_id:123,run_attempt:1,opened_at:stamp(opened),attempt_number:number};
+  delete identity.error;delete identity.final_source_pack_ref;delete identity.processing_complete;
+  details.issuance_attempt={attempt_id:hash(identity),attempt_number:number,run_attempt:1,opened_at:stamp(opened),open_status_id:null,footprint_snapshot_ref:null,footprint_snapshot_id:null,footprint_recovered_at:null};
+  const body={schema_version:'nba-sdv-production-status-v1',protocol_id:f.protocol_id,plan_id:f.plan_id,cycle_id:f.cycle_id,phase:'ISSUE',status:'ISSUANCE_ATTEMPT_OPEN',details,observed_at:stamp(opened),run_id:123},original=projection(body,'input_captures','SYNTHETIC OPEN '+number+' '+shard+' '+opened);
+  if(closedOffset===null)return [original];
+  const closed=structuredClone(body),at=Date.parse(f.cutoff_at)+closedOffset,sha=hash('SYNTHETIC FOOTPRINT '+number+' '+shard);closed.status='ISSUANCE_ATTEMPT_CLOSED';closed.observed_at=stamp(at);Object.assign(closed.details.issuance_attempt,{open_status_id:original.original_id,footprint_snapshot_ref:{tag:'nml-nba-records-v1-202610',name:`object-${sha}.z`,sha256:sha,bytes:128},footprint_snapshot_id:hash('SYNTHETIC SNAPSHOT MANIFEST '+number+' '+shard),footprint_recovered_at:stamp(at-1000)});
+  return [original,projection(closed,'input_captures','SYNTHETIC CLOSED '+number+' '+shard+' '+at)];
+}
+
+test('typed issuance attempts preserve closed originals and a later unresolved OPEN without changing admission',async()=>{
+  const b=prospective(),first=issuanceStatuses(b),second=issuanceStatuses(b,{number:2,openedOffset:70000,closedOffset:100000}),third=issuanceStatuses(b,{number:3,openedOffset:110000,closedOffset:null}),result=repack(b,[...all(b),...first,...second,...third]);
+  const before=all(result).map(row=>row.record_json),c=validate(result);await verifyProductionHashes(result.index,result.pages,webcrypto);assert.equal(c.statuses.length,5);assert.equal(c.loaded_counts.genuine_forecasts,2);assert.equal(c.loaded_counts.pending_grades,2);assert.deepEqual(all(result).map(row=>row.record_json),before);
+  assert.doesNotMatch(renderProductionResearch(c,{now:Date.parse(result.index.generated_at)}),/<h[1-6][^>]*>ISSUANCE_ATTEMPT_/);
+});
+
+test('checksum-consistent issuance status meaning and exact OPEN closure relationships fail closed',async()=>{
+  const b=prospective(),[open,close]=issuanceStatuses(b);
+  for(const change of ['phase','complete','cohort','unbound','missing','error','run_attempt','future_open','open_closure','close_clock','orphan','changed_run','changed_attempt','duplicate_close','skip_attempt','reordered_attempt']){
+    let records=[open,close],body=originalProduction(change==='open_closure'||change==='future_open'||change==='run_attempt'||change==='phase'||change==='complete'||change==='cohort'||change==='unbound'||change==='missing'||change==='error'?open:close);
+    if(change==='phase')body.phase='GRADE';if(change==='complete')body.details.processing_complete=true;if(change==='cohort')body.details.player_ids=['999999'];if(change==='unbound')body.cycle_id='prod-20990101-999-aaaaaaaaaaaa';if(change==='missing')delete body.details.issuance_attempt.run_attempt;if(change==='error')body.details.error='x'.repeat(1001);if(change==='run_attempt')body.details.issuance_attempt.run_attempt=0;if(change==='future_open')body.details.issuance_attempt.opened_at=stamp(Date.parse(body.observed_at)+1000);if(change==='open_closure')body.details.issuance_attempt.open_status_id='f'.repeat(64);if(change==='close_clock')body.details.issuance_attempt.footprint_recovered_at=stamp(Date.parse(body.observed_at)+1000);if(change==='orphan')body.details.issuance_attempt.open_status_id='f'.repeat(64);if(change==='changed_run')body.run_id=999;if(change==='changed_attempt')body.details.issuance_attempt.attempt_number=2;
+    if(change==='duplicate_close'){const duplicate=structuredClone(body);duplicate.details.error='SYNTHETIC second closure';records.push(projection(duplicate,'input_captures','SYNTHETIC DUPLICATE CLOSURE'));}else if(change==='skip_attempt')records.push(...issuanceStatuses(b,{number:3,openedOffset:70000,closedOffset:null}));else if(change==='reordered_attempt')records.push(...issuanceStatuses(b,{number:2,openedOffset:50000,closedOffset:null}));else records=records.map(row=>row.original_id===(body.status==='ISSUANCE_ATTEMPT_OPEN'?open.original_id:close.original_id)?projection(body,'input_captures','SYNTHETIC INVALID ISSUE '+change):row);
+    const result=repack(b,[...all(b),...records]);await assert.rejects(async()=>{validate(result);await verifyProductionHashes(result.index,result.pages,webcrypto);},/issuance|operating task|operating shard|grading task|unscored|bound input/i,change);
+  }
+});
+
+test('issuance attempt hash is independently verified even when outer status and page checksums agree',async()=>{
+  const b=prospective(),[opened]=issuanceStatuses(b,{closedOffset:null}),body=originalProduction(opened);body.details.issuance_attempt.attempt_id='f'.repeat(64);const result=repack(b,[...all(b),projection(body,'input_captures','SYNTHETIC INCORRECT ATTEMPT HASH')]);validate(result);await assert.rejects(verifyProductionHashes(result.index,result.pages,webcrypto),/issuance attempt identity checksum/);
+});

@@ -7,6 +7,9 @@ from copy import deepcopy
 from datetime import timedelta
 from pathlib import Path
 import subprocess
+import os
+import multiprocessing
+import shutil
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
@@ -231,6 +234,73 @@ class ProductionCoordinatorTests(unittest.TestCase):
         self.assertEqual(sum(row["phase"] == "INPUT" for row in self.current.registry["attempts"]),2)
         self.assertTrue(any("attempt" in row["error"].lower() for row in self.current.reports))
 
+    def test_process_death_after_local_original_blocks_fresh_host_regeneration(self):
+        self.prepared();self.fixture.now=self.case.cutoff+timedelta(seconds=1)
+        descriptor=self.current.prepare_tasks()[0];registry=deepcopy(self.current.registry)
+        original_append=engine.ProductionStore.append_body
+        def killed_worker():
+            def append(store,body,**kwargs):
+                reference=original_append(store,body,**kwargs)
+                if body.get("schema_version") == common.FORECAST_SCHEMA and body.get("model_key") == "R0":
+                    os._exit(77)  # Deliberately bypasses Python finally/atexit.
+                return reference
+            with patch.object(engine.ProductionStore,"append_body",new=append):self.current.work(descriptor)
+            os._exit(78)
+        child=multiprocessing.get_context("fork").Process(target=killed_worker);child.start();child.join(20)
+        if child.is_alive():child.kill();child.join();self.fail("Bounded synthetic crash fixture did not finish")
+        self.assertEqual(child.exitcode,77)
+        originals=list((self.current.root/"shards").glob("*/records/forecasts/*.json"))
+        self.assertEqual(len(originals),1);raw=originals[0].read_bytes()
+        self.fixture.now+=timedelta(seconds=14);self.current=self.coordinator(registry)
+        with patch.object(forecasts,"PreparedLaws") as math:
+            report=self.current.work(descriptor)
+            self.assertEqual(report["status"],"FAILED_OR_PARTIAL",report)
+            self.assertIn("remains OPEN",report["error"]);math.assert_not_called()
+        self.assertEqual(report["counts"]["forecasts"],0)
+        self.assertEqual(originals[0].read_bytes(),raw)
+        task=engine.validate_task(self.archive.get_json(descriptor["task_ref"]))
+        recovered=self.current._store(task)[0].recover()
+        opened=[body for _,body in recovered["records"] if body.get("status") == runner.ISSUE_OPEN]
+        closed=[body for _,body in recovered["records"] if body.get("status") == runner.ISSUE_CLOSED]
+        self.assertEqual(len(opened),1);self.assertEqual(closed,[])
+        self.assertEqual(len(self.calls),2)
+        # Explicitly restore the killed worker's emergency ledger bytes into a
+        # third isolated root. Their acknowledgment may progress without math;
+        # recovery still cannot close that process's unknown attempt or fill a
+        # missing peer automatically.
+        original_root=originals[0].parents[1]
+        self.current=self.coordinator(registry)
+        name=task["branch"].replace("/","-")
+        restored=self.current.root/"shards"/name/"records"
+        shutil.copytree(original_root,restored,dirs_exist_ok=True)
+        with patch.object(forecasts,"PreparedLaws") as math:
+            report=self.current.work(descriptor);math.assert_not_called()
+        self.assertEqual(report["status"],"FAILED_OR_PARTIAL",report)
+        self.assertIn("remains OPEN",report["error"]);self.assertEqual(report["counts"]["forecasts"],1)
+        disk=self.current._store(task)[0];ref,body=disk.recover()["forecasts"][0]
+        self.assertIsNotNone(disk.admission(ref)["remote_recovered_at"])
+        self.assertEqual((Path(disk.root)/"records/forecasts"/(ref.record_id+".json")).read_bytes(),raw)
+
+    def test_complete_recovered_open_attempt_needs_no_generation_or_fabricated_closure(self):
+        self.prepared();self.fixture.now=self.case.cutoff+timedelta(seconds=1)
+        descriptor=self.current.prepare_tasks()[0];registry=deepcopy(self.current.registry)
+        def killed_after_originals():
+            with patch.object(engine,"close_issuance_attempt",side_effect=lambda *args,**kwargs:os._exit(79)):
+                self.current.work(descriptor)
+            os._exit(78)
+        child=multiprocessing.get_context("fork").Process(target=killed_after_originals);child.start();child.join(20)
+        if child.is_alive():child.kill();child.join();self.fail("Bounded original-completion fixture did not finish")
+        self.assertEqual(child.exitcode,79);self.fixture.now+=timedelta(seconds=14)
+        self.current=self.coordinator(registry)
+        with patch.object(forecasts,"PreparedLaws") as math:
+            report=self.current.work(descriptor);math.assert_not_called()
+        self.assertEqual(report["status"],"RECOVERED_ORIGINALS_OPEN_ATTEMPT",report)
+        self.assertEqual(report["counts"]["forecasts"],4)
+        task=engine.validate_task(self.archive.get_json(descriptor["task_ref"]))
+        rows=self.current._store(task)[0].records()
+        self.assertEqual(sum(body.get("status") == runner.ISSUE_OPEN for _,body in rows),1)
+        self.assertFalse(any(body.get("status") == runner.ISSUE_CLOSED for _,body in rows))
+
     def test_interrupted_peer_is_preserved_and_restart_generates_only_missing_originals(self):
         self.prepared();self.fixture.now=self.case.cutoff+timedelta(seconds=1)
         descriptor=self.current.prepare_tasks()[0]
@@ -242,11 +312,36 @@ class ProductionCoordinatorTests(unittest.TestCase):
         with patch.object(engine.ProductionStore,"append_body",new=append):report=self.current.work(descriptor)
         self.assertEqual(report["status"],"FAILED_OR_PARTIAL");self.assertEqual(report["counts"]["forecasts"],1)
         task=engine.validate_task(self.archive.get_json(descriptor["task_ref"]))
-        retained=self.current._store(task)[0].recover()["forecasts"][0]
+        first_store=self.current._store(task)[0];retained=first_store.recover()["forecasts"][0]
+        statuses=[body for _,body in first_store.records() if body["schema_version"] == common.STATUS_SCHEMA]
+        self.assertEqual(sum(body["status"] == runner.ISSUE_OPEN for body in statuses),1)
+        self.assertEqual(sum(body["status"] == runner.ISSUE_CLOSED for body in statuses),1)
+        with self.assertRaisesRegex(IntegrityError,"this process"):
+            engine.close_issuance_attempt(first_store,deepcopy(next(body for body in statuses if body["status"] == runner.ISSUE_OPEN)),checkpoint=lambda _:None)
         self.current=self.coordinator(deepcopy(self.current.registry));report=self.current.work(descriptor)
         self.assertEqual(report["counts"]["forecasts"],4);self.assertEqual(report["genuine_issued"],0)
         self.assertIn(retained,self.current._store(task)[0].recover()["forecasts"])
         self.assertEqual(len(self.calls),2)
+
+    def test_keyboard_interrupt_retains_incomplete_grade_status_that_public_recovery_accepts(self):
+        self.issued();self.fixture.now=self.case.start+timedelta(hours=13,minutes=17)
+        descriptor=self.current.prepare_tasks()[0]
+        for interrupted in (KeyboardInterrupt("invented SIGINT"),SystemExit("invented termination")):
+            with self.subTest(interruption=type(interrupted).__name__):
+                with patch.object(self.current,"_grade",side_effect=interrupted):
+                    report=self.current.work(descriptor)
+                self.assertEqual(report["status"],"FAILED_OR_PARTIAL",report)
+                self.assertEqual(report["counts"],{"forecasts":4,"outcomes":0,"grades":0})
+                self.assertIn(type(interrupted).__name__,report["error"])
+                task=engine.validate_task(self.archive.get_json(descriptor["task_ref"]))
+                records=self.current._store(task)[0].records()
+                statuses=[body for _,body in records if body["schema_version"] == common.STATUS_SCHEMA and body["phase"] == "GRADE"]
+                self.assertTrue(statuses)
+                self.assertTrue(all(body["status"] == "FAILED_OR_PARTIAL" and body["details"]["processing_complete"] is False for body in statuses))
+                self.assertTrue(any(type(interrupted).__name__ in body["details"]["error"] for body in statuses))
+                from multisport_lab.sdv_production_publication import unresolved_grading,project_original,PUBLIC_SCHEMAS
+                public_records=[project_original(ref,body) for ref,body in records if body["schema_version"] in PUBLIC_SCHEMAS]
+                self.assertEqual(unresolved_grading(public_records),{})
 
     def test_corrected_sources_append_two_versions_and_never_replace_originals(self):
         descriptor=self.issued();self.fixture.now=self.case.start+timedelta(hours=13,minutes=17)

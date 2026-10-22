@@ -231,6 +231,56 @@ class ProductionPublicationTests(unittest.TestCase):
             with self.assertRaisesRegex(IntegrityError, "projection exceeds"):
                 self.emit()
 
+    def test_issuance_attempt_originals_are_typed_linked_and_never_forecast_counts(self):
+        from multisport_lab import sdv_production_runner as runner
+        normalized = next(public.original_record(row) for row in self.records
+                          if public.original_record(row)["schema_version"] == common.INPUT_SCHEMA)
+        baseline = deepcopy(self.records)
+        opened_at, closed_at, later = (self.now+timedelta(seconds=value) for value in (1, 2, 4))
+        details = {"task_id": digest({"invented_guard_task": 0}), "shard_index": 0,
+                   "player_ids": normalized["shards"][0], "error": None,
+                   "final_source_pack_ref": None, "processing_complete": False}
+        attempt = {"attempt_number": 1, "run_attempt": 1, "opened_at": stamp(opened_at), "open_status_id": None,
+                   "footprint_snapshot_ref": None, "footprint_snapshot_id": None, "footprint_recovered_at": None}
+        def identity(item, detail):
+            return digest({key: detail[key] for key in ("task_id", "shard_index", "player_ids")} |
+                          {"run_id": 0, **{key: item[key] for key in ("run_attempt", "opened_at", "attempt_number")}})
+        attempt["attempt_id"] = identity(attempt, details)
+        details["issuance_attempt"] = attempt
+        opened = common.seal({"schema_version": common.STATUS_SCHEMA, "protocol_id": common.PROTOCOL_ID,
+            "plan_id": normalized["plan_id"], "cycle_id": normalized["cycle_id"], "phase": "ISSUE",
+            "status": runner.ISSUE_OPEN, "details": details, "observed_at": stamp(opened_at), "run_id": 0}, "status_id")
+        closed = deepcopy(opened); closed.pop("status_id")
+        closed.update(status=runner.ISSUE_CLOSED, observed_at=stamp(closed_at))
+        reference = {"tag": "nml-nba-records-v1-202610", "name": "object-"+"b"*64+".z", "sha256": "b"*64, "bytes": 20}
+        closed["details"]["issuance_attempt"].update(open_status_id=opened["status_id"],
+            footprint_snapshot_ref=reference, footprint_snapshot_id="c"*64, footprint_recovered_at=stamp(closed_at))
+        closed = common.seal(closed, "status_id")
+        def row(body):
+            return public.project_original(synthetic_ref("input_captures", body["status_id"]), body)
+        def emit(guards):
+            return public.make_publication([*self.records, *(row(body) for body in guards)], now=later,
+                                           allow_development=True)
+        with patch.object(common, "now", return_value=later):
+            for guards in ([opened], [opened, closed]):
+                index, _ = emit(guards)
+                self.assertEqual(index["counts"]["forecasts"], 2)
+                self.assertEqual(index["counts"]["genuine_forecasts"], 0)
+            for change in ("missing_open", "foreign_open", "late_footprint", "foreign_cohort", "attempt_hash", "duplicate_close"):
+                invalid = deepcopy(closed); invalid.pop("status_id")
+                if change == "foreign_open": invalid["details"]["issuance_attempt"]["open_status_id"] = "a"*64
+                elif change == "late_footprint": invalid["details"]["issuance_attempt"]["footprint_recovered_at"] = stamp(later)
+                elif change == "foreign_cohort":
+                    invalid["details"]["player_ids"] = ["999999"]
+                    invalid["details"]["issuance_attempt"]["attempt_id"] = identity(invalid["details"]["issuance_attempt"], invalid["details"])
+                elif change == "attempt_hash": invalid["details"]["issuance_attempt"]["attempt_id"] = "a"*64
+                elif change == "duplicate_close": invalid["observed_at"] = stamp(closed_at+timedelta(seconds=1))
+                invalid = common.seal(invalid, "status_id")
+                guards = [invalid] if change == "missing_open" else [opened, invalid]
+                if change == "duplicate_close": guards.append(closed)
+                with self.assertRaises(IntegrityError, msg=change): emit(guards)
+        self.assertEqual(self.records, baseline)
+
     def test_authentication_event_string_is_shared_without_losing_original_bytes(self):
         from multisport_lab import sdv_production_runner as runner
         binding = public.original_record(self.records[-1])["producer_binding"]

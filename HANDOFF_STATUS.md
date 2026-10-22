@@ -3,6 +3,99 @@
 Updated: October 22, 2026 (UTC).
 
 
+## October 22 — recurring operating integration and interrupted-worker recovery
+
+Work continues on `implementation/sdv-recurring-pregame`, based on the ordinary
+merge of actual main `377a3e4e69749efeee912a75c51673144f9fc27f`. Source baseline
+`e5da30977fc9dd0745154854ddbfeb712307cfde` connects the existing coordinator to
+bounded source capture, R0/K0 generation, immutable chunked archives, independent
+Git/archive recovery, outcomes/corrections and the existing publication/UI path.
+This is a separate recurring implementation; it is not installed or activated by
+PR #15. The implementation source and final checks for the recovery fix are
+recorded in the completion entry below once frozen. Earlier dated measurements
+remain unchanged.
+
+The baseline passed 983 required Python tests (594.174 s), 134 frontend tests,
+the demo and static artifact checks. A development-only full 26,645-row,
+16-player/32-forecast run completed in 206.106 s, including independent local
+bare-Git/archive restart. Generation/persistence/checkpoint took 156.615 s;
+maximum generation-to-original-readback was 134.417 s and maximum encoded forecast
+was 32,199 bytes. All 14 categories were present; genuine issuance was zero.
+This was local timing, not hosted execution, source capture, evaluation or
+prospective eligibility. Its immutable receipt identifies `e5da309` explicitly.
+
+A subsequent actual synthetic hard-kill reproduced a material baseline defect:
+a fresh host could recreate the same logical subject with a different original
+ID after local persistence but before remote checkpoint. The original and fresh
+synthetic receipt hashes, clocks and unchanged remote head are retained in
+`evidence/operational/sdv-production-hardkill-reproduction-e5da309-20261022.json`.
+The baseline is therefore not sufficient evidence of hard-kill recovery. The
+forward fix independently checkpoints an OPEN issuance attempt before generation,
+permits only its original process to close a completely recovered footprint,
+and blocks missing generation from an uncertain recovered OPEN. Known originals
+remain evidence and can be recovered without fitting another forecast. CLOSED
+attempts permit bounded timely continuation only after typed recovery validates
+their exact original scope and footprint. Two status records use the existing
+64-status reserve, without an extra per-forecast record or ledger-limit increase.
+
+Independent review also reproduced a cancellation defect: KeyboardInterrupt during
+grading retained STARTED/error-null/processing-complete status with an empty grade
+summary, which public validation rejected. Explicit KeyboardInterrupt/SystemExit
+handling now retains FAILED_OR_PARTIAL and actual original counts, with incomplete
+grading pending. The incomplete required run was deliberately interrupted after
+99.885 s when this finding arrived; it is not counted as a passed suite. All 16
+independent optimized interruption/closure checks passed after the fixes, with no
+remaining material finding. The original baseline receipts remain unchanged;
+`evidence/operational/sdv-production-independent-interruption-review-20261022.json`
+records the working-tree hashes and actual reproductions separately. New strict
+Python and frontend closure validation also rejects checksum-consistent wrong
+peers, identities, clocks, snapshots and duplicate closure attempts.
+
+The original planning pool's 25,400-byte remainder is not used for production.
+New shards retain 512 records / 32 MiB. Complete reserved projection, including
+bounded unpublished failure evidence, is 327 files / 13,803,520 encoded bytes.
+Future archive policy is explicitly 32 GiB/month, 64 GiB/lifetime and 100,000
+objects, with all remaining record roles, cumulative manifests, shared source
+captures and parallel reservations charged before mutation. Byte capacity does
+not establish object capacity or GitHub/API throughput. The capacity receipt and
+`docs/SDV_PRODUCTION_ARCHIVE_LIMITS.md` give both calculations. Production emergency
+artifacts now retain only bounded relevant failure originals/reports for one day;
+they exclude successful routine work roots, Git/cache trees and archive copies.
+They are temporary aids, never the durable archive. The protected first-cycle
+postgame artifact scope remains byte-for-byte unchanged.
+
+The only actual GitHub archive smoke created a draft release but failed its
+asset upload; the original server reason was not retained and is UNKNOWN.
+Automatic approval review rejected the additional immutable upload before
+execution because it was an additional mutation without explicit approval.
+No transport workaround or indirect hosted retry followed. Local official-CLI
+mock tests found/fixed explicit upload-length framing, but do not establish the
+original failure cause or successful GitHub durability. Real hosted archive
+upload/readback and connected timing remain an operating blocker. The bounded
+hosted diagnostic uses at most 32 MiB / 64 new objects, a diagnostic draft release
+and records branch, zero sports-source requests, no genuine issuance or public
+publication. It needs the additional owner authorization identified in the
+archive receipt before it can run.
+
+The proposed single existing coordinator uses quarter-hour checks, all eligible
+UTC-date NBA events and all active roster members, with explicit exclusions and
+hard event/player/shard/request limits. It preserves conditional-on-appearance
+semantics, 36-hour exact-asset publisher-age limits, unknown upstream observation,
+missing injuries/lineups, the unchanged April 14 historical panel and frozen laws.
+The proposed cron exists only on this implementation branch. Actual default
+main still has the separately verified prior coordinator; no new recurring
+production execution or scheduler was installed. Offers, prices, EV and ticket
+qualification remain separate; all scope/direction/2–6-leg NO_ACTION gates remain.
+
+Current public evidence is the PR #15 deployment below: six historical bundles
+and six historical grades; zero genuine upcoming forecasts, prospective outcomes
+or grades, published offers, qualified tickets or financial settlements. No
+new source collection, live issuance, model comparison, activation or deployment
+was performed by this readiness work. The owner-only first-cycle launch remains
+22:00–strictly before22:30 UTC / 5:00–before5:30 p.m. CDT today, with its exact
+approved cycle/producer/confirmation on main. Approval alone is not a future
+dispatch. The 23 protected files and 19 original records remain unchanged.
+
 ## October 22 — PR #15 merged, deployed and independently checked
 
 The approved exact head `2640d90b833f2b6bd4afe88583609699bb72d8aa` was

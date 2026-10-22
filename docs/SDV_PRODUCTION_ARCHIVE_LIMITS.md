@@ -86,3 +86,22 @@ Relevant retained diagnostics are
 `evidence/operational/sdv-production-archive-diagnostic-20261022.json` and
 `evidence/operational/sdv-production-local-upload-framing-20261022.json`.
 The local framing test demonstrates a client fix, not a successful GitHub upload.
+
+
+## Temporary emergency artifacts
+
+The production prepare, issue and grading jobs upload emergency artifacts only
+when their job fails, or when prepare records an actual bounded phase failure
+while allowing other due work to continue. They expire after one day and include only the factual
+execution report, complete bounded capture originals, and shard ledger receipt
+originals (including hidden `.receipt-*` forensic files). Git repositories,
+archive copies, independent-readback caches and unrelated work-root files are
+excluded. The finish job retains only its failure report. The development-only
+diagnostic retains its report and diagnostic ledger originals for one day.
+
+These artifacts are temporary recovery aids, not durable archives or prospective
+issuance evidence. Successful immutable archive retention and independent
+readback remain required for admission; a failed archive/checkpoint cannot be
+made eligible by an artifact upload. Losing an unacknowledged emergency copy
+must remain an actual partial or unrecoverable result. The protected first-cycle
+postgame job's existing fourteen-day emergency-artifact scope is unchanged.

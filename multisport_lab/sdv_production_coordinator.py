@@ -10,7 +10,9 @@ from copy import deepcopy
 from datetime import timedelta
 from pathlib import Path
 import re
+import hashlib
 import os
+import sys
 import tempfile
 
 from .integrity import IntegrityError, digest, stamp, canonical
@@ -24,6 +26,7 @@ TASK_SCHEMA="nba-sdv-production-task-v1"
 TASK_FIELDS={"schema_version","protocol_id","mode","plan_ref","plan_source_pack_ref","input_ref","input_source_pack_ref",
     "branch","cycle_id","event_id","shard_index","player_ids","created_at","task_id"}
 ACTIONS={"PREPARE","ISSUE","GRADE"}
+COMPLETED_STATUSES={"PREPARED","ISSUED_PENDING_OUTCOMES","RECOVERED_ORIGINALS_OPEN_ATTEMPT","STATISTICAL_GRADING_RETAINED"}
 
 
 def _error(error):
@@ -43,6 +46,96 @@ def validate_task(body):
     common.require(type(body["event_id"]) is str and re.fullmatch(r"[1-9][0-9]*",body["event_id"]),"Invalid task event identity")
     common.require(common.clock(body["created_at"]) <= common.now(),"Future worker task")
     common.check_seal(body,"task_id");return body
+
+
+_OWNED_ISSUANCE_ATTEMPTS={}
+
+
+class _IssuanceAttempt:
+    __slots__=("reference","body","store_root","authorization","closed_reference")
+    def __init__(self,reference,body,store,authorization):
+        self.reference=reference;self.body=body;self.store_root=Path(store.root).absolute()
+        self.authorization=authorization;self.closed_reference=None
+
+
+def open_issuance_attempt(store,*,input_body,task_id,shard_index,authorization,checkpoint):
+    """Durably expose an in-progress writer before any original generation.
+
+    A recovered OPEN is uncertainty, not a license to regenerate invisible local
+    originals. Only this process receives the private handle that can close its
+    own attempt after independently retaining the entire resulting footprint.
+    """
+    inputs.validate_input(input_body);common.sha(task_id)
+    common.require(type(shard_index) is int and 0 <= shard_index < len(input_body["shards"])
+        and callable(checkpoint),"Issuance guard needs an exact shard and checkpoint")
+    genuine=input_body["mode"] == "PROSPECTIVE_RESEARCH"
+    if genuine:runner.require_execution_context(authorization,input_body,input_body["producer_binding"])
+    else:common.require(authorization is None,"Development cannot borrow genuine attempt authority")
+    records=store.records();scoped=[body for _,body in records if body["schema_version"] == common.STATUS_SCHEMA
+        and body["phase"] == "ISSUE" and body["details"].get("task_id") == task_id]
+    closed={body["details"]["issuance_attempt"]["open_status_id"] for body in scoped if body["status"] == runner.ISSUE_CLOSED}
+    unresolved=[body["status_id"] for body in scoped if body["status"] == runner.ISSUE_OPEN and body["status_id"] not in closed]
+    if unresolved:
+        # Existing bytes may still receive their factual timely acknowledgment.
+        # This path never fits a model, fabricates a peer or closes the prior
+        # process's unknown footprint.
+        player_ids=input_body["shards"][shard_index]
+        originals=[(ref,record) for ref,record in records if record["schema_version"] == common.FORECAST_SCHEMA
+            and record["cycle_id"] == input_body["cycle_id"] and record["player_id"] in player_ids]
+        pending=[ref for ref,_ in originals if store.admission(ref)["remote_recovered_at"] is None]
+        if pending:
+            if genuine:
+                inputs.freshness(input_body,at=common.now(),require_retrieval_window=True)
+                for ref,original in originals:
+                    if ref in pending:forecasts._window(input_body["event"],common.now(),started=common.clock(original["generation_started_at"]))
+            checkpoint(tuple(pending))
+        expected={(pid,key) for pid in player_ids for key in common.MODEL_VERSIONS}
+        if {(record["player_id"],record["model_key"]) for _,record in originals} == expected:
+            if genuine:common.require(all(store.admission(ref)["eligible"] for ref,_ in originals),"Recovered originals remain late or ineligible; no missing generation is permitted")
+            return None
+        raise IntegrityError("Earlier issuance attempt remains OPEN; recover original emergency bytes before generating missing forecasts")
+    common.require(not store.recover()["unpublished_entries"],"Unpublished original receipt bytes require recovery before missing generation")
+    actual=stamp(common.now());run_id=(authorization or {}).get("run_id",0);run_attempt=(authorization or {}).get("run_attempt",1)
+    details={"task_id":task_id,"shard_index":shard_index,"player_ids":input_body["shards"][shard_index],"error":None,
+        "final_source_pack_ref":None,"processing_complete":False}
+    attempt_number=1+sum(record["status"] == runner.ISSUE_OPEN for record in scoped)
+    attempt={"attempt_id":digest({key:details[key] for key in ("task_id","shard_index","player_ids")}|{
+        "run_id":run_id,"run_attempt":run_attempt,"opened_at":actual,"attempt_number":attempt_number}),"attempt_number":attempt_number,"run_attempt":run_attempt,"opened_at":actual,
+        "open_status_id":None,"footprint_snapshot_ref":None,"footprint_snapshot_id":None,"footprint_recovered_at":None}
+    details["issuance_attempt"]=attempt
+    body=common.seal({"schema_version":common.STATUS_SCHEMA,"protocol_id":common.PROTOCOL_ID,"plan_id":input_body["plan_id"],
+        "cycle_id":input_body["cycle_id"],"phase":"ISSUE","status":runner.ISSUE_OPEN,"details":details,"observed_at":actual,"run_id":run_id},"status_id")
+    reference=store.append_body(body);proof=checkpoint(())
+    common.require(type(proof) is dict and proof.get("snapshot_ref") is not None,"Issuance OPEN has no independent durable readback")
+    snapshot=store.snapshot_resolver(proof["snapshot_ref"]);validate_snapshot_manifest(snapshot)
+    path="records/"+reference.kind+"/"+reference.record_id+".json";raw=(Path(store.root)/path).read_bytes()
+    common.require({"path":path,"bytes":len(raw),"sha256":hashlib.sha256(raw).hexdigest()} in snapshot["entries"],
+        "Independently recovered issuance snapshot lacks its exact OPEN original")
+    if genuine:runner.require_execution_context(authorization,input_body,input_body["producer_binding"])
+    handle=_IssuanceAttempt(reference,body,store,authorization);_OWNED_ISSUANCE_ATTEMPTS[id(handle)]=handle
+    return handle
+
+
+def close_issuance_attempt(store,handle,*,checkpoint,error=None):
+    """Close only an actually owned attempt, after its entire footprint recovers."""
+    common.require(_OWNED_ISSUANCE_ATTEMPTS.get(id(handle)) is handle and isinstance(handle,_IssuanceAttempt)
+        and Path(store.root).absolute() == handle.store_root and callable(checkpoint),"Only this process's original issuance handle can close its attempt")
+    if handle.authorization is not None:runner.require_current_authority(handle.authorization)
+    if handle.closed_reference is None:
+        proof=checkpoint(())
+        common.require(type(proof) is dict and proof.get("snapshot_ref") is not None,"Issuance closure has no independently recovered footprint")
+        snapshot=store.snapshot_resolver(proof["snapshot_ref"]);validate_snapshot_manifest(snapshot)
+        common.require(snapshot == store.snapshot_manifest(),"Issuance closure does not cover the complete current original/forensic footprint")
+        body=deepcopy(handle.body);body.pop("status_id")
+        body["status"]=runner.ISSUE_CLOSED;body["observed_at"]=stamp(common.now());body["details"]["error"]=error
+        body["details"]["issuance_attempt"].update(open_status_id=handle.body["status_id"],footprint_snapshot_ref=proof["snapshot_ref"],
+            footprint_snapshot_id=snapshot["snapshot_id"],footprint_recovered_at=proof["remote_recovered_at"])
+        closed=common.seal(body,"status_id")
+        with store._verified_issue_closure(closed,proof["snapshot_ref"],proof["remote_recovered_at"]):
+            handle.closed_reference=store.append_body(closed)
+    checkpoint(())
+    _OWNED_ISSUANCE_ATTEMPTS.pop(id(handle),None)
+    return handle.closed_reference
 
 
 class Coordinator:
@@ -523,7 +616,7 @@ class Coordinator:
         plan=self.archive.get_json(task["plan_ref"]);body=self.archive.get_json(task["input_ref"]);inputs.validate_input(body,plan)
         common.require(body["cycle_id"] == task["cycle_id"] and body["shards"][task["shard_index"]] == task["player_ids"],"Worker input differs from exact registered shard")
         action=descriptor["action"];now=common.now();cutoff=common.clock(body["event"]["event_starts_at"])-timedelta(minutes=90)
-        store=remote=None;report={"branch":task["branch"],"cycle_id":task["cycle_id"],"action":action,"status":"STARTED","task_ref":descriptor["task_ref"],"error":None}
+        store=remote=None;attempt_handle=None;report={"branch":task["branch"],"cycle_id":task["cycle_id"],"action":action,"status":"STARTED","task_ref":descriptor["task_ref"],"error":None}
         try:
             store,remote=self._store(task)
             from .sdv_production_store import archive_liability
@@ -556,19 +649,37 @@ class Coordinator:
                 forecasts.prepare_intent(store,input_ref,body["producer_binding"],task["player_ids"],plan_ref=plan_ref,authorization_ref=authorization_ref,checkpoint=checkpoint)
                 report["status"]="PREPARED"
             elif action == "ISSUE":
-                forecasts.issue_shard(store,input_ref,body["producer_binding"],task["player_ids"],plan_ref=plan_ref,authorization_ref=authorization_ref,checkpoint=checkpoint,mode=self.mode)
-                report["status"]="ISSUED_PENDING_OUTCOMES"
+                attempt_handle=open_issuance_attempt(store,input_body=body,task_id=task["task_id"],shard_index=task["shard_index"],
+                    authorization=self.authorization,checkpoint=checkpoint)
+                if attempt_handle is not None:
+                    forecasts.issue_shard(store,input_ref,body["producer_binding"],task["player_ids"],plan_ref=plan_ref,authorization_ref=authorization_ref,checkpoint=checkpoint,mode=self.mode)
+                    report["status"]="ISSUED_PENDING_OUTCOMES"
+                else:
+                    report["status"]="RECOVERED_ORIGINALS_OPEN_ATTEMPT"
+                    report["unresolved_prior_attempt"]=True
             else:
                 report["grading"]=self._grade(store,task,input_ref,descriptor["final_source_pack_ref"])
                 report["status"]="STATISTICAL_GRADING_RETAINED"
             self._runtime_guard()
+        except (KeyboardInterrupt,SystemExit) as error:
+            report.update(status="FAILED_OR_PARTIAL",error=_error(type(error).__name__+": "+str(error)))
         except Exception as error:
             report.update(status="FAILED_OR_PARTIAL",error=_error(error))
         finally:
+            if report["status"] == "STARTED":
+                interrupted=sys.exc_info()[1]
+                message=(_error(type(interrupted).__name__+": "+str(interrupted)) if interrupted is not None else
+                    "Operating phase did not produce a completed result")
+                report.update(status="FAILED_OR_PARTIAL",error=message)
             if store is not None and remote is not None:
+                if attempt_handle is not None:
+                    try:close_issuance_attempt(store,attempt_handle,checkpoint=checkpoint,error=report["error"])
+                    except Exception as error:
+                        report["attempt_closure_error"]=_error(error)
+                        report.update(status="FAILED_OR_PARTIAL",error=report["error"] or _error(error))
                 try:
                     details={"task_id":task["task_id"],"shard_index":task["shard_index"],"player_ids":task["player_ids"],"error":report["error"],"final_source_pack_ref":descriptor.get("final_source_pack_ref"),
-                        "processing_complete":report["error"] is None}
+                        "processing_complete":report["error"] is None and report["status"] in COMPLETED_STATUSES}
                     if action == "GRADE":details["grading"]=report.get("grading",{})
                     status=common.seal({"schema_version":common.STATUS_SCHEMA,"protocol_id":common.PROTOCOL_ID,"plan_id":plan["plan_id"],"cycle_id":task["cycle_id"],
                         "phase":action,"status":report["status"],"details":details,"observed_at":stamp(common.now()),"run_id":(self.authorization or {}).get("run_id",0)},"status_id")

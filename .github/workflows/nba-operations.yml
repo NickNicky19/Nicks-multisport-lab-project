@@ -60,13 +60,19 @@ jobs:
         id: prepare
         run: python3 -m multisport_lab.sdv_production_runner prepare --work-root "$RUNNER_TEMP/nml-production-prepare"
       - name: Preserve factual partial source evidence and report
-        if: always()
+        if: failure() || steps.prepare.outputs.has_failures == 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: nba-production-prepare-${{ github.run_id }}-${{ github.run_attempt }}
-          retention-days: 14
+          retention-days: 1
           if-no-files-found: warn
-          path: ${{ runner.temp }}/nml-production-prepare/
+          # Emergency copies expire after one day. Durable archive readback
+          # remains mandatory for prospective admission; exclude Git/cache trees.
+          include-hidden-files: true
+          path: |
+            ${{ runner.temp }}/nml-production-prepare/execution-report.json
+            ${{ runner.temp }}/nml-production-prepare/phases/originals/
+            ${{ runner.temp }}/nml-production-prepare/phases/shards/*/records/
 
   work:
     needs: prepare
@@ -95,13 +101,19 @@ jobs:
       - name: Recover originals and execute only the still-timely phase
         run: python3 -m multisport_lab.sdv_production_runner work --work-root "$RUNNER_TEMP/nml-production-work"
       - name: Preserve actual partial state
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: nba-production-work-${{ strategy.job-index }}-${{ github.run_id }}-${{ github.run_attempt }}
-          retention-days: 14
+          retention-days: 1
           if-no-files-found: warn
-          path: ${{ runner.temp }}/nml-production-work/
+          # Emergency copies expire after one day. Durable archive readback
+          # remains mandatory for prospective admission; exclude Git/cache trees.
+          include-hidden-files: true
+          path: |
+            ${{ runner.temp }}/nml-production-work/execution-report.json
+            ${{ runner.temp }}/nml-production-work/phases/originals/
+            ${{ runner.temp }}/nml-production-work/phases/shards/*/records/
 
   grade:
     needs: [prepare, work]
@@ -130,13 +142,19 @@ jobs:
       - name: Recover originals and execute only the still-timely phase
         run: python3 -m multisport_lab.sdv_production_runner work --work-root "$RUNNER_TEMP/nml-production-grade"
       - name: Preserve actual partial state
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: nba-production-grade-${{ strategy.job-index }}-${{ github.run_id }}-${{ github.run_attempt }}
-          retention-days: 14
+          retention-days: 1
           if-no-files-found: warn
-          path: ${{ runner.temp }}/nml-production-grade/
+          # Emergency copies expire after one day. Durable archive readback
+          # remains mandatory for prospective admission; exclude Git/cache trees.
+          include-hidden-files: true
+          path: |
+            ${{ runner.temp }}/nml-production-grade/execution-report.json
+            ${{ runner.temp }}/nml-production-grade/phases/originals/
+            ${{ runner.temp }}/nml-production-grade/phases/shards/*/records/
 
   finish:
     needs: [prepare, work, grade]
@@ -164,11 +182,11 @@ jobs:
       - name: Recover shard heads and reconcile actual website publication
         run: python3 -m multisport_lab.sdv_production_runner finish --work-root "$RUNNER_TEMP/nml-production-finish"
       - name: Preserve factual finish report
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: nba-production-finish-${{ github.run_id }}-${{ github.run_attempt }}
-          retention-days: 14
+          retention-days: 1
           if-no-files-found: warn
           path: ${{ runner.temp }}/nml-production-finish/execution-report.json
 
@@ -231,11 +249,15 @@ jobs:
       - run: gh auth setup-git
       - name: Non-issuance full-history storage and execution diagnostic
         run: python3 scripts/diagnose_sdv_production.py --work-dir "$RUNNER_TEMP/nml-production-diagnostic" --hosted --producer-commit "$GITHUB_SHA" --authorize-diagnostic-archive
-      - name: Preserve diagnostic proof and partial originals
+      - name: Preserve DEVELOPMENT_ONLY diagnostic proof and partial originals
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: nba-production-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
-          retention-days: 14
+          retention-days: 1
           if-no-files-found: warn
-          path: ${{ runner.temp }}/nml-production-diagnostic/
+          # DEVELOPMENT_ONLY: temporary evidence, never prospective issuance.
+          include-hidden-files: true
+          path: |
+            ${{ runner.temp }}/nml-production-diagnostic/report.json
+            ${{ runner.temp }}/nml-production-diagnostic/state/records/

@@ -1,0 +1,35 @@
+{
+  "base_commit": "e5da30977fc9dd0745154854ddbfeb712307cfde",
+  "evidence_lane": "SYNTHETIC_DEVELOPMENT_ONLY",
+  "first_generation_started_at": "2026-10-23T22:30:01.000000Z",
+  "first_issued_at": null,
+  "first_local_original_preserved": true,
+  "first_original_id": "46d804a7d1f7146d8d5d180c9bd95a7f3a0599087ca9c08515cca8271fe10d13",
+  "forged_handle_rejected": "Only this process's original issuance handle can close its attempt",
+  "fresh_closed_attempts": 0,
+  "fresh_error": "Earlier issuance attempt remains OPEN; recover original emergency bytes before generating missing forecasts",
+  "fresh_forecasts": 0,
+  "fresh_status": "FAILED_OR_PARTIAL",
+  "genuine_forecasts": 0,
+  "guard_source_sha256": {
+    "multisport_lab/sdv_production_coordinator.py": "cc959e25682e68c99939527808826e5a6574523d18933d4ef83e10478a4b72a5",
+    "multisport_lab/sdv_production_runner.py": "85a526d4cfd171ebbfaaa4e918cea059a2cdfab9872a8dc552c905782dd8df78",
+    "multisport_lab/sdv_production_store.py": "ed478f947eec607e6e7baa0b5d7255d197c2cc26347dc99562e56ce2ca460d5e"
+  },
+  "hard_exit": 77,
+  "http_requests": 0,
+  "open_retained_before_generation": true,
+  "original_report": {
+    "path": "/tmp/nml-production-fresh-host-crash-fixed-working-20261022/reproduction.json",
+    "scope": "TEMPORARY_LOCAL_DEVELOPMENT_ONLY",
+    "sha256": "614535107ba92e001ac26305ebab650917011953ec6ba0a1877ca880f5c8ad45"
+  },
+  "prepared_remote_commit": "4379b088c1e113c084b51d63b9e07a91a7751d2e",
+  "real_model_fits": 0,
+  "remote_commit_after_hardkill": "8f3bce350e1f743c347b0be967a575ed9650e716",
+  "retained_open_attempts": 1,
+  "revision": "WORKING_FIX_AFTER_BASELINE",
+  "schema_version": "nml-synthetic-fresh-host-hardkill-fixed-v1",
+  "source_captures_in_fixture": 2,
+  "source_scope_note": "Working-tree guard check before final source freeze; final exact-source receipt and required integration checks are recorded separately. Not hosted recovery or genuine issuance."
+}
