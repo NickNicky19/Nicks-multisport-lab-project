@@ -178,6 +178,13 @@ dispatch must actually occur during the stated start window after approval; code
 merge alone will not populate Upcoming. Owner-controlled next decision is one
 consolidated exact-head PR/release plus this specific operating/publication cycle.
 
+PR #13 remains draft. Automatic approval review rejected an attempted ready-for-
+review status change: it would change release state before the consolidated
+approval. No status mutation occurred and no alternate transport was used. The
+final owner request must include marking this exact head ready as well as its
+guarded merge/deployment and the separately named cycle. Authorized PR-description
+editing and read-only checks continued independently.
+
 ### Commands and actual verification
 
 - `python3 -m unittest discover -s tests -v`: **782 passed / 530.033s**, stable
