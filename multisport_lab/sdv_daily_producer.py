@@ -13,7 +13,7 @@ from pathlib import Path
 import re
 import subprocess
 
-from .baseline import ForecastTarget, MARKETS
+from .baseline import ForecastTarget, JointForecast, MARKETS
 from .forecast_contract import UNITS, number, quantile
 from .integrity import IntegrityError, canonical, digest, stamp, utc
 from .ledger import Ledger, LedgerRef, _outcome_categories, _score_categories
@@ -324,6 +324,19 @@ def prepare_intent(store, input_ref, cycle, binding, *, authorization_ref=None):
     return store.append_body("input_captures",intent,references=tuple(refs),logical_id="daily-intent:"+cycle["cycle_id"])
 
 
+class _DevelopmentDistribution(JointForecast):
+    """Non-issuance carrier accepted by unchanged K0's R0 type contract."""
+    def __post_init__(self):
+        require(self.issued_at is None,"A development distribution has no issue time")
+        object.__setattr__(self,"trained_through",utc(self.trained_through))
+        require(self.trained_through <= self.target.history_freeze and self.support
+            and math.isclose(math.fsum(item.weight for item in self.support),1,abs_tol=1e-12,rel_tol=0),
+            "Development distribution violates the frozen causal/support rules")
+
+    def to_record(self):
+        raise IntegrityError("Development distributions cannot create original R0 issuance records")
+
+
 def _development_laws(history,target):
     """Pure non-issuance calculation of the frozen laws for an early preview.
 
@@ -334,7 +347,7 @@ def _development_laws(history,target):
     null issued_at. Tiny synthetic equivalence tests compare both calculations.
     """
     from .baseline import (HistoricalAppearance, HALF_LIFE_DAYS, PRIOR_APPEARANCES,
-                           WeightedOutcome, JointForecast, PROTOCOL_ID as R0_PROTOCOL,
+                           WeightedOutcome, PROTOCOL_ID as R0_PROTOCOL,
                            MODEL_VERSION as R0_VERSION)
     from .development_003 import WorkloadPrior
     eligible=[];identities=set();event_starts={}
@@ -358,7 +371,7 @@ def _development_laws(history,target):
     support=tuple(WeightedOutcome(source_event_id=row.event_id,source_player_id=row.player_id,
         line=row.primitive_line(),weight=(own+PRIOR_APPEARANCES*pool/pool_total)/denominator)
         for row,own,pool in zip(eligible,own_weights,pool_weights) if own+pool > 0)
-    reference=JointForecast(target=target,issued_at=_now(),
+    reference=_DevelopmentDistribution(target=target,issued_at=None,
         trained_through=max(row.outcome_available_at for row in eligible),
         input_sha256=digest({"protocol_id":R0_PROTOCOL,"model_version":R0_VERSION,
             "target":target.to_record(),"history_freeze":stamp(target.history_freeze),"rows":[row.to_record() for row in eligible]}),
