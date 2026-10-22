@@ -281,11 +281,40 @@ This establishes partial-input archive recovery, not full hosted generation or
 the 300-second original-delivery latency. The actual failed run and readback are
 retained in `sdv-production-hosted-diagnostic-39768069169-20261022.json`.
 
-Before recurring activation: finish exact-head checks/review, obtain a new
-exact-head authorization for one corrected hosted development diagnostic,
-verify connected generation/checkpoint timing, then obtain the exact-head release/
-operating decision. Do not claim recurring readiness from local tests, a draft
-release or an accepted dispatch. Completion of the overall goal still requires
+The separately authorized corrected diagnostic at exact head
+`51f712e1ca1d4b7edd6c8ba21bfa0d1047b83613` **completed successfully**, run
+39775425768, October 22 at 12:04:35–12:12:03 UTC. This consumes that one-run
+approval. It used the entire retained 26,645-row panel and synthetic future
+inputs, yielding 32 DEVELOPMENT_ONLY forecasts (16 R0 + 16 K0), all 14 categories,
+`issued_at: null` and zero genuine issuance. Maximum generation-to-original
+readback was **217.009114 s / 300 s**. The entire diagnostic step gives a
+conservative **438 s** upper bound for its contained shard against the 900-s
+limit; the exact unlogged monotonic shard duration is not claimed.
+
+It retained **34 new objects / 558,889 compressed bytes**, within 64 / 32 MiB.
+The exact typed runtime inventory is 105 records / 1,161,591 B with the existing
+outcome/grade/correction/status reserves intact. An independent GET-only recovery
+at 12:12:37–12:13:31 UTC verified every original object and the complete pointer
+history in a fresh Git object database: draft release 420671474, tag
+`diagnostics-nml-nba-production-load-20261022t120450`, branch
+`diagnostics/sdv-production-load-20261022T120450`, commit
+`31daf510003cd7750003bf76632e7853d9cc26a6`, snapshot
+`3d77de343e9bb37edc94c314740e33bfe270521ed5aa6726934fdad08dab91d0`.
+The runner also verified separate restart recovery. The temporary Actions ZIP
+was not downloaded: automatic review blocked the attempted download before
+execution because the prior artifact download returned 403. No retry or alternate
+artifact transport was used; original archive recovery and run logs supply this
+checkpoint's proof. Details and exact commands are retained in
+`evidence/operational/sdv-production-hosted-diagnostic-39775425768-20261022.json`.
+The separate verifier rehashed/replayed all originals and timing with no material
+findings; its receipt is
+`evidence/operational/sdv-production-hosted-diagnostic-independent-review-20261022.json`.
+
+Before recurring activation: finish final exact-head release checks, then obtain
+the separate exact-head release/operating decision.
+Do not rerun the completed hosted diagnostic or infer operating approval from its
+success. It does not test future input availability or actual T90 timeliness.
+Completion of the overall goal still requires
 public genuine forecasts, verified real final grades, a subsequent scheduled run,
 tested recovery and the operating evidence described above.
 

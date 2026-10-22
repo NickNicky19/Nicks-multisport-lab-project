@@ -2,6 +2,98 @@
 
 Updated: October 22, 2026 (UTC).
 
+## October 22, 12:13 UTC — corrected hosted diagnostic passed; originals independently recovered
+
+The user explicitly approved **one** corrected hosted DEVELOPMENT_ONLY diagnostic
+at PR #16 head **`51f712e1ca1d4b7edd6c8ba21bfa0d1047b83613`**. That single
+execution is now consumed: run **39775425768**, `workflow_dispatch`, attempt 1,
+started **12:04:35 UTC** and completed successfully at **12:12:03 UTC**. Only the
+diagnostic job ran. All capture/operating, first-cycle postgame, grading and
+publication jobs were skipped. There was no rerun, source capture, genuine
+issuance, activation or deployment.
+
+The unchanged implementation source is
+**`caecac74d120f27536a347ebdfe2b51675c7df39`**. The executed source binding is
+**`3d46732c0097a5cbd2d002ae45803746a77cf088efd169321b56c8b65a88434b`**:
+it binds the actual approved `51f712e` commit and all 34 source files. A binding
+that includes another commit has a different ID even when its source-file hashes
+are identical. No producer, mathematical law, protected first-cycle file or
+original record changed in this checkpoint.
+
+The run authenticated the complete **26,645-row** retained panel and generated
+**32 DEVELOPMENT_ONLY forecasts**, sixteen each for unchanged R0/K0, using
+sixteen explicitly invented diagnostic player aliases and synthetic future
+schedule/roster metadata. Every forecast contains **all 13 categories plus PA**,
+complete probability atoms and `issued_at: null`. This is software/operational
+test evidence, not a new accuracy comparison or genuine pregame evidence.
+
+Measured maximum generation-to-original-independent-readback latency was
+**217.009114 s**, below the registered **300 s** limit. Maximum generation was
+200.822507 s, verification 0.007802 s, verification-to-local-persistence 2.562422 s,
+and local-persistence-to-original-readback 37.067821 s. The entire successful
+diagnostic step ran 12:04:42–12:11:58 UTC; allowing two seconds for timestamp
+resolution gives a conservative **438 s** upper bound for its contained whole
+shard, below **900 s**. The unlogged exact monotonic shard duration is not
+invented. These observations establish this hosted development execution's
+timing; they do not guarantee a future run or test an actual T90 cutoff.
+
+The run retained **34 new immutable objects / 558,889 compressed bytes**, within
+the authorized 64-object/32-MiB bounds. The typed runtime snapshot contains
+**105 records / 1,161,591 bytes**, maximum encoded forecast envelope **32,201 B**,
+and its unchanged outcome/grade/correction/status reserves fit the 512-record /
+32-MiB runtime policy. No history was repeated in event packs or truncated.
+
+Durable originals are in authenticated draft release **420671474**, tag
+`diagnostics-nml-nba-production-load-20261022t120450`, with the final immutable
+Git pointer **`31daf510003cd7750003bf76632e7853d9cc26a6`** on
+`diagnostics/sdv-production-load-20261022T120450`. Pointer sequence 14 identifies
+snapshot **`3d77de343e9bb37edc94c314740e33bfe270521ed5aa6726934fdad08dab91d0`**.
+The executing runner verified a separate restart. Root then independently fetched
+the branch into a fresh bare Git object database and recovered **all 34 original
+wire objects**, pointer history, exact typed records, probabilities, input bytes,
+source binding, OPEN/CLOSED attempt and original clocks at
+**12:12:37.000699–12:13:31.895055 UTC**. This used 70 authenticated API GET actions,
+zero POSTs and zero sports-source requests. Internal CLI redirect counts are
+unknown. Local recovery copies are temporary; the authenticated release objects
+and committed Git pointers are the durable originals.
+
+The temporary one-day Actions artifact was uploaded, but its ZIP was not
+downloaded. Automatic approval review rejected the attempted download before
+execution because the earlier artifact download returned HTTP 403 and the
+standing instructions prohibit retrying or bypassing it. No retry or alternate
+artifact transport followed. The independently verified durable originals and
+already-retained run logs supply the evidence above; the inaccessible full-report
+ZIP is not described as recovered.
+
+Exact commands, per-original clock measurements, hashes, typed inventory,
+capacity, read-only recovery-helper source and the actual workflow/job result
+are retained in
+`evidence/operational/sdv-production-hosted-diagnostic-39775425768-20261022.json`.
+The separate verifier independently rehashed every wire object and original
+receipt, replayed the typed graph/source evidence, and recomputed all five clock
+maxima with **no material findings**. Its unchanged receipt is
+`evidence/operational/sdv-production-hosted-diagnostic-independent-review-20261022.json`.
+The earlier failed-run receipts remain unchanged. Required code checks at this
+exact executed head already passed in CI **39772289968**: **1,012 Python tests,
+138 frontend tests, demo and site artifact checks**. This checkpoint adds factual
+evidence/documentation only; it does not repeat frozen research or model timing.
+
+**Next concrete action:** finish final exact-head release checks, then present
+one consolidated PR #16 release/recurring-operation
+decision. This diagnostic approval does not authorize that landing, a recurring
+activation or another diagnostic. The approved protected first daily cycle still
+requires the owner-authenticated workflow launch **22:00–strictly before 22:30
+UTC / 5:00–before 5:30 p.m. CDT today**; no future dispatch is installed and none
+was made here. Its 23 protected files and 19 original records remain unchanged.
+
+The existing public website remains at main
+`377a3e4e69749efeee912a75c51673144f9fc27f` (Pages run 39741220070); it was not
+redeployed. Public evidence remains **six historical bundles and six historical
+grades; zero genuine forecasts, prospective outcomes/grades, published offers,
+qualified tickets and financial settlements**. PR #16 remains unmerged at this
+recording, and its recurring cron is not installed. OPS002, PROS004, S0, frozen
+experiments, the expired pilot and the independent NFL/MLB projects are untouched.
+
 
 ## October 22 — approved hosted diagnostic; recovery corrections and minutes display
 
