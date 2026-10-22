@@ -144,7 +144,9 @@ class Pros004TransferTests(unittest.TestCase):
     def test_retained_admission_cannot_omit_unreferenced_original_snapshot_member(self):
         f=ProducerFixture(self,prepare_admission=False)
         for clock in (f.record_clock,f.ledger_clock):clock.return_value=NOW
-        f.ledger_clock.return_value=datetime.now(timezone.utc)-timedelta(days=1)
+        # Keep this non-PROS004 receipt before both the synthetic checkpoint
+        # clock and actual transport clock, regardless of the calendar date.
+        f.ledger_clock.return_value=min(NOW,datetime.now(timezone.utc))-timedelta(days=1)
         extra=f.store.ledger.append('input_captures','unreferenced-prefix-member',
             {'note':'Synthetic original included in durable input phase snapshot'})
         f.ledger_clock.return_value=NOW

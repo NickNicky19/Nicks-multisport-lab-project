@@ -188,8 +188,10 @@ class Coordinator:
             (self.source_root,) if self.source_root in self.root.parents else (self.root,self.source_root))
         actual=sum(self._directory_bytes(path) for path in roots)
         maximum=common.make_policy()["runtime_disk_bytes"]
-        common.require(actual+reserve <= maximum,"Aggregate runtime work state and source checkout exceed the explicit two-GiB disk budget")
-        return {"actual_bytes":actual,"reserved_bytes":reserve,"maximum_bytes":maximum}
+        report_reserve=runner.HOSTED_RUN_OBSERVATION_DISK_RESERVE
+        common.require(actual+reserve+report_reserve <= maximum,"Aggregate runtime work state and source checkout exceed the explicit two-GiB disk budget")
+        return {"actual_bytes":actual,"reserved_bytes":reserve,"maximum_bytes":maximum,
+            "hosted_run_observation_reserved_bytes":report_reserve}
 
     @contextmanager
     def _read_store(self,task):
