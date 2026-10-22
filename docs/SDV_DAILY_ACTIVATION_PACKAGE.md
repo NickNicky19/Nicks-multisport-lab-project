@@ -153,6 +153,21 @@ enter automatic genuine publication. Actual-source private preview passed
 desktop/mobile 1440/390/320, all names/categories, source ages, conditional meaning,
 History routes and 2–6-leg/direction/scope NO_ACTION behavior.
 
+To rebuild the private review preview after an environment restart, independently
+fetch archive commit `14d4dab3f6fc8a4125e472f8b1f7461f007a73e3` from the existing
+repository into a fresh checkout, verify that exact fetched head, then run from
+the current candidate checkout:
+
+```bash
+python3 scripts/preview_sdv_daily.py \
+  --records-root <fresh-archive-checkout> --output <separate-preview-directory>
+node web/tests/site-smoke.mjs <separate-preview-directory>
+```
+
+The helper copies only authenticated bounded ledger entries into private staging
+and uses the current trusted website. It rejects source/output aliases and never
+generates a forecast, executes archived code or changes original records.
+
 The handoff records final repository checks, exact release head and separate
 independent findings. None of this software/development evidence establishes
 forecast accuracy, timely future issuance, betting qualification or live deployment.

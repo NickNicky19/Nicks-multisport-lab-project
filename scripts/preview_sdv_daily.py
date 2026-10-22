@@ -6,6 +6,7 @@ No remote code is executed and no source/provider requests are performed.
 """
 import argparse
 from datetime import datetime, timezone
+import hashlib
 from pathlib import Path
 import shutil
 import subprocess
@@ -14,7 +15,7 @@ import tempfile
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from multisport_lab.integrity import IntegrityError
+from multisport_lab.integrity import IntegrityError, _bounded_bytes
 from multisport_lab.publication import build_site
 from multisport_lab.sdv_daily_remote import snapshot_manifest
 from multisport_lab.sdv_daily_store import DailyStore
@@ -26,9 +27,10 @@ def main():
     parser.add_argument("--output",type=Path,required=True)
     args=parser.parse_args()
     records=args.records_root.absolute();output=args.output.absolute()
-    if any(path.is_symlink() for path in (output,*output.parents)):
-        raise IntegrityError("Preview output cannot traverse a symlink")
-    output=output.resolve()
+    if any(path.is_symlink() for root in (records,output) for path in (root,*root.parents)):
+        raise IntegrityError("Preview paths cannot traverse a symlink")
+    records=records.resolve(strict=True);output=output.resolve()
+    if not records.is_dir():raise IntegrityError("Recovered originals must be an existing directory")
     if (output == ROOT or ROOT.is_relative_to(output) or output == records
             or output.is_relative_to(records) or records.is_relative_to(output)):
         raise IntegrityError("Preview artifact and recovered originals must be separate")
@@ -42,8 +44,13 @@ def main():
         staged=Path(folder)
         for name in ("web","config","evidence"):
             shutil.copytree(ROOT/name,staged/name)
-        for name in ("records","daily/records"):
-            shutil.copytree(records/name,staged/name)
+        for entry in before["entries"]:
+            raw=_bounded_bytes(records/entry["path"],entry["bytes"])
+            if len(raw) != entry["bytes"] or hashlib.sha256(raw).hexdigest() != entry["sha256"]:
+                raise IntegrityError("Recovered original changed during bounded preview copy")
+            target=staged/entry["path"]
+            target.parent.mkdir(parents=True,exist_ok=True)
+            target.write_bytes(raw)
         manifest=build_site(staged,output,build_commit=commit,now=datetime.now(timezone.utc))
         if manifest["daily_research_error"] is not None:raise IntegrityError("Daily preview export failed")
     if snapshot_manifest(records) != before:raise IntegrityError("Recovered original records changed during preview")

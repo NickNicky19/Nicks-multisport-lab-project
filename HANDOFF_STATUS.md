@@ -64,7 +64,7 @@ fresh-host recovery cannot reset an uncertain/used request budget or silently
 replace a partial input. Required windows are checked before each GET.
 
 Full-path execution exposed repeated validation of the same original history.
-The interrupted five-record DEV attempt remains at
+The interrupted five-forecast DEV attempt remains at
 `/tmp/nml-sdv-real-preview-6f36b98`, unchanged and ineligible. Scoped authenticated
 memoization now clears after each operation and still checks changed/missing
 bytes and clocks on the next operation. One profiled forecast read improved
@@ -185,6 +185,9 @@ consolidated exact-head PR/release plus this specific operating/publication cycl
 - `node --test --test-isolation=none web/tests/*.test.mjs`: **103 passed**.
 - `python3 -m multisport_lab.demo`: **PASS**.
 - Focused normal/optimized cycle/input/producer/runner/store/remote checks: **PASS**.
+  The later preview-tool safety checks add **3 passed under optimized Python**:
+  normalized/symlink aliases cannot overwrite originals, and unaccounted archive
+  blobs are excluded from bounded copying. These do not repeat model calculation.
   Real typed local-Git import (no semantic-helper mock): **1 passed**, normal
   114.986s / optimized 99.604s; explicitly synthetic prospective wire fixtures,
   no source collection or model fit. Independent review found no remaining blocker.
