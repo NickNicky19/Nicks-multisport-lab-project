@@ -1,4 +1,5 @@
 import {validateDisplayDescriptor,validateDisplayMetadata} from './display.mjs';
+import {validatePros004Descriptor, validatePros004Index, validatePros004Page, validatePros004Forecast, validatePros004Grade, PROS004_MAX_TOTAL, pros004Original, validatePros004AdmissionContext} from './pros004.mjs';
 export const REQUIRED_MARKETS = ['PTS', 'PRA', 'REB', '3PM', 'AST', 'RA', 'PR', 'TOV', 'TD', 'DD', 'BLK', 'STL', 'BLK+STL'];
 const COLLECTIONS = ['events', 'offers', 'forecasts', 'candidates', 'tickets', 'performance'];
 const SHA256 = /^[a-f0-9]{64}$/;
@@ -15,14 +16,17 @@ async function sha256(bytes, cryptoProvider) {
   return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-async function boundedBytes(response) {
+async function boundedBytes(response, limit = MAX_BYTES) {
   const bytes = await response.arrayBuffer();
-  if (bytes.byteLength > MAX_BYTES) throw new Error('Publication asset exceeds its byte budget.');
+  if (bytes.byteLength > limit) throw new Error('Publication asset exceeds its byte budget.');
   return bytes;
 }
 
+const channelNames = version => ({3:['pros004'],4:['display'],5:['pros004','display','offers','paired_research'],6:['pros004','display','offers','paired_research','daily_research']}[version] || []);
+
 export function validateManifest(value) {
-  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors',...(value?.schema_version===4?['display','display_error']:[])]) || ![1, 2, 4].includes(value.schema_version) || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
+  const extra = channelNames(value?.schema_version).flatMap(channel=>[channel,`${channel}_error`]);
+  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors', ...extra]) || ![1, 2, 3, 4, 5, 6].includes(value.schema_version) || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
   if (!SHA256.test(value.snapshot_id) || !COMMIT.test(value.build_commit) || !utc(value.published_at) || Date.parse(value.published_at) > Date.now()) throw new Error('Incomplete publication identity or invalid clock.');
   if (!Array.isArray(value.supported_sports) || !value.supported_sports.length || value.supported_sports.some(s => typeof s !== 'string' || !/^[A-Z]+$/.test(s)) || new Set(value.supported_sports).size !== value.supported_sports.length) throw new Error('Invalid sport coverage.');
   if (!value.errors || typeof value.errors !== 'object' || Array.isArray(value.errors) || Object.entries(value.errors).some(([league, error]) => !/^[A-Z]+$/.test(league) || !text(error))) throw new Error('Invalid publication errors.');
@@ -35,7 +39,11 @@ export function validateManifest(value) {
     if (sport.path !== `${sport.league.toLowerCase()}.${sport.sha256}.json`) throw new Error('Unsafe or unversioned sport asset path.');
     seen.add(sport.league);
   }
-  // Optional display semantics are isolated after core manifest/hash checks.
+  if (value.schema_version === 3) {
+    if (!(value.pros004_error === null || text(value.pros004_error))) throw new Error('Invalid PROS004 publication error.');
+    if (value.pros004 === null) {if (!text(value.pros004_error)) throw new Error('Missing PROS004 collection needs an explicit error.');}
+    else validatePros004Descriptor(value.pros004, value.published_at);
+  }
   return value;
 }
 
@@ -88,6 +96,55 @@ export function validateSport(value, reference) {
   return value;
 }
 
+async function loadPros004(descriptor, fetcher, cryptoProvider) {
+  const fetchAsset = async (reference) => {
+    const response = await fetcher(`./data/${reference.path}`, {cache:'no-store', signal:AbortSignal.timeout(12000)});
+    if (!response.ok) throw new Error(`PROS004 asset unavailable (HTTP ${response.status}).`);
+    const raw = await boundedBytes(response);
+    if (reference.encoded_bytes !== undefined && raw.byteLength !== reference.encoded_bytes || await sha256(raw, cryptoProvider) !== reference.sha256) throw new Error('PROS004 asset byte/hash mismatch.');
+    return {size:raw.byteLength, value:JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw))};
+  };
+  const root = await fetchAsset(descriptor), index = await validatePros004Index(root.value, descriptor, cryptoProvider);
+  const pages = []; let total = root.size;
+  // A bounded batch reads every declared page. No first-page-only truncation.
+  for (let offset=0; offset<index.pages.length; offset+=8) {
+    const batch = await Promise.all(index.pages.slice(offset,offset+8).map(async reference => {
+      const raw=await fetchAsset(reference); total+=raw.size;
+      if(total>PROS004_MAX_TOTAL) throw new Error('PROS004 complete assets exceed byte budget.');
+      return validatePros004Page(raw.value,reference,index);
+    }));
+    pages.push(...batch);
+  }
+  const forecasts=pages.filter(page=>page.kind==='forecasts').flatMap(page=>page.records), grades=pages.filter(page=>page.kind==='grades').flatMap(page=>page.records), originals=new Map(), gradeIds=new Set(), targets=new Set(), gradedForecasts=new Set(), subjectOutcomes=new Map(), outcomeSubjects=new Map();
+  for(const row of forecasts) {
+    await validatePros004Forecast(row,index.generated_at,cryptoProvider);
+    validatePros004AdmissionContext(row,index);
+    if(originals.has(row.original_id)) throw new Error('Duplicate PROS004 original across pages.');
+    const record=pros004Original(row), target=JSON.stringify(['event_id','event_version','player_id','model_key','cutoff_at'].map(k=>record[k]));
+    if(targets.has(target)) throw new Error('Duplicate PROS004 original target/model.');
+    targets.add(target); originals.set(row.original_id,row);
+  }
+  for(const row of grades) {
+    await validatePros004Grade(row,originals,index.generated_at,cryptoProvider);
+    if(gradeIds.has(row.original_id)) throw new Error('Duplicate PROS004 active grade across pages.');
+    const grade=pros004Original(row), forecastId=grade.forecast_id, subject=JSON.stringify([grade.event_id,grade.event_version,grade.player_id]);
+    if(subjectOutcomes.has(subject)&&subjectOutcomes.get(subject)!==grade.outcome_id || outcomeSubjects.has(grade.outcome_id)&&outcomeSubjects.get(grade.outcome_id)!==subject) throw new Error('PROS004 paired shared-outcome identity conflict.');
+    subjectOutcomes.set(subject,grade.outcome_id);outcomeSubjects.set(grade.outcome_id,subject);
+    if(gradedForecasts.has(forecastId)) throw new Error('Multiple active PROS004 grades for one original.');
+    gradeIds.add(row.original_id); gradedForecasts.add(forecastId);
+  }
+  return {index,forecasts,grades};
+}
+
+function validatePairedDescriptor(value,publishedAt) {
+  if (!keys(value,['path','sha256','generated_at','status','retained','error']) || !SHA256.test(value.sha256)
+      || value.path !== `paired-research.${value.sha256}.json` || value.status !== 'RESEARCH_ONLY'
+      || !utc(value.generated_at) || Date.parse(value.generated_at)>Date.parse(publishedAt)
+      || typeof value.retained !== 'boolean' || !(value.error===null || text(value.error))) {
+    throw new Error('Invalid paired research descriptor.');
+  }
+}
+
 export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.crypto) {
   const response = await fetcher('./data/manifest.json', {cache: 'no-store', signal: AbortSignal.timeout(12000)});
   if (!response.ok) throw new Error(`Publication manifest unavailable (HTTP ${response.status}).`);
@@ -109,28 +166,72 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
     }
     return sport;
   }));
-  const sports=results.flatMap(result=>result.status==='fulfilled'?[result.value]:[]);
-  let display=null,displayError=null;
-  if(manifest.schema_version===4){
-    try{
-      if(!(manifest.display_error===null||text(manifest.display_error)))throw new Error('Invalid display metadata error.');
-      if(manifest.display===null){if(!text(manifest.display_error))throw new Error('Missing display metadata needs an explanation.');displayError=manifest.display_error;}
-      else {
-      const reference=validateDisplayDescriptor(manifest.display,manifest.published_at),result=await fetcher(`./data/${reference.path}`,{cache:'no-store',signal:AbortSignal.timeout(12000)});
-      if(!result.ok)throw new Error(`Display metadata unavailable (HTTP ${result.status}).`);
-      const raw=await boundedBytes(result);
-      if(raw.byteLength>128*1024||await sha256(raw,cryptoProvider)!==reference.sha256)throw new Error('Display metadata byte/hash mismatch.');
-      const asset=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));
-      validateDisplayMetadata(asset,sports,manifest.published_at);
-      if(asset.generated_at!==reference.generated_at)throw new Error('Display metadata generation mismatch.');
-      for(const [record,key] of [[asset,'metadata_id'],[asset.catalog,'catalog_id']]){
-        const {[key]:id,...body}=record;
-        if(await sha256(new TextEncoder().encode(canonical(body)),cryptoProvider)!==id)throw new Error('Display record checksum mismatch.');
+  const sports = results.flatMap(result => result.status === 'fulfilled' ? [result.value] : []);
+  const channels = Object.fromEntries(['pros004','display','offers','paired_research','daily_research'].map(channel=>[channel,{value:null,error:null}]));
+  await Promise.all(channelNames(manifest.schema_version).map(async channel => {
+    const state = channels[channel], descriptor = manifest[channel];
+    try {
+      const error = manifest[`${channel}_error`];
+      if (!(error === null || text(error))) throw new Error(`Invalid ${channel} publication error.`);
+      state.error = error;
+      if (descriptor === null) {
+        if (!text(error)) throw new Error(`Missing ${channel} collection needs an explicit explanation.`);
+        return;
       }
-      display=asset;displayError=manifest.display_error;
+      if (channel === 'pros004') {
+        validatePros004Descriptor(descriptor, manifest.published_at);
+        state.value = await loadPros004(descriptor, fetcher, cryptoProvider);
+        return;
       }
-    }catch(error){displayError=error.message||'Display metadata could not be verified.';}
-  }
-  return {manifest,sports,display,displayError,errors:results.flatMap((result,index)=>result.status==='rejected'?[{league:manifest.sports[index].league,message:result.reason.message}]:[])};
+      // Descriptor semantics run before any request, independently for each lane.
+      let module, maxBytes;
+      if (channel === 'display') {
+        validateDisplayDescriptor(descriptor, manifest.published_at);
+        maxBytes = 128 * 1024;
+      } else if (channel === 'offers') {
+        module = await import('./offers.mjs');
+        module.validateOfferDescriptor(descriptor, manifest.published_at);
+        maxBytes = 256 * 1024;
+      } else if (channel === 'paired_research') {
+        validatePairedDescriptor(descriptor, manifest.published_at);
+        module = await import('./paired-research.mjs');
+        module.validatePairedResearchDescriptor(descriptor,manifest.published_at);
+        maxBytes = 1024 * 1024;
+      } else {
+        module = await import('./sdv-daily.mjs');
+        module.validateDailyDescriptor(descriptor,manifest.published_at);
+        maxBytes = 1024 * 1024;
+      }
+      const result = await fetcher(`./data/${descriptor.path}`, {cache:'no-store',signal:AbortSignal.timeout(12000)});
+      if (!result.ok) throw new Error(`${channel} asset unavailable (HTTP ${result.status}).`);
+      const raw = await boundedBytes(result, maxBytes);
+      if (await sha256(raw,cryptoProvider) !== descriptor.sha256) throw new Error(`${channel} asset checksum mismatch.`);
+      const asset = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));
+      if (asset.generated_at !== descriptor.generated_at) throw new Error(`${channel} generation clock mismatch.`);
+      if (channel === 'display') {
+        validateDisplayMetadata(asset,sports,manifest.published_at);
+        for (const [record,key] of [[asset,'metadata_id'],[asset.catalog,'catalog_id']]) {
+          const {[key]:id,...body}=record;
+          if (await sha256(new TextEncoder().encode(canonical(body)),cryptoProvider)!==id) throw new Error('Display record checksum mismatch.');
+        }
+      } else if (channel === 'offers') {
+        module.validateOfferAsset(asset,manifest.published_at);
+        await module.verifyOfferAssetHashes(asset,cryptoProvider);
+      } else if (channel === 'paired_research') {
+        module.validatePairedResearchAsset(asset,manifest.published_at);
+        await module.verifyPairedResearchHashes(asset,cryptoProvider);
+      } else {
+        module.validateDailyAsset(asset,manifest.published_at);
+        await module.verifyDailyHashes(asset,cryptoProvider);
+      }
+      state.value = asset;
+    } catch (error) {state.error = error.message || `${channel} recovery failed.`;}
+  }));
+  return {manifest,sports,pros004:channels.pros004.value,pros004Error:channels.pros004.error,
+    display:channels.display.value,displayError:channels.display.error,
+    offers:channels.offers.value,offersError:channels.offers.error,
+    pairedResearch:channels.paired_research.value,pairedResearchError:channels.paired_research.error,
+    dailyResearch:channels.daily_research.value,dailyResearchError:channels.daily_research.error,
+    errors:results.flatMap((result,index)=>result.status==='rejected'?[{league:manifest.sports[index].league,message:result.reason.message}]:[])};
 }
 import {validateResearchEvent, validateResearchForecast, validateResearchGrade, utcMicros} from './research.mjs';

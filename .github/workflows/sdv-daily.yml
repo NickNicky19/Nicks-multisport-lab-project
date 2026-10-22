@@ -1,0 +1,75 @@
+name: Owner manual daily-snapshot NBA research cycle
+
+# This has no schedule. Merging this file does not authorize or start a cycle.
+# A later explicit owner approval and correctly bound manual dispatch are needed.
+on:
+  workflow_dispatch:
+    inputs:
+      cycle_id:
+        description: Exact approved daily-snapshot cycle ID
+        required: true
+        type: string
+      producer_commit:
+        description: Exact reviewed producer source commit (40 lowercase hexadecimal characters)
+        required: true
+        type: string
+      confirmation:
+        description: APPROVE followed by the exact cycle ID and producer commit
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nba-sdv-daily-001-20261023-401909094-writer
+  cancel-in-progress: false
+
+jobs:
+  research-cycle:
+    if: >-
+      github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'NickNicky19'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NML_PRODUCER_COMMIT: ${{ inputs.producer_commit }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - name: Prepare existing GitHub authentication for the single records writer
+        run: gh auth setup-git
+      - name: Verify owner approval, capture, issue and independently recover
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m multisport_lab.sdv_daily_runner run \
+            --mode prospective \
+            --cycle config/sdv_daily_cycle_v1.json \
+            --producer-commit "$NML_PRODUCER_COMMIT" \
+            --records-branch records/sdv-daily-001-20261023-401909094 \
+            --work-root "$RUNNER_TEMP/nml-sdv-daily"
+      - name: Preserve factual completion or failure evidence without publishing
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sdv-daily-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          include-hidden-files: false
+          path: |
+            ${{ runner.temp }}/nml-sdv-daily/execution-report.json
+            ${{ runner.temp }}/nml-sdv-daily/state/
+            ${{ runner.temp }}/nml-sdv-daily/originals/

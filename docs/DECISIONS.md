@@ -1,5 +1,147 @@
 # Implementation decisions
 
+## October 20, after 20:25 UTC — retain original input admission in the existing claim
+
+Version the prospective wrappers and source binding to v3, preserving both laws
+and all older originals. Event-claim-v2 embeds the original typed input-final
+checkpoint inside the same 8-KiB event-claim slot. Claim creation, local/remote
+completion and final prefix publication move into the input phase before selection
+closes; generation recovers that original from durable state. This eliminates
+temporary-file dependence without an extra ledger record or a renewed clock.
+Missing, conflicting, late or unacknowledged proof blocks missing-peer generation.
+Legacy claim-v1 remains readable evidence and cannot establish v3 admission.
+The readiness report is independently versioned v3; failed v2 measurements and
+their source bindings remain immutable. No activation follows from this change.
+
+
+## October 20 — preserve failed timing and reduce duplicate verification work
+
+Retain source c18809f2 and its PARTIAL_OR_FAILED_TIMING receipt unchanged: five
+synthetic originals, four timing-complete, no eligible forecasts. The next source
+revision may reuse only exact-content successful legacy validation identities
+and a private per-verification decoded/hash-checked JSON index. Fresh source
+bytes/hashes, current clocks, references, strict typed meaning, correction graphs
+and independent fetched-root validation remain mandatory. No model law, window,
+latency, probability support or ledger limit changes. Measure a new v3 receipt;
+never overwrite the failed v2 result or label profiling as prospective readiness.
+
+## October 20 — completion policy and inactive operating preparation
+
+Per-original admission uses observed post-write local completion and exact remote
+checkpoint/readback completion, never frozen ledger pre-write received_at.
+Generation through original remote acknowledgment is limited to 120 seconds;
+input completion closes at T90−10 minutes and forecast completion at T90+300.
+Final proof-prefix publication has its own observed clock and does not renew an
+original acknowledgment. Late publication cannot yield a successful cycle report.
+Missing-peer generation requires the original strict input-finalization receipt;
+its durable genuine operating-state admission remains an activation dependency.
+
+The two remaining future metadata slots hold one combined inactive proposal /
+independent review / earlier-proposal readback package and one eventual evaluation
+artifact. The original proposal must not consume a separate ledger slot. All
+current genuine paths remain disabled. Private raw evidence requires an admitted
+private primary backend with reviewed indefinite retention and outcome linkage;
+public Git/Pages and synthetic transports do not establish that dependency.
+
+Manifest v3 keeps PROS004 originals and individual grades in a separate paginated
+contract, with all 14 categories, explicit unadmitted states and no reserved
+comparative aggregate before the registered gate. Generic 24-MiB transport timing,
+full-history paired-law timing and actual GitHub diagnostic timing are distinct
+measurements; none establishes genuine capture, issuance, predictive quality or
+activation.
+
+## October 20, 2026, after 19:29 UTC — completion evidence and inactive operation
+
+The expired October 20 pilot is inspected read-only. No replacement capture,
+issuance, binding, dispatch or workflow-state change is authorized. New dated
+evidence preserves the prior observations. An absent scheduled run/log establishes
+an unobserved execution, not a particular scheduler or code failure cause.
+
+Pre-write `received_at` remains an original ledger clock, not proof of persistence
+completion. The new PROS004 wrapper records actual post-write/readback completion
+and required remote acknowledgment completion separately. Missing, late or
+interrupted proof retains the original receipt but does not admit it as timely on
+restart. Event-input completion must satisfy selection close by the same logic.
+No frozen ledger or operational pilot file is modified.
+
+Use one bounded append-only hash-chained completion journal, counted as one of the
+three already reserved future metadata slots. Its own ceiling is **2 MiB**, with
+at most **1,024 lines of 2,048 bytes including newline**. Existing ledger limits
+remain 512 records / 32 MiB and all original per-kind envelope ceilings remain.
+Replacing that slot's previous 8-KiB allowance gives **24,576,000 planned bytes**,
+leaving 8,978,432 bytes. The 499 planned slots plus 13 correction/failure slots
+remain unchanged. No extra per-forecast record or silent limit increase is used.
+The journal retains post-operation observations; it does not recursively certify
+its own write clock. Interrupted or ambiguous journal state fails closed.
+
+Version the operational producers/binding to v2 while keeping both mathematical
+laws unchanged. Old v1 originals remain readable evidence; absent completion
+proof never becomes timely issuance. Synthetic timing-complete states remain
+distinct from genuine comparison eligibility. This package keeps the genuine
+operation guard disabled, including caller-supplied activation flags.
+
+The user permits three bounded current schedule/metadata reads separately from
+the expired pilot. Missing source pagination/count evidence remains explicit;
+there is no selection or issuance from an opportunistic incomplete inventory.
+Implement read-only activation proposal validation, real checkpoint/readback code,
+strict bounded failure metadata, private raw-retention interfaces and paginated
+typed public support behind inactive guards. A synthetic remote diagnostic may
+use a dedicated branch in this same repository after local verification; it must
+not touch the original records branch. Actual source raw bodies remain barred
+from public Git/Pages unless a separately reviewed retention basis is established.
+
+## October 20, 2026 — PROS004 paired producer readiness only
+
+The user's next package retains PR #9/DEV005 as frozen evidence and S0 inactive.
+Use `implementation/pros004-paired-readiness` based on main `735a464`. The scheduled
+pilot, protected records branch, PR #8, nine reviewed producer files, R0/K0 laws,
+prior protocols/receipts and PROS004 reservation stay unchanged. No new source
+capture, scheduling, actual issuance, activation, merge or deployment is authorized.
+
+Implement separate prospective wrapper/input/store versions instead of editing
+the frozen producer/ledger/forecast contract. A common full-history record and
+compact event records bind all 14 category PMFs and a complete joint-law replay
+recipe. Every retained atom/weight must recover exactly against its original
+joint hash; a code reference alone is not sufficient evidence.
+
+Choose a **1200-second source-age ceiling** before any PROS004 activation or
+outcome inspection. Capture/normalize/persist one complete event input during
+[T90-20min,T90-10min], including schedule and fixed lowest-two active IDs/team.
+This allows the schedule/cohort to be durable by the selection close. A later
+input replacement cannot silently change the frozen selection. This proposed
+source operating bound does not establish source admission or continuous status
+monitoring. Changed event/subject versions fail closed.
+
+An immutable event admission claim is distinct from generation/issuance. Only a
+complete atomic original forecast receipt constitutes issuance. Recover originals
+before any timely missing-peer attempt, using one writer and an independently
+recovered full state; ambiguous orphan/remote state stops generation. Never claim
+an atomic two-model success or generate a missing peer after the window. Current
+readiness code rejects genuine writes; synthetic tests remain explicitly labelled.
+
+The corrected base is 442 comparison records + 32 existing/pilot allowance = 474, not
+the reservation's superseded 466 count. Add 21 event claims + 4 study/activation/
+readback/evaluation metadata slots = 499; reserve 13 correction/failure slots = 512.
+The conservative complete plan is 22,487,040 bytes; no file slots remain beyond
+the 13-record reserve. No budget increase, silent history/atom truncation or forgotten pilot grades.
+Date-level empty/failure inputs occupy their existing input slot. Actual envelope
+sizes and the conservative byte ceiling must be independently measured.
+
+The first selected cutoff remains unknown without permitted complete UTC-date
+schedule coverage/current versions. An October 20 local-date source showing an October 21
+01:30 UTC candidate does not prove it is the first event of the full UTC date.
+Measured diagnostics use explicitly invented events and simulated clocks, with
+actual resource clocks measured separately. A bounded content-addressed cache
+retains immutable normalized rows only; body hashes, clocks, provenance, source
+receipt bytes and exclusions are rechecked. Exact frozen law sources remain
+unchanged. Deterministic snapshots verify original receipt bytes and references
+before an offline acknowledgment; they establish no GitHub issuance checkpoint.
+
+Midnight October 21 is not an automatic safe activation deadline. PROS004 remains
+inactive until its complete reviewed implementation, source/retention admission
+and remotely recovered activation evidence exist before the actual first cutoff.
+
+
 ## October 19, 2026 Central / October 20 UTC — one unattended operating pilot
 
 The user's later explicit request authorizes one scheduled October 20 NBA pilot,
@@ -90,7 +232,7 @@ Fix T90, last-ten-minute current source captures/import/receipt, generation at
 T90 to T90+5 minutes with at most120 seconds latency, and actual local clocks
 only. Neither readiness success nor an earlier preparation snapshot admits
 future issuance. Prospective forecast v2 binds exact durable input records,
-source/event/cohort/model versions and generation clocks; all14 coherent outputs
+source/event/cohort/model versions and generation clocks; all 14 coherent outputs
 remain conditional on appearance and qualification UNAVAILABLE.
 
 The retained history cohort is the entire26,645-row panel, not a20k prefix.

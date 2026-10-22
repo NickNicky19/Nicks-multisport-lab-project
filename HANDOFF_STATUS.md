@@ -1,6 +1,2517 @@
 # Implementation handoff status
 
-Updated: October 20, 2026 (UTC).
+Updated: October 22, 2026 (UTC).
+
+## October 22 — functioning daily-snapshot candidate; release and cycle approval pending
+
+**Implemented and independently verified; no activation, merge or deployment.**
+Review PR #13: https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/13 .
+Branch `implementation/sdv-daily-forecast` began from retained evidence commit
+`998840972bd21c5fd62a7491d3d2c9eb3af4d77d`. Re-fetched main remains
+`411f904e4f9d577f97ca3a4ae6ba52fdb81ee130`. PR #10 remains draft at
+`c0a7b4bc3205d723b13d0f70baf66f3806e731ee`; PR #12 remains draft at
+`709c39e6ce3312663f2bd98457f5f46d63ae2124`. This main-targeted release includes
+their existing inactive dependency ancestry; it requires approval of that
+integration, not merely approval of one new adapter. Their branches were not
+reset, rewritten, merged or activated. The final PR-head SHA is reported in the
+PR/checkpoint response after committing this handoff; do not confuse it with the
+fixed producer source below.
+
+Fixed proposed genuine producer source:
+**`0c37b30060c2dffb20226bd3efbedc65a75d04e3`**, 23 matching executed files,
+binding `002419f25184496ccead9cf92556116872550e6f29ad6edfc60cc5846a00f733`.
+UI wrapping correction is `797c69f0a007cb1f6c3270e0ad24414df8029af8`; later
+documentation/preview-tool commits do not change those producer files. Freeze
+this producer SHA for all retries; never substitute dynamic HEAD after writing
+records. The exact first-cycle proposal and runnable dispatch command are in
+[SDV_DAILY_ACTIVATION_PACKAGE.md](docs/SDV_DAILY_ACTIVATION_PACKAGE.md).
+
+### Actual delivered implementation
+
+`sdv_daily_inputs.py` normalizes the two real SportsDataverse CSV schemas, with
+strict event/player/team/season/status/cohort and duplicate/missing-field checks.
+It binds exact release identities, CSV/metadata bytes/hashes and separate source
+clocks. It fabricates neither ESPN JSON responses nor an ESPN event revision.
+`sdv_daily_cycle.py`, registered config and manual-only `sdv-daily.yml` establish
+one separately versioned owner-dispatched cycle. Actual GitHub run/attempt/actor,
+source bytes, common input and actual clocks are checked; a caller-created
+authorization dictionary cannot activate the producer.
+
+`sdv_daily_producer.py` uses unchanged R0/K0 laws and the complete 26,645-row
+history. Every model has all 13 requested categories plus PA from its coherent
+complete joint law. The historical availability/cutoff limitations remain;
+the panel ends at `2026-04-14T00:30:00.000000Z`. Active roster membership does
+not establish participation, health, starting status or minutes. Outputs remain
+conditional on appearance; qualification is unavailable for every category.
+
+Genuine issuance uses the original R0 T90 guard. The first early DEV attempt
+correctly stopped at that guard before producing a forecast. A separate explicitly
+non-issuing distribution carrier now supports early development calculation;
+tiny synthetic checks prove exact R0/K0 input hashes, training counts, every
+weighted atom and all 14 marginals against the frozen calculation. Development
+records have null issue times and cannot serialize as original R0 issuance.
+No clock was patched or target retimed for the actual-source preview.
+
+`sdv_daily_store.py` / `sdv_daily_remote.py` provide exact compressed licensed
+original retention, typed graph recovery, one-writer guards and real Git
+checkpoint/readback. Parent history is authenticated and shared once. Local
+persistence, remote checkpoint, independent recovery and eligibility are distinct.
+Late/unacknowledged originals remain ineligible after restart. Existing peers
+survive; missing peers are generated only while timely. Private exact-request
+write/completion contexts prevent generic calls from asserting genuine issuance
+or remote acknowledgments. A durable capture-start marker precedes source GETs;
+fresh-host recovery cannot reset an uncertain/used request budget or silently
+replace a partial input. Required windows are checked before each GET.
+
+Full-path execution exposed repeated validation of the same original history.
+The interrupted five-forecast DEV attempt remains at
+`/tmp/nml-sdv-real-preview-6f36b98`, unchanged and ineligible. Scoped authenticated
+memoization now clears after each operation and still checks changed/missing
+bytes and clocks on the next operation. One profiled forecast read improved
+11.671→3.902 seconds; five-forecast recovery took 1.540 seconds. No model parameter,
+ledger ceiling, original byte or experiment was changed to solve this runtime risk.
+
+`sdv_daily_publication.py`, manifest 6, `web/sdv-daily.mjs`, existing renderer and
+Pages workflow connect the independent research channel. Development, genuine
+daily snapshots, historical research, stale sources and missing data have distinct
+labels. Readable identities, conditional meaning, model, issue/generation/input
+clocks, source ages, forecast horizon and panel cutoff are visible; source IDs and
+hashes remain in details. Raw sources stay outside Pages. Genuine eligible records
+can be imported from the fixed records branch and published through the existing
+Pages workflow without waiting for a future records PR to merge. Source/activation
+checks remain specific to this protocol; OPS002/PROS004 guards are unchanged.
+
+The real typed-import test caught a universal transport defect hidden by tiny
+fixtures: an actual branch includes `records/README.md`. The import now selects
+only configured ledger-kind subtrees while preserving strict JSON/path/size/byte
+checks. The real-data mobile preview also caught long admission-reason overflow;
+the renderer reuses existing wrapping styles. Both defects have focused regressions
+and passed actual integrated verification.
+
+`sdv_daily_outcomes.py` supplies offline final-CSV normalization and shared-outcome /
+separate-statistical-grade linkage, with source-byte replay, DNP/missing/nonfinal/
+postponed/unresolved handling and append-only corrections. Its final-source route
+is tested synthetically. Genuine final-source admission must be reviewed when
+actual final evidence exists; it is not inferred from this schedule/roster review.
+Nothing here creates an outcome, financial settlement or qualified ticket.
+
+### Actual-source development and durable recovery
+
+Completed model/data run source was
+**`86cbb6142e2ee24f3d8e5c9dc5043aca7b9f565a`**. Its immutable originals retain
+that exact producer binding. Later candidate changes are genuine-capture controls
+and the publication import fix; focused tests verify those changes without
+repeating the completed model calculation.
+
+The retained two actual CSVs and release metadata produced **eight DEV bundles**,
+four selected players × unchanged R0/K0, all 14 categories and **26,645 joint atoms
+per model**. Own-history counts: Caruso 56, Williams 56, DeRozan 77, Gordon 36.
+No model comparison or outcome was scored. Full calculation/local persistence
+took **80.946938 seconds**, peak **150,512 KiB**, while required tests also ran.
+This is local non-issuance execution evidence, not hosted future-timing proof.
+
+Normal Git push + independent fresh-object-database readback took **11.526203s**:
+
+- Branch `diagnostics/sdv-daily-001-20261022-dev-86cbb61`.
+- Archive commit `14d4dab3f6fc8a4125e472f8b1f7461f007a73e3`.
+- Independent second fetch: `/tmp/nml-sdv-independent-14d4dab`.
+- Snapshot SHA `c19780c085d900434db1c8153e501ec1f469f1f05294024c8689df7529ee5fdb`.
+- **40 records / 2,295,625 bytes**, including all original 19 byte-identical
+  receipts; both exact CSV bodies and exact release JSON independently recovered.
+- Eight null-issuance DEVELOPMENT_ONLY bundles; **zero genuine forecasts,
+  new outcomes or new grades**. This diagnostics branch cannot enter automatic
+  genuine publication. The archive flush added no genuine issuance acknowledgments.
+
+Actual private preview: `/tmp/nml-sdv-real-site`; asset SHA
+`ecbc367310a651bde0b590a9d23c09e7481efb8c36487747b9050dc6f8ee566c`,
+249,405 bytes. Largest forecast envelope 30,766 bytes (<64 KiB). Desktop/mobile
+1440/390/320 passed all four names/matchup, 14 rows per bundle, expanded real
+provenance without overflow, conditional participation, clocks/source age/history
+cutoff, zero genuine Upcoming, six historical bundles/grades, direct History
+refresh, sport scopes and every 2–6-leg/direction NO_ACTION check. No JS errors.
+All 40 original records remained unchanged. `scripts/preview_sdv_daily.py` rebuilds
+the current UI against independently recovered DEV originals without generation;
+its successful real-data build/smoke and repository-overwrite rejection were checked.
+
+The scoped publisher-release source-use receipt retains the actual README and
+attribution/modification notice. CC BY applies here as the publisher's data-store
+label, not a software-license inference or direct ESPN permission. This route
+needs no private encryption key; the original ESPN encryption design is unchanged.
+**Zero additional provider-source GETs** were made. The earlier retained source
+audit's request ledger and observation clocks remain unchanged. Four read-only
+requests to our own deployed website verified current public data; the first
+local reporting attempt used the wrong grade-field name and the corrected report
+reads `performance`, without changing any site or data.
+
+### Operating policy, capacity and exact next action
+
+Initial daily policy: **schedule and roster publisher ages ≤129,600s (36h)**;
+24-hour documented cadence + 12-hour delay tolerance, not an optimized scientific
+freshness claim. Publisher update, UNKNOWN upstream observation, retrieval,
+normalization, actual generation/issue, game and historical-panel clocks stay
+separate. Re-downloading old bytes cannot refresh content. Retrieve/normalize/
+recover input and intent T150–T90; generate/persist/recover T90–T75, with ≤300s
+per original. This does not satisfy the old fresh-observation T90 protocol.
+
+Capacity includes current 19 / 1,817,800 bytes plus conservative **112 records /
+27,615,232 bytes** for all planned source/input/auth/intent/forecast/completion,
+outcome/grade revisions, correction links and bounded operational metadata:
+**131 records / 29,433,032 bytes**, within unchanged **512 / 33,554,432** limits.
+No repeated history or omitted probability atom is used to fit that budget.
+
+Proposed cycle `NBA-SDV-DAILY-001-20261023-401909094` is registered separately,
+digest `eab839d53f26623f1256ef09d64b617f6b6bbb96dd36a1ea65d534c3e1590f92`.
+Fixed event/cohort/source routes are in the activation package. Manual hosted
+start: **October 22, 22:00 through strictly before 22:30 UTC (5–before5:30 p.m.
+CDT)**. Capture/input recovery: **23:00–00:00 UTC (6–7 p.m. CDT)**. Generation/
+original recovery: **October 23, 00:00–00:15 UTC (7–7:15 p.m. CDT)**. Six source
+GETs maximum, including redirects; no retries. Exact new asset revisions and
+freshness remain unknown until that approved capture. A stale publisher file,
+changed cohort or missed window must fail/retain partial state, never backfill.
+
+The authenticated CLI identifies `NickNicky19`. Existing GitHub access supports
+branch push/recovery and PR creation. Administrative workflow-setting inventory
+returned HTTP403 and remains UNKNOWN; no secret inventory or hosted genuine-run
+success is inferred. No new secret/key/signup/service is required by this route.
+The new genuine entrypoint has not run. **No scheduler or task is armed.** A manual
+dispatch must actually occur during the stated start window after approval; code
+merge alone will not populate Upcoming. Owner-controlled next decision is one
+consolidated exact-head PR/release plus this specific operating/publication cycle.
+
+PR #13 remains draft. Automatic approval review rejected an attempted ready-for-
+review status change: it would change release state before the consolidated
+approval. No status mutation occurred and no alternate transport was used. The
+final owner request must include marking this exact head ready as well as its
+guarded merge/deployment and the separately named cycle. Authorized PR-description
+editing and read-only checks continued independently.
+
+### Commands and actual verification
+
+- Hosted CI at `786a506` exposed a local-test origin defect: the depth-one PR
+  checkout was bare-cloned as a shallow server. A tiny two-commit reproduction
+  confirmed that Git can return zero from fetch while rejecting that shallow
+  root, leaving `FETCH_HEAD` empty and the next checkout failing. The final
+  typed-import fixture now seeds a complete, explicitly synthetic one-commit
+  origin with the exact 23 current source files and original 19 receipts/README.
+  It checks source-byte equality and non-shallowness; all production transport,
+  typed validation and independent readback code remain real and unchanged.
+  The proposed genuine producer remains `0c37b30060c2dffb20226bd3efbedc65a75d04e3`.
+  The operating workflow already uses a full checkout. This test-only correction
+  neither replays a model nor supplies operating admission. Final exact-head
+  hosted checks are reported separately after this checkpoint is committed.
+  Corrected real typed-import fixture: normal **1 passed / 98.490s**; optimized
+  **1 passed / 94.712s**. The independent verifier rechecked the unchanged
+  23-file producer binding and `git diff --check`.
+- `python3 -m unittest discover -s tests -v`: **782 passed / 530.033s**, stable
+  completed candidate; log `/tmp/nml-sdv-final-0c37b30-python.log`.
+- `node --test --test-isolation=none web/tests/*.test.mjs`: **103 passed**.
+- `python3 -m multisport_lab.demo`: **PASS**.
+- Focused normal/optimized cycle/input/producer/runner/store/remote checks: **PASS**.
+  The later preview-tool safety checks add **3 passed under optimized Python**:
+  normalized/symlink aliases cannot overwrite originals, and unaccounted archive
+  blobs are excluded from bounded copying. These do not repeat model calculation.
+  Real typed local-Git import (no semantic-helper mock): **1 passed**, normal
+  114.986s / optimized 99.604s; explicitly synthetic prospective wire fixtures,
+  no source collection or model fit. Independent review found no remaining blocker.
+- `python3 -m multisport_lab.sdv_daily_runner preview --store-root
+  /tmp/nml-sdv-real-preview-86cbb61 --sample-root
+  .local-data/sdv-input-audit-20261021/originals --producer-commit
+  86cbb6142e2ee24f3d8e5c9dc5043aca7b9f565a`: completed through the equivalent
+  Python resource/timing wrapper; **8 DEV / 0 genuine**. `/usr/bin/time` was absent;
+  that wrapper launch exited127 before model execution and was replaced, not
+  misclassified as a source/model failure.
+- `DailyGitCheckpointWriter(... diagnostics/sdv-daily-001-20261022-dev-86cbb61).
+  prepare(); flush()`: actual GitHub push/fresh recovery **PASS**; separate verifier
+  independently fetched exact `14d4dab...` and matched all bytes.
+- `python3 -m multisport_lab.publication --output /tmp/nml-sdv-inactive-release
+  --build-commit 797c69f0a007cb1f6c3270e0ad24414df8029af8` and
+  `node web/tests/site-smoke.mjs /tmp/nml-sdv-inactive-release`: **PASS**.
+- `python3 scripts/preview_sdv_daily.py --records-root
+  /tmp/nml-sdv-independent-14d4dab --output /tmp/nml-sdv-reproducible-preview`,
+  followed by artifact smoke: **PASS**; original-data snapshot unchanged.
+- `python3 /tmp/verify_sdv_daily_preview.py /tmp/nml-sdv-real-site`: actual-data
+  Chromium desktop/mobile checks **PASS**, loopback only.
+- `git diff --check`: **PASS**. GitHub PR checks are observed separately through
+  the PR Completion watcher at the final pushed head; they are not a deployment.
+
+Initial required-suite failures were three old synthetic-clock fixtures whose
+real import clocks exceeded simulated October 21 phases after the calendar
+changed. Only `tests/test_operating_diagnostic.py` and
+`tests/test_pros004_readiness.py` fixture clocks changed; all three targeted cases
+then passed. Intermediate overlapping source-pin checks correctly rejected
+uncommitted file changes; the stable final suite above passed. No frozen runtime,
+statistical comparison, pilot receipt or result was rewritten.
+
+Changed implementation files are the eight `sdv_daily_*.py` modules, new manual
+workflow/config, existing publication/Pages wiring and daily frontend module/app/
+snapshot integration; focused new tests/fixture plus legacy manifest compatibility
+and clock-fixture tests; current preview script and new source/e2e receipts,
+protocol/activation docs, context and this handoff. `git diff
+998840972bd21c5fd62a7491d3d2c9eb3af4d77d --name-only` provides the exact file list.
+
+Public verification at `2026-10-22T01:59:24.416454Z` still serves **main411f904**,
+manifest4 SHA `a9d38753fa721528e30fb7c4df8d9d43bec7bbf93baf221b8a17ea4f95d344c8`,
+NBA asset SHA `2747629ef1bb9736f0dba4b75f94ea665368bb7b8758e4a31d1b82df6c48ad67`:
+six RECONSTRUCTED_RESEARCH bundles, six historical grades, zero offers/candidates.
+No new Pages deployment was attempted. **Genuine forecasts0; published offers0;
+prospective outcomes/grades0; qualified tickets0; financial settlements0.**
+DEV8 are separate software/real-input evidence, not future issuance or model
+accuracy. PROS004/S0, OPS002, expired pilot and DEV005 remain inactive/frozen;
+NFL and the separate MLB project remain untouched.
+
+Next concrete action: review PR #13 and the activation package, then approve or
+defer the single exact-head release and fixed manual cycle/publication actions.
+After approval, merge through guarded PR Completion, verify the existing Pages
+release, and dispatch only in the registered start window. Genuine outcomes stay
+pending until verified final evidence is available and its source admission is
+resolved; no odds, offer, settlement rule or ticket EV is a forecasting prerequisite.
+
+Exact machine-readable evidence:
+`evidence/operational/2026-10-22-sdv-daily-development-checkpoint.json`.
+
+## October 21 — actual alternate-source schedule and cohort audit passed
+
+Following the Covers decision, the owner inspected one SportsDataverse schedule
+and roster CSV under the scoped publisher-CC-BY release basis. **Five sample
+GETs of a six-request ceiling**, including two counted GitHub 302 responses and
+their manual follows, produced one release-metadata body and two CSV bodies.
+Combined with the preceding four-document check: **nine GETs / 3,425,016 bytes**,
+zero retries/rejections, unchanged 2-MiB per-response ceiling. No provider key,
+signup, payment, private endpoint, sportsbook request or new source was added.
+
+Actual schedule: **1,206 rows / 1,206 unique event IDs**. Actual roster: **517 rows /
+517 unique player IDs**. The selected event matches the registered ID, start,
+teams and scheduled status. All four fixed player IDs/names/team assignments
+match; the original two-lowest-numeric-active-IDs-per-team rule independently
+reproduces that cohort. Active roster status is not an appearance guarantee.
+Both CSV sizes/SHA256 match GitHub's separately retrieved publisher metadata.
+An explicit-exception offline audit passed under `python -O`, followed by a
+separate-process replay from a fresh local directory with identical semantic
+results. This is actual-source row verification, not a synthetic forecast test.
+
+The CSV observations were **23:12:58.588035** and **23:13:10.246987 UTC**. Publisher
+file ages were **42,123.588035** and **42,075.246987 seconds**. The documented update
+cadence is daily. Do not promote a new download into a newer publisher update,
+claim T90-live inputs or bind these preparations to the existing OPS002 cycle.
+No provider event revision was inferred from these different source files.
+
+The concrete next implementation task is a small CSV-to-shared-input normalizer
+and a separately reviewed daily-source input/plan version, including explicit
+publisher-age/freshness semantics. Preserve unchanged R0/K0 laws, the full fixed
+history, original OPS002 reservation/windows and current operating-key safeguards.
+Missing offers/prices are not prerequisites. Current source observation is still
+preparation: no activation, issuance, public website output, outcome or grade.
+
+Exact source clocks, request inventory, hashes, audit-code hash and replay facts:
+`evidence/data/2026-10-21-sdv-current-input-audit.json`. Original bytes, ledger,
+scope decision and audit helper are locally retained under
+`.local-data/sdv-input-audit-20261021/originals/`; remote durable raw recovery is
+unverified. No application code/model changed or frozen evaluation/diagnostic
+was rerun. PR #10/#12 and all inactive/project boundaries remain unchanged.
+
+## October 21 — Covers assessed; alternate forecast-input route identified
+
+At clean integration HEAD **00ed62a341ead7693c6d62bd162c42a7630c3313**, Nick asked
+about Covers or another source. One owner performed a bounded **four GETs** for
+documentation/release metadata, **zero sports-data GETs**, zero redirects/retries,
+1,092,710 response bytes, unchanged 2-MiB per-response limit. The first guessed
+Covers terms URL returned 404; its footer supplied the actual `/terms` URL, which
+returned 200. No automatic-approval rejection or access bypass occurred.
+
+Covers' terms, marked August 5, 2026, sections 2/11.j/19, restrict modification,
+republication/distribution and public display absent prior written permission.
+No applicable public-data/API exception was established. **Do not select Covers
+as the current automated/public-product source** or assume its pages solve the
+ESPN admission problem. No Covers player row, offer or category coverage was read.
+
+**Prioritize SportsDataverse's public data releases for the next bounded input
+sample.** Its re-fetched data-store README retains the explicit publisher CC BY 4.0
+label and lists NBA schedules and rosters through season 2027. Public schedule
+release metadata independently lists `nba_schedule_2027.parquet`, 95,824 bytes,
+updated **2026-10-21 11:30:57 UTC**; this metadata was actually observed
+**23:09:14.603848 UTC**, not at the publisher's earlier update time. This is a
+publisher-documented keyless download route, still ESPN-derived, not a claim of
+independent original data or blanket upstream clearance. No account, provider
+key, signup, paid service or trial is required for the inspected public route.
+
+Next concrete task: inspect current schedule/roster Parquet bytes, verify the
+upcoming event/status/start and selected-player/team identities, and measure
+freshness/version coverage. Retain publisher attribution, modification notice,
+source hashes and distinct download/update clocks. The documented roster family
+is not yet verified roster rows; the schedule asset is not yet a verified event.
+Use a separately reviewed input/normalizer/plan version. The original four-ESPN-
+response OPS002 reservation/windows are unchanged; this is not its activation.
+This identifies a technical row-verification task under a published data-license
+basis rather than requiring a universal bespoke provider-permission request.
+
+Exact URLs/statuses/clocks/hashes and remaining fields are in
+`evidence/data/2026-10-21-covers-sdv-source-choice.json`. Original document bodies
+and request ledger have create-only local copy/readback under
+`.local-data/source-alternatives-20261021/originals/`; remote durable raw archival
+is not established. No behavior/model changes or diagnostic reruns; original
+records, all 14 categories, PR #10/#12 drafts, PROS004/S0, NFL/MLB and public website
+remain unchanged. Genuine issuance, published offers and new outcomes/grades
+remain zero. Prices/offers remain separate from statistical forecast inputs.
+
+## October 21 — forecast-delivery focus and deployed-main integration
+
+The executor recovered. Existing PR #12 local/remote HEAD was verified clean at
+**709c39e6ce3312663f2bd98457f5f46d63ae2124**; normal fetch confirmed main
+**411f904e4f9d577f97ca3a4ae6ba52fdb81ee130** and draft PR #10
+**c0a7b4bc3205d723b13d0f70baf66f3806e731ee** unchanged. A separate review branch,
+**implementation/ops002-site-integration**, integrates that main with PR #12 by
+normal merge ancestry. Its commit is the ordinary merge commit containing this
+checkpoint; neither PR is landed or activated by it.
+
+Eight publication/display/manifest overlaps were resolved by retaining the
+already-integrated manifest-v5 implementation from 709c. All executable code,
+tests, fixtures, frozen research and 19 original records (1,817,800 bytes) remain
+byte-identical. The deployed historical display catalog is also byte-identical
+to main. The merge preserves main's deployment checkpoint in this handoff.
+This removes the candidate's main-integration conflict, without claiming new
+forecast capability, a new operating producer or a deployed website change.
+
+Focused checks: **8 publication-channel Python tests / 75.384 s**, **11 display
+Python tests / 62.885 s**, **31 frontend tests**, demo and static artifact smoke
+passed. Optimized-Python Chromium passed 1440/390/320, six names/matchups/dates,
+direct History/refresh, all 14 categories, separate clocks, safe display fallback,
+scopes and 2–6-leg/direction/NO_ACTION behavior. The first browser attempt could
+not bind loopback in the default sandbox; the same command passed with supported
+network permission. No automatic-approval rejection, provider GET or alternative
+source transport occurred. Exact commands/log hashes and scope are recorded in
+`evidence/verification/2026-10-21-ops002-main-integration.json`. The unchanged full
+670-Python/93-frontend source checks and successful CI 39606717365 are reused;
+there was no behavior change requiring another full run or model diagnostic.
+
+The read-only delivery preparation command retained its **31-file verified
+6777025deca7c03636f5cb6739cfcc77cb0b5e49** binding and returned exit 2,
+**BLOCKED_NOT_ACTIVATED**. The existing paired exporter and browser deliberately
+reject activated eligibility; merging inactive software alone cannot populate
+Upcoming. A valid future release must connect actual reviewed activation and
+timely recoverable originals, then explicitly include them in the main build.
+Offers/prices are not prerequisites for that statistical path.
+
+**The first operating blocker remains source admission.** The retained review
+does not establish an allowance for the four fixed ESPN reads, public-repository
+ciphertext retention/location/duration and necessary derived publication. Nick's
+affirmative continuation reply is retained as such; the requested exact existing
+authorization/document reference has not yet been supplied or admitted. No key,
+secret, provider permission or activation is inferred. Owner backup/recovery,
+authenticated hosted raw/key readback and trusted entrypoint remain subsequent
+dependencies. Secret presence remains UNKNOWN. The next concrete action is to
+review that exact existing source-use evidence before more downstream work.
+If it cannot cover this plan, keep OPS002 inactive and version a later permitted
+source/import reservation separately. The October 22 23:40 UTC activation deadline
+and capture/generation windows remain unchanged.
+
+Polymarket is parked. Nick reports that a subsequent Markets/resolution review
+still found no applicable NBA correction rule. That is a user-reported documentary
+finding, not a new source-body receipt or admitted rule. Originals, partial v2,
+private preview and missing fields remain unchanged; no further search/capture.
+
+Public main still contains six historical bundles/six historical grades, with
+zero genuine forecasts, published offers, prospective outcomes/grades, qualified
+tickets or financial settlements. This checkpoint does not deploy or publish
+anything. PR #10/#12 remain draft; PROS004/S0, the expired pilot and its records,
+frozen experiments, NFL and MLB remain untouched.
+
+## October 21 — bounded exact-condition CLOB inspection and semantic offer v2
+
+**Actual result: one retained NBA contract enriched into a typed, incomplete
+local semantic record; zero complete contracts.** Native YES/NO token mapping is
+now verified. No NBA correction/regrading rule was established. The private
+single-card preview is updated, with all fourteen categories retained as scope.
+The original 28 partial player-stat rows remain PTS10/REB10/AST8; no new event or
+player cohort was collected and no previous incomplete observation was backdated.
+
+Branch: `implementation/one-event-paired-pilot`. Starting local/remote HEAD:
+**9a7bdcb019697d972990f81ff31913b75dd44e24**, clean; normal fetch confirmed the
+same remote and main **411f904e4f9d577f97ca3a4ae6ba52fdb81ee130**. Implementation:
+**b8347b152e6e0bd07e18cba38d4e4fb93fd2f0d3**. Later metadata HEAD does not replace this source pin. PR #10/#12
+remain draft, PROS004/S0 inactive. The prior exact-head recovery and successful CI
+39596602230 are preserved in the archived prior PR body. Final pushed-head
+readback and configured CI results are retained in the current PR #12 description
+rather than changing an already-verified head to insert its own hash.
+
+### Actual four-request result
+
+Nick authorized four additional read-only source/documentation GETs, redirects
+and retries included, for the exact retained condition. ROOT was the only HTTP
+requester; all agents used zero requests. The separate supplement pins the earlier
+12-request ledger's exact bytes. **4/4 used, 651,274 bytes, one counted 302 and
+its separately counted follow, zero retries or automatic-approval rejections**;
+each response remained below the unchanged 2 MiB cap. No source request followed
+exhaustion. Earlier originals and their clocks/ledger are unchanged.
+
+1. Official Get CLOB market info documentation: 200 / 578,287 bytes, observed
+   **12:36:02.581777 UTC**; exact production `GET /clob-markets/{condition_id}`,
+   `security: []`, credentialless examples, token ID/outcome-label meanings.
+2. Official Help Center root: 302 / zero bytes, **12:36:38.940819 UTC**; automatic
+   follow disabled; returned `/en/` location retained.
+3. Returned English Help Center: 200 / 72,511 bytes, **12:36:50.030627 UTC**;
+   category links, without an applicable NBA player-stat correction rule.
+4. Exact retained-condition CLOB response: 200 / 476 bytes,
+   **12:39:13.542467 UTC**; condition/start/token set agree with retained Gamma,
+   with explicit YES/NO token associations.
+
+The pre-data CLOB decision is separate from the Gamma decision. Its API-specific
+basis combines the newly inspected exact no-auth operation, retained official
+Market Data Overview application/read workflow and personal informational-use/
+copy terms. It is a narrow interpretation for one personal/local informational
+read/retention/private review, not a blanket API, trading, recurring/bulk collector,
+account/wallet or public data-distribution admission. HTTP 200 and checksum claims
+are not substitutes for that review or provider authenticity. No provider key,
+signup, payment, trial, subscription or operational encryption key was needed.
+
+The CLOB response describes tokens/order-book parameters, without NBA statistical
+correction/regrading meaning. Generic NBA correction documentation, generic
+oracle challenge/finality and an uninterpreted `customLiveness` literal do not fill
+that field. No claim is made that every venue policy/clarification is absent.
+**Recommendation: retain this source as partial; its currently retained routes
+cannot satisfy the complete-contract requirement. Do not request more events or
+prices to solve a settlement gap.** The exact next returned documentary lead is
+`https://help.polymarket.com/en/collections/17859586-markets`; any later review
+must find a correction statement applicable to this same international
+Polymarket/A1 NBA player-stat contract. Polymarket US, another sport or generic
+oracle language is insufficient. ESPN/DraftKings and Sleeper remain preferred.
+No further source request is authorized by this exhausted allowance.
+
+### Offline implementation and actual replay
+
+New **`nba-local-semantic-offer-v2`** preserves existing v1 files/contracts and
+original records. It represents the independently verified external canonical
+player without fabricating a native provider person ID, and declares selection
+identity as `(market ID, outcome label)`. Native IDs/tokens, prices and execution
+flags are not universal semantic-completeness requirements. The actual native
+token is populated only from the new labeled CLOB witness. Earlier price arrays
+remain literal/unassigned; **PRICE_UNAVAILABLE** and a separate price-binding gap
+remain. No sportsbook odds, multiplier, probability, EV or compatible parlay leg
+is inferred.
+
+Actual computed semantic gaps: **PLAYER_TEAM, PLAYER_OPPONENT, EVENT_VERSION,
+SETTLEMENT_STAT_CORRECTIONS**. Source teams establish a matchup, not the player's
+affiliation. The source version literal is preserved without becoming a verified
+event revision/snapshot. `semantic_status: INCOMPLETE`, `completed_at: null`;
+execution, public and ticket admission remain false. The complete price-free,
+null-native-ID control is explicitly **synthetic**.
+
+The original contract was observed **11:26:31.749940 UTC**; latest linked knowledge
+**12:39:13.542467 UTC**; actual initial v2 normalization **12:50:08.291254 UTC**.
+The retained record independently replays **eight originals / 31 bindings**.
+Retries recover that same receipt and clock without regeneration; interrupted
+persistence finishes missing local artifacts and rejects conflicts. Subsequent
+draft validation fixes were verified against the same unchanged record.
+No prospective issuance or new historical reconstruction is claimed.
+
+Private originals: `.local-data/keyless-contract-007/originals/` (ten create-only
+files). Earlier source-use witnesses copied without requests:
+`.local-data/keyless-contract-007/source-use/`. Original package006 remains intact.
+Private preview: **`.local-data/keyless-contract-007/preview-v2/standalone.html`**.
+This is **local recovery, not verified durable remote raw archival**. Operating
+key backup/recovery and authenticated production retention remain separate,
+unchanged dependencies; they do not block this offline parser.
+
+The card shows the readable player/matchup/date, canonical/composite/native IDs,
+separate clocks, known settlement rules and four explicit semantic gaps. Price,
+execution and public admission are separate; all fourteen categories are visible
+as scope and the builder remains **NO_ACTION**. Provided-HTML-byte rendering
+passed **1440/390/320px**, details expanded, no overflow/errors and zero HTTP.
+Root visually reviewed desktop/mobile screenshots. Direct managed `file://`
+navigation returned **net::ERR_BLOCKED_BY_ADMINISTRATOR** and stopped without
+policy changes. The successful receipt explicitly says
+`rendering_mode: PROVIDED_LOCAL_HTML_BYTES`, `file_url_navigation_verified: false`.
+This is rendering verification, not a claimed successful file route. The initial
+failure is retained under qa-v2; successful private evidence is under qa-v3.
+
+### Files, review and actual commands/results
+
+New software: `multisport_lab/semantic_offer.py`, `gamma_semantic_review.py`,
+`web/semantic-offer-review.mjs`, `scripts/render_semantic_offer_review.mjs`,
+`tests/test_semantic_offer.py`, `test_gamma_semantic_review.py`,
+`tests/fixtures/semantic_offer_v2.json`, `web/tests/semantic-offer-review.test.mjs`
+and `semantic-offer-browser.py`. New docs: `docs/OFFER_SEMANTIC_V2.md`,
+`KEYLESS_CONTRACT_007.md`. Sanitized evidence: source result007, independent
+review, integrated checks and archived prior PR description under `evidence/`.
+Context, this handoff and MANIFEST are metadata updates. Actual source bodies,
+individual offer facts, private cards and screenshots are not committed.
+
+Independent review reproduced/fixed generic source alias/field-role bypasses,
+event-membership/coherence gaps, a generic-correction-word false positive,
+query-bearing CLOB route acceptance and Python/JS ASCII/numeric/URL-bound parity.
+Known source pointers/transforms are strict; actual settlement quotes bind to
+primary market meaning. A lexical policy guard never establishes applicability.
+New integrity code uses explicit exceptions under `python -O`.
+
+```bash
+python3 -m unittest discover -s tests -p 'test*semantic*.py' -v
+python3 -O -m unittest discover -s tests -p 'test*semantic*.py' -v
+node --test --test-isolation=none web/tests/semantic-offer-review.test.mjs
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.gamma_semantic_review --prior-bundle .local-data/keyless-contract-006/originals --supplement .local-data/keyless-contract-007/originals --output .local-data/keyless-contract-007/preview-v2
+node scripts/render_semantic_offer_review.mjs .local-data/keyless-contract-007/preview-v2/contract.json .local-data/keyless-contract-007/preview-v2/standalone.html
+python3 -O web/tests/semantic-offer-browser.py .local-data/keyless-contract-007/preview-v2/standalone.html .local-data/keyless-contract-007/qa-v3
+python3 -m multisport_lab.publication --build-commit b8347b152e6e0bd07e18cba38d4e4fb93fd2f0d3 --output /tmp/nml-gamma007-public-artifact
+node web/tests/site-smoke.mjs /tmp/nml-gamma007-public-artifact
+sha256sum --check MANIFEST.sha256
+git diff --check
+```
+
+Final full Python: **670 tests / 344.352 s, PASS** on the nine frozen software/
+fixture pins. All **93 frontend tests** and demo passed. Focused **20 Python
+normal / 20 optimized / 7 frontend** passed; independent **14 Python and 7 JS**
+negative cases reject, with the synthetic complete price-free control passing.
+An earlier full **670 / 378.151 s** passed before the final ASCII-policy/URL guards;
+its log is preserved separately, without representing it as final-source proof.
+No frozen comparison or full-history diagnostic was run.
+
+Local public artifact build/smoke passed: six historical bundles/six grades,
+zero offers/qualified tickets, no selected private source facts/tokens. This is
+an offline artifact, not publication/deployment. Receipts:
+`evidence/verification/gamma007-independent-review-20261021.json` and
+`gamma007-integrated-checks-20261021.json`. Independent raw review SHA256:
+**f176fc0a86c5af70573d54ae38a1ff11a64bcced40940e0ec49fca23291efa5b**.
+At review all **396 parent tracked files** were byte-identical; only later allowed
+handoff/context/manifest metadata changes differ. All v1 software, **37 reviewed
+sources, 40 frozen research files and 19 ledger records / 1,817,800 bytes** remain
+unchanged. Final exact-head GitHub recovery and required CI are separately
+recorded in the PR description after push, not anticipated here.
+
+### Publication, operation and next concrete task
+
+Public main remains **411f904e4f9d577f97ca3a4ae6ba52fdb81ee130**, last verified
+Pages **39573648815**, six historical bundles/six historical grades. Genuine
+forecasts **0**, published offers **0**, prospective outcomes/grades **0**,
+qualified tickets **0**, financial settlements **0**. There is no merge,
+deployment, scheduler, activation, trading or comparative evaluation.
+PR #10/#12 stay draft, PROS004/S0 inactive. Operating source6777025, frozen
+producer/experiments, full-history protocol, expired pilot/PR #8, all categories,
+2–6-leg/scope/direction/smaller-ticket/NO_ACTION behavior, NFL and MLB are preserved.
+
+The next source task is the **specific applicable NBA correction rule** and its
+venue/product applicability, followed by actual affiliation/version evidence;
+keep Gamma partial if unavailable. No more event/price collection should be
+substituted for that rule. Public offer admission and durable private raw archival
+remain separate. Price-independent statistical-forecast preparation remains
+usable under its existing input/activation gates; missing offers/odds introduce
+no new forecast requirement. This package does not activate or issue that path.
+
+## October 21 — final identity/selection clarification and remote recovery
+
+This forward documentation checkpoint follows **8b46608dcbab4b9487db6922b6aaf6ab3ddb2a35**;
+implementation remains **730f4ea58c7e3c3a08eb44d8d7f33d6f5108d501**. No producer,
+parser, original response, frozen receipt or preview was changed by this addendum.
+The factual result remains **28 observed / 28 parsed / zero complete contracts**.
+
+The source already explicitly binds YES and NO to their threshold predicates.
+A missing token-to-outcome mapping does **not** inherently make a price-free
+semantic offer incomplete. A separately versioned adapter could declare the
+source selection as `(market ID, outcome label)` and retain the independently
+verified canonical player crosswalk, without inventing a native player/token ID.
+The existing v1 normalized contract requires provider player and selection IDs,
+player team/opponent bindings and an event-version binding; that representation
+has not been extended here. Source event teams verify the matchup, but do not
+by themselves bind a player to either team. No player affiliation is inferred. Assigning a reported price requires
+verified price-to-selection correspondence; an executable token quote additionally
+requires token binding. Neither array correspondence is established here.
+Restricted/readiness/context flags are preserved; they do not prove permanent
+contract absence. None of these facts supplies the still-missing applicable
+**NBA statistical correction/regrading rule**. This canonical crosswalk is verified for four selected-subject observations;
+the other 24 observations still lack independent player identity enrichment.
+The private preview remains partial.
+
+The precise retained next documentation lead is **Get CLOB market info**:
+`https://docs.polymarket.com/api-reference/markets/get-clob-market-info`,
+registered in the retained official navigation as
+`/api-spec/clob-openapi.yaml get /clob-markets/{condition_id}`. Verify its stated
+server/auth/response contract before any later data request. The often-assumed
+`/markets/{condition_id}` token shape is not established by our retained documents.
+This is a next request, **not a request already performed**. The shared 12-GET
+allowance remains exhausted. A further bounded investigation must also locate an
+official correction/finality rule applicable to this exact NBA market; generic
+oracle challenge durations cannot fill that settlement field. No new provider
+credentials or private-key decision are required for the local source task.
+
+Independent fresh GitHub clone/readback recovered exact **8b46608d** with all
+**394 manifest entries**, seven code pins, four new public receipts and archived
+prior PR-description hash verified. All **37 reviewed sources, 40 frozen research
+files and 19 original records / 1,817,800 bytes** matched. The checkout was clean;
+no actual private raw response, individual offer facts or preview was tracked.
+Receipt: `evidence/verification/gamma-final-remote-recovery-20261021.json`, raw SHA256
+**47af0cf84ec12f74fea44112fc74eace8dfd6b9b16e46ad2f1076de0f59bf1ee**.
+This verifies committed code/evidence recovery, not remote archival of the twelve
+private originals. No source requests, new model diagnostics or issuance occurred.
+
+GitHub check **39595640216** was in progress for 8b46608d at this checkpoint;
+its actual final result and this documentation head's independent recovery/check
+result will be retained in PR #12's concise review description. The previous
+near-limit description is preserved byte-for-byte in the committed archive.
+Local required checks remain the measured **650 Python / 86 frontend**, demo,
+focused normal/optimized checks and six Chromium route/viewport checks below.
+Documentation-only verification: manifest coverage/hashes, new receipt seal,
+whitespace and exact source-byte preservation. Public deployment remains unchanged.
+No activation, scheduler, forecast, grade, public offer, qualified ticket,
+financial settlement, merge or deployment is authorized or performed.
+
+## October 21 — actual keyless Gamma source replay and private website preview
+
+**Actual result: 28 player rows observed, 28 parsed, zero complete contracts.**
+The private local preview works on desktop/mobile, displaying partial source
+observations with explicit gaps. Zero complete normalized offers or public offers
+were produced. This is real-source feasibility evidence, not synthetic-only
+success or a completed-contract claim.
+
+Branch: `implementation/one-event-paired-pilot`. Implementation source:
+**730f4ea58c7e3c3a08eb44d8d7f33d6f5108d501**. Starting local/remote HEAD was
+**d0f2da9a21bb0bd712cbe189bf5fe1d0e7b3bb9a**, clean; normal fetches preserved
+all work. GitHub run **39588803255** was actually rechecked: completed/success,
+exact head d0f2da9a, updated October 21 at **11:10:40 UTC**. This is the prior
+head's CI, not an anticipated result for this new implementation. PR #10/#12
+remain draft; no landing or activation approval applies. The operating producer
+source **6777025deca7c03636f5cb6739cfcc77cb0b5e49** and its bindings remain
+unchanged; this separate source-review module is not wired into genuine operation.
+
+### Source decision and actual bounded evidence
+
+The preferred ESPN/Sleeper routes keep their existing scoped source-use gaps.
+ESPN004's six nonplayer rows do not imply permanent absence. One alternative,
+**Polymarket Gamma API**, was selected under a new narrow published-allowance
+interpretation: documented unauthenticated integrations, informational Content
+Features and personal use/copy support this bounded API inspection, local original
+retention and private preview. No site scraping, bulk/recurring collection,
+trading/wallet/account, public raw/offer redistribution or broader production
+admission follows. No universal bespoke written consent was required. The earlier
+unresolved review remains frozen; this new decision and its exact retained
+document hashes were recorded before the first data request.
+
+**Exactly 12/12 additional GETs**, shared by all agents and executed by one owner:
+8 data/identity, 4 documentation/schema, **zero redirects/retries/rejections**.
+Source requests ran **11:24:44.695528–11:32:18.771983 UTC**, returning
+**1,591,978 bytes**; each response stayed below the existing **2 MiB** bound.
+No further source request was made after exhaustion. Prior rejected Manifold
+requests were not retried. GitHub repository-administration queries and the
+loopback browser's static-asset reads are separate from source collection.
+
+The documented NBA listing initially returned futures/roster propositions. A
+documented player-stat type filter led to an actual market and linked NBA event:
+60 total markets, **28 unique player-stat markets / 14 source name labels**.
+Current sample: **PTS 10, REB 10, AST 8**; the other eleven of thirteen+PA are
+unobserved here, not permanently unsupported. Recognized returned 3PM/PRA/DD
+families without rules parsers now count as observed/unsupported parser cases,
+rather than silently disappearing. All fourteen category rows are retained.
+One canonical basketball-player identity was independently disambiguated from
+Wikidata CC0 entity data; property definitions also verified NBA/ESPN ID meanings.
+It appears in four observations. No current roster affiliation was inferred.
+Wikidata identity is not substituted for a nonexistent Gamma player ID.
+
+Exact individual source facts, original URLs, rules, prices and raw bytes remain
+private/local. The public checkpoint contains structural counts/hashes/clocks:
+`evidence/offers/2026-10-21-keyless-contract-006.json`. Full method, actual request
+sequence, fourteen-category table and next field-specific task:
+`docs/KEYLESS_CONTRACT_006.md`.
+
+### Contract and normalization outcome
+
+The source supplies named-player/stat/threshold predicates, YES/NO labels,
+source event/market identity, matchup/start, full-game/overtime meaning, DNP,
+postponement/cancellation rules and official NBA box-score source. Supplied
+price arrays and bare bid/ask fields remain literal, without sportsbook odds,
+pick'em multiplier, model-probability, EV or executable-quote conversion.
+Standalone sportsbook status remains **PRICE_UNAVAILABLE**; missing prices alone
+are not a complete-contract blocker.
+
+Complete admission is blocked by **specific facts/representation**, not a generic
+permission question: native provider person ID is absent; outcome-to-token binding
+is not established by retained documentation; exact NBA stat-correction/regrading
+meaning remains unspecified. A literal `customLiveness` value is not assigned units
+or replaced by the generic documentation's two-hour period. Source context and
+executable-status flags are preserved without claiming availability. The local
+normalization readiness receipt stages verified facts against the existing
+settlement-field contract, with `BLOCKED_INCOMPLETE_CONTRACT`,
+`selection_id: null` and `normalized_capture: null`. No fake complete record or
+public-admission bypass was used to obtain a card.
+
+### Retention and local website verification
+
+Originals/sidecars/ledger/decision: **`.local-data/keyless-contract-006/originals/`**,
+26 create-only files, independently copied and replayed with all twelve hashes
+matching. Temporary capture originals also remain in `/tmp/nml-keyless-contract-006/`.
+This demonstrates **local recovery, not durable remote raw archival**. No private
+encryption key was generated/replaced/required; operating backup/retention remain
+separate and unchanged.
+
+Ready preview: **`.local-data/keyless-contract-006/preview-v3/standalone.html`**.
+It opens without scripts/server and renders 28 partial cards, readable player and
+matchup labels/dates, canonical/source IDs in details, separate source capture,
+update and review-generation clocks, literal price arrays, missing-price status,
+gaps, all fourteen categories and **NO_ACTION**. Actual source data and screenshots
+stay ignored locally. Public app/registries and the builder were not changed.
+
+Real Chromium passed **1440/390/320px**, standalone and module routes: six route/
+viewport checks, 28 cards, fourteen categories, accessible source details, visible
+gaps and no horizontal overflow. **External browser requests: 0**. Root visually
+reviewed desktop/320px screenshots. The optional harness needed loopback socket
+permission and corrected a CSS-capitalization check before its passing run;
+these initial failures are not represented as product/test passes. Private QA:
+`.local-data/keyless-contract-006/qa-v3/browser.receipt.json` and PNGs.
+
+### Source files, checks and review
+
+New code: `multisport_lab/gamma_offer_review.py`,
+`scripts/render_local_offer_review.mjs`, `web/local-offer-review.{mjs,css}`,
+`tests/test_gamma_offer_review.py`, `web/tests/local-offer-review.test.mjs`,
+`web/tests/local_offer_browser_smoke.py`. Documentation/evidence:
+`docs/KEYLESS_CONTRACT_006.md`, the source checkpoint above,
+`evidence/verification/gamma-local-review-independent-20261021.json`,
+and `evidence/verification/pr12-description-before-gamma-006.json`. The latter
+preserves the entire prior near-limit PR description and embedded exact-head
+evidence before a concise current description replaces it. Context, handoff and
+MANIFEST are updated separately after the implementation commit.
+
+```bash
+python3 -m unittest discover -s tests -p test_gamma_offer_review.py -v
+python3 -O -m unittest discover -s tests -p test_gamma_offer_review.py -v
+node --test --test-isolation=none web/tests/local-offer-review.test.mjs
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -m multisport_lab.gamma_offer_review --bundle .local-data/keyless-contract-006/originals --preview .local-data/keyless-contract-006/preview-v3
+node scripts/render_local_offer_review.mjs .local-data/keyless-contract-006/preview-v3/review.json .local-data/keyless-contract-006/preview-v3/standalone.html
+python3 -O web/tests/local_offer_browser_smoke.py .local-data/keyless-contract-006/preview-v3 --evidence .local-data/keyless-contract-006/qa-v3
+sha256sum --check MANIFEST.sha256
+git diff --check
+```
+
+Focused **8 Python normal / 8 optimized / 8 frontend** passed; all **86 frontend**
+tests and demo passed. Initial full local run **649 / 341.141 s** preceded the final
+unsupported-family regression and is preserved separately. Final implementation full run: **650 tests / 352.405 s**, PASS. Its exact seven
+code/verifier bytes match source730f4ea; integrated receipt:
+`evidence/verification/gamma-local-review-integrated-20261021.json`.
+The independent reviewer verified all twelve originals, fresh-copy replay,
+source flags/arrays, local static readback/public-path rejection, and unchanged
+**37 reviewed source/helper paths, 40 frozen research paths, 19 original records /
+1,817,800 bytes**. Receipt SHA:
+`80134e2fa9775947736efeb318501a2c1810a625edd87b8d7d3e6f2e8242db37`.
+Review fixed exact high-precision binary-price bounds, unsupported observed-family
+counting and symlink confinement. No statistical experiment or full-history
+diagnostic was rerun. New verifiers use explicit integrity exceptions under -O.
+
+### Public facts and next concrete task
+
+Public deployment remains **411f904e4f9d577f97ca3a4ae6ba52fdb81ee130**, last verified
+Pages **39573648815**, six historical bundles/six historical statistical grades.
+Genuine forecasts **0**, published offers **0**, prospective outcomes **0**,
+prospective grades **0**, qualified tickets **0**, financial settlements **0**.
+No scheduler, genuine operation, public offer, new grade, merge or deployment.
+PR #10/#12 stay draft; PROS004/S0, expired pilot/PR #8, model definitions, frozen
+experiments, all categories, scope/direction/2–6-leg policies, NFL and MLB remain
+unchanged. Missing offers/odds do not gate independent price-free forecasting;
+its existing genuine-input/activation requirements are unchanged.
+
+**Next task:** with a new bounded request allowance, obtain a documented response
+explicitly binding outcome labels to token/selection IDs for the selected
+condition and an applicable official NBA correction/finality rule for that same
+market. If the rule remains unspecified, keep Gamma partial for this contract.
+A versioned canonical-name identity crosswalk can preserve verified identity
+without forging a native provider ID; it must be reviewed separately. New linked
+evidence keeps its own capture clock: never backdate completion into today's
+earlier incomplete observation. No provider API key/signup or private-key backup
+decision is needed for that source investigation.
+
+## October 21 — bounded credentialless NBA offer feasibility and offline parser
+
+Branch: `implementation/one-event-paired-pilot`; new parser implementation source
+**71527c59753f2f1a6c1c42c359048d33165320bc**. Starting local/remote HEAD was
+**74a7914ab7499cfb6963e326bf9c3c4543a0c8c0**, clean before this package; a normal
+fetch preserved all newer legitimate work and the earlier ChatGPT commits.
+This is a forward, independent parser package, not an operating producer revision.
+The reviewed operating source remains **6777025deca7c03636f5cb6739cfcc77cb0b5e49**;
+no 31-file source binding, clock/window or mathematical law was changed.
+PR #12 and its PR #10 base remain draft; PROS004 and S0 remain inactive.
+
+The clarified collection requirement is **free, with no provider API key,
+signup, account login, subscription or trial**. The native inspector has no
+HTTP client, credential or private-key prerequisite. The operational private
+encryption-key backup/recovery decision remains separate and unchanged; it did
+not block this source review, retained-byte replay or parser implementation.
+
+### Actual sources and request accounting
+
+- **New sports-data requests: 0.** Replayed retained ESPN OFFER-PILOT-004 originals
+  from `/tmp/nml-offer-pilot-004/`, without refreshing their capture clocks.
+  The exact inherited NBA `propBets` route for event 401909094 yielded six rows:
+  four Team Total Points, two Will There Be Overtime?, zero athletes. Bound
+  provider-100 original explicitly names DraftKings. ESPN is the data source;
+  provider attribution is response-backed, not inferred from ESPN or ID 100.
+- The 4,167-byte offer body SHA is
+  `dcee4d4f8fb16617f6ff46e52489165101e02fe1fc532d3a9e2886056e6ccb29`,
+  capture completed `2026-10-21T01:39:45.791491Z`. The 160-byte provider body SHA is
+  `101448a5e2bf365ae79efff5e7355e8e1193324014386df04b66afa82e974fa2`,
+  capture completed `2026-10-21T01:40:19.564083Z`. Their exact metadata and URLs
+  remain in the sidecars. Local originals are not claimed remotely archived.
+- **Nine official-document HTTP GETs**, including one redirect, reviewed Kalshi
+  and Polymarket. Both explicitly document unauthenticated market APIs. Reviewed
+  extraction/software/retention restrictions remain unreconciled; no new source
+  admitted and no data GET made. Polymarket's US informational Content Features
+  allowance is distinguished from trading restrictions. This is not a conclusion
+  that all keyless sources are unavailable. ESPN/Sleeper keep their prior scoped
+  source-use blockers; Sleeper's fantasy API allowance is not a Picks-feed grant.
+- **Six read-only NFL GitHub GETs** pinned main
+  `57c84dea3e7211356e04e201e11cd7090e14adaa`, tree and three immutable code blobs.
+  No provider request, inherited collector copy, active checkout/session contact,
+  workflow or NFL write. Reuse lessons concern HTTP bounds, explicit exceptions,
+  provenance and stable IDs; they do not establish NBA access or contracts.
+- Separate read-only NML administration queries confirmed PR #10/#12 draft and
+  main **411f904e4f9d577f97ca3a4ae6ba52fdb81ee130**. Git fetch/push/readback are
+  repository transport, not sports-provider collection.
+
+### Implementation, real replay and full-category distinctions
+
+`multisport_lab/offer_feasibility.py` adds an offline native ESPN original-byte
+inspector. It enforces bounded bodies/rows, raw count/hash matching, strict JSON,
+NBA event/competition/provider/athlete identities, source/capture/import clocks,
+exact `propBets` casing and pagination metadata. A separate matching provider
+original is required for a provider name. Original numeric line/price lexemes
+avoid float rounding. Unknown subjects, invalid identities and contradictory
+thresholds remain diagnoses. Side is never inferred by row order. Missing price
+is **PRICE_UNAVAILABLE**, separately from missing contract terms. This inspector
+emits partial observations only; existing normalized/offer-only validation still
+allows an otherwise complete price-free contract. No quote, EV or admission is
+created from an incomplete row.
+
+Actual CLI replay: **0 player observations / 6 nonplayer rows / 0 diagnostics /
+0 complete player contracts / 0 usable quotes**, all fourteen player categories
+UNOBSERVED_IN_SAMPLE. Earlier 002/003 raw directories and local Sleeper import
+report are absent. Historical 003 summary counts remain evidence of observations,
+not reproducible individual contracts: ESPN thirteen primary families including
+PA, TOV absent; Sleeper 2,472 recognized partial side observations plus 248
+unmapped quarter options, TD absent. Native ESPN player handlers are synthetic-
+tested only; Total Turnovers is an expected, unobserved alias. No Sleeper TD alias
+is invented. Milestone/quarter variants remain unsupported by primary mappings.
+Kalshi/Polymarket categories are NOT_INSPECTED_SOURCE_USE_GATE, not sample zeros.
+The complete fourteen-category table is in `docs/KEYLESS_PARSER_READINESS.md`.
+
+Files added: `multisport_lab/offer_feasibility.py`,
+`tests/test_offer_feasibility.py`, `docs/KEYLESS_PARSER_READINESS.md`,
+`docs/KEYLESS_SOURCE_FEASIBILITY.md`, `docs/NFL_KEYLESS_REFERENCE.md`,
+`evidence/offers/2026-10-21-keyless-retained-inventory.json`,
+`evidence/offers/2026-10-21-keyless-source-use-review.json`,
+`evidence/verification/nfl-readonly-keyless-reference-20261021.json`, and
+`evidence/verification/keyless-parser-independent-20261021{,-v2}.json`.
+`PROJECT_CONTEXT.md`, this handoff and MANIFEST document the clarification/status.
+No original research/ledger/protocol/producer/workflow/frontend file changed.
+
+### Commands and actual verification
+
+```bash
+python3 -m unittest discover -s tests -p test_offer_feasibility.py -v
+python3 -O -m unittest discover -s tests -p test_offer_feasibility.py -v
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+sha256sum --check MANIFEST.sha256
+git diff --check
+```
+
+The exact four-file actual CLI invocation and existing local report path appear
+in `docs/KEYLESS_PARSER_READINESS.md`; report readback passed. It is create-only,
+with its actual import clock, not an idempotent recapture command. Independent
+replay matched every field except each verifier's actual import clock.
+Eleven final focused tests passed normally and under optimized Python. The
+initial full run passed 641 tests / 357.620 s before the last missing-subject
+classification guard; its measurement is preserved, not relabeled as final.
+Final source full run: **642 tests passed / 352.482 s**. The exact parser/test
+bytes match source 71527c5; the integrated check receipt is
+`evidence/verification/keyless-integrated-checkpoint-20261021.json`.
+Frontend **78 tests passed**, demo exit 0, and checksum/whitespace checks passed.
+The independent initial receipt and appended v2 receipt preserve both reviewed
+source hashes and checks; v2 SHA is
+`322406a5a28d0fb1dd460986c0fa66a8862743f003258a25845946e1d8595bcb`.
+Eight document originals, three NFL source blobs, 37 reviewed execution/helper
+paths and 40 frozen research/diagnostic paths matched their pins. Final subject
+classification review distinguishes missing identity from verified nonplayers.
+No full-history timing diagnostic or frozen model comparison was rerun.
+
+### Publication, limits and next concrete task
+
+No merge, deployment, scheduler, activation, source admission, genuine issuance,
+new outcome/grade or public offer occurred. Last verified public release remains
+**411f904e**, Pages run **39573648815**: six historical bundles / six historical
+grades; genuine forecasts **0**, published offers **0**, prospective outcomes
+**0**, prospective grades **0**, qualified tickets **0**, financial settlements
+**0**. Existing scopes, 2–6 legs, three directions, smaller tickets and NO_ACTION
+are unchanged. NFL, separate MLB, original expired pilot/PR #8, DEV005 and all
+other frozen experiments/receipts are preserved.
+
+Next: resolve one documented public informational API's exact allowance for one
+credentialless NBA player-market inspection and local original-byte retention,
+separately from public redistribution. Then register a tiny request/byte budget
+and inspect one actual player contract plus necessary linked identity/event/rules
+references. Required gaps remain a recoverable original **player** row, verified
+name/stable IDs/event, exact side/line/period/OT/variant/product and applicable
+settlement meaning. No API key or signup is proposed. Odds can remain
+PRICE_UNAVAILABLE; neither absent offers nor odds block independent statistical
+forecast preparation. Source retention/operational private-key recovery remain
+separate future operating dependencies, not prerequisites for this local parser.
+
+Automatic approval review rejected two proposed additional documentation GETs
+on its stated request-budget concern. Neither ran; no alternate transport/retry
+followed. The task ledger records nine actual documentation GETs and makes no
+claim about the uninspected third source.
+
+## October 21 — exact forward source remotely recovered; preparation stays blocked
+
+Implementation source: **6777025deca7c03636f5cb6739cfcc77cb0b5e49**. Branch:
+`implementation/one-event-paired-pilot`; PR #12 stays draft, based on unchanged
+draft PR #10. This following checkpoint changes documentation/evidence only.
+Its eventual Git HEAD does not replace the source pin above. Both e5eb1a2 and
+714630dd remain ancestors. Source and mathematical laws are frozen for review,
+not approved for operating use.
+
+Independent fresh-Git recovery matched the exact pushed source: MANIFEST covered
+367 files, all 37 reviewed source/helper hashes matched, all nine original pilot
+files and 19 original records/1,817,800 bytes matched, and all 40 prior frozen
+research/protocol/diagnostic paths matched the original 06dbb492 Git objects.
+Actual GitHub readback confirms main 411f904e, approved PR #11 merged, PR #10/#12
+draft and expired workflow 390126745 disabled. No capture, issuance, key or workflow
+mutation was performed by the verifier. Receipt:
+`evidence/verification/ops002-forward-exact-source-6777025.json`, 22,623 bytes,
+raw SHA256 `7c17635e2fce14e70934307100f4878d43746c3008dbca537ad802f1451f2405`.
+
+Both actual read-only CLI commands at the fixed source returned expected exit 2:
+
+```bash
+python3 -m multisport_lab.operational_delivery \
+  --source-root . \
+  --producer-commit 6777025deca7c03636f5cb6739cfcc77cb0b5e49 \
+  --records-branch records/nba-paired-ops-002-20261022
+
+python3 -m multisport_lab.operational_preflight \
+  --plan evidence/operational/ops002-plan.json \
+  --producer-commit 6777025deca7c03636f5cb6739cfcc77cb0b5e49 \
+  --output /tmp/nml-ops002-reviewed-forward-preflight-6777025.json
+```
+
+The delivery binding verifies 31 exact files; binding ID
+`f0dbf50e0ae1f509b9e4bf17e0e1954b124f08fc201d95ac7776e355222ccca0`.
+Status remains BLOCKED_NOT_ACTIVATED with local preparation integrity PASS.
+No actual raw/backend/key admission or genuine execution follows. Actual CLI
+outputs/clocks and capacity 124 / 4,848,840 are retained in the two new source
+preparation/CLI receipts. The preflight output path above already exists in this
+workspace; use a distinct path when deliberately recording another read-only
+preparation check, preserving its original contents.
+
+Required local 631 Python/78 frontend/demo and focused optimized checks passed;
+source/test hashes stayed unchanged. The subsequent metadata-head GitHub check
+and exact final HEAD are reported in PR #12 after completion, avoiding a circular
+self-referential commit pin. This source's initial automatic software CI may be
+superseded by that metadata-only head; no frozen diagnostic is rerun or cancelled.
+
+Public release remains **411f904e4f9d577f97ca3a4ae6ba52fdb81ee130**, Pages
+39573648815, verified manifest/hash/live-response UI. Historical 6 bundles/6 grades
+are distinct from genuine forecasts 0, published offers 0, prospective outcomes 0,
+prospective grades 0, qualified tickets 0 and financial settlements 0. The original
+06dbb492 timing does not apply to this new candidate. All blockers, unchanged
+windows and next tasks are in the detailed checkpoint below and
+`docs/OPS002_ACTIVATION_PACKAGE.md`. No scheduler or activation was installed.
+
+## October 21 — approved website deployed; connected candidate reviewed and corrected
+
+The implementation owner verified a clean local PR #12 branch at fe09956 and
+fetched the actual remote. A normal fast-forward preserved both ChatGPT-added
+commits **e5eb1a24ee779cdec819bd239ccbc5a9d33e93f7** and
+**714630dd2b99e04ac5574d5c56f7cadbd934c126**. No reset, force push, ZIP restore
+or duplicate implementation. Current branch remains
+`implementation/one-event-paired-pilot`, stacked on unchanged draft PR #10.
+The following forward source commit is a new **unapproved operating candidate**;
+its exact pin and remote readback are recorded in the subsequent checkpoint.
+The older producer 06dbb492 and all of its actual diagnostic results stay frozen.
+
+### Website release: merged and publicly verified
+
+Nick's approval applied only to PR #11 head
+**326e354650aef57c3b965711abf071b2fc4205eb**. This Codex executor has a working
+GitHub CLI; the separate ChatGPT environment's CLI failure did not apply here.
+The canonical PR Completion watcher reported ready at 09:00 UTC with that exact
+head, green build, no unresolved threads and a clean merge state. The unchanged
+shipped `pr_land.py` planned/rechecked the same all-check policy and merge method;
+its confirmed normal protected request was followed by watcher state **merged**.
+No alternate/admin/force merge path was used.
+
+Actual merge and served commit: **411f904e4f9d577f97ca3a4ae6ba52fdb81ee130**.
+Pages run **39573648815** succeeded: build 09:00:51–09:02:39 UTC,
+deploy 09:02:42–09:03:00 UTC. Public manifest 4 snapshot
+`e17369539b72b639f3b8675830e79bcf7d67c25e217bcd45f682dcde5df255c9`;
+NBA SHA256 `2747629ef1bb9736f0dba4b75f94ea665368bb7b8758e4a31d1b82df6c48ad67`;
+display SHA256 `4a18eda1f84889c1133f81a1b78193b92453cd961ff163408f883f90254e9fb8`.
+Index and all seven referenced static assets match exact merged Git bytes.
+All 19 original records / 1,817,800 bytes are identical to approved head and prior
+main; public six forecast bundles and six statistical grades equal originals.
+
+Actual public-byte Chromium rendering passed 1440/390/320 widths: six verified
+names, historical matchups/dates, source IDs, separate publication/preparation/
+genuine-issuance clocks, clear independent empty states, direct
+`#/props/history` and refresh, all 14 categories / 84 PMFs, six grade receipts,
+135 builder combinations and empty sport scope with accurate NO_ACTION.
+Root visually inspected desktop/mobile History and 320px Builder screenshots.
+No model input, probability, source timestamp or historical team was regenerated.
+
+Direct native Chromium TLS failed ERR_CERT_AUTHORITY_INVALID for the environment
+proxy. Automatic approval review rejected a persistent CA import because it would
+broaden browser trust; no trust change occurred. The safe verification instead
+fetched actual same-site public responses with unchanged system TLS validation
+and existing proxy, then fulfilled browser requests with those exact verified
+bytes. No certificate-ignore flag or TLS bypass. This verifies live-byte UI,
+routes/reload and layout, and explicitly does not claim native Chromium TLS
+success. Complete 49,528-byte independent receipt:
+`evidence/deployment/2026-10-21-pr11-pages.json`; root visual receipt is adjacent.
+
+### Review and forward fixes to the added code
+
+Presence on the remote branch or earlier passing CI was not treated as approval.
+Bounded reviewers and the integration owner inspected the added source/admission,
+original-byte, encrypted delivery, key and offer paths. Reproduced defects:
+
+- Standalone binding recovery accepted a resealed receipt predating its event and
+  source references. It now independently checks their creation-clock ordering.
+- A capture manifest copied under a different valid-looking hash filename could
+  recover/count twice. Both direct archive recovery and outer delivery now bind
+  each actual filename to its original capture identity; invalid originals remain
+  preserved and reject recovery rather than being silently removed.
+- OpenSSL parsed a first certificate while ignoring appended keys/certificates
+  or hidden trailing DER. The shared loader now accepts exactly one standalone
+  PEM or DER certificate, preserving valid existing standalone formats. The local
+  key helper has the corresponding strict PEM-only check. No real key disclosure
+  occurred; all reproductions used synthetic material.
+
+New `operational_key_recovery.py` verifies caller-supplied original and restored
+owner-only keys outside Git against the same public certificate and registered
+public canary. Distinct inodes, pinned no-follow descriptors, file-stability,
+cryptographic suite, public fingerprints, actual clocks and helper source hash
+are checked. It emits neither key bytes nor private paths. Local success leaves
+backup-origin, hosted-secret, source-admission and genuine-operation flags false.
+It creates or installs no operational key. `docs/OPS002_KEY_RECOVERY.md` provides
+create-only preparation commands; private keys must never enter chat or Git.
+
+The already implemented four-input normalizer binding, authenticated raw reader,
+reference resolver, encrypted prefix-preserving transport and independent public
+channels are reused. Review found no further verified admission/offer validator
+defect. Consistency with a retained review inventory is not approval authority.
+Neither the synthetic offer fixture nor local key test supplies actual evidence.
+
+### Actual checks and resource accounting
+
+Required `python3 -m unittest discover -s tests -v`: **631 tests passed in 345.763s**.
+`python3 -m multisport_lab.demo`: passed. Frontend `node --test
+--test-isolation=none web/tests/*.test.mjs`: **78 actual tests passed**.
+The source/test byte map remained unchanged throughout. Receipt
+`ops002-forward-required-checks-20261021.json` records exact commands and log hashes.
+
+Focused normal and optimized checks passed: 43 source-link/delivery/transport;
+31 raw/delivery follow-up; final 19 raw tests; 10 local key-recovery tests;
+22 admission tests;8 original-text,18 offer and1 encrypted-offer bridge tests;
+10 offer frontend subtests. Separate verifier passed 19 targeted optimized checks
+and found no further integrity defect. Earlier pre-fix failures and each stage's
+actual hashes/results remain in the separate forward review receipts; counts
+refer to those actual runs, not additional unique model evidence.
+
+Original nine pilot files, all 19 records and 40 prior research/protocol/old-host
+report paths remain byte-identical. No new statistical comparison or hosted
+full-history measurement was run. Old producer 06dbb492/run39536525048 retained
+its original eight synthetic forecasts, eight timing-eligible and final
+T90+289.817868s. That timing does not cover the newer connected components.
+
+The unchanged v4 proposal reserves 124 files / 4,848,840 bytes against 512 files/
+33,554,432bytes, including required source links, outcomes/grades/corrections and
+bounded metadata. Owner key-recovery evidence fits an existing 16-KiB metadata
+slot; no per-forecast receipt or cap increase. Raw reserve remains 44,728,320 bytes /
+21 captures under 64 MiB / 128 caps. All 26,645 history rows and probability atoms remain.
+
+### Operating status, exact blockers and next task
+
+Read-only GitHub matching-ref queries found no proposed
+`records/nba-paired-ops-002-20261022` branch. Secret metadata queries returned 403;
+current secret existence is **UNKNOWN**, not established absent. No key/secret,
+branch, native automation or pilot workflow was changed by those queries.
+`ops002-owner-readiness-context-20261021.json` records actual query clocks/results.
+
+`docs/OPS002_ACTIVATION_PACKAGE.md` identifies the candidate, fixed event/cohort,
+source-use review, key/raw evidence, proposed destination/runner, complete recovery
+sequence and outstanding gates. The genuine entrypoint remains disabled and
+uninstalled; the existing synthetic diagnostic workflow must not be relabeled a
+genuine worker. Source-use remains NO_OPERATIONAL_ADMISSION. An applicable
+existing allowance/authorization must cover the exact four input requests,
+public-repository encrypted retention and necessary derived facts. Ordinary
+owner approval, HTTP200 or encryption does not establish provider rights.
+
+The proposed key arrangement still needs the owner's existing private durable
+backup/retrieval choice, actual restore of the original and authenticated trusted
+host readback. Recommend an already-used secure-file password manager, otherwise
+an existing encrypted offline backup; only name the arrangement. Once source/key
+requirements close, review and verify the actual trusted entrypoint/destination
+and its overhead at a separately pinned source before separate activation.
+No genuine worker, scheduler or activation is installed by this preparation.
+
+Fixed event 401909094 DEN at OKC and cohort 2991350/3133626/3978/3064290 remain.
+Activation evidence must be independently recovered **strictly before October 22,
+23:40 UTC** (6:40 p.m. CDT); fresh capture/persistence/readback 23:40–23:50 UTC;
+generation and all required readback October 23, 00:00–00:05 UTC. The 120/300-second
+gates remain. Those windows have not been shifted. If unmet, retain inactive/
+actual partial evidence and reserve any later event separately. Original PROS004
+remains inactive with its incomplete UTC inventory/first cutoff uncertainty intact.
+
+Actual offer review independently replayed the two surviving ESPN originals
+without GETs: six team/overtime markets, zero player contracts; provider 100 is
+DraftKings. Earlier Sleeper summaries cannot reconstruct absent originals or
+missing period/product/rules/crosswalk. Next offer task: one permitted complete
+actual player contract plus its applicable settlement rules and authenticated raw
+recovery, then reviewed public admission. Price may remain unavailable; a missing
+offer or odds does not block an otherwise admitted statistical forecast cycle.
+
+**Counts:** genuine new forecasts 0; published offers 0; prospective outcomes 0;
+prospective statistical grades 0; qualified tickets 0; financial settlements 0.
+Public historical bundles 6 and historical statistical grades 6 remain separate.
+All 13 requested categories plus PA, sport scopes, 2–6 legs, directions, smaller-ticket
+and NO_ACTION behavior are preserved. PR #10 / PR #12 remain draft and unapproved for
+landing/activation. NFL, MLB, S0/DEV005, frozen experiments, expired pilot evidence
+and disabled workflow 390126745 remain untouched.
+
+## October 21 — connected source committed; exact remote recovery and CI passed
+
+The new implementation source is **`e5eb1a24ee779cdec819bd239ccbc5a9d33e93f7`**
+on draft PR #12, `implementation/one-event-paired-pilot`. Its Git tree is
+`4949b8bd06926921a18d067df663d7f20a9a7133`, with sole parent
+`fe09956ac5708d3e2df65ebb6c833a3fbafdd73d`. This following checkpoint changes only
+documentation and verification evidence; it does not replace that source pin or
+the separately frozen old diagnostic producer. Resolve the branch HEAD for the
+final documentation review commit. Fetch this branch before resuming work from
+the older `fe09956` checkpoint; preserve the new legitimate commits.
+
+**GitHub CI [39568982026](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39568982026)
+passed for the implementation head.** The job log records **616 Python tests in
+339.702s**, **78 frontend tests**, the demo and artifact smoke check passing.
+The operating diagnostic and deployment jobs were skipped. This is software CI,
+not a new hosted full-history operating/timing measurement or website release.
+
+Independent authenticated GitHub readback verified the complete recursive tree:
+**376 entries, comprising 352 blobs and 24 directories**, with every path, mode,
+type and object hash equal to the committed local tree. All **24 changed blobs**
+were separately downloaded and compared byte-for-byte, by length, Git blob SHA1
+and SHA256. Their total was 543,594 bytes. Original 19-record and frozen
+nine-source-file preservation was checked against historical local Git objects,
+the remote blob identities and the independently retrieved verification receipt.
+Unchanged blobs were not unnecessarily downloaded again. This verifies repository
+source/evidence recovery; it does **not** demonstrate genuine provider-source or
+operating-record recovery.
+
+The read-only delivery preparation now verifies all **31 execution files** against
+that exact source commit. Its binding ID is
+`f2778e8baf81b28043fd939c1578dcaf920c1e82382a6393bfe907f279b8ca52`;
+`VERIFIED_COMMIT` still returns **`BLOCKED_NOT_ACTIVATED`**, expected exit 2.
+An exact-source local artifact build and smoke check passed with snapshot
+`3a496125703ffc3e0c8e9426225dedbbefc61e412b93f95455b4985f21f405b5`, one sport and
+no qualified rows. Neither check establishes a browser deployment or model
+accuracy. Machine-readable evidence is
+`evidence/verification/ops002-connected-remote-recovery-v1.json`; the earlier
+connected-components receipt and all original diagnostic results remain intact.
+
+The remote checkpoint again observed PR #11 open/unmerged at the approved
+`326e354650aef57c3b965711abf071b2fc4205eb`, PR #12 open/draft with unchanged PR #10
+base `c0a7b4bc3205d723b13d0f70baf66f3806e731ee`, and main
+`735a464e9e8718303ef481abf711a8969de56694`. **No merge or deployment occurred.**
+The PR Completion helper remains blocked by the missing authenticated GitHub CLI;
+Nick's already-given exact-head website approval remains valid. No alternative
+merge path was used. Complete that approved release in the existing authenticated
+Codex environment, then verify the public names, matchups, clocks, direct History
+route and mobile layout. Do not ask for the same approval again if the head is
+unchanged.
+
+Remaining operation requirements are unchanged: a permitted source-use basis,
+installed private raw/key retention with durable owner-controlled recovery,
+verified genuine hosted input/writer operation, and separate reviewed activation.
+The offered destination and key-custody procedure are concrete preparation, not
+an installed secret, created records branch or armed scheduler. One owner-only
+decision remains: identify an existing private durable backup/recovery location
+for the encryption key; an already-used secure-file password manager or encrypted
+offline backup is recommended. Selecting it does not resolve source admission or
+authorize activation. Never send the key in chat.
+
+The separate offer route still needs one permitted actual player contract, rules
+and original source bytes. Its synthetic complete `PRICE_UNAVAILABLE` fixture
+does not count as a published offer. Statistical forecast publication remains
+independent of missing offers or odds. **New genuine forecasts, published offers,
+prospective outcomes/grades, qualified tickets and financial settlements are all
+zero.** Six historical bundles and six historical grades remain the only public
+research records. PROS004 remains inactive; PR #10/#12 remain draft and unapproved;
+all 13 categories plus PA, 2–6 legs, directions and `NO_ACTION` remain intact.
+NFL, MLB, frozen experiments and the expired pilot were not changed.
+
+## October 21 — authenticated source/delivery connections; website release blocked by local CLI
+
+Nick explicitly approved **only PR #11 at
+`326e354650aef57c3b965711abf071b2fc4205eb`** for merge and Pages deployment.
+The GitHub readback still shows that exact head, open/non-draft, mergeable/clean,
+with successful build **39514677552**. Deployment on that PR check is correctly
+skipped. Main remains `735a464e9e8718303ef481abf711a8969de56694`.
+
+**No merge or deployment was performed.** The applied PR Completion skill requires
+its shipped guarded watcher/landing helper as the sole merge-state mutation.
+The unmodified watcher returned `blocked`, `required command not found: gh`
+at 06:37:27 UTC. This environment has no GitHub CLI, standard CLI authentication
+configuration or CLI token. The connected GitHub API remains usable for ordinary
+PR #12 branch work; it is not used to bypass the landing helper. Nick's approval
+remains valid for the unchanged PR #11 head. The existing authenticated Codex
+environment can complete the already-approved release after its normal recheck;
+do not request the same approval again.
+
+Public browser inspection, recorded at **07:05:40 UTC**, confirms the existing
+build `735a464e9e`. The direct `#/props/history` route reports Page unavailable;
+History still opens through the Props view and uses `ESPN player <ID>` headings.
+It reports 84 category distributions over the six historical bundles, zero
+upcoming distributions and zero published offers. The approved readable-name,
+direct-History and revised clock/empty-state changes are therefore **not public**.
+No new public mobile-layout or asset-hash release verification is claimed.
+
+### PR #12 implementation completed at this checkpoint
+
+Work continues on `implementation/one-event-paired-pilot`, based on unchanged
+`fe09956ac5708d3e2df65ebb6c833a3fbafdd73d`. PR #12 and PR #10 remain draft and
+unapproved for landing/activation; PROS004 remains inactive.
+
+- `operational_source_links.py` authenticates original encrypted bytes, compares
+  exact URL/event/mode/hash/length/clocks, and links the four source responses to
+  the exact normalized event and fixed cohort. Recovery repeats normalization
+  against those bytes and the explicit dated/season-qualified source inventory.
+- `operational_admission.py` resolves five activation and three raw-backend
+  references against bounded retained receipts, using no-follow descriptor reads,
+  exact payload hashes, role/context checks and final readback. It verifies
+  consistency with a review inventory; it does not establish rights or authority.
+  Every success remains `REVIEWABLE_CANDIDATE / NOT_ACTIVATED` with authority,
+  rights, actual key/host execution and timeliness flags false.
+- `operational_delivery.py` includes ledger and encrypted archive in preserved
+  checkpoints, authenticates source links/bindings after independent recovery and
+  prepares the exact records destination. Its genuine constructor remains hard
+  closed. Tests use actual encryption and temporary local bare Git repositories,
+  not GitHub-hosted genuine execution. Destination/push-URL changes, archive-only
+  replacement and plaintext/invalid-CMS orphan files are rejected before transfer.
+- `source_evidence.py`, the offer backend and browser validator now replay exact
+  HTML/plain-text RULES quotations from original bytes, with explicit extraction
+  version and UTF-8 byte spans. Existing JSON bindings stay compatible. The real
+  publication admission registries remain empty.
+- One cross-component fixture passes encrypted JSON identity/contract and HTML
+  rules through the actual raw reader into a complete synthetic
+  `PRICE_UNAVAILABLE` offer. Tampered/missing offer sources reject that offer while
+  the separately bound statistical-input and forecast-export path remains usable.
+
+Independent review found and corrected the delivery-destination, partial-archive,
+orphan-ciphertext and receipt-path race defects before this checkpoint. No model
+law, cutoff, category, original ledger record or frozen experiment was changed.
+
+### Checks and source identity
+
+Required local full suite: **616 Python tests passed in 399.612s**. Frontend:
+**78 tests passed**. Demo passed. Focused normal/optimized checks passed for the
+source links, admission resolver, encrypted delivery, original-text replay and
+offer bridge; existing transport regressions also passed. A final focused
+five-test capacity check passed in normal and optimized Python after adding the
+explicit final-summary/correction raw reservation during the full-suite run.
+Exact-head CI and artifact results are recorded in the following checkpoint.
+
+The read-only delivery CLI returned expected exit **2**,
+`BLOCKED_NOT_ACTIVATED`, an explicitly `LOCAL_UNREVIEWED` inventory of **31
+execution files**, zero provider requests and zero genuine issuance. The expanded
+binding includes new dependencies without changing the old producer's file list.
+The subsequent source commit, not the older producer SHA, identifies these new
+bytes. The exact implementation and remote readback are recorded below after
+publication; no candidate has been reviewed for activation.
+
+All **19 original ledger receipts** and **nine frozen October 20 producer files**
+were independently compared through their authentic historical Git objects and
+remain byte-identical. Existing experiment/evidence bytes are preserved. The
+completed full-history hosted synthetic run **39536525048** and producer
+**`06dbb492dda5d0043ec7a3a6c97ce9c46201edc8`** remain untouched. Its eight originals
+and T90+289.817868s result describe that old path only. **No additional full-history
+hosted measurement was performed.**
+
+### Concrete activation package and remaining requirements
+
+[OPS002_DELIVERY_READINESS.md](docs/OPS002_DELIVERY_READINESS.md) identifies the
+fixed event/cohort/plan, original measured producer, new delivery binding,
+four exact pregame sources, proposed destination
+`records/nba-paired-ops-002-20261022`, local/test execution limits, key custody
+procedure and unchanged operating windows. Capacity v4 reserves **124
+ledger/metadata files / 4,848,840 bytes**. Separate raw reserve **44,728,320 bytes /
+21 captures** includes pregame, offer, final-summary and bounded correction
+captures. Original 512-file/32-MiB ledger and 64-MiB raw limits are unchanged.
+
+[OPS002_SOURCE_USE_REVIEW.md](docs/OPS002_SOURCE_USE_REVIEW.md) completes the scoped
+official-document review with **NO_OPERATIONAL_ADMISSION**: the reviewed evidence
+does not establish the intended fresh ESPN/Sleeper collection, retention and
+publication basis. It preserves the existing bounded historical-data acceptance
+and the independent approved PR #11 release. No provider-data request or new
+source grant was made.
+
+The operational private key/certificate, owner-controlled durable backup,
+`NML_OP002_RAW_PRIVATE_KEY` Actions secret and authenticated hosted readback are
+**not installed or demonstrated**. The concrete custody/recovery procedure is
+prepared; the owner must identify an existing private durable backup and recovery
+method. Recommended: an already-used password manager with secure-file storage,
+or an existing encrypted offline backup. Never send key material in chat or Git.
+
+Genuine source use, installed key/backend, actual hosted capture/writer validation
+and separate exact-source activation remain unresolved. Complete activation must
+be independently recovered strictly before **October 22, 23:40 UTC**; capture is
+23:40–23:50, generation/final recovery October 23, 00:00–00:05. No scheduler is
+armed. The proposal remains inactive if those requirements cannot be met; do not
+shift the event or backdate inputs. Any further full-history hosted check must
+address a specific documented remaining risk with a bounded scope.
+
+Separately, the first actual offer still needs a permitted complete player
+contract, exact applicable settlement rules and recoverable originals. Missing
+price may remain explicit; absence of an offer does not block an independently
+admitted statistical forecast cycle. There are **0 new genuine forecasts,
+0 published offers, 0 prospective outcomes/grades, 0 qualified tickets and
+0 financial settlements**. Six historical bundles, six historical grades,
+all 13 categories plus PA, 2–6 legs, direction/sport options and `NO_ACTION`
+remain. NFL, MLB, PR #8, the expired pilot and frozen comparisons stay untouched.
+
+## October 21 — paired hosted diagnostic and independent recovery complete; genuine operation blocked
+
+The current implementation remains separate draft [PR #12](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/12), branch
+`implementation/one-event-paired-pilot`, stacked on unchanged draft PR #10 at
+`c0a7b4bc3205d723b13d0f70baf66f3806e731ee`. The exact executed producer is
+**`06dbb492dda5d0043ec7a3a6c97ce9c46201edc8`** (source E). This following
+checkpoint changes documentation/evidence only; its HEAD must not replace that
+producer pin. `evidence/verification/ops002-checkpoint-file-inventory.json`
+lists the source-package and checkpoint files. MANIFEST covers their exact bytes.
+Earlier observations, failures, source pins and original receipts below remain
+unchanged. No activation, scheduler, genuine capture, issuance, merge or deployment
+has occurred.
+
+The independent final metadata review found one ambiguous current-source sentence
+in PROJECT_CONTEXT.md that still named source C. It now explicitly names E as the
+current producer and C as the prior failed source. This documentation correction
+changes no executed source, measurement or record. Exact checkpoint commits are
+`47e8d34a3b60a5ebc2ad8ed133bae3e652606ec4` plus the following documentation-only
+clarification; resolve branch HEAD for the final review commit.
+
+**Software correctness.** Source E GitHub CI run **39536260329** passed; build
+03:01:30–03:06:41 UTC, diagnostic/deploy skipped. Required local commands against
+the same source passed: `python3 -m unittest discover -s tests -v` **555 tests**
+(335.961s); `python3 -O -m unittest discover -s tests -p 'test_pros004*.py' -v`
+**175** (120.849s); optimized `test_operational*.py` **63** (25.310s);
+optimized `test_operating_diagnostic.py` **5** (24.996s); optimized offer tests
+**15** (0.432s); `python3 -m multisport_lab.demo`; and `node --test
+--test-isolation=none --test-reporter=spec web/tests/*.test.mjs` **76 actual tests**.
+The v3 software receipt retains command/log/source hashes. Independent fresh-Git
+exact-source review also passed focused optimized rejection/recovery checks,
+MANIFEST, all 27 bound helpers, the frozen nine producer files and all 19 original
+ledger receipts. See `ops002-independent-source-review-06dbb492.json`.
+
+**Actual hosted non-issuance diagnostic.** The single registered new measurement
+ran as **39536525048**, actual October 21 **03:04:29.208809–03:10:44.443233 UTC**,
+with build/deploy skipped. It used the complete 26,645-row retained history,
+invented event/rosters and advancing simulated admission clocks. Result:
+**PASS_FULL_COHORT_OPERATIONAL_DIAGNOSTIC**, eight retained synthetic originals,
+eight timing-eligible after fresh independent recovery, no missing peers,
+**zero genuine issuance**. All eight complete joint laws and all 13 requested
+categories plus PA replayed exactly. This is timing/recovery software evidence,
+not prospective capture, forecasting accuracy, model qualification or a study
+comparison.
+
+Input phase took 27.318636s. Cohort including final retention took 284.818275s
+from a simulated T90+5 start. Actual final retained proof clock was
+**T90+289.817868s**, leaving **10.182132s** under 300; maximum original generation
+through required proof was **66.372487s** under 120. Total run wall 375.229280s,
+CPU 339.140537s, peak RSS 263,712 KiB. Eleven actual Git transfer operations and
+four two-reference callbacks preserved separate original acknowledgments;
+`atomic_pair_issuance=false`. One run with this narrow margin does not establish
+a delivery guarantee or test actual selected-player capture/raw-key integration.
+No further full-history measurement is authorized by this completed one-shot
+policy.
+
+The durable branch is `diagnostics/ops002-paired-batch-20261021`, exact head
+**`e2d4ef41c3262d4733b8a64223171224b801bb73`**, snapshot
+`4218e65a078e104338929f52785de1eb2e61daaa3ae7173f80ab5219b245fcc0`:
+30 ledger JSON records / 36 total files / 2,115,350 encoded bytes. Final completion
+metadata has 24 entries (10 LOCAL, 9 REMOTE, 5 PROOF_LOCAL). Maximum forecast
+32,202 bytes, event pack 6,281, history pack 3,772; all individual ceilings pass.
+A separate fresh Git fetch and Python `-O` strict recovery replayed all eight
+laws in 40.377s with writer/generation paths disabled. Original 19 receipts are
+byte-identical. Independent receipt:
+`evidence/verification/ops002-independent-host-recovery-39536525048.json`
+(33,694 bytes, raw SHA256
+`c025563eb3d0611b3e0733feb7043ada9d2da1b011fe68bf68ffedaecefbe84c`).
+
+The original host report is retained without rewriting at
+`evidence/operational/hosted-diagnostic-39536525048.json` (24,666 bytes), raw
+SHA256 `1837fd8b6db179189da9c211d6ad6abb21887492b8df3ca1d46967c12acf4dc2`.
+Artifact 12318236501 ZIP SHA256
+`b3cf565bacb7cad4842345e3d08931f3e6121562be6de6fa87d5fe9204870224`
+was recovered through the existing authorized GitHub connector after CLI signed
+artifact downloads returned 403. No producer rerun, new service or permission
+change was needed. `ops002-paired-hosted-run-recovery.json` retains actual run,
+job, artifact and raw-log hashes. The earlier source-C failure (run39533281196,
+remote4c3e3eb4, eight retained/seven timely) remains frozen and still recovers its
+late original as ineligible under the new verifier.
+
+**Resource limits and readiness.** The exact-source read-only command is:
+
+```bash
+python3 -m multisport_lab.operational_preflight \
+  --plan evidence/operational/ops002-plan.json \
+  --producer-commit 06dbb492dda5d0043ec7a3a6c97ce9c46201edc8 \
+  --output /tmp/ops002-reviewed-preflight-v3.json
+```
+
+Observed exit 2 `BLOCKED_NOT_ACTIVATED`, local integrity PASS. Its immutable
+03:01:18 receipt predates the now-completed host measurement; the checklist
+records that dependency as satisfied for this synthetic path only. Planned
+maximum **117 files / 4,758,728 bytes**, including existing records, outcomes,
+grades, corrections, one offer, eight raw links, completion metadata, seven
+16-KiB admissions, one 1-MiB host report and two 64-KiB independent audits,
+remains below **512 files / 33,554,432 bytes**. No history truncation, probability
+atom removal, repeated full history or cap increase. The separately bounded
+private raw archive remains an uninstalled candidate, not durable source evidence.
+Full original PROS004-study timing and complete UTC inventory remain unestablished.
+
+**Current actual sources, not fresh operating inputs.** The preparation retains
+nine bounded scoreboard/summary/roster/profile GETs for the fixed future event
+401909094 DEN at OKC and four predeclared subjects. The two offer GETs retain the
+correct inherited ESPN `propBets` route and provider-100 evidence: six team or
+overtime markets, zero complete player contracts; provider label DraftKings.
+No new source GET was made by either hosted diagnostic. These preparation clocks
+are not timely October 22 capture clocks. See fixed-event/cohort/player receipts
+and `evidence/offers/2026-10-21-offer-source-followup-v1.json`. Recognized source
+restrictions remain unresolved; HTTP 200 and encryption do not grant collection
+or redistribution permission. No new actual offers, price/EV claims or tickets.
+
+**Website and public delivery.** Exact-E artifact build, site smoke, and Chromium
+1440/390/320 checks passed; manifest5 snapshot
+`ca97ca8e3524f21df59b9c56cd8fe486659a44c45d3351577751217e9bb3a57e`.
+All web source bytes are unchanged from source C. The preview shows six verified
+player names, historical matchups/dates, IDs in details, all 14 categories and
+separate ordinary-language empty states with publication/capture/issuance clocks.
+Scopes, 2–6 legs, OVER_ONLY/UNDER_ONLY/MIXED and NO_ACTION pass. The separate
+main-based website PR #11 remains ready, reviewed, unmerged and undeployed at
+`326e354650aef57c3b965711abf071b2fc4205eb`, awaiting its exact-head landing approval.
+Last public readback at 02:41:13 UTC still served main
+`735a464e9e8718303ef481abf711a8969de56694`, manifest2, six historical bundles,
+six statistical grades, zero offers/candidates/tickets and no genuine issuance.
+Sport asset SHA256 remains
+`22e04b7a68fde0a9a639af9a71512a5a149fd3326e5ee1491a0f5f26f7a46f2b`.
+Local artifacts, diagnostic branches and successful CI are not deployments.
+
+A further read-only GitHub preservation check at 03:19:50–03:19:52 UTC confirms
+main735a464, PR #8 draft dec5cc9f, PR #9 draft d6801577, PR #10 draft c0a7b4bc,
+PR #11 ready/unmerged326e3546 and PR #12 draft at source E. Workflow390126745
+remains `disabled_manually`. Exact fields are retained in
+`evidence/verification/ops002-final-preservation-20261021.json`. No pilot
+workflow, records branch, native task or external project was written.
+
+**Remaining blockers and next concrete work.** Genuine source operation/admission,
+installed primary private raw retention with authenticated hosted key/readback,
+actual four-input raw linkage, and the reviewed genuine destination/entrypoint
+remain unresolved. The current genuine path is hard closed. Close those concrete
+dependencies and verify the complete admitted execution path within unchanged
+120/300-second gates before asking for separate activation. Reviewed activation
+must be independently recovered **strictly before October 22, 23:40 UTC**
+(6:40 p.m. CDT); fresh capture/persistence/readback is 23:40–23:50 UTC, generation
+and all required persistence/readback October 23 00:00–00:05 UTC. No scheduler is
+armed. Preparation bytes cannot substitute for the same fresh input ID. If a
+requirement or window is missed, retain inactive/actual partial evidence and use
+a new reservation for any later event. Original PROS004 remains inactive/not
+started, without shifting its reservation or inventing its unknown first cutoff.
+
+For one verified published offer, obtain a permitted exact player/event/side/line
+contract and its actual period/OT, participation/DNP, postponement, tie/push and
+correction rules, durably recover original bytes and pin reviewed derived-fact
+admission in both validators. Price may stay unavailable for offer-only display;
+quotes, value and ticket qualification require additional evidence. Actual new
+outcomes/statistical grades remain zero and pending genuine originals plus
+verified final evidence. No financial settlement or predictive qualification.
+Expired pilot, PR #8, draft PR #10, PR #9/DEV005, K0/S0 and all frozen research
+remain untouched. NFL, separate MLB and paused native automation are untouched.
+
+## October 21 — paired-transfer checks complete; new hosted measurement pending
+
+The same isolated PR #12 branch preserves source C and its actual failed host
+receipt in checkpoint commit `b014178`. The following source revision changes
+only four operating/preflight modules and their four regression files, plus
+documentation/evidence. It does not alter a mathematical law, category, input
+history, original record, registered window, genuine activation or public site.
+Its exact executed staged hashes are retained in
+`evidence/verification/ops002-software-checks-v3.json`; a subsequent commit freezes
+the new source SHA before independent remote recovery and measurement.
+
+The optional paired checkpoint verifies both same-player R0/K0 originals through
+one full strict source check and independently fetched strict snapshot. Separate
+immutable acknowledgments truthfully name the same original LOCAL prefix. A real
+subsequent final-prefix proof still completes each original separately. Recovery
+cross-checks exact references, raw hashes, inputs, producer, common commit/snapshot
+and actual operation/readback clocks. An interrupted second witness remains
+partial; retries do not regenerate originals or invent atomic success. Every new
+write has an actual window/120-second check. All post-write proof/300-second and
+input-admission gates remain in place. Genuine execution stays hard closed.
+
+Actual v3 checks, 02:51:51–03:00:22 UTC, passed against unchanged source:
+full Python555 tests/335.961s; optimized PROS004175/120.849s;
+optimized operating63/25.310s; optimized complete diagnostic5/24.996s;
+optimized offer15/0.432s; demo; frontend76 tests. Focused normal/optimized
+producer28 and actual temporary-Git transport14 tests also passed. The four-row
+driver recovers all eight originals using eleven transfers and four two-reference
+callbacks. These are software tests, not the full-history hosted timing result.
+
+Capacity v3 adds two independent 64-KiB audits to the seven small admissions and
+full 1-MiB host report: planned maximum117files/4,758,728bytes under the same
+512files/32MiB. Earlier capacity and failure receipts remain unchanged. The new
+host destination must be `diagnostics/ops002-paired-batch-20261021`, report v2;
+the first diagnostic branch must not be reused or replaced. At most one new
+full-history non-issuance measurement is registered. Next: freeze/push the source,
+independently fetch/check its exact bytes, then execute and retain that measurement.
+No new actual forecasts, outcomes, grades, offers or tickets are claimed.
+
+## October 21 — exact-source recovery passes; hosted timing fails
+
+The separate draft is [PR #12](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/12),
+branch `implementation/one-event-paired-pilot`, stacked on unchanged draft PR #10
+head `c0a7b4bc3205d723b13d0f70baf66f3806e731ee`. Its first exact software source is
+**`c535c7851382eb3d7a8701229bc4dd7094086c70`**. Documentation/evidence commits do
+not replace this producer pin. The independent source review lists all 81 changed
+paths and verifies MANIFEST, all 27 executed helper hashes, the frozen nine
+producer files and all 19 original ledger receipts (1,817,800 bytes). No original
+probability, timestamp, outcome, grade, protocol or frozen experiment changed.
+
+Required checks on unchanged source passed: `python3 -m unittest discover -s
+tests -v` 537 tests/321.300s; optimized `test_pros004*.py` 175/125.795s;
+optimized `test_operational*.py` 45/10.557s; optimized offer tests 15/0.444s;
+`python3 -m multisport_lab.demo`; frontend `node --test --test-isolation=none
+--test-reporter=spec web/tests/*.test.mjs` 76 actual tests. The create-only
+`ops002-software-checks-v2.json` pins executed bytes and raw log hashes. The
+earlier536-test failure and corrected fixture remain recorded above/below.
+Independent fresh-Git source review additionally passed optimized producer 18,
+remote 7, driver 5 and focused frontend 22 checks. Source CI 39533018349 passed
+build 02:35:22 UTC; diagnostic/deploy skipped. This is software evidence only.
+
+Exactly one source-C diagnostic was dispatched: workflow run **39533281196**,
+actual 02:29:23.735386–02:36:20.905863 UTC. Its invented event/rosters and advancing
+simulated admission clocks are explicitly non-issuance; all actual elapsed time
+is retained. Full 26,645-row history was used without truncation. Result:
+**PARTIAL_OR_FAILED_DIAGNOSTIC**, eight synthetic originals retained, seven
+timing-eligible after independent restart, no missing original peers, zero
+genuine issuance. All eight complete joint laws and all 14 marginal distributions
+replay correctly. This is not forecasting accuracy or a prospective study result.
+
+The eighth synthetic original, player 3195/K0, generated 23:03:30.109660–
+23:03:39.490178, verified/issued 23:03:41.293746, LOCAL 23:04:22.832813,
+REMOTE 23:04:45.859028, PROOF_LOCAL 23:05:10.633119 (simulated clocks). Its
+100.523459-second original latency meets 120s but proof completion exceeds
+T90+300 by 10.633119s. It survives restart as ineligible; its R0 peer remains
+eligible. Retention is not an atomic pair-success claim. Nothing is retimed.
+
+Actual input phase 23.417549s; cohort including final retention 338.647366s
+(generation startsT90+5s); final fresh whole-law replay 41.589289s;
+total 417.165566s / CPU 358.121491s; peak 238,188KiB. All 19 transfer operations total
+300.380874s wall/243.910460s CPU; four paired generation calls 44.329389s wall.
+This supports investigating repeated strict validation/transfer work, not a
+claim that network latency alone caused failure. No gate or deadline is relaxed.
+
+The exact immutable diagnostic head is
+**`4c3e3eb4c0e4cfdaa36f10a84918ccbbd28921ee`**, branch
+`diagnostics/ops002-timing-20261021`. Fresh independent Git recovery under
+Python `-O` passed all typed/reference/hash checks and eight-law replay in 35.609s.
+Snapshot7148c555dfdf6277c09bae355539c1bdecd287fcfa43a8b239a0cf9f2a0c366e
+contains 31 ledger records/41 total files/2,123,201 encoded bytes. Original 19
+receipt byte comparisons pass. The independent review is
+`evidence/verification/ops002-independent-host-recovery-39533281196.json`.
+
+The original host report is retained byte-for-byte at
+`evidence/operational/hosted-diagnostic-39533281196.json`, 29,167 bytes,
+raw SHA256 `5d6ec82564922760559186e1972d6099c36ee3ae791967ed1832ef5eda2fb8c4`,
+payload `16a346bffad5b2a5504a91184fe01ff126547155602df841e6f71e110040ad26`.
+Artifact 12316387426 ZIP SHA256 2a2dd0f1f42cd3e488e8569bfb7d03af102fb581da41fd64b908c964e82c2b79
+matches GitHub. CLI signed-download redirects returned 403; the existing GitHub
+connector recovered the same ZIP. No producer rerun, new service or workflow
+change was needed. `ops002-hosted-run-recovery.json` retains actual run/jobs/log
+hashes and download/readback details.
+
+The exact-source preflight remains exit 2 `BLOCKED_NOT_ACTIVATED`, local integrity
+PASS. Its v2 budget reserves 115files/4,627,656bytes, including one 1-MiB full host
+report, under 512 files / 32 MiB. The diagnostic's invented source fixture adds one 20th
+baseline record / 4,628 bytes to its own projection; this is not hidden in the real
+19-record starting budget. A further allocation will explicitly reserve two
+larger independent audit receipts rather than treating them as 16-KiB admissions.
+No original capacity receipt is rewritten. Full-study 512-record timing remains
+unmeasured and PROS004 remains inactive/not started with unknown complete UTC
+inventory/actual first selected cutoff.
+
+The bounded next transport change is registered before a new measurement in
+`ops002-paired-checkpoint-diagnostic-policy.json`: one strict fresh snapshot may
+verify both exact same-player R0/K0 originals; their separate original completion
+clocks, local/remote witnesses, final proof, 120s/300s gates and partial recovery
+remain mandatory. The original source-C branch/report is frozen. A new source pin
+and distinct `diagnostics/ops002-paired-batch-20261021` destination are required
+before at most one new full-history diagnostic. No result is claimed for that
+under-implementation change.
+
+Website artifact at exact C built manifest 5 / snapshot 9169f0d3104cccb3b0b6c190560101cab3aa8ffcfac31ca921cc42bcf2c36364;
+site-smoke and Chromium 1440/390/320 passed, with root visual inspection. Visitors
+to that local artifact see six verified names, historical matchups/dates, IDs in
+details, all 14 categories and independent plain-language forecast/offer/ticket
+states. Builder scopes,2–6 legs,directions and NO_ACTION remain. SourceC does not
+change the separate website PR #11 head 326e354650aef57c3b965711abf071b2fc4205eb.
+It is reviewed/ready with checks passed, but exact-head landing approval is still
+pending; no merge/deployment occurred. Public readback at 02:41:13 UTC still serves
+main 735a464e9e8718303ef481abf711a8969de56694 / manifest 2, six historical bundles and
+six grades, zero offers/candidates/tickets and no genuine issuance. Its sport hash
+remains 22e04b7a68fde0a9a639af9a71512a5a149fd3326e5ee1491a0f5f26f7a46f2b.
+
+Actual current preparation evidence remains nine bounded event/player GETs and
+two separate offer GETs. No preparation byte is a timely future input. The ESPN
+offer page has six non-player team/overtime markets, no complete athlete contract;
+provider 100 is DraftKings. No permanent-absence inference or invented price/rule.
+The next offer task is a permitted exact player contract plus actual settlement
+rules, raw retention and reviewed public admission. A price may be unavailable;
+that alone does not prevent otherwise admitted offer-only display. EV, quotes and
+ticket qualification remain separate and unavailable.
+
+Current preservation receipt re-observes main 735a464, draft PR #8 dec5cc9fa397332244985bea8815bd9a89ea264e,
+frozen PR #9 d68015778ab452c94db0385c471de663e830efec, draft PR #10 c0a7b4bc and disabled
+workflow 390126745. The expired pilot remains actual late guarded abort,
+run 39493005199, zero provider requests/forecasts/no fresh binding. Its late
+creation cause remains unestablished; native automation is untouched/last paused.
+
+Next concrete task: finish the separately tested paired-transfer revision, freeze
+and independently recover its exact source, then measure the unchanged gates on
+the intended host once. Genuine publication also requires permitted sources,
+installed primary private raw/key readback, actual four-input linkage, reviewed
+genuine destination/entrypoint and explicit independently recovered activation
+before October 22, 23:40UTC. No scheduler, capture or genuine issuance is installed.
+Actual capture 23:40–23:50UTC and generation October 23, 00:00–00:05UTC cannot be
+backdated or replaced. No new actual outcomes/grades exist; future outcomes stay
+pending. Financial settlement, product qualification and qualified tickets are
+unavailable. NFL/MLB, S0 and all frozen experiments remain untouched.
+
+## October 21 — separate operating package; first integrated check retained
+
+Work continues in the existing repository on isolated branch
+`implementation/one-event-paired-pilot`, based on draft PR #10 head
+`c0a7b4bc3205d723b13d0f70baf66f3806e731ee`. Main was independently observed as
+`735a464e9e8718303ef481abf711a8969de56694`; no branch reset, unrelated worktree
+write, merge or deployment occurred. PR #10 remains draft and unchanged.
+PR #11 remains independently ready at
+`326e354650aef57c3b965711abf071b2fc4205eb`, awaiting its exact-head landing
+approval. Its source records and reviewed implementation are untouched.
+
+This source-preparation checkpoint precedes the final producer commit and hosted
+measurement. The executed worktree hashes are in the create-only command and
+integration receipts; a base SHA is not relabeled as these modified source bytes.
+The following completed checkpoint will record the frozen exact new source pin.
+
+The bounded before-edit checkpoint profile found six strict whole-store passes
+consuming about 99% of a 31.125-second repeated checkpoint. The after-profile
+measured 12.005 seconds with two mandatory strict passes plus scoped fresh exact
+local transfer checks. Both use the retained 30-file / 3,680,132-byte full-history
+diagnostic state. The receipts distinguish final prefix/layout hardening from the
+actually measured source. Eleven new normal/-O transfer tests and existing strict
+snapshot/record/remote tests pass. This is transport profiling, not a full eight
+original hosted operating pass or a maximum 512-record timing proof.
+
+New separate `NBA-PAIRED-OPS-002` producers preserve unchanged R0/K0 and the
+complete 26,645-row history, all 13 categories plus PA, causal cutoffs, complete
+joint-law replay and original marginal probabilities. Both laws are preflighted
+before a pair starts. Typed event/input/forecast/outcome/grade/correction records,
+actual local/remote/post-fsync proof completions, missing peers and finite
+completion witnesses preserve late and unacknowledged originals across restart.
+Independent verification reproduced and closed 299→301-second,121-second original
+latency and input-close delayed-proof admission errors. Unknown/contradictory
+known typed records fail even with repaired checksums. Public counts, clocks,
+fixed input/cohort, active corrections and missing-peer sets cross-check in
+Python and JavaScript. Genuine writes remain unconditional
+`NO_REVIEWED_ACTIVATION_INSTALLED`; arbitrary activation dictionaries cannot
+enable or qualify forecasts.
+
+The create-only new preparation policy preceded nine bounded manual GETs.
+Scoreboard and summary agree on DEN at OKC, ESPN 401909094, start
+2026-10-23T01:30Z, version
+`698609650c6e8d5cf87e19933d4ae5fc6808aa006a023ef0d91617a5738f0a90`.
+Two lowest numeric active roster IDs per team were frozen before forecasts or
+outcomes, then independently cross-checked through ESPN athlete profiles:
+Alex Caruso 2991350 and Kenrich Williams 3133626 (OKC 25), DeMar DeRozan 3978 and
+Aaron Gordon 3064290 (DEN 7). These source facts are not corrected using a familiar
+past roster; the routes are not independent upstream providers. Actual request/
+observation clocks/hashes remain separate from unknown source update clocks.
+These early preparation bodies are not timely future input records or primary
+remote raw retention.
+
+The new inactive plan 41b219cb141824131166b0b50a5f08d5942a56bf63c8670a2143b2cad8a57410
+requires reviewed activation before October 22, 23:40 UTC; actual capture/input
+remote admission 23:40–23:50UTC and generation/verification/persistence
+October 23, 00:00–00:05 UTC. Each original remains bounded by 120 seconds. The original
+PROS004 reservation is inactive/not started with unknown complete UTC inventory/
+actual first cutoff; no midnight assumption, shift, backfill or replacement was
+made. It is not reactivated by the new one-game registration.
+
+The offer-only contract is separate from sport-v2's still-empty restricted
+offer/candidate/ticket arrays. It permits a missing price only after explicit
+player/event/side/line/period/OT/statistical/settlement meanings and source
+admission. Actual admission registries are empty. Retained Sleeper partial rows
+remain incomplete contracts. Two bounded new ESPN GETs found six non-player
+markets (four team totals, two overtime) and independently verified provider 100
+as DraftKings; no athlete/detail/rules reference was returned. Absence applies
+to that snapshot only. No prices, permission, usable quote, EV or ticket was
+invented. Software 15 normal/-O tests, 8 frontend cases and synthetic card browser
+checks 1440/390/320 passed; actual source receipts are separate.
+
+Manifest 5 integrates strict independent legacy research/PROS004, verified display,
+offer-only and separate paired channels, keeping legacy 1–4 readers and scoped
+NO_ACTION behavior. A composite envelope bridge fixes valid mixed-input ledgers
+without editing frozen Ledger. Full remote recovery still validates every known
+typed lane; publication isolates foreign new-channel semantic failure. Frozen
+legacy semantic validation remains global for complete-store integrity.
+Focused joint tests preserve six historical bundles/grades/names/all 14 over full
+shared-history inputs, separate clocks and 2–6 directions/scopes. They also check
+invalid asset paths/hashes, optional metadata failure and independent offer/
+research errors. All 19 original receipts remain byte-identical, 1,817,800 bytes.
+
+The encrypted raw archive candidate is bounded and tested under normal/-O with
+fresh independent Git-clone decrypt recovery. No operational key, certificate,
+secret or backend is installed. Encryption does not establish source rights.
+Actual four-input raw linkage, source/retention admission, genuine destination/
+entrypoint, hosted complete eight-original timing and exact reviewed activation
+remain unmet. Combined capacity v2 reserves 115 files / 4,627,656 bytes including one
+complete 1-MiB hosted report, one offer and source links, under unchanged 512-file / 32-MiB
+ledger limits. The older initial preflight v1's smaller metadata allocation is
+retained and explicitly superseded by v2. Raw archive limits remain separate and
+unchanged; no raw provider body is committed or copied to Pages.
+
+First required integrated command, actual 02:10:36–02:15:41 UTC:
+`python3 -m unittest discover -s tests -v` ran 536 tests, 535 passed / 1 error. The error
+was a display regression fixture reusing a predecessor manifest after intentional
+asset pruning, reaching a missing old sport asset before the intended optional
+metadata check. Root changed that fixture to use the currently admitted manifest;
+the exact targeted test passed in 27.843 seconds. The first log/raw hash and source
+map are retained in `evidence/verification/ops002-software-checks-v1.json`.
+This was a software-test failure, not altered or corrupted original research.
+Final required integrated checks are running against the subsequently held source;
+no final PASS or hosted timing is claimed here.
+
+Current public HTTP/readback at 01:59 UTC still served main 735a464, manifest 2,
+sport SHA256 22e04b7a68fde0a9a639af9a71512a5a149fd3326e5ee1491a0f5f26f7a46f2b:
+six historical bundles, six grades, all 14, 0 offers/candidates/tickets and no
+genuine issuance. The site has not deployed these new changes.
+The expired pilot remains `ACTUAL_PARTIAL_EXECUTION / LATE_GUARDED_ABORT`,
+run 39493005199, PR #8/records dec5cc9fa397332244985bea8815bd9a89ea264e,
+provider requests 0 / forecasts 0/no fresh binding. Workflow 390126745 was re-observed
+disabled; the native task was not modified. The cause of GitHub's late creation
+remains unestablished. No retry, re-enable, dispatch or rebind of that pilot.
+
+Next concrete task: finish held-source software checks, freeze/push the exact
+source commit, independently recover it, then dispatch the explicitly guarded
+non-issuance full-history operating diagnostic on the intended host. The prepared
+Pages workflow diagnostic mode skips build/deploy, adds no cron and enables only
+the diagnostic writer. Afterwards retain actual complete/partial results and
+update this handoff with the exact source and publication states. No real model
+comparison, future forecast/outcome/grade, financial settlement, qualification,
+activation or scheduler is created. NFL/MLB, PR #9/DEV005 and all frozen evidence
+remain untouched.
+
+## October 20, 23:19 UTC — strict callback proof verified; full cohort still blocked
+
+This checkpoint continues draft PR #10 on
+`implementation/pros004-paired-readiness`, preserving main
+`735a464e9e8718303ef481abf711a8969de56694` and all newer legitimate pilot records.
+Reviewed/executed producer and diagnostic source is exactly
+**`5a1b16edf84e0d765e20accc242f00597d0c749c`**. Later evidence/documentation HEAD
+must not become a new producer pin. PROS004 and S0 remain inactive; no scheduler,
+capture, genuine forecast, aggregate evaluation, merge or deployment was activated.
+
+The only new runtime changes since e469a589 are
+`multisport_lab/pros004_records.py` and `pros004_snapshot.py`: full strict typed
+verification before a callback creates a private one-operation exact-byte proof.
+After it, fresh checksums, canonical decoding, original references/chronology,
+correction graph, current clocks, source/root identities, journal and final raw
+seals still run. Only duplicate pure semantic validation of identical bytes is
+reused. Independent remote recovery remains fully typed. Actual completion is
+sampled after proof verification. There is no cached timing/admission result,
+new retained record or changed limit. New regressions are in
+`tests/test_pros004_records.py` and `tests/test_pros004_snapshot.py`.
+
+Independent focused normal/-O mutation/interruption checks passed. Changed-meaning
+receipts with valid checksums, changed parent/claim/journal/inventory/root/source,
+proof reuse, backward clocks, delayed post-proof completion and interruption are
+rejected. A forecast completing at126s remains retained/unadmitted on restart.
+The earlier c305 late-write reproductions, all original receipts and frozen pilot
+ledger code remain unchanged.
+
+Actual new non-issuance command:
+
+```bash
+python3 -m multisport_lab.pros004_readiness \
+  --producer-commit 5a1b16edf84e0d765e20accc242f00597d0c749c \
+  --store-root /tmp/nml-pros004-diagnostic-5a1b16edf84e \
+  --output evidence/research/pros004-readiness-measurement-v4.json
+```
+
+It ran23:02:39.268429–23:10:47.536377 UTC, **PARTIAL_OR_FAILED_TIMING**:
+cohort319.840583s exceeds300, input76.774496s, total488.269030s,
+peak213,892KiB. Six of eight synthetic originals survive, all local persistence
+timely. The sixth (3012/K0) remote readback atT90+303.744002s and post-proof
+completion at+304.064700s are late; it remains unadmitted on restart. Only five
+have timely remote proof. The final prefix was not fully published, two model
+originals are absent, genuine issuance0 and eligible0. This differs from v3's
+timely sixth original/unpublished last ACK; neither receipt was rewritten.
+
+All26,645 rows remain; two full-law replays recover26,645 atoms and all14 PMFs
+exactly. Actual30files/3,680,132bytes; history1,639,440,event10,972,
+claim5,786/8,192,maxforecast31,110/65,536bytes. Transient proof adds no ledger
+file/field/line. Full plan remains499+13reserve/512 and24,576,000/33,554,432bytes.
+Maximum typed512-record/hosted full-cohort timing remains unverified. Earlier
+generic transport/profile results are not substituted for this failed timing run.
+
+Actual current software commands/results, source5a1b16e:
+
+| Command | Observed result |
+| --- | --- |
+| `python3 -m unittest discover -s tests -v` |442 PASS,195.077s |
+| `python3 -O -m unittest discover -s tests -p 'test_pros004*.py' -v` |164 PASS,178.274s |
+| `python3 -m multisport_lab.demo` |PASS |
+| `node --test --test-isolation=none web/tests/*.test.mjs` |46 PASS |
+| `python3 -m multisport_lab.publication --build-commit 5a1b16edf84e0d765e20accc242f00597d0c749c` |PASS, local schema3 artifact |
+| `node web/tests/site-smoke.mjs output` |PASS |
+| `python3 -O web/tests/pros004_browser_smoke.py` |PASS desktop1440/mobile390, typed pairs/individual grades/scopes/builder; synthetic only |
+
+Independent standalone verification under normal/-O accepts retained strict typed
+store bytes but rejects the failed readiness report. Fresh restart confirms
+6local-timely/5remote-timely/5timing-complete/0eligible. Independent reconstruction
+of the exact during-run fetched prefix matches its original manifest; the
+temporary bare remote was already cleaned, so that later review does not claim
+another fresh fetch. No missing peer, clock or probability was rewritten.
+
+Actual GitHub idempotent checkpoint/readback using source5a1b16e ran
+23:11:46.398539–23:11:56.346523 UTC (9.948s), same diagnostic head
+8684aed08382d6be6c7e83ff93ee833888608d55. Zero new records/commits/stored ACKs;
+a separate fresh Git object database recovered identical bytes/clocks. It ran
+during software tests and is not a worst-case latency benchmark. A separate
+clean fresh fetch of source5a1b16e passed MANIFEST, all20 source pins,
+nine frozen pilot files, original19records, R0/K0 and protocol checks.
+
+New durable evidence: research `pros004-readiness-measurement-v4.json` and
+`pros004-github-idempotent-restart-v4.json`; verification
+`pros004-callback-proof-review-v4.json`,
+`pros004-diagnostic-readback-review-v4.json`, `pros004-software-checks-v4.json`,
+`pros004-browser-and-optimized-integrity-v4.json` and
+`pros004-source-remote-recovery-v4.json`. Supporting docs are
+`docs/PROS004_COMPLETION.md` and `docs/PROS004_READINESS.md`; MANIFEST is refreshed.
+Exact source maps, raw hashes, commands, actual clocks, partial state and the
+reviewer's corrected temporary helper typo are retained without overwriting v3.
+The13 changed/new Python production/verifier files contain no disappearing
+assert nodes; frozen DEV005 verification remains untouched.
+
+Actual exact-source hosted run39513969948 completed success23:21:21 UTC on
+5a1b16edf84e0d765e20accc242f00597d0c749c; build succeeded, deploy skipped and
+PR #10 remains draft. `pros004-source-ci-v4.json` retains the actual run/jobs,
+step clocks and PR state. This is source/software CI, not timely operation.
+The final documentation/evidence head receives its own post-push readback/checks.
+
+The latest pilot finding remains **ACTUAL_PARTIAL_EXECUTION / LATE_GUARDED_ABORT**:
+run39493005199, PR #8/records dec5cc9fa397332244985bea8815bd9a89ea264e,
+provider requests0/forecasts0/no fresh binding; workflow390126745 observed
+disabled, native task paused. Current read-only queries reconfirmed those heads
+and workflow state. Why GitHub created that run late remains unestablished.
+No dispatch, retry, re-enable, rebind or original-pilot write occurred here.
+
+Actual first selected T90 is still **unknown**: complete admitted UTC-date
+inventory/count proof is missing. The earliest theoretical22:30 UTC bound has
+passed, which does not prove the actual first cutoff passed; candidate midnight
+is not a safe deadline. Retain this reservation inactive/not started. No shift,
+backfill or replacement is permitted; any later window needs a separate
+reservation if timely original activation cannot be established.
+
+Next concrete task: resolve complete permitted UTC inventory/actual first cutoff
+and operating-source admission, and investigate typed-checkpoint latency without
+changing the laws or deadlines. Private primary raw outcome retention/full budget,
+reviewed genuine entrypoint/destination, maximum typed/hosted timing and exact
+remotely recovered activation evidence also remain unmet. Genuine writes stay
+hard-disabled. The separately isolated website readability work is draft PR #11;
+its manifest4 must be explicitly integrated with this branch's manifest3 before
+both can land. Website implementation is not deployed. NFL/MLB, PR #9/DEV005,
+all frozen experiments and original19records remain unchanged.
+
+
+## October 20, 21:00 UTC — exact remote checkpoint and GitHub checks verified
+
+Exact integrated checkpoint: **61d4032c759813a8818f8b8b3a9c9619d0e63e77**,
+independently fetched into a fresh Git object database, clean with MANIFEST PASS.
+All 20 diagnostic/producer source pins still match 71329d184f3857c9e75ee6cf12bbe841c6e4cccb;
+all nine frozen pilot files, original 19 raw records, protocol, laws, runbook and
+workflow bytes match. Independent receipt:
+`evidence/verification/pros004-final-head-recovery-v3.json`, raw SHA256
+**f0960e9575e62ca6bd70b5031a44eacbb5984361aec3efec8782077b8df1b681**.
+It also records the newly advanced PR #8/records head dec5cc9f and keeps the older
+observations separate. Main 735a464 and PR #9 d680157 remain unchanged; PR #10 is draft.
+
+Actual GitHub workflow **39496046715**, event pull_request, exact head 61d4032c,
+created 20:54:59, completed success 20:59:10 UTC. Build job 118881239910 succeeded;
+deploy job 118883201934 was **skipped**. Exact queries/responses/clocks/hashes and
+PR draft status are retained in
+`evidence/verification/pros004-checkpoint-a-ci-v3.json`. Local 434/156/46 and browser
+results below are separate from this hosted build and from actual pilot execution.
+`gh pr edit` hit the old CLI's deprecated projectCards GraphQL query; the same
+reviewable title/body update succeeded through structured REST PATCH, retaining
+draft status. No merge or deployment occurred.
+
+This following documentation/evidence-only checkpoint adds the newly observed
+late pilot facts, independent exact-head receipt and hosted check receipt, then
+refreshes MANIFEST. It changes no runtime/source pin, original record, model,
+probability, timing gate, workflow or schedule. Its eventual exact HEAD and final
+GitHub check/readback status are reported in PR #10 and the final session report.
+
+## October 20, 20:55–20:59 UTC — late pilot execution became visible; guarded abort recovered
+
+**Current pilot classification: ACTUAL_PARTIAL_EXECUTION / LATE_GUARDED_ABORT.**
+This supersedes the earlier no-observed-run classification with a new dated
+checkpoint; the 19:35 and 20:30 observations remain unchanged and were accurate
+before this run was visible. This session performed read-only inspection/recovery.
+It did not dispatch, retry, re-enable, capture, issue, rebind or mutate the pilot.
+
+Actual GitHub scheduled run **39493005199**, attempt 1, default main
+**735a464e9e8718303ef481abf711a8969de56694**, was created/started
+**20:33:35 UTC** and completed failure **20:36:37 UTC**. Its actual runner report
+starts 20:34:24.536822 and ends 20:34:33.119840 UTC: **EXPIRED_INCOMPLETE**, exit 1,
+issuance window expired; no source capture, **provider requests 0, forecasts 0,
+fresh input/binding absent, selected retained forecasts 0, all four subjects missing**.
+The guard ran after both 17:20–17:30 capture and 17:30–17:35 generation windows.
+Logs establish that guarded abort; **why GitHub created the run late is still
+NOT_ESTABLISHED**. No source/access failure is inferred.
+
+The legitimate bot records branch/draft PR #8 is now
+**dec5cc9fa397332244985bea8815bd9a89ea264e**, authored 20:35:49 UTC.
+It retains the original cycle/producer 58530309cf384425e15f02fd9fa980899a4dc0bc,
+claim, factual failure report and draft-PR publication result. An independent
+fresh clone at `/tmp/nml-pilot-current-dec5cc9f` is clean before/after documented
+read-only `python3 -m multisport_lab.manual_cycle recover --plan
+ evidence/cycles/2026-10-20-nba-401909088-plan.json`: exit0, closed/NOT_READY,
+null input, no forecasts, no pending grades, all four missing, provider 0/generation 0.
+All **19 original ledger records / 1,817,800 bytes** match the original frozen plan;
+there is no fresh binding, capture/generation intent or new forecast record.
+The original local protected worktree remains untouched; its older local HEAD
+must not be reset over this newer remote work.
+
+`PUBLICATION_VERIFIED` here means the factual records/draft PR #8 checkpoint was
+updated and verified, **not** completed forecasting or GitHub Pages deployment.
+Current workflow 390126745 is independently observed **disabled_manually**,
+updated 20:33:43 UTC; its source YAML and nine producer files remain unchanged.
+Native automation was last observed paused and was not touched. No outcome should
+be graded for a nonexistent original forecast; the six historical grades stay frozen.
+
+Evidence: `evidence/cycles/2026-10-20-pilot-late-observation.json`, 34,634 bytes,
+raw SHA256 **be524327d6b0abd649239291e642e7e0bbfa06e5353834d2d1239d04367d6203**.
+It binds actual API/job/log-archive evidence, exact executor report agreement,
+new isolated checkout/raw record inventory and read-only recovery output. The
+older audit and 20:30 follow-up receipts remain unchanged. Pilot operational
+execution is now observed, but **genuine issuance remains 0**, no fresh input was
+captured, no new real grades/financial settlement/tickets/deployment occurred.
+
+PROS004 remains inactive and draft PR #10 remains separate. Its integrated package
+checkpoint **61d4032c759813a8818f8b8b3a9c9619d0e63e77** contains the fixed
+producer source pin **71329d184f3857c9e75ee6cf12bbe841c6e4cccb**, final local
+434/156/46 checks and browser correction, preserved failed 312.366-second timing
+receipt and actual diagnostic readback. Main 735a464 and PR #9/DEV005 remain unchanged.
+This later pilot evidence does not activate, shift or backfill PROS004. Remaining
+source-completeness/private-retention/operating-admission/latency dependencies and
+next concrete optimization task are unchanged from the software checkpoint below.
+
+
+## October 20, 20:51 UTC — final local checks and independently checked partial recovery
+
+This completes the local correction package on draft [PR #10](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/10).
+Producer/driver source stays **71329d184f3857c9e75ee6cf12bbe841c6e4cccb**;
+Python/frontend test revision is **80f17e12d78406f8ac38d7b319ac2e051ecccf59**.
+The subsequent browser-test-only correction waits for destination headings after
+hash navigation; no UI, fixture, model, input, frozen pilot or source pin changed.
+Final remote-head/check-run evidence is recorded after pushing this checkpoint.
+No activation, scheduler, genuine issuance, merge or deployment is requested.
+
+Commands and actual results:
+
+| Command | Observed result |
+| --- | --- |
+| `python3 -m unittest discover -s tests -v` | **434 PASS**, 216.286s |
+| `python3 -O -m unittest discover -s tests -p 'test_pros004*.py' -v` | **156 PASS**, 214.149s |
+| `node --test --test-isolation=none web/tests/*.test.mjs` | **46 PASS** |
+| `python3 -m multisport_lab.demo` | PASS |
+| `python3 -m multisport_lab.publication --build-commit 80f17e12d78406f8ac38d7b319ac2e051ecccf59` | PASS; local schema3 artifact |
+| `node web/tests/site-smoke.mjs output` | PASS; relative assets and strict hash/schema readback |
+| `python3 -O web/tests/pros004_browser_smoke.py` | PASS twice after test-only route wait; desktop1440/mobile390, paired all14/PA, individual DNP, no reserved aggregate, scopes, 2–6/all directions/NO_ACTION |
+| `node /tmp/nml-pros004-artifact-inventory-v3.mjs` | PASS;13 local artifact files hashed,6 unchanged historical bundles/grades with all14; actual PROS004 records0; accurate unavailable Upcoming reasons |
+
+The initial browser invocation failed because it inspected the previous Props DOM
+before asynchronous Performance navigation finished. Its failed receipt/log is
+retained, not overwritten. The follow-up final software receipt links all six
+unchanged passing checks and the successful optimized browser retry, including
+exact verifier hash. New PROS004/verifier/browser Python has zero disappearing
+assert nodes. This establishes software behavior, not predictive quality.
+
+Independent normal/optimized verification accepts the partial store's byte/hash/
+reference/typed semantics, rejects its failed report as readiness, and confirms
+late recovery creates nothing. Precise local-versus-remote clarification: all six
+originals have timely local/original-remote proof; the independently reconstructed
+last fetched prefix proves only five, missing the final1,399-byte ACK entry.
+The sixth original's embedded remote readback completed at T90+291.127777s,
+post-verification completion+296.424543s, journal observation+296.638528s: it is
+**timely**, not a late original. Later bookkeeping/window check prevents model7.
+The diagnostic driver performed the actual fresh Git fetch; the separate reviewer
+reconstructed its exact prefix after that temporary bare remote was cleaned and
+does not claim an additional fresh remote fetch. No missing peer is regenerated.
+
+Actual GitHub idempotent restart used the new source against the retained writer:
+
+```bash
+PYTHONPATH=. python3 /tmp/nml-pros004-github-restart-probe.py \
+  71329d184f3857c9e75ee6cf12bbe841c6e4cccb \
+  evidence/research/pros004-github-idempotent-restart-v3.json
+python3 -m multisport_lab.pros004_load_diagnostic \
+  --output evidence/research/pros004-transport-load-20261020-v2.json \
+  --work-root /tmp/nml-pros004-generic-load-71329d18
+```
+
+GitHub restart/readback **12.123s**, same diagnostic head
+**8684aed08382d6be6c7e83ff93ee833888608d55**,21 files/1,820,865 bytes;
+**zero new records, commits or stored acknowledgments**. Every original byte and
+clock survived. Generic local-bare-Git load:499 explicitly synthetic receipts /
+25,165,824 bytes,7.435s checkpoint,8.810s total. This excludes typed study/model
+execution and hosted worst-case latency. The actual full-history typed result
+remains **PARTIAL_OR_FAILED_TIMING**,312.366s against300s; no old passing/fixed-clock
+result replaces it. Complete allocation stays499+13/512,24,576,000/33,554,432 bytes.
+
+Durable evidence under `evidence/verification/`: `pros004-software-checks-v3.json`
+(initial mixed result), `pros004-software-checks-v3-final.json`,
+`pros004-local-artifact-v3.json`, `pros004-independent-review-v3.json`.
+New research receipts are `pros004-readiness-measurement-v3.json`,
+`pros004-transport-load-20261020-v2.json`, and
+`pros004-github-idempotent-restart-v3.json`. Prior v1/v2 receipts remain unchanged.
+Exact source/file inventories and commands are bound in these receipts, source
+commit71329d1, test commit80f17e1 and the final manifest. The additional changed
+browser file is `web/tests/pros004_browser_smoke.py`; no runtime source changed
+since the timing pin. Detailed contracts/checklist: `docs/PROS004_COMPLETION.md`,
+`docs/PROS004_PUBLIC_EXPORT.md`, `docs/PROS004_READINESS.md`.
+
+Operational pilot finding remains **MISSED_OR_UNOBSERVED_EXECUTION**, cause
+**NOT_ESTABLISHED**, as of the20:30 read-only follow-up. Original PR8/records,
+workflow/producer, paused native task, PR9/DEV005 and NFL/MLB boundaries remain
+preserved. Three earlier permitted metadata GETs did not establish complete UTC
+inventory; actual firstT90 is **unknown**. The theoretical earliest22:30UTC /
+17:30CDT and conditional midnight candidate are not interchangeable deadlines.
+
+Remaining activation dependencies: cohort and maximum typed/hosted timing;
+complete permitted UTC inventory/actual cutoff and source operational admission;
+private primary raw outcome retention/full budget/outcome linkage; reviewed genuine
+entrypoint final-admission-publication proof and destination; exact reviewed remote
+activation evidence. The original reservation stays inactive and will not move or
+backfill. If its actual first cutoff passes, any later study needs a new reservation.
+
+**Next concrete action:** review this inactive draft, then a bounded optimization
+of repeated strict history/prefix verification with a new exact source pin and
+new non-issuance timing receipt. Separately resolve source completeness and private
+retention before any genuine activation review. Genuine issuance0, new real
+statistical grades0, comparative study evaluations0, financial settlements0,
+qualified tickets0, deployments0. Existing six historical bundles/grades remain
+historical research; synthetic diagnostic outputs are not public prospective picks.
+
+
+## October 20, 20:41 UTC — v3 input admission recovered; cohort timing still blocked
+
+Producer/driver source pin: `71329d184f3857c9e75ee6cf12bbe841c6e4cccb`.
+Current local test revision: `80f17e12d78406f8ac38d7b319ac2e051ecccf59`
+(test-only unused-date correction and manifest). Same PR #10 branch/worktree;
+main `735a464e9e8718303ef481abf711a8969de56694`, pilot records/draft PR #8
+`df446eee302fd6662ef82184e2c733f5d6e2d2dd` unchanged. PR #10 stays draft;
+PROS004/S0 remain inactive. No source pin follows later documentation HEAD.
+
+Producer/binding v3 retains the original input-finalization proof inside the
+existing event-claim-v2 slot. Capture-phase claim local persistence, original
+remote acknowledgment and final prefix publication finish before selection close.
+Independent restart recovers the exact claim/proof without a temporary report.
+Originals under v1/v2 remain readable and are not promoted to the new policy.
+Truthful schema inventories now distinguish v1/v2 claims; only capacity groups
+combine their shared allocation. No new ledger slot or limit increase was added.
+
+Actual non-issuance diagnostic, **20:33:05.889159–20:41:04.450416 UTC**:
+
+```bash
+python3 -m multisport_lab.pros004_readiness \
+  --output evidence/research/pros004-readiness-measurement-v3.json \
+  --store-root /tmp/nml-pros004-diagnostic-71329d184f38 \
+  --producer-commit 71329d184f3857c9e75ee6cf12bbe841c6e4cccb
+```
+
+**PARTIAL_OR_FAILED_TIMING**, total 478.562s; input persistence/checkpoint/finalization
+85.530s; cohort generation/verification/persistence 312.366s, exceeding 300s.
+Six originals survive. All six have timely local/original remote-operation
+proof in the retained local journal, but fresh remote recovery has only five
+complete proofs because its last acknowledgment entry was not published. Zero
+are comparison-eligible; two planned model originals remain absent. The next
+model is not generated after the window. The final original acknowledgment prefix
+was not fully published; exact full remote recovery is false. Fresh local-bare-Git
+fetch retains six originals and their original probabilities/clocks, explicitly
+unacknowledged state, and the original durable input claim. The sixth original itself is timely; its missing published acknowledgment
+must not be described as a late original. No partial state is replaced or
+relabeled as successful issuance.
+
+All 26,645 rows / 1,231 events / 14,720,351 normalized bytes were used, unchanged
+panel SHA-256 `489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c`; zero rows dropped. Each model's replay recovers 26,645 atoms
+and all 14 PMFs exactly, with no outcomes or comparison score. Measured local
+state 30 files / 3,680,132 bytes; fetched prefix 3,678,733 bytes. History 1,639,440;
+event 10,972; claim 5,786; maximum forecast 31,110; journal 18 entries / 18,457 bytes.
+Peak RSS 212,000 KiB. Actual first T90 remains unknown; earliest theoretical 22:30 UTC
+is distinct from conditional midnight. No genuine prospective input capture or issuance followed.
+
+Changed source/contracts: `multisport_lab/pros004_{producer,records,readiness,
+snapshot,publication}.py`, `scripts/verify_pros004_readiness.py`, matching
+producer/records/readiness/snapshot/verifier/publication tests, `web/pros004.mjs`
+and its fixtures/tests; completion/public/readiness/decision documents. Exact
+22-file source commit inventory: `git show --stat 71329d1`; test-only correction:
+`git show --stat 80f17e1`. The 20:30 read-only pilot follow-up remains
+MISSED_OR_UNOBSERVED_EXECUTION / cause NOT_ESTABLISHED, schedule filters 0;
+its dated evidence and earlier full audit are preserved separately.
+
+Independent review confirms original-claim remote durability differs from final
+acknowledgment-prefix publication. The complete diagnostic driver/report enforces
+both. The direct paired API does not establish the complete operating phase from
+claim timing alone; admission of a genuine entrypoint must require independently
+recovered original finalization evidence or a reviewed equivalent. All genuine
+paths are hard-disabled. Private raw primary retention, source completeness and
+operation admission, exact activation/readback and maximum typed/hosted timing
+remain dependencies. The fixed reservation is not shifted or backfilled.
+
+Next concrete work is in progress: final stable-source normal/optimized/frontend
+checks, idempotent actual-GitHub diagnostic restart and independent strict review.
+The failed v2 and new partial v3 receipts remain immutable. Software tests,
+operational execution, genuine issuance, statistical evaluation and deployment
+are distinct: this checkpoint has no genuine forecasts, new real grades,
+comparative study result, financial settlement, qualified ticket or deployment.
+
+## October 20, 20:07 UTC — completion fixes verified; full-history timing failed safely
+
+Exact implementation source commit: `c18809f2fc7752d8f48c4749024623f5f4d73eb6`
+on `implementation/pros004-paired-readiness`, draft PR #10. Source bindings cover
+19 producer dependencies and the diagnostic adds its driver as the 20th pin.
+Independent fresh GitHub recovery verified those exact bytes, all nine frozen
+pilot files, unchanged R0/K0 laws/protocol and all original 19 receipts. Main
+remains `735a464e9e8718303ef481abf711a8969de56694`; the pilot records branch/PR #8
+remain `df446eee302fd6662ef82184e2c733f5d6e2d2dd`. PROS004/S0 remain inactive.
+
+The persistence fixes preserve pre-write `received_at`, observe actual post-write
+completion, require exact structured remote readback, publish the final original
+ACK prefix, and distinguish timing, evidence publication and comparison admission.
+Missing generation requires the original strict input-finalization report; its
+genuine durable operating-state admission remains unresolved. Typed recovery now
+validates every supported contract and relationship. Explicit integrity exceptions
+survive optimized Python. The 20-case normal/optimized old/new reproduction receipt
+preserves both reviewed c305 defects and the fixed behavior.
+
+Actual final software commands at this source: `python3 -m unittest discover -s
+tests -v` **416 PASS / 152.963s**; `python3 -O -m unittest discover -s tests -p
+"test_pros004*.py" -v` **138 PASS / 127.721s**; `node --test
+--test-isolation=none web/tests/*.test.mjs` **45 PASS**; `python3 -m
+multisport_lab.demo` PASS. Earlier source-drift stops during coordinated editing
+remain recorded separately. They were followed by these stable-source passes.
+
+Actual GitHub diagnostic writer/readback succeeded at
+`8684aed08382d6be6c7e83ff93ee833888608d55` on
+`diagnostics/pros004-checkpoint-20261020`: **21 files (20 ledger + 1 journal),
+1,820,865 bytes, 25.387s total**, with actual UTC clocks and fresh independent
+fetches. The only new record is explicitly synthetic transport status, not an
+actual study selection failure. All 19 original receipts remain byte-identical.
+No provider request, forecast generation, activation or pilot mutation was involved.
+
+The separate generic high-entropy load retained **499 synthetic receipts /
+25,165,824 bytes**, local bare-Git push/fresh-fetch **5.763s**, total **6.666s**.
+It verifies transport load, not full typed-study execution or GitHub latency.
+The complete conservative study allocation remains **499 + 13 slots / 512**,
+**24,576,000 bytes**, under unchanged 32-MiB limits. One 2-MiB journal replaces
+one existing metadata slot; no per-forecast record or probability truncation.
+
+The complete retained 26,645-row path ran with explicitly advancing synthetic
+clocks and actual local Git checkpoints:
+
+```bash
+python3 -m multisport_lab.pros004_readiness \
+  --output evidence/research/pros004-readiness-measurement-v2.json \
+  --store-root /tmp/nml-pros004-diagnostic-c188 \
+  --producer-commit c18809f2fc7752d8f48c4749024623f5f4d73eb6
+```
+
+**PARTIAL_OR_FAILED_TIMING**, actual 19:59:09.051962–20:07:01.835522 UTC.
+Cohort generation/verification/persistence took **339.438s**; five model generations
+used only **29.745s**. Required checkpoint completion crossed the 300-second gate.
+Five original diagnostic forecasts survive, four have complete timely local/remote
+original-completion proof, and **zero are comparison-eligible**. Three model peers remain
+missing. The last ACK journal entry was not published after failure, so exact full
+remote-prefix recovery is false; this is not a complete paired cycle. The fetched
+prefix/readback retained five originals and explicit missing/unacknowledged state.
+Two integrity replays recovered every **26,645** joint atom and all **14** original
+category PMFs exactly; no outcomes or comparative scores were used. Local state is
+29 files / **3,645,510 bytes**, fetched prefix 3,644,111 bytes, peak RSS **185,396 KiB**.
+The create-only failed receipt is preserved unchanged, not replaced by old v1 timing.
+
+Research UI/export implementation and synthetic desktop/mobile checks passed;
+no website deployment occurred. No genuine prospective issuance, new real outcome
+grading, reserved comparative evaluation, financial settlement or qualified ticket
+was produced. Six historical forecast bundles/grades remain their original lane.
+
+Evidence: `evidence/research/pros004-readiness-measurement-v2.json`,
+`pros004-transport-load-20261020-v1.json`,
+`pros004-actual-github-checkpoint-20261020-v2.json`,
+`evidence/verification/pros004-software-checks-v2.json`,
+`pros004-independent-review-v2.json`, and the dated completion reproduction.
+Detailed new contracts are `docs/PROS004_COMPLETION.md` and
+`docs/PROS004_PUBLIC_EXPORT.md`; source files/commands are recoverable from
+`git show --stat c18809f2` and the receipts' exact source inventories.
+
+Remaining activation dependencies: complete permitted first UTC-date inventory
+(actual first T90 still unknown), source operational admission, private primary raw
+outcome retention/permission/full raw budget/linkage, reviewed durable operating
+phase-report admission, exact remotely recovered activation evidence, full typed
+late-study/hosted timing and sufficient cohort latency. The original reservation
+stays inactive and will not shift/backfill if its actual cutoff passes.
+
+Next concrete task already in progress: one bounded content-verified validation
+optimization, retaining all independent byte/hash/reference and typed checks,
+followed by a new exact source pin and separately named non-issuance timing receipt.
+R0/K0 mathematics, gates, capacities and all frozen experiments remain unchanged.
+
+## October 20, 19:29–19:40 UTC — expired pilot audit and PR #10 corrections
+
+This is a new checkpoint; earlier operating observations below remain unchanged.
+Review starting point and remote PR #10 head are
+`c305a6360c175413b5871170bcb23a1b7f7820ee` on
+`implementation/pros004-paired-readiness`. Initial tree was clean; local/remote
+branch matched and main remains `735a464e9e8718303ef481abf711a8969de56694`.
+PR #10 remains draft. The current package authorizes fixes and inactive operating
+preparation, not PROS004 activation, scheduling, genuine issuance, merge or deploy.
+
+**Expired pilot: MISSED_OR_UNOBSERVED_EXECUTION; cause NOT_ESTABLISHED.** Fresh
+read-only observations through **19:35:30 UTC** found 72 repository runs and
+18 runs for workflow 390126745, with zero schedule-event runs in both inventories.
+All 18 workflow runs were earlier PR setup activity; metadata/jobs and six actual
+job-log archives were inspected. No execution log establishes a reason for the
+unobserved scheduled run. Workflow metadata is still active, with its original
+default-branch YAML; that state does not prove execution.
+
+An independent records-branch clone remains clean at
+`df446eee302fd6662ef82184e2c733f5d6e2d2dd`; PR #8 is still draft at that exact
+head. All **19 original ledger records / 1,817,800 bytes** match the frozen plan.
+No execution claim, capture/generation intent, fresh binding or execution report
+was observed. The documented read-only `manual_cycle recover` returned closed
+window / NOT_READY, no bound input, zero retained selected forecasts and all four
+subjects missing. It made zero provider requests and generated zero forecasts.
+The native task was observed disabled with no next run at 19:34:17–18 UTC and was
+not changed. No dispatch, rerun, workflow-state write, capture, issue or rebind was
+performed. Original pilot deadlines/identities and all earlier evidence survive.
+
+Exact queries, response hashes, clocks, inventories and recovery output are in
+`evidence/cycles/2026-10-20-pilot-operational-recovery.json` and
+`docs/PILOT_OPERATIONAL_DIAGNOSIS.md`. The evidence receipt raw SHA-256 is
+`1f0b6a609c3ad057e275c5ada6ffb43a90b134d2818bda7d77fb646925d4a760`.
+
+Separately authorized current metadata inspection made exactly three bounded
+ESPN scoreboard requests at **19:32:07.895099–19:32:08.968371 UTC**, receiving
+HTTP 200 / 204,880 bytes, with 3/11/2 events in the adjacent routes. Six observed
+events start on UTC October 21. All responses lack the registered pagination/count
+proof; `UNKNOWN_SCHEDULE_COMPLETENESS` remains a blocker. The actual first T90 is
+**unknown**. Candidate 401909090 would have T90 October 21 00:00 UTC if first and
+unchanged, which is conditional rather than deadline proof. The theoretical
+earliest October 20 22:30 UTC / 17:30 CDT is distinct. No selected-player capture,
+model run or forecast followed. Safe evidence is in
+`evidence/data/2026-10-20-pros004-current-schedule.json` and
+`docs/PROS004_SCHEDULE_AUDIT.md`; raw response bodies remain outside Git/Pages.
+
+Persistence completion and all-type semantic recovery corrections are in progress
+on this same branch under one integration owner. Frozen `ledger.py`, pilot code,
+R0/K0 laws, PR #9/DEV005 and original records are unchanged. The new completion
+design retains originals even when late/unacknowledged and requires durable
+post-operation clocks before admitting timing. A bounded shared journal uses one
+already reserved metadata slot; no per-forecast ledger record is assumed to fit.
+Final tests, revised source pins, measured capacity/timing and independent recovery
+will be recorded as a separate completed implementation checkpoint.
+
+## PROS004 paired readiness — isolated review package
+
+Current integration owner works in `/workspace/nml-pros004-readiness`, branch
+`implementation/pros004-paired-readiness`, based on current main
+`735a464e9e8718303ef481abf711a8969de56694`. This supersedes the setup-pending
+status below: PR #7 is merged and its one-time pilot remains armed. Read-only
+GitHub checks on October 20 confirmed main unchanged, workflow 390126745 active,
+draft PR #8 at `df446eee302fd6662ef82184e2c733f5d6e2d2dd`, and draft PR #9 at
+`d68015778ab452c94db0385c471de663e830efec`. Their worktrees remain clean. No pilot
+workflow, producer, original records or native task was altered or retriggered.
+PR #9 / DEV005 is retained as completed frozen research; S0 remains inactive.
+
+This separate package implements prospective wrappers for unchanged R0/K0,
+full-history/shared-event input contracts, paired timing/recovery controls and
+shared-outcome statistical grading. Genuine operation is deliberately disabled.
+There are no live source captures, genuine forecasts, real statistical grades,
+reserved aggregate comparisons, financial settlements or qualified tickets from
+this package. No merge, deployment or PROS004 activation is authorized.
+
+Independent row-lineage reproduction from the original local Parquet bytes
+matches all 26,645 rows / 1,231 games / 14,720,351 bytes and original panel SHA-256,
+including all 8,238 exclusions. Evidence is
+`evidence/research/pros004-readiness-lineage.json`. A diagnostic source-drift stop
+before forecasting is retained in `pros004-readiness-attempt-01.json`. Full-history
+synthetic runtime and independent readback are recorded at the completed
+readiness checkpoint below. The integrated local suite passed 338 Python tests
+in 19.286s, 60 PROS004 tests under optimized Python in 7.667s, 35 frontend tests,
+the demo and research artifact smoke check. No model evaluation is being rerun.
+
+The first selected T90 remains **unknown**: retained October 20 local-date source
+bytes do not prove complete UTC-October-21 schedule coverage. Midnight is not a
+safe assumed deadline. The reservation permits a theoretical earliest T90 of
+October 20 22:30 UTC / 17:30 CDT, without establishing an actual event. Complete
+permitted current schedule evidence and source-bound remotely recovered activation
+must precede the actual first cutoff. See `docs/PROS004_READINESS.md` for the
+completed and unresolved activation checklist; the reservation remains inactive.
+
+### Completed implementation and measured checkpoint
+
+Draft [PR #10](https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/10)
+is open. Executed implementation commit is
+**`6e08b405d79d0fe7fde7299b3407504b35ef128f`**, normally committed/pushed on this
+branch. Subsequent evidence/documentation commits retain these same source bytes.
+One integration owner coordinated input, producer, records, offline snapshot and
+separate verification agents. No agent wrote to the protected pilot/DEV005 trees.
+
+Implemented files:
+
+- `multisport_lab/pros004_inputs.py`: versioned full-history and compact event
+  packs, source-byte normalization, complete UTC-date inventory/selection,
+  exact evidence lanes and observation/update/import/receipt clocks. Bounded
+  content-addressed caches retain immutable rows while all dynamic clocks,
+  checksums, provenance, source receipts and exclusions are revalidated.
+- `multisport_lab/pros004_producer.py`: separate `pros004-r0-producer-v1` and
+  `pros004-k0-producer-v1`; unchanged laws and causal contexts; all 14 complete
+  PMFs plus reported minutes; full joint replay recipe/hash; common T90,
+  five-minute window, 120-second latency gate, exact source/runtime/input pins,
+  pair preflight, fixed original identities and timely missing-peer recovery.
+- `multisport_lab/pros004_records.py`: new facade/private research-input validator
+  extension over the unchanged ledger; 499+13 record budget, immutable originals,
+  one writer, strict calendar/admission records, source-byte outcome normalization,
+  one shared outcome, separate statistical grades and traceable corrections.
+  A paired correction preflights all six needed revision/link slots and recovers
+  interruptions without replacing original probabilities or clocks.
+- `multisport_lab/pros004_snapshot.py`: deterministic bounded receipt manifests,
+  verified fresh-root copy/readback, exact raw/payload hashes and references,
+  interruption refusal and preservation of partial peers. This is offline
+  recovery code, not a live GitHub checkpoint or activation proof.
+- `multisport_lab/pros004_readiness.py`: source-pinned, explicitly non-issuance
+  full-history diagnostic; copies all existing receipts before synthetic work,
+  retains eight diagnostic forecasts and verifies baseline/snapshot/replay.
+- `scripts/verify_pros004_readiness.py` and six `tests/test_pros004_*.py` modules:
+  independent integrity, timing, identity, arithmetic, limit and recovery checks.
+  All new integrity guards remain active under optimized Python. DEV005's
+  original verifier is untouched.
+- `docs/PROS004_READINESS.md`, `docs/DECISIONS.md`, `PROJECT_CONTEXT.md`, this
+  handoff, `MANIFEST.sha256` and the `evidence/research/pros004-readiness-*`
+  receipts record scope, source recovery, lineage, measurements and limitations.
+
+Actual commands/results:
+
+```bash
+python3 -m unittest discover -s tests -v
+# 338 tests PASS, 19.286 seconds
+python3 -O -m unittest discover -s tests -p 'test_pros004*.py' -v
+# 60 focused tests PASS, 7.667 seconds
+python3 -m multisport_lab.demo
+# PASS
+node --test --test-isolation=none web/tests/*.test.mjs
+# 35 tests PASS
+python3 -m multisport_lab.publication --build-commit 735a464e9e8718303ef481abf711a8969de56694
+node web/tests/site-smoke.mjs output
+# PASS: bounded local research artifact, all-13 inventory and NO_ACTION
+PYTHONPATH=/tmp/nml-nba-audit/deps python3 scripts/prepare_nba_panel.py \
+  --players /tmp/nml-nba-audit/sdv_player_box_2026.parquet \
+  --schedule /tmp/nml-nba-audit/sdv_schedule_2026.parquet \
+  --output /tmp/nml-pros004-readiness/independent-renormalized.jsonl
+# PASS: exact original 26,645 rows / 1,231 events / 14,720,351 bytes and exclusions
+python3 -m multisport_lab.pros004_readiness \
+  --producer-commit 6e08b405d79d0fe7fde7299b3407504b35ef128f \
+  --store-root /tmp/nml-pros004-final-store \
+  --output /tmp/nml-pros004-final-report.json
+# PASS: explicit non-issuance diagnostic; actual clocks 12:16:53.909964–12:21:35.133660Z
+git clone --single-branch --branch implementation/pros004-paired-readiness \
+  https://github.com/NickNicky19/Nicks-multisport-lab-project.git \
+  /tmp/nml-pros004-independent-remote
+# PASS: independent exact source commit, clean tree, original 19 records
+python3 scripts/verify_pros004_readiness.py \
+  --report evidence/research/pros004-readiness-measurement.json --root .
+# Independent equivalent from fresh GitHub clone, with --store-root, passes normal and -O
+```
+
+The measured ledger contains **31 records / 3,716,686 bytes**: original 19 retained
+byte-for-byte plus 12 diagnostic records. History envelope is **1,639,440 bytes**;
+event **10,972**; R0 maximum **30,347**; K0 **30,488**; event admission **3,774**;
+manifest **1,616**. All are within registered complete-envelope ceilings.
+Eight retained forecasts include every original category and minute probability.
+One full **26,645-atom law per model** was regenerated for integrity only and
+matched every original atom/weight hash and marginal exactly. No real outcome
+entered this diagnostic and no predictive score or aggregate comparison was run.
+
+Actual four-subject cohort generation/verification/persistence cost was
+**196.303935 seconds**; complete diagnostic including baseline recovery and
+replay **281.225514 seconds**; peak RSS **185,296 KiB**. These are measured local
+resource results with explicitly simulated source/issuance clocks, not genuine
+timeliness or hosted latency evidence. The maximum conservative full-study plan
+is **512 records / 22,487,040 bytes**, including all 499 planned records and
+13 correction/failure reserve slots. Byte headroom is 11,067,392; no record slots
+remain outside the reserve. Bounds were not raised and no atoms/history dropped.
+
+A further size-only synthetic stress used the retained full PMFs, with fitting
+and forecast generation patched to raise. Exact executed command:
+`PYTHONPATH=/workspace/nml-pros004-readiness python3 /tmp/nml-pros004-size-stress.py`.
+The script is retained byte-for-byte in
+`evidence/research/pros004-readiness-size-stress.py`; exact paths/rerun refusal are
+in its adjacent `pros004-readiness-full-pmf-size.json` receipt. Two invented outcome
+revisions, four synthetic individual grade contracts and three supersession links
+expanded a separate copy from 31 to **40 records / 3,746,774 bytes**, consuming six
+reserve slots. Maximum outcome was **2,649 bytes**, grade **5,164**, correction link
+**1,406**. Restart/copied readback, idempotent retry and all 14 existing forecast
+byte hashes passed. The original final 31-record store/report were unchanged.
+No real outcome or comparative metric was inspected. A first stress preparation
+rejected an incorrect diagnostic-lane expectation before appending; its actual
+failure/copy was retained, and the fresh retry used the original exact lane.
+
+Independent review fixed lane consistency, strict admission metadata, interrupted
+correction linking/capacity and inclusion of the old ledger in the runtime path.
+The independent verifier's initial K0 version spelling/fixture was corrected to
+the unchanged law; no model source was changed. It then confirmed all 16 executed
+source files, 12 frozen pins, 19 original receipts and all eight new diagnostic
+contracts under normal and optimized Python. Final report raw SHA-256 is
+`76cc9c0e9fb00d2786fc8cab7bfdb7dda79f5bf7c0953becab94dc55c175188c`.
+`pros004-readiness-independent-verification.json` retains exact commands/results.
+The initial source-drift stop, intermediate empty-ledger measurement and malformed
+literal source-pin rejection remain separately retained; none is hidden or
+relabeled as prospective evidence.
+
+Activation remains **INACTIVE**. Still required: permitted complete current UTC
+schedule evidence/actual first cutoff; actual fresh selection/input capture;
+reviewed operational activation and GitHub writer/readback admission; new public
+input/forecast/history pagination support for the full study; durable raw outcome
+evidence; exact admission for unused private generic failure metadata. The current
+genuine-write guard deliberately rejects all activation flags. The reserved
+aggregate evaluation has not been executed or benchmarked; its original
+November 25 gate and 900-second/512-MiB budget remain. The local tests and resource
+measurements establish software behavior only. New genuine issuance, real grades,
+financial settlements, qualified tickets, deployment and model evaluation are all
+**zero** for this package. Existing historical records retain their original lane.
+
+Next concrete task: review the draft implementation and resolve the explicit
+source/operational/publication dependencies before any separately authorized
+activation. If they cannot be completed before the actual first selected cutoff,
+retain PROS004's original reservation as inactive. A later window needs a new
+reservation; do not replace subjects, backfill or relax gates.
 
 ## October 20, 23:21 UTC — website source independently verified; draft PR #11
 

@@ -1,0 +1,695 @@
+{
+  "actual_abort_reason": "The original issuance deadline was already expired when the worker recovered the cycle. Actual log and retained report agree on EXPIRED_INCOMPLETE and the issuance-window IntegrityError.",
+  "actual_executor_log_matches_retained_report": true,
+  "actual_executor_report": {
+    "attempt": "1",
+    "checkpoints": [],
+    "completed_at": "2026-10-20T20:34:33.119840Z",
+    "cycle_id": "nba-20261020-401909088-t90-r1",
+    "errors": [
+      "IntegrityError: issuance window expired; retained partial records remain pending"
+    ],
+    "exit_code": 1,
+    "financial_settlement": "NOT_EVALUATED",
+    "plan_sha256": "22ae8db607374486ebee6eb569d236a3d27aedc8535c3085a6b6858226921908",
+    "producer_commit": "58530309cf384425e15f02fd9fa980899a4dc0bc",
+    "qualification": "UNAVAILABLE",
+    "recovery": {
+      "capture_closes_at": "2026-10-20T17:30:00.000000Z",
+      "capture_opens_at": "2026-10-20T17:20:00.000000Z",
+      "checked_at": "2026-10-20T20:34:31.021304Z",
+      "clocks": null,
+      "cycle_id": "nba-20261020-401909088-t90-r1",
+      "financial_settlement": "NOT_EVALUATED",
+      "forecast_records": {},
+      "forecasts_generated": 0,
+      "input_reference": null,
+      "issuance_closes_at": "2026-10-20T17:35:00.000000Z",
+      "issuance_opens_at": "2026-10-20T17:30:00.000000Z",
+      "missing_player_ids": [
+        "2596112",
+        "2990962",
+        "3195",
+        "4251"
+      ],
+      "pending_statistical_grades": 0,
+      "phase": "ISSUANCE_WINDOW_CLOSED",
+      "plan_sha256": "22ae8db607374486ebee6eb569d236a3d27aedc8535c3085a6b6858226921908",
+      "producer_commit": "58530309cf384425e15f02fd9fa980899a4dc0bc",
+      "provider_requests": 0,
+      "qualification": "UNAVAILABLE",
+      "schema_version": "nba-manual-cycle-status-v1",
+      "selected_forecasts_retained": 0,
+      "selected_player_ids": [
+        "2596112",
+        "2990962",
+        "3195",
+        "4251"
+      ],
+      "status": "NOT_READY"
+    },
+    "run_id": "39493005199",
+    "schema_version": "nba-scheduled-cycle-report-v1",
+    "source_capture_attempted": false,
+    "started_at": "2026-10-20T20:34:24.536822Z",
+    "status": "EXPIRED_INCOMPLETE",
+    "workflow_disabled": true
+  },
+  "bounded_inventory": {
+    "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/actions/workflows/390126745/runs?created=%3E%3D2026-10-20T20%3A30%3A00Z&per_page=100&page=1",
+    "pagination_complete": true,
+    "total_count": 1
+  },
+  "capture_window": {
+    "closes_at": "2026-10-20T17:30:00.000000Z",
+    "opens_at": "2026-10-20T17:20:00.000000Z"
+  },
+  "classification": "ACTUAL_PARTIAL_EXECUTION",
+  "classification_detail": "Late operational execution claimed the original cycle and preserved an expired guarded-abort report. It captured no fresh source input and issued no selected forecast. This is not partial forecasting completion.",
+  "created_at": "2026-10-20T20:58:40.596721Z",
+  "current_workflow": {
+    "command": [
+      "gh",
+      "api",
+      "repos/NickNicky19/Nicks-multisport-lab-project/actions/workflows/390126745"
+    ],
+    "exit_code": 0,
+    "observed_at": "2026-10-20T20:57:33.450045+00:00",
+    "raw_bytes": 596,
+    "raw_sha256": "7f81cb658133f50192d2624088f715f6791ffc1fd4f8eb0a8ca69246c589422f",
+    "request_started_at": "2026-10-20T20:57:33.005908+00:00",
+    "response": {
+      "badge_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/workflows/One%20October%2020%20NBA%20pilot/badge.svg",
+      "created_at": "2026-10-20T04:12:56.000Z",
+      "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/blob/main/.github/workflows/nba-20261020-pilot.yml",
+      "id": 390126745,
+      "name": "One October 20 NBA pilot",
+      "node_id": "W_kwDOVQJa784XQNyZ",
+      "path": ".github/workflows/nba-20261020-pilot.yml",
+      "state": "disabled_manually",
+      "updated_at": "2026-10-20T20:33:43.000Z",
+      "url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/actions/workflows/390126745"
+    }
+  },
+  "evidence_distinctions": {
+    "financial_settlement": "NOT_EVALUATED",
+    "genuine_selected_prospective_issuance_count": 0,
+    "operational_execution": "Observed original schedule event, late claim, expired guarded abort and durable factual report.",
+    "pending_selected_statistical_grades": 0,
+    "publication": "Only draft PR #8 factual-record publication and its validation were verified. No merge, Pages deployment or forecast publication is established.",
+    "qualification": "UNAVAILABLE",
+    "software_checks": "Actual workflow software/artifact step succeeded; that does not establish prospective issuance."
+  },
+  "github_schedule_lateness_cause": "NOT_ESTABLISHED_FROM_AVAILABLE_RUN_LOGS",
+  "independent_records_recovery": {
+    "all_prior_ledger_bytes_preserved": true,
+    "checkout_path": "/tmp/nml-pilot-current-dec5cc9f",
+    "clean_when_evidence_assembled": true,
+    "clone_state": {
+      "changed_paths": "M\tHANDOFF_STATUS.md\nM\tMANIFEST.sha256\nA\tevidence/cycles/github-pilot-nba-20261020-401909088-t90-r1-claim.json\nA\tevidence/cycles/github-pilot-publication-39493005199.md\nA\tevidence/cycles/github-pilot-publication-result-39493005199-1.json\nA\tevidence/cycles/github-pilot-report-39493005199-1.json",
+      "clean": true,
+      "commit": "commit dec5cc9fa397332244985bea8815bd9a89ea264e\nAuthor:     github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>\nAuthorDate: Tue Oct 20 20:35:49 2026 +0000\nCommit:     github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>\nCommitDate: Tue Oct 20 20:35:49 2026 +0000\n\n    Record NBA pilot PUBLICATION_VERIFIED",
+      "completed_at": "2026-10-20T20:56:18.748245Z",
+      "diff_stat": "HANDOFF_STATUS.md                                                | 8 ++++++++\n MANIFEST.sha256                                                  | 6 +++++-\n .../cycles/github-pilot-nba-20261020-401909088-t90-r1-claim.json | 1 +\n evidence/cycles/github-pilot-publication-39493005199.md          | 9 +++++++++\n .../cycles/github-pilot-publication-result-39493005199-1.json    | 1 +\n evidence/cycles/github-pilot-report-39493005199-1.json           | 1 +\n 6 files changed, 25 insertions(+), 1 deletion(-)",
+      "head": "dec5cc9fa397332244985bea8815bd9a89ea264e",
+      "started_at": "2026-10-20T20:56:17.935890Z"
+    },
+    "independent_original_inventory": {
+      "local_path": "/tmp/nml-pilot-current-dec5-recovery-inventory.json",
+      "raw_bytes": 3788,
+      "raw_sha256": "c24630bd999c7e3fef1fce2a25d3911184318fae19bc6fe13cdc25c4695eb1f4",
+      "response": {
+        "all19_raw_hashes_match_plan": true,
+        "checked_at": "2026-10-20T20:58:03.117493Z",
+        "clean_after_read_only_manual_recover": true,
+        "encoded_bytes": 1817800,
+        "fresh_binding_exists": false,
+        "head": "dec5cc9fa397332244985bea8815bd9a89ea264e",
+        "manual_recover_result_file": "/tmp/nml-pilot-current-dec5-recover-result.json",
+        "new_paths_since_df446": [
+          "HANDOFF_STATUS.md",
+          "MANIFEST.sha256",
+          "evidence/cycles/github-pilot-nba-20261020-401909088-t90-r1-claim.json",
+          "evidence/cycles/github-pilot-publication-39493005199.md",
+          "evidence/cycles/github-pilot-publication-result-39493005199-1.json",
+          "evidence/cycles/github-pilot-report-39493005199-1.json"
+        ],
+        "original_inventory_sha256": "e97b5ac9c1933a08ab48b53affadd0402750c0ab0b4bd6b524fde33c8fd6f4ee",
+        "original_record_sha256": {
+          "records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json": "499b358129adde25134d5ba6243b372b1937915f7a0f2245750a057d40c4b8c6",
+          "records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json": "507344a333f5218039e39b1201e1f203f6045bf8e04375a7a19740ddea337967",
+          "records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json": "e35af6116e8151aacb23d21465c2744324501a92d0f83cf7e780066677df74fa",
+          "records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json": "1748dce54d24cc583deb3e102d08680142307c3c784ddfc728abc02f78e82f0f",
+          "records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json": "d74070a12aa144b4bc917de930e6527f4bd5bdeb84db693a215bec1513562f7b",
+          "records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json": "bf3aa0b6fab62f64a03070fc6775db1bec8b0654e89ae93b3c42133e94649894",
+          "records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json": "cf519c4238f641724d81040f8cdee82b693aa3f98e4ae8db772fbadc480fd6a0",
+          "records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json": "73b72a5ed145708157052c269d25c0dd72467a002e26efac41e1136839fa0f60",
+          "records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json": "c691398d641af291bcd3c2a9d7427ff59ab953606ee9388bc2c202642d80947c",
+          "records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json": "41e3453b89b97c160d56e932f1389ac90b451142dcda3cff27629b1448bc77dd",
+          "records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json": "1297f91dc9154d2b6111e60a1505f4a08e911dd3c99b919431833df76dbe40b5",
+          "records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json": "2a343e191af2f809baf91ab4d6f9de8d09f593c9f6b088d9740238982107237b",
+          "records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json": "a9474a89403e3aa87f44adb014eee6e10b09761002e5a4deabc198022ea88ce3",
+          "records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json": "c9938334da0fbfb3032558df23d5e69588fdf6ca7f0b9eb562fb271c090ef93e",
+          "records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json": "e94d071bf65e5f4815400a0e334b81529d6fd71147fb467584fc0aa1bb7e4f9c",
+          "records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json": "74bd3778ce79875bb6f238cabda878ab88789df928b3b7804494c3e94f346b54",
+          "records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json": "f4787faceff42cc52a2c446b03fc6ee7b8b2103643dff937b411193c75994bc5",
+          "records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json": "1332e892946d072d1500bdd693a877cbefb1ee54b51c3eb657e3c7af6393ee63",
+          "records/research_inputs/dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc.json": "db9a682099e28ce087edf430e9aa52f9be8e060ebf4b4cf8deb53d1317c8b122"
+        },
+        "records": 19
+      }
+    },
+    "manual_cycle_read_only_recover": {
+      "local_path": "/tmp/nml-pilot-current-dec5-recover-result.json",
+      "raw_bytes": 1402,
+      "raw_sha256": "22189b81d23642cb6f84436f84f29698b2b6e0c321a7cbe19a990512a7f6fcc3",
+      "response": {
+        "chunk_id": "79a73e",
+        "command": [
+          "python3",
+          "-m",
+          "multisport_lab.manual_cycle",
+          "recover"
+        ],
+        "cwd": "/tmp/nml-pilot-current-dec5cc9f",
+        "exit_code": 0,
+        "original_token_count": 255,
+        "output": "{\n  \"schema_version\": \"nba-manual-cycle-status-v1\",\n  \"cycle_id\": \"nba-20261020-401909088-t90-r1\",\n  \"producer_commit\": \"58530309cf384425e15f02fd9fa980899a4dc0bc\",\n  \"plan_sha256\": \"22ae8db607374486ebee6eb569d236a3d27aedc8535c3085a6b6858226921908\",\n  \"checked_at\": \"2026-10-20T20:56:55.848582Z\",\n  \"phase\": \"ISSUANCE_WINDOW_CLOSED\",\n  \"capture_opens_at\": \"2026-10-20T17:20:00.000000Z\",\n  \"capture_closes_at\": \"2026-10-20T17:30:00.000000Z\",\n  \"issuance_opens_at\": \"2026-10-20T17:30:00.000000Z\",\n  \"issuance_closes_at\": \"2026-10-20T17:35:00.000000Z\",\n  \"status\": \"NOT_READY\",\n  \"input_reference\": null,\n  \"clocks\": null,\n  \"selected_player_ids\": [\n    \"2596112\",\n    \"2990962\",\n    \"3195\",\n    \"4251\"\n  ],\n  \"selected_forecasts_retained\": 0,\n  \"missing_player_ids\": [\n    \"2596112\",\n    \"2990962\",\n    \"3195\",\n    \"4251\"\n  ],\n  \"forecast_records\": {},\n  \"pending_statistical_grades\": 0,\n  \"provider_requests\": 0,\n  \"forecasts_generated\": 0,\n  \"qualification\": \"UNAVAILABLE\",\n  \"financial_settlement\": \"NOT_EVALUATED\"\n}\n",
+        "wall_time_seconds": 2.741e-05
+      }
+    },
+    "new_operational_files": [
+      {
+        "path": "evidence/cycles/github-pilot-nba-20261020-401909088-t90-r1-claim.json",
+        "raw_bytes": 509,
+        "raw_sha256": "9ece07872840252414ba3851fa67b40808cde5bb1cb816f73a4a3cc01c545926",
+        "receipt": {
+          "hash_format": "sha256-canonical-decoded-json-v1",
+          "payload": {
+            "claimed_at": "2026-10-20T20:34:01.494461Z",
+            "cycle_id": "nba-20261020-401909088-t90-r1",
+            "plan_sha256": "22ae8db607374486ebee6eb569d236a3d27aedc8535c3085a6b6858226921908",
+            "producer_commit": "58530309cf384425e15f02fd9fa980899a4dc0bc",
+            "run_id": "39493005199",
+            "schema_version": "nba-github-pilot-claim-v1",
+            "workflow_id": 390126745
+          },
+          "payload_sha256": "a08945a114d867eab557309b22a0af20374db43ad85a5a6e70885d2bb5481ffd",
+          "schema_version": "decoded-json-receipt-v1"
+        }
+      },
+      {
+        "path": "evidence/cycles/github-pilot-report-39493005199-1.json",
+        "raw_bytes": 1723,
+        "raw_sha256": "23deac002af656d3aafadaa3183ece7487d9371baa9380d831aec559df34fda1",
+        "receipt": {
+          "hash_format": "sha256-canonical-decoded-json-v1",
+          "payload": {
+            "attempt": "1",
+            "checkpoints": [],
+            "completed_at": "2026-10-20T20:34:33.119840Z",
+            "cycle_id": "nba-20261020-401909088-t90-r1",
+            "errors": [
+              "IntegrityError: issuance window expired; retained partial records remain pending"
+            ],
+            "exit_code": 1,
+            "financial_settlement": "NOT_EVALUATED",
+            "plan_sha256": "22ae8db607374486ebee6eb569d236a3d27aedc8535c3085a6b6858226921908",
+            "producer_commit": "58530309cf384425e15f02fd9fa980899a4dc0bc",
+            "qualification": "UNAVAILABLE",
+            "recovery": {
+              "capture_closes_at": "2026-10-20T17:30:00.000000Z",
+              "capture_opens_at": "2026-10-20T17:20:00.000000Z",
+              "checked_at": "2026-10-20T20:34:31.021304Z",
+              "clocks": null,
+              "cycle_id": "nba-20261020-401909088-t90-r1",
+              "financial_settlement": "NOT_EVALUATED",
+              "forecast_records": {},
+              "forecasts_generated": 0,
+              "input_reference": null,
+              "issuance_closes_at": "2026-10-20T17:35:00.000000Z",
+              "issuance_opens_at": "2026-10-20T17:30:00.000000Z",
+              "missing_player_ids": [
+                "2596112",
+                "2990962",
+                "3195",
+                "4251"
+              ],
+              "pending_statistical_grades": 0,
+              "phase": "ISSUANCE_WINDOW_CLOSED",
+              "plan_sha256": "22ae8db607374486ebee6eb569d236a3d27aedc8535c3085a6b6858226921908",
+              "producer_commit": "58530309cf384425e15f02fd9fa980899a4dc0bc",
+              "provider_requests": 0,
+              "qualification": "UNAVAILABLE",
+              "schema_version": "nba-manual-cycle-status-v1",
+              "selected_forecasts_retained": 0,
+              "selected_player_ids": [
+                "2596112",
+                "2990962",
+                "3195",
+                "4251"
+              ],
+              "status": "NOT_READY"
+            },
+            "run_id": "39493005199",
+            "schema_version": "nba-scheduled-cycle-report-v1",
+            "source_capture_attempted": false,
+            "started_at": "2026-10-20T20:34:24.536822Z",
+            "status": "EXPIRED_INCOMPLETE",
+            "workflow_disabled": true
+          },
+          "payload_sha256": "a58e964be9e31392944c2049fc7bee0eec60f4d2dbf267307cc421ba48e032ad",
+          "schema_version": "decoded-json-receipt-v1"
+        }
+      },
+      {
+        "path": "evidence/cycles/github-pilot-publication-result-39493005199-1.json",
+        "raw_bytes": 499,
+        "raw_sha256": "250d3c68870986b176f9919adfe3b9960919944e7f26536c0ad8e2ea53c1e241",
+        "receipt": {
+          "hash_format": "sha256-canonical-decoded-json-v1",
+          "payload": {
+            "checked_at": "2026-10-20T20:35:40.847638Z",
+            "operation": "UPDATED_EXISTING",
+            "plan_sha256": "22ae8db607374486ebee6eb569d236a3d27aedc8535c3085a6b6858226921908",
+            "pull_request_write": "VERIFIED",
+            "run_id": "39493005199",
+            "status": "DRAFT_PR_OPEN",
+            "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/8"
+          },
+          "payload_sha256": "fc388e59f5587d596812652d15217a7596252ee3ddcca2ffa2a1b89f423313e4",
+          "schema_version": "decoded-json-receipt-v1"
+        }
+      },
+      {
+        "path": "evidence/cycles/github-pilot-publication-39493005199.md",
+        "raw_bytes": 350,
+        "raw_sha256": "91a95aa908d3faa195a67aa2eb1c69385c75dc6ce781e6c51aee4d98361bf7bc",
+        "text": "Actual one-shot NBA paper-research checkpoint.\n\nGitHub run: 39493005199\n\nStatus: EXPIRED_INCOMPLETE\n\nOriginal clocks and partial results are retained. No financial settlement, product qualification or confirmatory accuracy claim.\n\nhttps://github.com/NickNicky19/Nicks-multisport-lab-project/compare/main...records/nba-20261020-401909088-t90?expand=1\n"
+      }
+    ],
+    "original_ledger_bytes": 1817800,
+    "original_ledger_files": [
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json",
+        "raw_bytes": 22838,
+        "raw_sha256": "499b358129adde25134d5ba6243b372b1937915f7a0f2245750a057d40c4b8c6"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json",
+        "raw_bytes": 22747,
+        "raw_sha256": "507344a333f5218039e39b1201e1f203f6045bf8e04375a7a19740ddea337967"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json",
+        "raw_bytes": 22813,
+        "raw_sha256": "e35af6116e8151aacb23d21465c2744324501a92d0f83cf7e780066677df74fa"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json",
+        "raw_bytes": 22815,
+        "raw_sha256": "1748dce54d24cc583deb3e102d08680142307c3c784ddfc728abc02f78e82f0f"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json",
+        "raw_bytes": 22826,
+        "raw_sha256": "d74070a12aa144b4bc917de930e6527f4bd5bdeb84db693a215bec1513562f7b"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json",
+        "raw_bytes": 22830,
+        "raw_sha256": "bf3aa0b6fab62f64a03070fc6775db1bec8b0654e89ae93b3c42133e94649894"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json",
+        "raw_bytes": 4375,
+        "raw_sha256": "cf519c4238f641724d81040f8cdee82b693aa3f98e4ae8db772fbadc480fd6a0"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json",
+        "raw_bytes": 4357,
+        "raw_sha256": "73b72a5ed145708157052c269d25c0dd72467a002e26efac41e1136839fa0f60"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json",
+        "raw_bytes": 4365,
+        "raw_sha256": "c691398d641af291bcd3c2a9d7427ff59ab953606ee9388bc2c202642d80947c"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json",
+        "raw_bytes": 4370,
+        "raw_sha256": "41e3453b89b97c160d56e932f1389ac90b451142dcda3cff27629b1448bc77dd"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json",
+        "raw_bytes": 4369,
+        "raw_sha256": "1297f91dc9154d2b6111e60a1505f4a08e911dd3c99b919431833df76dbe40b5"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json",
+        "raw_bytes": 4368,
+        "raw_sha256": "2a343e191af2f809baf91ab4d6f9de8d09f593c9f6b088d9740238982107237b"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json",
+        "raw_bytes": 2023,
+        "raw_sha256": "a9474a89403e3aa87f44adb014eee6e10b09761002e5a4deabc198022ea88ce3"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json",
+        "raw_bytes": 2018,
+        "raw_sha256": "c9938334da0fbfb3032558df23d5e69588fdf6ca7f0b9eb562fb271c090ef93e"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json",
+        "raw_bytes": 2019,
+        "raw_sha256": "e94d071bf65e5f4815400a0e334b81529d6fd71147fb467584fc0aa1bb7e4f9c"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json",
+        "raw_bytes": 2018,
+        "raw_sha256": "74bd3778ce79875bb6f238cabda878ab88789df928b3b7804494c3e94f346b54"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json",
+        "raw_bytes": 2018,
+        "raw_sha256": "f4787faceff42cc52a2c446b03fc6ee7b8b2103643dff937b411193c75994bc5"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json",
+        "raw_bytes": 2021,
+        "raw_sha256": "1332e892946d072d1500bdd693a877cbefb1ee54b51c3eb657e3c7af6393ee63"
+      },
+      {
+        "matches_prior_1931_readback_bytes": true,
+        "path": "records/research_inputs/dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc.json",
+        "raw_bytes": 1642610,
+        "raw_sha256": "db9a682099e28ce087edf430e9aa52f9be8e060ebf4b4cf8deb53d1317c8b122"
+      }
+    ],
+    "original_ledger_records": 19
+  },
+  "issuance_window": {
+    "closes_at": "2026-10-20T17:35:00.000000Z",
+    "opens_at": "2026-10-20T17:30:00.000000Z"
+  },
+  "jobs": [
+    {
+      "completed_at": "2026-10-20T20:36:36Z",
+      "conclusion": "failure",
+      "id": 118870752071,
+      "name": "pilot",
+      "run_attempt": 1,
+      "started_at": "2026-10-20T20:33:37Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completed_at": "2026-10-20T20:33:39Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "started_at": "2026-10-20T20:33:38Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-20T20:33:40Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 2,
+          "started_at": "2026-10-20T20:33:39Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-20T20:33:40Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "number": 3,
+          "started_at": "2026-10-20T20:33:40Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-20T20:33:42Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+          "number": 4,
+          "started_at": "2026-10-20T20:33:40Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-20T20:35:02Z",
+          "conclusion": "failure",
+          "name": "Verify executor or run the single eligible pilot",
+          "number": 5,
+          "started_at": "2026-10-20T20:33:42Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-20T20:35:20Z",
+          "conclusion": "success",
+          "name": "Verify preserved software and research artifact",
+          "number": 6,
+          "started_at": "2026-10-20T20:35:02Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-20T20:36:34Z",
+          "conclusion": "success",
+          "name": "Prepare factual records PR without merging",
+          "number": 7,
+          "started_at": "2026-10-20T20:35:20Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-20T20:36:35Z",
+          "conclusion": "success",
+          "name": "Retain emergency recovery evidence",
+          "number": 8,
+          "started_at": "2026-10-20T20:36:34Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-20T20:36:35Z",
+          "conclusion": "skipped",
+          "name": "Post Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+          "number": 14,
+          "started_at": "2026-10-20T20:36:35Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-20T20:36:35Z",
+          "conclusion": "skipped",
+          "name": "Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+          "number": 15,
+          "started_at": "2026-10-20T20:36:35Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-20T20:36:35Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "number": 16,
+          "started_at": "2026-10-20T20:36:35Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-20T20:36:35Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 17,
+          "started_at": "2026-10-20T20:36:35Z",
+          "status": "completed"
+        }
+      ]
+    }
+  ],
+  "late_workflow_run": {
+    "conclusion": "failure",
+    "created_at": "2026-10-20T20:33:35Z",
+    "event": "schedule",
+    "head_branch": "main",
+    "head_sha": "735a464e9e8718303ef481abf711a8969de56694",
+    "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39493005199",
+    "id": 39493005199,
+    "name": "One October 20 NBA pilot",
+    "path": ".github/workflows/nba-20261020-pilot.yml",
+    "run_attempt": 1,
+    "run_started_at": "2026-10-20T20:33:35Z",
+    "status": "completed",
+    "updated_at": "2026-10-20T20:36:37Z",
+    "workflow_id": 390126745
+  },
+  "log_archive": {
+    "bounded_actual_log_excerpt": [
+      "2026-10-20T20:35:02.1636084Z   \"started_at\": \"2026-10-20T20:34:24.536822Z\",",
+      "2026-10-20T20:35:02.1638976Z   \"status\": \"EXPIRED_INCOMPLETE\",",
+      "2026-10-20T20:35:02.1639604Z   \"errors\": [",
+      "2026-10-20T20:35:02.1640166Z     \"IntegrityError: issuance window expired; retained partial records remain pending\"",
+      "2026-10-20T20:35:02.1641061Z   \"source_capture_attempted\": false,",
+      "2026-10-20T20:35:02.1646418Z     \"status\": \"NOT_READY\",",
+      "2026-10-20T20:35:02.1646691Z     \"input_reference\": null,",
+      "2026-10-20T20:35:02.1648676Z     \"selected_forecasts_retained\": 0,",
+      "2026-10-20T20:35:02.1650813Z     \"provider_requests\": 0,",
+      "2026-10-20T20:35:02.1651530Z     \"forecasts_generated\": 0,",
+      "2026-10-20T20:35:02.1653340Z   \"completed_at\": \"2026-10-20T20:34:33.119840Z\",",
+      "2026-10-20T20:35:02.1654102Z   \"workflow_disabled\": true",
+      "2026-10-20T20:35:02.1838446Z ##[error]Process completed with exit code 1."
+    ],
+    "files": [
+      {
+        "archive_path": "0_pilot.txt",
+        "raw_bytes": 96953,
+        "raw_sha256": "ebdd39ed770df6630df530dc841507bf8217a32a1fa5bb0bd92061f088b9ab5f"
+      },
+      {
+        "archive_path": "pilot/system.txt",
+        "raw_bytes": 1175,
+        "raw_sha256": "443aa98ab3a3e051be19f9db88b3a861d06ccf56520c6ea34adf9113cda9acd4"
+      },
+      {
+        "archive_path": "pilot/1_Set up job.txt",
+        "raw_bytes": 2525,
+        "raw_sha256": "808adc680b4c80c269b08a3d7542641c3b0c9b2db2209ac3f07cab82b1c9506a"
+      },
+      {
+        "archive_path": "pilot/2_Run actions_checkout@3d3c42e5aac5ba805825da76410c181273ba90b1.txt",
+        "raw_bytes": 10680,
+        "raw_sha256": "648cdd09f22b1534f80ccebaba2c38ff48b240bd33ecdeacf584d0435f3e55e7"
+      },
+      {
+        "archive_path": "pilot/3_Run actions_setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97.txt",
+        "raw_bytes": 897,
+        "raw_sha256": "640076cf098e3be6b69a586afc8f80abe01fc9a857ecfa2b641dbbac2b60870b"
+      },
+      {
+        "archive_path": "pilot/4_Run actions_setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1.txt",
+        "raw_bytes": 1481,
+        "raw_sha256": "fa60fd05da0df94f3b5082ec0198a9da5f0b663f5318bfc9abd46f2e10dac4f6"
+      },
+      {
+        "archive_path": "pilot/5_Verify executor or run the single eligible pilot.txt",
+        "raw_bytes": 4844,
+        "raw_sha256": "9b1500889a7eb8825ad59821eae35456473e6dd5bcd5369b65baf90ee15bf0d5"
+      },
+      {
+        "archive_path": "pilot/6_Verify preserved software and research artifact.txt",
+        "raw_bytes": 66439,
+        "raw_sha256": "3333767a6b31500140ce3fe510ab66265d672325ba58e866b461e55217589a34"
+      },
+      {
+        "archive_path": "pilot/7_Prepare factual records PR without merging.txt",
+        "raw_bytes": 2048,
+        "raw_sha256": "6fe24b74ce517cd8b5e17fe5c69fe5be016c27adf4acaad6449863a313d8903a"
+      },
+      {
+        "archive_path": "pilot/8_Retain emergency recovery evidence.txt",
+        "raw_bytes": 3255,
+        "raw_sha256": "2c8f00dd2c5f76d6adcac5b11648578e115a6c75f39308a52717c23f4e2884d3"
+      },
+      {
+        "archive_path": "pilot/16_Post Run actions_checkout@3d3c42e5aac5ba805825da76410c181273ba90b1.txt",
+        "raw_bytes": 4418,
+        "raw_sha256": "b7d7c1a99471ad01ac059c7a9baf85b54e233e4bb6881946a9e1b68ede4605b8"
+      },
+      {
+        "archive_path": "pilot/17_Complete job.txt",
+        "raw_bytes": 393,
+        "raw_sha256": "eb159a7f91cba928ff717b8f91fc6914f2e902e3d0557b19e8544ae882b66e2d"
+      }
+    ],
+    "raw_bytes": 47978,
+    "raw_sha256": "dca6988f5ef202bcfeb5eb9b1b1d057b427a61325ff8c6fc276b030dc4709252"
+  },
+  "next_concrete_task": "Retain expired-cycle evidence; keep automation paused and PROS004 inactive while separately completing reviewed readiness requirements.",
+  "observation_reason": "A genuine scheduled workflow run became visible after earlier read-only diagnosis; preserve both observations at their actual times.",
+  "observer_mutations": {
+    "capture_or_issuance_or_binding": 0,
+    "dispatch_or_rerun": 0,
+    "native_automation": 0,
+    "pr8": 0,
+    "records_branch": 0,
+    "source_provider_requests": 0,
+    "workflow_state": 0
+  },
+  "read_only_queries": [
+    {
+      "command": [
+        "gh",
+        "api",
+        "repos/NickNicky19/Nicks-multisport-lab-project/actions/workflows/390126745/runs?created=%3E%3D2026-10-20T20%3A30%3A00Z&per_page=100&page=1"
+      ],
+      "error": null,
+      "exit_code": 0,
+      "local_path": "/tmp/nml-pilot-late-observation-20261020/workflow-runs-created-since2030.json",
+      "observed_at": "2026-10-20T20:57:06.427947Z",
+      "raw_bytes": 14112,
+      "raw_sha256": "980e92274b6071b18b645fc2e9f25fa8324184a46339d23a87e293c259e250d7",
+      "started_at": "2026-10-20T20:57:05.841793Z"
+    },
+    {
+      "command": [
+        "gh",
+        "api",
+        "repos/NickNicky19/Nicks-multisport-lab-project/actions/runs/39493005199"
+      ],
+      "error": null,
+      "exit_code": 0,
+      "local_path": "/tmp/nml-pilot-late-observation-20261020/run-39493005199.json",
+      "observed_at": "2026-10-20T20:57:06.848373Z",
+      "raw_bytes": 14076,
+      "raw_sha256": "082145c861e9372e8cef5e1f0314162d9c2e00e7702495fd66aa41d05af06eb6",
+      "started_at": "2026-10-20T20:57:06.428137Z"
+    },
+    {
+      "command": [
+        "gh",
+        "api",
+        "repos/NickNicky19/Nicks-multisport-lab-project/actions/runs/39493005199/jobs?filter=all&per_page=100&page=1"
+      ],
+      "error": null,
+      "exit_code": 0,
+      "local_path": "/tmp/nml-pilot-late-observation-20261020/run-39493005199-jobs.json",
+      "observed_at": "2026-10-20T20:57:07.442158Z",
+      "raw_bytes": 3287,
+      "raw_sha256": "5388a0f8cd96b830798a26644e166aa9dad2f7e0a5fc262856e79cd12611f438",
+      "started_at": "2026-10-20T20:57:06.848515Z"
+    },
+    {
+      "command": [
+        "gh",
+        "api",
+        "repos/NickNicky19/Nicks-multisport-lab-project/actions/runs/39493005199/logs"
+      ],
+      "error": null,
+      "exit_code": 0,
+      "local_path": "/tmp/nml-pilot-late-observation-20261020/run-39493005199-logs.zip",
+      "observed_at": "2026-10-20T20:57:08.368606Z",
+      "raw_bytes": 47978,
+      "raw_sha256": "dca6988f5ef202bcfeb5eb9b1b1d057b427a61325ff8c6fc276b030dc4709252",
+      "started_at": "2026-10-20T20:57:07.442240Z"
+    }
+  ],
+  "remaining_uncertainty": [
+    "GitHub schedule event was created at20:33:35Z rather than17:15Z; the service-side reason for this delay is not established by the available logs."
+  ],
+  "scheduled_time": "2026-10-20T17:15:00.000000Z",
+  "schema_version": "nba-pilot-late-operational-observation-v1",
+  "supersedes_current_classification_without_rewriting_earlier_evidence": "evidence/cycles/2026-10-20-pilot-operational-recovery.json"
+}

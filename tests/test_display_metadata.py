@@ -86,7 +86,7 @@ class DisplayMetadataTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as name:
             base=Path(name);output=base/'site'
             first=build_site(ROOT,output,build_commit='a'*40,now=self.now)
-            self.assertEqual(first['schema_version'],4)
+            self.assertEqual(first['schema_version'],6)
             self.assertIsNone(first['display_error'])
             old=first['display'];before=(output/'data'/old['path']).read_bytes()
             from unittest.mock import patch
@@ -110,6 +110,10 @@ class DisplayMetadataTests(unittest.TestCase):
                 later=build_site(ROOT,output,build_commit='b'*40,now=self.now+timedelta(seconds=1))
                 self.assertIsNone(later['display_error'])
                 self.assertEqual(len(load_json(output/'data'/later['sports'][0]['path'])['forecasts']),6)
+                # Each corruption starts from the currently admitted manifest.
+                # The previous refresh correctly prunes unreferenced old assets;
+                # reusing its predecessor would instead test a missing core file.
+                first=later
             # Changed bytes also fail strict upload/readback but allow safe refresh.
             (output/'data'/later['display']['path']).write_bytes(b'{}')
             refreshed=build_site(ROOT,output,build_commit='c'*40,now=self.now+timedelta(seconds=2))

@@ -1,0 +1,177 @@
+{
+  "actual_completed_at": "2026-10-20T23:17:27.906108Z",
+  "actual_started_at": "2026-10-20T23:11:09.761370Z",
+  "commands": [
+    {
+      "actual_completed_at": "2026-10-20T23:14:25.195072Z",
+      "actual_started_at": "2026-10-20T23:11:09.761393Z",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "elapsed_seconds": 195.43369187000098,
+      "exit_code": 0,
+      "log_bytes": 79143,
+      "log_path": "/tmp/nml-pros004-integration-5a1b16edf84e-0.log",
+      "log_sha256": "a47726f275953709791254aedf7656bebc738728e368c98165b46ec7db765441",
+      "tail": [
+        "test_intent_checkpoint_failure_and_lost_original_never_regenerate (test_scheduled_cycle.ScheduledCycleTests.test_intent_checkpoint_failure_and_lost_original_never_regenerate) ... ok",
+        "test_late_partial_is_read_only_and_complete_late_can_recover (test_scheduled_cycle.ScheduledCycleTests.test_late_partial_is_read_only_and_complete_late_can_recover) ... ok",
+        "test_late_valid_input_is_retained_diagnostically_never_bound_or_issued (test_scheduled_cycle.ScheduledCycleTests.test_late_valid_input_is_retained_diagnostically_never_bound_or_issued) ... ok",
+        "test_ordered_input_remote_checkpoint_then_per_subject_intent_and_original (test_scheduled_cycle.ScheduledCycleTests.test_ordered_input_remote_checkpoint_then_per_subject_intent_and_original) ... ok",
+        "test_per_original_checkpoint_failure_stops_before_second_generation (test_scheduled_cycle.ScheduledCycleTests.test_per_original_checkpoint_failure_stops_before_second_generation) ... ok",
+        "test_slow_capture_intent_checkpoint_cannot_start_late_http (test_scheduled_cycle.ScheduledCycleTests.test_slow_capture_intent_checkpoint_cannot_start_late_http) ... ok",
+        "test_source_failure_preserves_failure_without_input_or_math (test_scheduled_cycle.ScheduledCycleTests.test_source_failure_preserves_failure_without_input_or_math) ... ok",
+        "",
+        "----------------------------------------------------------------------",
+        "Ran 442 tests in 195.077s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "actual_completed_at": "2026-10-20T23:17:23.951516Z",
+      "actual_started_at": "2026-10-20T23:14:25.195415Z",
+      "command": [
+        "python3",
+        "-O",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_pros004*.py",
+        "-v"
+      ],
+      "elapsed_seconds": 178.75629789599952,
+      "exit_code": 0,
+      "log_bytes": 31165,
+      "log_path": "/tmp/nml-pros004-integration-5a1b16edf84e-1.log",
+      "log_sha256": "bd1f91fe4761b92942d7857c547202280a8ff608e0559d7217c4a4544d7d78f8",
+      "tail": [
+        "test_unrelated_future_receipts_cannot_borrow_diagnostic_clock_context (test_pros004_verifier.Pros004VerifierTests.test_unrelated_future_receipts_cannot_borrow_diagnostic_clock_context) ... ok",
+        "test_v2_producer_binding_cannot_disagree_with_executed_source_map (test_pros004_verifier.Pros004VerifierTests.test_v2_producer_binding_cannot_disagree_with_executed_source_map) ... ok",
+        "test_v2_read_policy_does_not_gain_v3_durable_input_claim (test_pros004_verifier.Pros004VerifierTests.test_v2_read_policy_does_not_gain_v3_durable_input_claim) ... ok",
+        "test_v2_requires_complete_timely_recovery_without_prospective_eligibility (test_pros004_verifier.Pros004VerifierTests.test_v2_requires_complete_timely_recovery_without_prospective_eligibility) ... ok",
+        "test_v3_requires_durable_original_input_admission_and_unchanged_ceiling (test_pros004_verifier.Pros004VerifierTests.test_v3_requires_durable_original_input_admission_and_unchanged_ceiling) ... ok",
+        "test_verified_index_is_private_reference_bound_and_returns_isolated_copies (test_pros004_verifier.Pros004VerifierTests.test_verified_index_is_private_reference_bound_and_returns_isolated_copies) ... ok",
+        "test_verified_index_rejects_replaced_encoded_bytes_and_encoded_budget (test_pros004_verifier.Pros004VerifierTests.test_verified_index_rejects_replaced_encoded_bytes_and_encoded_budget) ... ok",
+        "",
+        "----------------------------------------------------------------------",
+        "Ran 164 tests in 178.274s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "actual_completed_at": "2026-10-20T23:17:24.003392Z",
+      "actual_started_at": "2026-10-20T23:17:23.953496Z",
+      "command": [
+        "python3",
+        "-m",
+        "multisport_lab.demo"
+      ],
+      "elapsed_seconds": 0.04989826600103697,
+      "exit_code": 0,
+      "log_bytes": 1632,
+      "log_path": "/tmp/nml-pros004-integration-5a1b16edf84e-2.log",
+      "log_sha256": "3d965ae542f5a7473441bf976bbcf695952c9eebb009953d26693820d48d0428",
+      "tail": [
+        "    \"PA\": 40,",
+        "    \"PR\": 38,",
+        "    \"PRA\": 50,",
+        "    \"PTS\": 28,",
+        "    \"RA\": 22,",
+        "    \"REB\": 10,",
+        "    \"STL\": 2,",
+        "    \"TD\": 1,",
+        "    \"TOV\": 3",
+        "  },",
+        "  \"supplied_joint_law_is_not_a_forecast\": true",
+        "}"
+      ]
+    },
+    {
+      "actual_completed_at": "2026-10-20T23:17:24.622097Z",
+      "actual_started_at": "2026-10-20T23:17:24.005969Z",
+      "command": [
+        "node",
+        "--test",
+        "--test-isolation=none",
+        "web/tests/evidence-groups.test.mjs",
+        "web/tests/pros004.test.mjs",
+        "web/tests/research.test.mjs",
+        "web/tests/scope.test.mjs",
+        "web/tests/snapshot.test.mjs"
+      ],
+      "elapsed_seconds": 0.6161428449995583,
+      "exit_code": 0,
+      "log_bytes": 4386,
+      "log_path": "/tmp/nml-pros004-integration-5a1b16edf84e-3.log",
+      "log_sha256": "0729ac07c158f3573f5e7e5c720b27b7c4cf8d20a978f58d86d544508d6ec309",
+      "tail": [
+        "\u2714 loader verifies manifest and sport hashes using repository-relative paths (1.193075ms)",
+        "\u2714 corrupted sport bytes are isolated; manifest corruption rejects the publication (0.958512ms)",
+        "\u2714 retained publication preserves original generation time and failure metadata (0.680703ms)",
+        "\u2714 HTTP failure and oversized publication are errors rather than empty boards (0.879499ms)",
+        "\u2139 tests 46",
+        "\u2139 suites 0",
+        "\u2139 pass 46",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 573.799"
+      ]
+    },
+    {
+      "actual_completed_at": "2026-10-20T23:17:27.818316Z",
+      "actual_started_at": "2026-10-20T23:17:24.622269Z",
+      "command": [
+        "python3",
+        "-m",
+        "multisport_lab.publication",
+        "--build-commit",
+        "5a1b16edf84e0d765e20accc242f00597d0c749c"
+      ],
+      "elapsed_seconds": 3.1960596829994756,
+      "exit_code": 0,
+      "log_bytes": 123,
+      "log_path": "/tmp/nml-pros004-integration-5a1b16edf84e-4.log",
+      "log_sha256": "f095b1b9d831423e671f3fbe50c646baecf358f78dfb52bb5cecf038d35f88da",
+      "tail": [
+        "Built research-only snapshot 417e90dc0c28b805305b1f872fa6544b61d4a626c732fa55f5b71e07ed76f0e3 (1 sport); no qualified rows"
+      ]
+    },
+    {
+      "actual_completed_at": "2026-10-20T23:17:27.906020Z",
+      "actual_started_at": "2026-10-20T23:17:27.818478Z",
+      "command": [
+        "node",
+        "web/tests/site-smoke.mjs",
+        "output"
+      ],
+      "elapsed_seconds": 0.0875515309999173,
+      "exit_code": 0,
+      "log_bytes": 170,
+      "log_path": "/tmp/nml-pros004-integration-5a1b16edf84e-5.log",
+      "log_sha256": "f8fb899a4e16ab982b34d48832b622946af02195d4620285d5f4a5627f7c2e3c",
+      "tail": [
+        "PASS: artifact root, 4 relative assets, 3 validated data files, all-13 NBA inventory and research-only NO_ACTION. Browser/deployment not established by this smoke check."
+      ]
+    }
+  ],
+  "deployment": false,
+  "head": "5a1b16edf84e0d765e20accc242f00597d0c749c",
+  "label": "pros004",
+  "model_evaluation": false,
+  "new_genuine_issuance": 0,
+  "schema_version": "integration-command-checks-v1",
+  "status": "PASS"
+}

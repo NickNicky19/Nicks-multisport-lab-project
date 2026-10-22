@@ -1,0 +1,54 @@
+{
+  "actual_completed_at": "2026-10-21T09:09:10.821385+00:00",
+  "checks": [
+    {
+      "command": "PYTHONPATH=tests python3 -m unittest -v test_operational_raw",
+      "result": "PASS",
+      "seconds": 2.36,
+      "tests": 19
+    },
+    {
+      "command": "PYTHONPATH=tests python3 -O -m unittest -v test_operational_raw",
+      "result": "PASS",
+      "seconds": 2.182,
+      "tests": 19
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "finding": "Common recipient-certificate loader accepted the first parsed certificate and ignored appended private-key bytes, other certificates or arbitrary material.",
+  "fix": "Require single PEM certificate whose decoded content equals exact parsed certificate DER, or exact standalone DER bytes. Reject prefix/trailer/bundles including extra DER material hidden inside one PEM block.",
+  "format_compatibility": [
+    "standalone PEM LF",
+    "standalone PEM CRLF",
+    "surrounding PEM whitespace",
+    "exact standalone DER"
+  ],
+  "genuine_issuance": 0,
+  "logs": {
+    "/tmp/nml-connected-certificate-normal.log": {
+      "bytes": 3433,
+      "sha256": "0139424ee31315556c6eda9cdcb96fdf2df312b971c53a61e0b07d67c3f2e91f"
+    },
+    "/tmp/nml-connected-certificate-optimized.log": {
+      "bytes": 3433,
+      "sha256": "03585a393ca19f30d5e406d3b95ee42047155bd222ec20fe33dde3851d7dd6dd"
+    }
+  },
+  "metadata_or_limit_changes": false,
+  "pre_fix_reproduction": "Standalone valid PEM LF/CRLF/whitespace and DER accepted; all five rejection subcases failed before fix because no exception was raised.",
+  "prior_source_git_objects_or_reports_modified": false,
+  "private_material": "Ephemeral synthetic fixtures only; no private bytes logged, committed, included in report or installed.",
+  "schema_version": "nba-ops002-recipient-certificate-review-v1",
+  "source_requests": 0,
+  "stable_files": {
+    "multisport_lab/operational_delivery.py": "5521b73b145727875d6eef157f855675fbff62990bd68d6df8e465001a186fa2",
+    "multisport_lab/operational_raw.py": "9aedabba3fceba39aad76ea3a44659853c08e668a31f0f575245d94dae529b17",
+    "multisport_lab/operational_source_links.py": "f16f91ed34267fb1f1a82bcd26ac0712cda25709bdb34c4b9c932135c6c4e7a7",
+    "tests/test_operational_delivery.py": "80001d74f679ae7f0c706a5fe60e98b90d418189694777d98017ef306d6db86c",
+    "tests/test_operational_raw.py": "7018e5968a0753698868967acc1b25c8de5a424f86f5aac8b2c5c070ddebdc3b",
+    "tests/test_operational_source_links.py": "0cf4c5f58fe9aa6a3bacfe76a63e3fd0ac5a7e59993a1f298098cbc2c50dc47f"
+  }
+}

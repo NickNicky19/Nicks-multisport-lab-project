@@ -1,0 +1,200 @@
+{
+  "schema_version": "final-github-preservation-read-only-v1",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "actual_started_at": "2026-10-21T03:19:50.923904+00:00",
+  "actual_completed_at": "2026-10-21T03:19:52.320513+00:00",
+  "read_only": true,
+  "dispatches": 0,
+  "source_captures": 0,
+  "queries": {
+    "repository": {
+      "api_path": "repos/NickNicky19/Nicks-multisport-lab-project",
+      "queried_at": "2026-10-21T03:19:50.926869+00:00",
+      "completed_at": "2026-10-21T03:19:51.658171+00:00",
+      "exit_code": 0,
+      "wall_seconds": 0.7313053350007976,
+      "fields": {
+        "full_name": "NickNicky19/Nicks-multisport-lab-project",
+        "default_branch": "main",
+        "archived": false,
+        "disabled": false,
+        "updated_at": "2026-10-20T05:59:15Z",
+        "pushed_at": "2026-10-21T03:09:46Z",
+        "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project"
+      }
+    },
+    "main": {
+      "api_path": "repos/NickNicky19/Nicks-multisport-lab-project/branches/main",
+      "queried_at": "2026-10-21T03:19:50.927414+00:00",
+      "completed_at": "2026-10-21T03:19:51.662272+00:00",
+      "exit_code": 0,
+      "wall_seconds": 0.734861130000354,
+      "fields": {
+        "name": "main",
+        "head": "735a464e9e8718303ef481abf711a8969de56694",
+        "protected": false
+      }
+    },
+    "workflow390126745": {
+      "api_path": "repos/NickNicky19/Nicks-multisport-lab-project/actions/workflows/390126745",
+      "queried_at": "2026-10-21T03:19:50.927962+00:00",
+      "completed_at": "2026-10-21T03:19:51.542295+00:00",
+      "exit_code": 0,
+      "wall_seconds": 0.6143431209966366,
+      "fields": {
+        "id": 390126745,
+        "name": "One October 20 NBA pilot",
+        "path": ".github/workflows/nba-20261020-pilot.yml",
+        "state": "disabled_manually",
+        "created_at": "2026-10-20T04:12:56.000Z",
+        "updated_at": "2026-10-20T20:33:43.000Z",
+        "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/blob/main/.github/workflows/nba-20261020-pilot.yml"
+      }
+    },
+    "PR8": {
+      "api_path": "repos/NickNicky19/Nicks-multisport-lab-project/pulls/8",
+      "queried_at": "2026-10-21T03:19:50.928288+00:00",
+      "completed_at": "2026-10-21T03:19:51.769153+00:00",
+      "exit_code": 0,
+      "wall_seconds": 0.840870061001624,
+      "fields": {
+        "number": 8,
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "merged_at": null,
+        "merge_commit_sha": "71f53791e3af4efd019b223482bfa818c28a27fb",
+        "created_at": "2026-10-20T04:16:25Z",
+        "updated_at": "2026-10-20T20:35:51Z",
+        "closed_at": null,
+        "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/8",
+        "head": {
+          "ref": "records/nba-20261020-401909088-t90",
+          "sha": "dec5cc9fa397332244985bea8815bd9a89ea264e",
+          "repository": "NickNicky19/Nicks-multisport-lab-project"
+        },
+        "base": {
+          "ref": "main",
+          "sha": "735a464e9e8718303ef481abf711a8969de56694",
+          "repository": "NickNicky19/Nicks-multisport-lab-project"
+        }
+      }
+    },
+    "PR9": {
+      "api_path": "repos/NickNicky19/Nicks-multisport-lab-project/pulls/9",
+      "queried_at": "2026-10-21T03:19:51.542373+00:00",
+      "completed_at": "2026-10-21T03:19:52.156234+00:00",
+      "exit_code": 0,
+      "wall_seconds": 0.6138797790008539,
+      "fields": {
+        "number": 9,
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "merged_at": null,
+        "merge_commit_sha": "5dff1d07b5a10b8f1fe8bdd6901531b52b9433a5",
+        "created_at": "2026-10-20T09:11:51Z",
+        "updated_at": "2026-10-20T09:18:00Z",
+        "closed_at": null,
+        "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/9",
+        "head": {
+          "ref": "research/nba-count-support-dev005",
+          "sha": "d68015778ab452c94db0385c471de663e830efec",
+          "repository": "NickNicky19/Nicks-multisport-lab-project"
+        },
+        "base": {
+          "ref": "main",
+          "sha": "735a464e9e8718303ef481abf711a8969de56694",
+          "repository": "NickNicky19/Nicks-multisport-lab-project"
+        }
+      }
+    },
+    "PR10": {
+      "api_path": "repos/NickNicky19/Nicks-multisport-lab-project/pulls/10",
+      "queried_at": "2026-10-21T03:19:51.658294+00:00",
+      "completed_at": "2026-10-21T03:19:52.273905+00:00",
+      "exit_code": 0,
+      "wall_seconds": 0.6156201969970425,
+      "fields": {
+        "number": 10,
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "merged_at": null,
+        "merge_commit_sha": "8c4572a9c3ceaa2a83057458c6cf253c3f8d3cdd",
+        "created_at": "2026-10-20T12:20:57Z",
+        "updated_at": "2026-10-20T23:29:30Z",
+        "closed_at": null,
+        "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/10",
+        "head": {
+          "ref": "implementation/pros004-paired-readiness",
+          "sha": "c0a7b4bc3205d723b13d0f70baf66f3806e731ee",
+          "repository": "NickNicky19/Nicks-multisport-lab-project"
+        },
+        "base": {
+          "ref": "main",
+          "sha": "735a464e9e8718303ef481abf711a8969de56694",
+          "repository": "NickNicky19/Nicks-multisport-lab-project"
+        }
+      }
+    },
+    "PR11": {
+      "api_path": "repos/NickNicky19/Nicks-multisport-lab-project/pulls/11",
+      "queried_at": "2026-10-21T03:19:51.662468+00:00",
+      "completed_at": "2026-10-21T03:19:52.262390+00:00",
+      "exit_code": 0,
+      "wall_seconds": 0.5998667150015535,
+      "fields": {
+        "number": 11,
+        "state": "open",
+        "draft": false,
+        "merged": false,
+        "merged_at": null,
+        "merge_commit_sha": "187b0cc32aa4171a18977995f4cf457529aa8d20",
+        "created_at": "2026-10-20T23:17:15Z",
+        "updated_at": "2026-10-21T01:34:36Z",
+        "closed_at": null,
+        "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/11",
+        "head": {
+          "ref": "website/readable-history-status",
+          "sha": "326e354650aef57c3b965711abf071b2fc4205eb",
+          "repository": "NickNicky19/Nicks-multisport-lab-project"
+        },
+        "base": {
+          "ref": "main",
+          "sha": "735a464e9e8718303ef481abf711a8969de56694",
+          "repository": "NickNicky19/Nicks-multisport-lab-project"
+        }
+      }
+    },
+    "PR12": {
+      "api_path": "repos/NickNicky19/Nicks-multisport-lab-project/pulls/12",
+      "queried_at": "2026-10-21T03:19:51.769314+00:00",
+      "completed_at": "2026-10-21T03:19:52.319990+00:00",
+      "exit_code": 0,
+      "wall_seconds": 0.5506847140022728,
+      "fields": {
+        "number": 12,
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "merged_at": null,
+        "merge_commit_sha": "80a337bece3bc6d44d22628b8b1215c30f298343",
+        "created_at": "2026-10-21T02:26:21Z",
+        "updated_at": "2026-10-21T03:05:20Z",
+        "closed_at": null,
+        "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/12",
+        "head": {
+          "ref": "implementation/one-event-paired-pilot",
+          "sha": "06dbb492dda5d0043ec7a3a6c97ce9c46201edc8",
+          "repository": "NickNicky19/Nicks-multisport-lab-project"
+        },
+        "base": {
+          "ref": "implementation/pros004-paired-readiness",
+          "sha": "c0a7b4bc3205d723b13d0f70baf66f3806e731ee",
+          "repository": "NickNicky19/Nicks-multisport-lab-project"
+        }
+      }
+    }
+  }
+}

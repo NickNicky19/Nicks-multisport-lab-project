@@ -1,0 +1,2853 @@
+{
+  "schema_version": "nba-sdv-daily-publication-v1",
+  "protocol_id": "NBA-SDV-DAILY-001",
+  "generated_at": "2026-10-22T00:01:00.000000Z",
+  "policy": {
+    "schema_version": "nba-sdv-daily-policy-v1",
+    "protocol_id": "NBA-SDV-DAILY-001",
+    "schedule_max_age_seconds": 129600,
+    "roster_max_age_seconds": 129600,
+    "retrieval_lookback_seconds": 3600,
+    "issuance_open_minutes_before_start": 90,
+    "issuance_window_seconds": 900,
+    "maximum_original_latency_seconds": 300,
+    "participation": "CONDITIONAL_ON_APPEARANCE",
+    "upstream_observation": "UNKNOWN_UNLESS_SUPPLIED",
+    "rationale": "Initial research operating policy: one documented daily publication interval (24 hours) plus 12 hours of publication-delay tolerance. Retrieve and normalize within one hour before T90; allow fifteen minutes after T90 for bounded generation and durable recovery. These are operational limits, not scientifically optimal thresholds or the original fresh-input T90 protocol.",
+    "policy_id": "b4bde8ea4f6cc775dfac4b9b1e71fe946243df77abc80563f4cb9ae995ed48ad"
+  },
+  "cycle": {
+    "schema_version": "nba-sdv-daily-cycle-v1",
+    "protocol_id": "NBA-SDV-DAILY-001",
+    "cycle_id": "NBA-SDV-DAILY-001-20261023-401909094",
+    "registered_at": "2026-10-22T00:00:00.000000Z",
+    "event": {
+      "event_id": "401909094",
+      "event_starts_at": "2026-10-23T01:30:00.000000Z",
+      "home_team_id": "25",
+      "away_team_id": "7"
+    },
+    "candidates": [
+      {
+        "player_id": "2991350",
+        "player_label": "Alex Caruso",
+        "team_id": "25",
+        "opponent_id": "7"
+      },
+      {
+        "player_id": "3133626",
+        "player_label": "Kenrich Williams",
+        "team_id": "25",
+        "opponent_id": "7"
+      },
+      {
+        "player_id": "3978",
+        "player_label": "DeMar DeRozan",
+        "team_id": "7",
+        "opponent_id": "25"
+      },
+      {
+        "player_id": "3064290",
+        "player_label": "Aaron Gordon",
+        "team_id": "7",
+        "opponent_id": "25"
+      }
+    ],
+    "selection_rule": "two_lowest_numeric_active_ids_per_current_event_team_v1",
+    "policy_id": "b4bde8ea4f6cc775dfac4b9b1e71fe946243df77abc80563f4cb9ae995ed48ad",
+    "history_record_id": "dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc",
+    "history_rows": 26645,
+    "history_panel_sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c",
+    "source_schema_version": "nba-sdv-daily-input-v1",
+    "producer_versions": {
+      "R0": "sdv-daily-r0-producer-v1",
+      "K0": "sdv-daily-k0-producer-v1"
+    },
+    "model_versions": {
+      "R0": "nba_joint_empirical_r0_v1",
+      "K0": "nba_joint_lagged_workload_prior_k0_v1"
+    },
+    "source_assets": [
+      {
+        "role": "schedule",
+        "release_tag": "espn_nba_schedules",
+        "asset_name": "nba_schedule_2027.csv",
+        "metadata_url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/espn_nba_schedules",
+        "asset_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_schedules/nba_schedule_2027.csv"
+      },
+      {
+        "role": "roster",
+        "release_tag": "espn_nba_rosters",
+        "asset_name": "rosters_2027.csv",
+        "metadata_url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/espn_nba_rosters",
+        "asset_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_rosters/rosters_2027.csv"
+      }
+    ],
+    "runner_start_earliest_at": "2026-10-22T22:00:00.000000Z",
+    "activation_deadline": "2026-10-22T22:30:00.000000Z",
+    "retrieval_opens_at": "2026-10-22T23:00:00.000000Z",
+    "cutoff_at": "2026-10-23T00:00:00.000000Z",
+    "issuance_closes_at": "2026-10-23T00:15:00.000000Z",
+    "records_branch": "records/sdv-daily-001-20261023-401909094",
+    "qualification": "UNAVAILABLE",
+    "purpose": "OPERATIONAL_RESEARCH_NO_ACCURACY_CLAIM",
+    "cycle_digest": "3516f6f12d5f1b044d578d154db51150a7081ee88ab8264dbd3cc2d31308527c"
+  },
+  "inputs": [
+    {
+      "schema_version": "nba-sdv-daily-input-v1",
+      "protocol_id": "NBA-SDV-DAILY-001",
+      "mode": "DEVELOPMENT_ONLY",
+      "policy": {
+        "schema_version": "nba-sdv-daily-policy-v1",
+        "protocol_id": "NBA-SDV-DAILY-001",
+        "schedule_max_age_seconds": 129600,
+        "roster_max_age_seconds": 129600,
+        "retrieval_lookback_seconds": 3600,
+        "issuance_open_minutes_before_start": 90,
+        "issuance_window_seconds": 900,
+        "maximum_original_latency_seconds": 300,
+        "participation": "CONDITIONAL_ON_APPEARANCE",
+        "upstream_observation": "UNKNOWN_UNLESS_SUPPLIED",
+        "rationale": "Initial research operating policy: one documented daily publication interval (24 hours) plus 12 hours of publication-delay tolerance. Retrieve and normalize within one hour before T90; allow fifteen minutes after T90 for bounded generation and durable recovery. These are operational limits, not scientifically optimal thresholds or the original fresh-input T90 protocol.",
+        "policy_id": "b4bde8ea4f6cc775dfac4b9b1e71fe946243df77abc80563f4cb9ae995ed48ad"
+      },
+      "event": {
+        "event_id": "401909094",
+        "event_starts_at": "2026-10-23T01:30:00.000000Z",
+        "home_team_id": "25",
+        "away_team_id": "7",
+        "id_namespace": "espn",
+        "league": "NBA",
+        "season_ending_year": 2027,
+        "season_type": "2",
+        "home_team_name": "Synthetic home display fixture",
+        "away_team_name": "Synthetic away display fixture",
+        "status": "SCHEDULED",
+        "provider_event_revision": null,
+        "event_snapshot_id": "c282354d118bb4025a61fde762a9217e90fcc182325eb7a5fe60874e0e0b8438"
+      },
+      "candidates": [
+        {
+          "player_id": "2991350",
+          "player_label": "Alex Caruso",
+          "team_id": "25",
+          "opponent_id": "7"
+        },
+        {
+          "player_id": "3133626",
+          "player_label": "Kenrich Williams",
+          "team_id": "25",
+          "opponent_id": "7"
+        },
+        {
+          "player_id": "3978",
+          "player_label": "DeMar DeRozan",
+          "team_id": "7",
+          "opponent_id": "25"
+        },
+        {
+          "player_id": "3064290",
+          "player_label": "Aaron Gordon",
+          "team_id": "7",
+          "opponent_id": "25"
+        }
+      ],
+      "sources": [
+        {
+          "role": "schedule",
+          "publisher": "SportsDataverse",
+          "release_tag": "espn_nba_schedules",
+          "asset_name": "nba_schedule_2027.csv",
+          "asset_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_schedules/nba_schedule_2027.csv",
+          "asset_id": 1000,
+          "asset_bytes": 10,
+          "asset_sha256": "2ab36b82e43a83fcb37e3448856bf588adcdb54f9d33aa08819245b2a131025b",
+          "publisher_updated_at": "2026-10-21T03:00:00.000000Z",
+          "upstream_observed_at": null,
+          "upstream_observation_status": "UNKNOWN",
+          "retrieval_started_at": "2026-10-21T23:59:58.000000Z",
+          "retrieved_at": "2026-10-21T23:59:59.000000Z",
+          "metadata_sha256": "43fda30c59180ca8deed479475886e512034b4d0d7a56a52e5f0fa387650f368",
+          "metadata_bytes": 20
+        },
+        {
+          "role": "roster",
+          "publisher": "SportsDataverse",
+          "release_tag": "espn_nba_rosters",
+          "asset_name": "rosters_2027.csv",
+          "asset_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_rosters/rosters_2027.csv",
+          "asset_id": 1001,
+          "asset_bytes": 10,
+          "asset_sha256": "006f65f878264720656c466c2e3887d9b36f883c79881ecd7439886af7606ac8",
+          "publisher_updated_at": "2026-10-21T03:00:00.000000Z",
+          "upstream_observed_at": null,
+          "upstream_observation_status": "UNKNOWN",
+          "retrieval_started_at": "2026-10-21T23:59:58.000000Z",
+          "retrieved_at": "2026-10-21T23:59:59.000000Z",
+          "metadata_sha256": "29862794354e4d7b17d99e220ee417761dd055806f6347ececedb6009762bf4c",
+          "metadata_bytes": 20
+        }
+      ],
+      "selection_rule": "two_lowest_numeric_active_ids_per_current_event_team_v1",
+      "normalized_at": "2026-10-22T00:00:00.000000Z",
+      "missing_information": [
+        "UPSTREAM_OBSERVATION_CLOCK",
+        "INJURIES",
+        "STARTING_LINEUP",
+        "CONFIRMED_PARTICIPATION"
+      ],
+      "qualification": "UNAVAILABLE",
+      "input_id": "f350990ec60a72f96e51c711567c7cc89d7f1af194ca3a102b43814896aacb13"
+    }
+  ],
+  "forecasts": [
+    {
+      "reference": {
+        "kind": "forecasts",
+        "record_id": "ab0006fa5a58faf6ef3210f0bdb384ce97b4eeaa49881e38b18d6c60b93e5625",
+        "payload_sha256": "9ef689555dc6396c09d5f1fd95dd1d253354890f018fa22656103b31501c611e"
+      },
+      "body": {
+        "schema_version": "nba-sdv-daily-forecast-v1",
+        "protocol_id": "NBA-SDV-DAILY-001",
+        "cycle_id": "NBA-SDV-DAILY-001-20261023-401909094",
+        "mode": "DEVELOPMENT_ONLY",
+        "evidence_lane": "DEVELOPMENT_ONLY",
+        "model_key": "R0",
+        "model_version": "nba_joint_empirical_r0_v1",
+        "producer_version": "sdv-daily-r0-producer-v1",
+        "producer_binding": {
+          "schema_version": "nba-sdv-daily-producer-binding-v1",
+          "commit": null,
+          "files": {
+            "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+            "multisport_lab/sdv_daily_store.py": "771a2e7aa93e9ff2199ce7c2e7675832abfa4b34e4233f2a7399c6f53e9d85a8",
+            "multisport_lab/sdv_daily_producer.py": "5589021134aec247aff82e893d6a788f51bc661d222a5447702ae1a950b0574f",
+            "multisport_lab/sdv_daily_cycle.py": "54e27597ef56eb5b0a2477df6adf1e9905d64ddd40e2eeb7fdeaae59311ee2fe",
+            "multisport_lab/sdv_daily_runner.py": "80355305e012264ed16fce70352b89966cbdf9b1dc45852486d26a996e3fd10f",
+            "multisport_lab/sdv_daily_remote.py": "cde2cae14b6df819d71968fa877f633b6b1472ae5ccbf1daf9b0b5c11b1b0f36",
+            "multisport_lab/sdv_daily_outcomes.py": "8978c03af3dadb631f8b951292024c9fe53f64858e902b160b20a6d4feafd6ea",
+            "multisport_lab/sdv_daily_publication.py": "013a0fc03fe2583b341b2893664c6e354094122a25efb36cf7c069012f562696",
+            "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+            "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+            ".github/workflows/sdv-daily.yml": "cddc63a5ea7cf28ba9f7defab4365926a4c97c071f11df1fffdbdbe648a82b9b",
+            "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+            "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+            "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+            "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+            "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+            "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+            "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+            "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+            "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+            "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+            "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2"
+          },
+          "law_sha256": {
+            "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"
+          },
+          "binding_id": "ec0fe493994135f9c5df236abd2c7ff345d9257c799debcc0ee6dbfbab3e87e6"
+        },
+        "history_ref": {
+          "kind": "research_inputs",
+          "record_id": "dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc",
+          "payload_sha256": "69edea858e0e9bf372dbba3182c205211ac248860e8a0badd7189c607489b308"
+        },
+        "history_rows": 26645,
+        "history_panel_sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c",
+        "history_panel_cutoff": "2025-02-13T00:00:00.000000Z",
+        "history_availability": "RECONSTRUCTED_COMPLETION_BOUND",
+        "input_ref": {
+          "kind": "research_inputs",
+          "record_id": "ee1c046b5f20bd257ad37bd936a2cfed3af2ba3823ddb33ec7277cfe842206e1",
+          "payload_sha256": "b651f10b74d258156758b75a56656cb827e3fd9c73424cd236448f0bde4f269a"
+        },
+        "input_id": "f350990ec60a72f96e51c711567c7cc89d7f1af194ca3a102b43814896aacb13",
+        "event_snapshot_id": "c282354d118bb4025a61fde762a9217e90fcc182325eb7a5fe60874e0e0b8438",
+        "event_id": "401909094",
+        "event_starts_at": "2026-10-23T01:30:00.000000Z",
+        "player_id": "2991350",
+        "player_label": "Alex Caruso",
+        "team_id": "25",
+        "opponent_id": "7",
+        "matchup": "Synthetic away display fixture @ Synthetic home display fixture",
+        "cutoff_at": "2026-10-23T00:00:00.000000Z",
+        "history_freeze": "2026-10-23T00:00:00.000000Z",
+        "trained_through": "2025-02-13T00:00:00.000000Z",
+        "conditioning": "CONDITIONAL_ON_APPEARANCE",
+        "period": "full_game",
+        "extra_time_policy": "includes_overtime",
+        "qualification": "UNAVAILABLE",
+        "generation_started_at": "2026-10-22T00:00:01.000000Z",
+        "generation_completed_at": "2026-10-22T00:00:02.000000Z",
+        "verified_at": "2026-10-22T00:00:03.000000Z",
+        "issued_at": null,
+        "categories": [
+          {
+            "code": "PTS",
+            "units": "points",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PRA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "REB",
+            "units": "rebounds",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "3PM",
+            "units": "made_three_point_field_goals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "AST",
+            "units": "assists",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "RA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PR",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TOV",
+            "units": "turnovers",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "DD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK",
+            "units": "blocks",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "STL",
+            "units": "steals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK+STL",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          }
+        ],
+        "reported_minutes": {
+          "pmf": [
+            {
+              "value": 0,
+              "probability": "1"
+            }
+          ],
+          "mean": "0",
+          "interval80": [
+            0,
+            0
+          ],
+          "precision": "reported_source_precision_not_exact_workload"
+        },
+        "joint_recipe": {
+          "algorithm": "nba_joint_empirical_r0_v1",
+          "input_sha256": "6fe0b6bcb92d5c61478d3d9aad915c703ec13e50521f816bfc089a65940c3eae",
+          "joint_sha256": "498167ded5f4c0b2b938e7f0fcf0923326cf43b02a0194f9a364c14ab790f48e",
+          "support_atom_count": 1,
+          "player_history_count": 1,
+          "pool_history_count": 1,
+          "omitted_atoms": 0
+        },
+        "forecast_id": "a70479055c24ed3d5ade0c3760799c7360bbff3cd6002b4bc1ff5924282c9630"
+      },
+      "admission": {
+        "eligible": false,
+        "local_persistence_completed_at": null,
+        "remote_recovery_completed_at": null,
+        "reasons": [
+          "SYNTHETIC DEVELOPMENT-ONLY FIXTURE: not issued; not original source or model evidence."
+        ]
+      }
+    },
+    {
+      "reference": {
+        "kind": "forecasts",
+        "record_id": "f74085b6e7470c7b7193afc9c61ddd7a3478b6073241f0c09779f98f78665164",
+        "payload_sha256": "c31b2800cd15df82daa484f052e2d83b7ea90fb890142f8abe4a8ccee1f8e48a"
+      },
+      "body": {
+        "schema_version": "nba-sdv-daily-forecast-v1",
+        "protocol_id": "NBA-SDV-DAILY-001",
+        "cycle_id": "NBA-SDV-DAILY-001-20261023-401909094",
+        "mode": "DEVELOPMENT_ONLY",
+        "evidence_lane": "DEVELOPMENT_ONLY",
+        "model_key": "K0",
+        "model_version": "nba_joint_lagged_workload_prior_k0_v1",
+        "producer_version": "sdv-daily-k0-producer-v1",
+        "producer_binding": {
+          "schema_version": "nba-sdv-daily-producer-binding-v1",
+          "commit": null,
+          "files": {
+            "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+            "multisport_lab/sdv_daily_store.py": "771a2e7aa93e9ff2199ce7c2e7675832abfa4b34e4233f2a7399c6f53e9d85a8",
+            "multisport_lab/sdv_daily_producer.py": "5589021134aec247aff82e893d6a788f51bc661d222a5447702ae1a950b0574f",
+            "multisport_lab/sdv_daily_cycle.py": "54e27597ef56eb5b0a2477df6adf1e9905d64ddd40e2eeb7fdeaae59311ee2fe",
+            "multisport_lab/sdv_daily_runner.py": "80355305e012264ed16fce70352b89966cbdf9b1dc45852486d26a996e3fd10f",
+            "multisport_lab/sdv_daily_remote.py": "cde2cae14b6df819d71968fa877f633b6b1472ae5ccbf1daf9b0b5c11b1b0f36",
+            "multisport_lab/sdv_daily_outcomes.py": "8978c03af3dadb631f8b951292024c9fe53f64858e902b160b20a6d4feafd6ea",
+            "multisport_lab/sdv_daily_publication.py": "013a0fc03fe2583b341b2893664c6e354094122a25efb36cf7c069012f562696",
+            "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+            "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+            ".github/workflows/sdv-daily.yml": "cddc63a5ea7cf28ba9f7defab4365926a4c97c071f11df1fffdbdbe648a82b9b",
+            "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+            "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+            "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+            "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+            "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+            "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+            "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+            "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+            "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+            "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+            "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2"
+          },
+          "law_sha256": {
+            "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"
+          },
+          "binding_id": "ec0fe493994135f9c5df236abd2c7ff345d9257c799debcc0ee6dbfbab3e87e6"
+        },
+        "history_ref": {
+          "kind": "research_inputs",
+          "record_id": "dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc",
+          "payload_sha256": "69edea858e0e9bf372dbba3182c205211ac248860e8a0badd7189c607489b308"
+        },
+        "history_rows": 26645,
+        "history_panel_sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c",
+        "history_panel_cutoff": "2025-02-13T00:00:00.000000Z",
+        "history_availability": "RECONSTRUCTED_COMPLETION_BOUND",
+        "input_ref": {
+          "kind": "research_inputs",
+          "record_id": "ee1c046b5f20bd257ad37bd936a2cfed3af2ba3823ddb33ec7277cfe842206e1",
+          "payload_sha256": "b651f10b74d258156758b75a56656cb827e3fd9c73424cd236448f0bde4f269a"
+        },
+        "input_id": "f350990ec60a72f96e51c711567c7cc89d7f1af194ca3a102b43814896aacb13",
+        "event_snapshot_id": "c282354d118bb4025a61fde762a9217e90fcc182325eb7a5fe60874e0e0b8438",
+        "event_id": "401909094",
+        "event_starts_at": "2026-10-23T01:30:00.000000Z",
+        "player_id": "2991350",
+        "player_label": "Alex Caruso",
+        "team_id": "25",
+        "opponent_id": "7",
+        "matchup": "Synthetic away display fixture @ Synthetic home display fixture",
+        "cutoff_at": "2026-10-23T00:00:00.000000Z",
+        "history_freeze": "2026-10-23T00:00:00.000000Z",
+        "trained_through": "2025-02-13T00:00:00.000000Z",
+        "conditioning": "CONDITIONAL_ON_APPEARANCE",
+        "period": "full_game",
+        "extra_time_policy": "includes_overtime",
+        "qualification": "UNAVAILABLE",
+        "generation_started_at": "2026-10-22T00:00:01.000000Z",
+        "generation_completed_at": "2026-10-22T00:00:02.000000Z",
+        "verified_at": "2026-10-22T00:00:03.000000Z",
+        "issued_at": null,
+        "categories": [
+          {
+            "code": "PTS",
+            "units": "points",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PRA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "REB",
+            "units": "rebounds",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "3PM",
+            "units": "made_three_point_field_goals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "AST",
+            "units": "assists",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "RA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PR",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TOV",
+            "units": "turnovers",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "DD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK",
+            "units": "blocks",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "STL",
+            "units": "steals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK+STL",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          }
+        ],
+        "reported_minutes": {
+          "pmf": [
+            {
+              "value": 0,
+              "probability": "1"
+            }
+          ],
+          "mean": "0",
+          "interval80": [
+            0,
+            0
+          ],
+          "precision": "reported_source_precision_not_exact_workload"
+        },
+        "joint_recipe": {
+          "algorithm": "nba_joint_lagged_workload_prior_k0_v1",
+          "input_sha256": "6fe0b6bcb92d5c61478d3d9aad915c703ec13e50521f816bfc089a65940c3eae",
+          "joint_sha256": "844f867b5b27cba9f142cfdd759e19f757a9255a7c02ff43045e63a14bb629a9",
+          "support_atom_count": 1,
+          "player_history_count": 1,
+          "pool_history_count": 1,
+          "omitted_atoms": 0
+        },
+        "forecast_id": "fb2ba317fbcf9e6d2f60f2f57fd9cd1c4826a50ed4fb13c98fa7f67d7fed9279"
+      },
+      "admission": {
+        "eligible": false,
+        "local_persistence_completed_at": null,
+        "remote_recovery_completed_at": null,
+        "reasons": [
+          "SYNTHETIC DEVELOPMENT-ONLY FIXTURE: not issued; not original source or model evidence."
+        ]
+      }
+    },
+    {
+      "reference": {
+        "kind": "forecasts",
+        "record_id": "52861af74e2dff9f72d395298819b435f3b3467c0008b6acd31c3ddc8f288368",
+        "payload_sha256": "4d51b2ce97f88eac322938253b241a2b1a3a81f2324f0e27bc4c8204057835d5"
+      },
+      "body": {
+        "schema_version": "nba-sdv-daily-forecast-v1",
+        "protocol_id": "NBA-SDV-DAILY-001",
+        "cycle_id": "NBA-SDV-DAILY-001-20261023-401909094",
+        "mode": "DEVELOPMENT_ONLY",
+        "evidence_lane": "DEVELOPMENT_ONLY",
+        "model_key": "R0",
+        "model_version": "nba_joint_empirical_r0_v1",
+        "producer_version": "sdv-daily-r0-producer-v1",
+        "producer_binding": {
+          "schema_version": "nba-sdv-daily-producer-binding-v1",
+          "commit": null,
+          "files": {
+            "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+            "multisport_lab/sdv_daily_store.py": "771a2e7aa93e9ff2199ce7c2e7675832abfa4b34e4233f2a7399c6f53e9d85a8",
+            "multisport_lab/sdv_daily_producer.py": "5589021134aec247aff82e893d6a788f51bc661d222a5447702ae1a950b0574f",
+            "multisport_lab/sdv_daily_cycle.py": "54e27597ef56eb5b0a2477df6adf1e9905d64ddd40e2eeb7fdeaae59311ee2fe",
+            "multisport_lab/sdv_daily_runner.py": "80355305e012264ed16fce70352b89966cbdf9b1dc45852486d26a996e3fd10f",
+            "multisport_lab/sdv_daily_remote.py": "cde2cae14b6df819d71968fa877f633b6b1472ae5ccbf1daf9b0b5c11b1b0f36",
+            "multisport_lab/sdv_daily_outcomes.py": "8978c03af3dadb631f8b951292024c9fe53f64858e902b160b20a6d4feafd6ea",
+            "multisport_lab/sdv_daily_publication.py": "013a0fc03fe2583b341b2893664c6e354094122a25efb36cf7c069012f562696",
+            "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+            "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+            ".github/workflows/sdv-daily.yml": "cddc63a5ea7cf28ba9f7defab4365926a4c97c071f11df1fffdbdbe648a82b9b",
+            "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+            "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+            "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+            "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+            "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+            "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+            "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+            "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+            "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+            "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+            "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2"
+          },
+          "law_sha256": {
+            "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"
+          },
+          "binding_id": "ec0fe493994135f9c5df236abd2c7ff345d9257c799debcc0ee6dbfbab3e87e6"
+        },
+        "history_ref": {
+          "kind": "research_inputs",
+          "record_id": "dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc",
+          "payload_sha256": "69edea858e0e9bf372dbba3182c205211ac248860e8a0badd7189c607489b308"
+        },
+        "history_rows": 26645,
+        "history_panel_sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c",
+        "history_panel_cutoff": "2025-02-13T00:00:00.000000Z",
+        "history_availability": "RECONSTRUCTED_COMPLETION_BOUND",
+        "input_ref": {
+          "kind": "research_inputs",
+          "record_id": "ee1c046b5f20bd257ad37bd936a2cfed3af2ba3823ddb33ec7277cfe842206e1",
+          "payload_sha256": "b651f10b74d258156758b75a56656cb827e3fd9c73424cd236448f0bde4f269a"
+        },
+        "input_id": "f350990ec60a72f96e51c711567c7cc89d7f1af194ca3a102b43814896aacb13",
+        "event_snapshot_id": "c282354d118bb4025a61fde762a9217e90fcc182325eb7a5fe60874e0e0b8438",
+        "event_id": "401909094",
+        "event_starts_at": "2026-10-23T01:30:00.000000Z",
+        "player_id": "3133626",
+        "player_label": "Kenrich Williams",
+        "team_id": "25",
+        "opponent_id": "7",
+        "matchup": "Synthetic away display fixture @ Synthetic home display fixture",
+        "cutoff_at": "2026-10-23T00:00:00.000000Z",
+        "history_freeze": "2026-10-23T00:00:00.000000Z",
+        "trained_through": "2025-02-13T00:00:00.000000Z",
+        "conditioning": "CONDITIONAL_ON_APPEARANCE",
+        "period": "full_game",
+        "extra_time_policy": "includes_overtime",
+        "qualification": "UNAVAILABLE",
+        "generation_started_at": "2026-10-22T00:00:01.000000Z",
+        "generation_completed_at": "2026-10-22T00:00:02.000000Z",
+        "verified_at": "2026-10-22T00:00:03.000000Z",
+        "issued_at": null,
+        "categories": [
+          {
+            "code": "PTS",
+            "units": "points",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PRA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "REB",
+            "units": "rebounds",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "3PM",
+            "units": "made_three_point_field_goals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "AST",
+            "units": "assists",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "RA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PR",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TOV",
+            "units": "turnovers",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "DD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK",
+            "units": "blocks",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "STL",
+            "units": "steals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK+STL",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          }
+        ],
+        "reported_minutes": {
+          "pmf": [
+            {
+              "value": 0,
+              "probability": "1"
+            }
+          ],
+          "mean": "0",
+          "interval80": [
+            0,
+            0
+          ],
+          "precision": "reported_source_precision_not_exact_workload"
+        },
+        "joint_recipe": {
+          "algorithm": "nba_joint_empirical_r0_v1",
+          "input_sha256": "6fe0b6bcb92d5c61478d3d9aad915c703ec13e50521f816bfc089a65940c3eae",
+          "joint_sha256": "498167ded5f4c0b2b938e7f0fcf0923326cf43b02a0194f9a364c14ab790f48e",
+          "support_atom_count": 1,
+          "player_history_count": 1,
+          "pool_history_count": 1,
+          "omitted_atoms": 0
+        },
+        "forecast_id": "6cf2f0c971e182b8ea6dd0e8fb195ea49da96107e91c9ddea07c32f15d74efc0"
+      },
+      "admission": {
+        "eligible": false,
+        "local_persistence_completed_at": null,
+        "remote_recovery_completed_at": null,
+        "reasons": [
+          "SYNTHETIC DEVELOPMENT-ONLY FIXTURE: not issued; not original source or model evidence."
+        ]
+      }
+    },
+    {
+      "reference": {
+        "kind": "forecasts",
+        "record_id": "14e41741c2eabd599b1391af1a8219f1b15539ee76a59e554b250f740adb5105",
+        "payload_sha256": "f4deec77768162ee40e9519a1a267fc7db4126a2202d7a6a0a6e074ab522f1a2"
+      },
+      "body": {
+        "schema_version": "nba-sdv-daily-forecast-v1",
+        "protocol_id": "NBA-SDV-DAILY-001",
+        "cycle_id": "NBA-SDV-DAILY-001-20261023-401909094",
+        "mode": "DEVELOPMENT_ONLY",
+        "evidence_lane": "DEVELOPMENT_ONLY",
+        "model_key": "K0",
+        "model_version": "nba_joint_lagged_workload_prior_k0_v1",
+        "producer_version": "sdv-daily-k0-producer-v1",
+        "producer_binding": {
+          "schema_version": "nba-sdv-daily-producer-binding-v1",
+          "commit": null,
+          "files": {
+            "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+            "multisport_lab/sdv_daily_store.py": "771a2e7aa93e9ff2199ce7c2e7675832abfa4b34e4233f2a7399c6f53e9d85a8",
+            "multisport_lab/sdv_daily_producer.py": "5589021134aec247aff82e893d6a788f51bc661d222a5447702ae1a950b0574f",
+            "multisport_lab/sdv_daily_cycle.py": "54e27597ef56eb5b0a2477df6adf1e9905d64ddd40e2eeb7fdeaae59311ee2fe",
+            "multisport_lab/sdv_daily_runner.py": "80355305e012264ed16fce70352b89966cbdf9b1dc45852486d26a996e3fd10f",
+            "multisport_lab/sdv_daily_remote.py": "cde2cae14b6df819d71968fa877f633b6b1472ae5ccbf1daf9b0b5c11b1b0f36",
+            "multisport_lab/sdv_daily_outcomes.py": "8978c03af3dadb631f8b951292024c9fe53f64858e902b160b20a6d4feafd6ea",
+            "multisport_lab/sdv_daily_publication.py": "013a0fc03fe2583b341b2893664c6e354094122a25efb36cf7c069012f562696",
+            "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+            "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+            ".github/workflows/sdv-daily.yml": "cddc63a5ea7cf28ba9f7defab4365926a4c97c071f11df1fffdbdbe648a82b9b",
+            "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+            "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+            "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+            "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+            "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+            "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+            "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+            "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+            "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+            "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+            "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2"
+          },
+          "law_sha256": {
+            "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"
+          },
+          "binding_id": "ec0fe493994135f9c5df236abd2c7ff345d9257c799debcc0ee6dbfbab3e87e6"
+        },
+        "history_ref": {
+          "kind": "research_inputs",
+          "record_id": "dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc",
+          "payload_sha256": "69edea858e0e9bf372dbba3182c205211ac248860e8a0badd7189c607489b308"
+        },
+        "history_rows": 26645,
+        "history_panel_sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c",
+        "history_panel_cutoff": "2025-02-13T00:00:00.000000Z",
+        "history_availability": "RECONSTRUCTED_COMPLETION_BOUND",
+        "input_ref": {
+          "kind": "research_inputs",
+          "record_id": "ee1c046b5f20bd257ad37bd936a2cfed3af2ba3823ddb33ec7277cfe842206e1",
+          "payload_sha256": "b651f10b74d258156758b75a56656cb827e3fd9c73424cd236448f0bde4f269a"
+        },
+        "input_id": "f350990ec60a72f96e51c711567c7cc89d7f1af194ca3a102b43814896aacb13",
+        "event_snapshot_id": "c282354d118bb4025a61fde762a9217e90fcc182325eb7a5fe60874e0e0b8438",
+        "event_id": "401909094",
+        "event_starts_at": "2026-10-23T01:30:00.000000Z",
+        "player_id": "3133626",
+        "player_label": "Kenrich Williams",
+        "team_id": "25",
+        "opponent_id": "7",
+        "matchup": "Synthetic away display fixture @ Synthetic home display fixture",
+        "cutoff_at": "2026-10-23T00:00:00.000000Z",
+        "history_freeze": "2026-10-23T00:00:00.000000Z",
+        "trained_through": "2025-02-13T00:00:00.000000Z",
+        "conditioning": "CONDITIONAL_ON_APPEARANCE",
+        "period": "full_game",
+        "extra_time_policy": "includes_overtime",
+        "qualification": "UNAVAILABLE",
+        "generation_started_at": "2026-10-22T00:00:01.000000Z",
+        "generation_completed_at": "2026-10-22T00:00:02.000000Z",
+        "verified_at": "2026-10-22T00:00:03.000000Z",
+        "issued_at": null,
+        "categories": [
+          {
+            "code": "PTS",
+            "units": "points",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PRA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "REB",
+            "units": "rebounds",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "3PM",
+            "units": "made_three_point_field_goals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "AST",
+            "units": "assists",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "RA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PR",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TOV",
+            "units": "turnovers",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "DD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK",
+            "units": "blocks",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "STL",
+            "units": "steals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK+STL",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          }
+        ],
+        "reported_minutes": {
+          "pmf": [
+            {
+              "value": 0,
+              "probability": "1"
+            }
+          ],
+          "mean": "0",
+          "interval80": [
+            0,
+            0
+          ],
+          "precision": "reported_source_precision_not_exact_workload"
+        },
+        "joint_recipe": {
+          "algorithm": "nba_joint_lagged_workload_prior_k0_v1",
+          "input_sha256": "6fe0b6bcb92d5c61478d3d9aad915c703ec13e50521f816bfc089a65940c3eae",
+          "joint_sha256": "844f867b5b27cba9f142cfdd759e19f757a9255a7c02ff43045e63a14bb629a9",
+          "support_atom_count": 1,
+          "player_history_count": 1,
+          "pool_history_count": 1,
+          "omitted_atoms": 0
+        },
+        "forecast_id": "a7813d159dc5cf66bede7a6fb2204b073b8eb654329335dce18ad1b1a97c5f3a"
+      },
+      "admission": {
+        "eligible": false,
+        "local_persistence_completed_at": null,
+        "remote_recovery_completed_at": null,
+        "reasons": [
+          "SYNTHETIC DEVELOPMENT-ONLY FIXTURE: not issued; not original source or model evidence."
+        ]
+      }
+    },
+    {
+      "reference": {
+        "kind": "forecasts",
+        "record_id": "3df32f72d2f99707c385d78e8bca7258a8dcfc82a52dfbff153ca9da8558b954",
+        "payload_sha256": "867e49a6743e154a9df2fe118cae47fffd2288c42b060d37c6e1ddebbeadbed4"
+      },
+      "body": {
+        "schema_version": "nba-sdv-daily-forecast-v1",
+        "protocol_id": "NBA-SDV-DAILY-001",
+        "cycle_id": "NBA-SDV-DAILY-001-20261023-401909094",
+        "mode": "DEVELOPMENT_ONLY",
+        "evidence_lane": "DEVELOPMENT_ONLY",
+        "model_key": "R0",
+        "model_version": "nba_joint_empirical_r0_v1",
+        "producer_version": "sdv-daily-r0-producer-v1",
+        "producer_binding": {
+          "schema_version": "nba-sdv-daily-producer-binding-v1",
+          "commit": null,
+          "files": {
+            "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+            "multisport_lab/sdv_daily_store.py": "771a2e7aa93e9ff2199ce7c2e7675832abfa4b34e4233f2a7399c6f53e9d85a8",
+            "multisport_lab/sdv_daily_producer.py": "5589021134aec247aff82e893d6a788f51bc661d222a5447702ae1a950b0574f",
+            "multisport_lab/sdv_daily_cycle.py": "54e27597ef56eb5b0a2477df6adf1e9905d64ddd40e2eeb7fdeaae59311ee2fe",
+            "multisport_lab/sdv_daily_runner.py": "80355305e012264ed16fce70352b89966cbdf9b1dc45852486d26a996e3fd10f",
+            "multisport_lab/sdv_daily_remote.py": "cde2cae14b6df819d71968fa877f633b6b1472ae5ccbf1daf9b0b5c11b1b0f36",
+            "multisport_lab/sdv_daily_outcomes.py": "8978c03af3dadb631f8b951292024c9fe53f64858e902b160b20a6d4feafd6ea",
+            "multisport_lab/sdv_daily_publication.py": "013a0fc03fe2583b341b2893664c6e354094122a25efb36cf7c069012f562696",
+            "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+            "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+            ".github/workflows/sdv-daily.yml": "cddc63a5ea7cf28ba9f7defab4365926a4c97c071f11df1fffdbdbe648a82b9b",
+            "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+            "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+            "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+            "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+            "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+            "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+            "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+            "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+            "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+            "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+            "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2"
+          },
+          "law_sha256": {
+            "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"
+          },
+          "binding_id": "ec0fe493994135f9c5df236abd2c7ff345d9257c799debcc0ee6dbfbab3e87e6"
+        },
+        "history_ref": {
+          "kind": "research_inputs",
+          "record_id": "dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc",
+          "payload_sha256": "69edea858e0e9bf372dbba3182c205211ac248860e8a0badd7189c607489b308"
+        },
+        "history_rows": 26645,
+        "history_panel_sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c",
+        "history_panel_cutoff": "2025-02-13T00:00:00.000000Z",
+        "history_availability": "RECONSTRUCTED_COMPLETION_BOUND",
+        "input_ref": {
+          "kind": "research_inputs",
+          "record_id": "ee1c046b5f20bd257ad37bd936a2cfed3af2ba3823ddb33ec7277cfe842206e1",
+          "payload_sha256": "b651f10b74d258156758b75a56656cb827e3fd9c73424cd236448f0bde4f269a"
+        },
+        "input_id": "f350990ec60a72f96e51c711567c7cc89d7f1af194ca3a102b43814896aacb13",
+        "event_snapshot_id": "c282354d118bb4025a61fde762a9217e90fcc182325eb7a5fe60874e0e0b8438",
+        "event_id": "401909094",
+        "event_starts_at": "2026-10-23T01:30:00.000000Z",
+        "player_id": "3978",
+        "player_label": "DeMar DeRozan",
+        "team_id": "7",
+        "opponent_id": "25",
+        "matchup": "Synthetic away display fixture @ Synthetic home display fixture",
+        "cutoff_at": "2026-10-23T00:00:00.000000Z",
+        "history_freeze": "2026-10-23T00:00:00.000000Z",
+        "trained_through": "2025-02-13T00:00:00.000000Z",
+        "conditioning": "CONDITIONAL_ON_APPEARANCE",
+        "period": "full_game",
+        "extra_time_policy": "includes_overtime",
+        "qualification": "UNAVAILABLE",
+        "generation_started_at": "2026-10-22T00:00:01.000000Z",
+        "generation_completed_at": "2026-10-22T00:00:02.000000Z",
+        "verified_at": "2026-10-22T00:00:03.000000Z",
+        "issued_at": null,
+        "categories": [
+          {
+            "code": "PTS",
+            "units": "points",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PRA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "REB",
+            "units": "rebounds",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "3PM",
+            "units": "made_three_point_field_goals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "AST",
+            "units": "assists",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "RA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PR",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TOV",
+            "units": "turnovers",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "DD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK",
+            "units": "blocks",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "STL",
+            "units": "steals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK+STL",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          }
+        ],
+        "reported_minutes": {
+          "pmf": [
+            {
+              "value": 0,
+              "probability": "1"
+            }
+          ],
+          "mean": "0",
+          "interval80": [
+            0,
+            0
+          ],
+          "precision": "reported_source_precision_not_exact_workload"
+        },
+        "joint_recipe": {
+          "algorithm": "nba_joint_empirical_r0_v1",
+          "input_sha256": "6fe0b6bcb92d5c61478d3d9aad915c703ec13e50521f816bfc089a65940c3eae",
+          "joint_sha256": "498167ded5f4c0b2b938e7f0fcf0923326cf43b02a0194f9a364c14ab790f48e",
+          "support_atom_count": 1,
+          "player_history_count": 1,
+          "pool_history_count": 1,
+          "omitted_atoms": 0
+        },
+        "forecast_id": "7ddd6c2b68fa6f184ae7896923f3d143fa2a293996edb12df8a7e887c3cf303b"
+      },
+      "admission": {
+        "eligible": false,
+        "local_persistence_completed_at": null,
+        "remote_recovery_completed_at": null,
+        "reasons": [
+          "SYNTHETIC DEVELOPMENT-ONLY FIXTURE: not issued; not original source or model evidence."
+        ]
+      }
+    },
+    {
+      "reference": {
+        "kind": "forecasts",
+        "record_id": "95b4231d04acece7baac857e594a4302d3af238881817bff9561644a8b672ec6",
+        "payload_sha256": "8fb2111226eaedc724f1ebe354e726d2d43dcbf1bebc0401800fd7c49652a9d1"
+      },
+      "body": {
+        "schema_version": "nba-sdv-daily-forecast-v1",
+        "protocol_id": "NBA-SDV-DAILY-001",
+        "cycle_id": "NBA-SDV-DAILY-001-20261023-401909094",
+        "mode": "DEVELOPMENT_ONLY",
+        "evidence_lane": "DEVELOPMENT_ONLY",
+        "model_key": "K0",
+        "model_version": "nba_joint_lagged_workload_prior_k0_v1",
+        "producer_version": "sdv-daily-k0-producer-v1",
+        "producer_binding": {
+          "schema_version": "nba-sdv-daily-producer-binding-v1",
+          "commit": null,
+          "files": {
+            "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+            "multisport_lab/sdv_daily_store.py": "771a2e7aa93e9ff2199ce7c2e7675832abfa4b34e4233f2a7399c6f53e9d85a8",
+            "multisport_lab/sdv_daily_producer.py": "5589021134aec247aff82e893d6a788f51bc661d222a5447702ae1a950b0574f",
+            "multisport_lab/sdv_daily_cycle.py": "54e27597ef56eb5b0a2477df6adf1e9905d64ddd40e2eeb7fdeaae59311ee2fe",
+            "multisport_lab/sdv_daily_runner.py": "80355305e012264ed16fce70352b89966cbdf9b1dc45852486d26a996e3fd10f",
+            "multisport_lab/sdv_daily_remote.py": "cde2cae14b6df819d71968fa877f633b6b1472ae5ccbf1daf9b0b5c11b1b0f36",
+            "multisport_lab/sdv_daily_outcomes.py": "8978c03af3dadb631f8b951292024c9fe53f64858e902b160b20a6d4feafd6ea",
+            "multisport_lab/sdv_daily_publication.py": "013a0fc03fe2583b341b2893664c6e354094122a25efb36cf7c069012f562696",
+            "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+            "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+            ".github/workflows/sdv-daily.yml": "cddc63a5ea7cf28ba9f7defab4365926a4c97c071f11df1fffdbdbe648a82b9b",
+            "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+            "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+            "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+            "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+            "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+            "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+            "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+            "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+            "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+            "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+            "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2"
+          },
+          "law_sha256": {
+            "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"
+          },
+          "binding_id": "ec0fe493994135f9c5df236abd2c7ff345d9257c799debcc0ee6dbfbab3e87e6"
+        },
+        "history_ref": {
+          "kind": "research_inputs",
+          "record_id": "dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc",
+          "payload_sha256": "69edea858e0e9bf372dbba3182c205211ac248860e8a0badd7189c607489b308"
+        },
+        "history_rows": 26645,
+        "history_panel_sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c",
+        "history_panel_cutoff": "2025-02-13T00:00:00.000000Z",
+        "history_availability": "RECONSTRUCTED_COMPLETION_BOUND",
+        "input_ref": {
+          "kind": "research_inputs",
+          "record_id": "ee1c046b5f20bd257ad37bd936a2cfed3af2ba3823ddb33ec7277cfe842206e1",
+          "payload_sha256": "b651f10b74d258156758b75a56656cb827e3fd9c73424cd236448f0bde4f269a"
+        },
+        "input_id": "f350990ec60a72f96e51c711567c7cc89d7f1af194ca3a102b43814896aacb13",
+        "event_snapshot_id": "c282354d118bb4025a61fde762a9217e90fcc182325eb7a5fe60874e0e0b8438",
+        "event_id": "401909094",
+        "event_starts_at": "2026-10-23T01:30:00.000000Z",
+        "player_id": "3978",
+        "player_label": "DeMar DeRozan",
+        "team_id": "7",
+        "opponent_id": "25",
+        "matchup": "Synthetic away display fixture @ Synthetic home display fixture",
+        "cutoff_at": "2026-10-23T00:00:00.000000Z",
+        "history_freeze": "2026-10-23T00:00:00.000000Z",
+        "trained_through": "2025-02-13T00:00:00.000000Z",
+        "conditioning": "CONDITIONAL_ON_APPEARANCE",
+        "period": "full_game",
+        "extra_time_policy": "includes_overtime",
+        "qualification": "UNAVAILABLE",
+        "generation_started_at": "2026-10-22T00:00:01.000000Z",
+        "generation_completed_at": "2026-10-22T00:00:02.000000Z",
+        "verified_at": "2026-10-22T00:00:03.000000Z",
+        "issued_at": null,
+        "categories": [
+          {
+            "code": "PTS",
+            "units": "points",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PRA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "REB",
+            "units": "rebounds",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "3PM",
+            "units": "made_three_point_field_goals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "AST",
+            "units": "assists",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "RA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PR",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TOV",
+            "units": "turnovers",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "DD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK",
+            "units": "blocks",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "STL",
+            "units": "steals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK+STL",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          }
+        ],
+        "reported_minutes": {
+          "pmf": [
+            {
+              "value": 0,
+              "probability": "1"
+            }
+          ],
+          "mean": "0",
+          "interval80": [
+            0,
+            0
+          ],
+          "precision": "reported_source_precision_not_exact_workload"
+        },
+        "joint_recipe": {
+          "algorithm": "nba_joint_lagged_workload_prior_k0_v1",
+          "input_sha256": "6fe0b6bcb92d5c61478d3d9aad915c703ec13e50521f816bfc089a65940c3eae",
+          "joint_sha256": "844f867b5b27cba9f142cfdd759e19f757a9255a7c02ff43045e63a14bb629a9",
+          "support_atom_count": 1,
+          "player_history_count": 1,
+          "pool_history_count": 1,
+          "omitted_atoms": 0
+        },
+        "forecast_id": "3af18798f35be55bd75c91a1eaeb862a176a10f3757e6fc06e58059e6fb1ba2b"
+      },
+      "admission": {
+        "eligible": false,
+        "local_persistence_completed_at": null,
+        "remote_recovery_completed_at": null,
+        "reasons": [
+          "SYNTHETIC DEVELOPMENT-ONLY FIXTURE: not issued; not original source or model evidence."
+        ]
+      }
+    },
+    {
+      "reference": {
+        "kind": "forecasts",
+        "record_id": "7003f60cb97cd18884aab93ee9b76d422f36ebf9052f735ae82187c862177ffd",
+        "payload_sha256": "11a68bc12b00d1afdd91d57341f8e8e5bcc48dbe11df58d6ae4bedf991594f31"
+      },
+      "body": {
+        "schema_version": "nba-sdv-daily-forecast-v1",
+        "protocol_id": "NBA-SDV-DAILY-001",
+        "cycle_id": "NBA-SDV-DAILY-001-20261023-401909094",
+        "mode": "DEVELOPMENT_ONLY",
+        "evidence_lane": "DEVELOPMENT_ONLY",
+        "model_key": "R0",
+        "model_version": "nba_joint_empirical_r0_v1",
+        "producer_version": "sdv-daily-r0-producer-v1",
+        "producer_binding": {
+          "schema_version": "nba-sdv-daily-producer-binding-v1",
+          "commit": null,
+          "files": {
+            "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+            "multisport_lab/sdv_daily_store.py": "771a2e7aa93e9ff2199ce7c2e7675832abfa4b34e4233f2a7399c6f53e9d85a8",
+            "multisport_lab/sdv_daily_producer.py": "5589021134aec247aff82e893d6a788f51bc661d222a5447702ae1a950b0574f",
+            "multisport_lab/sdv_daily_cycle.py": "54e27597ef56eb5b0a2477df6adf1e9905d64ddd40e2eeb7fdeaae59311ee2fe",
+            "multisport_lab/sdv_daily_runner.py": "80355305e012264ed16fce70352b89966cbdf9b1dc45852486d26a996e3fd10f",
+            "multisport_lab/sdv_daily_remote.py": "cde2cae14b6df819d71968fa877f633b6b1472ae5ccbf1daf9b0b5c11b1b0f36",
+            "multisport_lab/sdv_daily_outcomes.py": "8978c03af3dadb631f8b951292024c9fe53f64858e902b160b20a6d4feafd6ea",
+            "multisport_lab/sdv_daily_publication.py": "013a0fc03fe2583b341b2893664c6e354094122a25efb36cf7c069012f562696",
+            "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+            "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+            ".github/workflows/sdv-daily.yml": "cddc63a5ea7cf28ba9f7defab4365926a4c97c071f11df1fffdbdbe648a82b9b",
+            "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+            "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+            "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+            "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+            "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+            "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+            "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+            "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+            "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+            "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+            "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2"
+          },
+          "law_sha256": {
+            "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"
+          },
+          "binding_id": "ec0fe493994135f9c5df236abd2c7ff345d9257c799debcc0ee6dbfbab3e87e6"
+        },
+        "history_ref": {
+          "kind": "research_inputs",
+          "record_id": "dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc",
+          "payload_sha256": "69edea858e0e9bf372dbba3182c205211ac248860e8a0badd7189c607489b308"
+        },
+        "history_rows": 26645,
+        "history_panel_sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c",
+        "history_panel_cutoff": "2025-02-13T00:00:00.000000Z",
+        "history_availability": "RECONSTRUCTED_COMPLETION_BOUND",
+        "input_ref": {
+          "kind": "research_inputs",
+          "record_id": "ee1c046b5f20bd257ad37bd936a2cfed3af2ba3823ddb33ec7277cfe842206e1",
+          "payload_sha256": "b651f10b74d258156758b75a56656cb827e3fd9c73424cd236448f0bde4f269a"
+        },
+        "input_id": "f350990ec60a72f96e51c711567c7cc89d7f1af194ca3a102b43814896aacb13",
+        "event_snapshot_id": "c282354d118bb4025a61fde762a9217e90fcc182325eb7a5fe60874e0e0b8438",
+        "event_id": "401909094",
+        "event_starts_at": "2026-10-23T01:30:00.000000Z",
+        "player_id": "3064290",
+        "player_label": "Aaron Gordon",
+        "team_id": "7",
+        "opponent_id": "25",
+        "matchup": "Synthetic away display fixture @ Synthetic home display fixture",
+        "cutoff_at": "2026-10-23T00:00:00.000000Z",
+        "history_freeze": "2026-10-23T00:00:00.000000Z",
+        "trained_through": "2025-02-13T00:00:00.000000Z",
+        "conditioning": "CONDITIONAL_ON_APPEARANCE",
+        "period": "full_game",
+        "extra_time_policy": "includes_overtime",
+        "qualification": "UNAVAILABLE",
+        "generation_started_at": "2026-10-22T00:00:01.000000Z",
+        "generation_completed_at": "2026-10-22T00:00:02.000000Z",
+        "verified_at": "2026-10-22T00:00:03.000000Z",
+        "issued_at": null,
+        "categories": [
+          {
+            "code": "PTS",
+            "units": "points",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PRA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "REB",
+            "units": "rebounds",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "3PM",
+            "units": "made_three_point_field_goals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "AST",
+            "units": "assists",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "RA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PR",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TOV",
+            "units": "turnovers",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "DD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK",
+            "units": "blocks",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "STL",
+            "units": "steals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK+STL",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          }
+        ],
+        "reported_minutes": {
+          "pmf": [
+            {
+              "value": 0,
+              "probability": "1"
+            }
+          ],
+          "mean": "0",
+          "interval80": [
+            0,
+            0
+          ],
+          "precision": "reported_source_precision_not_exact_workload"
+        },
+        "joint_recipe": {
+          "algorithm": "nba_joint_empirical_r0_v1",
+          "input_sha256": "6fe0b6bcb92d5c61478d3d9aad915c703ec13e50521f816bfc089a65940c3eae",
+          "joint_sha256": "498167ded5f4c0b2b938e7f0fcf0923326cf43b02a0194f9a364c14ab790f48e",
+          "support_atom_count": 1,
+          "player_history_count": 1,
+          "pool_history_count": 1,
+          "omitted_atoms": 0
+        },
+        "forecast_id": "c7f2122e9ff49711e3abcd7f2fb4eb9b8fbd90c2cc88afb1648a6e519442f7a9"
+      },
+      "admission": {
+        "eligible": false,
+        "local_persistence_completed_at": null,
+        "remote_recovery_completed_at": null,
+        "reasons": [
+          "SYNTHETIC DEVELOPMENT-ONLY FIXTURE: not issued; not original source or model evidence."
+        ]
+      }
+    },
+    {
+      "reference": {
+        "kind": "forecasts",
+        "record_id": "c13d8bd3c1d74291306a4a164b1badb07ec29ef11659d11644a0ad580119843c",
+        "payload_sha256": "c09aa6cbfb7f0bbfaf35dd73b8ab4076fe81370be0106ae68fc81ea8777acff5"
+      },
+      "body": {
+        "schema_version": "nba-sdv-daily-forecast-v1",
+        "protocol_id": "NBA-SDV-DAILY-001",
+        "cycle_id": "NBA-SDV-DAILY-001-20261023-401909094",
+        "mode": "DEVELOPMENT_ONLY",
+        "evidence_lane": "DEVELOPMENT_ONLY",
+        "model_key": "K0",
+        "model_version": "nba_joint_lagged_workload_prior_k0_v1",
+        "producer_version": "sdv-daily-k0-producer-v1",
+        "producer_binding": {
+          "schema_version": "nba-sdv-daily-producer-binding-v1",
+          "commit": null,
+          "files": {
+            "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+            "multisport_lab/sdv_daily_store.py": "771a2e7aa93e9ff2199ce7c2e7675832abfa4b34e4233f2a7399c6f53e9d85a8",
+            "multisport_lab/sdv_daily_producer.py": "5589021134aec247aff82e893d6a788f51bc661d222a5447702ae1a950b0574f",
+            "multisport_lab/sdv_daily_cycle.py": "54e27597ef56eb5b0a2477df6adf1e9905d64ddd40e2eeb7fdeaae59311ee2fe",
+            "multisport_lab/sdv_daily_runner.py": "80355305e012264ed16fce70352b89966cbdf9b1dc45852486d26a996e3fd10f",
+            "multisport_lab/sdv_daily_remote.py": "cde2cae14b6df819d71968fa877f633b6b1472ae5ccbf1daf9b0b5c11b1b0f36",
+            "multisport_lab/sdv_daily_outcomes.py": "8978c03af3dadb631f8b951292024c9fe53f64858e902b160b20a6d4feafd6ea",
+            "multisport_lab/sdv_daily_publication.py": "013a0fc03fe2583b341b2893664c6e354094122a25efb36cf7c069012f562696",
+            "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+            "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+            ".github/workflows/sdv-daily.yml": "cddc63a5ea7cf28ba9f7defab4365926a4c97c071f11df1fffdbdbe648a82b9b",
+            "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+            "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+            "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+            "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+            "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+            "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+            "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+            "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+            "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+            "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+            "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2"
+          },
+          "law_sha256": {
+            "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+            "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"
+          },
+          "binding_id": "ec0fe493994135f9c5df236abd2c7ff345d9257c799debcc0ee6dbfbab3e87e6"
+        },
+        "history_ref": {
+          "kind": "research_inputs",
+          "record_id": "dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc",
+          "payload_sha256": "69edea858e0e9bf372dbba3182c205211ac248860e8a0badd7189c607489b308"
+        },
+        "history_rows": 26645,
+        "history_panel_sha256": "489b7148db26cc68e3096cacc1c6960d2b7652d0a82755c215efbd6a96876c8c",
+        "history_panel_cutoff": "2025-02-13T00:00:00.000000Z",
+        "history_availability": "RECONSTRUCTED_COMPLETION_BOUND",
+        "input_ref": {
+          "kind": "research_inputs",
+          "record_id": "ee1c046b5f20bd257ad37bd936a2cfed3af2ba3823ddb33ec7277cfe842206e1",
+          "payload_sha256": "b651f10b74d258156758b75a56656cb827e3fd9c73424cd236448f0bde4f269a"
+        },
+        "input_id": "f350990ec60a72f96e51c711567c7cc89d7f1af194ca3a102b43814896aacb13",
+        "event_snapshot_id": "c282354d118bb4025a61fde762a9217e90fcc182325eb7a5fe60874e0e0b8438",
+        "event_id": "401909094",
+        "event_starts_at": "2026-10-23T01:30:00.000000Z",
+        "player_id": "3064290",
+        "player_label": "Aaron Gordon",
+        "team_id": "7",
+        "opponent_id": "25",
+        "matchup": "Synthetic away display fixture @ Synthetic home display fixture",
+        "cutoff_at": "2026-10-23T00:00:00.000000Z",
+        "history_freeze": "2026-10-23T00:00:00.000000Z",
+        "trained_through": "2025-02-13T00:00:00.000000Z",
+        "conditioning": "CONDITIONAL_ON_APPEARANCE",
+        "period": "full_game",
+        "extra_time_policy": "includes_overtime",
+        "qualification": "UNAVAILABLE",
+        "generation_started_at": "2026-10-22T00:00:01.000000Z",
+        "generation_completed_at": "2026-10-22T00:00:02.000000Z",
+        "verified_at": "2026-10-22T00:00:03.000000Z",
+        "issued_at": null,
+        "categories": [
+          {
+            "code": "PTS",
+            "units": "points",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PRA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "REB",
+            "units": "rebounds",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "3PM",
+            "units": "made_three_point_field_goals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "AST",
+            "units": "assists",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "RA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PR",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TOV",
+            "units": "turnovers",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "TD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "DD",
+            "units": "indicator_0_or_1",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK",
+            "units": "blocks",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "STL",
+            "units": "steals",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "BLK+STL",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          },
+          {
+            "code": "PA",
+            "units": "stat_sum",
+            "pmf": [
+              {
+                "value": 0,
+                "probability": "1"
+              }
+            ],
+            "mean": "0",
+            "interval80": [
+              0,
+              0
+            ]
+          }
+        ],
+        "reported_minutes": {
+          "pmf": [
+            {
+              "value": 0,
+              "probability": "1"
+            }
+          ],
+          "mean": "0",
+          "interval80": [
+            0,
+            0
+          ],
+          "precision": "reported_source_precision_not_exact_workload"
+        },
+        "joint_recipe": {
+          "algorithm": "nba_joint_lagged_workload_prior_k0_v1",
+          "input_sha256": "6fe0b6bcb92d5c61478d3d9aad915c703ec13e50521f816bfc089a65940c3eae",
+          "joint_sha256": "844f867b5b27cba9f142cfdd759e19f757a9255a7c02ff43045e63a14bb629a9",
+          "support_atom_count": 1,
+          "player_history_count": 1,
+          "pool_history_count": 1,
+          "omitted_atoms": 0
+        },
+        "forecast_id": "58347d9a0669e0184cd95600be4da6991cfd5d3004feb73ae33a91c4fdebdd5c"
+      },
+      "admission": {
+        "eligible": false,
+        "local_persistence_completed_at": null,
+        "remote_recovery_completed_at": null,
+        "reasons": [
+          "SYNTHETIC DEVELOPMENT-ONLY FIXTURE: not issued; not original source or model evidence."
+        ]
+      }
+    }
+  ],
+  "outcomes": [],
+  "grades": [],
+  "corrections": [],
+  "activation": null,
+  "counts": {
+    "development_forecasts": 8,
+    "genuine_forecasts": 0,
+    "eligible_forecasts": 0,
+    "pending_grades": 8
+  },
+  "status": "DEVELOPMENT_PREVIEW",
+  "reason": "SYNTHETIC DEVELOPMENT-ONLY FIXTURE. Invented zero distributions and source digests exercise contracts only; no capture, model evaluation or issuance occurred.",
+  "qualification": "UNAVAILABLE",
+  "financial_settlement": "NOT_EVALUATED",
+  "asset_id": "258279a445a0f74e29013c798a94cbb482c54148bcc3da16f684b51d920e8f58"
+}

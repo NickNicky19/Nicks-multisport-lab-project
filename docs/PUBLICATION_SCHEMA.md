@@ -1,42 +1,56 @@
-# Static publication: display metadata v4 over research sport v2
+# Static publication contracts
 
-The separately reviewable website package adds manifest **4**, retaining the
-unchanged NBA research sport schema 2 and original forecast/outcome/grade records.
-Manifest versions 1 and 2 remain readable. Version 3 is reserved by the separate,
-unmerged PROS004 draft PR #10 and is deliberately not interpreted as this shape.
-Before both branches can land, integrate their overlapping publication modules
-with one reviewed combined contract and repeat both sets of tests. Neither draft
-implicitly activates PROS004 or publishes unreviewed code.
+## Joint manifest v5, prepared for review
 
-Manifest 4 adds nullable `display` and `display_error`. A display descriptor binds
-`display.<sha256>.json` by raw SHA-256, generation time, `DISPLAY_METADATA_ONLY`,
-retention flag and nullable error. The at-most-128-KiB asset uses
-`multisport-display-metadata-v1`, with its own canonical `metadata_id`, a source-
-backed `nba-display-catalog-v1` and `multisport-display-status-v1`. Players use
-`(league, id_namespace, player_id)`; events use the corresponding namespaced
-event ID and exact retained start/team identities. Historical appearances bind
-the original team/opponent, not a current roster. Bounded archived FINAL
-boxscore excerpts, source URLs, raw hashes, actual request/observation clocks and
-unknown source-update clocks support the labels. They are display verification,
-never historical model inputs or new forecasts.
+The combined implementation preserves exact legacy manifest 1/2/3/4 readers and
+sport 1/2 contracts. Manifest 5 retains the bounded core fields below and adds four
+independent descriptor/error pairs:
 
-Python and JavaScript validate names, matchups, dates and memberships against
-those excerpts and immutable published forecast identities. The browser also
-checks asset/catalog canonical checksums and byte hashes. Missing/unverifiable
-metadata leaves research visible with an explicit source-ID fallback and warning;
-it cannot rewrite research records. A failed update can retain previously valid
-metadata with its original clocks, provided it still matches the sport records.
+| Channel | Fields | Complete asset ceiling |
+| --- | --- | --- |
+| Reserved PROS004 | `pros004`, `pros004_error` | Existing paged contract, 24 MiB total |
+| Source-backed labels/status | `display`, `display_error` | 128 KiB |
+| Admitted offer-only facts | `offers`, `offers_error` | 256 KiB, at most 32 contracts |
+| Separate one-game paired research | `paired_research`, `paired_research_error` | 1 MiB |
 
-Status counts come from published research collections. Capture metadata comes
-from retained forecast-input records and is explicitly preparation with timeliness
-unestablished. Site publication, display verification, retained input capture and
-genuine pregame issuance clocks remain distinct. Current viewing time controls
-Upcoming independently of prices; zero offers and NO_ACTION have separate
-explanations. See [OFFER_PUBLICATION_READINESS.md](OFFER_PUBLICATION_READINESS.md)
-for the still-unimplemented offer publication path. The new display contract
-does not admit nonempty offers, candidates or tickets.
+Each descriptor binds a relative content-addressed filename, raw-byte SHA256,
+original generation clock and retention/error state. Both producers and browser
+readers validate exact fields, paths, sizes, source identities and nested content
+seals. Unsafe or invalid descriptors are rejected before fetching. One auxiliary
+channel's fetch/meaning/hash error does not erase valid peer channels. A retained
+previous valid asset keeps its original generation/source clocks. Rejected or
+unreferenced intermediate assets are pruned before the artifact swap.
 
-The sections below describe the underlying v2 research contract and its history.
+Research sport 2 still rejects nonempty `offers`, `candidates` and `tickets`.
+Actual offers have their own strict `nba-player-offers-v1` asset and reviewed
+source/admission registry. Complete verified offer facts may carry
+`PRICE_UNAVAILABLE`; no quote, EV or ticket eligibility follows. Incomplete
+identity, period/OT, statistical or settlement meaning cannot be filled with
+assumptions. The actual admission registry is empty in this readiness revision.
+See `OFFER_PUBLICATION_V1.md` and the source-specific audit receipts.
+
+The new paired channel has its own `NBA-PAIRED-OPS-002` identities and typed
+originals, completion admission, outcome/grade/correction links. It never relabels
+PROS004 or retrospective results. Original canonical contents and hashes remain
+available; active corrections drive individual status. Diagnostics and unadmitted
+claims cannot become genuine Upcoming forecasts. No reserved comparative study
+aggregate is exported. Genuine activation remains hard disabled.
+
+The display channel maps `(league, ID namespace, player ID)` to independently
+verified source names and uses retained event teams/start for historical matchup
+labels. Source IDs remain accessible and missing metadata uses an explicit ID
+fallback. Enrichment does not change forecast/outcome/grade bytes or model inputs.
+Publication, source capture, import and issuance clocks are distinct. Empty
+Upcoming, zero admitted offers and NO_ACTION are independent states.
+
+An independent valid offer channel can survive a research export failure. The
+builder first retains a valid earlier research asset; if none exists it emits a
+valid empty NBA category catalog with an explicit research error. The UI reports
+research unavailable rather than presenting that fallback as successful empty
+issuance. Offer failure likewise cannot suppress valid future research forecasts.
+No publication creates a new ledger record, source observation or forecast.
+
+## Retained sport v2 and legacy core contract
 
 Build: `python3 -m multisport_lab.publication --build-commit "$(git rev-parse HEAD)"`.
 Source `web/` → artifact `output/`, with `index.html` at artifact root.

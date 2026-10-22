@@ -155,8 +155,9 @@ def verify_archived_source(raw, source):
 
 
 def status_for(root, sports, *, now):
-    from .ledger import Ledger, LedgerRef
-    ledger=Ledger(root);index=ledger.scan();latest=None
+    from .ledger import LedgerRef
+    from .publication_ledger import CompositeEnvelopeLedger
+    ledger=CompositeEnvelopeLedger(root);index=ledger.scan();latest=None
     for record_id,payload in index['research_inputs'].items():
         pack=payload['data'].get('source_pack')
         if pack is None:continue

@@ -1,0 +1,50 @@
+{
+  "actual_completed_at": "2026-10-21T09:02:53.768839+00:00",
+  "changed_files": {
+    "multisport_lab/operational_delivery.py": "5521b73b145727875d6eef157f855675fbff62990bd68d6df8e465001a186fa2",
+    "multisport_lab/operational_source_links.py": "f16f91ed34267fb1f1a82bcd26ac0712cda25709bdb34c4b9c932135c6c4e7a7",
+    "tests/test_operational_delivery.py": "80001d74f679ae7f0c706a5fe60e98b90d418189694777d98017ef306d6db86c",
+    "tests/test_operational_source_links.py": "0cf4c5f58fe9aa6a3bacfe76a63e3fd0ac5a7e59993a1f298098cbc2c50dc47f"
+  },
+  "checks": [
+    {
+      "command": "PYTHONPATH=tests python3 -m unittest -v test_operational_source_links test_operational_delivery test_operational_remote",
+      "log": "/tmp/nml-connected-review-normal.log",
+      "result": "PASS",
+      "seconds": 31.002,
+      "tests": 43
+    },
+    {
+      "command": "PYTHONPATH=tests python3 -O -m unittest -v test_operational_source_links test_operational_delivery test_operational_remote",
+      "log": "/tmp/nml-connected-review-optimized.log",
+      "result": "PASS",
+      "seconds": 32.48,
+      "tests": 43
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "findings": [
+    {
+      "fix": "Cross-check binding received_at against every exact event/source reference received_at during standalone recovery.",
+      "issue": "Standalone event binding recovery accepted checksum-consistent receipt chronology contradicting referenced originals. Full ledger scan rejected it, but standalone API did not.",
+      "reproduction": "Focused negative regression failed before fix: IntegrityError not raised."
+    },
+    {
+      "fix": "Require actual captures filename stem equal original manifest capture_id before transport or authenticated recovery.",
+      "issue": "Encrypted delivery accepted a duplicate checksum-consistent capture manifest under another hash filename and counted/recovered its body twice.",
+      "reproduction": "Focused negative regression failed before fix: IntegrityError not raised."
+    }
+  ],
+  "genuine_issuance": 0,
+  "inherited_head": "714630dd2b99e04ac5574d5c56f7cadbd934c126",
+  "model_runs": "Tiny invented test fixtures only; no full-history measurement or comparative experiment.",
+  "new_metadata_or_budget_allocations": 0,
+  "remaining": "These are local synthetic integrity checks. Genuine source permission, private backup/host recovery, actual runner and separate activation remain outside this bounded review.",
+  "reviewed_commit": "e5eb1a24ee779cdec819bd239ccbc5a9d33e93f7",
+  "schema_version": "nba-ops002-connected-code-review-v1",
+  "source_requests": 0,
+  "status": "FIXED_VERIFIED_DEFECTS_PENDING_INTEGRATION"
+}

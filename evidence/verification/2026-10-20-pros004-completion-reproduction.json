@@ -1,0 +1,1092 @@
+{
+  "actual_source_requests": 0,
+  "all_expectations_passed": true,
+  "case_executions": 20,
+  "created_at": "2026-10-20T19:49:39.492463Z",
+  "current_source_pins_are_working_bytes_not_a_claim_that_uncommitted_changes_exist_in_head": true,
+  "current_working_tree_head_at_execution": "bce2c0912415afc0ba5bc2b873ffccabed0b5d73",
+  "current_working_tree_source_pins": {
+    "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+    "multisport_lab/pros004_completion.py": "444e339740c687604d6e591b87600bda08fe16550aa23f63d2daf6a5cdcd5719",
+    "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+    "multisport_lab/pros004_producer.py": "c4fb91c1c2c11c49730dc8809dda560376c75a14ddb7155c1d9dcadef0957cf4",
+    "multisport_lab/pros004_records.py": "ba749b78a0bda35061140d464b19d58f61895dd7bc97e965f702a24d1951ab26",
+    "tests/test_pros004_inputs.py": "7789c9ff04ded1bc0049ff2c5d3604df055deb6932efa95ea91acd18092e6fe8",
+    "tests/test_pros004_producer.py": "8e1537b63df9de55d893337cb3ccd3a7fdff541a0cee214e1a3dc08840b6d204"
+  },
+  "evidence_scope": "SOFTWARE_SYNTHETIC_ONLY",
+  "frozen_ledger_source_unchanged": true,
+  "frozen_statistical_experiments_rerun": 0,
+  "genuine_issuance_count": 0,
+  "pilot_or_native_automation_mutations": 0,
+  "qualification_limits": [
+    "All operating clocks and the three-row history inside tests are fictitious. Actual wall-clock execution times are recorded separately.",
+    "Fixed diagnostic mode reports zero eligible/issued models even for timely controls. Late-write regression is established independently by local_timely false, explicit timing reasons, preserved completion clocks and rejected checkpoint admission.",
+    "Evidence verifies exact recorded working-source hashes. Later source changes require separate verification, without rewriting this receipt.",
+    "No real-data model fitting, frozen comparison rerun, source request, actual prospective issuance, activation, financial settlement, qualified ticket or publication is claimed."
+  ],
+  "reviewed_isolated_checkout_clean_after_execution": true,
+  "reviewed_pre_fix_commit": "c305a6360c175413b5871170bcb23a1b7f7820ee",
+  "reviewed_source_bytes_verified_against_git_objects": true,
+  "runner": {
+    "original_path": "/tmp/nml-pros004-completion-reproduce.py",
+    "raw_sha256": "313bb6632d8c415c0510861bf527834c2c3ff248ed690bee18dded8280f4cfd4",
+    "reproduce": "Extract source_utf8 to a temporary script, then execute the four retained commands against matching source trees. Explicit IntegrityError checks survive python -O.",
+    "source_utf8": "\"\"\"Bounded synthetic persistence diagnostic; no source capture or real issuance.\"\"\"\nimport sys\nfrom pathlib import Path\nROOT = Path(sys.argv[1]).resolve()\nsys.path[:0] = [str(ROOT), str(ROOT/'tests')]\nimport hashlib\nimport json\nimport subprocess\nimport tempfile\nimport unittest\nfrom datetime import datetime, timedelta, timezone\nfrom unittest.mock import patch\nfrom test_pros004_producer import ProducerFixture, CUTOFF\nfrom multisport_lab import pros004_records as rec\nfrom multisport_lab import pros004_producer as prod\nfrom multisport_lab import ledger\nfrom multisport_lab.integrity import IntegrityError, stamp\n\n\ndef require(condition, message):\n    if not condition:\n        raise IntegrityError('reproduction expectation failed: '+message)\n\n\nIS_FIXED = hasattr(rec.Pros004Store, 'admission_status')\n\n\ndef sources():\n    paths = ['multisport_lab/ledger.py','multisport_lab/pros004_records.py',\n             'multisport_lab/pros004_producer.py','multisport_lab/pros004_inputs.py',\n             'multisport_lab/pros004_completion.py','tests/test_pros004_producer.py',\n             'tests/test_pros004_inputs.py']\n    return {p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest()\n            for p in paths if (ROOT/p).exists()}\n\n\ndef error_call(function):\n    try:\n        result=function()\n        return {'result':'ACCEPTED'}, result\n    except Exception as exc:\n        return {'result':'RAISED','exception_type':type(exc).__name__,\n                'exception_message':str(exc)}, None\n\n\ndef receipt_summary(f, store, ref):\n    raw=store.ledger._path(ref.kind,ref.record_id).read_bytes()\n    body=store.body(ref)\n    fresh=rec.Pros004Store(store.root,diagnostic=True)\n    recovered=fresh.recover_event(f.event_ref,f.binding)\n    require(raw==fresh.ledger._path(ref.kind,ref.record_id).read_bytes(),\n            'restart changed original receipt bytes')\n    out={'original_ref':ref.to_record(),'original_raw_sha256':hashlib.sha256(raw).hexdigest(),\n         'original_encoded_bytes':len(raw),'received_at_prewrite':store.read(ref)['received_at'],\n         'generation_started_at':body.get('generation_started_at'),\n         'generation_completed_at':body.get('generation_completed_at'),\n         'verified_at':body.get('verified_at'),'restart_status':recovered['status'],\n         'restart_issued_models':recovered['issued_models'],\n         'restart_retained_models':recovered.get('retained_models',\n                                              recovered['issued_models']),\n         'missing_peer_preserved':fresh.lookup_forecast(f.event_ref,'10','K0') is None,\n         'original_bytes_preserved':True}\n    if IS_FIXED:\n        out['admission']=fresh.admission_status(ref)\n    return out\n\n\ndef forecast_delay(prewrite_seconds, completed_seconds):\n    case=unittest.TestCase()\n    try:\n        f=ProducerFixture(case)\n        before=CUTOFF+timedelta(seconds=prewrite_seconds)\n        after=CUTOFF+timedelta(seconds=completed_seconds)\n        for clock in (f.record_clock,f.ledger_clock,f.producer_clock,f.baseline_clock):\n            clock.return_value=before\n        claim,_=f.store.claim_event(f.event_ref,f.binding)\n        body,_=f.generate('R0')\n        writer=ledger.write_receipt\n        def delayed(path,payload,**kwargs):\n            result=writer(path,payload,**kwargs)\n            if payload.get('kind')=='forecasts':\n                f.record_clock.return_value=after\n                f.ledger_clock.return_value=after\n            return result\n        with patch.object(ledger,'write_receipt',side_effect=delayed):\n            result,_=error_call(lambda:f.store.persist_forecast(body,f.event_ref,f.history_ref,claim))\n        original=f.store.lookup_forecast(f.event_ref,'10','R0')\n        require(original is not None,'forecast original was not retained')\n        result.update(receipt_summary(f,f.store,original))\n        result.update(case='FORECAST_WRITE_COMPLETION_DELAY',\n                      synthetic_prewrite_seconds_after_t90=prewrite_seconds,\n                      synthetic_actual_write_completion_seconds_after_t90=completed_seconds,\n                      synthetic_actual_completion_at=stamp(after))\n        if IS_FIXED:\n            require(result['result']=='RAISED','fixed delayed write was accepted')\n            require(result['restart_issued_models']==0,'fixed restart admitted delayed write')\n            require(result['restart_retained_models']==1,'fixed restart lost original')\n            require(result['admission']['local_timely'] is False,'fixed local gate allowed delay')\n            result['attempt_remote_checkpoint'],_=error_call(\n                lambda:f.store.complete_checkpoint(original,f.ack))\n            require(result['attempt_remote_checkpoint']['result']=='RAISED',\n                    'late original gained remote acknowledgment')\n        else:\n            require(result['result']=='ACCEPTED','reviewed bug did not reproduce')\n            require(result['restart_issued_models']==1,'old restart did not count original')\n        return result\n    finally:\n        case.doCleanups()\n\n\ndef interrupted_after_write():\n    case=unittest.TestCase()\n    try:\n        f=ProducerFixture(case)\n        claim,_=f.store.claim_event(f.event_ref,f.binding)\n        body,_=f.generate('R0')\n        writer=ledger.write_receipt\n        def interrupted(path,payload,**kwargs):\n            result=writer(path,payload,**kwargs)\n            if payload.get('kind')=='forecasts':\n                raise OSError('SYNTHETIC interruption after immutable write before completion acknowledgment')\n            return result\n        with patch.object(ledger,'write_receipt',side_effect=interrupted):\n            result,_=error_call(lambda:f.store.persist_forecast(body,f.event_ref,f.history_ref,claim))\n        original=f.store.lookup_forecast(f.event_ref,'10','R0')\n        require(original is not None,'interrupted persisted original missing')\n        result.update(receipt_summary(f,f.store,original))\n        result['case']='INTERRUPTED_BEFORE_LOCAL_COMPLETION_ACKNOWLEDGMENT'\n        require(result['result']=='RAISED','interruption did not raise')\n        require(result['restart_issued_models']==(0 if IS_FIXED else 1),\n                'unexpected interrupted restart count')\n        if IS_FIXED:\n            require('LOCAL_COMPLETION_UNOBSERVED' in result['admission']['reasons'],\n                    'fixed restart did not diagnose missing local acknowledgment')\n        return result\n    finally:\n        case.doCleanups()\n\n\ndef interrupted_remote_ack():\n    case=unittest.TestCase()\n    try:\n        f=ProducerFixture(case)\n        def checkpoint(reference):\n            if reference.kind=='forecasts':\n                raise OSError('SYNTHETIC interrupted required remote checkpoint/readback')\n            return f.ack(reference) if IS_FIXED else True\n        result,_=error_call(lambda:prod.issue_pair(f.store,f.event_ref,f.binding,\n                                                  player_id='10',checkpoint=checkpoint))\n        original=f.store.lookup_forecast(f.event_ref,'10','R0')\n        require(original is not None,'interrupted remote original missing')\n        result.update(receipt_summary(f,f.store,original))\n        result['case']='INTERRUPTED_REQUIRED_REMOTE_CHECKPOINT'\n        require(result['result']=='RAISED','remote checkpoint interruption did not raise')\n        require(result['missing_peer_preserved'],'interrupted remote generated missing peer')\n        require(result['restart_issued_models']==(0 if IS_FIXED else 1),\n                'unexpected remote restart count')\n        if IS_FIXED:\n            require(result['admission']['local_timely'] is True,'timely local write lost')\n            require(result['admission']['remote_timely'] is False,'missing remote ack admitted')\n        return result\n    finally:\n        case.doCleanups()\n\n\ndef event_crosses_selection_close():\n    case=unittest.TestCase()\n    try:\n        f=ProducerFixture(case)\n        with tempfile.TemporaryDirectory() as tmp:\n            store=rec.Pros004Store(tmp,diagnostic=True)\n            # Restore exact initial history observation clock for the shared ref.\n            from test_pros004_inputs import NOW\n            f.record_clock.return_value=NOW;f.ledger_clock.return_value=NOW\n            history=store.store_history(f.history)\n            require(history==f.history_ref,'second synthetic history ref differs')\n            close=CUTOFF-timedelta(minutes=10)\n            f.record_clock.return_value=close-timedelta(seconds=1)\n            f.ledger_clock.return_value=f.record_clock.return_value\n            writer=ledger.write_receipt\n            def delayed(path,payload,**kwargs):\n                result=writer(path,payload,**kwargs)\n                if payload['data'].get('pros004',{}).get('schema_version')=='nba-pros004-event-v1':\n                    f.record_clock.return_value=close+timedelta(seconds=1)\n                    f.ledger_clock.return_value=f.record_clock.return_value\n                return result\n            with patch.object(ledger,'write_receipt',side_effect=delayed):\n                result,_=error_call(lambda:store.store_event(f.event,history))\n            candidates=[]\n            for path in (Path(tmp)/'records/research_inputs').glob('*.json'):\n                value=json.loads(path.read_bytes())['payload']\n                if value['data'].get('pros004',{}).get('schema_version')=='nba-pros004-event-v1':\n                    from multisport_lab.integrity import digest\n                    from multisport_lab.ledger import LedgerRef\n                    candidates.append(LedgerRef('research_inputs',value['record_id'],digest(value)))\n            require(len(candidates)==1,'event original was not uniquely retained')\n            ref=candidates[0];raw=store.ledger._path(ref.kind,ref.record_id).read_bytes()\n            fresh=rec.Pros004Store(tmp,diagnostic=True)\n            fresh.read(ref)\n            result.update(case='EVENT_INPUT_WRITE_COMPLETES_AFTER_SELECTION_CLOSE',\n                selection_close_at=stamp(close),\n                received_at_prewrite=store.read(ref)['received_at'],\n                synthetic_actual_completion_at=stamp(close+timedelta(seconds=1)),\n                original_ref=ref.to_record(),original_encoded_bytes=len(raw),\n                original_raw_sha256=hashlib.sha256(raw).hexdigest(),\n                original_bytes_preserved=raw==fresh.ledger._path(ref.kind,ref.record_id).read_bytes())\n            if IS_FIXED:\n                result['admission']=fresh.admission_status(ref)\n                require(result['result']=='RAISED','fixed late event write accepted')\n                require(result['admission']['local_timely'] is False,'late event admitted')\n            else:\n                require(result['result']=='ACCEPTED','old event completion gap did not reproduce')\n            return result\n    finally:\n        case.doCleanups()\n\n\nstarted=stamp(datetime.now(timezone.utc))\nbefore_sources=sources()\nresults=[forecast_delay(299,301),forecast_delay(5,126),interrupted_after_write(),\n         interrupted_remote_ack(),event_crosses_selection_close()]\nrequire(sources()==before_sources,'implementation changed during diagnostic')\noutput={'schema_version':'nba-pros004-completion-reproduction-run-v1',\n        'diagnostic_only':True,'genuine_issuance_count':0,'source_requests':0,\n        'statistical_experiments_executed':0,'synthetic_history_rows':3,\n        'optimized_python':bool(sys.flags.optimize),\n        'actual_started_at':started,'actual_completed_at':stamp(datetime.now(timezone.utc)),\n        'root':str(ROOT),'git_head':subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip(),\n        'source_sha256':before_sources,'completion_gate_present':IS_FIXED,'results':results,\n        'all_explicit_expectations_passed':True,\n        'interpretation':'All source and completion clocks inside cases are synthetic. Three fictitious historical rows test unchanged formula and software controls only. No prospective activation, source capture, actual forecast issuance, real-data model evaluation, grading or settlement occurred.'}\nprint(json.dumps(output,sort_keys=True,indent=2))\n"
+  },
+  "runs": [
+    {
+      "captured_stdout_raw_sha256": "8e5e750a2ed0dbae674acd1460d262a9cdef01d7e8d9456dca02343c7d8ab179",
+      "command": "python3 /tmp/nml-pros004-completion-reproduce.py /tmp/nml-pros004-completion-reviewed-c305",
+      "exit_code": 0,
+      "label": "old-normal",
+      "result": {
+        "actual_completed_at": "2026-10-20T19:48:32.203379Z",
+        "actual_started_at": "2026-10-20T19:48:31.716358Z",
+        "all_explicit_expectations_passed": true,
+        "completion_gate_present": false,
+        "diagnostic_only": true,
+        "genuine_issuance_count": 0,
+        "git_head": "c305a6360c175413b5871170bcb23a1b7f7820ee",
+        "interpretation": "All source and completion clocks inside cases are synthetic. Three fictitious historical rows test unchanged formula and software controls only. No prospective activation, source capture, actual forecast issuance, real-data model evaluation, grading or settlement occurred.",
+        "optimized_python": false,
+        "results": [
+          {
+            "case": "FORECAST_WRITE_COMPLETION_DELAY",
+            "generation_completed_at": "2026-10-21T23:04:59.000000Z",
+            "generation_started_at": "2026-10-21T23:04:59.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 7834,
+            "original_raw_sha256": "b186a5a814e38fc6448b9adda032f42efb167f4a5408212589f961651119eb52",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "622fd502ba8a09c1ccd75b350de2ea073ac449b528a7d7123f2774bb48086afe",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:04:59.000000Z",
+            "restart_issued_models": 1,
+            "restart_retained_models": 1,
+            "restart_status": "PARTIAL_MISSING_PEERS",
+            "result": "ACCEPTED",
+            "synthetic_actual_completion_at": "2026-10-21T23:05:01.000000Z",
+            "synthetic_actual_write_completion_seconds_after_t90": 301,
+            "synthetic_prewrite_seconds_after_t90": 299,
+            "verified_at": "2026-10-21T23:04:59.000000Z"
+          },
+          {
+            "case": "FORECAST_WRITE_COMPLETION_DELAY",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 7834,
+            "original_raw_sha256": "84a99488493f6213d11e94bcff4782ce6a1518ed92c501acd8f603b319f464d4",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "46248b05a805efdcc59c32bee8ec61c9597f7ee2cd64fa28d8efa81a48019be5",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 1,
+            "restart_retained_models": 1,
+            "restart_status": "PARTIAL_MISSING_PEERS",
+            "result": "ACCEPTED",
+            "synthetic_actual_completion_at": "2026-10-21T23:02:06.000000Z",
+            "synthetic_actual_write_completion_seconds_after_t90": 126,
+            "synthetic_prewrite_seconds_after_t90": 5,
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "case": "INTERRUPTED_BEFORE_LOCAL_COMPLETION_ACKNOWLEDGMENT",
+            "exception_message": "SYNTHETIC interruption after immutable write before completion acknowledgment",
+            "exception_type": "OSError",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 7834,
+            "original_raw_sha256": "84a99488493f6213d11e94bcff4782ce6a1518ed92c501acd8f603b319f464d4",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "46248b05a805efdcc59c32bee8ec61c9597f7ee2cd64fa28d8efa81a48019be5",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 1,
+            "restart_retained_models": 1,
+            "restart_status": "PARTIAL_MISSING_PEERS",
+            "result": "RAISED",
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "case": "INTERRUPTED_REQUIRED_REMOTE_CHECKPOINT",
+            "exception_message": "SYNTHETIC interrupted required remote checkpoint/readback",
+            "exception_type": "OSError",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 7834,
+            "original_raw_sha256": "84a99488493f6213d11e94bcff4782ce6a1518ed92c501acd8f603b319f464d4",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "46248b05a805efdcc59c32bee8ec61c9597f7ee2cd64fa28d8efa81a48019be5",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 1,
+            "restart_retained_models": 1,
+            "restart_status": "PARTIAL_MISSING_PEERS",
+            "result": "RAISED",
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "case": "EVENT_INPUT_WRITE_COMPLETES_AFTER_SELECTION_CLOSE",
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 11928,
+            "original_raw_sha256": "7f25e4c9725410fcda3120861170fcf0eb41646e9a3287975026bead421d019d",
+            "original_ref": {
+              "kind": "research_inputs",
+              "payload_sha256": "701daae801fadf1878e46f71ac6a664f007c5932cd4dcd6ecfdaaf5d34cbdbd9",
+              "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+            },
+            "received_at_prewrite": "2026-10-21T22:49:59.000000Z",
+            "result": "ACCEPTED",
+            "selection_close_at": "2026-10-21T22:50:00.000000Z",
+            "synthetic_actual_completion_at": "2026-10-21T22:50:01.000000Z"
+          }
+        ],
+        "root": "/tmp/nml-pros004-completion-reviewed-c305",
+        "schema_version": "nba-pros004-completion-reproduction-run-v1",
+        "source_requests": 0,
+        "source_sha256": {
+          "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+          "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+          "multisport_lab/pros004_producer.py": "66171ef9daaf1228b1b151728bcba1fc8d166928b9a9110a0c84bed77a139f3c",
+          "multisport_lab/pros004_records.py": "b07a46d95a9e41d0c9bd64d27547e53ae3f1277ac2a9287532d805efcaaf6469",
+          "tests/test_pros004_inputs.py": "7789c9ff04ded1bc0049ff2c5d3604df055deb6932efa95ea91acd18092e6fe8",
+          "tests/test_pros004_producer.py": "876ff13dcb3ef9816e8021610680e3c271962716b8bb826569631f85b47cc45e"
+        },
+        "statistical_experiments_executed": 0,
+        "synthetic_history_rows": 3
+      }
+    },
+    {
+      "captured_stdout_raw_sha256": "25a75a05f615af886f67cb0908748c6d47dfb8a34e56a4790615a8448f388d62",
+      "command": "python3 /tmp/nml-pros004-completion-reproduce.py /workspace/nml-pros004-readiness",
+      "exit_code": 0,
+      "label": "fixed-normal",
+      "result": {
+        "actual_completed_at": "2026-10-20T19:48:32.086215Z",
+        "actual_started_at": "2026-10-20T19:48:31.583067Z",
+        "all_explicit_expectations_passed": true,
+        "completion_gate_present": true,
+        "diagnostic_only": true,
+        "genuine_issuance_count": 0,
+        "git_head": "bce2c0912415afc0ba5bc2b873ffccabed0b5d73",
+        "interpretation": "All source and completion clocks inside cases are synthetic. Three fictitious historical rows test unchanged formula and software controls only. No prospective activation, source capture, actual forecast issuance, real-data model evaluation, grading or settlement occurred.",
+        "optimized_python": false,
+        "results": [
+          {
+            "admission": {
+              "eligible_for_comparison": false,
+              "event_input_status": {
+                "eligible_for_comparison": false,
+                "event_input_status": null,
+                "generation_completed_at": null,
+                "local_persistence_completed_at": "2026-10-21T22:45:00.000000Z",
+                "local_timely": true,
+                "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+                "qualification": "UNAVAILABLE",
+                "reasons": [
+                  "DIAGNOSTIC_NON_ISSUANCE"
+                ],
+                "received_at_prewrite": "2026-10-21T22:45:00.000000Z",
+                "reference": {
+                  "kind": "research_inputs",
+                  "payload_sha256": "d76784fd3e1850d66843da49321044b61cae7bcfb4e685ec204c0909be19f425",
+                  "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+                },
+                "remote_checkpoint_completed_at": "2026-10-21T22:45:00.000000Z",
+                "remote_timely": true,
+                "retained": true,
+                "schema_version": "nba-pros004-admission-status-v2",
+                "status": "RETAINED_UNADMITTED",
+                "timing_complete": true,
+                "verified_at": null
+              },
+              "generation_completed_at": "2026-10-21T23:04:59.000000Z",
+              "local_persistence_completed_at": "2026-10-21T23:05:01.000000Z",
+              "local_timely": false,
+              "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+              "qualification": "UNAVAILABLE",
+              "reasons": [
+                "LOCAL_COMPLETION_LATE_OR_INVALID",
+                "REMOTE_CHECKPOINT_UNACKNOWLEDGED",
+                "DIAGNOSTIC_NON_ISSUANCE"
+              ],
+              "received_at_prewrite": "2026-10-21T23:04:59.000000Z",
+              "reference": {
+                "kind": "forecasts",
+                "payload_sha256": "2aedd0187a595350e65ee8dfce5ec04cb07dd3558baa5f15973e91efa7f75ee5",
+                "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+              },
+              "remote_checkpoint_completed_at": null,
+              "remote_timely": false,
+              "retained": true,
+              "schema_version": "nba-pros004-admission-status-v2",
+              "status": "RETAINED_UNADMITTED",
+              "timing_complete": false,
+              "verified_at": "2026-10-21T23:04:59.000000Z"
+            },
+            "attempt_remote_checkpoint": {
+              "exception_message": "original lacks timely local persistence completion; retain it unadmitted",
+              "exception_type": "IntegrityError",
+              "result": "RAISED"
+            },
+            "case": "FORECAST_WRITE_COMPLETION_DELAY",
+            "exception_message": "forecast local persistence completed late; immutable original retained unadmitted",
+            "exception_type": "IntegrityError",
+            "generation_completed_at": "2026-10-21T23:04:59.000000Z",
+            "generation_started_at": "2026-10-21T23:04:59.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 8456,
+            "original_raw_sha256": "6eac8f4d3bb1837be5f64b4d9b75d2c96c5bbada2b58657e4605cc6aa09e7a11",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "2aedd0187a595350e65ee8dfce5ec04cb07dd3558baa5f15973e91efa7f75ee5",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:04:59.000000Z",
+            "restart_issued_models": 0,
+            "restart_retained_models": 1,
+            "restart_status": "RETAINED_UNADMITTED",
+            "result": "RAISED",
+            "synthetic_actual_completion_at": "2026-10-21T23:05:01.000000Z",
+            "synthetic_actual_write_completion_seconds_after_t90": 301,
+            "synthetic_prewrite_seconds_after_t90": 299,
+            "verified_at": "2026-10-21T23:04:59.000000Z"
+          },
+          {
+            "admission": {
+              "eligible_for_comparison": false,
+              "event_input_status": {
+                "eligible_for_comparison": false,
+                "event_input_status": null,
+                "generation_completed_at": null,
+                "local_persistence_completed_at": "2026-10-21T22:45:00.000000Z",
+                "local_timely": true,
+                "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+                "qualification": "UNAVAILABLE",
+                "reasons": [
+                  "DIAGNOSTIC_NON_ISSUANCE"
+                ],
+                "received_at_prewrite": "2026-10-21T22:45:00.000000Z",
+                "reference": {
+                  "kind": "research_inputs",
+                  "payload_sha256": "d76784fd3e1850d66843da49321044b61cae7bcfb4e685ec204c0909be19f425",
+                  "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+                },
+                "remote_checkpoint_completed_at": "2026-10-21T22:45:00.000000Z",
+                "remote_timely": true,
+                "retained": true,
+                "schema_version": "nba-pros004-admission-status-v2",
+                "status": "RETAINED_UNADMITTED",
+                "timing_complete": true,
+                "verified_at": null
+              },
+              "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+              "local_persistence_completed_at": "2026-10-21T23:02:06.000000Z",
+              "local_timely": false,
+              "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+              "qualification": "UNAVAILABLE",
+              "reasons": [
+                "LOCAL_COMPLETION_LATE_OR_INVALID",
+                "REMOTE_CHECKPOINT_UNACKNOWLEDGED",
+                "DIAGNOSTIC_NON_ISSUANCE"
+              ],
+              "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+              "reference": {
+                "kind": "forecasts",
+                "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+                "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+              },
+              "remote_checkpoint_completed_at": null,
+              "remote_timely": false,
+              "retained": true,
+              "schema_version": "nba-pros004-admission-status-v2",
+              "status": "RETAINED_UNADMITTED",
+              "timing_complete": false,
+              "verified_at": "2026-10-21T23:00:05.000000Z"
+            },
+            "attempt_remote_checkpoint": {
+              "exception_message": "original lacks timely local persistence completion; retain it unadmitted",
+              "exception_type": "IntegrityError",
+              "result": "RAISED"
+            },
+            "case": "FORECAST_WRITE_COMPLETION_DELAY",
+            "exception_message": "forecast local persistence completed late; immutable original retained unadmitted",
+            "exception_type": "IntegrityError",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 8456,
+            "original_raw_sha256": "368a9a7c01bcf19578a728b3f4c9a419473362e11386fa92127faaf2ae033c56",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 0,
+            "restart_retained_models": 1,
+            "restart_status": "RETAINED_UNADMITTED",
+            "result": "RAISED",
+            "synthetic_actual_completion_at": "2026-10-21T23:02:06.000000Z",
+            "synthetic_actual_write_completion_seconds_after_t90": 126,
+            "synthetic_prewrite_seconds_after_t90": 5,
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "admission": {
+              "eligible_for_comparison": false,
+              "event_input_status": {
+                "eligible_for_comparison": false,
+                "event_input_status": null,
+                "generation_completed_at": null,
+                "local_persistence_completed_at": "2026-10-21T22:45:00.000000Z",
+                "local_timely": true,
+                "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+                "qualification": "UNAVAILABLE",
+                "reasons": [
+                  "DIAGNOSTIC_NON_ISSUANCE"
+                ],
+                "received_at_prewrite": "2026-10-21T22:45:00.000000Z",
+                "reference": {
+                  "kind": "research_inputs",
+                  "payload_sha256": "d76784fd3e1850d66843da49321044b61cae7bcfb4e685ec204c0909be19f425",
+                  "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+                },
+                "remote_checkpoint_completed_at": "2026-10-21T22:45:00.000000Z",
+                "remote_timely": true,
+                "retained": true,
+                "schema_version": "nba-pros004-admission-status-v2",
+                "status": "RETAINED_UNADMITTED",
+                "timing_complete": true,
+                "verified_at": null
+              },
+              "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+              "local_persistence_completed_at": null,
+              "local_timely": false,
+              "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+              "qualification": "UNAVAILABLE",
+              "reasons": [
+                "LOCAL_COMPLETION_UNOBSERVED",
+                "REMOTE_CHECKPOINT_UNACKNOWLEDGED",
+                "DIAGNOSTIC_NON_ISSUANCE"
+              ],
+              "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+              "reference": {
+                "kind": "forecasts",
+                "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+                "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+              },
+              "remote_checkpoint_completed_at": null,
+              "remote_timely": false,
+              "retained": true,
+              "schema_version": "nba-pros004-admission-status-v2",
+              "status": "RETAINED_UNADMITTED",
+              "timing_complete": false,
+              "verified_at": "2026-10-21T23:00:05.000000Z"
+            },
+            "case": "INTERRUPTED_BEFORE_LOCAL_COMPLETION_ACKNOWLEDGMENT",
+            "exception_message": "SYNTHETIC interruption after immutable write before completion acknowledgment",
+            "exception_type": "OSError",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 8456,
+            "original_raw_sha256": "368a9a7c01bcf19578a728b3f4c9a419473362e11386fa92127faaf2ae033c56",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 0,
+            "restart_retained_models": 1,
+            "restart_status": "RETAINED_UNADMITTED",
+            "result": "RAISED",
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "admission": {
+              "eligible_for_comparison": false,
+              "event_input_status": {
+                "eligible_for_comparison": false,
+                "event_input_status": null,
+                "generation_completed_at": null,
+                "local_persistence_completed_at": "2026-10-21T22:45:00.000000Z",
+                "local_timely": true,
+                "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+                "qualification": "UNAVAILABLE",
+                "reasons": [
+                  "DIAGNOSTIC_NON_ISSUANCE"
+                ],
+                "received_at_prewrite": "2026-10-21T22:45:00.000000Z",
+                "reference": {
+                  "kind": "research_inputs",
+                  "payload_sha256": "d76784fd3e1850d66843da49321044b61cae7bcfb4e685ec204c0909be19f425",
+                  "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+                },
+                "remote_checkpoint_completed_at": "2026-10-21T22:45:00.000000Z",
+                "remote_timely": true,
+                "retained": true,
+                "schema_version": "nba-pros004-admission-status-v2",
+                "status": "RETAINED_UNADMITTED",
+                "timing_complete": true,
+                "verified_at": null
+              },
+              "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+              "local_persistence_completed_at": "2026-10-21T23:00:05.000000Z",
+              "local_timely": true,
+              "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+              "qualification": "UNAVAILABLE",
+              "reasons": [
+                "REMOTE_CHECKPOINT_UNACKNOWLEDGED",
+                "DIAGNOSTIC_NON_ISSUANCE"
+              ],
+              "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+              "reference": {
+                "kind": "forecasts",
+                "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+                "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+              },
+              "remote_checkpoint_completed_at": null,
+              "remote_timely": false,
+              "retained": true,
+              "schema_version": "nba-pros004-admission-status-v2",
+              "status": "RETAINED_UNADMITTED",
+              "timing_complete": false,
+              "verified_at": "2026-10-21T23:00:05.000000Z"
+            },
+            "case": "INTERRUPTED_REQUIRED_REMOTE_CHECKPOINT",
+            "exception_message": "SYNTHETIC interrupted required remote checkpoint/readback",
+            "exception_type": "OSError",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 8456,
+            "original_raw_sha256": "368a9a7c01bcf19578a728b3f4c9a419473362e11386fa92127faaf2ae033c56",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 0,
+            "restart_retained_models": 1,
+            "restart_status": "RETAINED_UNADMITTED",
+            "result": "RAISED",
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "admission": {
+              "eligible_for_comparison": false,
+              "event_input_status": null,
+              "generation_completed_at": null,
+              "local_persistence_completed_at": "2026-10-21T22:50:01.000000Z",
+              "local_timely": false,
+              "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+              "qualification": "UNAVAILABLE",
+              "reasons": [
+                "LOCAL_COMPLETION_LATE_OR_INVALID",
+                "REMOTE_CHECKPOINT_UNACKNOWLEDGED",
+                "DIAGNOSTIC_NON_ISSUANCE"
+              ],
+              "received_at_prewrite": "2026-10-21T22:49:59.000000Z",
+              "reference": {
+                "kind": "research_inputs",
+                "payload_sha256": "701daae801fadf1878e46f71ac6a664f007c5932cd4dcd6ecfdaaf5d34cbdbd9",
+                "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+              },
+              "remote_checkpoint_completed_at": null,
+              "remote_timely": false,
+              "retained": true,
+              "schema_version": "nba-pros004-admission-status-v2",
+              "status": "RETAINED_UNADMITTED",
+              "timing_complete": false,
+              "verified_at": null
+            },
+            "case": "EVENT_INPUT_WRITE_COMPLETES_AFTER_SELECTION_CLOSE",
+            "exception_message": "event input local persistence did not complete before selection closed; original retained unadmitted",
+            "exception_type": "IntegrityError",
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 11928,
+            "original_raw_sha256": "7f25e4c9725410fcda3120861170fcf0eb41646e9a3287975026bead421d019d",
+            "original_ref": {
+              "kind": "research_inputs",
+              "payload_sha256": "701daae801fadf1878e46f71ac6a664f007c5932cd4dcd6ecfdaaf5d34cbdbd9",
+              "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+            },
+            "received_at_prewrite": "2026-10-21T22:49:59.000000Z",
+            "result": "RAISED",
+            "selection_close_at": "2026-10-21T22:50:00.000000Z",
+            "synthetic_actual_completion_at": "2026-10-21T22:50:01.000000Z"
+          }
+        ],
+        "root": "/workspace/nml-pros004-readiness",
+        "schema_version": "nba-pros004-completion-reproduction-run-v1",
+        "source_requests": 0,
+        "source_sha256": {
+          "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+          "multisport_lab/pros004_completion.py": "444e339740c687604d6e591b87600bda08fe16550aa23f63d2daf6a5cdcd5719",
+          "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+          "multisport_lab/pros004_producer.py": "c4fb91c1c2c11c49730dc8809dda560376c75a14ddb7155c1d9dcadef0957cf4",
+          "multisport_lab/pros004_records.py": "ba749b78a0bda35061140d464b19d58f61895dd7bc97e965f702a24d1951ab26",
+          "tests/test_pros004_inputs.py": "7789c9ff04ded1bc0049ff2c5d3604df055deb6932efa95ea91acd18092e6fe8",
+          "tests/test_pros004_producer.py": "8e1537b63df9de55d893337cb3ccd3a7fdff541a0cee214e1a3dc08840b6d204"
+        },
+        "statistical_experiments_executed": 0,
+        "synthetic_history_rows": 3
+      }
+    },
+    {
+      "captured_stdout_raw_sha256": "9e581090491d2174e7236f123e326a185d2498449a9ca01dfb781f4796ec5b85",
+      "command": "python3 -O /tmp/nml-pros004-completion-reproduce.py /tmp/nml-pros004-completion-reviewed-c305",
+      "exit_code": 0,
+      "label": "old-optimized",
+      "result": {
+        "actual_completed_at": "2026-10-20T19:48:42.579940Z",
+        "actual_started_at": "2026-10-20T19:48:41.898830Z",
+        "all_explicit_expectations_passed": true,
+        "completion_gate_present": false,
+        "diagnostic_only": true,
+        "genuine_issuance_count": 0,
+        "git_head": "c305a6360c175413b5871170bcb23a1b7f7820ee",
+        "interpretation": "All source and completion clocks inside cases are synthetic. Three fictitious historical rows test unchanged formula and software controls only. No prospective activation, source capture, actual forecast issuance, real-data model evaluation, grading or settlement occurred.",
+        "optimized_python": true,
+        "results": [
+          {
+            "case": "FORECAST_WRITE_COMPLETION_DELAY",
+            "generation_completed_at": "2026-10-21T23:04:59.000000Z",
+            "generation_started_at": "2026-10-21T23:04:59.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 7834,
+            "original_raw_sha256": "b186a5a814e38fc6448b9adda032f42efb167f4a5408212589f961651119eb52",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "622fd502ba8a09c1ccd75b350de2ea073ac449b528a7d7123f2774bb48086afe",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:04:59.000000Z",
+            "restart_issued_models": 1,
+            "restart_retained_models": 1,
+            "restart_status": "PARTIAL_MISSING_PEERS",
+            "result": "ACCEPTED",
+            "synthetic_actual_completion_at": "2026-10-21T23:05:01.000000Z",
+            "synthetic_actual_write_completion_seconds_after_t90": 301,
+            "synthetic_prewrite_seconds_after_t90": 299,
+            "verified_at": "2026-10-21T23:04:59.000000Z"
+          },
+          {
+            "case": "FORECAST_WRITE_COMPLETION_DELAY",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 7834,
+            "original_raw_sha256": "84a99488493f6213d11e94bcff4782ce6a1518ed92c501acd8f603b319f464d4",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "46248b05a805efdcc59c32bee8ec61c9597f7ee2cd64fa28d8efa81a48019be5",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 1,
+            "restart_retained_models": 1,
+            "restart_status": "PARTIAL_MISSING_PEERS",
+            "result": "ACCEPTED",
+            "synthetic_actual_completion_at": "2026-10-21T23:02:06.000000Z",
+            "synthetic_actual_write_completion_seconds_after_t90": 126,
+            "synthetic_prewrite_seconds_after_t90": 5,
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "case": "INTERRUPTED_BEFORE_LOCAL_COMPLETION_ACKNOWLEDGMENT",
+            "exception_message": "SYNTHETIC interruption after immutable write before completion acknowledgment",
+            "exception_type": "OSError",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 7834,
+            "original_raw_sha256": "84a99488493f6213d11e94bcff4782ce6a1518ed92c501acd8f603b319f464d4",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "46248b05a805efdcc59c32bee8ec61c9597f7ee2cd64fa28d8efa81a48019be5",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 1,
+            "restart_retained_models": 1,
+            "restart_status": "PARTIAL_MISSING_PEERS",
+            "result": "RAISED",
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "case": "INTERRUPTED_REQUIRED_REMOTE_CHECKPOINT",
+            "exception_message": "SYNTHETIC interrupted required remote checkpoint/readback",
+            "exception_type": "OSError",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 7834,
+            "original_raw_sha256": "84a99488493f6213d11e94bcff4782ce6a1518ed92c501acd8f603b319f464d4",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "46248b05a805efdcc59c32bee8ec61c9597f7ee2cd64fa28d8efa81a48019be5",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 1,
+            "restart_retained_models": 1,
+            "restart_status": "PARTIAL_MISSING_PEERS",
+            "result": "RAISED",
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "case": "EVENT_INPUT_WRITE_COMPLETES_AFTER_SELECTION_CLOSE",
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 11928,
+            "original_raw_sha256": "7f25e4c9725410fcda3120861170fcf0eb41646e9a3287975026bead421d019d",
+            "original_ref": {
+              "kind": "research_inputs",
+              "payload_sha256": "701daae801fadf1878e46f71ac6a664f007c5932cd4dcd6ecfdaaf5d34cbdbd9",
+              "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+            },
+            "received_at_prewrite": "2026-10-21T22:49:59.000000Z",
+            "result": "ACCEPTED",
+            "selection_close_at": "2026-10-21T22:50:00.000000Z",
+            "synthetic_actual_completion_at": "2026-10-21T22:50:01.000000Z"
+          }
+        ],
+        "root": "/tmp/nml-pros004-completion-reviewed-c305",
+        "schema_version": "nba-pros004-completion-reproduction-run-v1",
+        "source_requests": 0,
+        "source_sha256": {
+          "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+          "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+          "multisport_lab/pros004_producer.py": "66171ef9daaf1228b1b151728bcba1fc8d166928b9a9110a0c84bed77a139f3c",
+          "multisport_lab/pros004_records.py": "b07a46d95a9e41d0c9bd64d27547e53ae3f1277ac2a9287532d805efcaaf6469",
+          "tests/test_pros004_inputs.py": "7789c9ff04ded1bc0049ff2c5d3604df055deb6932efa95ea91acd18092e6fe8",
+          "tests/test_pros004_producer.py": "876ff13dcb3ef9816e8021610680e3c271962716b8bb826569631f85b47cc45e"
+        },
+        "statistical_experiments_executed": 0,
+        "synthetic_history_rows": 3
+      }
+    },
+    {
+      "captured_stdout_raw_sha256": "0909f8a5964354a787a0d2e0bcb55e2733c2000a3fef093d3530b31562d3f099",
+      "command": "python3 -O /tmp/nml-pros004-completion-reproduce.py /workspace/nml-pros004-readiness",
+      "exit_code": 0,
+      "label": "fixed-optimized",
+      "result": {
+        "actual_completed_at": "2026-10-20T19:48:42.572512Z",
+        "actual_started_at": "2026-10-20T19:48:41.574026Z",
+        "all_explicit_expectations_passed": true,
+        "completion_gate_present": true,
+        "diagnostic_only": true,
+        "genuine_issuance_count": 0,
+        "git_head": "bce2c0912415afc0ba5bc2b873ffccabed0b5d73",
+        "interpretation": "All source and completion clocks inside cases are synthetic. Three fictitious historical rows test unchanged formula and software controls only. No prospective activation, source capture, actual forecast issuance, real-data model evaluation, grading or settlement occurred.",
+        "optimized_python": true,
+        "results": [
+          {
+            "admission": {
+              "eligible_for_comparison": false,
+              "event_input_status": {
+                "eligible_for_comparison": false,
+                "event_input_status": null,
+                "generation_completed_at": null,
+                "local_persistence_completed_at": "2026-10-21T22:45:00.000000Z",
+                "local_timely": true,
+                "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+                "qualification": "UNAVAILABLE",
+                "reasons": [
+                  "DIAGNOSTIC_NON_ISSUANCE"
+                ],
+                "received_at_prewrite": "2026-10-21T22:45:00.000000Z",
+                "reference": {
+                  "kind": "research_inputs",
+                  "payload_sha256": "d76784fd3e1850d66843da49321044b61cae7bcfb4e685ec204c0909be19f425",
+                  "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+                },
+                "remote_checkpoint_completed_at": "2026-10-21T22:45:00.000000Z",
+                "remote_timely": true,
+                "retained": true,
+                "schema_version": "nba-pros004-admission-status-v2",
+                "status": "RETAINED_UNADMITTED",
+                "timing_complete": true,
+                "verified_at": null
+              },
+              "generation_completed_at": "2026-10-21T23:04:59.000000Z",
+              "local_persistence_completed_at": "2026-10-21T23:05:01.000000Z",
+              "local_timely": false,
+              "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+              "qualification": "UNAVAILABLE",
+              "reasons": [
+                "LOCAL_COMPLETION_LATE_OR_INVALID",
+                "REMOTE_CHECKPOINT_UNACKNOWLEDGED",
+                "DIAGNOSTIC_NON_ISSUANCE"
+              ],
+              "received_at_prewrite": "2026-10-21T23:04:59.000000Z",
+              "reference": {
+                "kind": "forecasts",
+                "payload_sha256": "2aedd0187a595350e65ee8dfce5ec04cb07dd3558baa5f15973e91efa7f75ee5",
+                "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+              },
+              "remote_checkpoint_completed_at": null,
+              "remote_timely": false,
+              "retained": true,
+              "schema_version": "nba-pros004-admission-status-v2",
+              "status": "RETAINED_UNADMITTED",
+              "timing_complete": false,
+              "verified_at": "2026-10-21T23:04:59.000000Z"
+            },
+            "attempt_remote_checkpoint": {
+              "exception_message": "original lacks timely local persistence completion; retain it unadmitted",
+              "exception_type": "IntegrityError",
+              "result": "RAISED"
+            },
+            "case": "FORECAST_WRITE_COMPLETION_DELAY",
+            "exception_message": "forecast local persistence completed late; immutable original retained unadmitted",
+            "exception_type": "IntegrityError",
+            "generation_completed_at": "2026-10-21T23:04:59.000000Z",
+            "generation_started_at": "2026-10-21T23:04:59.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 8456,
+            "original_raw_sha256": "6eac8f4d3bb1837be5f64b4d9b75d2c96c5bbada2b58657e4605cc6aa09e7a11",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "2aedd0187a595350e65ee8dfce5ec04cb07dd3558baa5f15973e91efa7f75ee5",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:04:59.000000Z",
+            "restart_issued_models": 0,
+            "restart_retained_models": 1,
+            "restart_status": "RETAINED_UNADMITTED",
+            "result": "RAISED",
+            "synthetic_actual_completion_at": "2026-10-21T23:05:01.000000Z",
+            "synthetic_actual_write_completion_seconds_after_t90": 301,
+            "synthetic_prewrite_seconds_after_t90": 299,
+            "verified_at": "2026-10-21T23:04:59.000000Z"
+          },
+          {
+            "admission": {
+              "eligible_for_comparison": false,
+              "event_input_status": {
+                "eligible_for_comparison": false,
+                "event_input_status": null,
+                "generation_completed_at": null,
+                "local_persistence_completed_at": "2026-10-21T22:45:00.000000Z",
+                "local_timely": true,
+                "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+                "qualification": "UNAVAILABLE",
+                "reasons": [
+                  "DIAGNOSTIC_NON_ISSUANCE"
+                ],
+                "received_at_prewrite": "2026-10-21T22:45:00.000000Z",
+                "reference": {
+                  "kind": "research_inputs",
+                  "payload_sha256": "d76784fd3e1850d66843da49321044b61cae7bcfb4e685ec204c0909be19f425",
+                  "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+                },
+                "remote_checkpoint_completed_at": "2026-10-21T22:45:00.000000Z",
+                "remote_timely": true,
+                "retained": true,
+                "schema_version": "nba-pros004-admission-status-v2",
+                "status": "RETAINED_UNADMITTED",
+                "timing_complete": true,
+                "verified_at": null
+              },
+              "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+              "local_persistence_completed_at": "2026-10-21T23:02:06.000000Z",
+              "local_timely": false,
+              "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+              "qualification": "UNAVAILABLE",
+              "reasons": [
+                "LOCAL_COMPLETION_LATE_OR_INVALID",
+                "REMOTE_CHECKPOINT_UNACKNOWLEDGED",
+                "DIAGNOSTIC_NON_ISSUANCE"
+              ],
+              "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+              "reference": {
+                "kind": "forecasts",
+                "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+                "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+              },
+              "remote_checkpoint_completed_at": null,
+              "remote_timely": false,
+              "retained": true,
+              "schema_version": "nba-pros004-admission-status-v2",
+              "status": "RETAINED_UNADMITTED",
+              "timing_complete": false,
+              "verified_at": "2026-10-21T23:00:05.000000Z"
+            },
+            "attempt_remote_checkpoint": {
+              "exception_message": "original lacks timely local persistence completion; retain it unadmitted",
+              "exception_type": "IntegrityError",
+              "result": "RAISED"
+            },
+            "case": "FORECAST_WRITE_COMPLETION_DELAY",
+            "exception_message": "forecast local persistence completed late; immutable original retained unadmitted",
+            "exception_type": "IntegrityError",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 8456,
+            "original_raw_sha256": "368a9a7c01bcf19578a728b3f4c9a419473362e11386fa92127faaf2ae033c56",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 0,
+            "restart_retained_models": 1,
+            "restart_status": "RETAINED_UNADMITTED",
+            "result": "RAISED",
+            "synthetic_actual_completion_at": "2026-10-21T23:02:06.000000Z",
+            "synthetic_actual_write_completion_seconds_after_t90": 126,
+            "synthetic_prewrite_seconds_after_t90": 5,
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "admission": {
+              "eligible_for_comparison": false,
+              "event_input_status": {
+                "eligible_for_comparison": false,
+                "event_input_status": null,
+                "generation_completed_at": null,
+                "local_persistence_completed_at": "2026-10-21T22:45:00.000000Z",
+                "local_timely": true,
+                "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+                "qualification": "UNAVAILABLE",
+                "reasons": [
+                  "DIAGNOSTIC_NON_ISSUANCE"
+                ],
+                "received_at_prewrite": "2026-10-21T22:45:00.000000Z",
+                "reference": {
+                  "kind": "research_inputs",
+                  "payload_sha256": "d76784fd3e1850d66843da49321044b61cae7bcfb4e685ec204c0909be19f425",
+                  "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+                },
+                "remote_checkpoint_completed_at": "2026-10-21T22:45:00.000000Z",
+                "remote_timely": true,
+                "retained": true,
+                "schema_version": "nba-pros004-admission-status-v2",
+                "status": "RETAINED_UNADMITTED",
+                "timing_complete": true,
+                "verified_at": null
+              },
+              "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+              "local_persistence_completed_at": null,
+              "local_timely": false,
+              "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+              "qualification": "UNAVAILABLE",
+              "reasons": [
+                "LOCAL_COMPLETION_UNOBSERVED",
+                "REMOTE_CHECKPOINT_UNACKNOWLEDGED",
+                "DIAGNOSTIC_NON_ISSUANCE"
+              ],
+              "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+              "reference": {
+                "kind": "forecasts",
+                "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+                "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+              },
+              "remote_checkpoint_completed_at": null,
+              "remote_timely": false,
+              "retained": true,
+              "schema_version": "nba-pros004-admission-status-v2",
+              "status": "RETAINED_UNADMITTED",
+              "timing_complete": false,
+              "verified_at": "2026-10-21T23:00:05.000000Z"
+            },
+            "case": "INTERRUPTED_BEFORE_LOCAL_COMPLETION_ACKNOWLEDGMENT",
+            "exception_message": "SYNTHETIC interruption after immutable write before completion acknowledgment",
+            "exception_type": "OSError",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 8456,
+            "original_raw_sha256": "368a9a7c01bcf19578a728b3f4c9a419473362e11386fa92127faaf2ae033c56",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 0,
+            "restart_retained_models": 1,
+            "restart_status": "RETAINED_UNADMITTED",
+            "result": "RAISED",
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "admission": {
+              "eligible_for_comparison": false,
+              "event_input_status": {
+                "eligible_for_comparison": false,
+                "event_input_status": null,
+                "generation_completed_at": null,
+                "local_persistence_completed_at": "2026-10-21T22:45:00.000000Z",
+                "local_timely": true,
+                "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+                "qualification": "UNAVAILABLE",
+                "reasons": [
+                  "DIAGNOSTIC_NON_ISSUANCE"
+                ],
+                "received_at_prewrite": "2026-10-21T22:45:00.000000Z",
+                "reference": {
+                  "kind": "research_inputs",
+                  "payload_sha256": "d76784fd3e1850d66843da49321044b61cae7bcfb4e685ec204c0909be19f425",
+                  "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+                },
+                "remote_checkpoint_completed_at": "2026-10-21T22:45:00.000000Z",
+                "remote_timely": true,
+                "retained": true,
+                "schema_version": "nba-pros004-admission-status-v2",
+                "status": "RETAINED_UNADMITTED",
+                "timing_complete": true,
+                "verified_at": null
+              },
+              "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+              "local_persistence_completed_at": "2026-10-21T23:00:05.000000Z",
+              "local_timely": true,
+              "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+              "qualification": "UNAVAILABLE",
+              "reasons": [
+                "REMOTE_CHECKPOINT_UNACKNOWLEDGED",
+                "DIAGNOSTIC_NON_ISSUANCE"
+              ],
+              "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+              "reference": {
+                "kind": "forecasts",
+                "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+                "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+              },
+              "remote_checkpoint_completed_at": null,
+              "remote_timely": false,
+              "retained": true,
+              "schema_version": "nba-pros004-admission-status-v2",
+              "status": "RETAINED_UNADMITTED",
+              "timing_complete": false,
+              "verified_at": "2026-10-21T23:00:05.000000Z"
+            },
+            "case": "INTERRUPTED_REQUIRED_REMOTE_CHECKPOINT",
+            "exception_message": "SYNTHETIC interrupted required remote checkpoint/readback",
+            "exception_type": "OSError",
+            "generation_completed_at": "2026-10-21T23:00:05.000000Z",
+            "generation_started_at": "2026-10-21T23:00:05.000000Z",
+            "missing_peer_preserved": true,
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 8456,
+            "original_raw_sha256": "368a9a7c01bcf19578a728b3f4c9a419473362e11386fa92127faaf2ae033c56",
+            "original_ref": {
+              "kind": "forecasts",
+              "payload_sha256": "734d0e37328e8166e601cc2f9d07aa095172ccaccfc9d133324c7feac6835b06",
+              "record_id": "759ae67d5cb68884e10911ca7b9ff21e889f36b76fcb9c9258ec2b3f336bc3d4"
+            },
+            "received_at_prewrite": "2026-10-21T23:00:05.000000Z",
+            "restart_issued_models": 0,
+            "restart_retained_models": 1,
+            "restart_status": "RETAINED_UNADMITTED",
+            "result": "RAISED",
+            "verified_at": "2026-10-21T23:00:05.000000Z"
+          },
+          {
+            "admission": {
+              "eligible_for_comparison": false,
+              "event_input_status": null,
+              "generation_completed_at": null,
+              "local_persistence_completed_at": "2026-10-21T22:50:01.000000Z",
+              "local_timely": false,
+              "metadata_publication_status": "NOT_ESTABLISHED_BY_LOCAL_JOURNAL",
+              "qualification": "UNAVAILABLE",
+              "reasons": [
+                "LOCAL_COMPLETION_LATE_OR_INVALID",
+                "REMOTE_CHECKPOINT_UNACKNOWLEDGED",
+                "DIAGNOSTIC_NON_ISSUANCE"
+              ],
+              "received_at_prewrite": "2026-10-21T22:49:59.000000Z",
+              "reference": {
+                "kind": "research_inputs",
+                "payload_sha256": "701daae801fadf1878e46f71ac6a664f007c5932cd4dcd6ecfdaaf5d34cbdbd9",
+                "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+              },
+              "remote_checkpoint_completed_at": null,
+              "remote_timely": false,
+              "retained": true,
+              "schema_version": "nba-pros004-admission-status-v2",
+              "status": "RETAINED_UNADMITTED",
+              "timing_complete": false,
+              "verified_at": null
+            },
+            "case": "EVENT_INPUT_WRITE_COMPLETES_AFTER_SELECTION_CLOSE",
+            "exception_message": "event input local persistence did not complete before selection closed; original retained unadmitted",
+            "exception_type": "IntegrityError",
+            "original_bytes_preserved": true,
+            "original_encoded_bytes": 11928,
+            "original_raw_sha256": "7f25e4c9725410fcda3120861170fcf0eb41646e9a3287975026bead421d019d",
+            "original_ref": {
+              "kind": "research_inputs",
+              "payload_sha256": "701daae801fadf1878e46f71ac6a664f007c5932cd4dcd6ecfdaaf5d34cbdbd9",
+              "record_id": "b07d08f48783654ba201ce3254459f65a64ca42593cd187158c05c010ef2e261"
+            },
+            "received_at_prewrite": "2026-10-21T22:49:59.000000Z",
+            "result": "RAISED",
+            "selection_close_at": "2026-10-21T22:50:00.000000Z",
+            "synthetic_actual_completion_at": "2026-10-21T22:50:01.000000Z"
+          }
+        ],
+        "root": "/workspace/nml-pros004-readiness",
+        "schema_version": "nba-pros004-completion-reproduction-run-v1",
+        "source_requests": 0,
+        "source_sha256": {
+          "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+          "multisport_lab/pros004_completion.py": "444e339740c687604d6e591b87600bda08fe16550aa23f63d2daf6a5cdcd5719",
+          "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+          "multisport_lab/pros004_producer.py": "c4fb91c1c2c11c49730dc8809dda560376c75a14ddb7155c1d9dcadef0957cf4",
+          "multisport_lab/pros004_records.py": "ba749b78a0bda35061140d464b19d58f61895dd7bc97e965f702a24d1951ab26",
+          "tests/test_pros004_inputs.py": "7789c9ff04ded1bc0049ff2c5d3604df055deb6932efa95ea91acd18092e6fe8",
+          "tests/test_pros004_producer.py": "8e1537b63df9de55d893337cb3ccd3a7fdff541a0cee214e1a3dc08840b6d204"
+        },
+        "statistical_experiments_executed": 0,
+        "synthetic_history_rows": 3
+      }
+    }
+  ],
+  "schema_version": "nba-pros004-completion-reproduction-evidence-v1",
+  "setup_commands": [
+    "git clone --no-checkout --shared /workspace/nml-pros004-readiness /tmp/nml-pros004-completion-reviewed-c305",
+    "git -C /tmp/nml-pros004-completion-reviewed-c305 checkout --detach c305a6360c175413b5871170bcb23a1b7f7820ee"
+  ],
+  "summary": [
+    "Both supplied late-write cases accepted by exact reviewed c305 and counted one issued model on fresh restart; fixed bytes reject after preserving original, with local_timely false and restart issued_models zero.",
+    "An interruption after immutable write before local completion acknowledgement raises in both revisions. Reviewed recovery still counts original as issued; fixed recovery retains it without admitting it and records LOCAL_COMPLETION_UNOBSERVED.",
+    "Required remote checkpoint interruption preserves R0 and missing K0. Fixed recovery distinguishes timely local persistence from absent remote completion; recovery generates no partner.",
+    "Event input starting one second before selection close and completing one second after is accepted by reviewed c305 but rejected by fixed bytes; late input remains retained and unadmitted."
+  ]
+}
