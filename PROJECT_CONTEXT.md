@@ -2,6 +2,26 @@
 
 Updated: October 22, 2026.
 
+## Current public release and recurring implementation
+
+PR #15 is merged at `377a3e4e69749efeee912a75c51673144f9fc27f`. Pages run
+39741220070 deployed that commit; public hashes and desktop/mobile checks passed.
+The site retains six historical bundles/grades and zero genuine forecasts/offers.
+The separately approved first daily cycle still needs its owner-authenticated
+October 22 22:00–strictly before22:30 UTC launch; no future dispatch is installed.
+Its 23 producer files, 19 original records, identity and windows remain unchanged.
+
+`implementation/sdv-recurring-pregame` now contains a separate production
+coordinator, full eligible-event/active-roster selection, native paired R0/K0,
+shared source archive, immutable shard recovery, outcome/correction grading and
+date-paged website candidate. It is not installed or activated. See
+`docs/SDV_PRODUCTION_OPERATIONS.md` and the latest handoff for exact verification.
+Hosted archive upload/readback is unresolved: the first attempt failed, and
+automatic approval review blocked another mutation. A locally reproduced upload
+framing defect is fixed; local checks do not prove GitHub durability or timing.
+OPS002/PROS004/S0 and all frozen studies remain inactive/unchanged. Missing prices
+remain independent of statistical forecasts and grades; NO_ACTION remains valid.
+
 ## Current delivery candidate — SportsDataverse daily-snapshot path implemented
 
 PR #13 / `implementation/sdv-daily-forecast` now connects actual licensed public

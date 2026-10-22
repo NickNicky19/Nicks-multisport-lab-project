@@ -86,7 +86,7 @@ class DisplayMetadataTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as name:
             base=Path(name);output=base/'site'
             first=build_site(ROOT,output,build_commit='a'*40,now=self.now)
-            self.assertEqual(first['schema_version'],6)
+            self.assertEqual(first['schema_version'],7)
             self.assertIsNone(first['display_error'])
             old=first['display'];before=(output/'data'/old['path']).read_bytes()
             from unittest.mock import patch

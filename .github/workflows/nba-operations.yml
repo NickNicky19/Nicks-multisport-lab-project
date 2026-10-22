@@ -1,32 +1,183 @@
-name: NBA research postgame coordinator
+name: NBA research operations coordinator
 
-# First-cycle final statistics and catch-up only. Recurring pregame issuance is
-# NOT_IMPLEMENTED. This never dispatches or changes the frozen first producer.
+# One coordinator. This never dispatches the protected owner-only first producer.
 on:
   schedule:
-    - cron: '17 13 * * *'
+    - cron: '2,17,32,47 * * * *'
   workflow_dispatch:
     inputs:
       cycle_id:
-        description: Fixed first-cycle identifier for owner catch-up
+        description: Protected first-cycle owner catch-up identifier
         required: true
         type: string
         default: NBA-SDV-DAILY-001-20261023-401909094
+      mode:
+        description: Actual due phases or isolated non-issuance archive diagnostic
+        type: choice
+        options: [operate, diagnostic]
+        default: operate
+        required: true
 
 permissions:
   contents: read
 
+# Preserve the protected first-cycle lock; queued runs must recheck actual clocks.
 concurrency:
   group: nba-sdv-daily-001-20261023-401909094-writer
   cancel-in-progress: false
 
 jobs:
-  postgame:
+  prepare:
     if: >-
       github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
       github.ref == 'refs/heads/main' &&
       (github.event_name == 'schedule' ||
-       (github.event_name == 'workflow_dispatch' && github.actor == 'NickNicky19'))
+       (github.event_name == 'workflow_dispatch' && github.actor == 'NickNicky19' && inputs.mode == 'operate'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: write
+      issues: write
+    outputs:
+      matrix: ${{ steps.prepare.outputs.matrix }}
+      has_tasks: ${{ steps.prepare.outputs.has_tasks }}
+      grade_matrix: ${{ steps.prepare.outputs.grade_matrix }}
+      has_grade_tasks: ${{ steps.prepare.outputs.has_grade_tasks }}
+      has_failures: ${{ steps.prepare.outputs.has_failures }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - run: gh auth setup-git
+      - name: Recover registry, reserve bounded requests and prepare due phases
+        id: prepare
+        run: python3 -m multisport_lab.sdv_production_runner prepare --work-root "$RUNNER_TEMP/nml-production-prepare"
+      - name: Preserve factual partial source evidence and report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nba-production-prepare-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/nml-production-prepare/
+
+  work:
+    needs: prepare
+    if: needs.prepare.outputs.has_tasks == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PRODUCTION_TASK_JSON: ${{ toJSON(matrix.task) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - run: gh auth setup-git
+      - name: Recover originals and execute only the still-timely phase
+        run: python3 -m multisport_lab.sdv_production_runner work --work-root "$RUNNER_TEMP/nml-production-work"
+      - name: Preserve actual partial state
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nba-production-work-${{ strategy.job-index }}-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/nml-production-work/
+
+  grade:
+    needs: [prepare, work]
+    if: always() && needs.prepare.result == 'success' && needs.prepare.outputs.has_grade_tasks == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix: ${{ fromJSON(needs.prepare.outputs.grade_matrix) }}
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PRODUCTION_TASK_JSON: ${{ toJSON(matrix.task) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - run: gh auth setup-git
+      - name: Recover originals and execute only the still-timely phase
+        run: python3 -m multisport_lab.sdv_production_runner work --work-root "$RUNNER_TEMP/nml-production-grade"
+      - name: Preserve actual partial state
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nba-production-grade-${{ strategy.job-index }}-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/nml-production-grade/
+
+  finish:
+    needs: [prepare, work, grade]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: write
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PRODUCTION_PREPARE_HAS_FAILURES: ${{ needs.prepare.outputs.has_failures }}
+      PRODUCTION_PREGAME_RESULT: ${{ needs.work.result }}
+      PRODUCTION_GRADE_RESULT: ${{ needs.grade.result }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - run: gh auth setup-git
+      - name: Recover shard heads and reconcile actual website publication
+        run: python3 -m multisport_lab.sdv_production_runner finish --work-root "$RUNNER_TEMP/nml-production-finish"
+      - name: Preserve factual finish report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nba-production-finish-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/nml-production-finish/execution-report.json
+
+  first-cycle-postgame:
+    if: >-
+      github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'schedule' ||
+       (github.event_name == 'workflow_dispatch' && github.actor == 'NickNicky19' && inputs.mode == 'operate'))
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -44,23 +195,47 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.12'
-      - name: Prepare existing repository authentication
-        run: gh auth setup-git
-      - name: Recover first-cycle originals and process admitted final evidence
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 -m multisport_lab.sdv_postgame_runner run \
-            --work-root "$RUNNER_TEMP/nml-nba-operations"
-      - name: Preserve factual report and bounded emergency originals
+      - run: gh auth setup-git
+      - name: Existing first-cycle outcomes only (no producer dispatch)
+        run: python3 -m multisport_lab.sdv_postgame_runner run --work-root "$RUNNER_TEMP/nml-nba-operations"
+      - name: Preserve factual first-cycle report and emergency originals
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: nba-postgame-${{ github.run_id }}-${{ github.run_attempt }}
           retention-days: 14
           if-no-files-found: warn
-          include-hidden-files: false
           path: |
             ${{ runner.temp }}/nml-nba-operations/execution-report.json
             ${{ runner.temp }}/nml-nba-operations/state/
             ${{ runner.temp }}/nml-nba-operations/originals/
+
+  diagnostic:
+    if: >-
+      github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
+      github.event_name == 'workflow_dispatch' && inputs.mode == 'diagnostic'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - run: gh auth setup-git
+      - name: Non-issuance full-history storage and execution diagnostic
+        run: python3 scripts/diagnose_sdv_production.py --work-dir "$RUNNER_TEMP/nml-production-diagnostic" --hosted --producer-commit "$GITHUB_SHA" --authorize-diagnostic-archive
+      - name: Preserve diagnostic proof and partial originals
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nba-production-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/nml-production-diagnostic/

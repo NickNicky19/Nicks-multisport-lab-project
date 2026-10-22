@@ -2,6 +2,43 @@
 
 Updated: October 22, 2026 (UTC).
 
+
+## October 22 — PR #15 merged, deployed and independently checked
+
+The approved exact head `2640d90b833f2b6bd4afe88583609699bb72d8aa` was
+revalidated and landed through the guarded PR Completion helper by merge commit.
+Actual main merge: **`377a3e4e69749efeee912a75c51673144f9fc27f`**, at
+07:32:38 UTC. Required checks/review conditions and the landing policy were
+unchanged. No administrator override, protection bypass or force push occurred.
+Pages run **39741220070** deployed successfully at 07:44:41 UTC. The public site
+serves that exact merge, with publication clock `2026-10-22T07:44:10.569642Z`.
+All six data assets and sixteen static files passed exact hash checks. Desktop
+1440 px and mobile 390/320 px browser checks passed readable historical identities,
+matchups/dates, original IDs, independent clocks, History refresh, all 14
+categories, six historical grades, and every scope/direction/2–6-leg NO_ACTION
+combination. Native Chromium cannot trust this environment's proxy CA; browser
+checks used TLS-verified actual served bytes at the public URL, without disabling
+TLS verification. Complete commands/results/limitations are retained in
+`evidence/deployment/2026-10-22-pr15-pages.json`.
+
+At this deployment there are **six historical bundles and six historical grades;
+zero genuine forecasts, prospective outcomes/grades, published offers, qualified
+tickets and financial settlements**. No unchanged website redeployment followed.
+The default-branch workflow readback is retained separately in
+`evidence/deployment/2026-10-22-installed-operations-after-pr15.json`.
+
+The separately approved first cycle is unchanged: producer
+`0c37b30060c2dffb20226bd3efbedc65a75d04e3`, all 23 protected source files and
+19 original ledger records retained byte-for-byte. Approval does not install a
+future dispatch. The owner must open **Actions → Owner manual daily-snapshot NBA
+research cycle → Run workflow**, select **main**, and supply the exact cycle, producer
+and confirmation from `docs/SDV_DAILY_ACTIVATION_PACKAGE.md`, on October 22
+**22:00 through strictly before 22:30 UTC / 5:00–before 5:30 p.m. CDT**. The
+capture and issuance windows remain 23:00–00:00 and October 23 00:00–00:15 UTC.
+No early dispatch, owner impersonation, replacement subjects, backdating or
+unattended launch promise is made. The following new recurring implementation
+is separate from those protected execution files and requires its own review.
+
 ## October 22 — recurring planning and exact-source recovery preparation
 
 This is continued implementation on **`implementation/sdv-recurring-pregame`**

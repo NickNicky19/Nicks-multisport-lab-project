@@ -1,0 +1,52 @@
+{
+  "schema_version": "nml-production-private-preview-verification-v1",
+  "checked_at": "2026-10-22T08:31:51.702764+00:00",
+  "preview_root": "/tmp/nml-production-dev-preview",
+  "synthetic_only": true,
+  "source_http_requests": 0,
+  "new_model_fits": 0,
+  "public_deployment": false,
+  "results": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "dev_forecasts": 2,
+      "genuine_forecasts": 0,
+      "historical_forecasts": 6,
+      "all14_categories": true,
+      "readable_provenance": true,
+      "history_refresh": true,
+      "performance_excludes_development": true,
+      "builder_scope_direction_size_matrix_no_action": true,
+      "no_document_overflow": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "dev_forecasts": 2,
+      "genuine_forecasts": 0,
+      "historical_forecasts": 6,
+      "all14_categories": true,
+      "readable_provenance": true,
+      "history_refresh": true,
+      "performance_excludes_development": true,
+      "builder_scope_direction_size_matrix_no_action": true,
+      "no_document_overflow": true
+    },
+    {
+      "width": 320,
+      "height": 760,
+      "dev_forecasts": 2,
+      "genuine_forecasts": 0,
+      "historical_forecasts": 6,
+      "all14_categories": true,
+      "readable_provenance": true,
+      "history_refresh": true,
+      "performance_excludes_development": true,
+      "builder_scope_direction_size_matrix_no_action": true,
+      "no_document_overflow": true
+    }
+  ],
+  "javascript_errors": [],
+  "external_requests": []
+}

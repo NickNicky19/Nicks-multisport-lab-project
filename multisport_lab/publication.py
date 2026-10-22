@@ -259,17 +259,20 @@ def _write_atomic(path: Path, raw: bytes):
 
 
 LEGACY_CHANNELS = ("pros004", "display", "offers", "paired_research")
-AUXILIARY_CHANNELS = (*LEGACY_CHANNELS, "daily_research")
+DAILY_CHANNELS = (*LEGACY_CHANNELS, "daily_research")
+AUXILIARY_CHANNELS = (*DAILY_CHANNELS, "production_research")
 REJECTED_UPDATE = (ValueError, KeyError, TypeError, OSError, ImportError)
 
 
 def _channel_names(version: int) -> tuple[str, ...]:
     if type(version) is not int:
         return ()
-    return {3: ("pros004",), 4: ("display",), 5: LEGACY_CHANNELS, 6: AUXILIARY_CHANNELS}.get(version, ())
+    return {3: ("pros004",), 4: ("display",), 5: LEGACY_CHANNELS, 6: DAILY_CHANNELS,
+            7: AUXILIARY_CHANNELS}.get(version, ())
 
 
-def _read_channel(data_dir: Path, channel: str, descriptor: dict, snapshots: list[dict], *, now: datetime):
+def _read_channel(data_dir: Path, channel: str, descriptor: dict, snapshots: list[dict], *, now: datetime,
+                  allow_production_development: bool = False):
     """Each independent channel validates its own paths before opening any asset."""
     if channel == "pros004":
         from .pros004_publication import read_publication
@@ -286,12 +289,16 @@ def _read_channel(data_dir: Path, channel: str, descriptor: dict, snapshots: lis
     if channel == "daily_research":
         from .sdv_daily_publication import read_asset
         return read_asset(data_dir, descriptor, now=now)
+    if channel == "production_research":
+        from .sdv_production_publication import read_publication
+        return read_publication(data_dir, descriptor, now=now,
+                                allow_development=allow_production_development)
     raise IntegrityError("Unsupported publication channel")
 
 
 def read_manifest(data_dir: Path, *, now: datetime, validate_display: bool = True,
-                  validate_auxiliary: bool = True) -> dict:
-    """Read legacy manifests exactly; v6 adds independent daily research.
+                  validate_auxiliary: bool = True, allow_production_development: bool = False) -> dict:
+    """Read legacy manifests exactly; v7 adds independent production research.
 
     Builders can recover the verified core before separately inspecting optional
     channels. Public artifact verification uses the strict default.
@@ -301,7 +308,7 @@ def read_manifest(data_dir: Path, *, now: datetime, validate_display: bool = Tru
     fields = {"schema_version", "snapshot_id", "build_commit", "published_at", "publication_status", "supported_sports", "sports", "errors"}
     fields |= {field for channel in _channel_names(version) for field in (channel, channel + "_error")}
     if (type(manifest) is not dict or set(manifest) != fields
-            or type(version) is not int or version not in {1, 2, 3, 4, 5, 6}
+            or type(version) is not int or version not in {1, 2, 3, 4, 5, 6, 7}
             or manifest["publication_status"] != "RESEARCH_ONLY"
             or not re.fullmatch(r"[a-f0-9]{40}", manifest["build_commit"])
             or utc(manifest["published_at"]) > utc(now)):
@@ -349,7 +356,8 @@ def read_manifest(data_dir: Path, *, now: datetime, validate_display: bool = Tru
             if error is None:
                 raise IntegrityError("Missing publication channel requires an explanation")
         else:
-            _read_channel(data_dir, channel, descriptor, snapshots, now=utc(manifest["published_at"]))
+            _read_channel(data_dir, channel, descriptor, snapshots, now=utc(manifest["published_at"]),
+                          allow_production_development=allow_production_development)
     return manifest
 
 
@@ -396,7 +404,8 @@ def _emit_asset(data_dir: Path, asset: dict, *, prefix: str, status: str) -> dic
     return descriptor
 
 
-def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) -> dict:
+def build_site(root: Path, output: Path, *, build_commit: str, now: datetime,
+               production_development_preview: bool = False) -> dict:
     """Allowlisted artifact; each publication channel fails independently."""
     output = output.resolve() if not output.is_symlink() else output
     if output.is_symlink() or output == root.resolve() or root.resolve().is_relative_to(output):
@@ -416,11 +425,16 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
                 if descriptor is None:
                     continue
                 try:
-                    _read_channel(output / "data", channel, descriptor, old_sports, now=now)
+                    _read_channel(output / "data", channel, descriptor, old_sports, now=now,
+                                  allow_production_development=production_development_preview)
                     names = [descriptor["path"]]
                     if channel == "pros004":
                         from .pros004_publication import publication_asset_paths
                         names = publication_asset_paths(output / "data", descriptor, now=now)
+                    elif channel == "production_research":
+                        from .sdv_production_publication import publication_asset_paths
+                        names = publication_asset_paths(output / "data", descriptor, now=now,
+                                                        allow_development=production_development_preview)
                     for name in names:
                         shutil.copyfile(output / "data" / name, staging / "data" / name)
                     retained[channel] = descriptor
@@ -462,12 +476,19 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
                 elif channel == "paired_research":
                     from .operational_publication import make_asset
                     descriptor = _emit_asset(staging / "data", make_asset(root, now=now), prefix="paired-research", status="RESEARCH_ONLY")
-                else:
+                elif channel == "daily_research":
                     from .sdv_daily_grading import validate_stored_admissions
                     from .sdv_daily_publication import make_asset
                     validate_stored_admissions(root)
                     descriptor = _emit_asset(staging / "data", make_asset(root, now=now), prefix="sdv-daily", status="DAILY_SNAPSHOT_RESEARCH")
-                _read_channel(staging / "data", channel, descriptor, snapshots, now=now)
+                else:
+                    from .sdv_production_publication import emit_publication
+                    descriptor = emit_publication(staging / "data", root, now=now,
+                                                  allow_development=production_development_preview,
+                                                  existing_artifact_bytes=sum(path.stat().st_size for path in output.rglob("*")
+                                                      if path.is_file() and not path.is_symlink()) if output.exists() else 0)
+                _read_channel(staging / "data", channel, descriptor, snapshots, now=now,
+                              allow_production_development=production_development_preview)
             except REJECTED_UPDATE as error:
                 error_text = f"{type(error).__name__}: {channel} update unavailable"
                 if channel == "display":
@@ -475,17 +496,18 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
                 previous = retained.get(channel)
                 if previous is not None:
                     try:
-                        _read_channel(staging / "data", channel, previous, snapshots, now=now)
+                        _read_channel(staging / "data", channel, previous, snapshots, now=now,
+                                      allow_production_development=production_development_preview)
                         descriptor = {**previous, "retained": True, "error": error_text}
                     except REJECTED_UPDATE:
                         descriptor = None
                 else:
                     descriptor = None
             result[channel], result[channel + "_error"] = descriptor, error_text
-        result["schema_version"] = 6
+        result["schema_version"] = 7
         result["snapshot_id"] = digest({k: v for k, v in result.items() if k != "snapshot_id"})
         _write_atomic(staging / "data/manifest.json", canonical(result))
-        read_manifest(staging / "data", now=now)
+        read_manifest(staging / "data", now=now, allow_production_development=production_development_preview)
         allowed = {"manifest.json", *(ref["path"] for ref in result["sports"])}
         for channel in AUXILIARY_CHANNELS:
             descriptor = result[channel]
@@ -495,6 +517,10 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
             if channel == "pros004":
                 from .pros004_publication import publication_asset_paths
                 allowed.update(publication_asset_paths(staging / "data", descriptor, now=now))
+            elif channel == "production_research":
+                from .sdv_production_publication import publication_asset_paths
+                allowed.update(publication_asset_paths(staging / "data", descriptor, now=now,
+                                                       allow_development=production_development_preview))
         # Failed publishers may have written intermediate assets. Only admitted,
         # manifest-referenced bytes belong in the public artifact.
         for asset_path in (staging / "data").iterdir():
@@ -523,9 +549,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("output"))
     parser.add_argument("--build-commit", required=True)
+    parser.add_argument("--production-development-preview", action="store_true",
+                        help="Local invented-data preview only; never used by the Pages publication workflow")
     args = parser.parse_args()
     manifest = build_site(Path(__file__).resolve().parent.parent, args.output,
-                          build_commit=args.build_commit, now=datetime.now(timezone.utc))
+                          build_commit=args.build_commit, now=datetime.now(timezone.utc),
+                          production_development_preview=args.production_development_preview)
     print(f"Built research-only snapshot {manifest['snapshot_id']} ({len(manifest['sports'])} sport); no qualified rows")
 
 

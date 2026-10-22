@@ -34,6 +34,7 @@ from . import sdv_daily_publication as public
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ".github/workflows/nba-operations.yml"
 CRON = "17 13 * * *"
+PRODUCTION_CRON = "2,17,32,47 * * * *"
 BRANCH = "records/sdv-daily-001-20261023-401909094"
 FIRST_DAY, LAST_DAY = "2026-10-23", "2026-10-30"
 AUTH_KIND = "Project-authored postgame run proof v1"
@@ -102,9 +103,10 @@ def authorize_current_run():
         and event["repository"].get("full_name") == cycles.REPOSITORY,
         "Postgame event repository differs")
     if event_name == "schedule":
-        require(event.get("schedule") == CRON, "Unregistered hosted schedule")
+        require(event.get("schedule") in {CRON, PRODUCTION_CRON}, "Unregistered hosted schedule")
     else:
-        require(event.get("inputs") == {"cycle_id": cycles.CYCLE_ID}
+        require(event.get("inputs") in ({"cycle_id": cycles.CYCLE_ID},
+                {"cycle_id": cycles.CYCLE_ID, "mode": "operate"})
             and type(event.get("sender")) is dict and event["sender"].get("login") == cycles.OWNER,
             "Postgame manual event is not the exact owner/cycle")
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
