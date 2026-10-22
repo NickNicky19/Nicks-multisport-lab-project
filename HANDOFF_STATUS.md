@@ -2,6 +2,121 @@
 
 Updated: October 22, 2026 (UTC).
 
+## October 22 — PR #14 merged and public; pending-boxscore forward fix
+
+The owner approved exact PR #14 head
+**`c7862040063c4bc6088aeb8978839dff54b90eb9`**. The guarded PR Completion helper
+rechecked that head, green checks, empty unresolved-review conditions and unchanged
+landing-policy digest, then used matching-head automatic merge by **merge commit**.
+Actual main merge: **`af0456d29b2922a400340c998502e963bf85d6e8`**, merged at
+04:09:30 UTC. No administrator override, protection bypass or force push occurred.
+
+Pages run **[39720789962](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39720789962)**
+completed successfully, including deploy job **119637488628** at 04:23:02 UTC.
+The actual public manifest serves build `af0456d`, publication clock
+`2026-10-22T04:22:33.820663Z`, snapshot
+`d4b79e6da05a99e361e5254b223a8a983e5f3d918ee8aa4fcf0af07451e925db`.
+All six data-asset hashes and sixteen static files match the exact merge; strict
+typed recovery and the six original historical forecasts/grades pass unchanged.
+The retained proof is
+[evidence/deployment/2026-10-22-pr14-pages.json](evidence/deployment/2026-10-22-pr14-pages.json).
+
+Independent browser checks at 1440/390/320 px passed the six verified names,
+three historical matchups/dates, accessible IDs, all 14 categories, separate clocks,
+direct History navigation/refresh, descriptive daily Performance filters and its
+honest zero-grade state, plus all three sport scopes / all three directions /
+2–6-leg NO_ACTION. There was no overflow or JavaScript error. Native Chromium
+cannot trust this environment's proxy CA; the check rendered TLS-verified actual
+public bytes at the public URL with a fresh manifest. TLS checking was not disabled.
+The release supplies descriptive reporting and final-statistics recovery; it does
+not create prospective results or qualify forecasts or tickets.
+
+### Installed execution versus the first forecast launch
+
+GitHub readback confirms **workflow 392458906 active**, path
+`.github/workflows/nba-operations.yml`, with default-branch YAML identical to the
+approved head. It was installed at 04:09:31 UTC and had zero runs at readback.
+Configured cron is 13:17 UTC daily. October 22's occurrence is a guarded no-op;
+first eligible postgame occurrence is **October 23, 13:17 UTC / 8:17 a.m. CDT**.
+GitHub does not expose a guaranteed next-run time. The code admits only October
+23–30, 13:00–14:30 UTC and at most two started captures, six GETs each, no retries;
+afterward it refuses collection but does not disable the cron automatically.
+It never generates forecasts or dispatches the first producer. No local app or
+computer needs to remain open for this GitHub-hosted postgame workflow.
+
+The separately approved first producer and all **23 protected execution files**
+remain identical to `0c37b30060c2dffb20226bd3efbedc65a75d04e3`, binding
+`002419f25184496ccead9cf92556116872550e6f29ad6edfc60cc5846a00f733`.
+All **19 original parent-ledger receipts** remain unchanged. Manual workflow
+392407623 is active, with zero runs and source use **0/6** at readback. There is
+**no installed future first-cycle dispatch**. The authorized owner launch remains
+October 22 **22:00 through strictly before 22:30 UTC** / 5:00–before 5:30 p.m. CDT,
+using the exact command in `docs/SDV_DAILY_ACTIVATION_PACKAGE.md`. Capture is
+23:00–00:00; issuance/readback October 23 00:00–00:15 UTC. Neither workflow was
+manually dispatched here. Native automation remains paused. OPS002, PROS004, S0,
+the expired October 20 pilot and frozen experiments are unchanged.
+
+### Separate forward fix, not included in the deployed release
+
+Review during deployment found a concrete catch-up defect: a valid retained
+FINAL schedule with **zero target-event player-boxscore rows** raised a score
+reconciliation error. A later restart then replayed that same proof and failed
+before its second permitted capture (synthetic October 24/25 reproduction:
+collector called zero times, zero outcomes/grades). Original forecasts were safe,
+but useful recovery was stranded.
+
+Branch **`implementation/postgame-pending-evidence`**, isolated at
+`/workspace/nml-sdv-postdeploy` from current main `af0456d`, implements the narrow
+fix in source commit **`e8d05d8a127c061ffb1402c6d08df634daf40fb4`**. The subsequent
+handoff/hash-index commit and exact draft-PR head are reported in the checkpoint
+response. Only a fully validated final event with no matching player rows becomes
+`FinalEvidencePending` / `FINAL_BOXSCORE_UNAVAILABLE`. Per-subject grading leaves
+it pending and writes no MISSING, DNP or zero outcome. Independent admission still
+rejects a forged outcome, and hash, identity, final-status and supplied-count
+contradictions remain errors. No coordinator, model law, source budget, producer
+file, original record, probability atom or issuance clock changed.
+
+The disk-backed regression replays the first pending proof, permits the second
+complete capture, appends **one shared outcome / two synthetic statistical grades**,
+preserves originals byte-for-byte and blocks a third source capture. Additional
+cases cover headers-only, unrelated-event rows, invalid identities and idempotent
+pending retries. Central and independent review found no material issue. Tests
+use invented records only; no HTTP, genuine issuance, model comparison or real
+grade was generated by this fix.
+
+Commands on the completed behavior candidate:
+
+```bash
+python3 -m unittest discover -s tests -v
+python3 -m multisport_lab.demo
+node --test --test-isolation=none web/tests/*.test.mjs
+python3 -O -m unittest discover -s tests -p test_sdv_daily_grading.py -v
+python3 -O -m unittest discover -s tests -p test_sdv_postgame_runner.py -v
+git diff --check
+```
+
+Actual local results: **831 Python tests passed in 504.337 s**, demo exit 0,
+**111 frontend tests passed**, optimized grader **24/24** and coordinator **22/22**
+passed independently. No frozen model evaluation or extra hosted full-history
+diagnostic was run. Conservative capacity is unchanged: **155 records /
+31,431,880 bytes**, below the unchanged 512 / 33,554,432 limits; no new ledger
+record schema or slot was introduced. This source commit is not part of the public
+build. Its separate draft PR requires exact-head review/approval before landing.
+Final configured CI and independent remote recovery are reported in that PR and
+the checkpoint response without rewriting this deployment receipt.
+
+### Counts and next action
+
+Actual public inventory remains **six historical bundles and six historical
+grades; zero genuine forecasts, published offers, prospective outcomes,
+prospective grades, qualified tickets or financial settlements**. Upcoming remains
+honestly empty. The next useful code action is to review and land the bounded
+pending-boxscore fix separately. The next genuine product action is the already
+approved first manual cycle in its original start window; approval alone is not
+a scheduled launch. Successful hosted dispatch no longer requires an open app.
+Later statistical grading uses verified final evidence; recurring pregame
+operation remains **NOT_IMPLEMENTED**, and offers/odds are separate requirements.
+
 ## October 22 — bounded postgame recovery and descriptive reporting candidate
 
 **Implemented and independently reviewed; this follow-up is not merged,

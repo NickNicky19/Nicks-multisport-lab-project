@@ -6,6 +6,8 @@ append-only files and restart/idempotence are exercised without model fitting.
 """
 from contextlib import nullcontext
 from copy import deepcopy
+import csv
+import io
 from datetime import timedelta
 from pathlib import Path
 import tempfile
@@ -137,7 +139,12 @@ class GenuineGradingReadinessTests(unittest.TestCase):
     def capture(self,mutator=None):
         triples=[];requests=[]
         for index,(role,rows) in enumerate((('schedule',[self.event]),('boxscore',self.rows))):
-            raw=csv_bytes(rows);rule=self.config['roles'][role]
+            rule=self.config['roles'][role]
+            if rows:raw=csv_bytes(rows)
+            else:
+                stream=io.StringIO(newline="")
+                csv.DictWriter(stream,fieldnames=rule['required_headers']).writeheader()
+                raw=stream.getvalue().encode()
             metadata=canonical({'tag_name':rule['release_tag'],'assets':[{'id':123+index,'name':rule['asset_name'],
                 'size':len(raw),'browser_download_url':rule['asset_url'],'digest':'sha256:'+grading.sha(raw),
                 'updated_at':'2026-10-23T04:00:00.000000Z'}]})
@@ -179,6 +186,38 @@ class GenuineGradingReadinessTests(unittest.TestCase):
         self.rows[0]['athlete_id']='9000002'
         result=self.grade();outcome=self.store.read(result['outcomes'][0])['data']['daily']
         self.assertEqual(outcome['status'],'MISSING');self.assertIsNone(outcome['primitives']);self.assertEqual(result['grades'],[])
+
+    def test_final_without_target_boxscore_stays_pending_without_invented_missing_outcome(self):
+        self.rows=[]
+        refs=self.capture()
+        original={path:path.read_bytes() for path in self.store.project_root.rglob('*.json')}
+        result=grading.normalize_and_grade(self.store,self.refs,*refs)
+        self.assertEqual(result['pending'],[self.forecast['player_id']])
+        self.assertEqual(result['unresolved_event_state'],'FINAL_BOXSCORE_UNAVAILABLE')
+        self.assertEqual(result['outcomes'],[]);self.assertEqual(result['grades'],[])
+        self.assertEqual(original,{path:path.read_bytes() for path in self.store.project_root.rglob('*.json')})
+        # The generic v1 normalizer's MISSING fallback is not admitted when the
+        # whole final event has no boxscore evidence; this is not a player DNP.
+        forged=outcomes._normalize(self.store,self.forecast,schedule_ref=refs[0],boxscore_ref=refs[1],normalized_at=stamp(self.now))
+        self.assertEqual(forged['status'],'MISSING')
+        with self.assertRaisesRegex(grading.FinalEvidencePending,'no target-event'):
+            grading.validate_admission_graph(self.store,forged)
+        self.assertEqual(grading.validate_stored_admissions(self.store)['genuine_grades'],0)
+        repeated=grading.normalize_and_grade(self.store,self.refs,*refs)
+        self.assertEqual(repeated,result)
+        self.assertEqual(original,{path:path.read_bytes() for path in self.store.project_root.rglob('*.json')})
+
+    def test_unrelated_boxscore_events_do_not_make_target_evidence_available(self):
+        for row in self.rows:row['game_id']='999999999'
+        result=self.grade()
+        self.assertEqual(result['unresolved_event_state'],'FINAL_BOXSCORE_UNAVAILABLE')
+        self.assertEqual(result['pending'],[self.forecast['player_id']])
+        self.assertEqual(result['outcomes'],[]);self.assertEqual(result['grades'],[])
+
+    def test_missing_boxscore_does_not_hide_invalid_final_schedule_identity(self):
+        self.rows=[];self.event['home_id']='999'
+        with self.assertRaisesRegex(IntegrityError,'identity/version') as caught:self.grade()
+        self.assertNotIsInstance(caught.exception,grading.FinalEvidencePending)
 
     def test_explicit_dnp_is_not_zero_production(self):
         self.rows[0]['did_not_play']='true';self.rows[0]['minutes']=''
