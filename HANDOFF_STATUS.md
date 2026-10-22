@@ -2,6 +2,100 @@
 
 Updated: October 22, 2026 (UTC).
 
+
+## October 22 — PR #13 landed and public daily-snapshot release verified
+
+Owner explicitly approved exact PR #13 head
+`d67bd6c5486f1d6e76c5f396b7be515ab78f87c2`, its inactive PR #10/#12 dependency
+ancestry, merge-commit landing and deployment. Fresh PR Completion readback
+confirmed the same head, all checks green, no unresolved review threads, unchanged
+all-checks policy and allowed merge method. Marked ready and used only the shipped
+`pr_land.py`, with policy digest
+`70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df`.
+The exact-head watcher observed MERGED. Actual main merge commit:
+**`4400be06183ac86082aa0b77dd2d93a0ac6ab88c`**, merged at 02:47:10 UTC.
+No override, bypass or force push was used.
+
+Pages run **39713282201** completed successfully, including actual deploy job
+119612887201 at **02:59:45 UTC**. Public URL:
+https://nicknicky19.github.io/Nicks-multisport-lab-project/ . Independent served-byte
+verification confirmed build `4400be0`, manifest version 6, publication time
+`2026-10-22T02:59:14.696547Z`, manifest SHA
+`b5d5de2f1c0f7d8baa6cdef18be35402b90782c8160d511982a2cc7e0474f175`
+and snapshot ID
+`f93797bdb3bd570669361748ae47bf864957016609cfb7c35f334f2a20cebd33`.
+All six referenced data assets matched their hashes; all 15 served static files
+matched exact merge blobs. The original six forecast and grade bodies matched
+retained records. Names, historical matchups/dates, source IDs, independent clocks,
+History direct refresh, all 14 categories, and the 2–6-leg/direction/scope NO_ACTION
+checks passed at desktop 1440 and mobile 390/320, without overflow or JS errors.
+
+Browser limitation is explicit: direct Chromium HTTPS encountered the environment
+proxy's untrusted CA. Browser rendering used TLS-verified public responses at the
+public URL through a bounded request bridge; no certificate verification was
+disabled. This is served-data/rendering evidence with that transport limit, not a
+claim that native Chromium TLS succeeded. Complete deployment/readback facts:
+`evidence/deployment/2026-10-22-pr13-pages.json`; local screenshots and original
+readback report: `/tmp/nml-public-verification-4400be0/`.
+
+Actual public counts: six historical bundles / six historical grades; **zero**
+genuine forecasts, published offers, prospective outcomes, prospective grades,
+qualified tickets, financial settlements or published DEV bundles. The daily
+channel accurately remains INACTIVE. Offers do not block future research issuance.
+OPS002, PROS004, S0, the expired pilot and frozen experiments remain unchanged.
+
+### First-cycle approval is retained; it is not a schedule
+
+The separately approved cycle remains
+`NBA-SDV-DAILY-001-20261023-401909094`, producer
+`0c37b30060c2dffb20226bd3efbedc65a75d04e3`. All 23 protected files match that
+source across approved PR/main/working state. Actual installed GitHub workflow
+**392407623** is active, manual-only, with zero runs at 02:53:31 UTC; main YAML
+contains no cron. Nothing was dispatched or armed. First-cycle source usage is
+**0/6**. The exact documented owner-authenticated command remains the launch path.
+Start October 22 **22:00 through strictly before 22:30 UTC** (5:00–before5:30 p.m.
+CDT), capture 23:00–00:00 UTC, issue/read back October 23 00:00–00:15 UTC.
+No early dispatch, shifted window, new player or late partner is permitted.
+
+A scheduled dispatcher with GITHUB_TOKEN would dispatch as github-actions[bot]
+and fail the frozen owner-only workflow and independent API/runtime guards. Do
+not spoof that actor or silently alter the first producer. The historical native
+task remains paused. Later scheduling requires a separately reviewed trusted
+scheduled entrypoint; an approved manual cycle is not an installed future job.
+
+### Broader goal: isolated postgame work in progress
+
+Created normal worktree `/workspace/nml-sdv-operations`, branch
+`implementation/sdv-recurring-operations`, from actual merged main. The current
+source-admission checkpoint is `5ab020a`; no later branch changes have landed.
+Protected first-cycle files are unchanged. New source work used a **separate three
+GET budget**, fully consumed: one release metadata request and one CSV request
+with one explicit public-asset redirect; no retries, credentials or broader source
+requests. Exact originals, clocks and audit receipts are retained under
+`evidence/data/2026-10-22-sdv-final-*`. Metadata and CSV hash replay passed.
+
+Actual final-source CSV: **43,806 bytes / 84 rows / 57 fields**; existing normalizer
+and retained FINAL schedule join accepted all rows: **68 appearances / 16 explicit
+DNP**, zero duplicate keys or rejected joins. All six team scores and player point
+sums reconcile across three past games. Independent verification reproduced those
+facts and admission references. This does not independently verify every non-scoring
+count or all participants. Publisher/upstream/retrieval clocks remain separate;
+upstream observation is UNKNOWN, finality provisional and corrections append.
+Target event 401909094 is absent and remains pending. No outcome or grade was
+appended and no model comparison was scored.
+
+New source admission is narrow: this publisher-release CSV family, exact original
+release binding, explicit finality/count/completeness checks and at most two bounded
+postgame observations for the first cycle. It neither inherits direct ESPN access
+nor silently grants unlimited league-wide storage/collection. Public licensed
+originals need no encryption-key setup; old ESPN encryption remains untouched.
+
+Next concrete implementation: additive genuine grading/provenance/restart wrapper,
+publication admission gate and one coordinated postgame catch-up workflow on this
+future branch, with focused failure-path tests and separate review before landing.
+The broader project's recurring pregame issuance, league expansion, later grading,
+future results and complete offer/ticket delivery are **not completed** by PR #13.
+
 ## October 22 — functioning daily-snapshot candidate; release and cycle approval pending
 
 **Implemented and independently verified; no activation, merge or deployment.**
