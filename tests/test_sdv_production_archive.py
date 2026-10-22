@@ -62,6 +62,28 @@ class MemoryGitHub(archive.GitHubReleaseArchive):
         raise RuntimeError("Unexpected offline fake endpoint")
 
 
+class DraftTagMissingGitHub(MemoryGitHub):
+    """Model the observed draft-by-tag 404 with an authenticated inventory."""
+    def __init__(self):
+        super().__init__()
+        self.unacknowledged_create = False
+
+    def _gh(self, args, *, input_bytes=None, maximum=archive.MAX_WIRE, missing=False, reconcile=False):
+        if "/releases/tags/" in args[0]:
+            self.calls.append(args)
+            return None
+        result = super()._gh(args, input_bytes=input_bytes, maximum=maximum,
+                             missing=missing, reconcile=reconcile)
+        if self.unacknowledged_create and args[0].endswith("/releases") and "POST" in args:
+            return None
+        return result
+
+    def fresh_reader(self):
+        reader = DraftTagMissingGitHub()
+        reader.releases, reader.assets, reader.raw = self.releases, self.assets, self.raw
+        return reader
+
+
 class ProductionArchiveTests(unittest.TestCase):
     def test_file_archive_restart_idempotence_and_exact_wire_reference(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -156,6 +178,162 @@ class ProductionArchiveTests(unittest.TestCase):
             with self.assertRaisesRegex(IntegrityError, "do not change transports"):
                 client.put(b"no mutation", TAG)
         command.assert_called_once()
+
+    def test_cold_reader_recovers_existing_draft_omitted_by_tag_without_new_writes(self):
+        first = DraftTagMissingGitHub()
+        original = b"immutable original draft bytes"
+        ref = first.put(original, DIAGNOSTIC)
+        cold = first.fresh_reader()
+        cold.write_budget_bytes, cold.write_budget_objects = 0, 0
+        self.assertEqual(cold.get(ref, len(original)), original)
+        self.assertEqual(cold.put(original, DIAGNOSTIC), ref)
+        self.assertEqual(cold.new_bytes_reserved, 0)
+        self.assertEqual(cold.new_objects_reserved, 0)
+        self.assertTrue(any("/releases?" in args[0] for args in cold.calls))
+        self.assertFalse(any("POST" in args for args in cold.calls))
+        self.assertEqual(len(first.releases), 1)
+        self.assertEqual(len(first.assets[1]), 1)
+
+    def test_existing_draft_reader_refreshes_decoded_inventory_for_later_original(self):
+        writer = DraftTagMissingGitHub()
+        first = writer.put(b"first original", DIAGNOSTIC)
+        reader = writer.fresh_reader()
+        reader.write_budget_bytes, reader.write_budget_objects = 0, 0
+        self.assertEqual(reader.get(first, 64), b"first original")
+        rid = writer.releases[DIAGNOSTIC]["id"]
+        self.assertIsNot(reader._asset_cache[rid], writer.assets[rid])
+        self.assertEqual(len(reader._asset_cache[rid]), 1)
+        second = writer.put(b"second later original", DIAGNOSTIC)
+        self.assertEqual(len(reader._asset_cache[rid]), 1)
+        before = len([args for args in reader.calls if "/assets?" in args[0]])
+        self.assertEqual(reader.get(second, 64), b"second later original")
+        self.assertEqual(len([args for args in reader.calls if "/assets?" in args[0]]), before + 1)
+        self.assertEqual(reader.get(first, 64), b"first original")
+        self.assertEqual(reader.put(b"second later original", DIAGNOSTIC), second)
+        self.assertEqual(reader.new_bytes_reserved, 0)
+        self.assertEqual(reader.new_objects_reserved, 0)
+        self.assertFalse(any("POST" in args for args in reader.calls))
+
+    def test_missing_draft_object_refreshes_cached_inventory_only_once(self):
+        writer = DraftTagMissingGitHub()
+        first = writer.put(b"first original", DIAGNOSTIC)
+        missing = archive._wire(b"never uploaded", DIAGNOSTIC, True)[1]
+        reader = writer.fresh_reader()
+        self.assertEqual(reader.get(first, 64), b"first original")
+        before = len([args for args in reader.calls if "/assets?" in args[0]])
+        with self.assertRaisesRegex(IntegrityError, "object identity/size differs"):
+            reader.get(missing, 64)
+        self.assertEqual(len([args for args in reader.calls if "/assets?" in args[0]]), before + 1)
+        self.assertFalse(any("POST" in args for args in reader.calls))
+        cold = writer.fresh_reader()
+        with self.assertRaisesRegex(IntegrityError, "object identity/size differs"):
+            cold.get(missing, 64)
+        self.assertEqual(len([args for args in cold.calls if "/assets?" in args[0]]), 1)
+
+    def test_existing_draft_identity_size_and_hash_failures_never_refresh_inventory(self):
+        for failure in ("size", "hash", "ambiguous"):
+            with self.subTest(failure=failure):
+                writer = DraftTagMissingGitHub()
+                ref = writer.put(b"immutable original", DIAGNOSTIC)
+                reader = writer.fresh_reader()
+                rid = writer.releases[DIAGNOSTIC]["id"]
+                reader._asset_cache[rid] = json.loads(canonical(writer.assets[rid]))
+                item = reader._asset_cache[rid][0]
+                if failure == "size":
+                    item["size"] += 1
+                elif failure == "hash":
+                    original = writer.raw[item["id"]]
+                    writer.raw[item["id"]] = bytes([original[0] ^ 1]) + original[1:]
+                else:
+                    reader._asset_cache[rid].append(dict(item))
+                with self.assertRaises(IntegrityError):
+                    reader.get(ref, 64)
+                self.assertFalse(any("/assets?" in args[0] or "POST" in args for args in reader.calls))
+
+    def test_forbidden_draft_inventory_refresh_is_fatal_without_another_attempt(self):
+        writer = DraftTagMissingGitHub()
+        first = writer.put(b"first original", DIAGNOSTIC)
+        reader = writer.fresh_reader()
+        self.assertEqual(reader.get(first, 64), b"first original")
+        second = writer.put(b"second later original", DIAGNOSTIC)
+        with patch.object(reader, "_json", side_effect=archive.ArchiveHTTPError(403, "Forbidden")) as request:
+            with self.assertRaises(archive.ArchiveHTTPError) as caught:
+                reader.get(second, 64)
+        self.assertEqual(caught.exception.http_status, 403)
+        request.assert_called_once()
+        self.assertIn("/assets?", request.call_args.args[0])
+        self.assertFalse(any("POST" in args for args in reader.calls))
+
+    def test_unacknowledged_draft_creation_reconciles_once_without_second_post(self):
+        client = DraftTagMissingGitHub()
+        client.unacknowledged_create = True
+        ref = client.put(b"original survives interrupted create acknowledgment", DIAGNOSTIC)
+        self.assertEqual(client.fresh_reader().get(ref, 100),
+                         b"original survives interrupted create acknowledgment")
+        creates = [args for args in client.calls if args[0].endswith("/releases") and "POST" in args]
+        self.assertEqual(len(creates), 1)
+        self.assertEqual(len(client.releases), 1)
+
+    def test_draft_inventory_rejects_invalid_matching_identities_before_creation(self):
+        variants = [
+            [{"tag_name": DIAGNOSTIC, "id": 1, "draft": False}],
+            [{"tag_name": DIAGNOSTIC, "id": True, "draft": True}],
+            [{"tag_name": DIAGNOSTIC, "id": 0, "draft": True}],
+            [{"tag_name": DIAGNOSTIC, "draft": True}],
+            [{"tag_name": None, "id": 1, "draft": True}],
+            ["not a release"],
+            [{"tag_name": DIAGNOSTIC, "id": 1, "draft": True},
+             {"tag_name": DIAGNOSTIC, "id": 2, "draft": True}],
+        ]
+        for releases in variants:
+            with self.subTest(releases=releases):
+                client = DraftTagMissingGitHub()
+                def response(endpoint, **kwargs):
+                    self.assertNotEqual(kwargs.get("method"), "POST")
+                    return None if "/releases/tags/" in endpoint else releases
+                with patch.object(client, "_json", side_effect=response):
+                    with self.assertRaises(IntegrityError):
+                        client._release(DIAGNOSTIC, create=True)
+
+    def test_draft_inventory_scans_complete_pages_before_accepting_unique_match(self):
+        client = DraftTagMissingGitHub()
+        first = [{"tag_name": "unrelated-" + str(i), "id": i + 1, "draft": False}
+                 for i in range(99)] + [{"tag_name": DIAGNOSTIC, "id": 100, "draft": True}]
+        duplicate = [{"tag_name": DIAGNOSTIC, "id": 101, "draft": True}]
+        def response(endpoint, **kwargs):
+            self.assertNotEqual(kwargs.get("method"), "POST")
+            if "/releases/tags/" in endpoint:
+                return None
+            return first if endpoint.endswith("page=1") else duplicate
+        with patch.object(client, "_json", side_effect=response):
+            with self.assertRaisesRegex(IntegrityError, "Ambiguous diagnostic draft"):
+                client._release(DIAGNOSTIC, create=True)
+
+    def test_incomplete_draft_inventory_rejects_before_release_creation(self):
+        client = DraftTagMissingGitHub()
+        full = [{"tag_name": "unrelated-" + str(i), "id": i + 1, "draft": False}
+                for i in range(100)]
+        def response(endpoint, **kwargs):
+            self.assertNotEqual(kwargs.get("method"), "POST")
+            return None if "/releases/tags/" in endpoint else full
+        with patch.object(client, "_json", side_effect=response) as request:
+            with self.assertRaisesRegex(IntegrityError, "draft release inventory exceeds bounded pagination"):
+                client._release(DIAGNOSTIC, create=True)
+        self.assertEqual(request.call_count, 13)  # One tag lookup, twelve bounded list pages.
+
+    def test_forbidden_draft_lookup_never_falls_back_to_inventory_or_creates(self):
+        result = subprocess.CompletedProcess([], 1, b"", b"gh: Forbidden (HTTP 403)")
+        client = archive.GitHubReleaseArchive(allow_diagnostics=True)
+        with patch.object(archive.subprocess, "run", return_value=result) as command:
+            with self.assertRaises(archive.ArchiveHTTPError):
+                client._release(DIAGNOSTIC, create=True)
+        command.assert_called_once()
+
+    def test_published_production_lookup_does_not_inherit_diagnostic_fallback(self):
+        client = MemoryGitHub()
+        self.assertIsNone(client._release(TAG))
+        self.assertEqual(len(client.calls), 1)
+        self.assertIn("/releases/tags/", client.calls[0][0])
 
     def test_binary_stdin_upload_declares_exact_wire_content_length(self):
         client=MemoryGitHub(); raw=b"invented release upload payload"*100

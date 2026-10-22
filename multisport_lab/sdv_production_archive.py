@@ -355,12 +355,42 @@ class GitHubReleaseArchive(_Archive):
                        maximum=MAX_WIRE, missing=missing, reconcile=reconcile)
         return _decode(raw) if raw is not None else None
 
+    def _listed_diagnostic_release(self, tag):
+        """Resolve a draft omitted by the tag endpoint, without creating it.
+
+        Draft releases may exist in the authenticated release inventory while
+        the tag route returns 404. A cold reader must inspect that bounded
+        inventory before declaring absence, creating a release or admitting a
+        recovered original. Keep the public production lookup unchanged.
+        """
+        require(self.allow_diagnostics and tag.startswith("diagnostics-"),
+                "Draft inventory lookup requires explicit diagnostic scope")
+        matches = []
+        for page in range(1, 13):
+            releases = self._json("repos/" + self.repository + "/releases?per_page=100&page=" + str(page))
+            require(type(releases) is list and len(releases) <= 100,
+                    "Invalid own-repository release inventory")
+            for release in releases:
+                require(type(release) is dict and type(release.get("tag_name")) is str,
+                        "Invalid release identity in draft inventory")
+                if release["tag_name"] == tag:
+                    require(type(release.get("id")) is int and release["id"] > 0
+                            and release.get("draft") is True,
+                            "Diagnostic draft inventory identity differs")
+                    matches.append(release)
+                    require(len(matches) <= 1, "Ambiguous diagnostic draft release")
+            if len(releases) < 100:
+                return matches[0] if matches else None
+        raise IntegrityError("Own-repository draft release inventory exceeds bounded pagination")
+
     def _release(self, tag, *, create=False):
         _tag(tag, self.allow_diagnostics)
         endpoint = "repos/" + self.repository + "/releases/tags/" + tag
         release = self._release_cache.get(tag)
         if release is None:
             release = self._json(endpoint, missing=True)
+        if release is None and tag.startswith("diagnostics-"):
+            release = self._listed_diagnostic_release(tag)
         if release is None and create:
             body = {"tag_name": tag, "name": tag, "draft": tag.startswith("diagnostics-"),
                     "prerelease": tag.startswith("diagnostics-"),
@@ -369,6 +399,8 @@ class GitHubReleaseArchive(_Archive):
             if release is None:
                 # One read-only reconciliation handles a completed but unacknowledged create.
                 release = self._json(endpoint, missing=True)
+                if release is None and tag.startswith("diagnostics-"):
+                    release = self._listed_diagnostic_release(tag)
                 require(release is not None, "Release creation unacknowledged; no blind retry")
         if release is not None:
             require(type(release) is dict and type(release.get("id")) is int and release.get("tag_name") == tag,
@@ -466,7 +498,14 @@ class GitHubReleaseArchive(_Archive):
             return raw
         release = self._release(ref["tag"])
         require(release is not None, "Archived release is missing")
+        had_cached_assets = release["id"] in self._asset_cache
         asset = self._asset(release, ref["name"])
+        if asset is None and had_cached_assets:
+            # A separate checkpoint writer may have appended this exact object
+            # since our decoded inventory was cached. Refresh once on absence
+            # only; never mask an existing ambiguous or mismatched identity.
+            self._asset_cache.pop(release["id"], None)
+            asset = self._asset(release, ref["name"])
         require(asset is not None and asset.get("size") == ref["bytes"] and type(asset.get("id")) is int,
                 "Archived object identity/size differs")
         packed = self._gh(["repos/" + self.repository + "/releases/assets/" + str(asset["id"]),

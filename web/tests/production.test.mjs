@@ -76,6 +76,22 @@ test('actual Python normalized development fixture independently validates every
   const html=renderProductionResearch(c,{now:Date.parse(b.index.generated_at)});assert.match(html,/Development preview · not issued/);assert.match(html,/Synthetic Player/);assert.match(html,/Conditional on the player appearing/);assert.match(html,/No genuinely issued recurring NBA forecast/);assert.match(html,/execution is not guaranteed/);assert.match(html,/CC BY 4.0/);
 });
 
+test('history-based minutes render their mean and interval without changing originals or promising participation',()=>{
+  const b=mutate(copy(),'forecast',f=>{f.reported_minutes={pmf:[{value:12,probability:'0.25'},{value:28,probability:'0.75'}],mean:'24',interval80:[12,28],precision:'reported_source_precision_not_exact_workload'};}),c=validate(b),before=JSON.stringify(c.records);
+  const html=renderProductionResearch(c,{category:'REB',limit:1,now:Date.parse(b.index.generated_at)});
+  assert.match(html,/History-based minutes estimate: <strong>24 minutes<\/strong>; 80% interval 12–28 minutes/);
+  assert.match(html,/Conditional on appearance; this is not confirmed playing time/);
+  assert.match(html,/Injury, starting-lineup and confirmed-participation information are unavailable/);
+  assert.match(html,/<th scope="row">REB/);assert.doesNotMatch(html,/<th scope="row">PTS/);
+  assert.equal(JSON.stringify(c.records),before);assert.equal(c.forecasts.every(r=>r.body.categories.length===14&&r.body.issued_at===null),true);
+  // Rendering-boundary injection only; it is not new source/admission evidence.
+  const display=structuredClone(c),row=display.records.find(r=>originalProduction(r).schema_version==='nba-sdv-production-forecast-v1'),body=originalProduction(row);
+  Object.assign(row,wrap(row,{...body,player_label:'<img src=x onerror="alert(1)"> & Player'}));
+  const escapedHtml=renderProductionResearch(display,{limit:1,now:Date.parse(b.index.generated_at)});
+  assert.match(escapedHtml,/&lt;img src=x onerror=&quot;alert\(1\)&quot;&gt; &amp; Player/);assert.doesNotMatch(escapedHtml,/<img src=x/);
+  assert.match(escapedHtml,/History-based minutes estimate: <strong>24 minutes<\/strong>/);
+});
+
 test('empty production index remains an honest separate inactive channel',async()=>{
   const b=repack(copy(),[]),c=validate(b);await verifyProductionHashes(b.index,b.pages,webcrypto);assert.equal(c.forecasts.length,0);assert.equal(c.index.counts.pending_grades,0);assert.match(renderProductionResearch(c),/No genuinely issued recurring NBA forecast/);assert.equal(renderProductionResearch(c,{nbaSelected:false}),'');
   const descriptor={path:`sdv-production.${hash(b.index)}.json`,sha256:hash(b.index),generated_at:b.index.generated_at,status:'PRODUCTION_RESEARCH',retained:false,error:null};validateProductionDescriptor(descriptor,b.index.generated_at);assert.throws(()=>validateProductionDescriptor({...descriptor,path:'../production.json'},b.index.generated_at));assert.throws(()=>validateProductionDescriptor({...descriptor,status:'DAILY_SNAPSHOT_RESEARCH'},b.index.generated_at));
