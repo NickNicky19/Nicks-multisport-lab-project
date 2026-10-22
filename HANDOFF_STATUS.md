@@ -2,6 +2,82 @@
 
 Updated: October 22, 2026 (UTC).
 
+## October 22, late UTC — first-cycle start missed; scheduled-run repair prepared
+
+At **23:08:10 UTC / 6:08 p.m. CDT**, the protected first cycle's
+22:00–strictly-before-22:30 UTC owner-start window had passed. Read-only recovery
+found one manual run, **39825208340**, started **17:43:39 UTC**, rejected as too
+early. There was no valid-window launch. The protected records branch was absent
+in the current remote inventory. The original 23 producer files, 19 records,
+fixed cohort, producer `0c37b30060c2dffb20226bd3efbedc65a75d04e3` and all windows
+remain unchanged. Classification: **MISSED START WINDOW WITH AN EARLY REJECTED
+ATTEMPT**, zero genuine issuance. The later capture window does not extend the
+runner-start deadline. Do not rerun, launch late, rebind or replace this cycle.
+
+Actual native scheduled runs are now observed, superseding only the earlier
+zero-run as-of status, not rewriting those observations. **39826518040** at
+17:52:51 UTC failed with `Recovered authority is evidence, not a new issuance
+capability`. **39856046159** at 21:17:33 UTC failed with `Actual production run
+metadata differs`. Both stopped before sports-source capture or generation.
+The first failure is explained by a confirmed module-identity defect: `python -m`
+minted a private capability in `__main__`, but Coordinator checked the separately
+imported canonical module. The second failure's exact field/cause remains
+**UNKNOWN**; its validation-time API original was not retained. Later completed-run
+API responses are not substitutes for that missing original.
+
+Implementation source commit: **`90c0098a569c5a7e4615fbb1b3db6921d22c5508`**, branch
+`implementation/sdv-live-operations`, based on deployed main
+`fd1b9f413e2e2fa92f598ac704539a4998932115` and carried checkpoint `731ea67`.
+The candidate delegates CLI execution to the canonical module, preserves strict
+authority/identity/status gates, reports mismatched field names, and retains exact
+bounded event/run originals in a separately versioned execution-report observation
+before validation. Rejected observations grant no capability. The 640-KiB
+observation ceiling and 1,310,720-byte retained/staging reservation fit within the
+unchanged 2-GiB runtime limit; ledger/archive budgets are unchanged. This is not
+a global bound for all pre-coordinator failure-path files or report outer fields.
+R0/K0 laws, parameters, historical panel, participation semantics and all fourteen
+categories are unchanged. Future operation must bind its actual executing main
+commit; the older hosted diagnostic is not a timing measurement of this patch.
+
+Required/focused checks: **1,016 Python tests / 650.444 s**, demo, **138 frontend tests**, **149 focused production tests / 134.590 s**, **19 optimized runner tests / 0.765 s**, optimized runtime-boundary and calendar-fixture regressions all passed. Validation receipt: `evidence/operational/sdv-production-entrypoint-validation-20261022.json`.
+Commands: `python3 -m unittest discover -s tests -v`,
+`python3 -m multisport_lab.demo`,
+`node --test --test-isolation=none web/tests/*.test.mjs`,
+`python3 -m unittest discover -s tests -p 'test_sdv_production_*.py' -v`,
+`python3 -O -m unittest discover -s tests -p test_sdv_production_runner.py -v`,
+and the optimized single runtime-boundary regression. No hosted diagnostic,
+frozen statistical comparison or new source collection was run. A development
+full suite failed **1 of 1,015 tests / 592.536 s** because an existing PROS004
+test set an auxiliary receipt to real-now-minus-one-day, which had advanced past
+its synthetic checkpoint clock. The test fixture now places it before both
+clocks; PROS004 runtime/receipts/protocol remain untouched. The failed log and an
+interrupted pre-final-fixture run remain distinct from final passing evidence.
+
+Evidence: `evidence/operational/sdv-production-scheduled-failure-and-missed-first-cycle-20261022.json`
+retains all three later completed-run API bodies and failed-log CLI outputs with
+actual recovery clocks. It does not claim recovery of the temporary original
+Actions artifact or the second failed job's validation-time API body. Separate
+immutable independent review receipts cover runtime/retention and the calendar
+fixture. Review found no remaining material defect; successful hosted operation
+after release remains unverified. Source GETs, dispatches and real model
+generations in this checkpoint are all **zero**.
+
+Public main/Pages remain at `fd1b9f4`, deployment run **39781672740**. This repair
+is a review candidate, not a deployed fix. Public counts remain **six historical
+bundles / six historical grades; zero genuine forecasts, prospective outcomes or
+grades, published offers, qualified tickets and financial settlements**. No
+development output is promoted. NFL/MLB, S0, DEV005, OPS002, PROS004 and the expired
+October 20 pilot are untouched.
+
+**Next concrete action:** review/land the exact candidate through PR Completion,
+then verify a real native scheduled run and its original metadata. The registered
+planning window remains **October 23, 13:00–14:00 UTC / 8:00–9:00 a.m. CDT**, for
+the first eligible UTC game date October 24. Its actual fresh inputs, complete
+inventory, timely paired issuance/readback, public forecasts and later verified
+final grades remain pending. No manual launch of the missed cycle is needed or
+authorized; no new scheduler or provider credential is required by this repair.
+
+
 ## October 22, 13:10 UTC — PR #16 merged and publicly deployed; recurring coordinator installed
 
 The owner approved the consolidated exact-head release and separate documented

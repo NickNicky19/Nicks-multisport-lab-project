@@ -12,6 +12,42 @@ The protected first daily cycle retains its separate owner launch, producer,
 23 files, 19 original records and dated windows. OPS002, PROS004 and S0 remain
 inactive. Nothing here backfills a missed forecast or establishes accuracy.
 
+### October 22 late checkpoint: native runs failed; protected start missed
+
+Read-only recovery at 23:08 UTC found one protected manual attempt at 17:43 UTC,
+rejected as too early, and no valid launch during its 22:00–strictly-before-22:30
+UTC window. That start window is missed. The later capture window does not extend
+the owner-start deadline. Do not rerun, start late, replace its cohort or shift
+its clocks.
+
+Two actual native coordinator runs are now observed: 39826518040 and 39856046159.
+Both failed before any source phase or genuine generation. The first exposed a
+CLI module-identity defect: `python -m` minted its private capability in
+`__main__`, while the coordinator checked the separately imported canonical
+module. The candidate delegates CLI execution to that canonical module, retaining
+the recovered-authority rejection. The second run reported a metadata mismatch;
+the exact validation-time API body was not retained, so its mismatched field and
+cause remain UNKNOWN. Do not relax the required running status or identities.
+
+The candidate preserves bounded exact event/run response bytes in a versioned
+execution-report observation before validation and reports mismatched field
+names. An observation remains unverified until the existing strict checks pass;
+recovery of that report cannot mint a capability. At most 32 KiB of event bytes
+and 384 KiB of run bytes encode within a 640-KiB observation ceiling. The runtime
+guard reserves two such observations (1,310,720 bytes) for retained and atomic
+staging copies within the unchanged 2-GiB limit. This is report headroom, not a
+new ledger/archive record or source allowance. Pre-coordinator authentication
+failures remain stopped; this guard does not certify every filesystem byte in
+that failure path. Failure artifacts are temporary; copied API/log evidence in
+`evidence/operational/sdv-production-scheduled-failure-and-missed-first-cycle-20261022.json`
+becomes Git-retained with this candidate.
+
+The candidate fix requires its own exact-head review and landing decision. Its
+focused tests do not establish successful hosted operation. The next registered
+planning window remains October 23, 13:00–14:00 UTC, for the first eligible UTC
+game date October 24. Actual source availability, event/cohort admission, timely
+issuance/readback, public delivery and later final grading remain unproven.
+
 ## Source, population and clocks
 
 Reuse the retained publisher README and the scoped reviews in

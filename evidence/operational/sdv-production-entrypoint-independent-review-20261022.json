@@ -1,0 +1,149 @@
+{
+  "schema_version": "nba-sdv-recurring-entrypoint-independent-review-v2",
+  "recorded_at": "2026-10-22T23:22:34.325843+00:00",
+  "reviewer": "/root/diagnostic_fix_verify",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "worktree": "/workspace/nml-sdv-live-operations",
+  "branch": "implementation/sdv-live-operations",
+  "reviewed_base_commit": "731ea67541ec4963377e743039693ccc9766443d",
+  "deployed_main_at_review": "fd1b9f413e2e2fa92f598ac704539a4998932115",
+  "reviewed_state": "Uncommitted final source/test/doc changes relative to the stated base; file hashes identify the exact reviewed bytes.",
+  "reviewed_sha256": {
+    "multisport_lab/sdv_production_runner.py": "8f398c98b7caba57065e80192064cb963d3db114d449f7fdf949dfc2d4e14a86",
+    "multisport_lab/sdv_production_coordinator.py": "b7cad8bb9c7d92d4dcab8ba71fe5b05a488e5d2366b27929104ccbc85a9153b0",
+    "tests/test_sdv_production_runner.py": "7959f271078bda7bacd0d67ff64af047a35db541efb61c295162e6e6089023b2",
+    "tests/test_sdv_production_coordinator.py": "c4cb3ac4ddf29d1f5b9f310b0260ee01a45568e6d76fa1923a731ca96d636ace",
+    "docs/SDV_PRODUCTION_OPERATIONS.md": "9643cd7a317fb7bfe1eeeff44669824478082b62b0a95403a2bd40ea1135f8f1"
+  },
+  "material_findings_remaining": [],
+  "previous_review": {
+    "path": "/tmp/nml-recurring-entrypoint-independent-review-20261022.json",
+    "sha256": "7478a818a0cc15abef3a2aa5a3a917910466173b8469f77c5f740dc90a10be45",
+    "unchanged": true,
+    "scope": "Earlier two-file runner/test review; this v2 additionally reviews coordinator headroom, its boundary regression and operating/factual documentation."
+  },
+  "review_findings": [
+    "Canonical main-module delegation keeps current-run capability minting and actual Coordinator authority checks in the same canonical module. Recovered evidence alone remains unable to grant a process capability.",
+    "The runpy entrypoint regression invokes the real Coordinator constructor and wraps the actual authority gate; transport and prepare_tasks are mocked, not the authority decision.",
+    "Strict typed run identities, trusted main, current status=in_progress and null conclusion are preserved. Queued/completed and wrong-identity cases reject without capability or archive creation.",
+    "Versioned hosted-run observation retains bounded exact event/run wrappers before validation and remains unverified/rejected until all existing authority checks pass. Safe mismatch names improve future diagnostics without assigning an unsupported historical cause.",
+    "The runtime guard now includes two 640-KiB observation allowances for the additional retained and atomic-staging metadata outside the phase directory. It keeps caller reserve and observation reserve distinct and does not raise the two-GiB limit.",
+    "The new boundary regression inspects one byte below, exactly at and one byte above actual+caller reserve+observation allowance, and verifies existing worker bytes remain unchanged.",
+    "The operations document accurately separates missed protected launch, observed native failures, candidate-only software safeguards, temporary failure artifacts and future permitted source/issuance/publication/grading gates.",
+    "Three completed-run API originals and failed-log CLI outputs are retained with actual later retrieval clocks and exact byte/hash wrappers. They are explicitly not the API responses consumed at the original validation time."
+  ],
+  "limits": {
+    "maximum_raw_event_bytes": 32768,
+    "maximum_raw_run_api_bytes": 393216,
+    "maximum_encoded_observation_report_bytes": 655360,
+    "additional_observation_disk_reserve_bytes": 1310720,
+    "copies_reserved": "One retained observation plus one atomic-staging observation",
+    "runtime_disk_limit_bytes_unchanged": 2147483648,
+    "runtime_guard_math": "counted phase/source actual bytes + caller reserve + 1,310,720 <= 2,147,483,648",
+    "runtime_guard_return_fields": "actual_bytes; reserved_bytes (caller only); hosted_run_observation_reserved_bytes (separate); maximum_bytes",
+    "new_ledger_records": 0,
+    "new_archive_record_roles": 0,
+    "new_sports_source_gets": 0,
+    "pre_coordinator_limit": "This guard charges the added observation for operating admission. Authentication failures before Coordinator are fail-closed, but the guard does not certify every pre-coordinator filesystem byte or all unchanged outer-report fields."
+  },
+  "factual_checkpoint": {
+    "path": "evidence/operational/sdv-production-scheduled-failure-and-missed-first-cycle-20261022.json",
+    "bytes": 196969,
+    "sha256": "170d41f233b9d41ce216238373e4d6b002a0eba7da76f17af56e4ae6e629845b",
+    "recorded_at": "2026-10-22T23:15:03.068116+00:00",
+    "later_original_wrappers_verified": [
+      {
+        "run_id": 39825208340,
+        "field": "completed_run_api_original",
+        "bytes": 14137,
+        "sha256": "055810dfaeca5961989b6fa1737de86212a3227a03cc5ba523a3e76c300098f4"
+      },
+      {
+        "run_id": 39825208340,
+        "field": "failed_log_cli_output",
+        "bytes": 37581,
+        "sha256": "a90f6095bfe5999171d9358a2cedc06d14f46e779cf285174990f2f53cde096a"
+      },
+      {
+        "run_id": 39826518040,
+        "field": "completed_run_api_original",
+        "bytes": 14111,
+        "sha256": "de83ca2e5e7044c4021896c617753e2d010475315a93efb97a61b49a5668cfaa"
+      },
+      {
+        "run_id": 39826518040,
+        "field": "failed_log_cli_output",
+        "bytes": 31977,
+        "sha256": "7522df98d74225938ea0977702cce45f5abb287e2ef8d6bacd082f4ac0ac02c9"
+      },
+      {
+        "run_id": 39856046159,
+        "field": "completed_run_api_original",
+        "bytes": 14111,
+        "sha256": "07c036ac61aea9bcae36df550b3ac7c926ee87f9fb4536456b1ae5dd9e955b47"
+      },
+      {
+        "run_id": 39856046159,
+        "field": "failed_log_cli_output",
+        "bytes": 31838,
+        "sha256": "a0e9a4ce4829788275fc72a3da7083cef85347a23dc4f3bffca473a228db3459"
+      }
+    ],
+    "package_source_requests": 0,
+    "package_dispatches": 0,
+    "package_model_generations": 0,
+    "second_original_validation_mismatch": "UNKNOWN",
+    "second_original_mismatch_not_inferred_from_later_completed_status": true,
+    "protected_first_cycle": {
+      "classification": "MISSED_START_WINDOW_WITH_ONE_EARLY_REJECTED_ATTEMPT",
+      "cycle_id": "NBA-SDV-DAILY-001-20261023-401909094",
+      "genuine_forecasts": 0,
+      "late_launch_or_replacement_authorized": false,
+      "producer": "0c37b30060c2dffb20226bd3efbedc65a75d04e3",
+      "start_closes_strictly_before": "2026-10-22T22:30:00Z",
+      "start_opens_at": "2026-10-22T22:00:00Z",
+      "valid_launch_observed": false
+    },
+    "reviewer_role": "Inspected root-retained evidence locally; root performed the earlier authorized GitHub reads. No network retrieval by this reviewer."
+  },
+  "preservation": {
+    "reference": "evidence/operational/sdv-production-independent-exact-source-4fe1dbe-20261022.json",
+    "reference_sha256": "80ff624aa2d7c0b6b2bf3116f7be65e9982dacf826da56c974991c428b0acc4c",
+    "frozen_source": "0c37b30060c2dffb20226bd3efbedc65a75d04e3",
+    "protected_files_verified": 23,
+    "original_records_verified": 19,
+    "all_byte_identical": true,
+    "law_sha256": {
+      "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+      "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"
+    }
+  },
+  "method_and_commands": [
+    "Read-only git status --short --branch, git diff --stat, and git diff of the five reviewed source/test/documentation paths.",
+    "Trace runner canonical CLI delegation, authorize_current_run/validate_authorization/require_current_authority/execute, Coordinator._authority and _runtime_guard, and atomic _write_json report writing.",
+    "Read new entrypoint, strict rejection/raw retention and exact headroom boundary regression source; no tests executed by this reviewer.",
+    "Decode the six retained own-repository evidence wrappers; verify exact byte lengths and SHA-256, run identities, later retrieval clocks and documentary UNKNOWN labels.",
+    "Compute SHA-256 for the reviewed files, frozen laws and all23 protected/19 original paths; compare preserved paths to the frozen reference using explicit IntegrityError guards."
+  ],
+  "reviewer_actions": {
+    "network_requests": 0,
+    "source_captures": 0,
+    "tests_executed": 0,
+    "full_history_runs": 0,
+    "model_generation": 0,
+    "comparative_evaluations": 0,
+    "workflow_dispatches": 0,
+    "operating_activation_mutations": 0,
+    "repository_edits": 0,
+    "original_record_edits": 0,
+    "new_temporary_review_receipts": 1
+  },
+  "limitations": [
+    "This receipt is a static patch and local byte-integrity review. The root integration owner reports actual test results; this reviewer makes no independent test-pass claim.",
+    "A successful subsequent native scheduled execution after release is still pending. A candidate fix and synthetic entrypoint tests do not establish live source capture, genuine issuance, publication or statistical quality.",
+    "The original validation-time response for the second native failure was not retained. Later completed-run responses cannot establish that earlier mismatch field or authorize relaxed validation.",
+    "The protected first cycle start window remains missed. Its later capture window does not authorize late start, shifted clocks, substitute players or backdated forecasts.",
+    "Only the added observation metadata receives this reserved headroom. The unchanged pre-coordinator and outer-report filesystem accounting limits remain explicitly disclosed; this is not a global all-file disk certification.",
+    "New executable source bytes require an appropriate new pinned source binding/reviewed release. Frozen mathematical laws, original records, provider constraints, qualification gates and separate NFL/MLB boundaries remain unchanged."
+  ]
+}
