@@ -1,0 +1,108 @@
+{
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "pr": 16,
+  "head": "1869915ebca29d542e24511d8f45ff20dcf25ffe",
+  "user_reply": "I approve of all. Continue",
+  "scope": "Prior consolidated request: merge commit/deploy exact PR16 and documented recurring SportsDataverse operation no earlier than October24. Protected first-cycle owner launch unchanged. No early first-cycle dispatch, diagnostic rerun or other protocol activation.",
+  "recorded_at": "2026-10-22T12:50:16.127636+00:00",
+  "readiness_policy_digest": "7691ab6501095b993156211c102a3520b590d3d54cb446f2df572c8e7c3f5219",
+  "schema_version": "nml-recurring-release-and-operating-authority-v1",
+  "actual_main": "fd1b9f413e2e2fa92f598ac704539a4998932115",
+  "guarded_landing_plan": {
+    "headSha": "1869915ebca29d542e24511d8f45ff20dcf25ffe",
+    "method": "merge",
+    "mode": "auto",
+    "pr": {
+      "number": 16,
+      "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/16"
+    },
+    "readinessPolicy": {
+      "checkPolicy": "all",
+      "configPath": null,
+      "requiredReviewers": [],
+      "source": "no-config",
+      "strictChangesRequested": false
+    },
+    "readinessPolicyDigest": "7691ab6501095b993156211c102a3520b590d3d54cb446f2df572c8e7c3f5219",
+    "repository": "NickNicky19/Nicks-multisport-lab-project",
+    "requiresConfirmation": true,
+    "schemaVersion": 1,
+    "state": "confirmation_required",
+    "warning": "This landing request may merge the pull request immediately."
+  },
+  "actual_merge": {
+    "headRefOid": "1869915ebca29d542e24511d8f45ff20dcf25ffe",
+    "mergeCommit": {
+      "oid": "fd1b9f413e2e2fa92f598ac704539a4998932115"
+    },
+    "mergedAt": "2026-10-22T12:50:21Z",
+    "mergedBy": {
+      "id": "U_kgDODHPCJQ",
+      "is_bot": false,
+      "login": "NickNicky19",
+      "name": ""
+    },
+    "state": "MERGED",
+    "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/16"
+  },
+  "initial_installed_verification": {
+    "schema_version": "nml-pr16-installed-default-coordinator-v1",
+    "repository": "NickNicky19/Nicks-multisport-lab-project",
+    "main": "fd1b9f413e2e2fa92f598ac704539a4998932115",
+    "started_at": "2026-10-22T12:54:18.121893+00:00",
+    "verified_at": "2026-10-22T12:54:20.055928+00:00",
+    "workflow_id": 392458906,
+    "workflow_path": ".github/workflows/nba-operations.yml",
+    "workflow_state": "active",
+    "default_branch": "main",
+    "workflow_sha256": "017536d67acc3b7d598b3ba7288e59fa5ad2494e33e72e95e9536676df4548a5",
+    "workflow_bytes_match_approved_merge": true,
+    "cron": "2,17,32,47 * * * *",
+    "next_nominal_due": "2026-10-22T13:02:00Z",
+    "scheduled_runs_observed": 0,
+    "observed_runs": [],
+    "first_eligible_game_date": "2026-10-24",
+    "first_plan_window_utc": [
+      "2026-10-23T13:00:00Z",
+      "2026-10-23T14:00:00Z"
+    ],
+    "source_requests_this_verification": 0,
+    "genuine_issuance_this_verification": 0,
+    "note": "Active default-branch cron confirms installation. Nominal due time is not a promise of actual GitHub launch. First eligibility refers to UTC GAME_DATE; planning is on preceding UTC day under the approved documented policy."
+  },
+  "independent_installed_review": {
+    "path": "evidence/operational/sdv-production-installed-coordinator-independent-review-20261022.json",
+    "sha256": "fb2f7ceda0a4610a7afc6252a591b3061f218a5ee383035e6460ebcd0cae3627"
+  },
+  "scheduled_run_observations": [
+    {
+      "observed_at": "2026-10-22T13:02:23.652258+00:00",
+      "total_count": 0,
+      "runs": []
+    },
+    {
+      "observed_at": "2026-10-22T13:05:06.994362+00:00",
+      "total_count": 0,
+      "runs": []
+    },
+    {
+      "observed_at": "2026-10-22T13:14:21.224079+00:00",
+      "total_count": 0,
+      "runs": []
+    }
+  ],
+  "manual_early_startup": {
+    "requested": true,
+    "command_executed": false,
+    "dispatch_posted": false,
+    "run_created": false,
+    "automatic_approval_review": "REJECTED",
+    "stated_reason": "This dispatch would start an operate workflow today using the first-cycle ID, outside the approved recurring start/eligibility window; the approval covers operation no earlier than October24, not an extra hosted execution now.",
+    "retry_or_bypass": false,
+    "effect": "No GET/POST or worker ran. Existing approved default-branch workflow is unchanged. Actual source/issuance remain subject to the registered windows."
+  },
+  "sports_source_gets_this_release_verification": 0,
+  "genuine_forecasts_issued": 0,
+  "other_protocols_activated": false,
+  "protected_first_producer_dispatched": false
+}

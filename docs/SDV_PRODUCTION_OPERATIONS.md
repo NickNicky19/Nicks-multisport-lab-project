@@ -1,8 +1,13 @@
 # Recurring NBA daily-snapshot operation
 
-This is the **NBA-SDV-PRODUCTION-001 implementation candidate**, extending the
-existing `nba-operations.yml` coordinator. It is not an installed recurring
-producer until its exact release and operating scope are approved and merged.
+The **NBA-SDV-PRODUCTION-001 release and documented recurring scope are approved**.
+PR #16 merged at `fd1b9f413e2e2fa92f598ac704539a4998932115`; Pages workflow
+39781672740 deployed that exact build, with public byte/hash and desktop/mobile
+verification. The actual default-branch API/YAML confirm the existing
+`nba-operations.yml` coordinator is active on its quarter-hour cron. Installation
+does not establish an actual scheduled run, fresh source capture or issuance.
+The initial as-of observations and any later actual execution evidence are
+recorded separately in HANDOFF_STATUS.md and the release checkpoint receipts.
 The protected first daily cycle retains its separate owner launch, producer,
 23 files, 19 original records and dated windows. OPS002, PROS004 and S0 remain
 inactive. Nothing here backfills a missed forecast or establishes accuracy.
@@ -310,10 +315,14 @@ The separate verifier rehashed/replayed all originals and timing with no materia
 findings; its receipt is
 `evidence/operational/sdv-production-hosted-diagnostic-independent-review-20261022.json`.
 
-Before recurring activation: finish final exact-head release checks, then obtain
-the separate exact-head release/operating decision.
-Do not rerun the completed hosted diagnostic or infer operating approval from its
-success. It does not test future input availability or actual T90 timeliness.
+The separate exact-head release/operating decision was subsequently approved,
+PR #16 merged and Pages was independently verified. See
+`evidence/deployment/2026-10-22-pr16-pages.json` and
+`evidence/operational/sdv-production-release-activation-20261022.json`.
+Do not rerun the completed hosted diagnostic. Its success does not test future
+input availability or actual T90 timeliness. No extra early manual startup
+execution was approved: automatic review rejected the attempted October 22
+`operate` dispatch before command execution, and no retry/bypass followed.
 Completion of the overall goal still requires
 public genuine forecasts, verified real final grades, a subsequent scheduled run,
 tested recovery and the operating evidence described above.
