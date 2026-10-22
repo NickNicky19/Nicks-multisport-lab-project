@@ -395,7 +395,11 @@ def prepare_published_records(root, commit=None, *, now=None):
         git("fetch", "--no-tags", "--depth=1", "origin", "refs/heads/" + branch)
         require(git("rev-parse", "FETCH_HEAD").stdout.strip() == head,
                 "Daily records branch changed during independent fetch")
-        listing = git("ls-tree", "-r", "-z", "--long", head, "--", "records", "daily/records", binary=True).stdout
+        # Ledger roots also contain documentation. Select only the configured
+        # kind subtrees; README files and unrelated branch content are never
+        # treated as records or copied into the publication checkout.
+        record_paths = tuple(prefix + "/" + kind for prefix in ("records", "daily/records") for kind in KINDS)
+        listing = git("ls-tree", "-r", "-z", "--long", head, "--", *record_paths, binary=True).stdout
         require(len(listing) <= 256 * 1024, "Daily record inventory exceeds its metadata budget")
         inventory = []
         for entry in listing.split(b"\0"):
@@ -407,7 +411,6 @@ def prepare_published_records(root, commit=None, *, now=None):
                 size = int(size_text)
             except (ValueError, UnicodeDecodeError) as exc:
                 raise IntegrityError("Malformed independent daily record inventory") from exc
-            parts = path.split("/")
             prefix = "daily/records/" if path.startswith("daily/records/") else "records/"
             suffix = path[len(prefix):].split("/")
             require(mode == "100644" and kind == "blob" and re.fullmatch(r"[a-f0-9]{40}", oid)

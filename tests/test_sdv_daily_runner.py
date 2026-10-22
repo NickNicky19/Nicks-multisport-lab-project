@@ -97,6 +97,36 @@ class DailyRunnerTests(unittest.TestCase):
                 capture.get("https://unrelated.example/data", limit=10, label="bad", redirect=True)
             self.assertEqual(capture.requests, [])
 
+    def test_capture_checks_each_request_window_and_keeps_actual_late_response(self):
+        closes = datetime.now(timezone.utc)
+        with tempfile.TemporaryDirectory() as folder:
+            capture = runner.BoundedCapture(folder, opens_at=closes - timedelta(hours=1), closes_at=closes)
+            capture.opener = MagicMock()
+            capture.opener.open.return_value = Response(b"actual late response")
+            clocks = [closes - timedelta(seconds=1), closes - timedelta(seconds=1),
+                      closes + timedelta(seconds=1), closes + timedelta(seconds=1),
+                      closes + timedelta(seconds=2)]
+            with patch.object(runner, "_now", side_effect=clocks):
+                raw, receipt, _ = capture.get("https://api.github.com/example", limit=100, label="late")
+                with self.assertRaisesRegex(IntegrityError, "outside the registered capture window"):
+                    capture.get("https://api.github.com/example", limit=100, label="forbidden_next")
+            self.assertEqual(raw, b"actual late response")
+            self.assertEqual(receipt["retrieved_at"], stamp(closes + timedelta(seconds=1)))
+            self.assertEqual((Path(folder) / "request-01.body").read_bytes(), raw)
+            capture.opener.open.assert_called_once()
+            self.assertEqual(len(capture.requests), 1)
+
+    def test_remote_capture_marker_asset_or_request_inventory_blocks_fresh_host_recapture(self):
+        for evidence in ({"schema_version": runner.OPERATION_SCHEMA, "status": "CAPTURE_STARTED",
+                          "source_requests": []},
+                         {"schema_version": runner.ASSET_SCHEMA},
+                         {"schema_version": runner.OPERATION_SCHEMA, "status": "FAILED_OR_PARTIAL",
+                          "source_requests": [{"request_number": 1}]}):
+            store = MagicMock()
+            store.records.return_value = [(None, evidence)]
+            with self.subTest(evidence=evidence), self.assertRaisesRegex(IntegrityError, "do not recapture"):
+                runner._require_unstarted_capture(store)
+
     def test_complete_first_asset_is_persisted_before_second_source_failure(self):
         source = runner.cycles.SOURCE_ASSETS[0]
         now = datetime.now(timezone.utc) - timedelta(minutes=5)
@@ -207,6 +237,87 @@ class DailyRunnerTests(unittest.TestCase):
                 writer.return_value.checkpoint.assert_not_called()
                 capture.assert_not_called()
                 pr.assert_not_called()
+
+    def test_fresh_local_state_recovers_remote_capture_marker_and_performs_zero_capture(self):
+        auth = {"schema_version": runner.cycles.AUTHORIZATION_SCHEMA, "authorization_id": "a" * 64}
+        marker = {"schema_version": runner.OPERATION_SCHEMA, "status": "CAPTURE_STARTED", "source_requests": []}
+        report = {"records": [], "forecasts": [], "inputs": [], "genuine_issued": 0, "admissions": {}}
+        cycle = {"cycle_id": runner.cycles.CYCLE_ID, "records_branch": "records/sdv-daily-synthetic"}
+        env = {"GITHUB_ACTIONS": "true", "GITHUB_REPOSITORY": runner.cycles.REPOSITORY,
+            "GITHUB_EVENT_NAME": "workflow_dispatch", "GITHUB_ACTOR": runner.cycles.OWNER,
+            "GITHUB_REF": "refs/heads/main", "GITHUB_WORKFLOW_REF": runner.cycles.REPOSITORY
+            + "/" + runner.cycles.WORKFLOW_PATH + "@refs/heads/main"}
+        auth_ref = LedgerRef("input_captures", "a" * 64, "b" * 64)
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(runner.cycles, "load_cycle", return_value=cycle), \
+                    patch.object(runner.producer, "make_source_binding", return_value={}), \
+                    patch.object(runner.cycles, "validate_authorization"), \
+                    patch.object(runner.cycles, "authenticate_retained_dispatch") as authenticate, \
+                    patch.object(runner, "copy_records"), patch.object(runner, "DailyStore") as store, \
+                    patch.dict(runner.os.environ, env, clear=True), \
+                    patch.object(runner, "BoundedCapture") as capture, patch.object(runner, "wait_until") as wait, \
+                    patch.object(runner, "_records_pr", return_value="https://github.com/example/pull/1"), \
+                    patch.object(runner, "_persist_operation", return_value=auth_ref), \
+                    patch("multisport_lab.sdv_daily_remote.DailyGitCheckpointWriter") as writer:
+                store.return_value.records.return_value = [(auth_ref, auth), (None, marker)]
+                store.return_value.recover.return_value = report
+                writer.return_value._head = "a" * 40
+                writer.return_value.prepare.return_value = {"local_head": "a" * 40}
+                writer.return_value.flush.return_value = {"commit": "a" * 40}
+                with self.assertRaises(IntegrityError):
+                    runner.run(work_root=folder, producer_commit="a" * 40,
+                               records_branch=cycle["records_branch"])
+                authenticate.assert_called_once()
+                capture.assert_not_called()
+                wait.assert_not_called()
+                factual = json.loads((Path(folder) / "execution-report.json").read_text())
+                self.assertIn("do not recapture", factual["error"])
+                self.assertEqual(factual["source_request_count_status"],
+                                 "RETAINED_INVENTORY_ONLY_INTERRUPTED_TOTAL_MAY_BE_UNKNOWN")
+
+    def test_capture_marker_is_independently_flushed_before_any_new_source_get(self):
+        auth = {"schema_version": runner.cycles.AUTHORIZATION_SCHEMA, "authorization_id": "a" * 64}
+        report = {"records": [], "forecasts": [], "inputs": [], "genuine_issued": 0, "admissions": {}}
+        now = datetime.now(timezone.utc)
+        cycle = {"cycle_id": runner.cycles.CYCLE_ID, "records_branch": "records/sdv-daily-synthetic",
+            "retrieval_opens_at": stamp(now - timedelta(minutes=1)), "cutoff_at": stamp(now + timedelta(minutes=59))}
+        env = {"GITHUB_ACTIONS": "true", "GITHUB_REPOSITORY": runner.cycles.REPOSITORY,
+            "GITHUB_EVENT_NAME": "workflow_dispatch", "GITHUB_ACTOR": runner.cycles.OWNER,
+            "GITHUB_REF": "refs/heads/main", "GITHUB_WORKFLOW_REF": runner.cycles.REPOSITORY
+            + "/" + runner.cycles.WORKFLOW_PATH + "@refs/heads/main"}
+        ref = LedgerRef("input_captures", "a" * 64, "b" * 64)
+        events = []
+        def persist(store, cycle, body, *args):
+            events.append(body["status"])
+            return ref
+        def flush():
+            events.append("INDEPENDENT_FLUSH")
+            return {"commit": "a" * 40}
+        def capture_factory(*args, **kwargs):
+            events.append("CAPTURE_CREATED")
+            capture = MagicMock()
+            capture.collect.side_effect = IntegrityError("synthetic stop before any actual source request")
+            return capture
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(runner.cycles, "load_cycle", return_value=cycle), \
+                    patch.object(runner.producer, "make_source_binding", return_value={}), \
+                    patch.object(runner.cycles, "validate_authorization"), \
+                    patch.object(runner.cycles, "authenticate_retained_dispatch"), \
+                    patch.object(runner, "copy_records"), patch.object(runner, "DailyStore") as store, \
+                    patch.dict(runner.os.environ, env, clear=True), patch.object(runner, "wait_until"), \
+                    patch.object(runner, "BoundedCapture", side_effect=capture_factory), \
+                    patch.object(runner, "_records_pr", return_value="https://github.com/example/pull/1"), \
+                    patch.object(runner, "_persist_operation", side_effect=persist), \
+                    patch("multisport_lab.sdv_daily_remote.DailyGitCheckpointWriter") as writer:
+                store.return_value.records.return_value = [(ref, auth)]
+                store.return_value.recover.return_value = report
+                writer.return_value._head = "a" * 40
+                writer.return_value.prepare.return_value = {"local_head": "a" * 40}
+                writer.return_value.flush.side_effect = flush
+                with self.assertRaises(IntegrityError):
+                    runner.run(work_root=folder, producer_commit="a" * 40,
+                               records_branch=cycle["records_branch"])
+        self.assertEqual(events[:3], ["CAPTURE_STARTED", "INDEPENDENT_FLUSH", "CAPTURE_CREATED"])
 
     def test_operating_report_rejects_resealed_impossible_counts_clocks_and_private_urls(self):
         now = datetime.now(timezone.utc) - timedelta(minutes=1)

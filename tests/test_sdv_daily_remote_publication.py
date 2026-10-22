@@ -44,7 +44,9 @@ class DailyRemotePublicationTests(unittest.TestCase):
         for index in range(19):
             ledger.append("input_captures", "synthetic-existing-" + str(index),
                           {"identity": {"software_fixture_original": index}})
+        (self.root / "records/README.md").write_text("Local ledger documentation must remain unchanged.\n")
         shutil.copytree(self.root / "records", self.source / "records")
+        (self.source / "records/README.md").write_text("Remote documentation is not an imported ledger record.\n")
         self.before = self.inventory(self.root / "records")
         self.git("init", "--quiet", cwd=self.source)
         self.git("config", "user.name", "Synthetic Publication Test", cwd=self.source)
@@ -117,6 +119,8 @@ class DailyRemotePublicationTests(unittest.TestCase):
         self.assertNotEqual(staged, self.source)
         self.assertEqual((self.root / self.relative).read_bytes(), expected)
         self.assertFalse((self.root / "never_execute_remote.py").exists())
+        self.assertEqual((self.root / "records/README.md").read_text(),
+                         "Local ledger documentation must remain unchanged.\n")
         self.assertEqual(self.inventory(self.root / "records"), self.before)
         first = self.inventory(self.root / "daily/records")
         recovered, _ = self.prepare(commit=self.head)

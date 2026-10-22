@@ -24,7 +24,7 @@ from .ledger import LedgerRef
 from . import sdv_daily_inputs as inputs
 from . import sdv_daily_cycle as cycles
 from . import sdv_daily_producer as producer
-from .sdv_daily_store import DailyStore
+from .sdv_daily_store import ASSET_SCHEMA, DailyStore
 
 MAX_SOURCE_REQUESTS = 6
 MAX_METADATA_BYTES = 256 * 1024
@@ -187,14 +187,21 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
 
 class BoundedCapture:
     """Six total source GETs, counting redirects; no retries or credentials."""
-    def __init__(self, root):
+    def __init__(self, root, *, opens_at=None, closes_at=None):
         self.root = Path(root)
         self.requests = []
+        require((opens_at is None) == (closes_at is None), "Capture needs both operating bounds")
+        self.opens_at = utc(opens_at) if opens_at is not None else None
+        self.closes_at = utc(closes_at) if closes_at is not None else None
+        require(self.opens_at is None or self.opens_at < self.closes_at, "Capture operating bounds conflict")
         require(not (self.root / "requests.json").exists(),
                 "An existing capture attempt must be recovered, never silently recaptured")
         self.opener = urllib.request.build_opener(_NoRedirect())
 
     def get(self, url, *, limit, label, redirect=False):
+        if self.opens_at is not None:
+            require(self.opens_at <= _now() <= self.closes_at,
+                    "Daily source request is outside the registered capture window")
         require(len(self.requests) < MAX_SOURCE_REQUESTS, "Daily source request budget exhausted")
         parsed = urllib.parse.urlsplit(url)
         allowed = {"api.github.com", "github.com"} if not redirect else {"release-assets.githubusercontent.com"}
@@ -355,8 +362,7 @@ def validate_operation(body):
 def _persist_operation(store, cycle, report, work, input_ref, asset_refs):
     prior = [body for _, body in store.records() if body["schema_version"] == OPERATION_SCHEMA]
     require(len(prior) < 8, "Daily cycle exhausted its eight bounded operating reports")
-    request_file = work / "originals/requests.json"
-    requests = _decode(_bounded_bytes(request_file, 64 * 1024)) if request_file.exists() else []
+    requests = _request_inventory(store, work)
     recovered = store.recover()
     forecast_refs = [ref for ref, _ in recovered["forecasts"]]
     body = producer.seal({"schema_version": OPERATION_SCHEMA, "protocol_id": inputs.PROTOCOL_ID,
@@ -368,6 +374,26 @@ def _persist_operation(store, cycle, report, work, input_ref, asset_refs):
     validate_operation(body)
     references = list(asset_refs) + ([input_ref] if input_ref else []) + forecast_refs
     return store.append_body("input_captures", body, references=tuple(dict.fromkeys(references)))
+
+
+def _request_inventory(store, work):
+    request_file = work / "originals/requests.json"
+    if request_file.exists():
+        return _decode(_bounded_bytes(request_file, 64 * 1024))
+    retained = [body["source_requests"] for _, body in store.records()
+                if body["schema_version"] == OPERATION_SCHEMA and body["source_requests"]]
+    return max(retained, key=len, default=[])
+
+
+def _require_unstarted_capture(store):
+    """A fresh host must not turn an interrupted capture into another six GETs."""
+    records = store.records()
+    prior = [body for _, body in records if body["schema_version"] == OPERATION_SCHEMA]
+    require(not any(body["schema_version"] == ASSET_SCHEMA for _, body in records)
+        and not any(body["status"] == "CAPTURE_STARTED" or body["source_requests"] for body in prior),
+        "Original daily capture already started without a complete retained input; preserve partial evidence, "
+        "the interrupted request count may be unknown, and do not recapture")
+    require(len(prior) <= 6, "Daily capture needs room for its marker and final report within the eight-report budget")
 
 
 def _publish_records(commit):
@@ -440,11 +466,17 @@ def run(*, work_root, producer_commit, records_branch, cycle_path=None):
                         "Daily recovery has multiple or development input records")
                 input_ref, body = retained_inputs[0]
             else:
+                _require_unstarted_capture(store)
                 report["phase"] = "WAIT_FOR_CAPTURE"
                 _write_json(report_path, report)
                 wait_until(cycle["retrieval_opens_at"], deadline=cycle["cutoff_at"])
                 report["phase"] = "CAPTURE"
-                capture = BoundedCapture(work / "originals")
+                marker = _persist_operation(store, cycle, {**report, "status": "CAPTURE_STARTED"},
+                                            work, None, ())
+                report["capture_marker_ref"] = marker.to_record()
+                report["capture_marker_checkpoint"] = writer.flush()
+                capture = BoundedCapture(work / "originals", opens_at=cycle["retrieval_opens_at"],
+                                         closes_at=cycle["cutoff_at"])
                 def persist_complete_asset(raw, metadata, original):
                     observed_asset_refs.append(store.retain_asset(raw, metadata, original))
                 retained = capture.collect(cycle, on_asset=persist_complete_asset)
@@ -483,9 +515,8 @@ def run(*, work_root, producer_commit, records_branch, cycle_path=None):
             if store is not None and cycle is not None:
                 try:
                     current = store.recover()
-                    request_file = work / "originals/requests.json"
-                    requests = _decode(_bounded_bytes(request_file, 64 * 1024)) if request_file.exists() else []
-                    reason = (report["error"][:800] + "; source_requests=" + str(len(requests))
+                    requests = _request_inventory(store, work)
+                    reason = (report["error"][:800] + "; retained_request_inventory_count=" + str(len(requests))
                               + "; retained_complete_assets=" + str(len(observed_asset_refs)))
                     body = producer.seal({"schema_version": "nba-sdv-daily-failure-v1",
                         "protocol_id": inputs.PROTOCOL_ID, "cycle_id": cycle["cycle_id"],
@@ -503,9 +534,10 @@ def run(*, work_root, producer_commit, records_branch, cycle_path=None):
                     report.update(_summary(store))
                 except Exception as recovery_error:
                     report["recovery_error"] = type(recovery_error).__name__ + ": " + str(recovery_error)[:500]
-            request_path = work / "originals/requests.json"
-            if request_path.exists():
-                report["source_requests"] = len(_decode(_bounded_bytes(request_path, 64 * 1024)))
+            if store is not None:
+                report["source_requests"] = len(_request_inventory(store, work))
+                if "Original daily capture already started" in (report["error"] or ""):
+                    report["source_request_count_status"] = "RETAINED_INVENTORY_ONLY_INTERRUPTED_TOTAL_MAY_BE_UNKNOWN"
             if authority_verified and writer is not None and writer._head is not None:
                 try:
                     report["operation_ref"] = _persist_operation(store, cycle, report, work, input_ref,
