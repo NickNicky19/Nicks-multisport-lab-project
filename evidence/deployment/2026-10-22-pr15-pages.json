@@ -1,0 +1,335 @@
+{
+  "verification_started_at": "2026-10-22T07:47:09.714121+00:00",
+  "verification_completed_at": "2026-10-22T07:47:15.687552+00:00",
+  "base_url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/",
+  "merge_commit": "377a3e4e69749efeee912a75c51673144f9fc27f",
+  "manifest_snapshot_id": "ac6b820cd5b5285f327eab4fd013dfa96a983711156e19968426a8aa1491a741",
+  "published_at": "2026-10-22T07:44:10.569642Z",
+  "schema_version": "nml-pages-deployment-verification-v1",
+  "requests": [
+    {
+      "path": "data/manifest.json",
+      "status": 200,
+      "bytes": 2118,
+      "sha256": "ae7c0a9c72ca2494cb93a60b6293ce7b8dabcae63cc92948e56bfe7a6c832359"
+    },
+    {
+      "path": "data/nba.48d3ae3a104bdf08c53504be1527c27a648c80a17dfac7a870642089bece3dc2.json",
+      "status": 200,
+      "bytes": 151194,
+      "sha256": "48d3ae3a104bdf08c53504be1527c27a648c80a17dfac7a870642089bece3dc2"
+    },
+    {
+      "path": "data/pros004.index.6bd12cc6c365b825065e032a9dfc8c99379421023ac5d61078e1153bf625e71e.json",
+      "status": 200,
+      "bytes": 1102,
+      "sha256": "6bd12cc6c365b825065e032a9dfc8c99379421023ac5d61078e1153bf625e71e"
+    },
+    {
+      "path": "data/display.27377525f0a7bc87ef013af278b14a47de292839d498be382f66338ebc495291.json",
+      "status": 200,
+      "bytes": 6565,
+      "sha256": "27377525f0a7bc87ef013af278b14a47de292839d498be382f66338ebc495291"
+    },
+    {
+      "path": "data/nba-offers.c11d19e2c7210b255df2a15a4c203c992460b3d38ac2b40beff58e830e14b100.json",
+      "status": 200,
+      "bytes": 525,
+      "sha256": "c11d19e2c7210b255df2a15a4c203c992460b3d38ac2b40beff58e830e14b100"
+    },
+    {
+      "path": "data/paired-research.bf03aed629e448e046c5ec5efb1e3c9d71a0b96321affef09aaff21dab53dcb9.json",
+      "status": 200,
+      "bytes": 712,
+      "sha256": "bf03aed629e448e046c5ec5efb1e3c9d71a0b96321affef09aaff21dab53dcb9"
+    },
+    {
+      "path": "data/sdv-daily.e1b988e1de6c3e337aa28e5f4b9476502e666d2ffd218f621b0f9538075bf748.json",
+      "status": 200,
+      "bytes": 1490,
+      "sha256": "e1b988e1de6c3e337aa28e5f4b9476502e666d2ffd218f621b0f9538075bf748"
+    },
+    {
+      "path": "app.mjs",
+      "status": 200,
+      "bytes": 59170,
+      "sha256": "942646d0d9f0c08fc10c2a642b87349a0db50a8c36a299101750a7ea8b39577c"
+    },
+    {
+      "path": "daily-performance.mjs",
+      "status": 200,
+      "bytes": 17743,
+      "sha256": "fd66747cde5aa1863ee203fefd2f2aeaefe7531e9da90ada532f401522daa1d0"
+    },
+    {
+      "path": "display.mjs",
+      "status": 200,
+      "bytes": 10998,
+      "sha256": "406b0d1167e6b5d0247ba88bed9b4970e8cb78b16eb0838ccf6a4770979b19f3"
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 2327,
+      "sha256": "37391a53ea37095583dee4ad54a3dca8faee6928a90f2c0adf64f552a5a1a447"
+    },
+    {
+      "path": "local-offer-review.css",
+      "status": 200,
+      "bytes": 1621,
+      "sha256": "c4d6531373191fe1daadf7214ed7d1097101264ca7b14fa685b29f48b8bd5074"
+    },
+    {
+      "path": "local-offer-review.mjs",
+      "status": 200,
+      "bytes": 14348,
+      "sha256": "6ce7c0d96434c7f4c9d858be8276b90f8e83093311ade2e9ad17142a4c87bb74"
+    },
+    {
+      "path": "mark.svg",
+      "status": 200,
+      "bytes": 265,
+      "sha256": "b2ac3b2cee0ea515f8d09831defc655076fa7bedeb0324da33b1534ea6383891"
+    },
+    {
+      "path": "offers.mjs",
+      "status": 200,
+      "bytes": 20133,
+      "sha256": "6a6b5b138e6e1a2500805879753fdfa4a417874174f477bc118b4f992b250afd"
+    },
+    {
+      "path": "paired-research.mjs",
+      "status": 200,
+      "bytes": 33624,
+      "sha256": "c2f6057e7967f36f956d67f1d5ba3ee8b00721d10191a833422b02c753ca070f"
+    },
+    {
+      "path": "pros004.mjs",
+      "status": 200,
+      "bytes": 26988,
+      "sha256": "af5e8a9bd0ea6d5a027c9e8602d309a4aa08bcebff9e68dfd78e8a6bd89022fc"
+    },
+    {
+      "path": "research.mjs",
+      "status": 200,
+      "bytes": 19974,
+      "sha256": "b61f25fd04fae269a54c7f359fef15f5f4d25ea90b0572ebb48fefee71afb2c7"
+    },
+    {
+      "path": "scope.mjs",
+      "status": 200,
+      "bytes": 1793,
+      "sha256": "79ef949736b0a440a7ca104e220385177e9e8c16a3d3267a13533b146cc8bafe"
+    },
+    {
+      "path": "sdv-daily.mjs",
+      "status": 200,
+      "bytes": 46567,
+      "sha256": "735b698a503596c46f8891145033727230cc213ff5122e27aa1a96b601908360"
+    },
+    {
+      "path": "semantic-offer-review.mjs",
+      "status": 200,
+      "bytes": 28348,
+      "sha256": "84c78f71cd52b23feee6b5bdf21fb80e237f9eb877cb979bf009a9644d870376"
+    },
+    {
+      "path": "snapshot.mjs",
+      "status": 200,
+      "bytes": 19562,
+      "sha256": "378d77c0caa2ba9ee30e92a13c1894699955208182bd178a9f0e34715c774d4f"
+    },
+    {
+      "path": "styles.css",
+      "status": 200,
+      "bytes": 29510,
+      "sha256": "f2e5b666db75d90481c37cc61d4060483bf0c511aca8fe31b25a2af87d0adba2"
+    }
+  ],
+  "static_files_equal_merge": [
+    "app.mjs",
+    "daily-performance.mjs",
+    "display.mjs",
+    "index.html",
+    "local-offer-review.css",
+    "local-offer-review.mjs",
+    "mark.svg",
+    "offers.mjs",
+    "paired-research.mjs",
+    "pros004.mjs",
+    "research.mjs",
+    "scope.mjs",
+    "sdv-daily.mjs",
+    "semantic-offer-review.mjs",
+    "snapshot.mjs",
+    "styles.css"
+  ],
+  "verified_player_names": {
+    "2991070": "Jerami Grant",
+    "2991350": "Alex Caruso",
+    "2489663": "Kelly Olynyk",
+    "2583632": "Royce O'Neale",
+    "1966": "LeBron James",
+    "2960236": "Maxi Kleber"
+  },
+  "historical_matchups": [
+    {
+      "event_id": "401810135",
+      "label": "Portland Trail Blazers @ Oklahoma City Thunder",
+      "event_starts_at": "2025-11-24T00:00:00.000000Z"
+    },
+    {
+      "event_id": "401810136",
+      "label": "San Antonio Spurs @ Phoenix Suns",
+      "event_starts_at": "2025-11-24T01:00:00.000000Z"
+    },
+    {
+      "event_id": "401810137",
+      "label": "Los Angeles Lakers @ Utah Jazz",
+      "event_starts_at": "2025-11-24T01:00:00.000000Z"
+    }
+  ],
+  "counts": {
+    "historical_forecasts": 6,
+    "historical_grades": 6,
+    "genuine_forecasts": 0,
+    "published_offers": 0,
+    "prospective_outcomes": 0,
+    "prospective_grades": 0,
+    "qualified_tickets": 0,
+    "financial_settlements": 0,
+    "published_development_forecasts": 0
+  },
+  "clocks": {
+    "site_publication": "2026-10-22T07:44:10.569642Z",
+    "last_retained_preparation": {
+      "imported_at": "2026-10-20T02:10:36.352647Z",
+      "meaning": "RETAINED_INPUT_PREPARATION_TIMELINESS_NOT_ESTABLISHED",
+      "observed_at": "2026-10-20T01:51:55.889290Z",
+      "record_ref": {
+        "kind": "research_inputs",
+        "payload_sha256": "be1cf24531a241f1d2752cde3429414b9c6fc64491e99a8bffaf4695d8fa3659",
+        "record_id": "dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc"
+      }
+    },
+    "last_genuine_issued_at": null,
+    "daily_status": "INACTIVE",
+    "daily_reason": "No daily-snapshot research forecast has been issued. A reviewed operating cycle and timely admitted daily assets are required."
+  },
+  "browser": {
+    "mode": "TLS_VERIFIED_SERVED_BYTES_AT_PUBLIC_URL",
+    "tls_verification": true,
+    "transport": "urllib HTTPS proxy verification plus immutable captured asset bodies; fresh public manifest on each reload",
+    "direct_chromium_transport_limitation": "Existing proxy CA not trusted by Chromium (net::ERR_CERT_AUTHORITY_INVALID); no TLS verification was disabled",
+    "started_at": "2026-10-22T07:48:03.226574+00:00",
+    "completed_at": "2026-10-22T07:48:24.524803+00:00",
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 1000,
+        "upcoming": true,
+        "six_historical_names": true,
+        "three_matchups_and_dates": true,
+        "original_ids_issue_model_accessible": true,
+        "all14_categories": true,
+        "six_historical_grades": true,
+        "daily_performance_filters_empty_state": true,
+        "direct_history_refresh": true,
+        "separate_clocks": true,
+        "daily_inactive_honesty": true,
+        "builder_2_to_6_all_directions_scopes_no_action": true,
+        "no_overflow": true
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "upcoming": true,
+        "six_historical_names": true,
+        "three_matchups_and_dates": true,
+        "original_ids_issue_model_accessible": true,
+        "all14_categories": true,
+        "six_historical_grades": true,
+        "daily_performance_filters_empty_state": true,
+        "direct_history_refresh": true,
+        "separate_clocks": true,
+        "daily_inactive_honesty": true,
+        "builder_2_to_6_all_directions_scopes_no_action": true,
+        "no_overflow": true
+      },
+      {
+        "width": 320,
+        "height": 760,
+        "upcoming": true,
+        "six_historical_names": true,
+        "three_matchups_and_dates": true,
+        "original_ids_issue_model_accessible": true,
+        "all14_categories": true,
+        "six_historical_grades": true,
+        "daily_performance_filters_empty_state": true,
+        "direct_history_refresh": true,
+        "separate_clocks": true,
+        "daily_inactive_honesty": true,
+        "builder_2_to_6_all_directions_scopes_no_action": true,
+        "no_overflow": true
+      }
+    ],
+    "javascript_errors": [],
+    "request_count": 95,
+    "external_site_requests": []
+  },
+  "public_manifest_schema_version": 6,
+  "github_run": {
+    "conclusion": "success",
+    "created_at": "2026-10-22T07:32:40Z",
+    "event": "push",
+    "head_sha": "377a3e4e69749efeee912a75c51673144f9fc27f",
+    "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39741220070",
+    "id": 39741220070,
+    "run_started_at": "2026-10-22T07:32:40Z",
+    "status": "completed",
+    "updated_at": "2026-10-22T07:44:42Z"
+  },
+  "github_jobs": {
+    "jobs": [
+      {
+        "completed_at": "2026-10-22T07:44:25Z",
+        "conclusion": "success",
+        "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39741220070/job/119698633044",
+        "id": 119698633044,
+        "name": "build",
+        "started_at": "2026-10-22T07:32:43Z",
+        "status": "completed"
+      },
+      {
+        "completed_at": "2026-10-22T07:32:41Z",
+        "conclusion": "skipped",
+        "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39741220070/job/119698635716",
+        "id": 119698635716,
+        "name": "operating-diagnostic",
+        "started_at": "2026-10-22T07:32:41Z",
+        "status": "completed"
+      },
+      {
+        "completed_at": "2026-10-22T07:44:41Z",
+        "conclusion": "success",
+        "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39741220070/job/119703251911",
+        "id": 119703251911,
+        "name": "deploy",
+        "started_at": "2026-10-22T07:44:28Z",
+        "status": "completed"
+      }
+    ],
+    "total_count": 3
+  },
+  "commands": [
+    "gh api repos/NickNicky19/Nicks-multisport-lab-project/actions/runs/39741220070",
+    "gh api repos/NickNicky19/Nicks-multisport-lab-project/actions/runs/39741220070/jobs",
+    "python3 /tmp/verify_nml_public_pr15.py 377a3e4e69749efeee912a75c51673144f9fc27f",
+    "python3 /tmp/verify_nml_public_browser_pr15.py 377a3e4e69749efeee912a75c51673144f9fc27f"
+  ],
+  "limitations": [
+    "Native Chromium cannot trust the environment proxy CA. Browser verification renders TLS-verified actual public bytes at the public URL; no TLS checking is disabled.",
+    "Screenshots are temporary local verification artifacts; the committed JSON retains their factual results, not durable image archival.",
+    "No genuine issuance, provider source capture, model evaluation, ticket settlement or qualification follows from deployment verification."
+  ]
+}

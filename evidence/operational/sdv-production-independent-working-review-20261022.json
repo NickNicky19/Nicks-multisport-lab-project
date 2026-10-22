@@ -1,0 +1,153 @@
+{
+  "approval_or_qualification_claim": false,
+  "base_head": "88b61783754ee2bcd9a3a432ae7ea49749059e09",
+  "branch": "implementation/sdv-recurring-pregame",
+  "findings": [
+    {
+      "id": "grade-prewrite-eligibility",
+      "reproduced": "Late K0 grade append raised after writing a poison grade receipt; fresh recovery then failed.",
+      "resolution": "Prewrite graph+admission check rejects before any receipt; timely R0 grade and fresh restart remain valid.",
+      "severity": "high",
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "id": "retained-correction-clocks",
+      "ownership_note": "Already known to producer owner before independent reproduction.",
+      "reproduced": "Timely day-six final source could not be processed as correction on day-eight because actual processing clock was used as capture deadline.",
+      "resolution": "Both exact source retrieval clocks must meet seven-day capture deadline; later processing retains original source clocks.",
+      "severity": "medium",
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "id": "runtime-disk-bound",
+      "reproduced": "Declared2GiB runtime cap was not consumed, and whole Git/source caches accumulated per recovered shard.",
+      "resolution": "Aggregate runtime guard reserves materialization/source work; read-only fresh caches use temporary per-shard directories without deleting worker originals.",
+      "severity": "medium",
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "id": "registry-reservation-integrity",
+      "reproduced": "Checksum-consistent future attempt clocks hid24 reserved current-hour GETs and admitted another6.",
+      "resolution": "Attempt digest binds phase/scope/clocks; future and duplicate reservations reject; monotonic writer retains immutable original fields and prevents erasing budget history.",
+      "severity": "high",
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "id": "grading-status-shape",
+      "reproduced": "Actual six-field coordinator GRADE details were rejected by former four-field Python/JS publication validators.",
+      "resolution": "Python/JS accept and strictly validate actual six-field contract including late unscored peers.",
+      "severity": "medium",
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "id": "multi-shard-grading-scope",
+      "reproduced": "Later healthy shard status keyed only by plan/cycle cleared a different shard unresolved correction or pending flag and exposed stale grades.",
+      "resolution": "Status includes exact task/shard/player scope; typed recovery authenticates native input cohort; Python/JS apply latest status only to its immutable shard.",
+      "severity": "high",
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "id": "input-task-registration-restart",
+      "reproduced": "Second task archive failure could retain only some task refs, then unconditional partial-registry rejection prevented missing task recovery.",
+      "resolution": "Durable pending-input binding preserves exact original input/ref/source clocks; all task originals independently verified before assignment; retry makes no new source request.",
+      "severity": "medium",
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    }
+  ],
+  "independent_commands": [
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_store.ProductionStoreTests.test_ineligible_peer_grade_is_rejected_before_write_and_restart_keeps_eligible_peer -v",
+      "result": "PASS",
+      "seconds": 1.427,
+      "tests": 1
+    },
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_coordinator.ProductionCoordinatorTests.test_many_readonly_shard_recoveries_keep_constant_disk_and_preserve_worker_state test_sdv_production_coordinator.ProductionCoordinatorTests.test_runtime_budget_rejects_before_materializing_or_collecting -v",
+      "result": "PASS",
+      "seconds": 2.107,
+      "tests": 2
+    },
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_forecasts.ProductionOutcomeTests.test_retained_day_six_sources_can_be_corrected_on_day_eight_but_late_capture_cannot test_sdv_production_publication.ProductionPublicationTests.test_completed_later_correction_gap_survives_a_newer_failed_run -v",
+      "result": "PASS",
+      "seconds": 0.088,
+      "tests": 2
+    },
+    {
+      "command": "node --test --test-name-pattern='completed|correction|unscored' web/tests/production.test.mjs",
+      "reported_test_file_passes": 1,
+      "result": "PASS",
+      "seconds": 1.23095113
+    },
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_runner.ProductionRunnerTests.test_resealed_future_reservations_cannot_restore_get_budget test_sdv_production_runner.ProductionRunnerTests.test_index_survives_new_object_database_and_refuses_conflicting_writers -v",
+      "result": "PASS",
+      "seconds": 0.345,
+      "tests": 2
+    },
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_coordinator.ProductionCoordinatorTests.test_two_shard_task_archive_interruption_retries_exact_original_input_atomically test_sdv_production_coordinator.ProductionCoordinatorTests.test_closed_windows_report_unobserved_state_without_replacement_capture -v",
+      "result": "PASS",
+      "seconds": 1.473,
+      "tests": 2
+    },
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_store.ProductionStoreTests.test_status_authenticates_exact_native_event_input_and_player_shard test_sdv_production_publication.ProductionPublicationTests.test_completed_later_correction_gap_survives_a_newer_failed_run -v",
+      "result": "PASS",
+      "seconds": 0.828,
+      "tests": 2
+    },
+    {
+      "command": "node --test --test-name-pattern='later healthy shard|foreign grading' web/tests/production.test.mjs",
+      "reported_test_file_passes": 1,
+      "result": "PASS",
+      "seconds": 2.750559846
+    }
+  ],
+  "material_findings_remaining": [],
+  "operations": {
+    "dispatch_or_activation": 0,
+    "frozen_experiments_rerun": 0,
+    "genuine_issuance": 0,
+    "github_http_gets": 0,
+    "hosted_archive_writes": 0,
+    "hosted_git_pushes": 0,
+    "local_synthetic_git_and_archive_fixtures_used": true,
+    "model_evaluation_runs": 0,
+    "provider_http_gets": 0
+  },
+  "preservation": {
+    "changed_original_records": [],
+    "changed_protected_source_files": [],
+    "original_records": 19,
+    "producer_pin": "0c37b30060c2dffb20226bd3efbedc65a75d04e3",
+    "protected_source_files": 23
+  },
+  "read_only_repository_review": true,
+  "remaining_limitations": [
+    "Hosted archive write/readback remains unestablished; review did not retry or bypass the automatic-review rejection.",
+    "No full-history timing diagnostic, hosted operation, genuine issuance, public deployment or live outcome grading was performed by this verification.",
+    "Final exact committed-head and integration CI verification remain the integration owner responsibility."
+  ],
+  "repository_edits": [],
+  "reviewed_at": "2026-10-22T08:40:09.764633+00:00",
+  "reviewed_file_sha256": {
+    ".github/workflows/nba-operations.yml": "d8dfc54cc0c73962625115755ea1905c141e700a744f28776a8cd38b3a304b38",
+    ".github/workflows/pages.yml": "01e3f860545ddfaa417b30957557d6f23d6fe1ae5da6f5abe02b0a588202a69c",
+    "config/sdv_production_policy_v1.json": "069861090182c7bcb7a14c1900cdd85bcd62e8e2b662b2796ed6c05612cb5d38",
+    "multisport_lab/sdv_production_archive.py": "a7c1492159c4a0ee11b182ffcde88ada7c03fa29d249cb0cd1e038a785922eb9",
+    "multisport_lab/sdv_production_common.py": "2c91f99995fbce6458501cb265d18c586661d13be5841c5b700f543681f1a7d5",
+    "multisport_lab/sdv_production_coordinator.py": "62cd1d109ede7a8084d2abd9de68cbc44d5dbe093fb39f00477d49a05802cd8d",
+    "multisport_lab/sdv_production_forecasts.py": "a1ea04c33b5ff714f99aaf2f2dd1a52bc9a7039b3dae4e0e0e8dfc92c776c2aa",
+    "multisport_lab/sdv_production_inputs.py": "bb79d3eb4643cf419a677db09393aed3d682395aa5dc685644cc90519ded8511",
+    "multisport_lab/sdv_production_publication.py": "9d7a8f2cbdf96d946032db44a0f26872f44bf9de632020c76ae29c40343accd4",
+    "multisport_lab/sdv_production_remote.py": "d779dbce00f14081c6347fa887de289bd0ce8dedb0d3a692e241e634f5adfbc9",
+    "multisport_lab/sdv_production_runner.py": "f114cdd7ad0d9f7fa2252f674e0544f45c32f6e9af5679fe72057d07da25e2ee",
+    "multisport_lab/sdv_production_store.py": "c4261542e0ad33fc578ed9e0a284b352a2992ddcfbdd35b3163ad1cb39971528",
+    "web/production.mjs": "21081acf115cbde868b57adf2878d2c51204a6af080af14cd2e72da8c4edadb3"
+  },
+  "reviewer": "/root/sdv_independent_verify",
+  "revision_status": "WORKING_CANDIDATE_NOT_EXACT_COMMITTED_RELEASE",
+  "schema_version": "nml-independent-production-review-v1",
+  "worktree": "/workspace/nml-sdv-recurring"
+}

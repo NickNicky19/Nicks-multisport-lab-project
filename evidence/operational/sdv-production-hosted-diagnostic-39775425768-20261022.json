@@ -1,0 +1,1955 @@
+{
+  "schema_version": "nba-sdv-production-corrected-hosted-diagnostic-checkpoint-v1",
+  "recorded_at": "2026-10-22T12:16:18.679298+00:00",
+  "authorization": {
+    "exact_head": "51f712e1ca1d4b7edd6c8ba21bfa0d1047b83613",
+    "scope": "One corrected hosted DEVELOPMENT_ONLY diagnostic. Maximum64newimmutableobjects/32MiB; zero sports-sourceGETs, genuine issuance, publicpublication oractivation.",
+    "dispatches": 1,
+    "reruns": 0
+  },
+  "implementation_source_commit": "caecac74d120f27536a347ebdfe2b51675c7df39",
+  "executed_review_head": "51f712e1ca1d4b7edd6c8ba21bfa0d1047b83613",
+  "actual_dispatch": {
+    "schema_version": "nml-approved-development-diagnostic-dispatch-v1",
+    "repository": "NickNicky19/Nicks-multisport-lab-project",
+    "approved_head": "51f712e1ca1d4b7edd6c8ba21bfa0d1047b83613",
+    "workflow_path": ".github/workflows/nba-operations.yml",
+    "dispatch": {
+      "ref": "implementation/sdv-recurring-pregame",
+      "inputs": {
+        "cycle_id": "NBA-SDV-DAILY-001-20261023-401909094",
+        "mode": "diagnostic"
+      }
+    },
+    "one_execution_only": true,
+    "maximum_new_archive_objects": 64,
+    "maximum_new_archive_bytes": 33554432,
+    "sports_source_gets": 0,
+    "genuine_issuance": false,
+    "public_publication": false,
+    "started_at": "2026-10-22T12:04:33.557187+00:00",
+    "status": "ACCEPTED",
+    "completed_at": "2026-10-22T12:04:35.422746+00:00",
+    "exit_code": 0
+  },
+  "workflow_run": {
+    "conclusion": "success",
+    "createdAt": "2026-10-22T12:04:35Z",
+    "databaseId": 39775425768,
+    "event": "workflow_dispatch",
+    "headSha": "51f712e1ca1d4b7edd6c8ba21bfa0d1047b83613",
+    "jobs": [
+      {
+        "completedAt": "2026-10-22T12:12:02Z",
+        "conclusion": "success",
+        "databaseId": 119813031571,
+        "name": "diagnostic",
+        "startedAt": "2026-10-22T12:04:38Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-22T12:04:40Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-22T12:04:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T12:04:42Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-10-22T12:04:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T12:04:42Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+            "number": 3,
+            "startedAt": "2026-10-22T12:04:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T12:04:42Z",
+            "conclusion": "success",
+            "name": "Run gh auth setup-git",
+            "number": 4,
+            "startedAt": "2026-10-22T12:04:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T12:11:58Z",
+            "conclusion": "success",
+            "name": "Non-issuance full-history storage and execution diagnostic",
+            "number": 5,
+            "startedAt": "2026-10-22T12:04:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T12:12:00Z",
+            "conclusion": "success",
+            "name": "Preserve DEVELOPMENT_ONLY diagnostic proof and partial originals",
+            "number": 6,
+            "startedAt": "2026-10-22T12:11:58Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T12:12:00Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+            "number": 11,
+            "startedAt": "2026-10-22T12:12:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T12:12:00Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 12,
+            "startedAt": "2026-10-22T12:12:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T12:12:00Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-10-22T12:12:00Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39775425768/job/119813031571"
+      },
+      {
+        "completedAt": "2026-10-22T12:04:36Z",
+        "conclusion": "skipped",
+        "databaseId": 119813033922,
+        "name": "work",
+        "startedAt": "2026-10-22T12:04:37Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39775425768/job/119813033922"
+      },
+      {
+        "completedAt": "2026-10-22T12:04:36Z",
+        "conclusion": "skipped",
+        "databaseId": 119813034012,
+        "name": "first-cycle-postgame",
+        "startedAt": "2026-10-22T12:04:37Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39775425768/job/119813034012"
+      },
+      {
+        "completedAt": "2026-10-22T12:04:36Z",
+        "conclusion": "skipped",
+        "databaseId": 119813034264,
+        "name": "grade",
+        "startedAt": "2026-10-22T12:04:37Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39775425768/job/119813034264"
+      },
+      {
+        "completedAt": "2026-10-22T12:04:36Z",
+        "conclusion": "skipped",
+        "databaseId": 119813034614,
+        "name": "finish",
+        "startedAt": "2026-10-22T12:04:37Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39775425768/job/119813034614"
+      },
+      {
+        "completedAt": "2026-10-22T12:04:36Z",
+        "conclusion": "skipped",
+        "databaseId": 119813034890,
+        "name": "prepare",
+        "startedAt": "2026-10-22T12:04:37Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39775425768/job/119813034890"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-22T12:12:03Z",
+    "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39775425768"
+  },
+  "workflow_log_sha256": "e92fab1f5b5c8639719aa3b2355f4ecdbd30a4f285b3f5906171e81dadc405d1",
+  "logged_original_summary": {
+    "purpose": "full-26645-history-16-player-original-checkpoint-latency",
+    "forecast_records": 32,
+    "maximum_encoded_forecast_envelope_bytes": 32201,
+    "maximum_actual_stage_seconds": {
+      "generation_seconds": 200.822507,
+      "verification_seconds": 0.007802,
+      "verification_to_local_persistence_seconds": 2.562422,
+      "local_to_original_readback_seconds": 37.067821,
+      "generation_to_original_readback_seconds": 217.009114
+    },
+    "capacity": {
+      "schema_version": "nba-sdv-production-capacity-v1",
+      "existing_records": 105,
+      "existing_bytes": 1161591,
+      "remaining_records": 214,
+      "remaining_bytes": 6144000,
+      "maximum_projected_records": 327,
+      "maximum_projected_bytes": 11499895,
+      "future_grading_receipt_bytes": 3538944,
+      "future_grading_liability_bytes": 8126464,
+      "future_status_receipt_bytes": 507904,
+      "future_status_liability_bytes": 1277952,
+      "maximum_records": 512,
+      "maximum_bytes": 33554432,
+      "role_counts": {
+        "nba-sdv-production-plan-v1": 1,
+        "nba-sdv-production-input-v1": 1,
+        "nba-sdv-production-run-v1": 0,
+        "nba-sdv-production-intent-v1": 1,
+        "nba-sdv-production-forecast-v1": 32,
+        "nba-sdv-production-outcome-v1": 0,
+        "nba-sdv-production-grade-v1": 0,
+        "nba-sdv-production-local-completion-v1": 34,
+        "nba-sdv-production-completion-v1": 34,
+        "nba-sdv-production-status-v1": 2,
+        "corrections": 0
+      },
+      "fits": true,
+      "forensic_files": 0,
+      "forensic_bytes": 0,
+      "forensic_oversized_files": 0,
+      "forensic_fits": true,
+      "remaining_forensic_files": 8,
+      "remaining_forensic_bytes": 4194304,
+      "maximum_forensic_files": 8,
+      "maximum_forensic_bytes": 4194304,
+      "maximum_forensic_file_bytes": 524288
+    },
+    "independent_restart_verified": true,
+    "genuine_forecasts": 0,
+    "retained_work_dir": "/home/runner/work/_temp/nml-production-diagnostic"
+  },
+  "timing": {
+    "maximum_actual_stage_seconds": {
+      "generation_seconds": 200.822507,
+      "verification_seconds": 0.007802,
+      "verification_to_local_persistence_seconds": 2.562422,
+      "local_to_original_readback_seconds": 37.067821,
+      "generation_to_original_readback_seconds": 217.009114
+    },
+    "recomputed_from_recovered_originals": true,
+    "maximum_generation_to_original_readback_seconds": 217.009114,
+    "original_latency_limit_seconds": 300,
+    "within_original_latency_limit": true,
+    "whole_diagnostic_step_timestamp_duration_seconds": 436.0,
+    "whole_diagnostic_step_conservative_upper_seconds": 438.0,
+    "whole_shard_limit_seconds": 900,
+    "within_whole_shard_limit": true,
+    "whole_shard_basis": "Entire successful diagnostic step includes source authentication, storage, the whole issuance shard and independent restart. Two seconds added to second-resolution boundary duration. This upper bound proves <900s; the unlogged exact monotonic shard duration is not claimed.",
+    "actual_T90_issuance_tested": false
+  },
+  "durable_recovery": {
+    "all14_categories": true,
+    "completed_at": "2026-10-22T12:13:31.895055Z",
+    "counts": {
+      "forecasts": 32,
+      "grades": 0,
+      "outcomes": 0
+    },
+    "executed_head": "51f712e1ca1d4b7edd6c8ba21bfa0d1047b83613",
+    "forecast_completion_measurements": [
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:08:18.778337Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 148.439825,
+        "local_completed_at": "2026-10-22T12:08:21.212755Z",
+        "model": "R0",
+        "player_id": "4432241",
+        "record_id": "177a806467b1c4cd9e8bf1eca6d1e8c111361b5f5b4d5a5493b3856f0b4bbf1c",
+        "remote_recovered_at": "2026-10-22T12:08:41.277043Z",
+        "verified_at": "2026-10-22T12:08:18.786139Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:06:24.475260Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 33.227587,
+        "local_completed_at": "2026-10-22T12:06:25.487540Z",
+        "model": "K0",
+        "player_id": "2991139",
+        "record_id": "2634cb7534ed3968eed2249c967a593b53c59d8a36717242be5e646a1d1e77bb",
+        "remote_recovered_at": "2026-10-22T12:06:46.064805Z",
+        "verified_at": "2026-10-22T12:06:24.482883Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:09:17.364306Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 217.009114,
+        "local_completed_at": "2026-10-22T12:09:19.855281Z",
+        "model": "R0",
+        "player_id": "4602025",
+        "record_id": "285d097b9b6b8bbefc02d19f3358b9a422573a0fbd90144dc97f00a3baa045f4",
+        "remote_recovered_at": "2026-10-22T12:09:49.846332Z",
+        "verified_at": "2026-10-22T12:09:17.371865Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:09:24.487525Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 217.009114,
+        "local_completed_at": "2026-10-22T12:09:27.050704Z",
+        "model": "R0",
+        "player_id": "4709138",
+        "record_id": "302e45e0fb62994f087855bb3d3fa9ae0f85e13318fc1f983110c35f4761b2c1",
+        "remote_recovered_at": "2026-10-22T12:09:49.846332Z",
+        "verified_at": "2026-10-22T12:09:24.495195Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:07:14.290452Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 87.542524,
+        "local_completed_at": "2026-10-22T12:07:16.639571Z",
+        "model": "R0",
+        "player_id": "4065731",
+        "record_id": "3f77e41eb39927e95a468210d32dcadd414aceb7a06a1c1214cb0d774d83d34b",
+        "remote_recovered_at": "2026-10-22T12:07:40.379742Z",
+        "verified_at": "2026-10-22T12:07:14.298168Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:06:17.959315Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 33.227587,
+        "local_completed_at": "2026-10-22T12:06:20.138549Z",
+        "model": "R0",
+        "player_id": "2596112",
+        "record_id": "4351b0366388dfd4b2d6f31ff8c75b46af1ff3f38cc5def9bc475c87a179f757",
+        "remote_recovered_at": "2026-10-22T12:06:46.064805Z",
+        "verified_at": "2026-10-22T12:06:17.967097Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:09:10.243283Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 217.009114,
+        "local_completed_at": "2026-10-22T12:09:12.778511Z",
+        "model": "R0",
+        "player_id": "4601023",
+        "record_id": "46346a4f3a06bf0d14f331f22e1d33bde421a12a6aec336bb92b404db8111a01",
+        "remote_recovered_at": "2026-10-22T12:09:49.846332Z",
+        "verified_at": "2026-10-22T12:09:10.250917Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:08:12.317234Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 148.439825,
+        "local_completed_at": "2026-10-22T12:08:14.756557Z",
+        "model": "R0",
+        "player_id": "4431736",
+        "record_id": "46b165b8303e04425696d95b4ab8aeeac8ec278b8c90f041ecd8dc805d756e84",
+        "remote_recovered_at": "2026-10-22T12:08:41.277043Z",
+        "verified_at": "2026-10-22T12:08:12.324882Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:06:32.783620Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 33.227587,
+        "local_completed_at": "2026-10-22T12:06:35.073546Z",
+        "model": "R0",
+        "player_id": "3934673",
+        "record_id": "4d5b0eb9236366c7cec878b3b05fe473e656a67b3c07c4838f1b756416d50258",
+        "remote_recovered_at": "2026-10-22T12:06:46.064805Z",
+        "verified_at": "2026-10-22T12:06:32.791387Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:08:06.060577Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 148.439825,
+        "local_completed_at": "2026-10-22T12:08:08.451083Z",
+        "model": "R0",
+        "player_id": "4066320",
+        "record_id": "53b22077b0288fd3b8b12d9567169c2bc7e9b912dfc991e5518836f6dba57ae5",
+        "remote_recovered_at": "2026-10-22T12:08:41.277043Z",
+        "verified_at": "2026-10-22T12:08:06.068347Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:07:25.853402Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 87.542524,
+        "local_completed_at": "2026-10-22T12:07:28.221689Z",
+        "model": "R0",
+        "player_id": "4592479",
+        "record_id": "540bf01056280d1e158e6d9825853496cb53f9a75dee01cb331d54c8faf67957",
+        "remote_recovered_at": "2026-10-22T12:07:40.379742Z",
+        "verified_at": "2026-10-22T12:07:25.861094Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:08:20.580084Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 148.439825,
+        "local_completed_at": "2026-10-22T12:08:22.570581Z",
+        "model": "K0",
+        "player_id": "4432241",
+        "record_id": "5ad752839916420884f62789e63a8eec1ec91362b6d273246023738988537097",
+        "remote_recovered_at": "2026-10-22T12:08:41.277043Z",
+        "verified_at": "2026-10-22T12:08:20.587732Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:06:34.584421Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 33.227587,
+        "local_completed_at": "2026-10-22T12:06:35.792975Z",
+        "model": "K0",
+        "player_id": "3934673",
+        "record_id": "5b01a5cfdfa947d651939c4d1c7dcc0c9a4579ba93265277fd7280bc6e7c7832",
+        "remote_recovered_at": "2026-10-22T12:06:46.064805Z",
+        "verified_at": "2026-10-22T12:06:34.592096Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:08:07.856986Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 148.439825,
+        "local_completed_at": "2026-10-22T12:08:09.667874Z",
+        "model": "K0",
+        "player_id": "4066320",
+        "record_id": "5bea73afb765bb66a96ad8df3156f4c63a905662598aaab064c7a16cec49b318",
+        "remote_recovered_at": "2026-10-22T12:08:41.277043Z",
+        "verified_at": "2026-10-22T12:08:07.864712Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:06:19.735137Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 33.227587,
+        "local_completed_at": "2026-10-22T12:06:20.623855Z",
+        "model": "K0",
+        "player_id": "2596112",
+        "record_id": "618b01ce31c197b491ce2d92c918936dfaaf57004dddb730b80b999d781e096c",
+        "remote_recovered_at": "2026-10-22T12:06:46.064805Z",
+        "verified_at": "2026-10-22T12:06:19.742895Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:06:27.658084Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 33.227587,
+        "local_completed_at": "2026-10-22T12:06:29.899020Z",
+        "model": "R0",
+        "player_id": "3147657",
+        "record_id": "61d42e2f2667926283156c5d672b9cd55ad530b26d37b6964a87908b00cafa15",
+        "remote_recovered_at": "2026-10-22T12:06:46.064805Z",
+        "verified_at": "2026-10-22T12:06:27.665754Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:07:21.798242Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 87.542524,
+        "local_completed_at": "2026-10-22T12:07:23.350359Z",
+        "model": "K0",
+        "player_id": "4395723",
+        "record_id": "6296a8744759f7dd2c2c47c7fcaea03a2c626eb9f4efc2b2b3f5243babb5d131",
+        "remote_recovered_at": "2026-10-22T12:07:40.379742Z",
+        "verified_at": "2026-10-22T12:07:21.805926Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:07:27.649896Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 87.542524,
+        "local_completed_at": "2026-10-22T12:07:29.304108Z",
+        "model": "K0",
+        "player_id": "4592479",
+        "record_id": "6cf3640689d859c96fa978e5674f1b144f853a4641f8fbeddb52ac4bc14c73cd",
+        "remote_recovered_at": "2026-10-22T12:07:40.379742Z",
+        "verified_at": "2026-10-22T12:07:27.657561Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:09:31.878936Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 217.009114,
+        "local_completed_at": "2026-10-22T12:09:34.411841Z",
+        "model": "R0",
+        "player_id": "4711272",
+        "record_id": "6dcea484a36c1eb595c7b9cf62d35ffc72cb3981faae57ab702c34439e0ff126",
+        "remote_recovered_at": "2026-10-22T12:09:49.846332Z",
+        "verified_at": "2026-10-22T12:09:31.886594Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:09:33.659725Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 217.009114,
+        "local_completed_at": "2026-10-22T12:09:36.229792Z",
+        "model": "K0",
+        "player_id": "4711272",
+        "record_id": "7eb54cbcff07302963e48371a0afda0b795e07324553362688a353a4afc20de5",
+        "remote_recovered_at": "2026-10-22T12:09:49.846332Z",
+        "verified_at": "2026-10-22T12:09:33.667370Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:08:27.139438Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 148.439825,
+        "local_completed_at": "2026-10-22T12:08:29.278009Z",
+        "model": "K0",
+        "player_id": "4592691",
+        "record_id": "8120b115c6146af842d6f6f1d365a607cd3bf56b420fd8926299de15050d04ae",
+        "remote_recovered_at": "2026-10-22T12:08:41.277043Z",
+        "verified_at": "2026-10-22T12:08:27.147161Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:06:22.682468Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 33.227587,
+        "local_completed_at": "2026-10-22T12:06:24.894298Z",
+        "model": "R0",
+        "player_id": "2991139",
+        "record_id": "85fa6d0c3619b7e5b9b980bf17361a3a12ef5ca752d2e49a1fe3a5879a97c751",
+        "remote_recovered_at": "2026-10-22T12:06:46.064805Z",
+        "verified_at": "2026-10-22T12:06:22.690219Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:07:08.769229Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 87.542524,
+        "local_completed_at": "2026-10-22T12:07:11.058255Z",
+        "model": "R0",
+        "player_id": "4065670",
+        "record_id": "9107fb3050df44fa6b4d50d9dfcb28cb41af6f2d40e87a531f5f2863b9b2e400",
+        "remote_recovered_at": "2026-10-22T12:07:40.379742Z",
+        "verified_at": "2026-10-22T12:07:08.776938Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:09:12.078979Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 217.009114,
+        "local_completed_at": "2026-10-22T12:09:14.380538Z",
+        "model": "K0",
+        "player_id": "4601023",
+        "record_id": "941a6cb6f968b420f00d4de01fe97e69c38e555c86e3f725443a04ce58ee030c",
+        "remote_recovered_at": "2026-10-22T12:09:49.846332Z",
+        "verified_at": "2026-10-22T12:09:12.086611Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:09:26.264092Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 217.009114,
+        "local_completed_at": "2026-10-22T12:09:28.822521Z",
+        "model": "K0",
+        "player_id": "4709138",
+        "record_id": "9b8cd0918533e798601495a49f7f772a268ac836cc9ed365f9d19351c99c63c4",
+        "remote_recovered_at": "2026-10-22T12:09:49.846332Z",
+        "verified_at": "2026-10-22T12:09:26.271768Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:07:10.550201Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 87.542524,
+        "local_completed_at": "2026-10-22T12:07:11.893924Z",
+        "model": "K0",
+        "player_id": "4065670",
+        "record_id": "a4b162c3d011a356360ae9beac5d6d3a59ae63aa21d8fbedb6099421e2416394",
+        "remote_recovered_at": "2026-10-22T12:07:40.379742Z",
+        "verified_at": "2026-10-22T12:07:10.557867Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:08:14.133720Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 148.439825,
+        "local_completed_at": "2026-10-22T12:08:16.060081Z",
+        "model": "K0",
+        "player_id": "4431736",
+        "record_id": "a7e4ef03070cbe1f8c9a8a5281e104c37f5395d9c7319b031b90a67dfd435d56",
+        "remote_recovered_at": "2026-10-22T12:08:41.277043Z",
+        "verified_at": "2026-10-22T12:08:14.141513Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:08:25.342828Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 148.439825,
+        "local_completed_at": "2026-10-22T12:08:27.794928Z",
+        "model": "R0",
+        "player_id": "4592691",
+        "record_id": "aeab9aa92f5267a4361652f222fdc2d30c93d5a929372d16793b18bf4acbedd7",
+        "remote_recovered_at": "2026-10-22T12:08:41.277043Z",
+        "verified_at": "2026-10-22T12:08:25.350541Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:09:19.153769Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 217.009114,
+        "local_completed_at": "2026-10-22T12:09:21.498816Z",
+        "model": "K0",
+        "player_id": "4602025",
+        "record_id": "d3dafebb44dcf2d3bc09466c277dcf5927b037c93745c84cf4e3330f8c0a4c58",
+        "remote_recovered_at": "2026-10-22T12:09:49.846332Z",
+        "verified_at": "2026-10-22T12:09:19.161379Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:06:29.452354Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 33.227587,
+        "local_completed_at": "2026-10-22T12:06:30.534613Z",
+        "model": "K0",
+        "player_id": "3147657",
+        "record_id": "dab4d1f1cb7f7106723d46a6726a35078964612bd8e9f6e0d0897bf6e5136f1a",
+        "remote_recovered_at": "2026-10-22T12:06:46.064805Z",
+        "verified_at": "2026-10-22T12:06:29.459984Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:07:20.001500Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 87.542524,
+        "local_completed_at": "2026-10-22T12:07:22.347182Z",
+        "model": "R0",
+        "player_id": "4395723",
+        "record_id": "e8c1d8395e481637fc99bafd7580e240cc0712741ca3a17246653448340d7f90",
+        "remote_recovered_at": "2026-10-22T12:07:40.379742Z",
+        "verified_at": "2026-10-22T12:07:20.009285Z"
+      },
+      {
+        "eligible": false,
+        "generation_completed_at": "2026-10-22T12:07:16.114896Z",
+        "generation_started_at": "2026-10-22T12:06:12.837218Z",
+        "generation_to_original_readback_seconds": 87.542524,
+        "local_completed_at": "2026-10-22T12:07:17.554813Z",
+        "model": "K0",
+        "player_id": "4065731",
+        "record_id": "fe816506c196c83bbc6b2b56f22f49134b82d0e8c10f09a11a4bf3a72a3d35a0",
+        "remote_recovered_at": "2026-10-22T12:07:40.379742Z",
+        "verified_at": "2026-10-22T12:07:16.122548Z"
+      }
+    ],
+    "generated_forecasts": 0,
+    "genuine_issued": 0,
+    "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+    "ledger_bytes": 1161591,
+    "ledger_records": 105,
+    "local_copy_retention": "TEMPORARY_LOCAL",
+    "maximum_api_get_actions": 256,
+    "maximum_encoded_forecast_envelope_bytes": 32201,
+    "model_counts": {
+      "K0": 16,
+      "R0": 16
+    },
+    "new_archive_bytes": 0,
+    "new_archive_objects": 0,
+    "player_count": 16,
+    "pointer_id": "e4d1b6940843008b8b165eb8f1987e222e87695e0af831194962fcecfaddf098",
+    "pointer_sequence": 14,
+    "public_publication": false,
+    "read_only": true,
+    "records_branch": "diagnostics/sdv-production-load-20261022T120450",
+    "records_commit": "31daf510003cd7750003bf76632e7853d9cc26a6",
+    "recovered_assets": [
+      {
+        "bytes": 1148,
+        "id": 665751464,
+        "name": "object-0aa4208564b60c47df1a023090e65afe08bb8301d21e3a57537aa5dfbe7358fa.z",
+        "sha256": "0aa4208564b60c47df1a023090e65afe08bb8301d21e3a57537aa5dfbe7358fa"
+      },
+      {
+        "bytes": 7847,
+        "id": 665759645,
+        "name": "object-1f8f55db2bc9336b41e25bceb55ef2cc49a29308d5e9e4f5831330ae291b103b.z",
+        "sha256": "1f8f55db2bc9336b41e25bceb55ef2cc49a29308d5e9e4f5831330ae291b103b"
+      },
+      {
+        "bytes": 12122,
+        "id": 665763528,
+        "name": "object-2a9eed96e48e11a431008c26b1b933154972dd2ec02c312117c710ff16fe28a1.z",
+        "sha256": "2a9eed96e48e11a431008c26b1b933154972dd2ec02c312117c710ff16fe28a1"
+      },
+      {
+        "bytes": 315,
+        "id": 665750265,
+        "name": "object-2ad65d447a1e1565742e19c8f04a0117d71af992a0e5fe0e986581ac81694c40.z",
+        "sha256": "2ad65d447a1e1565742e19c8f04a0117d71af992a0e5fe0e986581ac81694c40"
+      },
+      {
+        "bytes": 8628,
+        "id": 665760802,
+        "name": "object-36b9b34abc5c0147b361a4a9d3ddec3381bf5c31b065eb249ff1026cb8bd833e.z",
+        "sha256": "36b9b34abc5c0147b361a4a9d3ddec3381bf5c31b065eb249ff1026cb8bd833e"
+      },
+      {
+        "bytes": 2089,
+        "id": 665764307,
+        "name": "object-3865624e59680047cf65cdea9a161859271046a531dbbf4d912f577d58fc2929.z",
+        "sha256": "3865624e59680047cf65cdea9a161859271046a531dbbf4d912f577d58fc2929"
+      },
+      {
+        "bytes": 231,
+        "id": 665750000,
+        "name": "object-397ca987ad397470de25427445bce5279cdb9f05c6fe0aced3110b6db30949bd.z",
+        "sha256": "397ca987ad397470de25427445bce5279cdb9f05c6fe0aced3110b6db30949bd"
+      },
+      {
+        "bytes": 1716,
+        "id": 665752551,
+        "name": "object-3f8230705e3cefe8d7c0ac3f60443d7acd72601d00364024542083ceb37d4df9.z",
+        "sha256": "3f8230705e3cefe8d7c0ac3f60443d7acd72601d00364024542083ceb37d4df9"
+      },
+      {
+        "bytes": 1801,
+        "id": 665752937,
+        "name": "object-429b3121dcd706919c8dcaf914c850d3629817b3814735c6cdbd30bee71d231f.z",
+        "sha256": "429b3121dcd706919c8dcaf914c850d3629817b3814735c6cdbd30bee71d231f"
+      },
+      {
+        "bytes": 107707,
+        "id": 665756990,
+        "name": "object-6f9424f354529c501bd79d04158d8c6f0dcfd5e13cbda01e736f1d4b16d24a23.z",
+        "sha256": "6f9424f354529c501bd79d04158d8c6f0dcfd5e13cbda01e736f1d4b16d24a23"
+      },
+      {
+        "bytes": 6316,
+        "id": 665758097,
+        "name": "object-770c0cb9fb48badb90780bd57177ee2207dd0288977ddc3ca432bda8fdc233bc.z",
+        "sha256": "770c0cb9fb48badb90780bd57177ee2207dd0288977ddc3ca432bda8fdc233bc"
+      },
+      {
+        "bytes": 2819,
+        "id": 665752019,
+        "name": "object-77d9a0fba8e87c46e3b15cd77bbc96917a7f410982d5dc9d1c28976db7fb6825.z",
+        "sha256": "77d9a0fba8e87c46e3b15cd77bbc96917a7f410982d5dc9d1c28976db7fb6825"
+      },
+      {
+        "bytes": 13943,
+        "id": 665750694,
+        "name": "object-7859f1efe4342b9ebfd7eafdda09b3309cfaa4a273b6a6a2002d775ddd2670bd.z",
+        "sha256": "7859f1efe4342b9ebfd7eafdda09b3309cfaa4a273b6a6a2002d775ddd2670bd"
+      },
+      {
+        "bytes": 12379,
+        "id": 665764338,
+        "name": "object-79a10290f27b965a552fdcd1e3ce88e776eda9884a1c98320555c30163ce9f9d.z",
+        "sha256": "79a10290f27b965a552fdcd1e3ce88e776eda9884a1c98320555c30163ce9f9d"
+      },
+      {
+        "bytes": 1682,
+        "id": 665752981,
+        "name": "object-7c3c9798c35da15d75f90b4a61f083dc1d964920955ae42228018ed3e73f4ec6.z",
+        "sha256": "7c3c9798c35da15d75f90b4a61f083dc1d964920955ae42228018ed3e73f4ec6"
+      },
+      {
+        "bytes": 4018,
+        "id": 665755538,
+        "name": "object-7d95a651e6a9f2fd5e79bec0bd4955165f91f1baf3427a5810f398ed224eb545.z",
+        "sha256": "7d95a651e6a9f2fd5e79bec0bd4955165f91f1baf3427a5810f398ed224eb545"
+      },
+      {
+        "bytes": 107255,
+        "id": 665754422,
+        "name": "object-812af1b382f82be3464e38ae27bf3a320f384c67a2e222b8a567f279627ec93d.z",
+        "sha256": "812af1b382f82be3464e38ae27bf3a320f384c67a2e222b8a567f279627ec93d"
+      },
+      {
+        "bytes": 5555,
+        "id": 665757058,
+        "name": "object-8a6aa78722e0efd9627d7ac355a4c0d54b904451fa4a0673bac0001af079414c.z",
+        "sha256": "8a6aa78722e0efd9627d7ac355a4c0d54b904451fa4a0673bac0001af079414c"
+      },
+      {
+        "bytes": 5955,
+        "id": 665760719,
+        "name": "object-8bac7535e12c413b89e37f4780ffc28d6dc1a69756eb4e72c1556fb847286ac4.z",
+        "sha256": "8bac7535e12c413b89e37f4780ffc28d6dc1a69756eb4e72c1556fb847286ac4"
+      },
+      {
+        "bytes": 1387,
+        "id": 665752103,
+        "name": "object-8ceb0f34b60771c6b045e98cb4a9ca16eb7902ba3f6b6501e285a9ccc5f03a36.z",
+        "sha256": "8ceb0f34b60771c6b045e98cb4a9ca16eb7902ba3f6b6501e285a9ccc5f03a36"
+      },
+      {
+        "bytes": 1683,
+        "id": 665751390,
+        "name": "object-9133582f570020e3233ec747a93ebe7e65057e58d7c66f1760f46332ba518ae5.z",
+        "sha256": "9133582f570020e3233ec747a93ebe7e65057e58d7c66f1760f46332ba518ae5"
+      },
+      {
+        "bytes": 5969,
+        "id": 665763468,
+        "name": "object-a8bb32de61fe62b62dc91a8f6048b2eb5e03515cadb30298a0d81e0caae1e7d8.z",
+        "sha256": "a8bb32de61fe62b62dc91a8f6048b2eb5e03515cadb30298a0d81e0caae1e7d8"
+      },
+      {
+        "bytes": 337,
+        "id": 665750196,
+        "name": "object-acab994020cf3a9e8672c1e775d3a7e07d4e7ccaac7acfdd839b08178f8afd7a.z",
+        "sha256": "acab994020cf3a9e8672c1e775d3a7e07d4e7ccaac7acfdd839b08178f8afd7a"
+      },
+      {
+        "bytes": 5947,
+        "id": 665755459,
+        "name": "object-b0a6a985b88652c7f3d33ba740713c1b9743dc05841eb3f90eb3494c7a992f45.z",
+        "sha256": "b0a6a985b88652c7f3d33ba740713c1b9743dc05841eb3f90eb3494c7a992f45"
+      },
+      {
+        "bytes": 5952,
+        "id": 665758038,
+        "name": "object-c03112c0a590f9f47cc84cac85243cc691fd59d7bd2d0d4bf9d9b109533d23c8.z",
+        "sha256": "c03112c0a590f9f47cc84cac85243cc691fd59d7bd2d0d4bf9d9b109533d23c8"
+      },
+      {
+        "bytes": 3245,
+        "id": 665754503,
+        "name": "object-c73df69173fbbd68db2e0a5bee78378606ccf5c0d9791f1156954dc3762591c7.z",
+        "sha256": "c73df69173fbbd68db2e0a5bee78378606ccf5c0d9791f1156954dc3762591c7"
+      },
+      {
+        "bytes": 732,
+        "id": 665750137,
+        "name": "object-cb138c9d69cebcbce09bf6cc5f35c5362d3e7742066d7a828a9e8e3b569c3963.z",
+        "sha256": "cb138c9d69cebcbce09bf6cc5f35c5362d3e7742066d7a828a9e8e3b569c3963"
+      },
+      {
+        "bytes": 1534,
+        "id": 665752604,
+        "name": "object-ee2f3d0c0821b8f6cf1c9b5a0589196b1d429b96c246b830585fe36b7d114189.z",
+        "sha256": "ee2f3d0c0821b8f6cf1c9b5a0589196b1d429b96c246b830585fe36b7d114189"
+      },
+      {
+        "bytes": 316,
+        "id": 665750081,
+        "name": "object-ef219216d9212dbdd8f4e278e2c83177eced6a95fa4f6092a2d40c7ce17f8581.z",
+        "sha256": "ef219216d9212dbdd8f4e278e2c83177eced6a95fa4f6092a2d40c7ce17f8581"
+      },
+      {
+        "bytes": 729,
+        "id": 665750338,
+        "name": "object-efc462892ac61bade4a561ef9fcf059568c618ca6a04989c2aaa8aba97083c0d.z",
+        "sha256": "efc462892ac61bade4a561ef9fcf059568c618ca6a04989c2aaa8aba97083c0d"
+      },
+      {
+        "bytes": 994,
+        "id": 665750723,
+        "name": "object-f0c9100a82d5487f3d1c75a0d79ece0e1b8977d03f475c9d252cb367e06b362c.z",
+        "sha256": "f0c9100a82d5487f3d1c75a0d79ece0e1b8977d03f475c9d252cb367e06b362c"
+      },
+      {
+        "bytes": 107794,
+        "id": 665759613,
+        "name": "object-f4dc7554297d5230f64e53bafaad4b451b4089d913c9987cb690ac793700b65e.z",
+        "sha256": "f4dc7554297d5230f64e53bafaad4b451b4089d913c9987cb690ac793700b65e"
+      },
+      {
+        "bytes": 108013,
+        "id": 665762399,
+        "name": "object-fa14529a8523b40b260cd5a6c9c6249493dd8c603e458228fe60eb1f60d334c1.z",
+        "sha256": "fa14529a8523b40b260cd5a6c9c6249493dd8c603e458228fe60eb1f60d334c1"
+      },
+      {
+        "bytes": 10731,
+        "id": 665762441,
+        "name": "object-ffc36c2f122f73e737913287ccee15d43bb9e6981fbc3c3ed0095f37b0834084.z",
+        "sha256": "ffc36c2f122f73e737913287ccee15d43bb9e6981fbc3c3ed0095f37b0834084"
+      }
+    ],
+    "release_created_at": "2026-10-22T12:04:55Z",
+    "release_draft": true,
+    "release_id": 420671474,
+    "release_total_objects": 34,
+    "release_total_wire_bytes": 558889,
+    "remote_original_retention": "AUTHENTICATED_DRAFT_RELEASE_AND_COMMITTED_GIT_POINTER",
+    "run_id": 39775425768,
+    "schema_version": "nml-corrected-hosted-diagnostic-independent-recovery-v1",
+    "seconds": 54.894348228001036,
+    "snapshot_id": "3d77de343e9bb37edc94c314740e33bfe270521ed5aa6726934fdad08dab91d0",
+    "snapshot_sha256": "29ba756bcd55bd2579c97c83b77cc42562b37d9e5975292d38dfa16f8943b561",
+    "source_binding": {
+      "binding_id": "3d46732c0097a5cbd2d002ae45803746a77cf088efd169321b56c8b65a88434b",
+      "commit": "51f712e1ca1d4b7edd6c8ba21bfa0d1047b83613",
+      "files": {
+        ".github/workflows/nba-operations.yml": "017536d67acc3b7d598b3ba7288e59fa5ad2494e33e72e95e9536676df4548a5",
+        ".github/workflows/sdv-daily.yml": "fb39ce1e9bf0b32632d314b11e391043a89806a446bfee453f92468e790c0b47",
+        "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+        "config/sdv_production_policy_v1.json": "f1ff3563c172c6989a74d75249c9d26bac3c44c1912acd1a4e62485ad0808711",
+        "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+        "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+        "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+        "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+        "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+        "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2",
+        "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+        "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+        "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+        "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+        "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+        "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+        "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+        "multisport_lab/sdv_daily_cycle.py": "5a40fd1bc6cdf6ebf75af52a6171641ee79d0d4bfbf9581c9e5b14dc8b3daef0",
+        "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+        "multisport_lab/sdv_daily_outcomes.py": "d84a9c2dd6cd7097e6f12d3170b7b914aa17a0876f32054c03d40036510adac6",
+        "multisport_lab/sdv_daily_producer.py": "eb793c94a2473f7210158b60aaf98fd8e215bc7f62ecf260bb11b301e72a334b",
+        "multisport_lab/sdv_daily_publication.py": "ce2bd99c7b1193af328d39cf33fd36b7400626becde4c656e658bb763fd7e425",
+        "multisport_lab/sdv_daily_remote.py": "c3e70fea9d4da6434703706b4f51bf4edf7320834dcc6a10c9456f3ddbc3b763",
+        "multisport_lab/sdv_daily_runner.py": "cf8d7ba3d65bc354029ee9fc1c54b8d9f110c3036204a4bd690fcc7943fd50ef",
+        "multisport_lab/sdv_daily_store.py": "fd508c0459519f54f0faf9009438632755c64b31227105794109d326c8ecf045",
+        "multisport_lab/sdv_production_archive.py": "2830b7fd9f862e2d089a2bc4f9f446a3ec1fa2ff6cea9ebf996ffa6b9d6bd60c",
+        "multisport_lab/sdv_production_common.py": "e0641b9c46e423510b9cda6a5423da0c54cf38e7e55a35a7ed7248c428a12709",
+        "multisport_lab/sdv_production_coordinator.py": "e866efd7e59ec51bdf9c5db2d28d07322f261d5dccb709fe0b72ca814093ece1",
+        "multisport_lab/sdv_production_forecasts.py": "a1ea04c33b5ff714f99aaf2f2dd1a52bc9a7039b3dae4e0e0e8dfc92c776c2aa",
+        "multisport_lab/sdv_production_inputs.py": "bb79d3eb4643cf419a677db09393aed3d682395aa5dc685644cc90519ded8511",
+        "multisport_lab/sdv_production_publication.py": "436bf40ac7797fb61fa5185141582e10c1c455529c4f3717079e59e9c849f494",
+        "multisport_lab/sdv_production_remote.py": "d779dbce00f14081c6347fa887de289bd0ce8dedb0d3a692e241e634f5adfbc9",
+        "multisport_lab/sdv_production_runner.py": "85a526d4cfd171ebbfaaa4e918cea059a2cdfab9872a8dc552c905782dd8df78",
+        "multisport_lab/sdv_production_store.py": "ed478f947eec607e6e7baa0b5d7255d197c2cc26347dc99562e56ce2ca460d5e"
+      },
+      "law_sha256": {
+        "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+        "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689"
+      },
+      "schema_version": "nba-sdv-production-producer-binding-v1"
+    },
+    "sports_source_gets": 0,
+    "started_at": "2026-10-22T12:12:37.000699Z",
+    "status": "RECOVERED_ORIGINALS",
+    "tag": "diagnostics-nml-nba-production-load-20261022t120450",
+    "typed_recovery": true
+  },
+  "independent_GET_actions": [
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/420671474",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/420671474/assets?per_page=100&page=1",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/tags/diagnostics-nml-nba-production-load-20261022t120450",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases?per_page=100&page=1",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/420671474/assets?per_page=100&page=1",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665751464",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665759645",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665763528",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750265",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665760802",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665764307",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750000",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665752551",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665752937",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665756990",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665758097",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665752019",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750694",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665764338",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665752981",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665755538",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665754422",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665757058",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665760719",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665752103",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665751390",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665763468",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750196",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665755459",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665758038",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665754503",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750137",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665752604",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750081",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750338",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750723",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665759613",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665762399",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665762441",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/tags/diagnostics-nml-nba-production-load-20261022t120450",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases?per_page=100&page=1",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/420671474/assets?per_page=100&page=1",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665764338",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665759613",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665754422",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665762399",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665756990",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665763468",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665758038",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665760719",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665755459",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750694",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665751390",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665752551",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665764307",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665752937",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665752019",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665762441",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665757058",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665759645",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665754503",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750137",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750000",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750081",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750338",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750196",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750265",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665750723",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665752103",
+      "method": "GET"
+    },
+    {
+      "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665763528",
+      "method": "GET"
+    }
+  ],
+  "original_status_records": [
+    {
+      "cycle_id": "prod-20261025-999999999-98052903583c",
+      "details": {
+        "error": null,
+        "final_source_pack_ref": null,
+        "issuance_attempt": {
+          "attempt_id": "a15e993f4ff78845f679b2f8b9af31dc4edcb8ff670dc7ce75dc1fc00afe3a7d",
+          "attempt_number": 1,
+          "footprint_recovered_at": "2026-10-22T12:10:27.219131Z",
+          "footprint_snapshot_id": "06768b1cc0f8cf58b6741916f7dae05e6be6a855005dfd92f5f8379d8138c809",
+          "footprint_snapshot_ref": {
+            "bytes": 12122,
+            "name": "object-2a9eed96e48e11a431008c26b1b933154972dd2ec02c312117c710ff16fe28a1.z",
+            "sha256": "2a9eed96e48e11a431008c26b1b933154972dd2ec02c312117c710ff16fe28a1",
+            "tag": "diagnostics-nml-nba-production-load-20261022t120450"
+          },
+          "open_status_id": "0c921f2b2b91b2a425e22b10abf5ac6a8d6cda12bb7470dfd5d82114b6b4accb",
+          "opened_at": "2026-10-22T12:05:59.067513Z",
+          "run_attempt": 1
+        },
+        "player_ids": [
+          "2596112",
+          "2991139",
+          "3147657",
+          "3934673",
+          "4065670",
+          "4065731",
+          "4395723",
+          "4592479",
+          "4066320",
+          "4431736",
+          "4432241",
+          "4592691",
+          "4601023",
+          "4602025",
+          "4709138",
+          "4711272"
+        ],
+        "processing_complete": false,
+        "shard_index": 0,
+        "task_id": "7c178674a086eb33ad114ad0bf69dd60e7fbd3c71ef8443354120d0c8318d45b"
+      },
+      "observed_at": "2026-10-22T12:10:28.725945Z",
+      "phase": "ISSUE",
+      "plan_id": "79f30a140cce430c8c4c7aff4d0caea8f27f10f35bbc8856952059d36693f3a0",
+      "protocol_id": "NBA-SDV-PRODUCTION-001",
+      "run_id": 0,
+      "schema_version": "nba-sdv-production-status-v1",
+      "status": "ISSUANCE_ATTEMPT_CLOSED",
+      "status_id": "f26468a61320a3f5737a86a6e867574dd61bacd5fb226b9f82d29705111b1e55"
+    },
+    {
+      "cycle_id": "prod-20261025-999999999-98052903583c",
+      "details": {
+        "error": null,
+        "final_source_pack_ref": null,
+        "issuance_attempt": {
+          "attempt_id": "a15e993f4ff78845f679b2f8b9af31dc4edcb8ff670dc7ce75dc1fc00afe3a7d",
+          "attempt_number": 1,
+          "footprint_recovered_at": null,
+          "footprint_snapshot_id": null,
+          "footprint_snapshot_ref": null,
+          "open_status_id": null,
+          "opened_at": "2026-10-22T12:05:59.067513Z",
+          "run_attempt": 1
+        },
+        "player_ids": [
+          "2596112",
+          "2991139",
+          "3147657",
+          "3934673",
+          "4065670",
+          "4065731",
+          "4395723",
+          "4592479",
+          "4066320",
+          "4431736",
+          "4432241",
+          "4592691",
+          "4601023",
+          "4602025",
+          "4709138",
+          "4711272"
+        ],
+        "processing_complete": false,
+        "shard_index": 0,
+        "task_id": "7c178674a086eb33ad114ad0bf69dd60e7fbd3c71ef8443354120d0c8318d45b"
+      },
+      "observed_at": "2026-10-22T12:05:59.067513Z",
+      "phase": "ISSUE",
+      "plan_id": "79f30a140cce430c8c4c7aff4d0caea8f27f10f35bbc8856952059d36693f3a0",
+      "protocol_id": "NBA-SDV-PRODUCTION-001",
+      "run_id": 0,
+      "schema_version": "nba-sdv-production-status-v1",
+      "status": "ISSUANCE_ATTEMPT_OPEN",
+      "status_id": "0c921f2b2b91b2a425e22b10abf5ac6a8d6cda12bb7470dfd5d82114b6b4accb"
+    }
+  ],
+  "original_ledger_manifest": {
+    "bytes": 1161591,
+    "capacity": {
+      "existing_bytes": 1161591,
+      "existing_records": 105,
+      "fits": true,
+      "forensic_bytes": 0,
+      "forensic_files": 0,
+      "forensic_fits": true,
+      "forensic_oversized_files": 0,
+      "future_grading_liability_bytes": 8126464,
+      "future_grading_receipt_bytes": 3538944,
+      "future_status_liability_bytes": 1277952,
+      "future_status_receipt_bytes": 507904,
+      "maximum_bytes": 33554432,
+      "maximum_forensic_bytes": 4194304,
+      "maximum_forensic_file_bytes": 524288,
+      "maximum_forensic_files": 8,
+      "maximum_projected_bytes": 11499895,
+      "maximum_projected_records": 327,
+      "maximum_records": 512,
+      "remaining_bytes": 6144000,
+      "remaining_forensic_bytes": 4194304,
+      "remaining_forensic_files": 8,
+      "remaining_records": 214,
+      "role_counts": {
+        "corrections": 0,
+        "nba-sdv-production-completion-v1": 34,
+        "nba-sdv-production-forecast-v1": 32,
+        "nba-sdv-production-grade-v1": 0,
+        "nba-sdv-production-input-v1": 1,
+        "nba-sdv-production-intent-v1": 1,
+        "nba-sdv-production-local-completion-v1": 34,
+        "nba-sdv-production-outcome-v1": 0,
+        "nba-sdv-production-plan-v1": 1,
+        "nba-sdv-production-run-v1": 0,
+        "nba-sdv-production-status-v1": 2
+      },
+      "schema_version": "nba-sdv-production-capacity-v1"
+    },
+    "entries": [
+      {
+        "bytes": 32109,
+        "path": "records/forecasts/177a806467b1c4cd9e8bf1eca6d1e8c111361b5f5b4d5a5493b3856f0b4bbf1c.json",
+        "sha256": "ec64295fe5bce144bcfa734fa472d147a3474c3e3e44f1d2aeea21a8829691ac"
+      },
+      {
+        "bytes": 32131,
+        "path": "records/forecasts/2634cb7534ed3968eed2249c967a593b53c59d8a36717242be5e646a1d1e77bb.json",
+        "sha256": "55d2eedb7f15099cabc87354fe1069abac1750be565a7c8eb895a390757f252b"
+      },
+      {
+        "bytes": 32072,
+        "path": "records/forecasts/285d097b9b6b8bbefc02d19f3358b9a422573a0fbd90144dc97f00a3baa045f4.json",
+        "sha256": "b770f57c8ef58a41612516a884035cf735b0431b23d7578da805398d9458ab69"
+      },
+      {
+        "bytes": 32100,
+        "path": "records/forecasts/302e45e0fb62994f087855bb3d3fa9ae0f85e13318fc1f983110c35f4761b2c1.json",
+        "sha256": "03592aba09c41d8ff0455f4d4902f51dfcef60c876fb84e2011505a81a2c6aa7"
+      },
+      {
+        "bytes": 32079,
+        "path": "records/forecasts/3f77e41eb39927e95a468210d32dcadd414aceb7a06a1c1214cb0d774d83d34b.json",
+        "sha256": "57c440e15489586c9c40bf5ad0f75b725c621ba6d152d8b730c28cbb5853d90a"
+      },
+      {
+        "bytes": 32086,
+        "path": "records/forecasts/4351b0366388dfd4b2d6f31ff8c75b46af1ff3f38cc5def9bc475c87a179f757.json",
+        "sha256": "203c8c0e6646b49e5b264fac0d1bf659d94415f20688112c7b4303a1e59c9da1"
+      },
+      {
+        "bytes": 32072,
+        "path": "records/forecasts/46346a4f3a06bf0d14f331f22e1d33bde421a12a6aec336bb92b404db8111a01.json",
+        "sha256": "d27b28cfde298a4412821f2852e7979c45064ca2e4473a17270922dd6e664055"
+      },
+      {
+        "bytes": 32073,
+        "path": "records/forecasts/46b165b8303e04425696d95b4ab8aeeac8ec278b8c90f041ecd8dc805d756e84.json",
+        "sha256": "25edce567ee0e379868ee5202e0adb65e0cb2bb2be0bf7eaa1c29856b032f25b"
+      },
+      {
+        "bytes": 32104,
+        "path": "records/forecasts/4d5b0eb9236366c7cec878b3b05fe473e656a67b3c07c4838f1b756416d50258.json",
+        "sha256": "457b43f317e353ae423d26487fe27d45de2bbf504ef60582c54edcba6e4f2ed7"
+      },
+      {
+        "bytes": 32102,
+        "path": "records/forecasts/53b22077b0288fd3b8b12d9567169c2bc7e9b912dfc991e5518836f6dba57ae5.json",
+        "sha256": "d68c5ff3c756eeb92e11571a29ac3fda3974dad6dc256eda8631fb28e7d9aa6d"
+      },
+      {
+        "bytes": 32112,
+        "path": "records/forecasts/540bf01056280d1e158e6d9825853496cb53f9a75dee01cb331d54c8faf67957.json",
+        "sha256": "64de2356f520e3bffd5f3a286e99d19aed8e55fcfdcd5d523490ba0eaa510e15"
+      },
+      {
+        "bytes": 32150,
+        "path": "records/forecasts/5ad752839916420884f62789e63a8eec1ec91362b6d273246023738988537097.json",
+        "sha256": "58b576201f3e2af4043711ea3c7a9c5bf4f0538c61d9257545d96041c7fbe17c"
+      },
+      {
+        "bytes": 32131,
+        "path": "records/forecasts/5b01a5cfdfa947d651939c4d1c7dcc0c9a4579ba93265277fd7280bc6e7c7832.json",
+        "sha256": "0e78a3c60b9a678b843b8f79e4380547eb8ed74571b3f748acd1ef73dcb3f2b4"
+      },
+      {
+        "bytes": 32128,
+        "path": "records/forecasts/5bea73afb765bb66a96ad8df3156f4c63a905662598aaab064c7a16cec49b318.json",
+        "sha256": "fcf8bbb7cb721f0573b68a740178841ab5e88013d2361cb2be7ebb1ad004a311"
+      },
+      {
+        "bytes": 32201,
+        "path": "records/forecasts/618b01ce31c197b491ce2d92c918936dfaaf57004dddb730b80b999d781e096c.json",
+        "sha256": "617cde5c1d6aa41ad7c57b0e8cec28e1cfb65c4b11db9c93fb3a6ded6551628c"
+      },
+      {
+        "bytes": 32096,
+        "path": "records/forecasts/61d42e2f2667926283156c5d672b9cd55ad530b26d37b6964a87908b00cafa15.json",
+        "sha256": "8a97ce0bbf320131d9d5bfe33a9f62f852e47950d14217a814cec4eb15045bfb"
+      },
+      {
+        "bytes": 32160,
+        "path": "records/forecasts/6296a8744759f7dd2c2c47c7fcaea03a2c626eb9f4efc2b2b3f5243babb5d131.json",
+        "sha256": "ac60fad6fb43285dc777e722b30b2baee60990c2c5da85c3ad44da6d0f6b3018"
+      },
+      {
+        "bytes": 32121,
+        "path": "records/forecasts/6cf3640689d859c96fa978e5674f1b144f853a4641f8fbeddb52ac4bc14c73cd.json",
+        "sha256": "23d67b284981504278b7f55b7082be945cb99a89a7db5e164ec2db5a384197d7"
+      },
+      {
+        "bytes": 32066,
+        "path": "records/forecasts/6dcea484a36c1eb595c7b9cf62d35ffc72cb3981faae57ab702c34439e0ff126.json",
+        "sha256": "a126710fcf9a66f55c2fa2af0dde1f69acef9788c2a4518aea77e56ea27dd1ce"
+      },
+      {
+        "bytes": 32167,
+        "path": "records/forecasts/7eb54cbcff07302963e48371a0afda0b795e07324553362688a353a4afc20de5.json",
+        "sha256": "e3eb2d6ad75019196a7071ac09f8f9fd7718b2d31ba6dd5a12f7020c6dc2be17"
+      },
+      {
+        "bytes": 32128,
+        "path": "records/forecasts/8120b115c6146af842d6f6f1d365a607cd3bf56b420fd8926299de15050d04ae.json",
+        "sha256": "82e8b74bff0997c01cfd4f7087fba1332575626cd503c5827772861179fb58e2"
+      },
+      {
+        "bytes": 32098,
+        "path": "records/forecasts/85fa6d0c3619b7e5b9b980bf17361a3a12ef5ca752d2e49a1fe3a5879a97c751.json",
+        "sha256": "726058d89a88b4a338a05aa641b5e5f8b120fddde81d7217ced0272b68530d66"
+      },
+      {
+        "bytes": 32102,
+        "path": "records/forecasts/9107fb3050df44fa6b4d50d9dfcb28cb41af6f2d40e87a531f5f2863b9b2e400.json",
+        "sha256": "a68a45a08731b1c49c546bce373505ca2fa154356a8081b99c1dc53473ae0350"
+      },
+      {
+        "bytes": 32170,
+        "path": "records/forecasts/941a6cb6f968b420f00d4de01fe97e69c38e555c86e3f725443a04ce58ee030c.json",
+        "sha256": "05f59a0304d095d193037fe670049fe3bf9a005051175c0fd0afb153ee3a8227"
+      },
+      {
+        "bytes": 32100,
+        "path": "records/forecasts/9b8cd0918533e798601495a49f7f772a268ac836cc9ed365f9d19351c99c63c4.json",
+        "sha256": "78b597eeaccdd9a3d60a8d754eb1947ce194469f3c0c7498471f813b2f834140"
+      },
+      {
+        "bytes": 32166,
+        "path": "records/forecasts/a4b162c3d011a356360ae9beac5d6d3a59ae63aa21d8fbedb6099421e2416394.json",
+        "sha256": "822fee873837f4b1512af45f158c8d5eeacdef9c32ce456f4f950390ab8756b6"
+      },
+      {
+        "bytes": 32054,
+        "path": "records/forecasts/a7e4ef03070cbe1f8c9a8a5281e104c37f5395d9c7319b031b90a67dfd435d56.json",
+        "sha256": "dbbf7bca24771f2277e58fcad3b4b34a33e46223865fd713083bbc4e7bad8e3c"
+      },
+      {
+        "bytes": 32111,
+        "path": "records/forecasts/aeab9aa92f5267a4361652f222fdc2d30c93d5a929372d16793b18bf4acbedd7.json",
+        "sha256": "36b98edf9b248dfbecea10d987aa4165e31b1d537fa2aa3955017d5018ee130c"
+      },
+      {
+        "bytes": 32167,
+        "path": "records/forecasts/d3dafebb44dcf2d3bc09466c277dcf5927b037c93745c84cf4e3330f8c0a4c58.json",
+        "sha256": "a9bc795c821551bb67034536b610f163693bdecfdfd64dc5f1170140677af29c"
+      },
+      {
+        "bytes": 32120,
+        "path": "records/forecasts/dab4d1f1cb7f7106723d46a6726a35078964612bd8e9f6e0d0897bf6e5136f1a.json",
+        "sha256": "50f0802588d9697f49901b9c8c1ac9d79fee1e1a989135eb15b0ab22ac850c0e"
+      },
+      {
+        "bytes": 32118,
+        "path": "records/forecasts/e8c1d8395e481637fc99bafd7580e240cc0712741ca3a17246653448340d7f90.json",
+        "sha256": "e37dee1db4961c189e743f8f51456f53efa1161d9864969b4b501d69c425aa26"
+      },
+      {
+        "bytes": 32140,
+        "path": "records/forecasts/fe816506c196c83bbc6b2b56f22f49134b82d0e8c10f09a11a4bf3a72a3d35a0.json",
+        "sha256": "1e78a0986a4777f5498f220f6b790274994ca8f2d4bcdcd2c5d0e13bf708c7c0"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/01875a5367a423c6f97d05ff527eea246f4c773ae6f523f9ed42a516a2f860e1.json",
+        "sha256": "1679dd81aeb2fc2b887526985fc9111f7486ca6785fa94b51f74086bc4e26193"
+      },
+      {
+        "bytes": 1835,
+        "path": "records/input_captures/035b396a98adb872d7dae8ff0155c866fda92c5c22c12013c512b015e18cb00b.json",
+        "sha256": "d7f937e091e6a8b04183e30693d083cf04116b561afc8784fba7da2ce5b5dd85"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/07a41d7f73f9d9e7a2a03f19413e8192115a02ea33ad591bf31ccd3089001424.json",
+        "sha256": "fc9288a559419e25f8e940715bfa8eafaa09dfb403ea10b8f749a343a96905d8"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/0d2638b150458fe888dc9cc4bc67647d11e6973e64133e184d47acc201d05763.json",
+        "sha256": "bec46b0784e951b7fb2a197f50aa6ddfd911c1916ec0fe926728ca5ad0b8df42"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/0de805a7b18fd954bce3716583aa88bbb3071d9e3e13ab2740b423a2605dad12.json",
+        "sha256": "eace9bc17cf92d04f142fcd7036caacfd5463b6a8c8f938d77759f4431b1a4b3"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/13d804bb2978a2c1027724cbbbc917d53275b7b338dd7516060970984569c0d8.json",
+        "sha256": "452008870b976734acad9be819dcb1c7e94f31717989e61afe0a2e24924d4c10"
+      },
+      {
+        "bytes": 1835,
+        "path": "records/input_captures/176bf171c293229ae38359e24b63176d33e8323e2b632fe1d55c62ead30bf0b6.json",
+        "sha256": "da64909dec4e5e2a779d518254155f1730013b7b0eb47e57e3ab7cbbb20451e0"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/17ee597551b88a589157cbb1255ffc6e9f861cedd7e8088998dd8cbc61d18c46.json",
+        "sha256": "e73336963cfd5393587e9d8935e3b7bd0e908dcfbedab5adf3e4b4c766092d68"
+      },
+      {
+        "bytes": 1835,
+        "path": "records/input_captures/181e4a32738aa7017ddb19b0efafc7e30ee0fa7c222492fa97da621929b69ec9.json",
+        "sha256": "b47b23ace66738dcc95adc573b568353e1312499648705e9d82383cef88fe399"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/1e26000bc45ac9be5ea84f03e4e954f713d7686529b7ae051ab45b996092e766.json",
+        "sha256": "2da7696c0d59697360939895ed9fda76ebe0f9e09a32585b3e997336fae3eb9e"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/260498a7ec27023b1cb9a714892307f2b3b8c1c0141e2d846491ec8b843d0588.json",
+        "sha256": "dd1c0d5625d188ec98311bfef4a9581e2aae50c65fe67c1dd1d8cc66d5735278"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/2718f2dd3c5422a7729e7cd3991c31f0c32e822c2b796011c6b6999473e58a2d.json",
+        "sha256": "ec5ffd7598a897a5792d2dd5d7df6b7b9d23287419fed8bd946f7db69d298736"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/2a885fc3aa8334830de3ed0e3b1ae0597b4d46a2da2f22f5ff760c38a8869404.json",
+        "sha256": "bece120c022ccdd02533af67208c9490ea82af0e389d08bef485a3192fcd99d0"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/2da0c6988195c26eee7c45f32018b3dca4f588b90144e397ee5b409ac4163dc4.json",
+        "sha256": "5921cf9b456a94fd13de1a98277e54ecb5c5af7f85bb35212f3e280b9b25de7d"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/33ddb23d8a26cd0cad8b42216194cff51c3535ca048df50bc7eea38ea1910ac6.json",
+        "sha256": "6142539e07ecfd2fcf2f069a01e40b7481613b4733971713da0d05ada0fdec87"
+      },
+      {
+        "bytes": 12964,
+        "path": "records/input_captures/4002b80d71e5adf7904c95f2cfe72f1da9d8c50269c8674057a5bad12c844d6a.json",
+        "sha256": "70e0997c534565447fd427ce9ac0278fee1da78f1b2b266a5113b55cb8a527b0"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/425e527ccc081dcf020d29b1443a45df5588551234447affcf62035b9aa60b96.json",
+        "sha256": "9cd6de014c5214c5c33a1255ed3601513e94eb3adb31ad9b9aac4e5f807d85a8"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/475c78b18bbb33c4dd9fa4ce98193c8b698c61df5d2d9ba6a59c53385761ea55.json",
+        "sha256": "c40f4a0f836a4fd349b51d38f7e73fd653967598f8ddd629576789c134c0828f"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/4d8908eb0defbec7cadbf457c83029417ac633f418d35697cfdcd14feed9b69c.json",
+        "sha256": "f51a8bed4663a42cfe567cda574169278afb1fcada99519a5cc2892fa76b7d12"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/4e69954e66a96888dda9f6a1281307fbf79b0151a570331feac0921bcf980369.json",
+        "sha256": "1acee9c7381846d4924fdaa2773744f54be3529e2a564e1e910336b8dfcc1f56"
+      },
+      {
+        "bytes": 1709,
+        "path": "records/input_captures/4e94781a6ccb99f4c8493b6c3d7bb99fd12dd42a0006fcab7f7b43231ed076f1.json",
+        "sha256": "9d361ba54833e0c0142bec5e88e17b3cdd654fef4b3c206e7157389673b5be0c"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/4eec169fedbabb89d30c4b52b5efbd700792c3f96d17db3cfae87b01fc5c8494.json",
+        "sha256": "302302e170b1cc2a08590de994af2691f59331388ac0d6131f550bb986bba54e"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/5044b19be3dc01668928ed8a8c782a3ed2b0beaa1d17638a7a8f8597bed85ee8.json",
+        "sha256": "990474e9e34d366db9ce243bbcf42942096c91517220272688e9dfd5cccdc2ec"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/52579a093f1b99eb44c8988054e1207a8347aab28b4a9d4a5c1ecf3555400c46.json",
+        "sha256": "4da9d34796672be6fb8ed7128a64e82cf853d39e891155718aa370f07e849ff5"
+      },
+      {
+        "bytes": 1751,
+        "path": "records/input_captures/588bf273ef22acee5908ede1a99b6660d0729ce8ae78a8de661b8a508047b329.json",
+        "sha256": "5dd0eb879703938ba7d74e7e33d80a7847b6ec0e3d854337e1c1b828b7892757"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/58f5ff2abffc69ff1a0b5a6ecacc6e5466ae4678e269d8bcada7dd51da329987.json",
+        "sha256": "d1f903f01101339396f07d2e87be2b745f5b1e93795c54b33ee59f53e1657f8c"
+      },
+      {
+        "bytes": 2208,
+        "path": "records/input_captures/5c6b88de702c40fa520e6c094abba2c2898a74b416d873b6cdf28119558bbd59.json",
+        "sha256": "2bf407f1c7dd6c829717ad01617c6c657c86d34c81d441031455d48917880ba1"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/60922b547cbd7e231fd7ef79ea4c2824bcb9154afa8d918002560a215e608a53.json",
+        "sha256": "0cad85457349506160aa8d4216bf07b433c53f8bd474450392875bb20efedd00"
+      },
+      {
+        "bytes": 1835,
+        "path": "records/input_captures/63242dd76b1dfec5229d2939fb405a81147b08e091fb932ce4eb6b187e60c4c5.json",
+        "sha256": "0a88520e54f3edac074d42e944b5f586dacdab541c5b44e98dc0d8164337381a"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/6c1390daf2e33eab99ca8a528257aa59e94bb861061ed1c12e74f7b34ddfa3d7.json",
+        "sha256": "3a867d4341e1ad4fb41aa3c667362b87ee725801ebc53f919ff1deebc0d839b8"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/6d5d69c3c024e6a51a913faa6478c7ae25f5cb7ebd3f40e6a8de3f85fde95bbf.json",
+        "sha256": "4040b0a12427a013c02cf9a2772b764376bd2585a2284b26ad7749b0d4cc1bca"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/75916366dbc511b000e3705fb12f1e0cc298045bc961a680ec73d903d5f24432.json",
+        "sha256": "5e060f60218fd46d9efc9e45595db83ed0deab6525db9f97cdc1632b17ecd28a"
+      },
+      {
+        "bytes": 1827,
+        "path": "records/input_captures/7599c8929e07a9d90220819f56c3b95af8c078f7aab393c1a007efcdce8474d4.json",
+        "sha256": "5ca8474946e59ecb08c59b2fe04a00d0be9b61bef3b360bc05792ccce92a8d09"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/770f0772ad2bee5466fe54e61b58ff5249a80c6f7fcccd1220766128fb7a4b20.json",
+        "sha256": "a29d4011e4537189b2dbf2a1ba4a0ba724c881ab5ab53623b5781bf835bb0807"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/7891bb04514c40fcdb27a516c1fc4ec93ed47cb7891eaf2ac4cf976ea34d2a68.json",
+        "sha256": "a35fd67264d34fce2078fc9115e9e916ad2cb2dc8c7f4994009171e2ba7906b9"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/7895cb16a2c070602119dead78585970ef35b7fa5c4dbf528ad59cde08bdd0d8.json",
+        "sha256": "32297ee59fb749141c659e826ffb5f6a866411a711294cae550aa0d59b48e336"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/86ed1d71c9a8ea62e11b76b521686e54d61650b5afd5c97d3c71ef1fdff9b60a.json",
+        "sha256": "e58b5262aa25fb5d3333d54c0a1c558cfc95a5c57a878a88186bb5a783592eab"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/89528d9dc554debb89cc8035b6bee26f15c4dffea559f9f6be59ad431181835e.json",
+        "sha256": "3fd0d86e3789c420c495f9ddfd2a3ab17b42b5ae3c0e720e7348236b0fbc1a4c"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/8b91c6fa3af6d50fe67fb7f0a4c76dcd47d1c070b629d7d1b1389e4b46f3b762.json",
+        "sha256": "f6ee726e4b4bebc892542c8909a1cb7710f347f41eae1c20407ea447b0c0bbd5"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/8e236d14e88ba06c259754e2fc21f28066969817067d60e312ac4059297abe6d.json",
+        "sha256": "123490aca9735f2422fb4a2a294164a6e237a2011308ac514832ff98b82f460d"
+      },
+      {
+        "bytes": 1835,
+        "path": "records/input_captures/8eb9823d80c163e57795c5990cce762d259eb0c6a89aebd39acfa3b5f2343200.json",
+        "sha256": "43d6e4697fa4b606e6db38b379b5b2156a8b8becf8f3e0553898af54182917f8"
+      },
+      {
+        "bytes": 1835,
+        "path": "records/input_captures/8f30c4b7fca76e139de1c4104652a5b3475d04738d6edbea821751b7096ed2b9.json",
+        "sha256": "595aab4097c3b9ef4e28477122c13d368ebd98281dd3799b26fd60f55e854528"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/9132bb4c6923e9d890fbbb8ee7e0885e12dd8b9ed75e16b095d10de8e7400cb0.json",
+        "sha256": "76e213825766b7638c70b137cf487e76d321919094d0cff8df9a6902ccae130c"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/9571e91d058fa73b69aed8c4ba685a7610a88f456c8c073c13fc3587034f3dce.json",
+        "sha256": "3d990d6303bd0310f04399c1d6b69c9782c99e43b2fe6e6fffae47fcbbf006b8"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/a3557c8fea3c75aa607e848a3330f76146fce37be660f4d587730e92fcc106eb.json",
+        "sha256": "5e5aee8213ca9f4f1c70aa42d0f9e0cad2e3f930a54febbaa2fdfd6437ab14c9"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/a6d9e6d62c3a90ed6ce1d71a272c3098763b071c0013c7a76c9b3fd4d87fe692.json",
+        "sha256": "1c8136594e5338b11d099eafee42a413e672dcac6cc102fdbf046f70b4399439"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/aa8106709213cc7bffd67082221046adbc62661f2506aceb86bbeec87a6ed7a6.json",
+        "sha256": "0f2fa88c647622e7d4d9aabad39a0d34182e8fd80796579450497415c618ca44"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/b6b05d0e904ff8f78aeb46169b830bdcb64e3d8ae728832c2b2431089eadf123.json",
+        "sha256": "62584ade6584069eee8380514abc8506a8ababf66fe9c472865c4e79a2a23a08"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/b9034c414976d51f37ee4a2604be6ca52bfb75a9d9c8913246a4b67d7f65281f.json",
+        "sha256": "5ebd937beb55de61928f5fc294f47174114b2eaf82fdddc336d01af368e4e727"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/b996613f0d46122273dc2c69e70d5a976c1399ea949530a6525aaef35ba3f372.json",
+        "sha256": "e89b5c9b1c5b62b0b381cbf7eadf61d0e3a9760d271b35d926421b4cdec1bbf3"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/bcada7e8311dde60e5d550e7a92eec15dfb9c6351604c614e9e1c1e0e95c4a37.json",
+        "sha256": "7fe5ae9e6311d044c17feaadee03a808ddc163fe5a1010e9f3b81c7f90a17227"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/c045aaf2fb3b633cbb83d3f783aefba2b9f7705dceab91edd193dc4bd92f6029.json",
+        "sha256": "9f908a508d7f8bd059bff865453469a17e8cbf1f195a1eeddd68a24a6289dedd"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/c18d823105fbd0593e13611375841f20db8ba9c727b156de4da1f376f686a97f.json",
+        "sha256": "28b17ab6208d9a89cb4bc02692a4c3c5aba9429517a602c0cd3537a3fcb40a65"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/c2dbf3bfa1d0a6bf10979d72704a87e6fba2cf1a11e9bb739914f56cfd187b5b.json",
+        "sha256": "f363e2705bfec0fb748301821d1a465f15a05b880a622c7e09b902aea5b5bb6f"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/c5d2fddf84470c167d7876b567d832ffb8d5dee466b91dabacc9232bcbb35c27.json",
+        "sha256": "48dc87c2c8517a05632a509cea5443a3eab58ca7a0a21e13932e44cdd35e897d"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/c68bb5a3bfd4eaa2686661cda2b226aa442aa37ab53bbf2977d381507c4eb301.json",
+        "sha256": "81c7cc188fc8f7eeaa6a2f0f60c9c9af2d79770528782ac70d0980c8f7262d54"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/c70e623c4426b5e727ff6f495e840298856fa00f5820374e297f99981d896e65.json",
+        "sha256": "574ba25f2e6ec19e44f801609d844e5746d71e901a994bc2bbed24e6ce8b76b8"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/c70e8f09e6a236ce4e577ed0c342c588aa1786e93523e17b8e898cf881a1497e.json",
+        "sha256": "b4f9a5084bef02a34e4fe0835ac57939188c889f584ffc3a790b12746b6aa52a"
+      },
+      {
+        "bytes": 1169,
+        "path": "records/input_captures/d11e393f6cde99d8cc0f6c167588268cb3fb19127faafd9573bd8c7e7055f50e.json",
+        "sha256": "3209227a2f2fe5b7af57673c979a56970de65b4128715976c20bfed43ebd616a"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/d295eaf12669d16bcebf30efa813361c252fde1732f6d81025a10f84a62ca44f.json",
+        "sha256": "dbf1e960187bbeb80c49a5142486ec9249ce80196208307a5251361cc5f33c40"
+      },
+      {
+        "bytes": 1835,
+        "path": "records/input_captures/d80257149b4a428bbed80312bd9e3882cf102e26eccc8c3e420f8f9a7332a782.json",
+        "sha256": "64efa822e5b452a969f513b785d5788caa3b7fc9fd69c198f47f562cad5aa09b"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/d9f0451f2695e20daafacc75019fa5f789c79a531eb7fb1414baf09ee27ea3a0.json",
+        "sha256": "1c43fc94766065e9291628971882053152c55969f2b569edfd98d7c887074a23"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/da0808a2fbd0965dfe6f86033e04baabd74b586968abc9865d6e817951e5bab8.json",
+        "sha256": "95bd82102a3cf3d594564ad420cdb35e9722ea072a39d08d685aeaaf25cd8906"
+      },
+      {
+        "bytes": 1164,
+        "path": "records/input_captures/da0b0ec44dce928daba47bf4ff9d50789052f50f2f702ca256523baf41dafb53.json",
+        "sha256": "6e735a02d2caa6b9c6a2142b03ed19261e9818922e71ee19216582609c83df77"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/deedbae9c48d3962430747284ca03ab20680dc3a6ba1175d278e2896f94e74d3.json",
+        "sha256": "7ecc2c4ee9431a99d6ecdc3ed6660aae7eb0dad602e78cab33655508120e5899"
+      },
+      {
+        "bytes": 12787,
+        "path": "records/input_captures/dfc76aa6b6acb360636ef9c2f1c40ab21813df0b5b3a5bb8ddcc64adf5ad7a8c.json",
+        "sha256": "13f481fb275cbe3e2ab155e8360ed01dcf44a7410baba82e499b4429b3f4c1a2"
+      },
+      {
+        "bytes": 1835,
+        "path": "records/input_captures/e4efe010562dc343968ea357e9ef103126e326187ee1c6d1f5de3a0ca182ea9e.json",
+        "sha256": "1aa3b35b7acfa9bb9a0a0249681d590af2df2e7da26e4ba63158bc58c07898db"
+      },
+      {
+        "bytes": 2329,
+        "path": "records/input_captures/e61e20a8ac087d739c2820f0b635064c92b6614dfd5788831c4206d14294d23e.json",
+        "sha256": "a0fd6d3c37d1004b9c4d6eedbdbdcec806e3f45e81e8f0f01e77b8ac602b9d46"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/f12c66c961443941ed608fdbcca44f11b1cd88674e07bd78cceb1a6670fce886.json",
+        "sha256": "5ae2fbab9a76ae23c173fed6cdc3715f83a04151b93ff7365c4607214eb2ccb4"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/f3f48db07a180b7352da2f67abed69f9a373c7ddc31979e132b317c3376fe4c8.json",
+        "sha256": "9629c04013423a70096bc42925a4579e35e72cd1af9628fc103fc8bb0ce77b41"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/fc9ce53070576abed194100c58a7d2c7efea1095f6113ec5c74c69138ebc5e7e.json",
+        "sha256": "d5cdd5c9515f2ab2e90071fe6cad6f619d9c33ee6b75de85dfae2277b4ae44a1"
+      },
+      {
+        "bytes": 1169,
+        "path": "records/input_captures/fe7376d49dda986bcffe853f8e05344485584d7448c74f55b46393a3b15833d7.json",
+        "sha256": "6f8a22e514d5d2fa1193609506008f74342c370bb414aacec118d96cae7d7b23"
+      },
+      {
+        "bytes": 1834,
+        "path": "records/input_captures/ff3093a4716451c708188345b7d0159b80eba2b1da3e313b28b2247fb6082e6e.json",
+        "sha256": "a4e0e0e97b6fd308dff12ef91cb22850ef18eed54e81d4273483a594b6ebfae5"
+      }
+    ],
+    "protocol_id": "NBA-SDV-PRODUCTION-001",
+    "records": 105,
+    "schema_version": "nba-sdv-production-snapshot-v1",
+    "snapshot_id": "3d77de343e9bb37edc94c314740e33bfe270521ed5aa6726934fdad08dab91d0",
+    "unpublished_entries": []
+  },
+  "retained_original_recovery_helper": {
+    "temporary_path": "/tmp/nml_pr16_corrected_diagnostic_readback.py",
+    "sha256": "2b98feaf4e3ef6e27892bd5072087c21bbb641135e0b2714eb42946b3998888e",
+    "source_text": "\"\"\"Bounded GET-only independent recovery of one explicitly approved DEV run.\"\"\"\nfrom pathlib import Path\nfrom collections import Counter\nimport argparse\nimport hashlib\nimport json\nimport os\nimport re\nimport subprocess\nimport sys\nimport time\n\nROOT = Path('/workspace/nml-sdv-recurring')\nsys.path.insert(0, str(ROOT))\nfrom multisport_lab import sdv_production_common as common\nfrom multisport_lab import sdv_production_forecasts as forecasts\nfrom multisport_lab.integrity import IntegrityError, _decode, canonical, stamp\nfrom multisport_lab.sdv_production_archive import GitHubReleaseArchive, recover_snapshot, MAX_RAW\nfrom multisport_lab.sdv_production_remote import validate_pointer\n\nAPPROVED = '51f712e1ca1d4b7edd6c8ba21bfa0d1047b83613'\nRUN = 39775425768\n\n\ndef main():\n    parser = argparse.ArgumentParser(allow_abbrev=False)\n    parser.add_argument('--tag', required=True)\n    parser.add_argument('--branch', required=True)\n    parser.add_argument('--release-id', required=True, type=int)\n    parser.add_argument('--work', required=True)\n    args = parser.parse_args()\n    common.require(re.fullmatch(r'diagnostics-nml-nba-production-load-20261022t12[0-9]{4}', args.tag), 'Wrong diagnostic tag')\n    common.require(args.branch == 'diagnostics/sdv-production-load-' + args.tag.rsplit('-', 1)[1].replace('t', 'T'), 'Wrong branch/tag')\n    work = Path(args.work).absolute()\n    common.require(work.is_relative_to('/tmp') and not work.exists(), 'Use a new temporary recovery directory')\n    work.mkdir()\n    wire = work / 'original-wire'; wire.mkdir()\n    observed, recovered_assets = [], {}\n    asset_index = {}\n\n    class ReadOnlyArchive(GitHubReleaseArchive):\n        def __init__(self):\n            super().__init__(allow_diagnostics=True, command_seconds=60, write_budget_bytes=0, write_budget_objects=0)\n\n        def fresh_reader(self):\n            return ReadOnlyArchive()\n\n        def _gh(self, argv, **kwargs):\n            method = argv[argv.index('--method') + 1] if '--method' in argv else 'GET'\n            common.require(method == 'GET' and len(observed) < 256 and argv[0].startswith('repos/' + common.REPOSITORY + '/releases'), 'Recovery forbids mutation, unrelated endpoints or >256 API GET actions')\n            observed.append({'method': method, 'endpoint': argv[0]})\n            raw = super()._gh(argv, **kwargs)\n            if '/releases/assets/' in argv[0] and raw is not None:\n                aid = argv[0].rsplit('/', 1)[1]; asset = asset_index.get(aid)\n                common.require(asset is not None, 'Binary asset outside exact diagnostic release')\n                sha = hashlib.sha256(raw).hexdigest()\n                common.require(len(raw) == asset['size'] and asset['digest'] == 'sha256:' + sha, 'Actual server digest/size differs')\n                destination = wire / asset['name']\n                common.require(not destination.exists() or destination.read_bytes() == raw, 'Cannot replace original wire')\n                if not destination.exists(): destination.write_bytes(raw)\n                recovered_assets[aid] = {'id': asset['id'], 'name': asset['name'], 'bytes': len(raw), 'sha256': sha}\n            return raw\n\n    start = stamp(common.now()); tick = time.monotonic()\n    report = {'schema_version': 'nml-corrected-hosted-diagnostic-independent-recovery-v1',\n        'run_id': RUN, 'executed_head': APPROVED, 'release_id': args.release_id,\n        'tag': args.tag, 'records_branch': args.branch, 'started_at': start,\n        'read_only': True, 'sports_source_gets': 0, 'generated_forecasts': 0,\n        'new_archive_objects': 0, 'new_archive_bytes': 0, 'public_publication': False,\n        'maximum_api_get_actions': 256, 'gh_internal_redirect_requests': 'UNKNOWN_NOT_INSTRUMENTED',\n        'local_copy_retention': 'TEMPORARY_LOCAL',\n        'remote_original_retention': 'AUTHENTICATED_DRAFT_RELEASE_AND_COMMITTED_GIT_POINTER'}\n    try:\n        reader = ReadOnlyArchive()\n        release = reader._json('repos/' + common.REPOSITORY + '/releases/' + str(args.release_id))\n        common.require(release['id'] == args.release_id and release['tag_name'] == args.tag and release['draft'] is True, 'Exact draft release identity differs')\n        assets = reader._json('repos/' + common.REPOSITORY + '/releases/' + str(args.release_id) + '/assets?per_page=100&page=1')\n        common.require(type(assets) is list and 0 < len(assets) <= 64, 'Exact diagnostic exceeds authorized new object limit')\n        common.require(sum(a['size'] for a in assets) <= 33554432 and len({a['name'] for a in assets}) == len(assets), 'Diagnostic byte limit or unique names failed')\n        asset_index.update({str(a['id']): a for a in assets})\n        env = os.environ.copy()\n        for key in ('GIT_ALTERNATE_OBJECT_DIRECTORIES', 'GIT_OBJECT_DIRECTORY', 'GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE'): env.pop(key, None)\n        checkout = work / 'fresh.git'; checkout.mkdir()\n        def git(*argv, limit=1024*1024):\n            result = subprocess.run(['git', *argv], cwd=checkout, env=env, capture_output=True, timeout=60)\n            common.require(result.returncode == 0 and len(result.stdout) <= limit, 'Bounded independent read-only Git command failed: ' + argv[0])\n            return result.stdout\n        git('init', '--quiet', '--bare')\n        expected = git('ls-remote', '--heads', common.REMOTE_URL, 'refs/heads/' + args.branch).decode().strip().split()\n        common.require(len(expected) == 2 and expected[1] == 'refs/heads/' + args.branch, 'Exact diagnostic branch missing or ambiguous')\n        git('fetch', '--no-tags', '--depth=1', common.REMOTE_URL, 'refs/heads/' + args.branch)\n        commit = git('rev-parse', 'FETCH_HEAD').decode().strip()\n        common.require(commit == expected[0] and not (checkout / 'objects/info/alternates').exists(), 'Independent fetched head/objects differ')\n        pointer = validate_pointer(_decode(git('show', 'FETCH_HEAD:latest.json', limit=65536)), branch=args.branch, allow_diagnostics=True)\n        current, visited, sequence = pointer, set(), pointer['sequence']\n        while True:\n            common.require(current['pointer_id'] not in visited and current['sequence'] == sequence, 'Pointer sequence missing/cycles')\n            visited.add(current['pointer_id'])\n            retained = _decode(git('show', 'FETCH_HEAD:history/' + current['pointer_id'] + '.json', limit=65536))\n            common.require(retained == current, 'Exact original pointer history differs')\n            if current['previous_pointer_id'] is None:\n                common.require(sequence == 1, 'Pointer ancestry ended early'); break\n            sequence -= 1\n            current = validate_pointer(_decode(git('show', 'FETCH_HEAD:history/' + current['previous_pointer_id'] + '.json', limit=65536)), branch=args.branch, allow_diagnostics=True)\n        for asset in assets:\n            match = re.fullmatch(r'object-([a-f0-9]{64})\\.z', asset['name'])\n            common.require(match is not None and asset['digest'] == 'sha256:' + match[1], 'Asset content address/server digest differs')\n            reader.get({'tag': args.tag, 'name': asset['name'], 'sha256': match[1], 'bytes': asset['size']}, max_raw_bytes=MAX_RAW)\n        store = recover_snapshot(pointer['snapshot_ref'], reader, work / 'state', source_root=ROOT)\n        recovered = store.recover(); snapshot = store.snapshot_manifest()\n        common.require(snapshot['snapshot_id'] == pointer['snapshot_id'], 'Typed snapshot differs from independently fetched pointer')\n        rows = recovered['records']; expected_binding = forecasts.make_source_binding(APPROVED, root=ROOT)\n        pairs = recovered['forecasts']\n        completions = {b['target']: b for _, b in rows if b['schema_version'] == common.COMPLETION_SCHEMA}\n        measurements = []\n        for ref, body in pairs:\n            common.require(body['mode'] == 'DEVELOPMENT_ONLY' and body['evidence_lane'] == 'DEVELOPMENT_ONLY' and body['issued_at'] is None, 'Diagnostic became genuine')\n            common.require(body['producer_binding'] == expected_binding and body['history_rows'] == 26645 and body['history_panel_sha256'] == common.HISTORY_SHA256, 'Exact producer/history binding differs')\n            common.require(len(body['categories']) == 14 and body['joint_recipe']['omitted_atoms'] == 0, 'Categories/complete law changed')\n            marker = store.local_completion(ref); remote = completions.get(ref.record_id)\n            measurement = {'record_id': ref.record_id, 'model': body['model_key'], 'player_id': body['player_id'],\n                'generation_started_at': body['generation_started_at'], 'generation_completed_at': body['generation_completed_at'],\n                'verified_at': body['verified_at'], 'local_completed_at': marker['local_completed_at'] if marker else None,\n                'remote_recovered_at': remote['remote_recovered_at'] if remote else None,\n                'eligible': recovered['admissions'][ref.record_id]['eligible'],\n                'generation_to_original_readback_seconds': (common.clock(remote['remote_recovered_at']) - common.clock(body['generation_started_at'])).total_seconds() if remote else None}\n            measurements.append(measurement)\n        status_bodies = [b for _, b in rows if b['schema_version'] == common.STATUS_SCHEMA]\n        report.update(status='RECOVERED_ORIGINALS', records_commit=commit, pointer_id=pointer['pointer_id'], pointer_sequence=pointer['sequence'],\n            snapshot_id=snapshot['snapshot_id'], snapshot_sha256=hashlib.sha256(canonical(snapshot)).hexdigest(),\n            ledger_records=snapshot['records'], ledger_bytes=snapshot['bytes'], typed_recovery=True,\n            counts={key:len(recovered[key]) for key in ('forecasts','outcomes','grades')}, genuine_issued=recovered['genuine_issued'],\n            all14_categories=all(len(b['categories']) == 14 for _, b in pairs),\n            model_counts=dict(Counter(b['model_key'] for _, b in pairs)), player_count=len({b['player_id'] for _, b in pairs}),\n            source_binding=expected_binding, statuses=status_bodies, forecast_completion_measurements=measurements,\n            maximum_encoded_forecast_envelope_bytes=max((work/'state/records/forecasts'/(r.record_id+'.json')).stat().st_size for r,_ in pairs) if pairs else None,\n            release_created_at=release['created_at'], release_draft=release['draft'],\n            release_total_objects=len(assets), release_total_wire_bytes=sum(a['size'] for a in assets),\n            original_record_manifest=snapshot)\n    except Exception as exc:\n        report.update(status='READBACK_FAILED', error_type=type(exc).__name__, error=str(exc)[:300])\n    finally:\n        report.update(completed_at=stamp(common.now()), seconds=time.monotonic()-tick,\n            api_actions=observed, recovered_assets=list(recovered_assets.values()))\n        (work/'recovery-report.json').write_bytes(canonical(report)+b'\\n')\n        print(json.dumps({k:v for k,v in report.items() if k not in ('api_actions','recovered_assets','source_binding','statuses','forecast_completion_measurements','original_record_manifest')}, indent=2))\n        print('verified_assets',len(recovered_assets),'GET_actions',len(observed))\n    if report['status'] == 'READBACK_FAILED': raise SystemExit(1)\n\n\nif __name__ == '__main__': main()\n",
+    "new_production_implementation": false
+  },
+  "temporary_artifact": {
+    "artifact_id": 12423419974,
+    "uploaded_zip_bytes": 416101,
+    "uploaded_zip_sha256": "17184eef289f8afa24032f58bfd88ee596e81555516c9796a2bd567bc99acdad",
+    "retention_days": 1,
+    "downloaded": false,
+    "command_executed": false,
+    "automatic_review_rejection": "The artifact ZIP download is an alternate transport after the prior official artifact download was rejected with HTTP403, which the standing instructions explicitly prohibit retrying or bypassing; metadata-only inspection should be used instead.",
+    "retry_or_alternate_transport": false,
+    "does_not_prevent_original_recovery": "Original archive/records recovery completed independently before the rejected artifact attempt; already-retained run logs supply timing evidence."
+  },
+  "commands": [
+    "gh api repos/NickNicky19/Nicks-multisport-lab-project/actions/workflows/nba-operations.yml/dispatches --method POST --input - (one POST; actual JSON retained in actual_dispatch)",
+    "XDG_CACHE_HOME=/tmp/nml-gh-cache gh run watch 39775425768 --repo NickNicky19/Nicks-multisport-lab-project --interval 30 --exit-status",
+    "gh run view 39775425768 --repo NickNicky19/Nicks-multisport-lab-project --json databaseId,event,headSha,conclusion,status,createdAt,updatedAt,jobs,url",
+    "XDG_CACHE_HOME=/tmp/nml-gh-cache gh run view 39775425768 --repo NickNicky19/Nicks-multisport-lab-project --log",
+    "PATH=/tmp/nml-gh-2.102.1/bin:$PATH python3 /tmp/nml_pr16_corrected_diagnostic_readback.py --tag diagnostics-nml-nba-production-load-20261022t120450 --branch diagnostics/sdv-production-load-20261022T120450 --release-id 420671474 --work /tmp/nml-pr16-corrected-hosted-independent-readback-39775425768"
+  ],
+  "required_checks_reused": {
+    "exact_head": "51f712e1ca1d4b7edd6c8ba21bfa0d1047b83613",
+    "run_id": 39772289968,
+    "conclusion": "success",
+    "python_tests": 1012,
+    "frontend_tests": 138,
+    "demo_exit": 0,
+    "code_changes_this_checkpoint": false
+  },
+  "public_state": {
+    "deployed_commit": "377a3e4e69749efeee912a75c51673144f9fc27f",
+    "pages_run": 39741220070,
+    "redeployed": false,
+    "historical_bundles": 6,
+    "historical_grades": 6,
+    "genuine_forecasts": 0,
+    "prospective_outcomes": 0,
+    "prospective_grades": 0,
+    "published_offers": 0,
+    "qualified_tickets": 0,
+    "financial_settlements": 0
+  },
+  "remaining_limits": [
+    "Hosted DEVELOPMENT_ONLY mechanics/timing are verified; genuine pregame timeliness and future source availability are untested.",
+    "No statistical accuracy, financial settlement, offer or product qualification follows.",
+    "PR16 remains draft/unmerged at recording; recurring cron is not installed. Release/recurring-operation approval is separate.",
+    "The protected first-cycle owner launch and exact source/records limits remain unchanged; no future dispatch is installed."
+  ],
+  "independent_review": {
+    "path": "evidence/operational/sdv-production-hosted-diagnostic-independent-review-20261022.json",
+    "sha256": "70e2b1291ecb5fc3821dd6d13ab52e39e4467f2a7e9ab7db6121fbd9743efeed",
+    "material_findings_remaining": [],
+    "mode": "Independent agent local read-only replay of root-authenticated original bytes; no extra network/model fit."
+  },
+  "protected_preservation": {
+    "verified_now": true,
+    "protected_source_files": 23,
+    "original_records": 19,
+    "hash_inventory": "evidence/operational/sdv-production-protected-inventory-20261022.json"
+  }
+}

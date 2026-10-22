@@ -139,14 +139,15 @@ class DailyPublicationTests(unittest.TestCase):
             out = Path(tmp) / "site"
             with patch("multisport_lab.sdv_daily_publication.make_asset", side_effect=IntegrityError("bad daily original")):
                 manifest = build_site(ROOT, out, build_commit="a" * 40, now=self.now)
-            self.assertEqual(manifest["schema_version"], 6)
+            self.assertEqual(manifest["schema_version"], 7)
             self.assertIsNone(manifest["daily_research"])
             self.assertIsNotNone(manifest["daily_research_error"])
             self.assertIsNotNone(manifest["offers"])
             nba = load_json(out / "data" / manifest["sports"][0]["path"])
             self.assertEqual((len(nba["forecasts"]), len(nba["performance"])), (6, 6))
             self.assertEqual([nba[key] for key in ("offers", "candidates", "tickets")], [[], [], []])
-            old = {k: v for k, v in manifest.items() if k not in {"daily_research", "daily_research_error"}}
+            old = {k: v for k, v in manifest.items() if k not in {"daily_research", "daily_research_error",
+                                                             "production_research", "production_research_error"}}
             old["schema_version"] = 5
             old["snapshot_id"] = digest({k: v for k, v in old.items() if k != "snapshot_id"})
             (out / "data/manifest.json").write_bytes(canonical(old))

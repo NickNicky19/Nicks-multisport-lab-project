@@ -1,0 +1,46 @@
+{
+  "schema_version": "nml-production-software-verification-v1",
+  "recorded_at": "2026-10-22T09:33:35.472134+00:00",
+  "source_commit": "e5da30977fc9dd0745154854ddbfeb712307cfde",
+  "branch": "implementation/sdv-recurring-pregame",
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "started_at": "2026-10-22T09:18:43.890525+00:00",
+      "completed_at": "2026-10-22T09:28:38.337440+00:00",
+      "seconds": 594.447065757995,
+      "exit_code": 0,
+      "log": "/tmp/nml-production-required-python.log",
+      "test_count": 983,
+      "result": "PASS"
+    },
+    {
+      "command": "node --test --test-isolation=none web/tests/*.test.mjs",
+      "result": "PASS",
+      "test_count": 134,
+      "failed": 0,
+      "duration_ms": 9513.761655,
+      "log": "/tmp/nml-production-frontend-final.log"
+    },
+    {
+      "command": "python3 -m multisport_lab.demo",
+      "result": "PASS",
+      "exit_code": 0,
+      "log": "/tmp/nml-production-demo-final.log"
+    }
+  ],
+  "temporary_log_sha256": {
+    "/tmp/nml-production-required-python.log": "c8e6006956ae3ab6f586dc34e69c8d5367545ccdcde2c4383231fa829b655109",
+    "/tmp/nml-production-frontend-final.log": "488a15068d045109f5c47b996a7c9d0b5a3b4980c36515d4217ccda265f1978a",
+    "/tmp/nml-production-demo-final.log": "3d965ae542f5a7473441bf976bbcf695952c9eebb009953d26693820d48d0428"
+  },
+  "log_retention": "LOCAL_TEMPORARY; command/results retained by this committed receipt",
+  "source_inventory_sha256": "cdd604e4303e496ada2ef36f3970f788b79712d90afd5d04a03eeb21c18e81aa",
+  "source_inventory_files": 211,
+  "meaning": "Software contracts, not real prospective issuance or accuracy evidence.",
+  "provider_source_requests": 0,
+  "genuine_issuance": 0,
+  "prospective_grades": 0,
+  "financial_settlements": 0,
+  "frozen_experiments_rerun": false
+}

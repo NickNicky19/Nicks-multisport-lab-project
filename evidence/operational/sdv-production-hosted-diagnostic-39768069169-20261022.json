@@ -1,0 +1,444 @@
+{
+  "schema_version": "nba-sdv-production-hosted-diagnostic-checkpoint-v1",
+  "recorded_at": "2026-10-22T11:14:11.421445+00:00",
+  "authorization": {
+    "exact_head": "2b8bcd4767fd85d19148dea5587e7da28290a988",
+    "scope": "One hosted DEVELOPMENT_ONLY archive/recovery diagnostic; 32 MiB/64 new objects; zero sports GETs, genuine issuance, publication or activation.",
+    "dispatches": 1,
+    "reruns": 0
+  },
+  "workflow_run": {
+    "conclusion": "failure",
+    "createdAt": "2026-10-22T11:06:14Z",
+    "databaseId": 39768069169,
+    "headSha": "2b8bcd4767fd85d19148dea5587e7da28290a988",
+    "jobs": [
+      {
+        "completedAt": "2026-10-22T11:06:50Z",
+        "conclusion": "failure",
+        "databaseId": 119788385033,
+        "name": "diagnostic",
+        "startedAt": "2026-10-22T11:06:18Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-22T11:06:19Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-22T11:06:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T11:06:20Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-10-22T11:06:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T11:06:20Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+            "number": 3,
+            "startedAt": "2026-10-22T11:06:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T11:06:22Z",
+            "conclusion": "success",
+            "name": "Run gh auth setup-git",
+            "number": 4,
+            "startedAt": "2026-10-22T11:06:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T11:06:48Z",
+            "conclusion": "failure",
+            "name": "Non-issuance full-history storage and execution diagnostic",
+            "number": 5,
+            "startedAt": "2026-10-22T11:06:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T11:06:49Z",
+            "conclusion": "success",
+            "name": "Preserve DEVELOPMENT_ONLY diagnostic proof and partial originals",
+            "number": 6,
+            "startedAt": "2026-10-22T11:06:48Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T11:06:49Z",
+            "conclusion": "skipped",
+            "name": "Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+            "number": 11,
+            "startedAt": "2026-10-22T11:06:49Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T11:06:49Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 12,
+            "startedAt": "2026-10-22T11:06:49Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-22T11:06:49Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "startedAt": "2026-10-22T11:06:49Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39768069169/job/119788385033"
+      },
+      {
+        "completedAt": "2026-10-22T11:06:16Z",
+        "conclusion": "skipped",
+        "databaseId": 119788387045,
+        "name": "first-cycle-postgame",
+        "startedAt": "2026-10-22T11:06:16Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39768069169/job/119788387045"
+      },
+      {
+        "completedAt": "2026-10-22T11:06:16Z",
+        "conclusion": "skipped",
+        "databaseId": 119788387205,
+        "name": "work",
+        "startedAt": "2026-10-22T11:06:16Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39768069169/job/119788387205"
+      },
+      {
+        "completedAt": "2026-10-22T11:06:16Z",
+        "conclusion": "skipped",
+        "databaseId": 119788387464,
+        "name": "prepare",
+        "startedAt": "2026-10-22T11:06:16Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39768069169/job/119788387464"
+      },
+      {
+        "completedAt": "2026-10-22T11:06:16Z",
+        "conclusion": "skipped",
+        "databaseId": 119788389324,
+        "name": "grade",
+        "startedAt": "2026-10-22T11:06:17Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39768069169/job/119788389324"
+      },
+      {
+        "completedAt": "2026-10-22T11:06:16Z",
+        "conclusion": "skipped",
+        "databaseId": 119788389852,
+        "name": "finish",
+        "startedAt": "2026-10-22T11:06:17Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39768069169/job/119788389852"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-22T11:06:53Z",
+    "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39768069169"
+  },
+  "workflow_log_sha256": "ca5f9933a726e336f66dbb8504c282e073eef59f31edff461919c54d8cb21469",
+  "actual_failure": "Archived release is missing",
+  "cause": "Authenticated draft release exists; cold by-tag lookup returned404. Prior implementation failed to search authenticated draft inventory.",
+  "read_only_reproduction": {
+    "checked_at": "2026-10-22T11:09:13.758090+00:00",
+    "release_tag": "diagnostics-nml-nba-production-load-20261022t110633",
+    "read_only": true,
+    "sports_source_requests": 0,
+    "requests": [
+      {
+        "label": "by_tag",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/tags/diagnostics-nml-nba-production-load-20261022t110633",
+        "exit_code": 1,
+        "http_status_if_reported": 404,
+        "id": null,
+        "tag_name": null,
+        "draft": null,
+        "message": "Not Found"
+      },
+      {
+        "label": "by_id",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/420618037",
+        "exit_code": 0,
+        "http_status_if_reported": null,
+        "id": 420618037,
+        "tag_name": "diagnostics-nml-nba-production-load-20261022t110633",
+        "draft": true,
+        "message": null
+      },
+      {
+        "label": "records_ref",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/git/ref/heads/diagnostics/sdv-production-load-20261022T110633",
+        "exit_code": 0,
+        "http_status_if_reported": null,
+        "ref": "refs/heads/diagnostics/sdv-production-load-20261022T110633",
+        "object": {
+          "sha": "edfec1ce4bc20f66a7f58f32a006c2ed92a7d39a",
+          "type": "commit",
+          "url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/git/commits/edfec1ce4bc20f66a7f58f32a006c2ed92a7d39a"
+        }
+      }
+    ]
+  },
+  "independent_original_recovery": {
+    "schema_version": "nml-existing-hosted-diagnostic-recovery-v1",
+    "run_id": 39768069169,
+    "executed_head": "2b8bcd4767fd85d19148dea5587e7da28290a988",
+    "release_id": 420618037,
+    "tag": "diagnostics-nml-nba-production-load-20261022t110633",
+    "records_branch": "diagnostics/sdv-production-load-20261022T110633",
+    "records_commit": "edfec1ce4bc20f66a7f58f32a006c2ed92a7d39a",
+    "started_at": "2026-10-22T11:11:23.848879+00:00",
+    "read_only": true,
+    "new_archive_objects": 0,
+    "new_archive_bytes": 0,
+    "sports_source_requests": 0,
+    "generated_forecasts": 0,
+    "public_publication": false,
+    "hosted_latency_test_completed": false,
+    "reader_implementation": "working forward draft-tag lookup fix; original source and all original bytes unchanged",
+    "status": "RECOVERED_ORIGINAL_PARTIAL_INPUT_STATE",
+    "snapshot_id": "7fd2baa8abdad4cbddf8c79f55895223f489cd7946ef4b59b2041f39b67950a3",
+    "snapshot": {
+      "schema_version": "nba-sdv-production-snapshot-v1",
+      "protocol_id": "NBA-SDV-PRODUCTION-001",
+      "entries": [
+        {
+          "path": "records/input_captures/4002b80d71e5adf7904c95f2cfe72f1da9d8c50269c8674057a5bad12c844d6a.json",
+          "bytes": 12964,
+          "sha256": "8e1ecabf942e9e3c3de65129a537af93944fae270348d1a32bb70e869ad8148e"
+        },
+        {
+          "path": "records/input_captures/46c4e5d3917867038865d7cc238d110260a1df55cef7ab0a9df17890a02f3b61.json",
+          "bytes": 12787,
+          "sha256": "f9796e42fe79a3558a8427b8e681b5cbb9b899bdce19ab5d0c421d53dd9c57d1"
+        },
+        {
+          "path": "records/input_captures/cb8e3943a8b719e7d11783740deeeca51cb0c3fe203a9522ad8a40129b49f213.json",
+          "bytes": 1169,
+          "sha256": "a57f39d0cd2a9692cbc12d2bf8adee71a6072498ec0b01e4b734cc34b018a165"
+        }
+      ],
+      "unpublished_entries": [],
+      "records": 3,
+      "bytes": 26920,
+      "capacity": {
+        "schema_version": "nba-sdv-production-capacity-v1",
+        "existing_records": 3,
+        "existing_bytes": 26920,
+        "remaining_records": 316,
+        "remaining_bytes": 8814592,
+        "maximum_projected_records": 327,
+        "maximum_projected_bytes": 13035816,
+        "future_grading_receipt_bytes": 3538944,
+        "future_grading_liability_bytes": 8126464,
+        "future_status_receipt_bytes": 524288,
+        "future_status_liability_bytes": 1310720,
+        "maximum_records": 512,
+        "maximum_bytes": 33554432,
+        "role_counts": {
+          "nba-sdv-production-plan-v1": 1,
+          "nba-sdv-production-input-v1": 1,
+          "nba-sdv-production-run-v1": 0,
+          "nba-sdv-production-intent-v1": 0,
+          "nba-sdv-production-forecast-v1": 0,
+          "nba-sdv-production-outcome-v1": 0,
+          "nba-sdv-production-grade-v1": 0,
+          "nba-sdv-production-local-completion-v1": 1,
+          "nba-sdv-production-completion-v1": 0,
+          "nba-sdv-production-status-v1": 0,
+          "corrections": 0
+        },
+        "fits": true,
+        "forensic_files": 0,
+        "forensic_bytes": 0,
+        "forensic_oversized_files": 0,
+        "forensic_fits": true,
+        "remaining_forensic_files": 8,
+        "remaining_forensic_bytes": 4194304,
+        "maximum_forensic_files": 8,
+        "maximum_forensic_bytes": 4194304,
+        "maximum_forensic_file_bytes": 524288
+      },
+      "snapshot_id": "7fd2baa8abdad4cbddf8c79f55895223f489cd7946ef4b59b2041f39b67950a3"
+    },
+    "typed_recovery": true,
+    "counts": {
+      "forecasts": 0,
+      "outcomes": 0,
+      "grades": 0
+    },
+    "genuine_issued": 0,
+    "completed_at": "2026-10-22T11:11:33.040852+00:00",
+    "seconds": 9.191969670006074,
+    "api_actions": [
+      {
+        "method": "GET",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/tags/diagnostics-nml-nba-production-load-20261022t110633"
+      },
+      {
+        "method": "GET",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases?per_page=100&page=1"
+      },
+      {
+        "method": "GET",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/420618037/assets?per_page=100&page=1"
+      },
+      {
+        "method": "GET",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665594848"
+      },
+      {
+        "method": "GET",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665594815"
+      },
+      {
+        "method": "GET",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665594491"
+      },
+      {
+        "method": "GET",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665594414"
+      },
+      {
+        "method": "GET",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665594444"
+      },
+      {
+        "method": "GET",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665594611"
+      },
+      {
+        "method": "GET",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665594525"
+      },
+      {
+        "method": "GET",
+        "endpoint": "repos/NickNicky19/Nicks-multisport-lab-project/releases/assets/665594586"
+      }
+    ],
+    "recovered_assets": [
+      {
+        "id": 665594848,
+        "name": "object-b6cf1c734ca99c7670ca3f4654e02378c6b14906fd4d500adb8add19a535959e.z",
+        "bytes": 995,
+        "sha256": "b6cf1c734ca99c7670ca3f4654e02378c6b14906fd4d500adb8add19a535959e"
+      },
+      {
+        "id": 665594815,
+        "name": "object-4655b7b3d410752644a10e7fb84f224f0630001cd47c5ca198b401d914748094.z",
+        "bytes": 13952,
+        "sha256": "4655b7b3d410752644a10e7fb84f224f0630001cd47c5ca198b401d914748094"
+      },
+      {
+        "id": 665594491,
+        "name": "object-de8a503e493b5a6854df1df0896a0769670d5631b2e06c40676db28f572da095.z",
+        "bytes": 734,
+        "sha256": "de8a503e493b5a6854df1df0896a0769670d5631b2e06c40676db28f572da095"
+      },
+      {
+        "id": 665594414,
+        "name": "object-bd36ea6350406c8eb56e4043a4e54ef210a1f7eb499003ffce4da8c91f818065.z",
+        "bytes": 232,
+        "sha256": "bd36ea6350406c8eb56e4043a4e54ef210a1f7eb499003ffce4da8c91f818065"
+      },
+      {
+        "id": 665594444,
+        "name": "object-974451d38fd473b8a6ac08715829e3ca460cbb43ce7a15cf962442477f9d93d9.z",
+        "bytes": 315,
+        "sha256": "974451d38fd473b8a6ac08715829e3ca460cbb43ce7a15cf962442477f9d93d9"
+      },
+      {
+        "id": 665594611,
+        "name": "object-cda28df98b06bef5356896802e916446bf004972d5c583abd27f1f85c58c4d45.z",
+        "bytes": 731,
+        "sha256": "cda28df98b06bef5356896802e916446bf004972d5c583abd27f1f85c58c4d45"
+      },
+      {
+        "id": 665594525,
+        "name": "object-acab994020cf3a9e8672c1e775d3a7e07d4e7ccaac7acfdd839b08178f8afd7a.z",
+        "bytes": 337,
+        "sha256": "acab994020cf3a9e8672c1e775d3a7e07d4e7ccaac7acfdd839b08178f8afd7a"
+      },
+      {
+        "id": 665594586,
+        "name": "object-76bdcd39cb4743cb0d78192222926b3b2a4bfdaeb45f553a17d2a33ddec87ad0.z",
+        "bytes": 315,
+        "sha256": "76bdcd39cb4743cb0d78192222926b3b2a4bfdaeb45f553a17d2a33ddec87ad0"
+      }
+    ],
+    "local_copy_retention": "TEMPORARY_LOCAL",
+    "remote_original_retention": "AUTHENTICATED_DRAFT_RELEASE_AND_COMMITTED_GIT_POINTER"
+  },
+  "original_uploads": {
+    "release_id": 420618037,
+    "tag": "diagnostics-nml-nba-production-load-20261022t110633",
+    "draft": true,
+    "assets": 8,
+    "compressed_bytes": 17611,
+    "all_original_objects_recovered_with_hash_and_size_verification": true
+  },
+  "partial_state": {
+    "plan": 1,
+    "input": 1,
+    "local_completion": 1,
+    "intent": 0,
+    "attempt_open": 0,
+    "forecasts": 0,
+    "outcomes": 0,
+    "grades": 0,
+    "genuine_forecasts": 0
+  },
+  "limits": {
+    "maximum_new_archive_bytes": 33554432,
+    "maximum_new_archive_objects": 64,
+    "limits_raised": false
+  },
+  "recovery_transport": "Official authenticated own-repository GitHub API GET-only plus an isolated fresh bare Git object database. The corrected reader rejected mutations; zero POSTs.",
+  "temporary_artifact": {
+    "id": 12420548983,
+    "declared_retention_days": 1,
+    "wire_zip_sha256_from_hosted_log": "23cf5bef6fd2c5431f9096555555e21f00823a041e2f9a4817e1abb15eb91bdc",
+    "download_result": "Official gh run download returned HTTP 403 at storage; no alternate transport was attempted. The signed URL is intentionally not retained."
+  },
+  "source_requests": 0,
+  "public_publication": false,
+  "activation": false,
+  "hosted_full_history_generation_or_latency_completed": false,
+  "prior_local_timing_receipts": "UNCHANGED_VALID_ONLY_FOR_THEIR_ORIGINAL_SOURCE",
+  "next_gate": "A new exact-head owner-approved diagnostic is needed to measure connected hosted generation/checkpoints. The one approved execution was consumed by this failed run.",
+  "additional_offline_cache_reproduction": {
+    "schema_version": "nml-diagnostic-stale-asset-cache-reproduction-v1",
+    "reproduced_at": "2026-10-22T11:23:06.161859+00:00",
+    "evidence_lane": "SYNTHETIC_ONLY",
+    "network_requests": 0,
+    "sports_source_requests": 0,
+    "remote_writes": 0,
+    "genuine_forecasts": 0,
+    "steps": [
+      "Upload first invented object through API-shaped offline fake.",
+      "Use a separate reader with its own decoded asset inventory to recover first object.",
+      "Uploader appends second invented object.",
+      "Same independent reader requests second object."
+    ],
+    "observed": "IntegrityError: Archived object identity/size differs",
+    "cause": "The cold reader retains an older draft asset inventory across original and proof checkpoint readbacks.",
+    "code_sha256": "2ec8080dfafd0717119f2084915bf57f95811a4805caa7f2f6ad89307c2a9370",
+    "required_regression": "Refresh cached draft inventory once on an exact-name miss, without write retries or bypassing identity/size/hash mismatches; public production recovery unchanged."
+  },
+  "additional_offline_cache_fix": "Refresh only a cached diagnostic asset-list exact-name miss once. Existing mismatches, ambiguity, hash corruption and HTTP403 remain fatal; no write retry or new hosted execution."
+}

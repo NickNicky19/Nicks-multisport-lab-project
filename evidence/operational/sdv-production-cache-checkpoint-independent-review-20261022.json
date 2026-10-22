@@ -1,0 +1,240 @@
+{
+  "schema_version": "nba-sdv-production-cache-checkpoint-independent-review-v1",
+  "recorded_at": "2026-10-22T11:28:30.574275+00:00",
+  "reviewer": "/root/diagnostic_fix_verify",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "reviewed_head": "caecac74d120f27536a347ebdfe2b51675c7df39",
+  "reviewed_files_sha256": {
+    "multisport_lab/sdv_production_archive.py": "2830b7fd9f862e2d089a2bc4f9f446a3ec1fa2ff6cea9ebf996ffa6b9d6bd60c",
+    "tests/test_sdv_production_archive.py": "f2462be46c2c12d6aa09ffb29ba5a774198a18b9a2f8a53b2878bb7ea4ca3b1c",
+    "web/production.mjs": "caf2eaf4fc18b09634d2186651fc65dcf6f46456aa4a4a66a692bd9b58832abc",
+    "web/tests/production.test.mjs": "c303511f9f40c3e87b9baeddc4dea637ce0cbcb08956eb18aabd7b92be0a7877"
+  },
+  "all_four_files_match_reviewed_head": true,
+  "earlier_review_preserved": {
+    "path": "evidence/operational/sdv-production-draft-recovery-independent-review-20261022.json",
+    "sha256": "5e914875151985a060307521e7a0aa96a69067dbd1a10dce29e8eec161e61be5",
+    "unchanged": true
+  },
+  "material_findings_remaining": [],
+  "review": [
+    "The second fix refreshes draft asset inventory once only when an exact content-addressed name is missing from a previously cached inventory. A cold miss does not repeat its first inventory read.",
+    "Existing ambiguous entries, size mismatches, compressed-byte hash mismatches and HTTP403 remain fatal without another lookup or write retry. The published production get path returns before this diagnostic-only logic.",
+    "The API-shaped draft test server is shared only as remote state. Each independent client has separate decoded JSON asset inventory and wire caches; canonical API responses are decoded separately.",
+    "Actual local Git checkpoint/readback covered multiple appended original/proof pairs with the same cold reader, then a separate writer/store restart and a duplicate checkpoint with no additional archive POST or Git pointer change."
+  ],
+  "focused_checks": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_sdv_production_archive.py",
+        "-v"
+      ],
+      "started_at": "2026-10-22T11:27:30.228091+00:00",
+      "completed_at": "2026-10-22T11:27:30.443267+00:00",
+      "exit_code": 0,
+      "tests": 28,
+      "seconds": 0.048,
+      "stdout_stderr_path": "/tmp/nml-independent-cache-focused-normal.log"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-O",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_sdv_production_archive.py",
+        "-v"
+      ],
+      "started_at": "2026-10-22T11:27:30.443283+00:00",
+      "completed_at": "2026-10-22T11:27:31.180354+00:00",
+      "exit_code": 0,
+      "tests": 28,
+      "seconds": 0.05,
+      "stdout_stderr_path": "/tmp/nml-independent-cache-focused-optimized.log"
+    }
+  ],
+  "integration_commands": [
+    "python3 /tmp/nml-independent-cache-checkpoint.py",
+    "python3 -O /tmp/nml-independent-cache-checkpoint.py"
+  ],
+  "integration_results": {
+    "normal": {
+      "schema_version": "nba-sdv-production-cache-checkpoint-integration-v1",
+      "evidence_lane": "SYNTHETIC_ONLY",
+      "started_at": "2026-10-22T11:27:03.956613+00:00",
+      "network_requests": 0,
+      "sports_source_requests": 0,
+      "remote_github_writes": 0,
+      "genuine_forecasts": 0,
+      "comparative_model_evaluation": false,
+      "full_history_model_fit": false,
+      "test_double": "API-shaped draft-by-tag-404 fake server; clients share server dictionaries only, never decoded API or wire caches. Three-atom invented law and tiny retained-history fixture.",
+      "status": "PASS",
+      "models": [
+        "R0",
+        "K0"
+      ],
+      "development_forecasts": 2,
+      "all14_categories": true,
+      "all_original_and_proof_readbacks_completed": true,
+      "checkpoints": 4,
+      "separate_decoded_clients": 4,
+      "original_bytes_unchanged": true,
+      "idempotent_restart_no_git_or_archive_mutation": true,
+      "git_objects_independent": true,
+      "snapshot_id": "7e93a3b250a55fb62b8e2cd56cb47dabadc7a2e7d51149073c11f97f9682fef1",
+      "snapshot_records": 13,
+      "snapshot_bytes": 74507,
+      "maximum_encoded_forecast_bytes": 9949,
+      "archive_objects": 22,
+      "archive_encoded_bytes": 48886,
+      "tag_lookup_404_invented": true,
+      "public_network_path_called": false,
+      "record_hashes": {
+        "a26588fc0076f8390e74b58fe3927e4acecff16a21f099feb93c27563140bb72": "76f21767c9f0083c11dd06a1630a00e914c0bd5d6f81fabb9db0f6474825d93d",
+        "aebd1261d6a2836862f209330acccfce26cd0f644993891c08216a5b61d3fffb": "102d0fa2b6684a8bb3f072e7fbbc7e6e41f638ba1327f8d94ac6466a34d325f7"
+      },
+      "api_actions_by_client": [
+        {
+          "get": 27,
+          "post": 23
+        },
+        {
+          "get": 32,
+          "post": 0
+        },
+        {
+          "get": 14,
+          "post": 0
+        },
+        {
+          "get": 22,
+          "post": 0
+        }
+      ],
+      "completed_at": "2026-10-22T11:27:09.448854+00:00",
+      "seconds": 5.492239890008932
+    },
+    "optimized": {
+      "schema_version": "nba-sdv-production-cache-checkpoint-integration-v1",
+      "evidence_lane": "SYNTHETIC_ONLY",
+      "started_at": "2026-10-22T11:27:13.796237+00:00",
+      "network_requests": 0,
+      "sports_source_requests": 0,
+      "remote_github_writes": 0,
+      "genuine_forecasts": 0,
+      "comparative_model_evaluation": false,
+      "full_history_model_fit": false,
+      "test_double": "API-shaped draft-by-tag-404 fake server; clients share server dictionaries only, never decoded API or wire caches. Three-atom invented law and tiny retained-history fixture.",
+      "status": "PASS",
+      "models": [
+        "R0",
+        "K0"
+      ],
+      "development_forecasts": 2,
+      "all14_categories": true,
+      "all_original_and_proof_readbacks_completed": true,
+      "checkpoints": 4,
+      "separate_decoded_clients": 4,
+      "original_bytes_unchanged": true,
+      "idempotent_restart_no_git_or_archive_mutation": true,
+      "git_objects_independent": true,
+      "snapshot_id": "7e93a3b250a55fb62b8e2cd56cb47dabadc7a2e7d51149073c11f97f9682fef1",
+      "snapshot_records": 13,
+      "snapshot_bytes": 74507,
+      "maximum_encoded_forecast_bytes": 9949,
+      "archive_objects": 22,
+      "archive_encoded_bytes": 48886,
+      "tag_lookup_404_invented": true,
+      "public_network_path_called": false,
+      "record_hashes": {
+        "a26588fc0076f8390e74b58fe3927e4acecff16a21f099feb93c27563140bb72": "76f21767c9f0083c11dd06a1630a00e914c0bd5d6f81fabb9db0f6474825d93d",
+        "aebd1261d6a2836862f209330acccfce26cd0f644993891c08216a5b61d3fffb": "102d0fa2b6684a8bb3f072e7fbbc7e6e41f638ba1327f8d94ac6466a34d325f7"
+      },
+      "api_actions_by_client": [
+        {
+          "get": 27,
+          "post": 23
+        },
+        {
+          "get": 32,
+          "post": 0
+        },
+        {
+          "get": 14,
+          "post": 0
+        },
+        {
+          "get": 22,
+          "post": 0
+        }
+      ],
+      "completed_at": "2026-10-22T11:27:17.125955+00:00",
+      "seconds": 3.3297188889991958
+    }
+  },
+  "integration_harness": {
+    "path": "/tmp/nml-independent-cache-checkpoint.py",
+    "sha256": "95e9f57bfc9750ba909a889f4410a7f9ba46be4e8326eed9f07ffcc1eb3fde3b",
+    "retention": "The /tmp script is temporary; its exact source is retained below for reproducibility.",
+    "source": "from pathlib import Path\nfrom datetime import datetime,timezone,timedelta\nimport hashlib,json,sys,subprocess,time\nfrom unittest.mock import patch\nsys.path[:0]=['/workspace/nml-sdv-recurring','/workspace/nml-sdv-recurring/tests']\nfrom multisport_lab.integrity import IntegrityError,canonical,digest,stamp\nfrom multisport_lab import sdv_production_common as common\nfrom multisport_lab import sdv_production_store as stores\nfrom multisport_lab import sdv_production_archive as archives\nfrom multisport_lab import sdv_production_forecasts as forecasts\nfrom multisport_lab.sdv_production_remote import ProductionGitCheckpointWriter\nfrom test_sdv_production_archive import DraftTagMissingGitHub\nfrom test_sdv_production_store import ProductionStoreTests\n\n\ndef need(ok,message):\n if not ok:raise IntegrityError(message)\n\nclass IsolatedClient(DraftTagMissingGitHub):\n def __init__(self,server=None):\n  super().__init__()\n  if server is None:self.clients=[]\n  else:\n   self.releases,self.assets,self.raw=server.releases,server.assets,server.raw\n   self.clients=server.clients\n  self.clients.append(self)\n def fresh_reader(self):\n  reader=IsolatedClient(self)\n  reader.write_budget_bytes=reader.write_budget_objects=0\n  return reader\n\nstarted=datetime.now(timezone.utc).isoformat();tick=time.monotonic()\nresult={'schema_version':'nba-sdv-production-cache-checkpoint-integration-v1','evidence_lane':'SYNTHETIC_ONLY','started_at':started,'network_requests':0,'sports_source_requests':0,'remote_github_writes':0,'genuine_forecasts':0,'comparative_model_evaluation':False,'full_history_model_fit':False,'test_double':'API-shaped draft-by-tag-404 fake server; clients share server dictionaries only, never decoded API or wire caches. Three-atom invented law and tiny retained-history fixture.'}\ncase=ProductionStoreTests('test_independent_archive_restart_keeps_exact_originals_and_all14_categories')\ntry:\n case.setUp()\n fake=IsolatedClient();fake.write_budget_bytes=32*1024*1024;fake.write_budget_objects=64\n case.archive=fake;case.mode='DEVELOPMENT_ONLY';case.state=case.folder/'diagnostic-state'\n case.store=stores.ProductionStore(case.state,source_root=case.source,source_resolver=fake.recover_source,\n  snapshot_resolver=lambda ref:fake.get_json(ref)['ledger_snapshot'],allow_diagnostics=True)\n tag='diagnostics-nml-nba-independent-cache-checkpoint'\n branch='diagnostics/sdv-production-load-20300101T000000'\n assets=case.fixture.assets()\n archive_refs=tuple(fake.retain_source(raw,meta,assets[4][role],tag=tag) for role,raw,meta in [('schedule',assets[0],assets[2]),('roster',assets[1],assets[3])])\n case.plan=case.fixture.build(assets,mode=case.mode)\n case.plan_ref=case.store.append_body(case.plan,archive_refs=archive_refs)\n case.input=case.fixture.fresh(case.plan,assets,mode=case.mode)\n case.input_ref=case.store.append_body(case.input,references=(case.plan_ref,),archive_refs=archive_refs)\n def git(*args,cwd):\n  p=subprocess.run(['git',*args],cwd=cwd,capture_output=True,timeout=20)\n  need(p.returncode==0,'Local synthetic Git command failed: '+args[0]);return p.stdout.decode().strip()\n git('init','--quiet','-b','main',cwd=case.source);git('add','.',cwd=case.source)\n git('-c','user.name=Independent Synthetic Review','-c','user.email=independent@example.invalid','commit','--quiet','-m','Invented tiny history fixture',cwd=case.source)\n base=git('rev-parse','HEAD',cwd=case.source);bare=case.folder/'synthetic-remote.git'\n git('init','--quiet','--bare',str(bare),cwd=case.folder);git('push',str(bare),'HEAD:refs/heads/main',cwd=case.source)\n def writer(name,archive):return ProductionGitCheckpointWriter(case.source,case.folder/name,base_commit=base,branch=branch,archive=archive,tag=tag,remote_url=bare,allow_local_test_remote=True,allow_diagnostics=True)\n def reject_public(*args,**kwargs):raise IntegrityError('Offline diagnostic must not perform public/network reads')\n checkpoints=[]\n with patch.object(archives.GitHubReleaseArchive,'_public_object',side_effect=reject_public):\n  w=writer('first-writer',fake);w.prepare()\n  checkpoints.append(w.checkpoint(case.store,(case.input_ref,)))\n  case.intent=common.seal({'schema_version':common.INTENT_SCHEMA,'protocol_id':common.PROTOCOL_ID,\n   'plan_id':case.plan['plan_id'],'cycle_id':case.input['cycle_id'],'mode':case.mode,'input_ref':case.input_ref.to_record(),\n   'input_id':case.input['input_id'],'producer_binding_id':case.fixture.binding['binding_id'],'history_ref':case.history_ref.to_record(),\n   'player_ids':case.input['shards'][0],'created_at':stamp(case.fixture.now)},'intent_id')\n  case.intent_ref=case.store.append_body(case.intent,references=(case.input_ref,case.plan_ref))\n  checkpoints.append(w.checkpoint(case.store,(case.intent_ref,)))\n  with patch.object(forecasts,'_development_laws',side_effect=case.laws):bodies=case.pair()\n  refs=[];originals={}\n  for body in bodies:\n   ref=case.append_forecast(body);refs.append(ref);originals[ref.record_id]=case.path(ref).read_bytes()\n   checkpoints.append(w.checkpoint(case.store,(ref,)))\n  original=case.store.snapshot_manifest();head=w._head\n  need(all(case.store.admission(ref)['eligible'] is False for ref in refs),'Development fixture became eligible prospective research')\n  need(all(case.store.read_body(ref)['issued_at'] is None for ref in refs),'Development fixture gained issue time')\n  need(all(len(case.store.read_body(ref)['categories'])==14 for ref in refs),'Lost categories')\n  root_reader=w.reader\n  rid=fake.releases[tag]['id']\n  need(root_reader._asset_cache[rid] is not fake.assets[rid],'Reader decoded cache aliases mutable server list')\n  for i,client in enumerate(fake.clients):\n   for other in fake.clients[i+1:]:\n    need(client._asset_cache is not other._asset_cache and client._wire_cache is not other._wire_cache,'Independent clients share decoded/wire cache')\n  restarted=writer('restarted-writer',fake.fresh_reader());restarted.prepare()\n  recovered=stores.ProductionStore(case.folder/'restarted-state',source_root=case.source,allow_diagnostics=True)\n  restarted.restore(recovered)\n  need(recovered.snapshot_manifest()==original,'Exact snapshot differs on separate restart')\n  for ref in refs:\n   need((recovered.root/'records'/ref.kind/(ref.record_id+'.json')).read_bytes()==originals[ref.record_id],'Original numeric bytes changed')\n  calls_before=sum('POST' in args for c in fake.clients for args in c.calls)\n  object_count_before=len(fake.raw)\n  retry=restarted.checkpoint(recovered,refs)\n  need(restarted._head==head and recovered.snapshot_manifest()==original,'Idempotent restart changed original pointer/state')\n  need(sum('POST' in args for c in fake.clients for args in c.calls)==calls_before and len(fake.raw)==object_count_before,'Idempotent restart mutated API-shaped archive')\n  need(not (restarted.root/'.git/objects/info/alternates').exists(),'Separate restart shares Git alternates')\n  need(all(not p['metadata_acknowledgment_recursive'] and p['original_records_recovered_at'] and p['proof_metadata_recovered_at'] for p in checkpoints),'Original/proof readback incomplete')\n  result.update(status='PASS',models=[b['model_key'] for b in bodies],development_forecasts=len(refs),all14_categories=True,\n   all_original_and_proof_readbacks_completed=True,checkpoints=len(checkpoints),separate_decoded_clients=len(fake.clients),\n   original_bytes_unchanged=True,idempotent_restart_no_git_or_archive_mutation=True,git_objects_independent=True,\n   snapshot_id=original['snapshot_id'],snapshot_records=original['records'],snapshot_bytes=original['bytes'],\n   maximum_encoded_forecast_bytes=max(len(raw) for raw in originals.values()),\n   archive_objects=len(fake.raw),archive_encoded_bytes=sum(len(v) for v in fake.raw.values()),\n   tag_lookup_404_invented=True,public_network_path_called=False,record_hashes={rid:hashlib.sha256(raw).hexdigest() for rid,raw in originals.items()},\n   api_actions_by_client=[{'get':sum('POST' not in args for args in c.calls),'post':sum('POST' in args for args in c.calls)} for c in fake.clients])\nexcept Exception as error:\n result.update(status='FAIL',error_type=type(error).__name__,error=str(error))\nfinally:\n case.doCleanups()\n result.update(completed_at=datetime.now(timezone.utc).isoformat(),seconds=time.monotonic()-tick)\n outfile=Path('/tmp/nml-independent-cache-checkpoint-'+('optimized' if sys.flags.optimize else 'normal')+'.json')\n outfile.write_text(json.dumps(result,indent=2)+'\\n')\n print(json.dumps(result,indent=2))\nif result['status']!='PASS':raise SystemExit(1)\n",
+    "scope": "Only temporary local Git repositories, invented typed data and an API-shaped in-memory server. No provider HTTP, actual GitHub request, full-history fit, comparative experiment or operating workflow."
+  },
+  "first_harness_attempt": {
+    "schema_version": "nba-sdv-production-cache-checkpoint-integration-v1",
+    "evidence_lane": "SYNTHETIC_ONLY",
+    "started_at": "2026-10-22T11:26:31.978965+00:00",
+    "network_requests": 0,
+    "sports_source_requests": 0,
+    "remote_github_writes": 0,
+    "genuine_forecasts": 0,
+    "comparative_model_evaluation": false,
+    "full_history_model_fit": false,
+    "test_double": "API-shaped draft-by-tag-404 fake server; clients share server dictionaries only, never decoded API or wire caches. Three-atom invented law and tiny retained-history fixture.",
+    "status": "FAIL",
+    "error_type": "IntegrityError",
+    "error": "Development history must contain resolved appearances",
+    "completed_at": "2026-10-22T11:26:33.517859+00:00",
+    "seconds": 1.5388925060105976,
+    "classification": "TEST_HARNESS_CONFIGURATION_ERROR_NOT_PRODUCTION_FINDING",
+    "explanation": "Existing ProductionStoreTests.pair mocks the prospective _fit_laws branch. The new harness explicitly requested DEVELOPMENT_ONLY, which uses _development_laws. The first attempt correctly rejected placeholder history. The harness was corrected to mock the intended development law with the existing invented three-atom case.laws double; source code and admission validators were not relaxed."
+  },
+  "preservation": {
+    "reference_path": "evidence/operational/sdv-production-independent-exact-source-4fe1dbe-20261022.json",
+    "reference_sha256": "80ff624aa2d7c0b6b2bf3116f7be65e9982dacf826da56c974991c428b0acc4c",
+    "frozen_source": "0c37b30060c2dffb20226bd3efbedc65a75d04e3",
+    "protected_files_verified": 23,
+    "original_records_verified": 19,
+    "all_byte_identical": true
+  },
+  "reviewer_actions": {
+    "network_requests": 0,
+    "sports_source_requests": 0,
+    "remote_github_writes": 0,
+    "hosted_reruns": 0,
+    "full_history_model_runs": 0,
+    "comparative_model_evaluations": 0,
+    "code_edits": 0,
+    "test_edits": 0,
+    "commits": 0,
+    "new_repository_receipts": 1
+  },
+  "limitations": [
+    "All API POST and GET counts inside the integration results refer to an in-memory test double, not HTTP or GitHub mutations.",
+    "The local integration exercises only invented three-atom laws; no 26,645-row mathematical fitting or frozen experiment was executed.",
+    "Clock and trust test doubles are explicit. These results do not establish genuine issuance, future availability, model accuracy, actual GitHub permissions or hosted end-to-end timing.",
+    "Development fixture records were generated with issued_at=null and remained ineligible for prospective admission. No public publication, deployment, activation, scheduler, offer, ticket or financial settlement occurred.",
+    "The originally failed hosted diagnostic and original partial bytes remain unchanged; no additional hosted diagnostic was launched."
+  ]
+}

@@ -22,11 +22,11 @@ async function boundedBytes(response, limit = MAX_BYTES) {
   return bytes;
 }
 
-const channelNames = version => ({3:['pros004'],4:['display'],5:['pros004','display','offers','paired_research'],6:['pros004','display','offers','paired_research','daily_research']}[version] || []);
+const channelNames = version => ({3:['pros004'],4:['display'],5:['pros004','display','offers','paired_research'],6:['pros004','display','offers','paired_research','daily_research'],7:['pros004','display','offers','paired_research','daily_research','production_research']}[version] || []);
 
 export function validateManifest(value) {
   const extra = channelNames(value?.schema_version).flatMap(channel=>[channel,`${channel}_error`]);
-  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors', ...extra]) || ![1, 2, 3, 4, 5, 6].includes(value.schema_version) || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
+  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors', ...extra]) || ![1, 2, 3, 4, 5, 6, 7].includes(value.schema_version) || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
   if (!SHA256.test(value.snapshot_id) || !COMMIT.test(value.build_commit) || !utc(value.published_at) || Date.parse(value.published_at) > Date.now()) throw new Error('Incomplete publication identity or invalid clock.');
   if (!Array.isArray(value.supported_sports) || !value.supported_sports.length || value.supported_sports.some(s => typeof s !== 'string' || !/^[A-Z]+$/.test(s)) || new Set(value.supported_sports).size !== value.supported_sports.length) throw new Error('Invalid sport coverage.');
   if (!value.errors || typeof value.errors !== 'object' || Array.isArray(value.errors) || Object.entries(value.errors).some(([league, error]) => !/^[A-Z]+$/.test(league) || !text(error))) throw new Error('Invalid publication errors.');
@@ -145,7 +145,30 @@ function validatePairedDescriptor(value,publishedAt) {
   }
 }
 
-export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.crypto) {
+export async function loadProductionDate(collection,{gameDate=null,view='upcoming',now=Date.now(),fetcher=fetch,cryptoProvider=globalThis.crypto}={}) {
+  const production=await import('./production.mjs');
+  const index=collection?.index??collection;
+  production.validateProductionIndex(index);
+  const selected=production.selectProductionDate(index,{gameDate,view,now});
+  const references=index.pages.filter(reference=>selected===null||reference.game_date===selected);
+  let total=new TextEncoder().encode(canonical(index)).byteLength;
+  const pages=[];
+  for (const reference of references) {
+    const response=await fetcher(`./data/${reference.path}`,{cache:'no-store',signal:AbortSignal.timeout(12000)});
+    if (!response.ok) throw new Error(`Production research page unavailable (HTTP ${response.status}).`);
+    const raw=await boundedBytes(response,production.PRODUCTION_MAX_PAGE_BYTES);
+    total+=raw.byteLength;
+    if (total>production.PRODUCTION_CLIENT_MAX_BYTES) throw new Error('Selected production date exceeds the 64-MiB browser budget. Other publication channels remain available.');
+    if (await sha256(raw,cryptoProvider)!==reference.sha256) throw new Error('Production research page checksum mismatch.');
+    const page=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));
+    production.validateProductionPage(page,reference,index.generated_at);
+    pages.push(page);
+  }
+  await production.verifyProductionHashes(index,pages,cryptoProvider,{gameDate:selected});
+  return production.validateProductionCollection(index,pages,{gameDate:selected});
+}
+
+export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.crypto, {productionView='upcoming'}={}) {
   const response = await fetcher('./data/manifest.json', {cache: 'no-store', signal: AbortSignal.timeout(12000)});
   if (!response.ok) throw new Error(`Publication manifest unavailable (HTTP ${response.status}).`);
   const manifest = validateManifest(JSON.parse(new TextDecoder('utf-8', {fatal: true}).decode(await boundedBytes(response))));
@@ -167,7 +190,7 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
     return sport;
   }));
   const sports = results.flatMap(result => result.status === 'fulfilled' ? [result.value] : []);
-  const channels = Object.fromEntries(['pros004','display','offers','paired_research','daily_research'].map(channel=>[channel,{value:null,error:null}]));
+  const channels = Object.fromEntries(['pros004','display','offers','paired_research','daily_research','production_research'].map(channel=>[channel,{value:null,error:null}]));
   await Promise.all(channelNames(manifest.schema_version).map(async channel => {
     const state = channels[channel], descriptor = manifest[channel];
     try {
@@ -181,6 +204,19 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
       if (channel === 'pros004') {
         validatePros004Descriptor(descriptor, manifest.published_at);
         state.value = await loadPros004(descriptor, fetcher, cryptoProvider);
+        return;
+      }
+      if (channel === 'production_research') {
+        const production = await import('./production.mjs');
+        production.validateProductionDescriptor(descriptor,manifest.published_at);
+        const response = await fetcher(`./data/${descriptor.path}`,{cache:'no-store',signal:AbortSignal.timeout(12000)});
+        if (!response.ok) throw new Error(`Production research index unavailable (HTTP ${response.status}).`);
+        const raw = await boundedBytes(response,production.PRODUCTION_MAX_PAGE_BYTES);
+        if (await sha256(raw,cryptoProvider)!==descriptor.sha256) throw new Error('Production research index checksum mismatch.');
+        const index = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));
+        production.validateProductionIndex(index,descriptor);
+        if (index.generated_at!==descriptor.generated_at) throw new Error('Production research index generation clock differs.');
+        state.value=await loadProductionDate(index,{view:productionView,fetcher,cryptoProvider});
         return;
       }
       // Descriptor semantics run before any request, independently for each lane.
@@ -232,6 +268,7 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
     offers:channels.offers.value,offersError:channels.offers.error,
     pairedResearch:channels.paired_research.value,pairedResearchError:channels.paired_research.error,
     dailyResearch:channels.daily_research.value,dailyResearchError:channels.daily_research.error,
+    productionResearch:channels.production_research.value,productionResearchError:channels.production_research.error,
     errors:results.flatMap((result,index)=>result.status==='rejected'?[{league:manifest.sports[index].league,message:result.reason.message}]:[])};
 }
 import {validateResearchEvent, validateResearchForecast, validateResearchGrade, utcMicros} from './research.mjs';

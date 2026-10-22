@@ -1,0 +1,54 @@
+{
+  "code_commit": "e5da30977fc9dd0745154854ddbfeb712307cfde",
+  "duplicate_logical_subject_recreated": true,
+  "evidence_lane": "SYNTHETIC_DEVELOPMENT_ONLY_NO_ACTUAL_ISSUANCE",
+  "finding": "A fresh host generated a different original for the same logical player/model/input after the prior host died before remote checkpoint. The e5da baseline is insufficient for hard-kill recovery.",
+  "first_generation_started_at": "2026-10-23T22:30:01.000000Z",
+  "first_issued_at": null,
+  "first_local_bytes_preserved": true,
+  "first_original_id": "46d804a7d1f7146d8d5d180c9bd95a7f3a0599087ca9c08515cca8271fe10d13",
+  "first_work_root": "/tmp/tmpmjtfi865/worker-1",
+  "fresh_counts": {
+    "forecasts": 4,
+    "grades": 0,
+    "outcomes": 0
+  },
+  "fresh_generation_started_at": "2026-10-23T22:30:15.000000Z",
+  "fresh_issued_at": null,
+  "fresh_original_id": "c42eb92c0eb56296bcf6b33e88e96ce2959b8e4b1772cdb6c043153deb48aa73",
+  "fresh_status": "ISSUED_PENDING_OUTCOMES",
+  "genuine_forecasts": 0,
+  "hard_kill_exit": 77,
+  "http_requests": 0,
+  "model_fit": "EXPLICIT_TINY_TEST_DOUBLE",
+  "prepared_remote_commit": "eadcab832eda80f602ec9a4661053b66a855339d",
+  "remote_commit_after_hardkill": "eadcab832eda80f602ec9a4661053b66a855339d",
+  "remote_had_no_first_r0": true,
+  "retained_artifact_locations": {
+    "first-unacknowledged-local-r0.json": {
+      "bytes": 9949,
+      "path": "/tmp/nml-production-fresh-host-crash-repro-e5da309/first-unacknowledged-local-r0.json",
+      "scope": "TEMPORARY_LOCAL_SYNTHETIC_RECEIPT",
+      "sha256": "732b93b09cf4853230bdb5dbc587dc5ad7961dc0afa55b343937caecf4484802"
+    },
+    "reproduction": {
+      "path": "/tmp/nml-production-fresh-host-crash-repro-e5da309/reproduction.json",
+      "scope": "TEMPORARY_LOCAL_ORIGINAL_REPORT",
+      "sha256": "fba5ec45bae4bda7bf44064069049ad94f4a63dd9a5e5b46ed88df1841413601"
+    },
+    "second-fresh-host-r0.json": {
+      "bytes": 9949,
+      "path": "/tmp/nml-production-fresh-host-crash-repro-e5da309/second-fresh-host-r0.json",
+      "scope": "TEMPORARY_LOCAL_SYNTHETIC_RECEIPT",
+      "sha256": "d6366d5d3a985a268b8a84c39380e7f6f21a4bbe0cba76e2b4ee7a522b618853"
+    }
+  },
+  "retained_artifacts": "/tmp/nml-production-fresh-host-crash-repro-e5da309",
+  "same_input": true,
+  "same_model": true,
+  "same_player": true,
+  "same_producer": true,
+  "schema_version": "nml-synthetic-fresh-host-hardkill-reproduction-v1",
+  "second_work_root": "/tmp/tmpmjtfi865/worker-2",
+  "status": "REPRODUCED_BASELINE_FIX_UNDER_REVIEW"
+}

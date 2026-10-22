@@ -1,0 +1,222 @@
+{
+  "schema_version": "nml-production-protected-inventory-v1",
+  "checked_at": "2026-10-22T08:55:26.264397+00:00",
+  "producer_pin": "0c37b30060c2dffb20226bd3efbedc65a75d04e3",
+  "records_baseline": "377a3e4e69749efeee912a75c51673144f9fc27f",
+  "protected_source_files": [
+    {
+      "path": "multisport_lab/sdv_daily_inputs.py",
+      "sha256": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+      "bytes": 21049
+    },
+    {
+      "path": "multisport_lab/sdv_daily_store.py",
+      "sha256": "fd508c0459519f54f0faf9009438632755c64b31227105794109d326c8ecf045",
+      "bytes": 40316
+    },
+    {
+      "path": "multisport_lab/sdv_daily_producer.py",
+      "sha256": "eb793c94a2473f7210158b60aaf98fd8e215bc7f62ecf260bb11b301e72a334b",
+      "bytes": 34082
+    },
+    {
+      "path": "multisport_lab/sdv_daily_cycle.py",
+      "sha256": "5a40fd1bc6cdf6ebf75af52a6171641ee79d0d4bfbf9581c9e5b14dc8b3daef0",
+      "bytes": 28426
+    },
+    {
+      "path": "multisport_lab/sdv_daily_runner.py",
+      "sha256": "cf8d7ba3d65bc354029ee9fc1c54b8d9f110c3036204a4bd690fcc7943fd50ef",
+      "bytes": 34724
+    },
+    {
+      "path": "multisport_lab/sdv_daily_remote.py",
+      "sha256": "c3e70fea9d4da6434703706b4f51bf4edf7320834dcc6a10c9456f3ddbc3b763",
+      "bytes": 15075
+    },
+    {
+      "path": "multisport_lab/sdv_daily_outcomes.py",
+      "sha256": "d84a9c2dd6cd7097e6f12d3170b7b914aa17a0876f32054c03d40036510adac6",
+      "bytes": 7183
+    },
+    {
+      "path": "multisport_lab/sdv_daily_publication.py",
+      "sha256": "ce2bd99c7b1193af328d39cf33fd36b7400626becde4c656e658bb763fd7e425",
+      "bytes": 28418
+    },
+    {
+      "path": "multisport_lab/pros004_remote.py",
+      "sha256": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+      "bytes": 14562
+    },
+    {
+      "path": "config/sdv_daily_cycle_v1.json",
+      "sha256": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+      "bytes": 2820
+    },
+    {
+      "path": ".github/workflows/sdv-daily.yml",
+      "sha256": "fb39ce1e9bf0b32632d314b11e391043a89806a446bfee453f92468e790c0b47",
+      "bytes": 2722
+    },
+    {
+      "path": "multisport_lab/baseline.py",
+      "sha256": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+      "bytes": 21422
+    },
+    {
+      "path": "multisport_lab/development_003.py",
+      "sha256": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+      "bytes": 27136
+    },
+    {
+      "path": "multisport_lab/development_002.py",
+      "sha256": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+      "bytes": 20818
+    },
+    {
+      "path": "multisport_lab/research_pilot.py",
+      "sha256": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+      "bytes": 19681
+    },
+    {
+      "path": "multisport_lab/pros004_producer.py",
+      "sha256": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+      "bytes": 34376
+    },
+    {
+      "path": "multisport_lab/pros004_inputs.py",
+      "sha256": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+      "bytes": 37189
+    },
+    {
+      "path": "multisport_lab/pregame_sources.py",
+      "sha256": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+      "bytes": 37339
+    },
+    {
+      "path": "multisport_lab/nba_data.py",
+      "sha256": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+      "bytes": 19703
+    },
+    {
+      "path": "multisport_lab/basketball.py",
+      "sha256": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+      "bytes": 2119
+    },
+    {
+      "path": "multisport_lab/ledger.py",
+      "sha256": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+      "bytes": 53362
+    },
+    {
+      "path": "multisport_lab/forecast_contract.py",
+      "sha256": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+      "bytes": 19991
+    },
+    {
+      "path": "multisport_lab/integrity.py",
+      "sha256": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2",
+      "bytes": 6219
+    }
+  ],
+  "original_records": [
+    {
+      "path": "records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json",
+      "sha256": "499b358129adde25134d5ba6243b372b1937915f7a0f2245750a057d40c4b8c6",
+      "bytes": 22838
+    },
+    {
+      "path": "records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json",
+      "sha256": "507344a333f5218039e39b1201e1f203f6045bf8e04375a7a19740ddea337967",
+      "bytes": 22747
+    },
+    {
+      "path": "records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json",
+      "sha256": "e35af6116e8151aacb23d21465c2744324501a92d0f83cf7e780066677df74fa",
+      "bytes": 22813
+    },
+    {
+      "path": "records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json",
+      "sha256": "1748dce54d24cc583deb3e102d08680142307c3c784ddfc728abc02f78e82f0f",
+      "bytes": 22815
+    },
+    {
+      "path": "records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json",
+      "sha256": "d74070a12aa144b4bc917de930e6527f4bd5bdeb84db693a215bec1513562f7b",
+      "bytes": 22826
+    },
+    {
+      "path": "records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json",
+      "sha256": "bf3aa0b6fab62f64a03070fc6775db1bec8b0654e89ae93b3c42133e94649894",
+      "bytes": 22830
+    },
+    {
+      "path": "records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json",
+      "sha256": "cf519c4238f641724d81040f8cdee82b693aa3f98e4ae8db772fbadc480fd6a0",
+      "bytes": 4375
+    },
+    {
+      "path": "records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json",
+      "sha256": "73b72a5ed145708157052c269d25c0dd72467a002e26efac41e1136839fa0f60",
+      "bytes": 4357
+    },
+    {
+      "path": "records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json",
+      "sha256": "c691398d641af291bcd3c2a9d7427ff59ab953606ee9388bc2c202642d80947c",
+      "bytes": 4365
+    },
+    {
+      "path": "records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json",
+      "sha256": "41e3453b89b97c160d56e932f1389ac90b451142dcda3cff27629b1448bc77dd",
+      "bytes": 4370
+    },
+    {
+      "path": "records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json",
+      "sha256": "1297f91dc9154d2b6111e60a1505f4a08e911dd3c99b919431833df76dbe40b5",
+      "bytes": 4369
+    },
+    {
+      "path": "records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json",
+      "sha256": "2a343e191af2f809baf91ab4d6f9de8d09f593c9f6b088d9740238982107237b",
+      "bytes": 4368
+    },
+    {
+      "path": "records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json",
+      "sha256": "a9474a89403e3aa87f44adb014eee6e10b09761002e5a4deabc198022ea88ce3",
+      "bytes": 2023
+    },
+    {
+      "path": "records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json",
+      "sha256": "c9938334da0fbfb3032558df23d5e69588fdf6ca7f0b9eb562fb271c090ef93e",
+      "bytes": 2018
+    },
+    {
+      "path": "records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json",
+      "sha256": "e94d071bf65e5f4815400a0e334b81529d6fd71147fb467584fc0aa1bb7e4f9c",
+      "bytes": 2019
+    },
+    {
+      "path": "records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json",
+      "sha256": "74bd3778ce79875bb6f238cabda878ab88789df928b3b7804494c3e94f346b54",
+      "bytes": 2018
+    },
+    {
+      "path": "records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json",
+      "sha256": "f4787faceff42cc52a2c446b03fc6ee7b8b2103643dff937b411193c75994bc5",
+      "bytes": 2018
+    },
+    {
+      "path": "records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json",
+      "sha256": "1332e892946d072d1500bdd693a877cbefb1ee54b51c3eb657e3c7af6393ee63",
+      "bytes": 2021
+    },
+    {
+      "path": "records/research_inputs/dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc.json",
+      "sha256": "db9a682099e28ce087edf430e9aa52f9be8e060ebf4b4cf8deb53d1317c8b122",
+      "bytes": 1642610
+    }
+  ],
+  "changed_files": [],
+  "execution_or_issuance": false
+}

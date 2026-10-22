@@ -1,0 +1,73 @@
+{
+  "schema_version": "nba-lines-minutes-source-advice-v1",
+  "reviewed_at": "2026-10-22T11:14:11.422256+00:00",
+  "status": "DOCUMENTARY_REVIEW_NOT_SOURCE_ADMISSION",
+  "nfl_reference": {
+    "repository": "NickNicky19/nicks-expert-nfl-picks",
+    "reviewed_commit": "57c84dea3e7211356e04e201e11cd7090e14adaa",
+    "retained_review": "evidence/verification/nfl-readonly-keyless-reference-20261021.json",
+    "read_only": true,
+    "new_network_requests": 0,
+    "findings": [
+      {
+        "path": "pull/books.py",
+        "function": "game_props",
+        "lines": "48-64",
+        "facts": "Reads current.target.value/open.target.value on the ESPN propBets route separately from prices."
+      },
+      {
+        "path": "pull/books.py",
+        "function": "sleeper_lines",
+        "lines": "145-169",
+        "facts": "Reads outcome_value separately from optional pick’em multipliers."
+      },
+      {
+        "path": "pull/books.py",
+        "function": "game_odds",
+        "lines": "181-201",
+        "facts": "Reads spread/overUnder and derives team implied points separately from moneylines."
+      }
+    ]
+  },
+  "nba_conclusions": {
+    "line_only_research": "The parsing approach is technically reusable. NBA coverage, stable identities, period/threshold/side, observation clocks and applicable collection, retention and display scope still require verification. Odds, EV and financial settlement are separate from honest line-only research observations.",
+    "minutes": "Existing R0/K0 reported_minutes distributions retain the mean and 80% interval, conditional on appearance. K0 uses the latest up to five causally available historical reported-minute appearances. Current injury, lineup and blowout adjustments are not implemented.",
+    "blowout": "Spreads and totals can provide game context; a calibrated blowout probability and minutes adjustment require a separately versioned model and evaluation."
+  },
+  "sportsline": {
+    "projections_url": "https://www.sportsline.com/nba/expert-projections/simulation/",
+    "odds_url": "https://www.sportsline.com/nba/odds/",
+    "terms_url": "https://legal.paramount.com/us/en/cbsi/sportsline-terms-of-use",
+    "observations": [
+      "Public odds-page inspection showed game spreads and totals. No player-prop contract was admitted.",
+      "The projections page offers a link to join for projection export; a complete free projection table was not established.",
+      "Official SportsLine-specific terms distinguish free services and paid Pro membership, and prohibit distribution, modification, republication or public display without prior written permission. These findings do not establish applicable automated collection and website redistribution scope."
+    ],
+    "decision": "Do not install a SportsLine collector, use a member export, create an account or republish its lines/projections under the present constraints.",
+    "web_review": {
+      "search_queries": 2,
+      "requested_public_page_opens": 3,
+      "actual_underlyingHTTPredirects": "NOT_EXPOSED_BY_BROWSING_SERVICE",
+      "no_automated_sports_collector_requests": true
+    },
+    "original_source_body_retention": "No SportsLine raw body was admitted or archived. This is an advisory browsing review, separate from admitted source receipts."
+  },
+  "preserved": {
+    "math_laws": true,
+    "all14_categories": true,
+    "historical_panel_cutoff": "2026-04-14T00:30:00.000000Z",
+    "frozen_experiments": true,
+    "nfl_mlb_untouched": true
+  },
+  "next_small_product_change": "Surface the existing validated minutes mean and interval on private production research cards; no new model or provider is required.",
+  "minutes_display_implementation": {
+    "status": "IMPLEMENTED_DRAFT_PRIVATE_PREVIEW_ONLY",
+    "files": [
+      "web/production.mjs",
+      "web/tests/production.test.mjs"
+    ],
+    "new_provider_or_model_required": false,
+    "changes_original_records": false,
+    "browser_receipt": "evidence/operational/sdv-production-minutes-private-preview-20261022.json"
+  }
+}

@@ -10,6 +10,10 @@ on:
         description: Exact authorized daily records branch head to recover for publication (empty reads its current head)
         required: false
         type: string
+      production_state_commit:
+        description: Exact production registry branch head to recover independently (empty reads its current head)
+        required: false
+        type: string
       operating_diagnostic:
         description: Run the separately guarded synthetic eight-forecast timing diagnostic (no source capture, issuance, or deployment)
         required: false
@@ -59,9 +63,21 @@ jobs:
           else
             python3 -m multisport_lab.sdv_daily_publication
           fi
+      - name: Independently recover the admitted production registry for main publication
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PRODUCTION_STATE_COMMIT: ${{ inputs.production_state_commit }}
+        run: |
+          if [ -n "$PRODUCTION_STATE_COMMIT" ]; then
+            python3 -m multisport_lab.sdv_production_publication --state-commit "$PRODUCTION_STATE_COMMIT"
+          else
+            python3 -m multisport_lab.sdv_production_publication
+          fi
       - name: Build bounded static research artifact
         env:
           BUILD_COMMIT: ${{ github.sha }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           python3 -m multisport_lab.publication --build-commit "$BUILD_COMMIT"
           node web/tests/site-smoke.mjs output

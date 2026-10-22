@@ -1,0 +1,213 @@
+{
+  "browser_script_sha256": "b8b9d077c2a1c5d1673e809a7026f31c7772045a2720adc3d19cefad2ad7cb90",
+  "browser_stdout_sha256": "4d357e396716c02e8565828e79acb2ea066e3bd663489888bf7efcff4c3044d1",
+  "browser_transport": "CHROMIUM_LOOPBACK_HTTP_ONLY_EXTERNAL_ROUTES_ABORTED",
+  "checked_at": "2026-10-22T11:18:16.440570+00:00",
+  "commands": [
+    "python3 /tmp/check_nml_production_minutes_current_fixture_preview_20261022.py"
+  ],
+  "expected_minutes_by_model": {
+    "K0": {
+      "interval80": [
+        0,
+        0
+      ],
+      "mean": "0",
+      "pmf": [
+        {
+          "probability": "1",
+          "value": 0
+        }
+      ],
+      "precision": "reported_source_precision_not_exact_workload"
+    },
+    "R0": {
+      "interval80": [
+        0,
+        0
+      ],
+      "mean": "0",
+      "pmf": [
+        {
+          "probability": "1",
+          "value": 0
+        }
+      ],
+      "precision": "reported_source_precision_not_exact_workload"
+    }
+  },
+  "external_requests": [],
+  "fixture_metadata": {
+    "fixture_index_id": "f04705dc8269fc28a38f3084c2df48c43a6eed6b7c833b406078533c592f9b7e",
+    "fixture_original_bytes_unchanged": true,
+    "fixture_path": "/workspace/nml-sdv-recurring/tests/fixtures/sdv-production-synthetic.json",
+    "fixture_policy_id": "2a2543c981c23c6c09b0af8eb598fc5eaeae4a6278233acef1c59e265acedf43",
+    "fixture_probabilities_unchanged": true,
+    "fixture_records": [
+      {
+        "original_id": "824806feec48ce92c0fc8e644d06b8406bf312381a77bfcdc54ecec7f9810922",
+        "record_json_sha256": "824806feec48ce92c0fc8e644d06b8406bf312381a77bfcdc54ecec7f9810922"
+      },
+      {
+        "original_id": "df9e6172a43a4ea03f95304e893e712681157b3eb29980036772e980998f4f7d",
+        "record_json_sha256": "df9e6172a43a4ea03f95304e893e712681157b3eb29980036772e980998f4f7d"
+      },
+      {
+        "original_id": "1cd15f281ff44cdb870d1fd7d8200041e2ef010ca397461295fbf120819706a0",
+        "record_json_sha256": "1cd15f281ff44cdb870d1fd7d8200041e2ef010ca397461295fbf120819706a0"
+      },
+      {
+        "original_id": "cba3fde4de66f41fbff453bc9b2c5ac2a21d945e1d8b33bc797765363636f0ae",
+        "record_json_sha256": "cba3fde4de66f41fbff453bc9b2c5ac2a21d945e1d8b33bc797765363636f0ae"
+      }
+    ],
+    "fixture_sha256": "45cbeaf9f5cd80580f5d3f331d29baec37eb89bc9448055dbeec3f18eb6886cb",
+    "new_model_fits": 0,
+    "new_preview": "/tmp/nml-production-minutes-current-fixture-preview-20261022",
+    "preview_only_descriptor_rebuild": true,
+    "previous_preview_rejection": {
+      "old_month_bytes": 8589934592,
+      "old_policy_id": "e29ae3ab7545ecedecdb4b8dba44ebfb80e9e07d06d154086b1ef4760016fdce",
+      "original_directory_unchanged": true,
+      "probability_or_model_failure": false,
+      "registered_month_bytes": 34359738368,
+      "status": "CORRECTLY_REJECTED_STALE_OPERATING_POLICY"
+    },
+    "python_fixture_clock": "SYNTHETIC_ONLY: sdv_production_forecasts._now and sdv_production_common.now patched only inside test harness readback",
+    "recovered_records": 4,
+    "retained_source": "/tmp/nml-production-dev-preview",
+    "synthetic_browser_now": "2026-10-23T13:19:00+00:00"
+  },
+  "javascript_errors": [],
+  "limitations": [
+    "Development-only synthetic inputs and existing forecast probabilities were reused; no genuine pregame forecast or future result is established.",
+    "This is a loopback private preview, not public deployment.",
+    "Existing fixture records and probabilities are unchanged. Only a new temporary publication descriptor/manifest is built for the current policy; the browser and Python readback harness use the declared synthetic fixture clock, not an actual capture or issuance clock.",
+    "Screenshot files and loopback preview are temporary local verification artifacts, not durable public records."
+  ],
+  "loopback_prerequisite": "Initial base-sandbox server bind failed with PermissionError before browser work. The same localhost-only verification used the supported network-permission grant; external page routes were denied throughout.",
+  "new_model_fits": 0,
+  "new_preview_only_index_and_manifest_descriptors": true,
+  "nonzero_minutes_coverage": "Separate focused frontend regression used invented 12/28-minute atoms, mean24 and80%interval12\u201328; this browser run preserves the original current fixture zero-minute probabilities.",
+  "original_preview_files_unchanged": true,
+  "original_source_data_files_unchanged": true,
+  "preparation_script_sha256": "04a9385c70fd8403e22fbfd016004631c86028e7b16333e3aa19f4622f850055",
+  "preview_root": "/tmp/nml-production-minutes-current-fixture-preview-20261022",
+  "previous_old_preview_finding": {
+    "old_month_bytes": 8589934592,
+    "old_policy_id": "e29ae3ab7545ecedecdb4b8dba44ebfb80e9e07d06d154086b1ef4760016fdce",
+    "original_directory_unchanged": true,
+    "probability_or_model_failure": false,
+    "registered_month_bytes": 34359738368,
+    "status": "CORRECTLY_REJECTED_STALE_OPERATING_POLICY"
+  },
+  "production_module_sha256": "caf2eaf4fc18b09634d2186651fc65dcf6f46456aa4a4a66a692bd9b58832abc",
+  "public_deployment": false,
+  "results": [
+    {
+      "all14_categories": true,
+      "builder_scope_direction_size_matrix_no_action": true,
+      "dev_forecasts": 2,
+      "genuine_forecasts": 0,
+      "height": 1000,
+      "historical_forecasts": 6,
+      "history_based_minutes_mean_and_interval": true,
+      "history_refresh": true,
+      "minutes_conditional_not_confirmed": true,
+      "no_document_overflow": true,
+      "original_minutes_values_verified": true,
+      "performance_excludes_development": true,
+      "readable_provenance": true,
+      "width": 1440
+    },
+    {
+      "all14_categories": true,
+      "builder_scope_direction_size_matrix_no_action": true,
+      "dev_forecasts": 2,
+      "genuine_forecasts": 0,
+      "height": 844,
+      "historical_forecasts": 6,
+      "history_based_minutes_mean_and_interval": true,
+      "history_refresh": true,
+      "minutes_conditional_not_confirmed": true,
+      "no_document_overflow": true,
+      "original_minutes_values_verified": true,
+      "performance_excludes_development": true,
+      "readable_provenance": true,
+      "width": 390
+    },
+    {
+      "all14_categories": true,
+      "builder_scope_direction_size_matrix_no_action": true,
+      "dev_forecasts": 2,
+      "genuine_forecasts": 0,
+      "height": 760,
+      "historical_forecasts": 6,
+      "history_based_minutes_mean_and_interval": true,
+      "history_refresh": true,
+      "minutes_conditional_not_confirmed": true,
+      "no_document_overflow": true,
+      "original_minutes_values_verified": true,
+      "performance_excludes_development": true,
+      "readable_provenance": true,
+      "width": 320
+    }
+  ],
+  "retained_manifest_build_commit": "88b61783754ee2bcd9a3a432ae7ea49749059e09",
+  "retained_manifest_snapshot_id": "e7340ce65381421f20d83f47af54015d3065af7f91c48aa98b7442ed027aa976",
+  "retained_source_data_file_hashes": {
+    "data/display.16d748ed75069904833a144291d8cb16033799bf91feee2751bfdcff0c21004b.json": "16d748ed75069904833a144291d8cb16033799bf91feee2751bfdcff0c21004b",
+    "data/display.38f7a4f3d318c151d2b511bbfa038f9c6621a6855d2f90fe726fee197b9e0148.json": "38f7a4f3d318c151d2b511bbfa038f9c6621a6855d2f90fe726fee197b9e0148",
+    "data/manifest.json": "e5b095427050d333502d11422d98698cb57ae61f7050365191fc5f5b5222880b",
+    "data/nba-offers.4f3eab3ec674c44cb47c48202e96d89f1027112548a54ba3f46698c03ed49dfc.json": "4f3eab3ec674c44cb47c48202e96d89f1027112548a54ba3f46698c03ed49dfc",
+    "data/nba-offers.55f586ffe17f425230c21a3ed10dff6cef73289948d29732a2b049c3140882a5.json": "55f586ffe17f425230c21a3ed10dff6cef73289948d29732a2b049c3140882a5",
+    "data/nba.66826e4560fd3f117d87582a0da23d87834263943ad274c5b8e1ff12af1d0b2e.json": "66826e4560fd3f117d87582a0da23d87834263943ad274c5b8e1ff12af1d0b2e",
+    "data/nba.a713d2907223e6d1777892e3ecd0e349ec66fd11620ebe55aefc20ba1c5df502.json": "a713d2907223e6d1777892e3ecd0e349ec66fd11620ebe55aefc20ba1c5df502",
+    "data/paired-research.3c7caa0b84067043adcba2c08e79caad36fe40cc268b9046fdd23447f74fca58.json": "3c7caa0b84067043adcba2c08e79caad36fe40cc268b9046fdd23447f74fca58",
+    "data/paired-research.44e39c82a4e2ab4a7a9556fd354fc43e695c70ee40ff8c0f1d66542e5fd6fc84.json": "44e39c82a4e2ab4a7a9556fd354fc43e695c70ee40ff8c0f1d66542e5fd6fc84",
+    "data/pros004.index.30fdc46156e9e04d94de654c333f87a85669f8ad7878868bed4d626c776c693d.json": "30fdc46156e9e04d94de654c333f87a85669f8ad7878868bed4d626c776c693d",
+    "data/pros004.index.b8dfe0405661cbace01a895f04a28d47baba3c596db1861da523615f8f6ac7ca.json": "b8dfe0405661cbace01a895f04a28d47baba3c596db1861da523615f8f6ac7ca",
+    "data/sdv-daily.93fcff2b271b8e31956a54b30b896b9821edace0e0870d0ddaff3e9ea37102bc.json": "93fcff2b271b8e31956a54b30b896b9821edace0e0870d0ddaff3e9ea37102bc",
+    "data/sdv-daily.e17f6194c53b4353f7e0582c1aa4be6676e31c665fda752e328391a856295f00.json": "e17f6194c53b4353f7e0582c1aa4be6676e31c665fda752e328391a856295f00",
+    "data/sdv-production-page.4447c5e641bcfc1562f3fe191d487eb476fed08a4959571ccde626c495198b92.json": "4447c5e641bcfc1562f3fe191d487eb476fed08a4959571ccde626c495198b92",
+    "data/sdv-production-page.d0a636c507b281d84b02450552204270badaff8ecaeae5b508f03c94fed773aa.json": "d0a636c507b281d84b02450552204270badaff8ecaeae5b508f03c94fed773aa",
+    "data/sdv-production.0c3a496f8c4fe9926e975e86924877c5b56c2b5110e2c4e90707650f936a5380.json": "0c3a496f8c4fe9926e975e86924877c5b56c2b5110e2c4e90707650f936a5380",
+    "data/sdv-production.0ec34be6aed915685717916ce6844b614453152c818394e48e95e2cc256c7029.json": "0ec34be6aed915685717916ce6844b614453152c818394e48e95e2cc256c7029",
+    "data/sdv-production.5c9bbc719035bf7c4e8bb2f3400ce7f85cb8d27fd5588d57d3387d24ad1b11a0.json": "5c9bbc719035bf7c4e8bb2f3400ce7f85cb8d27fd5588d57d3387d24ad1b11a0",
+    "data/sdv-production.e4b9c7a67f0d193bb264d28bc082d0e90ae054faf2c9621cefc069bd90878780.json": "e4b9c7a67f0d193bb264d28bc082d0e90ae054faf2c9621cefc069bd90878780"
+  },
+  "retained_source_file_count": 36,
+  "retained_source_preview": "/tmp/nml-production-dev-preview",
+  "retention_status": "This factual JSON is prepared for repository retention. Preview directories, scripts, screenshots and raw browser log remain temporary local files; public deployment is false.",
+  "schema_version": "nml-production-minutes-private-preview-verification-v1",
+  "screenshot_retention": "TEMPORARY_LOCAL_ONLY",
+  "screenshots_directory": "/tmp/nml-production-minutes-current-fixture-browser-20261022",
+  "script_path": "/tmp/check_nml_production_minutes_current_fixture_preview_20261022.py",
+  "source_http_requests": 0,
+  "started_at": "2026-10-22T11:17:58.682545+00:00",
+  "static_overlay_files": [
+    "local-offer-review.mjs",
+    "production.mjs",
+    "daily-performance.mjs",
+    "local-offer-review.css",
+    "styles.css",
+    "snapshot.mjs",
+    "offers.mjs",
+    "paired-research.mjs",
+    "semantic-offer-review.mjs",
+    "display.mjs",
+    "pros004.mjs",
+    "research.mjs",
+    "sdv-daily.mjs",
+    "index.html",
+    "mark.svg",
+    "app.mjs",
+    "scope.mjs"
+  ],
+  "synthetic_only": true,
+  "test_commands": [
+    "PYTHONPATH=/workspace/nml-sdv-recurring python3 /tmp/prepare_nml_minutes_current_preview_20261022.py",
+    "python3 /tmp/check_nml_production_minutes_current_fixture_preview_20261022.py"
+  ],
+  "verification_method": "Existing current-policy DEVELOPMENT_ONLY fixture. Python typed readback under explicitly synthetic test clocks; Chromium actual loopback navigation with same synthetic Date.now and real verification wall clocks. Existing original record_json strings, IDs, probability distributions and timestamps are unmodified."
+}

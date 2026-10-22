@@ -1,0 +1,136 @@
+{
+  "base_head": "88b61783754ee2bcd9a3a432ae7ea49749059e09",
+  "branch": "implementation/sdv-recurring-pregame",
+  "capacity": {
+    "315_shards_byte_envelope_with_1GiB_existing": 26356334592,
+    "315_shards_object_envelope_before_existing_objects": 212553,
+    "empty_shard_archive_byte_liability": 71647232,
+    "empty_shard_archive_object_liability": 655,
+    "global_metadata_bytes": 536870912,
+    "global_metadata_objects": 4096,
+    "global_object_ceiling": 100000,
+    "global_shared_source_bytes": 1908408320,
+    "global_shared_source_objects": 1876,
+    "maximum_initial_empty_shards_by_object_reserve_only": 143,
+    "parallel_headroom_bytes": 268435456,
+    "parallel_headroom_objects": 256,
+    "per_shard_ledger_bytes": 33554432,
+    "per_shard_ledger_records": 512,
+    "projected_empty_legal_and_forensic_bytes": 13803520,
+    "projected_empty_legal_and_forensic_records": 327,
+    "proposed_monthly_bytes": 34359738368,
+    "remaining_forensic_bytes": 4194304,
+    "remaining_forensic_files": 8,
+    "snapshot_wire_ceiling_bytes": 131072,
+    "total_archive_bytes": 68719476736
+  },
+  "findings": [
+    {
+      "fix": "All remaining legal/forensic envelope bytes plus one enforced128-KiB manifest per remaining immutable file state, current pending manifest, and bounded metadata overhead.",
+      "id": "cumulative-manifest-tail-budget",
+      "old_reproduction": {
+        "existing_role_slots": 271,
+        "incremental_manifest_wire_bytes_alone": 2431753,
+        "lane": "SYNTHETIC_STRUCTURAL_WIRE_SIZE_ONLY",
+        "notes": "Generated hash/path/reference metadata only; capacity fields omitted, making this a structural lower-bound diagnostic rather than source/model evidence.",
+        "old_formula_reserve_bytes": 1835008,
+        "remaining_status_slots": 48,
+        "unfunded_bytes_before_receipt_packs": 596745
+      },
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "fix": "Eight files/four MiB failure allowance is explicitly reserved; no new write starts without remaining forensic file and byte headroom. Existing overflow/oversized originals still recover without admitting new writes.",
+      "id": "forensic-next-write-boundary",
+      "status": "FIXED_AND_INDEPENDENTLY_RECHECKED"
+    },
+    {
+      "fix": "Shared final-capture pool reserves134 objects per capture; per-phase hard cap138 includes four bounded metadata objects.",
+      "id": "source-success-then-failure-object",
+      "old_arithmetic": "Successful max-sized pair133 objects can require one additional factual failure manifest.",
+      "status": "FIXED_AND_INDEPENDENTLY_REVIEWED"
+    },
+    {
+      "id": "object-cap-versus-byte-cap",
+      "notes": "A315-fresh-shard byte envelope is not a complete resource guarantee; global100000-object capacity is separately reserved and enforced without truncation or a cap increase.",
+      "status": "EXPLICITLY_GUARDED_AND_DISCLOSED"
+    }
+  ],
+  "independent_checks": [
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_store.ProductionStoreTests.test_full16_player_shard_has_conservative_future_grade_and_marker_capacity test_sdv_production_store.ProductionStoreTests.test_exhausted_forensic_allowance_stops_new_writes_but_recovers_all_actual_bytes test_sdv_production_archive.ProductionArchiveTests.test_file_write_budget_charges_only_new_wire_bytes_before_creation test_sdv_production_archive.ProductionArchiveTests.test_github_write_budget_rejects_before_upload_and_duplicate_costs_zero test_sdv_production_archive.ProductionArchiveTests.test_full_snapshot_encoded_ceiling_blocks_publication_before_snapshot_write -v",
+      "result": "PASS",
+      "seconds": 1.258,
+      "tests": 5
+    },
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_runner.ProductionRunnerTests.test_thin_registry_pointer_retains_originals_and_ignores_volatile_only_ticks test_sdv_production_runner.ProductionRunnerTests.test_global_reservation_funds_byte_and_object_roles_without_calendar_expiry test_sdv_production_coordinator.ProductionCoordinatorTests.test_cold_global_reserve_precedes_writes_and_rejects_false_snapshot_capacity test_sdv_production_coordinator.ProductionCoordinatorTests.test_parallel_workers_keep_all_other_shards_and_metadata_in_the_reserve -v",
+      "result": "PASS",
+      "seconds": 3.424,
+      "tests": 4
+    },
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_archive.ProductionArchiveTests.test_cold_file_object_reserve_and_run_budget_keep_original_readable test_sdv_production_archive.ProductionArchiveTests.test_cold_mock_github_object_reserve_stops_post_not_exact_read_or_retry -v",
+      "result": "PASS",
+      "seconds": 0.003,
+      "tests": 2
+    },
+    {
+      "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_production_coordinator.ProductionCoordinatorTests.test_unchanged_head_probe_skips_only_exact_prior_typed_readback test_sdv_production_runner.ProductionRunnerTests.test_new_operational_failure_and_its_clearance_publish_without_forecasts -v",
+      "result": "PASS",
+      "seconds": 1.489,
+      "tests": 2
+    }
+  ],
+  "limits": [
+    "This is software and synthetic resource-arithmetic verification, not a hosted sixteen-worker benchmark.",
+    "Hosted archive write/readback remains unestablished; no rejected action was retried or bypassed.",
+    "No genuine forecast, prospective outcome/grade, live source verification, qualification or deployment was created by this review.",
+    "The proposed monthly32GiB policy and operating activation remain subject to the integration owner final review/authorization workflow.",
+    "Final exact committed-head verification and required integrated CI remain pending."
+  ],
+  "material_findings_remaining": [],
+  "operations": {
+    "dispatch_or_activation": 0,
+    "frozen_experiments": 0,
+    "full_history_diagnostics": 0,
+    "genuine_issuance": 0,
+    "github_http_gets": 0,
+    "hosted_archive_writes": 0,
+    "hosted_git_pushes": 0,
+    "local_synthetic_git_and_archive_fixtures": true,
+    "provider_http_gets": 0
+  },
+  "preservation": {
+    "changed_original_records": [],
+    "changed_protected_source_files": [],
+    "original_records": 19,
+    "pin": "0c37b30060c2dffb20226bd3efbedc65a75d04e3",
+    "protected_source_files": 23
+  },
+  "prior_review_preserved": "/tmp/nml-independent-production-working-review-88b6178.json",
+  "reviewed_at": "2026-10-22T09:18:56.769504+00:00",
+  "reviewed_controls": [
+    "Actual cohort/shard count admitted before plan archive/publication; no hypothetical league maximum is silently truncated.",
+    "Cold clients authenticate each retained snapshot capacity and apply all active shards plus future-source/metadata/object/parallel reservations before new writes.",
+    "No calendar expiry drops retained day-eight catch-up grading obligations.",
+    "Workers retain all other shard reservations and fund their own remaining states; byte/object write counters count ambiguous writes and do not refund through retries.",
+    "Forensic overflow blocks new writes while retaining recovery/readback of actual original bytes.",
+    "Exact registry bytes are content-addressed and independently recovered through <=4KiB Git pointers; volatile-only checks reuse the original retained clock rather than manufacturing a fresh checkpoint.",
+    "Changed shard heads require full typed recovery; unchanged heads only reuse exact prior proof-backed snapshots and acknowledge this status."
+  ],
+  "reviewed_file_sha256": {
+    ".github/workflows/nba-operations.yml": "d8dfc54cc0c73962625115755ea1905c141e700a744f28776a8cd38b3a304b38",
+    "config/sdv_production_policy_v1.json": "f1ff3563c172c6989a74d75249c9d26bac3c44c1912acd1a4e62485ad0808711",
+    "multisport_lab/sdv_production_archive.py": "a0637fb2c73b6a1041397985f1996ba1e555525586a209b862ddc275f38a25f4",
+    "multisport_lab/sdv_production_common.py": "e0641b9c46e423510b9cda6a5423da0c54cf38e7e55a35a7ed7248c428a12709",
+    "multisport_lab/sdv_production_coordinator.py": "2b519705462ec99858c6915d519d221803b41b1ca6c98a0c96840f77fdc65efe",
+    "multisport_lab/sdv_production_remote.py": "d779dbce00f14081c6347fa887de289bd0ce8dedb0d3a692e241e634f5adfbc9",
+    "multisport_lab/sdv_production_runner.py": "58e6d478e37910fea94e7380a4dd257a88d592127c26be568dff114e08bc5f2f",
+    "multisport_lab/sdv_production_store.py": "061d8c304527e452388eae2c39d9603cc9f72c4b199b5dd72ffe852f3d694abb"
+  },
+  "reviewer": "/root/sdv_independent_verify",
+  "revision_status": "FROZEN_WORKING_SOURCE_REVIEW_NOT_EXACT_COMMITTED_HEAD",
+  "schema_version": "nml-independent-production-capacity-review-v1",
+  "worktree": "/workspace/nml-sdv-recurring"
+}
