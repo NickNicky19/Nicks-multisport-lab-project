@@ -87,3 +87,60 @@ count arithmetic and source update limitations. Later genuine grading also needs
 an independently retained final schedule observation and explicit completeness
 criteria. Missing/nonfinal data remains pending; no outcome is inferred from
 this metadata or publisher upload time.
+
+## October 22, 2026 — bounded actual CSV and retained-schedule audit
+
+A separate reviewed scope admitted the actual advertised CSV only:
+[`2026-10-22-sdv-final-source-csv-inspection-scope-v1.json`](../evidence/data/2026-10-22-sdv-final-source-csv-inspection-scope-v1.json).
+Its canonical GET returned 302; one explicitly validated public GitHub release
+asset redirect returned 200 at **02:56:18.797775 UTC**. There were **two asset
+GETs, no retries**, consuming the package total of **3/3 requests** including
+the earlier metadata GET. No further request remains in this package.
+
+The exact body is **43,806 bytes**, SHA256
+`697c67283cac7d1af7b0f7a579aa0f60dd3fd76520a9940526d93c4ea7df4029`,
+matching the advertised asset. Exact original bodies, safe headers and later
+actual request/completion clocks are retained in
+[`2026-10-22-sdv-final-source-csv-capture-v1.json`](../evidence/data/2026-10-22-sdv-final-source-csv-capture-v1.json).
+Transient signed redirect query values were not retained. Local decompression,
+hash verification and CSV replay succeeded; durable remote recovery still needs
+the integration checkpoint.
+
+The offline audit retained all **57 fields and 84 rows**. Existing source
+normalization accepted all 84 rows: **68 APPEARED, 16 explicit DNP**. It found
+no duplicate event/player key, missing required field, count-identity failure,
+normalization rejection or retained-schedule join rejection. DNP remains distinct
+from zero production. Decimal source minutes retain the existing
+`rounded_whole_minutes` precision; no exact duration was inferred.
+
+Only the already-retained October 21 schedule original was read for finality and
+score comparisons; **zero new schedule requests** occurred. All three observed
+events have matching event/start/season/team identities and explicit retained
+`STATUS_FINAL`, `post`, completed status. Summed player points and source team
+scores match all six retained final team scores:
+
+| Event | Archived matchup and score | Source rows |
+| --- | --- | --- |
+| `401909088` | Boston 113 at Detroit 121 | 28 |
+| `401909089` | Philadelphia 106 at New York 100 | 28 |
+| `401909090` | Oklahoma City 116 at San Antonio 104 | 28 |
+
+The create-only row/field/clock audit is
+[`2026-10-22-sdv-final-source-csv-audit-v1.json`](../evidence/data/2026-10-22-sdv-final-source-csv-audit-v1.json).
+Its complete ordered field list is the contract input for a later wrapper.
+These are two retained observations from the same publisher lineage, not
+independent upstream verification. A matching point sum does not establish every
+non-scoring count or a complete participant roster.
+
+The first daily-cycle event **`401909094` has zero rows in this earlier file**
+and remains pending. No genuine outcome, grade, forecast, financial settlement or
+qualification was created. The inspection does not refresh the publisher's
+October 21 update clock or automatically admit recurring/genuine grading.
+
+The next implementation step is a separately versioned genuine final-source
+wrapper using these verified CSV fields and exact retained schedule evidence.
+It must require exact original forecast identities, explicit final status and
+complete required selected-player counts; preserve DNP/missing/nonfinal states;
+recover grades by original forecast/outcome identity before writing; and append
+correction evidence and revisions without replacing original records. The first
+cycle's protected producer files and dated windows remain unchanged.
