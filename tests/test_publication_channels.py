@@ -20,7 +20,7 @@ class PublicationChannelsTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             out=Path(tmp)/'site'
             manifest=build_site(ROOT,out,build_commit='a'*40,now=self.now)
-            self.assertEqual(manifest['schema_version'],5)
+            self.assertEqual(manifest['schema_version'],6)
             self.assertIsNotNone(manifest['pros004'])
             self.assertIsNotNone(manifest['display'])
             self.assertIsNotNone(manifest['offers'])
@@ -158,7 +158,7 @@ class PublicationChannelsTests(unittest.TestCase):
             out=Path(tmp)/'site'
             current=build_site(ROOT,out,build_commit='a'*40,now=self.now)
             for version,keep in [(3,'pros004'),(4,'display')]:
-                old={k:v for k,v in current.items() if k not in {'pros004','pros004_error','display','display_error','offers','offers_error','paired_research','paired_research_error'}}
+                old={k:v for k,v in current.items() if k not in {'pros004','pros004_error','display','display_error','offers','offers_error','paired_research','paired_research_error','daily_research','daily_research_error'}}
                 old.update(schema_version=version,**{keep:current[keep],keep+'_error':None})
                 old['snapshot_id']=digest({k:v for k,v in old.items() if k!='snapshot_id'})
                 (out/'data/manifest.json').write_bytes(canonical(old))

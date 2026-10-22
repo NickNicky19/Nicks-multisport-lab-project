@@ -258,14 +258,15 @@ def _write_atomic(path: Path, raw: bytes):
         Path(name).unlink(missing_ok=True)
 
 
-AUXILIARY_CHANNELS = ("pros004", "display", "offers", "paired_research")
+LEGACY_CHANNELS = ("pros004", "display", "offers", "paired_research")
+AUXILIARY_CHANNELS = (*LEGACY_CHANNELS, "daily_research")
 REJECTED_UPDATE = (ValueError, KeyError, TypeError, OSError, ImportError)
 
 
 def _channel_names(version: int) -> tuple[str, ...]:
     if type(version) is not int:
         return ()
-    return {3: ("pros004",), 4: ("display",), 5: AUXILIARY_CHANNELS}.get(version, ())
+    return {3: ("pros004",), 4: ("display",), 5: LEGACY_CHANNELS, 6: AUXILIARY_CHANNELS}.get(version, ())
 
 
 def _read_channel(data_dir: Path, channel: str, descriptor: dict, snapshots: list[dict], *, now: datetime):
@@ -282,12 +283,15 @@ def _read_channel(data_dir: Path, channel: str, descriptor: dict, snapshots: lis
     if channel == "paired_research":
         from .operational_publication import read_asset
         return read_asset(data_dir, descriptor, now=now)
+    if channel == "daily_research":
+        from .sdv_daily_publication import read_asset
+        return read_asset(data_dir, descriptor, now=now)
     raise IntegrityError("Unsupported publication channel")
 
 
 def read_manifest(data_dir: Path, *, now: datetime, validate_display: bool = True,
                   validate_auxiliary: bool = True) -> dict:
-    """Read legacy manifests exactly; v5 composes independently typed channels.
+    """Read legacy manifests exactly; v6 adds independent daily research.
 
     Builders can recover the verified core before separately inspecting optional
     channels. Public artifact verification uses the strict default.
@@ -297,7 +301,7 @@ def read_manifest(data_dir: Path, *, now: datetime, validate_display: bool = Tru
     fields = {"schema_version", "snapshot_id", "build_commit", "published_at", "publication_status", "supported_sports", "sports", "errors"}
     fields |= {field for channel in _channel_names(version) for field in (channel, channel + "_error")}
     if (type(manifest) is not dict or set(manifest) != fields
-            or type(version) is not int or version not in {1, 2, 3, 4, 5}
+            or type(version) is not int or version not in {1, 2, 3, 4, 5, 6}
             or manifest["publication_status"] != "RESEARCH_ONLY"
             or not re.fullmatch(r"[a-f0-9]{40}", manifest["build_commit"])
             or utc(manifest["published_at"]) > utc(now)):
@@ -455,9 +459,12 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
                 elif channel == "offers":
                     from .offer_publication import make_asset
                     descriptor = _emit_asset(staging / "data", make_asset(root, now=now), prefix="nba-offers", status="OFFER_ONLY_RESEARCH")
-                else:
+                elif channel == "paired_research":
                     from .operational_publication import make_asset
                     descriptor = _emit_asset(staging / "data", make_asset(root, now=now), prefix="paired-research", status="RESEARCH_ONLY")
+                else:
+                    from .sdv_daily_publication import make_asset
+                    descriptor = _emit_asset(staging / "data", make_asset(root, now=now), prefix="sdv-daily", status="DAILY_SNAPSHOT_RESEARCH")
                 _read_channel(staging / "data", channel, descriptor, snapshots, now=now)
             except REJECTED_UPDATE as error:
                 error_text = f"{type(error).__name__}: {channel} update unavailable"
@@ -473,7 +480,7 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime) ->
                 else:
                     descriptor = None
             result[channel], result[channel + "_error"] = descriptor, error_text
-        result["schema_version"] = 5
+        result["schema_version"] = 6
         result["snapshot_id"] = digest({k: v for k, v in result.items() if k != "snapshot_id"})
         _write_atomic(staging / "data/manifest.json", canonical(result))
         read_manifest(staging / "data", now=now)

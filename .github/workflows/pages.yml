@@ -6,6 +6,10 @@ on:
     branches: [main, implementation/nba-foundation]
   workflow_dispatch:
     inputs:
+      daily_records_commit:
+        description: Exact authorized daily records branch head to recover for publication (empty reads its current head)
+        required: false
+        type: string
       operating_diagnostic:
         description: Run the separately guarded synthetic eight-forecast timing diagnostic (no source capture, issuance, or deployment)
         required: false
@@ -41,6 +45,16 @@ jobs:
           python3 -m unittest discover -s tests -v
           python3 -m multisport_lab.demo
           node --test --test-isolation=none web/tests/*.test.mjs
+      - name: Independently recover admitted daily research originals for main publication
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          DAILY_RECORDS_COMMIT: ${{ inputs.daily_records_commit }}
+        run: |
+          if [ -n "$DAILY_RECORDS_COMMIT" ]; then
+            python3 -m multisport_lab.sdv_daily_publication --records-commit "$DAILY_RECORDS_COMMIT"
+          else
+            python3 -m multisport_lab.sdv_daily_publication
+          fi
       - name: Build bounded static research artifact
         env:
           BUILD_COMMIT: ${{ github.sha }}

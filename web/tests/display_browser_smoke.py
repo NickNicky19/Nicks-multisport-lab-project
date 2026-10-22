@@ -35,7 +35,7 @@ def main():
     parser.add_argument('output',type=Path)
     args=parser.parse_args();root=args.output.resolve()
     manifest=json.loads((root/'data/manifest.json').read_text())
-    require(manifest['schema_version'] in {4,5} and manifest['display'] is not None,'Readable metadata artifact required')
+    require(manifest['schema_version'] in {4,5,6} and manifest['display'] is not None,'Readable metadata artifact required')
     sport=json.loads((root/'data'/next(r['path'] for r in manifest['sports'] if r['league']=='NBA')).read_text())
     metadata=json.loads((root/'data'/manifest['display']['path']).read_text())
     names={r['player_id']:r['display_name'] for r in metadata['catalog']['players']}
@@ -54,19 +54,19 @@ def main():
                 page.get_by_role('heading',level=1,name='Props',exact=True).wait_for()
                 page.locator('.research-availability').wait_for()
                 require(page.get_by_role('alert').count()==0,'Valid display asset raised an alert')
-                if manifest['schema_version']==5:
+                if manifest['schema_version'] in {5,6}:
                     require(page.get_by_role('heading',level=2,name='Paired operational research',exact=True).count()==1,'Valid paired channel did not render')
                     require('Paired operational research unavailable' not in page.locator('main').inner_text() and 'Offer publication unavailable' not in page.locator('main').inner_text(),'Independent paired/offer channel failed browser recovery')
-                if manifest['schema_version']==5:
+                if manifest['schema_version'] in {5,6}:
                     require(page.get_by_role('heading',level=2,name='Paired operational research',exact=True).count()==1,'Valid paired channel did not render')
                     require('Paired operational research unavailable' not in page.locator('main').inner_text() and 'Offer publication unavailable' not in page.locator('main').inner_text(),'Independent paired/offer channel failed browser recovery')
                 status=page.locator('.research-availability').inner_text()
                 require('0 published player contracts' in status and '0 qualified · NO_ACTION' in status,'Offer/ticket state not independently visible')
-                require(('No complete player contract with reviewed source permission' in status) if manifest['schema_version']==5 else ('Complete player contracts and permission to publish them are still unverified' in status and 'no checked offer export yet' in status),'Offer summary hides contract/permission or export blocker')
+                require(('No complete player contract with reviewed source permission' in status) if manifest['schema_version'] in {5,6} else ('Complete player contracts and permission to publish them are still unverified' in status and 'no checked offer export yet' in status),'Offer summary hides contract/permission or export blocker')
                 require('admitted offer-only record may show “price unavailable”' in status and 'quotes, value estimates and tickets have separate checks' in status,'Offer-only pricing was confused with quote/ticket gates')
                 offers=page.locator('section.panel').filter(has=page.get_by_role('heading',level=2,name='Published offers',exact=True)).inner_text()
-                require(('reviewed source permission' in offers and 'Retained source observations are not admitted published offers' in offers) if manifest['schema_version']==5 else ('checked offer export is not implemented' in offers and 'permission to publish them remain unverified' in offers),'Published-offer empty state hides its next export/contract requirement')
-                require(('An admitted offer can display “price unavailable”' in offers) if manifest['schema_version']==5 else ('Some source prices have been observed' in offers and 'otherwise complete, admitted offer can be displayed with “price unavailable”' in offers),'Empty state implies all source prices are missing or every offer needs a price')
+                require(('reviewed source permission' in offers and 'Retained source observations are not admitted published offers' in offers) if manifest['schema_version'] in {5,6} else ('checked offer export is not implemented' in offers and 'permission to publish them remain unverified' in offers),'Published-offer empty state hides its next export/contract requirement')
+                require(('An admitted offer can display “price unavailable”' in offers) if manifest['schema_version'] in {5,6} else ('Some source prices have been observed' in offers and 'otherwise complete, admitted offer can be displayed with “price unavailable”' in offers),'Empty state implies all source prices are missing or every offer needs a price')
                 require('Source access, exact contract mapping and price evidence are still under review' not in offers and 'Missing lines and prices remain unknown' not in status,'Ambiguous old price-dependent publication explanation returned')
                 require('Last retained NBA forecast-input preparation' in status and 'Preparation only' in status and 'None recorded in the published forecasts' in status,'Clocks were conflated or historical issue promoted')
                 history=page.locator('.research-availability .history-shortcut');history.focus();page.keyboard.press('Enter')

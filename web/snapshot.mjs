@@ -22,11 +22,11 @@ async function boundedBytes(response, limit = MAX_BYTES) {
   return bytes;
 }
 
-const channelNames = version => ({3:['pros004'],4:['display'],5:['pros004','display','offers','paired_research']}[version] || []);
+const channelNames = version => ({3:['pros004'],4:['display'],5:['pros004','display','offers','paired_research'],6:['pros004','display','offers','paired_research','daily_research']}[version] || []);
 
 export function validateManifest(value) {
   const extra = channelNames(value?.schema_version).flatMap(channel=>[channel,`${channel}_error`]);
-  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors', ...extra]) || ![1, 2, 3, 4, 5].includes(value.schema_version) || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
+  if (!keys(value, ['schema_version', 'snapshot_id', 'build_commit', 'published_at', 'publication_status', 'supported_sports', 'sports', 'errors', ...extra]) || ![1, 2, 3, 4, 5, 6].includes(value.schema_version) || value.publication_status !== 'RESEARCH_ONLY') throw new Error('Unsupported publication schema or status.');
   if (!SHA256.test(value.snapshot_id) || !COMMIT.test(value.build_commit) || !utc(value.published_at) || Date.parse(value.published_at) > Date.now()) throw new Error('Incomplete publication identity or invalid clock.');
   if (!Array.isArray(value.supported_sports) || !value.supported_sports.length || value.supported_sports.some(s => typeof s !== 'string' || !/^[A-Z]+$/.test(s)) || new Set(value.supported_sports).size !== value.supported_sports.length) throw new Error('Invalid sport coverage.');
   if (!value.errors || typeof value.errors !== 'object' || Array.isArray(value.errors) || Object.entries(value.errors).some(([league, error]) => !/^[A-Z]+$/.test(league) || !text(error))) throw new Error('Invalid publication errors.');
@@ -167,7 +167,7 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
     return sport;
   }));
   const sports = results.flatMap(result => result.status === 'fulfilled' ? [result.value] : []);
-  const channels = Object.fromEntries(['pros004','display','offers','paired_research'].map(channel=>[channel,{value:null,error:null}]));
+  const channels = Object.fromEntries(['pros004','display','offers','paired_research','daily_research'].map(channel=>[channel,{value:null,error:null}]));
   await Promise.all(channelNames(manifest.schema_version).map(async channel => {
     const state = channels[channel], descriptor = manifest[channel];
     try {
@@ -192,10 +192,14 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
         module = await import('./offers.mjs');
         module.validateOfferDescriptor(descriptor, manifest.published_at);
         maxBytes = 256 * 1024;
-      } else {
+      } else if (channel === 'paired_research') {
         validatePairedDescriptor(descriptor, manifest.published_at);
         module = await import('./paired-research.mjs');
         module.validatePairedResearchDescriptor(descriptor,manifest.published_at);
+        maxBytes = 1024 * 1024;
+      } else {
+        module = await import('./sdv-daily.mjs');
+        module.validateDailyDescriptor(descriptor,manifest.published_at);
         maxBytes = 1024 * 1024;
       }
       const result = await fetcher(`./data/${descriptor.path}`, {cache:'no-store',signal:AbortSignal.timeout(12000)});
@@ -213,9 +217,12 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
       } else if (channel === 'offers') {
         module.validateOfferAsset(asset,manifest.published_at);
         await module.verifyOfferAssetHashes(asset,cryptoProvider);
-      } else {
+      } else if (channel === 'paired_research') {
         module.validatePairedResearchAsset(asset,manifest.published_at);
         await module.verifyPairedResearchHashes(asset,cryptoProvider);
+      } else {
+        module.validateDailyAsset(asset,manifest.published_at);
+        await module.verifyDailyHashes(asset,cryptoProvider);
       }
       state.value = asset;
     } catch (error) {state.error = error.message || `${channel} recovery failed.`;}
@@ -224,6 +231,7 @@ export async function loadSnapshot(fetcher = fetch, cryptoProvider = globalThis.
     display:channels.display.value,displayError:channels.display.error,
     offers:channels.offers.value,offersError:channels.offers.error,
     pairedResearch:channels.paired_research.value,pairedResearchError:channels.paired_research.error,
+    dailyResearch:channels.daily_research.value,dailyResearchError:channels.daily_research.error,
     errors:results.flatMap((result,index)=>result.status==='rejected'?[{league:manifest.sports[index].league,message:result.reason.message}]:[])};
 }
 import {validateResearchEvent, validateResearchForecast, validateResearchGrade, utcMicros} from './research.mjs';
