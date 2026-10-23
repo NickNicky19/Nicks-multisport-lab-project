@@ -5,13 +5,34 @@ import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {webcrypto} from 'node:crypto';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
 import {renderLocalOfferReview} from '../web/local-offer-review.mjs';
 import {PLAYER_LINE_REVIEW_SCHEMA,renderPlayerLineReview,verifyPlayerLineReviewHash} from '../web/player-line-review.mjs';
 import {ENRICHMENT_SOURCE_URLS,renderEnrichedPlayerLineReview,verifyPlayerLineEnrichmentSources} from '../web/player-line-enrichment.mjs';
+import {MOVIODDS_REVIEW_SCHEMA,renderMovioddsReview,verifyMovioddsReviewHash} from '../web/moviodds-review.mjs';
 
 const MAX_REVIEW_BYTES = 256 * 1024;
 const MAX_HTML_BYTES = 2 * 1024 * 1024;
 const require = (condition,message) => {if (!condition) throw new Error(message);};
+const execFileAsync=promisify(execFile);
+
+async function replayMovioddsOriginals(input,review) {
+  require(path.basename(input)==='review.json','MoviOdds replay requires the package original review.json.');
+  let result;
+  try {
+    result=await execFileAsync('python3',['-O','-m','multisport_lab.moviodds_offer','--verify',path.dirname(input)],{
+      cwd:fileURLToPath(new URL('../',import.meta.url)),shell:false,timeout:30000,maxBuffer:128*1024,encoding:'utf8',
+      env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'}});
+  } catch(error) {
+    const reason=typeof error.stderr==='string'?error.stderr.trim().split('\n').at(-1).slice(0,800):'offline verifier did not complete';
+    throw new Error('MoviOdds original-source replay failed: '+reason);
+  }
+  const replay=JSON.parse(result.stdout);
+  require(replay.schema_version==='nba-moviodds-replay-v1'&&replay.review_id===review.review_id
+    &&replay.originals_replayed===7&&replay.public_admission===false&&replay.durable_remote_archive_verified===false,
+    'Independent replay does not acknowledge this exact private review.');
+}
 
 async function boundedRegularFile(filename,limit) {
   const before = await fs.lstat(filename);
@@ -73,7 +94,12 @@ export async function renderPreparedLocalReview(inputFilename,outputFilename,{cw
   try {review = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));}
   catch {throw new Error('Review input is not valid UTF-8 JSON.');}
   let rendered;
-  if (review?.schema_version === PLAYER_LINE_REVIEW_SCHEMA) {
+  if (review?.schema_version === MOVIODDS_REVIEW_SCHEMA) {
+    require(enrichmentFilename===null,'MoviOdds has its own retained evidence; no Sleeper enrichment applies.');
+    await verifyMovioddsReviewHash(review,webcrypto);
+    await replayMovioddsOriginals(input,review);
+    rendered=renderMovioddsReview(review);
+  } else if (review?.schema_version === PLAYER_LINE_REVIEW_SCHEMA) {
     await verifyPlayerLineReviewHash(review,webcrypto);
     if (enrichmentFilename !== null) {
       const filename=path.resolve(cwd,enrichmentFilename),directory=path.dirname(filename);

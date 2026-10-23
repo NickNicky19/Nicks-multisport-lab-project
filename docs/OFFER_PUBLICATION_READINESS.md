@@ -1,5 +1,13 @@
 # Offer publication remains a separate delivery path
 
+October 23 update: the [MoviOdds private parser](MOVIODDS_NBA_PRIVATE_REVIEW.md)
+now establishes 34 actual local binary DD/TD source-semantic contracts from a
+free keyless API. This is a private snapshot proof, with a blocked canonical-event
+start crosswalk and no public offer admission. The earlier zero-contract findings
+below describe their dated ESPN/Sleeper samples; they are not a claim that all
+alternative sources lack usable player contracts. Existing public admission and
+ticket guards remain unchanged.
+
 Reviewed October 20, 2026 UTC. This website display package publishes verified
 names and clearer status explanations. It does not admit offers, prices, value
 claims, candidates or tickets. Research forecasts do not require bookmaker prices.
