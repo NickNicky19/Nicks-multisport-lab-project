@@ -2,6 +2,18 @@
 
 Updated: October 23, 2026.
 
+## Latest execution — automatic startup and registry recovery verified
+
+Scheduled run **39902534915** succeeded on deployed main `ef9e270` at
+04:51:13–04:51:46 UTC. Independent fresh Git/archive readback verified registry
+commit `75d3a4a6dbb6853e8d17d9c036c797dbf6922a61`, its exact bytes and typed
+meaning. No forecasting or grading phase was due: the registry has zero days,
+tasks and captures, with null publication. The next complete planning window is
+October 23, 13:00–14:00 UTC / 08:00–09:00 CDT. Genuine forecasts, served delivery,
+final statistical grades and a later successful scheduled execution remain
+separate outstanding evidence. See the newest handoff for retained originals,
+the inaccessible log-batch limitation and exact recovery proof.
+
 ## Current release — scheduled runner repair merged
 
 PR #18 merged the approved head `37c2720a29c5b8f66ab528e4d9bf4d74e5c719db`

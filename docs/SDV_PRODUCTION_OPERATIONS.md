@@ -1,5 +1,16 @@
 # Recurring NBA daily-snapshot operation
 
+### October 23 actual native success
+
+Scheduled run **39902534915** completed successfully at **04:51:46 UTC** on main
+`ef9e270`. An independent fresh Git/archive recovery verified its index commit
+`75d3a4a6dbb6853e8d17d9c036c797dbf6922a61` and exact typed registry. Its zero due
+tasks, empty source reservations and null publication preserve the actual state:
+automatic startup/storage passed; genuine capture, forecasts, publication and
+final grading remain pending. The next registered complete planning window is
+13:00–14:00 UTC / 08:00–09:00 CDT today. The evidence receipt and separate
+job-log retrieval limitation are in the newest HANDOFF_STATUS.md checkpoint.
+
 ### October 23 release checkpoint
 
 PR #18's exact approved head `37c2720a29c5b8f66ab528e4d9bf4d74e5c719db`

@@ -2,6 +2,78 @@
 
 Updated: October 23, 2026 (UTC).
 
+## October 23 — repaired native scheduler succeeded; durable registry independently recovered
+
+An actual **scheduled** run now supersedes only the earlier unobserved-run status:
+**39902534915**, main **`ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`**, attempt 1,
+**04:51:13–04:51:46 UTC**. GitHub reports success. `prepare`, `finish` and the
+separate protected first-cycle postgame check passed; `work`, `grade` and
+`diagnostic` were skipped. This was the existing cron with the actual owner actor,
+not a manual dispatch, a scheduler replacement or a new hosted diagnostic.
+
+Independent read-only recovery at **05:01:14.766946–05:01:16.260784 UTC** fetched
+the new exact index commit **`75d3a4a6dbb6853e8d17d9c036c797dbf6922a61`** into a
+fresh Git object database and recovered its public immutable Release object.
+Registry ID: `21447a563095e51bb4ee5157fb1d3aa5f6d484a63d62dd886aee25099ea7f2bd`.
+Its **1,221 original JSON bytes** match pointer SHA256
+`d7c3dd81efc6ae51f2d8c7f18f5600fe1cc1e806561a0565efb76d51fbc54d31`;
+the content-addressed compressed object is **581 bytes**, retained at tag
+`nml-nba-records-v1-202610`. The independent archive reader made two public
+project-archive GETs, no writes or retries. Typed clocks, seals, policy and the
+34-file executing producer binding passed. This verifies repaired automatic
+startup and this actual durable registry write/readback.
+
+The registry honestly contains **zero tasks, days, source reservations and
+forecasts**, `NOT_STARTED`, null publication and the real successful run ID.
+No capture or generation was due. A successful native control pass is separate
+from the outstanding genuine forecast-to-publication-to-final-grade acceptance
+cycle. The first complete planning window remains **October 23, 08:00–09:00 CDT /
+13:00–14:00 UTC**, for UTC game date October 24. Future event/cohort and issuance
+times must come from its complete admitted plan. All 13 categories plus PA remain
+implemented; source ages, conditioning and frozen laws stay unchanged.
+
+Log recovery has a separate limitation: a batch of three job-log GETs did not
+complete; the surfaced prepare-log error was `Forbidden` at GitHub's supplied
+blob redirect. No job-log body, full structured execution report or temporary
+Actions artifact was recovered. No alternate log transport or denial bypass was
+attempted. Current environment readiness reported connected/enforced unrestricted
+networking, which does not explain that particular response. The cause remains
+unknown; it does not turn the successful native jobs into a failed model run.
+The successful run/job API bodies and exact recovered registry are retained in
+`evidence/operational/sdv-production-native-success-39902534915-20261023.json`.
+Those first API bodies' request clocks were not retained before the log-batch
+error; their file mtimes are explicitly labeled rather than invented as capture
+times. Independent registry readback clocks were recorded directly.
+
+The user's category-accuracy question was answered by reading the unchanged
+DEV003 receipt, **517 appearances / 24 games / 12 weeks**. Recorded mean-forecast
+MAE, R0/K0 respectively: PTS **5.07/4.72**, PRA **6.91/6.37**, REB **2.17/2.10**,
+3PM **0.98/0.96**, AST **1.47/1.40**, RA **3.00/2.86**, PR **6.24/5.82**, TOV
+**1.01/0.98**, BLK **0.55/0.55**, STL **0.74/0.72**, BLK+STL **0.96/0.96**, PA
+**5.82/5.33** (rounded only for this explanation). DD/TD use Brier probability
+scores: **0.056740599/0.056111858** and **0.003669754/0.003670558**, with only
+39 DD and two TD positives. These are exposed retrospective development results,
+conditional on appearance; no line-specific hit rate, prospective accuracy or
+qualification is established. Tail/zero-support and workload limitations remain.
+R0/K0 and DEV005/S0 receipts were not modified, rerun or spliced.
+
+This checkpoint starts from source `fc9c7a6f4592149862b0ead77417a236eb5a8fd1`
+on `implementation/sdv-operations-followthrough`; only evidence/handoff/checksums
+change. Commands: normal `git fetch --prune origin`; read-only `gh api` run/jobs
+and refs; `RegistryWriter.prepare(commit=...)` with a new read-only archive client;
+local strict receipt/checksum and source-binding verification. No software change
+requires repeating the unchanged full suite. The separate read-only reviewer
+reproduced both API-body hashes, typed joins, exact canonical/compressed registry
+identities, all 34 source bindings and every cited historical metric, with no
+material findings or new network/model execution. All **545 manifest members**
+and whitespace checks passed. Public main remains the previously
+verified release; no unchanged website deployment was dispatched. Counts remain
+**six historical bundles/grades, zero genuine forecasts, prospective outcomes/
+grades, published offers, qualified tickets or financial settlements**. Next
+concrete task: verify the actual registered plan, timely paired originals and
+served forecasts, then append outcomes/grades after verified final evidence.
+The missed pilots, inactive studies, original records and NFL/MLB remain unchanged.
+
 ## October 23, 04:29 UTC — category delivery verified; native execution still pending
 
 This continuation preserved clean branch `implementation/sdv-operations-followthrough`
