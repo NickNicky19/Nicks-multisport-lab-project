@@ -2,6 +2,167 @@
 
 Updated: October 23, 2026 (UTC).
 
+## October 23, 21:00 UTC onward — native offer delivery and actual operating failures
+
+Entry branch **`implementation/nba-player-line-review`**, clean at
+**`a3fe49b3dd98e2196c442b7970b5b89d4100637b`**. Normal fetch/readback confirmed
+PR #20 still open/draft at that head and main
+**`ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`**. Preserve all earlier dated
+observations below. New implementation source:
+**`520a6f459fc99e1d2c6a34f977bef9facf3c75c0`**; the final native publication-reader
+follow-up is **`7915972cc7c246574268fab0de655faf59319edd`**. No merge, deployment, scheduler change,
+late capture, forecast issuance or model comparison was performed.
+
+**Actual source result:** the retained MoviOdds/bet365 snapshot still contains
+1,229 parsed full-game player selections, 19 verified labels and **34 complete
+local DD/TD Boolean contracts**. One actual Myles Turner DD **Yes** selection is
+now an explicit **`nba-native-player-offer-v2`** record, **9,450 bytes**, ID
+`71e5f5c6c6ecb32496bc8c4d2bd1befa17ebb2493264d42fc7ac396040cf7fab`.
+Its actual normalization is **21:14:32.682251 UTC**; original board/rules/review
+clocks and seven original bodies/metadata are unchanged. No fake `0.5` threshold,
+native permanent player ID, price conversion, forecast match or ticket eligibility.
+The native 20:10 UTC start and retained canonical 20:00 start remain in conflict.
+The other **1,195 numeric selections lack a verified comparison operator**; TOV
+is unobserved, not permanently unsupported. All 13 categories plus PA remain.
+
+**Implementation:** versioned Python/JS native validators and separate empty
+admission registries, original-source replay, `nba-player-offers-v2` asset dispatch,
+existing OfferStore persistence/restart, native Yes/No display filters and private
+HTML rendering. No second offer ledger or public raw mirror. The source-specific
+private archiver reuses the existing create-only GitHub Release transport with
+fresh draft checks at each actual upload/read/cache boundary. Its fixed draft tag
+is `diagnostics-nml-nba-moviodds-20261023`; never publish that draft. Exact source
+files: `multisport_lab/native_offer.py`, `native_offer_admissions.py`,
+`moviodds_archive.py`, `offer_publication.py`; `scripts/render_local_offer_review.mjs`;
+`web/native-offer.mjs`, `native-offer-admissions.mjs`, `offers.mjs`, `app.mjs`;
+three focused Python test files, `web/tests/native-offer.test.mjs` and manifest.
+Details: [native delivery](docs/NBA_NATIVE_OFFER_DELIVERY.md),
+[actual aggregate evidence](evidence/offers/2026-10-23-moviodds-completion.json).
+
+**Private retention actually blocked:** 16 originals total **3,208,947 bytes**;
+source/manifest deduplication projects **16 objects / 243,579 wire bytes**.
+Native record/descriptor add at most two objects. Unchanged scope ceilings:
+32 objects/8 MiB for this private namespace, 2-MiB bodies, 256-KiB metadata,
+512 files/32-MiB local package; shared ledger limits unchanged. The actual
+21-action GitHub attempt created draft release **422318512**, then the **first
+asset POST to uploads.github.com returned HTTP 401, `Bad credentials`**, at
+21:18:12 UTC. A subsequent read-only listing found **zero assets**. Normal API
+metadata authentication still succeeds. Cause is unestablished; no blind upload
+retry, alternate transport or public fallback. This was **not** an automatic
+approval-review rejection. Original files/request ledger remain in ignored
+`.local-data/moviodds-remote-20261023/` and the existing private source package.
+**No durable remote raw-source recovery acknowledgment exists.** A working
+existing release-upload authorization context, then cold exact-source recovery,
+is the remaining infrastructure step; no sports-provider key or new encryption
+arrangement is needed. Never ask for private tokens/keys in chat.
+Two later read-only GET probes at the upload URL used the installed and newer
+CLI, both with an authorization header and HTTP 400. They performed no upload,
+did not prove POST access and did not establish the earlier 401's cause. No
+secret values or raw debug headers were retained.
+An exact private handover ZIP is ready locally: **17 files / 249,419 bytes**,
+SHA256 `67d13f6da7985c4b9022f98bd1c269b8dc104277892fe173add494a7df3fc2d2`;
+all extracted original/native bytes match. It is not remote archival. An existing
+authenticated GitHub CLI environment can use that package for the same bounded
+archive operation if this environment's upload authorization cannot be repaired.
+
+**Bounded follow-up:** three of four registered direct GETs were used, including
+one document request and one licensed SDV schedule request plus its redirect;
+zero retries, agent direct GETs or new MoviOdds event/market/price requests.
+The complete NBA API document is 14,423 bytes, SHA256
+`4305949851846ebff509abecc844ac546f90448fc878a93c5439cd88b339c09e`.
+The same-game schedule request exceeded its declared 2-MiB identity-reader ceiling
+at 21:23:17.393242 UTC. Retained prefix is explicitly incomplete, not imported;
+no ceiling was raised, original review rebound or full-file digest claimed.
+Use a complete later original from the separately admitted SDV production path
+for any versioned crosswalk correction. For numeric lines, the exact remaining
+question is the predicate of NBA group 181446 `side:"5"`; more unrelated events
+or prices do not answer it. New evidence does not backdate earlier completeness.
+
+**Software and actual-data verification:**
+
+- `python3 -m unittest discover -s tests -v`: integrated **1,098 PASS /
+  601.954 seconds**. This preceded the final default-reader follow-up; that final
+  integration evidence is recorded separately, not inferred from this result.
+- Final required run on source **7915972**: the same full Python command
+  **1,103 PASS / 614.111 seconds**, followed by
+  `python3 -m multisport_lab.demo` **PASS**, completed by 21:48:11 UTC.
+  This new run covers the concrete default-reader follow-up. No frozen model
+  comparison or full-history diagnostic was rerun. Logs are retained locally at
+  `/tmp/nml-native-connected-final-python.log` and
+  `/tmp/nml-native-connected-final-demo.log`; aggregate hashes/results are in
+  the dated evidence JSON. New remote CI follows this documentation push;
+  the parent run is not presented as that new-source check.
+- `python3 -m multisport_lab.demo`: **PASS**; synthetic, not model evaluation.
+- `node --test --test-isolation=none web/tests/*.test.mjs`: **185 PASS**.
+- Final source 520a independent local `git archive`: **578 manifest entries**, 31
+  optimized Python cases, nine frontend cases and actual seven-original native
+  replay passed. Review SHA256
+  `d74a0c38c0e3932573e0413af2d42e14cd98897466c189aa3d6e9fb438747aa1`.
+  This is exact local code recovery, not GitHub raw-source archival.
+- Source 7915972 connects the actual `make_asset` Pages entrypoint to the fixed
+  authenticated private reader after public admission. Actual-source records
+  require a strictly true completed remote source-graph readback flag; synthetic
+  records need an explicit offline reader. Empty/unreviewed rows cause zero
+  archive access; remote failure stops export without fallback or record writes.
+  Independent follow-up review: **28 normal / 10 optimized tests PASS**, no
+  material finding, report SHA256
+  `a8bca95d17a91d6801451b145cf5ca44813018a1338c0dcee9b6319be4cee9a1`.
+  This mocked recovery is not actual hosted proof. The native record has its own
+  immutable ledger/archive recovery, separate from original-source durability.
+  Pages' existing contents-read GitHub token still needs actual private-draft
+  read verification before any actual admission; none is claimed here.
+- Static artifact/site smoke passed. Actual private native Chromium **1440/390/320**:
+  one readable Myles Turner card and fourteen category rows each, original source
+  IDs/clocks, conflict, historical-snapshot label and NO_ACTION; zero HTTP requests,
+  errors or overflow. HTML SHA256
+  `b7593540a23cb192de909a955d35e28fa2b299380f454ea144453b01f78ebe03`.
+- All **23 protected producer files and 19 original records** remain byte-identical.
+  Source laws/frozen experiments/expired pilots unchanged; NFL/MLB untouched.
+  Parent-head CI **40022646850** succeeded at 21:09:31 UTC; new-source CI is a
+  separate check after push, not established by that parent run.
+
+**Actual automatic forecasting diagnosis:** read-only default-branch workflow,
+all five October 23 scheduled runs, latest jobs, independent registry Git recovery
+and public manifest/index readback were retained. Latest observed native run
+**40005008319** succeeded at 18:38:52–18:39:23 UTC on main ef9e270. No run was
+observed within **13:00–14:00 UTC**; registry has no days/tasks/captures, source
+reservations zero and game date **October24** marked
+`INCOMPLETE_OR_UNOBSERVED_WINDOW`. No absent-run log establishes a cause; do not
+assert one. A green coordinator run is not genuine forecast issuance.
+[Operational evidence](evidence/operational/sdv-production-missed-planning-20261023.json)
+retains registry commit **e35c090cdf728da48dac1bd2ac48da17bfd08855** and the exact
+public readback. Current installed cron remains `2,17,32,47 * * * *`; no competing
+scheduler, late dispatch or alteration of the missed reservation.
+
+**Next eligible planning:** **October24 08:00–09:00 CDT / 13:00–14:00 UTC**, for
+October25 UTC games. It is an eligible planning window, not a guarantee that
+GitHub starts a run. Event-specific capture/issuance windows do not exist until
+an admitted plan establishes them. The separately approved manual first cycle
+stays missed; do not relabel or backfill it. A wider future operating policy with
+retained waiting workers would require a separately versioned reviewed change,
+not rewriting the existing planning gate or claiming cron guarantees coverage.
+
+**Public state and counts:** independently served build remains **ef9e270**;
+manifest SHA256
+`b3d135c3913c13eff70ef4d9fa7981f77c99e72b59b744434a1b763704d7b353` and production
+index SHA256
+`3dcb57413f8dbe5349527ab5eb318348218a5cf92eeeb9195fd5e6fb07268f30`, checked
+21:03:54.973735 UTC. Six historical bundles/six historical grades remain.
+New genuine forecasts **0**, public offers **0**, prospective outcomes/grades
+**0**, qualified tickets **0**, financial settlements **0**. Native cards are
+private/local; both public admission registries remain empty. PR #20 remains
+draft. No new website deployment or public offer publication.
+
+**Next concrete actions:** restore/establish actual authenticated release-asset
+upload capability, continue with the same original package/native record and a
+new exact-source continuation receipt retaining the failed intent, cold-recover exact
+originals/native record, and finish its scoped admission/release review. Resolve
+canonical event identity and numeric predicate through specific evidence rather
+than more unrelated collection. Independently, verify the next actual scheduled
+planning/capture/issuance/recovery/publication before claiming automatic live
+forecasts. Later final outcomes must occur and be verified before grading.
+
+
 ## October 23, postflight — final source tests, GitHub readback and CI complete
 
 Exact implementation source remains **`10e6f7a06260b96c19fc1eb05eabb640d9e74a11`**.

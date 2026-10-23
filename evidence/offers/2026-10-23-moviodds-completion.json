@@ -1,0 +1,282 @@
+{
+  "archive": {
+    "archiver_api_actions": 21,
+    "automatic_approval_rejection": false,
+    "draft_release_id": 422318512,
+    "existing_metadata_authentication": "WORKING",
+    "later_readonly_diagnostic_conclusion": "Both installed CLI versions send an Authorization header and receive HTTP400 for read-only GET at the upload URL. This does not establish POST upload capability or explain the earlier401. No upload retried.",
+    "later_readonly_upload_diagnostic": {
+      "gh_api_get_invocations": 2,
+      "internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+      "rows": [
+        {
+          "authorization_header_present": true,
+          "binary": "/usr/bin/gh",
+          "exit_code": 1,
+          "finished_at": "2026-10-23T21:43:07.542151+00:00",
+          "method": "GET",
+          "started_at": "2026-10-23T21:43:07.179380+00:00",
+          "status_codes": [
+            "400"
+          ],
+          "stdout_bytes": 82,
+          "upload_attempts": 0,
+          "url": "https://uploads.github.com/repos/NickNicky19/Nicks-multisport-lab-project/releases/422318512/assets?name=object-4bd292dc6f004ca73714075b4eed8cb114b1ec0d7043cebd3aadeaa57dd388ca.z",
+          "version": "gh version 2.46.0 (2025-01-13 Debian 2.46.0-3)"
+        },
+        {
+          "authorization_header_present": true,
+          "binary": "/tmp/nml-gh-2.102.1/bin/gh",
+          "exit_code": 1,
+          "finished_at": "2026-10-23T21:43:07.986038+00:00",
+          "method": "GET",
+          "started_at": "2026-10-23T21:43:07.542455+00:00",
+          "status_codes": [
+            "400"
+          ],
+          "stdout_bytes": 81,
+          "upload_attempts": 0,
+          "url": "https://uploads.github.com/repos/NickNicky19/Nicks-multisport-lab-project/releases/422318512/assets?name=object-4bd292dc6f004ca73714075b4eed8cb114b1ec0d7043cebd3aadeaa57dd388ca.z",
+          "version": "gh version 2.102.1 (2026-10-20)"
+        }
+      ],
+      "schema_version": "own-github-readonly-upload-diagnostic-v1",
+      "writes": 0
+    },
+    "maximum_total_objects": 32,
+    "maximum_total_wire_bytes": 8388608,
+    "original_attempt_intent_preserved": true,
+    "original_attempt_source_pins": {
+      "multisport_lab/moviodds_archive.py": "d5cbff247dacad4b81ca6cd2bac1649d3d839514f939f2711dfafddb271fd7ee",
+      "multisport_lab/moviodds_offer.py": "f835db2b1887e379170897fcd09351f2bfeba8712b6ac74be912f0d815081800",
+      "multisport_lab/native_offer.py": "67d99467e4496ac3e84b1cc22a9704e5d95d0b885d25721940b87c01ac0b56d0"
+    },
+    "originals_retained_locally": true,
+    "projected_source_wire_bytes": 243579,
+    "projected_source_wire_objects": 16,
+    "raw_bytes": 3208947,
+    "raw_file_count": 16,
+    "raw_objects_uploaded": 0,
+    "remote_raw_recovery_verified": false,
+    "status": "UPLOAD_REJECTED_HTTP_401",
+    "tag": "diagnostics-nml-nba-moviodds-20261023",
+    "transport_changed": false,
+    "upload_attempts": 1,
+    "upload_failure_root_cause": "UNKNOWN",
+    "upload_observed_at": "2026-10-23T21:18:12.189287Z"
+  },
+  "base_head": "a3fe49b3dd98e2196c442b7970b5b89d4100637b",
+  "canonical_schedule_followup": {
+    "canonical_conflict_resolved": false,
+    "complete_body": false,
+    "failure": "RESPONSE_SIZE_LIMIT",
+    "followup": "Reuse a complete original from the separately admitted existing64MiB SDV production capture after an actual timely plan; add a versioned crosswalk companion without rebinding original receipts.",
+    "http_status": 200,
+    "imported": false,
+    "limit_changed": false,
+    "maximum_complete_body_bytes": 2097152,
+    "original_review_changed": false,
+    "purpose": "Same retained-game identity discrepancy only, not forecast input or freshness admission",
+    "redirect_observed_at": "2026-10-23T21:23:05.374206Z",
+    "response_observed_at": "2026-10-23T21:23:17.393242Z",
+    "retained_prefix_bytes": 2097153,
+    "retained_prefix_sha256": "1d2b897088269727ba4e91901f9e45b12482439aab4fd6afffa806eee34bc82d",
+    "stable_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_schedules/nba_schedule_2027.csv"
+  },
+  "checked_at": "2026-10-23T21:48:11Z",
+  "connected_publication_source_commit": "7915972cc7c246574268fab0de655faf59319edd",
+  "counts": {
+    "financial_settlements": 0,
+    "genuine_forecasts": 0,
+    "historical_bundles_preserved": 6,
+    "historical_grades_preserved": 6,
+    "prospective_grades": 0,
+    "prospective_outcomes": 0,
+    "published_offers": 0,
+    "qualified_tickets": 0
+  },
+  "implementation_source_commit": "520a6f459fc99e1d2c6a34f977bef9facf3c75c0",
+  "native_record": {
+    "bytes": 9450,
+    "normalized_at": "2026-10-23T21:14:32.682251Z",
+    "offer_id": "71e5f5c6c6ecb32496bc8c4d2bd1befa17ebb2493264d42fc7ac396040cf7fab",
+    "public": false,
+    "source_review_id": "a054afaa586a4a7a04e8c3c1c40e092ba930e36d99761eef492aa7ac59036ac0"
+  },
+  "new_document": {
+    "actual_get_attempts": 1,
+    "basis": "Specific official NBA API lead for player numeric thresholds and display/retention scope; no market request",
+    "complete_body": true,
+    "content_type": "text/html",
+    "elapsed_seconds": 0.8654796839691699,
+    "final_url": "https://moviodds.com/bet365-nba-odds-api/",
+    "http_status": 200,
+    "kind": "documentation",
+    "location": null,
+    "maximum_gets": 4,
+    "maximum_response_bytes": 2097152,
+    "observed_at": "2026-10-23T21:02:30.649710Z",
+    "raw_bytes": 14423,
+    "raw_sha256": "4305949851846ebff509abecc844ac546f90448fc878a93c5439cd88b339c09e",
+    "redirects_allowed": 0,
+    "request_number": 1,
+    "request_started_at": "2026-10-23T21:02:29.784226Z",
+    "retries_allowed": 0,
+    "schema_version": "nba-alternative-source-get-v1",
+    "source_http_date": "Fri, 23 Oct 2026 21:02:30 GMT",
+    "url": "https://moviodds.com/bet365-nba-odds-api/"
+  },
+  "operation": {
+    "genuine_forecasts": 0,
+    "in_window_run_observed": false,
+    "latest_successful_native_run": 40005008319,
+    "main": "ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+    "missed_game_date": "2026-10-24",
+    "next_planning_closes_utc": "2026-10-24T14:00:00Z",
+    "next_planning_game_date": "2026-10-25",
+    "next_planning_opens_utc": "2026-10-24T13:00:00Z",
+    "registry_commit": "e35c090cdf728da48dac1bd2ac48da17bfd08855",
+    "registry_id": "d522c56179d0f997a4fd586c566651b8b7f690db8982e1bfa22262546b6c07f6",
+    "scheduler_modified": false,
+    "source_attempts": 0,
+    "status": "INCOMPLETE_OR_UNOBSERVED_WINDOW"
+  },
+  "preservation": {
+    "frozen_experiments_rerun": false,
+    "model_laws_changed": false,
+    "original_records_unchanged": 19,
+    "protected_files_unchanged": 23
+  },
+  "private_browser": {
+    "html_sha256": "b7593540a23cb192de909a955d35e28fa2b299380f454ea144453b01f78ebe03",
+    "network_requests": 0,
+    "publication": false,
+    "schema_version": "moviodds-native-private-browser-check-v1",
+    "verified_at": "2026-10-23T21:16:53.301493+00:00",
+    "viewports": [
+      {
+        "cards": 1,
+        "category_rows": 14,
+        "errors": [],
+        "height": 1000,
+        "overflow": false,
+        "requests": 0,
+        "screenshot_sha256": "f6c18ce9fdc7f1e43696991c0b8a8a1fedcd905479fffa98da2b49b773f7f24d",
+        "width": 1440
+      },
+      {
+        "cards": 1,
+        "category_rows": 14,
+        "errors": [],
+        "height": 844,
+        "overflow": false,
+        "requests": 0,
+        "screenshot_sha256": "9d46b14d724642b060cc5c1d6dddd2a1fbaebb6737e93c148c3faca90353fe89",
+        "width": 390
+      },
+      {
+        "cards": 1,
+        "category_rows": 14,
+        "errors": [],
+        "height": 760,
+        "overflow": false,
+        "requests": 0,
+        "screenshot_sha256": "d041e62d68ac431c386befcbe4e40b6d13a4b0193b64677ef530940046b3a35c",
+        "width": 320
+      }
+    ]
+  },
+  "private_handover": {
+    "bytes": 249419,
+    "contains_secrets": false,
+    "created_at": "2026-10-23T21:45:07.879885+00:00",
+    "durable_remote_archive_verified": false,
+    "file_count": 17,
+    "original_intent_and_review": 2,
+    "original_metadata": 7,
+    "original_native_record": 1,
+    "path": ".local-data/moviodds-private-originals-20261023.zip",
+    "published": false,
+    "purpose": "Private owner transfer only; exact same originals/native record for existing authenticated archive operation",
+    "schema_version": "private-original-handover-v1",
+    "sha256": "67d13f6da7985c4b9022f98bd1c269b8dc104277892fe173add494a7df3fc2d2",
+    "source_bodies": 7
+  },
+  "publication": {
+    "draft": true,
+    "new_deployment": false,
+    "pr": 20,
+    "prior_head_ci_completed_at": "2026-10-23T21:09:31Z",
+    "prior_head_ci_conclusion": "success",
+    "prior_head_ci_run": 40022646850
+  },
+  "schema_version": "nba-moviodds-completion-checkpoint-v1",
+  "source_result": {
+    "complete_source_contracts": 34,
+    "direct_get_budget": 4,
+    "distinct_player_names": 19,
+    "full_game_player_observations": 1229,
+    "new_direct_gets_total": 3,
+    "new_get_retries": 0,
+    "new_moviodds_market_event_price_gets": 0,
+    "new_source_document_gets": 1,
+    "new_source_identity_gets_including_redirects": 2,
+    "new_sports_data_gets_including_redirects": 2,
+    "numeric_player_selections_unresolved": 1195,
+    "private_preview": true,
+    "public_admission": false,
+    "source": "MoviOdds",
+    "typed_native_contracts_prepared": 1,
+    "venue_as_declared": "bet365"
+  },
+  "verification": {
+    "default_reader_followup": {
+      "actual_pages_private_draft_read_verified": false,
+      "network_requests": 0,
+      "normal_tests": 28,
+      "optimized_tests": 10,
+      "result": "PASS",
+      "review_report_sha256": "a8bca95d17a91d6801451b145cf5ca44813018a1338c0dcee9b6319be4cee9a1",
+      "source_commit": "7915972cc7c246574268fab0de655faf59319edd"
+    },
+    "demo": "PASS",
+    "exact_source_local_archive": {
+      "actual_originals_replayed": 7,
+      "frontend_tests": 9,
+      "manifest_members": 578,
+      "optimized_python_tests": 31,
+      "report_sha256": "d74a0c38c0e3932573e0413af2d42e14cd98897466c189aa3d6e9fb438747aa1",
+      "scope": "Local Git archive only; source commit recovery is not remote raw-source archival",
+      "source_commit": "520a6f459fc99e1d2c6a34f977bef9facf3c75c0"
+    },
+    "final_connected_demo": {
+      "command": "python3 -m multisport_lab.demo",
+      "log_sha256": "3d965ae542f5a7473441bf976bbcf695952c9eebb009953d26693820d48d0428",
+      "result": "PASS",
+      "source_commit": "7915972cc7c246574268fab0de655faf59319edd"
+    },
+    "final_connected_python": {
+      "command": "python3 -m unittest discover -s tests -v",
+      "completion_observed_by": "2026-10-23T21:48:11Z",
+      "log_sha256": "c6150d531408dcf6d7ed9cec04fdda9e5fc3ba15ad83f083d2afde349a195dba",
+      "result": "PASS",
+      "seconds": 614.111,
+      "source_commit": "7915972cc7c246574268fab0de655faf59319edd",
+      "tests": 1103
+    },
+    "frontend": {
+      "command": "node --test --test-isolation=none web/tests/*.test.mjs",
+      "milliseconds": 11159.374203,
+      "result": "PASS",
+      "tests": 185
+    },
+    "integrated_python": {
+      "command": "python3 -m unittest discover -s tests -v",
+      "result": "PASS",
+      "scope": "Integrated source before final native default-reader follow-up; later focused/integration evidence is recorded separately",
+      "seconds": 601.954,
+      "tests": 1098
+    },
+    "static_artifact": "PASS"
+  }
+}

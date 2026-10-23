@@ -2,6 +2,37 @@
 
 Updated: October 23, 2026.
 
+## Latest native-offer delivery and actual operating state — October 23, 21:00 UTC
+
+Native implementation `520a6f459fc99e1d2c6a34f977bef9facf3c75c0` adds a versioned
+Boolean player-offer contract, private archive/recovery and existing offer-channel
+integration. Follow-up `7915972` connects the Pages entrypoint to guarded private
+source recovery after admission. The retained MoviOdds/bet365 sample establishes
+34 local DD/TD source contracts (1,229 player observations, 19 labels); one actual Myles Turner Yes record
+has independently replayed private desktop/mobile preview. Its canonical event
+start conflict remains explicit; 1,195 numeric observations lack an established
+operator. No native provider player ID or 0.5 source line is invented. Both public
+admission registries are empty; no public offer or ticket qualification.
+
+Actual private GitHub raw archival is **blocked**: draft release 422318512 was
+created, but the first release-asset upload returned HTTP 401; independent inventory
+contains zero assets. Existing API metadata authentication works; root cause is
+unknown. No alternate transport/retry/public raw fallback was attempted. No sports
+provider key or encryption-key arrangement is required for this source-specific
+private draft; a working existing upload-authentication context and actual cold
+readback are still needed. Exact originals/requests are retained locally.
+
+Automatic SDV coordinator run 40005008319 succeeded at 18:38 UTC, but no native run
+was observed within October 23's 13:00–14:00 UTC planning window. Independently
+recovered registry marks October 24 game date missed/unobserved, with zero planned
+days/captures/forecasts/grades. Cause cannot be inferred from an absent run.
+Next eligible planning is **October 24, 08:00–09:00 CDT / 13:00–14:00 UTC**, for October 25
+UTC games; installed cron is not a guarantee of an actual run. No clocks/windows,
+workflow, model law, expired pilot or original record changed. Public build
+remains main `ef9e270`, six historical bundles/six grades, zero genuine forecasts and
+offers. Read the newest handoff and `docs/NBA_NATIVE_OFFER_DELIVERY.md`; older
+sections below retain their dated earlier observations.
+
 ## Current player-line work — verified names, partial rules and exact research matching
 
 Implementation `dd6784bf59e7acdac0e5426552835f65f1a9a716` adds a source-backed,
