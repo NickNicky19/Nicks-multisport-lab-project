@@ -1,6 +1,8 @@
 """Strict, separately admitted NBA offer-only facts; never ticket eligibility.
 
-This module performs no network access. A reviewed contract may be displayed
+Typed validation performs no network access. After the independent public
+admission gate, native ledger recovery can authenticate its private originals
+through the existing fixed GitHub draft. A reviewed contract may be displayed
 without a price. Checksums and review declarations do not establish provider
 permission, upstream authenticity, or a usable betting quote.
 """
@@ -450,14 +452,27 @@ class OfferStore:
             validate_native_offer(offer, now=datetime.now(timezone.utc))
             _require(admission is None and ((self.allow_synthetic and offer["evidence_lane"] == "SYNTHETIC_TEST")
                      or native_offer_publicly_admitted(offer)), "Native record requires a reviewed public admission")
-            _require(len(references) == 1 and references[0].kind == "input_captures" and self.raw_reader is not None,
+            _require(len(references) == 1 and references[0].kind == "input_captures",
                      "Native contract requires one independently recoverable private source reference")
             source = self.ledger.read(references[0])["data"]
             _fields(source, {"native_offer_archive"}, "private native source pointer")
             pointer = validate_reference(source["native_offer_archive"])
-            retained = self.raw_reader(references[0])
+            if self.raw_reader is None:
+                _require(offer["evidence_lane"] == "ACTUAL_SOURCE_REPLAY",
+                         "Synthetic native records require an explicit offline source reader")
+                from .moviodds_archive import GuardedGitHubReleaseArchive, PrivateMoviOddsArchive
+                # No provider request or write is possible on this default path.
+                # The empty public registry rejects unreviewed records above,
+                # before even constructing the authenticated archive client.
+                retained = PrivateMoviOddsArchive(GuardedGitHubReleaseArchive(
+                    allow_diagnostics=True)).load_recovered_assets(pointer, now=datetime.now(timezone.utc))
+            else:
+                retained = self.raw_reader(references[0])
             _require(type(retained) is dict and {"assets", "review", "manifest", "manifest_ref"} <= set(retained),
                      "Native private source reader lacks original bytes and manifest")
+            _require(offer["evidence_lane"] == "SYNTHETIC_TEST"
+                     or retained.get("durable_remote_archive_verified") is True,
+                     "Actual native source requires authenticated durable remote recovery")
             validate_manifest(retained["manifest"], reference=pointer)
             _require(retained["manifest_ref"] == pointer["manifest_ref"]
                      and pointer["review_id"] == offer["original_review_id"]

@@ -423,13 +423,18 @@ class PrivateMoviOddsArchive:
 
     @_strict
     def load_recovered_assets(self, reference, *, now):
+        """Cold-recover originals; the remote flag covers this source graph.
+
+        Native canonical-record archiving is separately verified by
+        recover_native_offer; this method never creates or replaces that record.
+        """
         reference = self._source_reference(reference)
         files, manifest, _, _ = self.fresh_reader()._read(reference, now=now)
         return {"assets": {k: {"raw": files[k + ".body"],
                               "metadata_raw": files[k + ".metadata.json"]} for k in offers.URLS},
                 "review": _decode(files["review.json"]), "manifest": manifest,
                 "manifest_ref": reference["manifest_ref"], "manifest_id": manifest["manifest_id"],
-                "reference": reference}
+                "reference": reference, "durable_remote_archive_verified": self.hosted}
 
     @_strict
     def archive_native_offer(self, source_reference, offer, *, now):

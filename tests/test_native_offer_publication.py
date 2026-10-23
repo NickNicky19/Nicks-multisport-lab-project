@@ -1,11 +1,14 @@
 """Version dispatch and independent offer delivery, using fictional sources."""
 from copy import deepcopy
+from contextlib import contextmanager
+from datetime import datetime, timezone
 import json
 import hashlib
 from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from multisport_lab.integrity import IntegrityError, canonical, digest
 from multisport_lab import offer_publication as publication
@@ -23,7 +26,103 @@ def native_asset(offers, *, admissions=()):
         "offers": offers, "admissions": list(admissions), "unavailable_reasons": []}, "asset_id")
 
 
+@contextmanager
+def fictional_retained_native(*, synthetic=False):
+    """No real source/permission: inject an actual-lane shape to test its gates."""
+    root = Path(__file__).resolve().parents[1]; (root / ".local-data").mkdir(exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=root / ".local-data", prefix="fictional-native-default-") as folder:
+        base = Path(folder); source = base / "originals"; source.mkdir()
+        assets = fictional_assets()
+        review = build_review(assets, fixture=FIXTURE, normalized_at=NOW,
+                             evidence_lane="SYNTHETIC_TEST" if synthetic else "ACTUAL_SOURCE_REPLAY")
+        for role, pair in assets.items():
+            (source / (role + ".body")).write_bytes(pair["raw"])
+            (source / (role + ".metadata.json")).write_bytes(pair["metadata_raw"])
+        (source / "review-intent.json").write_bytes(canonical({"fixture": FIXTURE, "normalized_at": NOW,
+            "originals": {role: {name: hashlib.sha256(raw).hexdigest() for name, raw in pair.items()}
+                          for role, pair in assets.items()}}))
+        (source / "review.json").write_bytes(canonical(review))
+        archive = PrivateMoviOddsArchive(FileArchive(base / "archive", allow_diagnostics=True), allow_synthetic=synthetic)
+        pointer = archive.archive(source, now=NOW)["reference"]
+        recovered = archive.fresh_reader().load_recovered_assets(pointer, now=NOW)
+        store = publication.OfferStore(base / "ledger", allow_synthetic=synthetic)
+        reference = store.retain_native_archive(pointer)
+        yield store, reference, pointer, build_native_offer(review, 0, now=NOW), recovered
+
+
 class NativeOfferPublicationTests(unittest.TestCase):
+    def test_make_asset_default_native_reader_recovers_fixed_authenticated_archive(self):
+        with fictional_retained_native() as (store, reference, pointer, offer, retained):
+            # Model the successful authenticated adapter response, never real I/O.
+            remote = {**retained, "durable_remote_archive_verified": True}
+            with patch("multisport_lab.native_offer.native_offer_publicly_admitted", return_value=True), \
+                    patch("multisport_lab.moviodds_archive.GuardedGitHubReleaseArchive") as backend, \
+                    patch("multisport_lab.moviodds_archive.PrivateMoviOddsArchive") as private:
+                private.return_value.load_recovered_assets.return_value = remote
+                saved = store.persist(offer, None, raw_references=[reference])
+                value = publication.make_asset(store.root, now=datetime.now(timezone.utc))
+                self.assertEqual(value["schema_version"], publication.NATIVE_ASSET_SCHEMA)
+                self.assertEqual(value["offers"], [offer])
+                self.assertEqual(value["admissions"], [])
+                backend.assert_called_with(allow_diagnostics=True)
+                self.assertGreaterEqual(private.return_value.load_recovered_assets.call_count, 3)
+                for call in private.return_value.load_recovered_assets.call_args_list:
+                    self.assertEqual(call.args, (pointer,))
+                self.assertEqual(store.ledger.read(saved)["data"]["offer_capture"]["offer"], offer)
+
+    def test_default_reader_rejects_actual_unreviewed_record_before_any_network(self):
+        with fictional_retained_native() as (store, reference, _, offer, _):
+            # Deliberately seed an unadmitted receipt, bypassing operating persist,
+            # to exercise the actual Pages build path's independent gate.
+            store._append("offer-publication-v1:" + offer["offer_id"],
+                {"identity": store._identity(offer), "offer_capture": {"offer": offer, "admission": None}},
+                (reference,))
+            with patch("multisport_lab.moviodds_archive.GuardedGitHubReleaseArchive") as backend, \
+                    patch("multisport_lab.moviodds_archive.PrivateMoviOddsArchive") as private:
+                with self.assertRaisesRegex(IntegrityError, "public admission"):
+                    publication.make_asset(store.root, now=datetime.now(timezone.utc))
+                backend.assert_not_called(); private.assert_not_called()
+
+    def test_default_reader_remote_failure_is_closed_without_fallback_or_record_write(self):
+        with fictional_retained_native() as (store, reference, _, offer, _):
+            with patch("multisport_lab.native_offer.native_offer_publicly_admitted", return_value=True), \
+                    patch("multisport_lab.moviodds_archive.GuardedGitHubReleaseArchive"), \
+                    patch("multisport_lab.moviodds_archive.PrivateMoviOddsArchive") as private:
+                private.return_value.load_recovered_assets.side_effect = IntegrityError("Fictional remote unavailable")
+                before = {p: p.read_bytes() for p in (store.root / "records").rglob("*.json")}
+                with self.assertRaisesRegex(IntegrityError, "remote unavailable"):
+                    store.persist(offer, None, raw_references=[reference])
+                self.assertEqual({p: p.read_bytes() for p in (store.root / "records").rglob("*.json")}, before)
+                store._append("offer-publication-v1:" + offer["offer_id"],
+                    {"identity": store._identity(offer), "offer_capture": {"offer": offer, "admission": None}},
+                    (reference,))
+                before = {p: p.read_bytes() for p in (store.root / "records").rglob("*.json")}
+                with self.assertRaisesRegex(IntegrityError, "remote unavailable"):
+                    publication.make_asset(store.root, now=datetime.now(timezone.utc))
+                self.assertEqual({p: p.read_bytes() for p in (store.root / "records").rglob("*.json")}, before)
+
+    def test_actual_native_requires_true_remote_durability_even_with_explicit_reader(self):
+        with fictional_retained_native() as (store, reference, _, offer, retained):
+            self.assertIs(retained["durable_remote_archive_verified"], False)
+            with patch("multisport_lab.native_offer.native_offer_publicly_admitted", return_value=True):
+                for value in [None, False, "true", 1]:
+                    store.raw_reader = lambda _: {**retained, "durable_remote_archive_verified": value}
+                    with self.subTest(value=value), self.assertRaisesRegex(IntegrityError, "durable remote"):
+                        store.persist(offer, None, raw_references=[reference])
+                store.raw_reader = lambda _: {k: v for k, v in retained.items() if k != "durable_remote_archive_verified"}
+                with self.assertRaisesRegex(IntegrityError, "durable remote"):
+                    store.persist(offer, None, raw_references=[reference])
+
+    def test_synthetic_default_reader_does_not_promote_local_archive_or_contact_github(self):
+        with fictional_retained_native(synthetic=True) as (store, reference, _, offer, retained):
+            with patch("multisport_lab.moviodds_archive.GuardedGitHubReleaseArchive") as backend:
+                with self.assertRaisesRegex(IntegrityError, "explicit offline"):
+                    store.persist(offer, None, raw_references=[reference])
+                backend.assert_not_called()
+            store.raw_reader = lambda _: retained
+            saved = store.persist(offer, None, raw_references=[reference])
+            self.assertEqual(store.active(), [(saved, {"offer": offer, "admission": None})])
+
     def test_existing_offer_ledger_recovers_native_contract_and_private_source_graph(self):
         root = Path(__file__).resolve().parents[1]; (root / ".local-data").mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=root / ".local-data", prefix="native-offer-ledger-") as folder:
