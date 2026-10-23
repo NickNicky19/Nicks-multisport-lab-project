@@ -2,6 +2,140 @@
 
 Updated: October 23, 2026 (UTC).
 
+## October 23 — names and quarter rules verified; strict daily/production line matching connected
+
+Implementation: **`dd6784bf59e7acdac0e5426552835f65f1a9a716`** on
+**`implementation/nba-player-line-review`**, following preserved checkpoint
+`3322bd44a0aa03a9e3f6ad5d673c9a3128425edb`. Remote main remained
+`ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`; PR #20 remains draft. The following
+handoff/evidence commit also adds explicit destination-heading waits to the
+browser smoke helper after an observed navigation race; it changes no producer,
+model, original research record or public source-admission pin.
+
+**Actual source verification:** six additional GETs, one owner counter, no agent
+requests, redirects, retries, credentials or new board/price capture. The official
+documented player catalogue resolves **173/173 native Sleeper player IDs**. Its
+2,176 objects contain 2,146 players and 30 recognized team subjects; those team
+subjects cannot become player identities. There are zero differing nonnull
+board/catalogue team literals. The later catalogue observation
+**12:11:50.061540 UTC** does not refresh the original **11:12:31.699799 UTC** line
+observation or change historical affiliations/model inputs.
+
+Official Player Picks Rules establish general overtime inclusion and the
+30-minute correction/regrading window. Official Stats Explained establishes
+first-quarter/end-of-quarter grading and quarter overtime exclusion. The actual
+board has **94 explicitly named Q1 rows / 188 side selections**, now displayable
+as Q1 / `OT_EXCLUDED`. All 1,272 NBA rows, including Q1, have `line_type=normal`:
+this field cannot establish full game. Unprefixed markets retain unknown period
+bindings. The exact retained schedule route returned `[]`; **12 native game IDs**
+each have two source-declared team labels but **zero verified canonical event/start
+mappings**. IDs, recent-performance dates and nearest scheduled matchups are not
+guessed into game starts. The native catalogue supplies no ESPN IDs for these
+173 players. No complete actual contract is claimed.
+
+The official API documentation expressly permits noncommercial read-only API use
+and own-server player-ID-map caching, at most once daily. That supplies an
+applicable published allowance for this documented lookup. Current General Terms
+11.1/11.3 still supply no corresponding allowance for recurring undocumented
+Picks extraction/public derived offers. No further Picks data requests followed
+that revalidation. The route's accessibility and the owner's legality assertion
+are not substituted for that separate provider scope. This is an evidence finding,
+not a claim that every keyless source is unavailable. ESPN/Sleeper preferences and
+the parked Polymarket findings remain unchanged.
+
+**Implemented and locally usable:** `player_line_enrichment.py`, its separate
+browser module and the existing private renderer add a sealed companion without
+changing the original v1 review. Native IDs, catalogue names, source team labels,
+later observation clocks, explicit Q1 rules and missing game/full-game fields
+replay from exact retained bodies and metadata. The companion is **28,651 bytes**,
+ID `84f27d54b5ffb47910f0fe3830e77d53708d56ddeae2ef4e84ff8c0cee1ab50a`.
+The source package is **14 files / 12,812,043 bytes**; including the new HTML,
+**15 files / 12,864,455 bytes**, within the unchanged 512-file/32-MiB source-package
+limits. All seven earlier base-package hashes are unchanged. Interrupted retries
+preserve the first enrichment clock and sources; overlapping destinations, missing
+bodies, altered meanings/hashes, duplicate source keys and budget failures reject.
+Independent Python `-O` and JavaScript replay passed without GETs/writes.
+These are **local originals**, not independently verified durable remote raw
+archival. A code-branch readback does not archive the private bodies.
+
+The actual private preview is
+`.local-data/sleeper-lines-20261023/enriched-preview.html` (**52,412 bytes**).
+Desktop 1440 and mobile 390/320 checks verified all 32 displayed names, the two
+displayed Q1 cards, all 14 inventory rows, accessible native IDs, distinct clocks,
+explicit unknown game/full-game fields and `PRICE_UNAVAILABLE`, with no external
+requests, page errors or horizontal overflow. These cards are recorded source
+observations, not current-availability certification or a public live feed.
+
+**Concrete forecast integration fixes:** Python `offer_research_forecasts` and
+browser `offerResearchForecasts` now validate original daily/recurring publication
+graphs before exact contract matching. Props previously omitted both SDV channels;
+it now supplies their independently verified admitted R0/K0 originals. The original
+schema, lane, probabilities, conditioning and input references remain intact.
+Hash verification precedes admission; asynchronous verification snapshots the
+supplied graph; an eligible flag cannot bypass authorization/input/completion.
+Matching rejects decision times before local persistence, required remote recovery
+or publication. Namespaces, event snapshots, player/teams, start, category/units,
+period/OT and pregame clocks must agree. Full-game models cannot match Q1 lines.
+Missing prices remain acceptable; no EV, ticket eligibility or qualification is
+conferred. Failed matching proof in one channel preserves valid independent
+channels and displays its reason. One shared microsecond decision clock fixes
+the earlier browser timestamp-format failure for nonempty offers.
+
+**Actual checks:** full local Python **1,050 passed / 597.883 seconds**; full
+frontend **167 passed**; final focused optimized-Python **13 enrichment + four
+matching tests passed**; demo, artifact build, static smoke, manifest and whitespace
+checks passed. Full local discovery began before the final overlapping-destination
+regression was added; the 13-test focused run covers that final guard, and final
+GitHub CI checks the pushed source. Original website desktop/mobile checks passed
+seven routes, direct reloads, historical names/matchups/dates, six bundles/grades,
+84 PMFs, scopes, 2–6 legs/directions and `NO_ACTION`. The first browser attempt
+failed because its helper selected a Performance category control before Props
+navigation completed. Explicit destination-heading waits fixed that test; the
+rerun passed. No frozen comparison, new retrospective evaluation, full-history
+diagnostic, new collector or scheduler was run.
+
+Commands actually run: the capture claim/receipt program retained under `/tmp`
+and ignored source-inspection directory; all offline create/render/replay commands
+in `docs/PLAYER_LINE_REVIEW.md`; `python3 -m unittest discover -s tests -v`;
+`python3 -O -m unittest discover -s tests -p test_player_line_enrichment.py -v`;
+the corresponding `test_offer_research_matching.py` run;
+`node --test --test-isolation=none web/tests/*.test.mjs`;
+`python3 -m multisport_lab.demo`;
+`python3 -m multisport_lab.publication --build-commit dd6784bf59e7acdac0e5426552835f65f1a9a716`;
+`node web/tests/site-smoke.mjs output`;
+`python3 web/tests/browser_smoke.py output --screenshots /tmp/nml-player-match-final-dd6784`;
+`python3 /tmp/nml_enriched_line_browser.py`; checksum/diff checks and independent
+23-producer/19-record preservation verification. Exact source clocks/hashes,
+inventory, review fixes, limits and browser evidence are recorded in
+`evidence/offers/2026-10-23-sleeper-name-period-followthrough.json`.
+
+**Not complete as a public live lines feed:** remaining requirements are an
+applicable Picks collection/publication scope; native game/start and canonical
+player crosswalk evidence; native full-game/OT and product-variant binding; and
+authorized durable raw-offer archival compatible with the versioned complete-offer
+contract. That existing complete-offer path remains bounded at 2 MiB per original;
+the actual 7-MiB board and 2.5-MiB catalogue use the separate 8-MiB private path.
+No body is cropped and no cap silently raised. The smallest source action capable
+of resolving the feed gaps is provider documentation/approval identifying the
+credentialless NBA game/period fields and the intended noncommercial Picks feed
+scope, or an independently admitted source contract containing those facts. More
+board or price requests alone cannot establish them. Do not repeat the same empty
+route or generic documentation search.
+
+**Independent forecasting and deployment:** read-only GitHub queries at
+**12:22:55 UTC** still show successful native runs 39902534915 and 39934330055,
+with no newer run then observed. The next authorized planning window is today
+**13:00–14:00 UTC / 08:00–09:00 CDT**, for UTC game date October 24; actual games
+and issue times require its admitted plan. This package does not disable, dispatch,
+reschedule or wait in place of that installed coordinator. Public main/Pages
+remain unchanged; no private observations were published. Counts remain **six
+historical bundles/six historical grades; zero genuine forecasts, published offers,
+prospective outcomes/grades, qualified tickets or financial settlements** at the
+recorded observations. The next statistical task is to independently recover the
+next actual native plan/inputs/issuance and later final grades within its existing
+windows. NFL/MLB, inactive studies, frozen experiments and expired pilots remain
+untouched. All 23 protected files and 19 original records remain byte-identical.
+
 ## October 23 — actual keyless NBA lines replayed into private desktop/mobile review
 
 Work continues on **`implementation/nba-player-line-review`**, based normally on

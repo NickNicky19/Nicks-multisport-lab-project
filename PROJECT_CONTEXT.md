@@ -2,7 +2,30 @@
 
 Updated: October 23, 2026.
 
-## Current player-line work — actual source replay and private display
+## Current player-line work — verified names, partial rules and exact research matching
+
+Implementation `dd6784bf59e7acdac0e5426552835f65f1a9a716` adds a source-backed,
+separately sealed companion for all **173 native Sleeper player names** and
+**188 explicit Q1 selections** (overtime excluded). Exact original board and later
+catalogue/rule clocks remain distinct. The 32-card private desktop/mobile preview
+preserves all original records and all 14 category counts. Twelve native games
+have raw team-label pairs but no verified canonical events/starts; unprefixed
+full-game periods and canonical player crosswalks remain unknown. Complete actual
+contracts and published offers remain zero. Applicable recurring/public Picks
+scope and durable raw-offer archival are unresolved. The documented catalogue
+API/cache allowance is not a Picks-feed grant. Six bounded follow-up GETs were
+used; no further board, price, credential or paid-service access occurred.
+
+The existing offer-only matcher now accepts strictly validated, hash-verified,
+remotely admitted original daily/recurring R0/K0 forecasts across all 14 categories.
+Props includes those channels and uses a consistent microsecond decision clock.
+Exact event/player/team/period/OT and actual persistence/recovery/publication
+availability remain mandatory. No price, ticket eligibility or EV is invented.
+This implementation is in draft PR #20; public main remains `ef9e270` and the
+licensed statistical forecast coordinator remains independent and unchanged.
+See latest handoff and `evidence/offers/2026-10-23-sleeper-name-period-followthrough.json`.
+
+## Earlier player-line inspection — original evidence preserved
 
 One bounded, unauthenticated Sleeper board GET at October 23 **11:12:31 UTC**
 returned 1,272 NBA player rows. Exact original bytes independently replay into
