@@ -113,6 +113,7 @@ def main():
                     page.locator(".forecast-card").first.screenshot(path=str(args.screenshots / "real-reb-card-mobile.png"))
                     page.set_viewport_size({"width": 1440, "height": 1000})
                 page.get_by_role("link", name="Performance", exact=True).click()
+                page.get_by_role("heading", level=1, name="Performance", exact=True).wait_for()
                 scored = [row for row in nba_snapshot["performance"] if row["status"] == "SCORED"]
                 by_forecast = {row["forecast_id"]: row for row in nba_snapshot["forecasts"]}
                 groups = {tuple(by_forecast[row["forecast_id"]][key] for key in ("league", "evidence_lane", "model_version", "model_commit", "model_code_sha256", "conditioning", "period", "extra_time_policy")) for row in scored}
@@ -124,6 +125,7 @@ def main():
                     assert "Financial settlement: NOT_EVALUATED" in page.locator(".grade-receipt").first.inner_text()
                 assert "No settled paper tickets published" in page.locator("main").inner_text()
                 page.get_by_role("link", name="Props", exact=True).click()
+                page.get_by_role("heading", level=1, name="Props", exact=True).wait_for()
                 page.locator('[data-filter="category"]').select_option("ALL")
             page.get_by_role("button", name="Selected sports", exact=True).click()
             page.locator('input[name="sport"]').uncheck()

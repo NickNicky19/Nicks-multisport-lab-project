@@ -1,0 +1,220 @@
+{
+  "schema_version": "nml-pr18-public-browser-independent-review-v1",
+  "status": "PASS",
+  "completed_at": "2026-10-23T03:22:50.198699+00:00",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "approved_head": "37c2720a29c5b8f66ab528e4d9bf4d74e5c719db",
+  "actual_merge_commit": "ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+  "public_url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/",
+  "served_snapshot_id": "83436918a4e6e4a8467829f41f24daf924048deda832922e44f283171b1c93b9",
+  "site_publication_time": "2026-10-23T03:18:29.510034Z",
+  "root_byte_verification_receipt": {
+    "path": "/tmp/nml-public-verification-pr18-ef9e270/verification.json",
+    "sha256_observed_before_browser": "084941e612af7bd3133a56910f4775b3374cafdef90c9388ff4a51c0c07222fc",
+    "byte_receipts_independently_rehashed": 25,
+    "static_files_independently_compared_against_actual_merge_git_blobs": 17,
+    "original_receipt_not_written_by_verifier": true
+  },
+  "browser_command": [
+    "python3",
+    "/tmp/verify_nml_public_browser_pr16.py",
+    "ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+    "/tmp/nml-pr18-independent-browser-ef9e270"
+  ],
+  "browser_helper_sha256": "309d0d76ee35efbd1ab8bad7b31ddf97dcad66dc569583fffb2fbb3e6916cd5d",
+  "browser_helper_python_assert_count": 0,
+  "integrity_checks": "Explicit ValueError/RuntimeError checks remain present under optimized Python; browser was not rerun under -O",
+  "browser": {
+    "mode": "TLS_VERIFIED_SERVED_BYTES_AT_PUBLIC_URL",
+    "tls_verification": true,
+    "transport": "urllib HTTPS proxy verification plus immutable captured asset bodies; fresh public manifest on each reload",
+    "direct_chromium_transport_limitation": "Prior native Chromium attempt established environment proxy CA is not trusted (net::ERR_CERT_AUTHORITY_INVALID). This verification uses the existing TLS-verified public-byte bridge; no TLS verification was disabled and native Chromium TLS was not retested.",
+    "started_at": "2026-10-23T03:21:29.616850+00:00",
+    "completed_at": "2026-10-23T03:21:51.615070+00:00",
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 1000,
+        "upcoming": true,
+        "six_historical_names": true,
+        "three_matchups_and_dates": true,
+        "original_ids_issue_model_accessible": true,
+        "all14_categories": true,
+        "six_historical_grades": true,
+        "daily_performance_filters_empty_state": true,
+        "direct_history_refresh": true,
+        "separate_clocks": true,
+        "daily_inactive_honesty": true,
+        "production_empty_state_honesty": true,
+        "production_performance_empty_filters": true,
+        "no_published_development_or_minutes_forecast_cards": true,
+        "props_scope_filters_and_empty_selection": true,
+        "builder_2_to_6_all_directions_scopes_no_action": true,
+        "no_overflow": true
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "upcoming": true,
+        "six_historical_names": true,
+        "three_matchups_and_dates": true,
+        "original_ids_issue_model_accessible": true,
+        "all14_categories": true,
+        "six_historical_grades": true,
+        "daily_performance_filters_empty_state": true,
+        "direct_history_refresh": true,
+        "separate_clocks": true,
+        "daily_inactive_honesty": true,
+        "production_empty_state_honesty": true,
+        "production_performance_empty_filters": true,
+        "no_published_development_or_minutes_forecast_cards": true,
+        "props_scope_filters_and_empty_selection": true,
+        "builder_2_to_6_all_directions_scopes_no_action": true,
+        "no_overflow": true
+      },
+      {
+        "width": 320,
+        "height": 760,
+        "upcoming": true,
+        "six_historical_names": true,
+        "three_matchups_and_dates": true,
+        "original_ids_issue_model_accessible": true,
+        "all14_categories": true,
+        "six_historical_grades": true,
+        "daily_performance_filters_empty_state": true,
+        "direct_history_refresh": true,
+        "separate_clocks": true,
+        "daily_inactive_honesty": true,
+        "production_empty_state_honesty": true,
+        "production_performance_empty_filters": true,
+        "no_published_development_or_minutes_forecast_cards": true,
+        "props_scope_filters_and_empty_selection": true,
+        "builder_2_to_6_all_directions_scopes_no_action": true,
+        "no_overflow": true
+      }
+    ],
+    "javascript_errors": [],
+    "request_count": 103,
+    "external_site_requests": []
+  },
+  "public_counts": {
+    "historical_forecasts": 6,
+    "historical_grades": 6,
+    "genuine_forecasts": 0,
+    "published_offers": 0,
+    "prospective_outcomes": 0,
+    "prospective_grades": 0,
+    "qualified_tickets": 0,
+    "financial_settlements": 0,
+    "published_development_forecasts": 0
+  },
+  "production_counts": {
+    "active_grades": 0,
+    "development_forecasts": 0,
+    "dnp_grades": 0,
+    "eligible_forecasts": 0,
+    "events": 0,
+    "forecasts": 0,
+    "genuine_forecasts": 0,
+    "grades": 0,
+    "outcomes": 0,
+    "pending_grades": 0,
+    "players": 0,
+    "scored_grades": 0
+  },
+  "readable_player_names": {
+    "2991070": "Jerami Grant",
+    "2991350": "Alex Caruso",
+    "2489663": "Kelly Olynyk",
+    "2583632": "Royce O'Neale",
+    "1966": "LeBron James",
+    "2960236": "Maxi Kleber"
+  },
+  "historical_matchups": [
+    {
+      "event_id": "401810135",
+      "label": "Portland Trail Blazers @ Oklahoma City Thunder",
+      "event_starts_at": "2025-11-24T00:00:00.000000Z"
+    },
+    {
+      "event_id": "401810136",
+      "label": "San Antonio Spurs @ Phoenix Suns",
+      "event_starts_at": "2025-11-24T01:00:00.000000Z"
+    },
+    {
+      "event_id": "401810137",
+      "label": "Los Angeles Lakers @ Utah Jazz",
+      "event_starts_at": "2025-11-24T01:00:00.000000Z"
+    }
+  ],
+  "visual_inspection": {
+    "file": "public-upcoming-390.png",
+    "observed": "Mobile layout renders readable clocks/scope/filter controls, with empty genuine issuance shown honestly; screenshot is scrolled to the controls after interactions. No claim of a genuine forecast card."
+  },
+  "screenshots_directory": "/tmp/nml-pr18-independent-browser-ef9e270",
+  "screenshots": {
+    "public-builder-1440.png": {
+      "bytes": 131445,
+      "sha256": "4484fd5c72f9e61788dbac2f8f47bd985c7a9ef93aa0d08a3540ca511f967580"
+    },
+    "public-builder-320.png": {
+      "bytes": 39606,
+      "sha256": "2ba9b3efa9fdffe854644a9e21e44a579c3f5b0dc46446a47806997f6a3d3719"
+    },
+    "public-builder-390.png": {
+      "bytes": 45748,
+      "sha256": "5c38366be0e9700b24553d14363585327c8cea545d1bbcaa209f15d192fbf220"
+    },
+    "public-daily-performance-1440.png": {
+      "bytes": 56303,
+      "sha256": "b8cfa4c3a39ed060687ce8402af557c19f732dd582e5b307b8723b7db8b270f0"
+    },
+    "public-daily-performance-320.png": {
+      "bytes": 58331,
+      "sha256": "541229bb8c50202616e90d9c602a9b06ee6907d047208705bc9316a90ee3c5ac"
+    },
+    "public-daily-performance-390.png": {
+      "bytes": 53550,
+      "sha256": "49bb1dc5180dbc72944d0172a6cf7f496f728c12c30547de44a9b2e3de7cb3a2"
+    },
+    "public-history-1440.png": {
+      "bytes": 1169482,
+      "sha256": "fe70532deb1364c0f72645b320aaacaab638398e132804ce8265865fa2e705dd"
+    },
+    "public-history-320.png": {
+      "bytes": 1306830,
+      "sha256": "74ac212fe0af3a24edaa8153eea026ffe7917d3a5f8626a6c25ff4e383ba814e"
+    },
+    "public-history-390.png": {
+      "bytes": 1384868,
+      "sha256": "13790f8dad7edf613df12089f2a6b552222f38bdf4ec89dd753e5cdea3d41303"
+    },
+    "public-upcoming-1440.png": {
+      "bytes": 146666,
+      "sha256": "f3604a0702428eb62b49cb605484b9cbd141ad2cdd6422411df0b6a9a4fbda86"
+    },
+    "public-upcoming-320.png": {
+      "bytes": 45517,
+      "sha256": "50c16edafa45390e321f5f55da0baccb713f76fe558c9fe69ec0be7ffc58811a"
+    },
+    "public-upcoming-390.png": {
+      "bytes": 57830,
+      "sha256": "cbf486938c12cd085dcf2f2b11f3e6800e9321b38f2d318cf024ef0db242a3c5"
+    }
+  },
+  "actions": {
+    "sports_source_gets": 0,
+    "forecast_generation": 0,
+    "source_capture": 0,
+    "statistical_evaluation": 0,
+    "dispatches": 0,
+    "reruns": 0,
+    "repository_edits": 0,
+    "actions_artifact_downloads": 0
+  },
+  "limitations": [
+    "Browser request_count includes cached route fulfillment and is not a count of new HTTP GETs. Actual fresh public-manifest GET count was not separately instrumented.",
+    "TLS stayed verified via urllib public-byte bridge; native Chromium/proxy CA compatibility was not retested.",
+    "No successful native coordinator execution, genuine issuance, real prospective outcome/grade, financial settlement or model quality follows from these interface checks."
+  ]
+}

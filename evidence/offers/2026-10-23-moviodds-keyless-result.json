@@ -1,0 +1,313 @@
+{
+  "actual_result": {
+    "category_inventory": {
+      "3PM": {
+        "complete": 0,
+        "observed": 122,
+        "parsed": 122,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "AST": {
+        "complete": 0,
+        "observed": 67,
+        "parsed": 67,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "BLK": {
+        "complete": 0,
+        "observed": 68,
+        "parsed": 68,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "BLK+STL": {
+        "complete": 0,
+        "observed": 111,
+        "parsed": 111,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "DD": {
+        "complete": 28,
+        "observed": 28,
+        "parsed": 28,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "PA": {
+        "complete": 0,
+        "observed": 113,
+        "parsed": 113,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "PR": {
+        "complete": 0,
+        "observed": 129,
+        "parsed": 129,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "PRA": {
+        "complete": 0,
+        "observed": 135,
+        "parsed": 135,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "PTS": {
+        "complete": 0,
+        "observed": 114,
+        "parsed": 114,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "RA": {
+        "complete": 0,
+        "observed": 149,
+        "parsed": 149,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "REB": {
+        "complete": 0,
+        "observed": 96,
+        "parsed": 96,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "STL": {
+        "complete": 0,
+        "observed": 91,
+        "parsed": 91,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "TD": {
+        "complete": 6,
+        "observed": 6,
+        "parsed": 6,
+        "status": "OBSERVED_IN_SAMPLE"
+      },
+      "TOV": {
+        "complete": 0,
+        "observed": 0,
+        "parsed": 0,
+        "status": "UNOBSERVED_IN_SAMPLE"
+      }
+    },
+    "counts": {
+      "complete_local_contracts": 34,
+      "displayed": 8,
+      "full_game_player_selections": 1229,
+      "game_selections": 6,
+      "other_selections": 687,
+      "parsed_player_selections": 1229,
+      "quarter_player_selections": 175,
+      "source_selections": 2097,
+      "verified_player_selections": 1229
+    },
+    "distinct_verified_player_labels": 19,
+    "forecast_matching": "BLOCKED_EVENT_START_DISAGREEMENT",
+    "latest_supporting_evidence_at": "2026-10-23T20:01:31.153166Z",
+    "local_binary_semantics": "DD_TD_YES_NO",
+    "normalized_at": "2026-10-23T20:13:01.190345Z",
+    "numeric_ladder_operator": "UNVERIFIED",
+    "provider_canonical_start_difference_seconds": 600,
+    "raw_snapshot_bytes": 543939,
+    "raw_snapshot_sha256": "32d073114b74f8d3bc743a4f783cddccbbc393cee9073a16d0e47fd3cad3ab9b",
+    "review_id": "a054afaa586a4a7a04e8c3c1c40e092ba930e36d99761eef492aa7ac59036ac0",
+    "snapshot_observed_at": "2026-10-23T20:00:14.986063Z"
+  },
+  "basis": {
+    "kind": "PUBLISHED_API_INVITATION",
+    "references": [
+      "https://moviodds.com/doc",
+      "https://moviodds.com/docs/sports/",
+      "https://help.bet365.com/s/en/sportsrules/basketball"
+    ],
+    "scope": "Bounded free keyless private read/cache/replay; no account/wallet/trade, public raw mirror or scheduled collector admitted."
+  },
+  "branch": "implementation/nba-player-line-review",
+  "decision": "ACTUAL_SOURCE_PRIVATE_PARSER_PROOF_NOT_PUBLIC_ADMISSION",
+  "implementation_source_commit": "10e6f7a06260b96c19fc1eb05eabb640d9e74a11",
+  "new_counts": {
+    "financial_settlements": 0,
+    "genuine_forecasts": 0,
+    "prospective_outcomes": 0,
+    "published_offers": 0,
+    "qualified_tickets": 0,
+    "real_model_evaluations": 0,
+    "statistical_grades": 0
+  },
+  "next_concrete_task": "Review exact provider/canonical start crosswalk and numeric selection operators, and establish scoped public-derived display plus durable private originals; preserve separate price-independent forecast operation.",
+  "parent_commit": "ee6a00537faa3fbb03c487711ce93fc8a7f66c22",
+  "publication": {
+    "deployed": false,
+    "draft_pr": 20,
+    "merged": false,
+    "public_admission": false,
+    "ticket_eligibility": false
+  },
+  "recorded_at": "2026-10-23T20:21:04.355454+00:00",
+  "requests": {
+    "agents_direct_gets": 0,
+    "automatic_approval_rejections": 0,
+    "data_route_gets": 11,
+    "direct_get_attempts": 26,
+    "documentation_gets": 15,
+    "explicit_named_amendment_before_requests_25_26": true,
+    "original_budget": 24,
+    "oversize_http_200_bodies_not_imported": 1,
+    "provider_contacts": 0,
+    "redirects": 0,
+    "result_statuses": {
+      "200": 23,
+      "404": 2,
+      "503": 1
+    },
+    "retries": 0,
+    "service_managed_discovery_http_count": "UNKNOWN_SEPARATE_FROM_CONTROLLED_COUNTER"
+  },
+  "retention": {
+    "durable_remote_raw_archive_verified": false,
+    "fresh_directory_separate_process_recovery": true,
+    "ledger_limits_unchanged": true,
+    "location": ".local-data/moviodds-review-20261023-v2",
+    "optimized_python_recovery": true,
+    "originals": 7,
+    "per_original_limit_bytes": 2097152,
+    "private_package_bytes": 3249925,
+    "private_package_files": 18,
+    "private_package_limit_bytes": 33554432,
+    "private_package_limit_files": 512,
+    "public_raw_redistribution": false,
+    "raw_and_metadata_unchanged_between_prototype_and_corrected_review": true,
+    "review_limit_bytes": 262144
+  },
+  "schema_version": "nba-keyless-alternative-result-v1",
+  "source": "MoviOdds",
+  "updated_at": "2026-10-23T20:52:39.754859+00:00",
+  "venue_as_declared_by_source": "bet365",
+  "verification": {
+    "browser": {
+      "html_sha256": "60c4271b4d63298140529066f0d69b9a97c1c0eefd208ae61d5751de0578da21",
+      "network_requests": 0,
+      "publication": false,
+      "schema_version": "moviodds-private-browser-check-v1",
+      "verified_at": "2026-10-23T20:19:13.534078+00:00",
+      "viewports": [
+        {
+          "cards": 8,
+          "category_rows": 14,
+          "errors": [],
+          "height": 1000,
+          "overflow": false,
+          "requests": 0,
+          "screenshot_sha256": "cee547e6ce1150b33ebf2c8a28dad381b3e891091213de9c821662df9fc56945",
+          "width": 1440
+        },
+        {
+          "cards": 8,
+          "category_rows": 14,
+          "errors": [],
+          "height": 844,
+          "overflow": false,
+          "requests": 0,
+          "screenshot_sha256": "921b72cd3a6e2f5f1c17ec73a495e8e686dd8e6abad9385d851ab66681811151",
+          "width": 390
+        },
+        {
+          "cards": 8,
+          "category_rows": 14,
+          "errors": [],
+          "height": 760,
+          "overflow": false,
+          "requests": 0,
+          "screenshot_sha256": "df9099b9b3c380508bee9b9a3835274134af13ed1f5b954388a742e3dd7fe7c3",
+          "width": 320
+        }
+      ]
+    },
+    "candidate_file_sha256": {
+      "multisport_lab/moviodds_offer.py": "f835db2b1887e379170897fcd09351f2bfeba8712b6ac74be912f0d815081800",
+      "scripts/render_local_offer_review.mjs": "79d1debeee0c4a34dc97898f378709d9b7000dac7d81a22bfa9cfe9472168c1e",
+      "tests/fixtures/moviodds_review_v1.json": "9e1267a67fa60d6403d138c0f8dd5a9e1eea662ac406331f9c7a05f7e6474916",
+      "tests/test_moviodds_offer.py": "e2660f1a7178bc510309c93cd5e7dc6f69ab985ef90ea1f65c28a01b5f55d056",
+      "web/moviodds-review.mjs": "f351d7c3cb13228add7920e3b6c3a0473bb7aea7d01bd4ff29e2678233ee6ff3",
+      "web/tests/moviodds-review.test.mjs": "9be64765ef61c9f907f9188dd7deee7604c679f499d07e855184ff5aadcc241a"
+    },
+    "demo": "PASS",
+    "final_source_full_python": {
+      "completion_observed_at": "2026-10-23T20:40:32Z",
+      "failures": 0,
+      "local_log": "/tmp/nml-moviodds-exact-source-python.log",
+      "seconds": 617.816,
+      "source_commit": "10e6f7a06260b96c19fc1eb05eabb640d9e74a11",
+      "status": "PASS",
+      "tests": 1067
+    },
+    "focused_python_optimized": {
+      "failures": 0,
+      "tests": 16
+    },
+    "frontend_full": {
+      "failures": 0,
+      "tests": 176
+    },
+    "full_python": {
+      "failures": 0,
+      "scope": "Completed during integration before final identity parity checks; final exact-source suite running separately.",
+      "seconds": 626.879,
+      "tests": 1064
+    },
+    "github_ci": {
+      "conclusion": "success",
+      "databaseId": 40020183869,
+      "headSha": "d836dafa6bb1c9fcde5bbb5f318416b164cdb644",
+      "jobs": {
+        "build": "success",
+        "deploy": "skipped",
+        "operating-diagnostic": "skipped"
+      },
+      "status": "completed",
+      "updatedAt": "2026-10-23T20:51:03Z",
+      "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40020183869"
+    },
+    "github_code_recovery": {
+      "code_from_github": true,
+      "durable_remote_raw_archive_verified": false,
+      "head": "d836dafa6bb1c9fcde5bbb5f318416b164cdb644",
+      "implementation_source_commit": "10e6f7a06260b96c19fc1eb05eabb640d9e74a11",
+      "manifest_entries": 569,
+      "manifest_passed": true,
+      "normalizer_sha256": "f835db2b1887e379170897fcd09351f2bfeba8712b6ac74be912f0d815081800",
+      "originals_origin": "LOCAL_RETAINED_PACKAGE_NOT_GITHUB",
+      "verified_at": "2026-10-23T20:35:05.113550+00:00"
+    },
+    "independent_review": {
+      "final_candidate_report_sha256": "ec0b248c475de44945795270bd2bb005f738e6d4f3704e6aa9e5baf5ad609bb9",
+      "final_focused_optimized_tests": 16,
+      "final_parity_report_sha256": "e202415ed7d775fdfd73f74d301907ef3f40529d9c967e173670209310d92175",
+      "initial_findings_preserved": true,
+      "report_sha256": "85b2a84eab544a57268b7b904887e3b3383fdb54842470a8ef9449248e37f9af",
+      "unresolved_actionable_integrity_findings": 0,
+      "verified_fixes": [
+        "exact_nanosecond_chronology",
+        "source_redirect_chronology",
+        "strict_catalog_integer_count",
+        "cross_runtime_integral_difference_encoding",
+        "plain_decimal_lexeme_parity",
+        "strict_native_and_used_canonical_identity_fields"
+      ]
+    },
+    "local_exact_source_recovery": {
+      "all_manifest_entries_passed": true,
+      "durable_remote_raw_archive_verified": false,
+      "manifest_entries": 569,
+      "optimized_seven_original_replay": true,
+      "remote_code_recovery": false,
+      "source_commit": "10e6f7a06260b96c19fc1eb05eabb640d9e74a11"
+    },
+    "protected": {
+      "original_records": {
+        "count": 19,
+        "unchanged": true
+      },
+      "protected_source_files": {
+        "count": 23,
+        "unchanged": true
+      }
+    }
+  }
+}

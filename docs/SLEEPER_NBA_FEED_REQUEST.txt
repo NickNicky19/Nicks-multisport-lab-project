@@ -1,0 +1,55 @@
+DRAFT ONLY — not sent
+To: api@sleeper.app
+Subject: Free noncommercial NBA Picks access, game mapping and period documentation
+
+Hello Sleeper API team,
+
+We are building Nick's Multisport Lab, a noncommercial NBA research website:
+https://nicknicky19.github.io/Nicks-multisport-lab-project/
+
+Could you point us to applicable published documentation, or confirm a scoped
+allowance, for anonymous read-only NBA Picks thresholds? The route must remain
+free and require no subscription, trial, signup, account login, wallet or
+provider API key. We do not need trading or account access, and prices may remain
+unavailable.
+
+Your documented player catalogue already supplies native player identities. We
+also found the Player Picks Rules, Stats Explained and In-Game Contests articles.
+The remaining technical questions are:
+
+1. Which supported public route/document maps a Picks NBA game_id to the real
+   teams, scheduled start with timezone, season, status and event revision?
+   The fantasy-league matchups resource does not describe these real games.
+2. Which native fields explicitly identify full-game, quarter, second-half,
+   series or season targets and overtime treatment? In particular, do unprefixed
+   pregame wagers use full-game totals including overtime, and which field binds
+   that rule? We have seen explicit Q1 labels also carrying line_type=normal,
+   so we cannot treat normal alone as a full-game designation.
+3. Which participation, void and statistical-correction rules apply to those
+   exact pregame variants? We will preserve the separate in-game rules.
+4. Is there a supported external player-ID crosswalk for matching these native
+   identities to independently sourced statistical forecasts?
+
+Please distinguish permission for:
+- Bounded anonymous collection, initially at most two board snapshots per NBA
+  event day, subject to any stricter supported limit.
+- Private caching of exact original responses, hashes and capture clocks for
+  reproducibility; player-catalogue refresh at most once per day.
+- Attributed public display of derived player names, matchups, scheduled times,
+  statistics, periods, thresholds, selections and observation clocks.
+
+Raw response redistribution is a separate scope and is not assumed. Public
+display would identify Sleeper Picks, preserve missing prices, and make no claim
+that pick'em multipliers are standalone sportsbook odds or that these selections
+are compatible with another venue's parlays.
+
+Our NBA category inventory is points, points+rebounds+assists, rebounds, threes
+made, assists, rebounds+assists, points+rebounds, turnovers, triple-doubles,
+double-doubles, blocks, steals, blocks+steals, and points+assists. We will report
+unobserved or unsupported categories explicitly rather than assume coverage.
+
+An existing published allowance with its conditions would be sufficient if it
+covers this scope. If this free route is not supported, please identify which
+specific access, retention, display or mapping requirement cannot be met.
+
+Thank you.

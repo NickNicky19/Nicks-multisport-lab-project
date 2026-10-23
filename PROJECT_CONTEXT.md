@@ -1,6 +1,106 @@
 # Nick's Multisport Lab — project context
 
-Updated: October 22, 2026.
+Updated: October 23, 2026.
+
+## Latest native-offer delivery and actual operating state — October 23, 21:00 UTC
+
+Native implementation `520a6f459fc99e1d2c6a34f977bef9facf3c75c0` adds a versioned
+Boolean player-offer contract, private archive/recovery and existing offer-channel
+integration. Follow-up `7915972` connects the Pages entrypoint to guarded private
+source recovery after admission. The retained MoviOdds/bet365 sample establishes
+34 local DD/TD source contracts (1,229 player observations, 19 labels); one actual Myles Turner Yes record
+has independently replayed private desktop/mobile preview. Its canonical event
+start conflict remains explicit; 1,195 numeric observations lack an established
+operator. No native provider player ID or 0.5 source line is invented. Both public
+admission registries are empty; no public offer or ticket qualification.
+
+Actual private GitHub raw archival is **blocked**: draft release 422318512 was
+created, but the first release-asset upload returned HTTP 401; independent inventory
+contains zero assets. Existing API metadata authentication works; root cause is
+unknown. No alternate transport/retry/public raw fallback was attempted. No sports
+provider key or encryption-key arrangement is required for this source-specific
+private draft; a working existing upload-authentication context and actual cold
+readback are still needed. Exact originals/requests are retained locally.
+
+Automatic SDV coordinator run 40005008319 succeeded at 18:38 UTC, but no native run
+was observed within October 23's 13:00–14:00 UTC planning window. Independently
+recovered registry marks October 24 game date missed/unobserved, with zero planned
+days/captures/forecasts/grades. Cause cannot be inferred from an absent run.
+Next eligible planning is **October 24, 08:00–09:00 CDT / 13:00–14:00 UTC**, for October 25
+UTC games; installed cron is not a guarantee of an actual run. No clocks/windows,
+workflow, model law, expired pilot or original record changed. Public build
+remains main `ef9e270`, six historical bundles/six grades, zero genuine forecasts and
+offers. Read the newest handoff and `docs/NBA_NATIVE_OFFER_DELIVERY.md`; older
+sections below retain their dated earlier observations.
+
+## Current player-line work — verified names, partial rules and exact research matching
+
+Implementation `dd6784bf59e7acdac0e5426552835f65f1a9a716` adds a source-backed,
+separately sealed companion for all **173 native Sleeper player names** and
+**188 explicit Q1 selections** (overtime excluded). Exact original board and later
+catalogue/rule clocks remain distinct. The 32-card private desktop/mobile preview
+preserves all original records and all 14 category counts. Twelve native games
+have raw team-label pairs but no verified canonical events/starts; unprefixed
+full-game periods and canonical player crosswalks remain unknown. Complete actual
+contracts and published offers remain zero. Applicable recurring/public Picks
+scope and durable raw-offer archival are unresolved. The documented catalogue
+API/cache allowance is not a Picks-feed grant. Six bounded follow-up GETs were
+used; no further board, price, credential or paid-service access occurred.
+
+The existing offer-only matcher now accepts strictly validated, hash-verified,
+remotely admitted original daily/recurring R0/K0 forecasts across all 14 categories.
+Props includes those channels and uses a consistent microsecond decision clock.
+Exact event/player/team/period/OT and actual persistence/recovery/publication
+availability remain mandatory. No price, ticket eligibility or EV is invented.
+This implementation is in draft PR #20; public main remains `ef9e270` and the
+licensed statistical forecast coordinator remains independent and unchanged.
+See latest handoff and `evidence/offers/2026-10-23-sleeper-name-period-followthrough.json`.
+
+## Earlier player-line inspection — original evidence preserved
+
+One bounded, unauthenticated Sleeper board GET at October 23 **11:12:31 UTC**
+returned 1,272 NBA player rows. Exact original bytes independently replay into
+**2,544 over/under observations**, zero diagnostics, 188 unmapped quarter options,
+and the full 14-category inventory. The private desktop/mobile preview preserves
+thresholds, native IDs, source clocks and literal side multipliers without
+requiring odds. Prices remain unavailable. Names/event crosswalks, start, period,
+overtime and settlement rules remain unverified; no full contract, forecast match
+or qualified ticket is fabricated. Evidence is retained locally, not remotely
+archived or publicly admitted. See `docs/PLAYER_LINE_REVIEW.md` and latest handoff.
+Existing statistical forecast operation is independent and unchanged.
+
+## Latest execution — automatic startup and registry recovery verified
+
+Scheduled run **39902534915** succeeded on deployed main `ef9e270` at
+04:51:13–04:51:46 UTC. Independent fresh Git/archive readback verified registry
+commit `75d3a4a6dbb6853e8d17d9c036c797dbf6922a61`, its exact bytes and typed
+meaning. No forecasting or grading phase was due: the registry has zero days,
+tasks and captures, with null publication. The next complete planning window is
+October 23, 13:00–14:00 UTC / 08:00–09:00 CDT. Genuine forecasts, served delivery,
+final statistical grades and a later successful scheduled execution remain
+separate outstanding evidence. See the newest handoff for retained originals,
+the inaccessible log-batch limitation and exact recovery proof.
+
+## Current release — scheduled runner repair merged
+
+PR #18 merged the approved head `37c2720a29c5b8f66ab528e4d9bf4d74e5c719db`
+at actual main `ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`. It fixes the
+`python -m` capability-registry split without relaxing source/authority/timing
+gates. All 23 protected producer files, 19 original records and both model laws
+remain unchanged. Pages run 39892839314 deployed the exact merge successfully;
+public manifest/assets and independent desktop/mobile checks passed. The site
+retains six historical bundles/grades and zero genuine forecasts/offers. A
+successful native startup/readback is now verified above; genuine source capture,
+issuance, publication and final grading remain separate outstanding evidence.
+
+The recurring coordinator is installed and its documented scope is approved.
+Three native runs on the previous main failed before capture/generation. The
+protected first daily cycle missed its owner-start window after an early rejected
+attempt and must not be rerun or backfilled. Next production planning is October
+23, 13:00–14:00 UTC for UTC game date October 24; no daily manual launch is the
+production design. Genuine forecasts and verified final statistical grades remain
+pending. Older sections below are dated prior checkpoints, not current activation
+or deployment statements. Missing offers/prices remain independent of forecasting.
 
 ## Current public release and recurring implementation
 

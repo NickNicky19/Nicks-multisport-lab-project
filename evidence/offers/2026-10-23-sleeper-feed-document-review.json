@@ -1,0 +1,340 @@
+{
+  "branch": "implementation/nba-player-line-review",
+  "discovery": {
+    "malformed_tool_call_without_source_result": 1,
+    "queries": 9,
+    "query_texts": [
+      "site:sleeper.com Picks API developer noncommercial data permission",
+      "site:docs.sleeper.com NBA schedule game_id period Picks",
+      "site:support.sleeper.com NBA Picks \"full game\" overtime",
+      "\"Sleeper\" \"Picks\" \"API\" \"licensing\"",
+      "\"api.sleeper\" \"nba\" \"game_id\" schedule",
+      "site:support.sleeper.com \"API\" \"data\" \"Picks\"",
+      "site:sleeper.com \"NBA\" \"game_id\" API",
+      "site:docs.sleeper.com \"Picks\" API permission",
+      "site:sleeper.com \"Picks\" \"API\" \"partner\""
+    ],
+    "results": [
+      {
+        "bytes": 33233,
+        "local_path": ".local-data/nba-feed-document-review-20261023/discovery-01.json",
+        "sha256": "c1b2c0273a79f3564aa6f7e2d2a34253d29fe289ec707aeb9addeda85e5c6bbd"
+      },
+      {
+        "bytes": 32788,
+        "local_path": ".local-data/nba-feed-document-review-20261023/discovery-02.json",
+        "sha256": "c61140539c79418aa7673d4c1fdede90bc388745ad5a4e3aa15686ba3fc98e64"
+      },
+      {
+        "bytes": 31318,
+        "local_path": ".local-data/nba-feed-document-review-20261023/discovery-03.json",
+        "sha256": "63d510ff57a1633502e48487e454b1dad25590ca6b5b7396de183aa670aea179"
+      }
+    ],
+    "successful_tool_calls": 3,
+    "third_party_snippets_not_source_authority": true,
+    "underlying_http_get_count": "UNKNOWN_TOOL_MANAGED"
+  },
+  "findings": {
+    "documented_api_use": "Published free noncommercial read-only/no-token scope; documented ID-map private cache at most daily; explicit attributed trending embed scope.",
+    "in_game_participation": "No automatic DNP/void is IN_GAME-specific; not applied to PRE_GAME rows.",
+    "in_game_period": "FULL_GAME_FOR_IN_GAME_PRODUCT; statistics before and after entry included.",
+    "legacy_rules_link": "ACTUAL_404; no retry and no category-absence inference.",
+    "native_names": "173/173 previously verified and unchanged; namespaced native IDs remain distinct from canonical forecast identities.",
+    "nba_game_mapping": "NOT_ESTABLISHED; no documented real NBA game/start route found; fantasy matchups do not supply it.",
+    "picks_collection_and_public_derived_display": "NO_OPERATIONAL_ADMISSION; applicable scope not established by these documents/searches; not a universal claim of absence.",
+    "quarter_overtime": "OT_EXCLUDED; explicit Q1 mapping already retained.",
+    "second_half_overtime": "OT_INCLUDED for second-half markets in the official article.",
+    "unprefixed_pregame_period": "UNKNOWN; line_type=normal also occurs in every retained Q1 row."
+  },
+  "independent_native_operation": {
+    "current_registry_body_recovered": false,
+    "current_registry_contents_and_counts": "UNVERIFIED",
+    "failure_localization": "first-cycle-postgame: Existing first-cycle outcomes only, exit2. Production prepare/finish succeeded; work/grade/diagnostic skipped.",
+    "no_dispatch_capture_reenable_or_records_write": true,
+    "observation": {
+      "conclusion": "failure",
+      "created_at": "2026-10-23T14:28:56Z",
+      "event": "schedule",
+      "first-cycle-annotations": {
+        "bytes": 1338,
+        "local_path": "/tmp/nml-sdv-run39969989665-first-cycle-annotations.json",
+        "sha256": "aad43c0b00f788f3e4da1eaeea1226c80ee3f6fba85055cba9c24b65c32ccbd0"
+      },
+      "head_sha": "ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+      "html_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39969989665",
+      "id": 39969989665,
+      "job_observations": [
+        {
+          "completed_at": "2026-10-23T14:29:11Z",
+          "conclusion": "success",
+          "id": 120469810662,
+          "name": "prepare",
+          "started_at": "2026-10-23T14:28:58Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-23T14:29:09Z",
+          "conclusion": "failure",
+          "id": 120469811011,
+          "name": "first-cycle-postgame",
+          "started_at": "2026-10-23T14:28:58Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-23T14:28:56Z",
+          "conclusion": "skipped",
+          "id": 120469813132,
+          "name": "diagnostic",
+          "started_at": "2026-10-23T14:28:57Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-23T14:29:27Z",
+          "conclusion": "success",
+          "id": 120469935610,
+          "name": "finish",
+          "started_at": "2026-10-23T14:29:13Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-23T14:29:11Z",
+          "conclusion": "skipped",
+          "id": 120469937295,
+          "name": "work",
+          "started_at": "2026-10-23T14:29:12Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-10-23T14:29:11Z",
+          "conclusion": "skipped",
+          "id": 120469937397,
+          "name": "grade",
+          "started_at": "2026-10-23T14:29:12Z",
+          "status": "completed"
+        }
+      ],
+      "jobs": {
+        "bytes": 10930,
+        "local_path": "/tmp/nml-sdv-run39969989665-jobs.json",
+        "sha256": "bd636945f562f89174782a5c758c006c0056aa330eb4d5b391a79f6befdb8145"
+      },
+      "run": {
+        "bytes": 14114,
+        "local_path": "/tmp/nml-sdv-run39969989665-run.json",
+        "sha256": "0951d05c02e2a222c4b67ddb2a2660b146d484a4be5b67d6edfa25d299eb506f"
+      },
+      "run_attempt": 1,
+      "run_started_at": "2026-10-23T14:28:56Z",
+      "status": "completed",
+      "updated_at": "2026-10-23T14:29:28Z"
+    },
+    "planning_window": "2026-10-23T13:00:00Z to 2026-10-23T14:00:00Z; observed run began14:28:56Z.",
+    "records_pointer_head": "d0d9d4795d79d8ded5bafb7a3da9693ae2a70be6",
+    "source_metadata_gets": 3,
+    "specific_failure_cause": "UNKNOWN; no execution traceback/log body recovered. Do not infer a production-coordinator defect from the overall failure."
+  },
+  "independent_review": {
+    "edits": 0,
+    "provider_gets": 0,
+    "provider_messages": 0,
+    "result": "PASS_NO_MATERIAL_CORRECTIONS",
+    "reviewer": "sleeper_contract_sources",
+    "scope": [
+      "Actual new and retained official documents",
+      "In-Game/PRE_GAME applicability",
+      "Game/start and native-period gaps",
+      "Scoped API/trending allowance",
+      "Contact, original hashes and later clocks",
+      "Unsent draft and local-only recovery"
+    ]
+  },
+  "offline_verification": {
+    "archive_recovery": "INDEPENDENT_LOCAL_ZIP_READBACK_NOT_DURABLE_REMOTE",
+    "assertions_used_for_integrity": false,
+    "controlled_document_gets": 3,
+    "directory_articles": 27,
+    "documentation_zip": "/workspace/nml-sdv-operations-followthrough/.local-data/nba-feed-document-review-20261023/official-document-package.zip",
+    "http_requests_by_this_verifier": 0,
+    "official_contact": "api@sleeper.app",
+    "provider_messages_sent": 0,
+    "result": "PASS",
+    "reused_originals_verified": 4,
+    "runtime_originals_unchanged": true,
+    "schema_version": "nba-sleeper-document-offline-replay-v1",
+    "verified_at": "2026-10-23T17:57:36.245364Z",
+    "zip_bytes": 82151,
+    "zip_sha256": "4e504e6ff5280697e9be86c30a962d9cceb21be55c917bc2c4ef456f4ce6e76f"
+  },
+  "preserved_main": "ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+  "provider_request": {
+    "asks_for_existing_published_allowance_or_scoped_confirmation": true,
+    "contact_basis": "Cloudflare-encoded email link in retained official API documentation",
+    "draft": "docs/SLEEPER_NBA_FEED_REQUEST.txt",
+    "official_contact": "api@sleeper.app",
+    "raw_redistribution_separate": true,
+    "requires_no_provider_key_signup_or_payment": true,
+    "sent": false
+  },
+  "pull_request": 20,
+  "pull_request_remains_draft": true,
+  "recorded_at": "2026-10-23T17:55:56.727088Z",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "retention": {
+    "durable_remote_raw_archive_verified": false,
+    "later_rule_capture_does_not_refresh_board_observation": true,
+    "local_source_readback_verified": true,
+    "raw_bodies_committed": false,
+    "unchanged_board_observed_at": "2026-10-23T11:12:31.699799Z"
+  },
+  "reused_sources_without_new_gets": [
+    {
+      "local_body": ".local-data/nba-live-lines-20261023/01-sleeper-api-docs.body",
+      "local_metadata": ".local-data/nba-live-lines-20261023/01-sleeper-api-docs.metadata.json",
+      "observed_at": "2026-10-23T12:10:36.262091Z",
+      "raw_bytes": 84121,
+      "raw_sha256": "948df50cee3dec2370acabb9153c18cb093cb7763fba0582484efdee93a7ca9b",
+      "url": "https://docs.sleeper.com/"
+    },
+    {
+      "local_body": ".local-data/nba-live-lines-20261023/03-sleeper-picks-rules.body",
+      "local_metadata": ".local-data/nba-live-lines-20261023/03-sleeper-picks-rules.metadata.json",
+      "observed_at": "2026-10-23T12:11:54.835089Z",
+      "raw_bytes": 114431,
+      "raw_sha256": "f9966609cfe4c0742c9ceb1d2e6a9c684c7b1f7b52ddcbf312cc3501a7ec2637",
+      "url": "https://support.sleeper.com/en/articles/9047931-sleeper-player-picks-rules"
+    },
+    {
+      "local_body": ".local-data/nba-live-lines-20261023/04-sleeper-stats-rules.body",
+      "local_metadata": ".local-data/nba-live-lines-20261023/04-sleeper-stats-rules.metadata.json",
+      "observed_at": "2026-10-23T12:11:58.886369Z",
+      "raw_bytes": 149379,
+      "raw_sha256": "0f13c591cfc12aa9ca7229e5ec43c03d037523736328e23efb5ee4a0ebe6ace5",
+      "url": "https://support.sleeper.com/en/articles/6262990-sleeper-player-picks-stats-explained"
+    },
+    {
+      "local_body": ".local-data/nba-live-lines-20261023/06-sleeper-general-terms.body",
+      "local_metadata": ".local-data/nba-live-lines-20261023/06-sleeper-general-terms.metadata.json",
+      "observed_at": "2026-10-23T12:13:19.871359Z",
+      "raw_bytes": 503006,
+      "raw_sha256": "7fa85a43db6b6d2c06925c6b19edd60386bcf8a6b312abf0fb66361215211039",
+      "url": "https://support.sleeper.com/en/articles/5486620-general-terms-of-use"
+    }
+  ],
+  "schema_version": "nba-sleeper-feed-document-review-v1",
+  "scope": "OFFICIAL_DOCUMENT_REVIEW_ONLY_NOT_PICKS_PUBLICATION_OR_OPERATIONAL_ADMISSION",
+  "software": {
+    "behavior_changed": false,
+    "full_tests_not_repeated_for_docs_only": true,
+    "previous_exact_implementation_ci": {
+      "build_conclusion": "SUCCESS",
+      "completed_at": "2026-10-23T12:59:13Z",
+      "deployment": "SKIPPED",
+      "head": "610d46bfaff02ce566bc0db74454081e1c83ce41",
+      "run_id": 39955407112
+    }
+  },
+  "source_requests": {
+    "agent_gets": 0,
+    "controlled_document_gets": 3,
+    "local_package_limit_bytes": 33554432,
+    "per_document_limit_bytes": 2097152,
+    "receipts": [
+      {
+        "actual_get_attempts": 1,
+        "basis": "Official rules link retained in Stats Explained; inspect specific game/period applicability and link routing, no sports-data extraction.",
+        "complete_body": true,
+        "content_type": "text/html; charset=utf-8",
+        "elapsed_seconds": 0.48984509499859996,
+        "final_url": "https://support.sleeper.com/en/articles/5556096-over-under-rules",
+        "http_status": 404,
+        "kind": "documentation",
+        "local_body": ".local-data/nba-feed-document-review-20261023/01-legacy-picks-rules.body",
+        "local_metadata": ".local-data/nba-feed-document-review-20261023/01-legacy-picks-rules.metadata.json",
+        "location": null,
+        "maximum_gets": 8,
+        "maximum_response_bytes": 2097152,
+        "metadata_sha256": "8de55170f35a0849f8b50391e0b247d9479a377da182a6f1cd88d4abbc76349c",
+        "name": "legacy-picks-rules",
+        "observed_at": "2026-10-23T17:47:12.334102Z",
+        "raw_bytes": 65914,
+        "raw_sha256": "8afc6521d6a05ddc9b952109d4f3efcfe9098fd68f76047e7256a33b72ac47d9",
+        "redirects_allowed": 0,
+        "request_number": 1,
+        "request_started_at": "2026-10-23T17:47:11.844229Z",
+        "retries_allowed": 0,
+        "schema_version": "nba-live-line-get-v1",
+        "source_http_date": "Fri, 23 Oct 2026 17:47:12 GMT",
+        "url": "https://support.sleeper.com/en/articles/5556096-over-under-rules"
+      },
+      {
+        "actual_get_attempts": 1,
+        "basis": "New official indexed Player Picks NBA full-game/quarter rules article; documentary inspection only.",
+        "complete_body": true,
+        "content_type": "text/html; charset=utf-8",
+        "elapsed_seconds": 0.5338383959897328,
+        "final_url": "https://support.sleeper.com/en/articles/6998002-sleeper-player-picks-in-game-contests",
+        "http_status": 200,
+        "kind": "documentation",
+        "local_body": ".local-data/nba-feed-document-review-20261023/02-ingame-rules.body",
+        "local_metadata": ".local-data/nba-feed-document-review-20261023/02-ingame-rules.metadata.json",
+        "location": null,
+        "maximum_gets": 8,
+        "maximum_response_bytes": 2097152,
+        "metadata_sha256": "2c7219aa50398e06b7aac9357dfb8b1a193c89e07d3d27420d8e6a78184f6b4b",
+        "name": "ingame-rules",
+        "observed_at": "2026-10-23T17:47:37.975310Z",
+        "raw_bytes": 84581,
+        "raw_sha256": "b4dba4f94b677ffbcc5d7ea235eff6d905ba9c0bc8f30e4defb58c15e1a22ccc",
+        "redirects_allowed": 0,
+        "request_number": 2,
+        "request_started_at": "2026-10-23T17:47:37.441397Z",
+        "retries_allowed": 0,
+        "schema_version": "nba-live-line-get-v1",
+        "source_http_date": "Fri, 23 Oct 2026 17:47:37 GMT",
+        "url": "https://support.sleeper.com/en/articles/6998002-sleeper-player-picks-in-game-contests"
+      },
+      {
+        "actual_get_attempts": 1,
+        "basis": "Official Contest Rules collection linked from retained and new rules documents; locate targeted NBA period/product and API-use documentation.",
+        "complete_body": true,
+        "content_type": "text/html; charset=utf-8",
+        "elapsed_seconds": 0.5843618169892579,
+        "final_url": "https://support.sleeper.com/en/collections/3126755-contest-rules",
+        "http_status": 200,
+        "kind": "documentation",
+        "local_body": ".local-data/nba-feed-document-review-20261023/03-contest-rules-index.body",
+        "local_metadata": ".local-data/nba-feed-document-review-20261023/03-contest-rules-index.metadata.json",
+        "location": null,
+        "maximum_gets": 8,
+        "maximum_response_bytes": 2097152,
+        "metadata_sha256": "7953c2e68c837d8b872e8038a5d505edd410664ebfac93a9c3842be2c7e82389",
+        "name": "contest-rules-index",
+        "observed_at": "2026-10-23T17:48:34.228020Z",
+        "raw_bytes": 109292,
+        "raw_sha256": "1ecff8c54409ab830cabe752990e3c7ff093ba23508b96be433ca83b8fd60746",
+        "redirects_allowed": 0,
+        "request_number": 3,
+        "request_started_at": "2026-10-23T17:48:33.643553Z",
+        "retries_allowed": 0,
+        "schema_version": "nba-live-line-get-v1",
+        "source_http_date": "Fri, 23 Oct 2026 17:48:34 GMT",
+        "url": "https://support.sleeper.com/en/collections/3126755-contest-rules"
+      }
+    ],
+    "redirects": 0,
+    "registered_ceiling": 8,
+    "retries": 0,
+    "sports_data_gets": 0
+  },
+  "this_package": {
+    "new_financial_settlements": 0,
+    "new_genuine_forecasts": 0,
+    "new_prospective_outcomes": 0,
+    "new_published_offers": 0,
+    "new_qualified_tickets": 0,
+    "new_statistical_grades": 0,
+    "public_deployment": false
+  },
+  "unchanged_implementation_commit": "610d46bfaff02ce566bc0db74454081e1c83ce41"
+}

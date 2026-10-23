@@ -1,6 +1,8 @@
 """Strict, separately admitted NBA offer-only facts; never ticket eligibility.
 
-This module performs no network access. A reviewed contract may be displayed
+Typed validation performs no network access. After the independent public
+admission gate, native ledger recovery can authenticate its private originals
+through the existing fixed GitHub draft. A reviewed contract may be displayed
 without a price. Checksums and review declarations do not establish provider
 permission, upstream authenticity, or a usable betting quote.
 """
@@ -12,10 +14,12 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from functools import wraps
 import hashlib
+import json
 from pathlib import Path
 import re
 from urllib.parse import urlparse
 import zlib
+from weakref import WeakKeyDictionary
 
 from .integrity import (HASH_FORMAT, RECEIPT_SCHEMA, IntegrityError, canonical,
                         digest, load_json, read_receipt, stamp, utc)
@@ -24,6 +28,7 @@ from .source_evidence import (replay_text_evidence, validate_text_binding,
                               validate_text_replay)
 
 ASSET_SCHEMA = "nba-player-offers-v1"
+NATIVE_ASSET_SCHEMA = "nba-player-offers-v2"
 OFFER_SCHEMA = "nba-player-offer-v1"
 ADMISSION_SCHEMA = "nba-offer-publication-admission-v1"
 RAW_SCHEMA = "nba-offer-raw-capture-v1"
@@ -267,7 +272,7 @@ def validate_offer(offer, admission, *, now, allow_synthetic=False):
 def validate_asset(asset, *, now, allow_synthetic=False):
     _fields(asset, {"schema_version", "asset_id", "league", "generated_at", "status", "category_inventory",
                     "admissions", "offers", "unavailable_reasons"}, "offer asset")
-    _require(asset["schema_version"] == ASSET_SCHEMA and asset["league"] == "NBA"
+    _require(asset["schema_version"] in {ASSET_SCHEMA, NATIVE_ASSET_SCHEMA} and asset["league"] == "NBA"
              and asset["status"] == "OFFER_ONLY_RESEARCH" and asset["category_inventory"] == list(CATEGORIES),
              "Unsupported offer asset or incomplete category inventory")
     _hash(asset["asset_id"], "asset ID")
@@ -285,12 +290,23 @@ def validate_asset(asset, *, now, allow_synthetic=False):
         admissions[admission["admission_id"]] = admission
     used, ids, selections = set(), set(), set()
     for offer in asset["offers"]:
-        _require(type(offer) is dict and offer.get("admission_id") in admissions, "Offer missing publication review")
-        validate_offer(offer, admissions[offer["admission_id"]], now=generated, allow_synthetic=allow_synthetic)
-        selection = (offer["venue"], offer["product"], offer["provider"]["id_namespace"],
-                     offer["provider"]["selection_id"], offer["observed_at"])
+        _require(type(offer) is dict, "Invalid typed offer")
+        if offer.get("schema_version") == "nba-native-player-offer-v2":
+            from .native_offer import validate_native_offer, native_offer_publicly_admitted
+            _require(asset["schema_version"] == NATIVE_ASSET_SCHEMA, "Native offers require the versioned v2 asset")
+            validate_native_offer(offer, now=generated)
+            _require((allow_synthetic and offer["evidence_lane"] == "SYNTHETIC_TEST")
+                     or native_offer_publicly_admitted(offer), "Native offer has no reviewed public admission")
+            selection = (offer["venue"], offer["product"], offer["event"]["id_namespace"], offer["event"]["id"],
+                         *(offer["selection"][key] for key in ("group_id", "market_id", "selection_id")), offer["observed_at"])
+        else:
+            _require(offer.get("admission_id") in admissions, "Offer missing publication review")
+            validate_offer(offer, admissions[offer["admission_id"]], now=generated, allow_synthetic=allow_synthetic)
+            selection = (offer["venue"], offer["product"], offer["provider"]["id_namespace"],
+                         offer["provider"]["selection_id"], offer["observed_at"])
+            used.add(offer["admission_id"])
         _require(offer["offer_id"] not in ids and selection not in selections, "Duplicate offer/provider selection")
-        ids.add(offer["offer_id"]); selections.add(selection); used.add(offer["admission_id"])
+        ids.add(offer["offer_id"]); selections.add(selection)
     _require(used == set(admissions), "Unreferenced admission review")
     _require(type(asset["unavailable_reasons"]) is list and len(asset["unavailable_reasons"]) <= 16,
              "Invalid offer availability reasons")
@@ -430,6 +446,39 @@ class OfferStore:
 
     @_strict
     def _validate_retained(self, offer, admission, references):
+        if offer.get("schema_version") == "nba-native-player-offer-v2":
+            from .native_offer import validate_native_offer, replay_native_offer, native_offer_publicly_admitted
+            from .moviodds_archive import validate_manifest, validate_reference
+            validate_native_offer(offer, now=datetime.now(timezone.utc))
+            _require(admission is None and ((self.allow_synthetic and offer["evidence_lane"] == "SYNTHETIC_TEST")
+                     or native_offer_publicly_admitted(offer)), "Native record requires a reviewed public admission")
+            _require(len(references) == 1 and references[0].kind == "input_captures",
+                     "Native contract requires one independently recoverable private source reference")
+            source = self.ledger.read(references[0])["data"]
+            _fields(source, {"native_offer_archive"}, "private native source pointer")
+            pointer = validate_reference(source["native_offer_archive"])
+            if self.raw_reader is None:
+                _require(offer["evidence_lane"] == "ACTUAL_SOURCE_REPLAY",
+                         "Synthetic native records require an explicit offline source reader")
+                from .moviodds_archive import GuardedGitHubReleaseArchive, PrivateMoviOddsArchive
+                # No provider request or write is possible on this default path.
+                # The empty public registry rejects unreviewed records above,
+                # before even constructing the authenticated archive client.
+                retained = PrivateMoviOddsArchive(GuardedGitHubReleaseArchive(
+                    allow_diagnostics=True)).load_recovered_assets(pointer, now=datetime.now(timezone.utc))
+            else:
+                retained = self.raw_reader(references[0])
+            _require(type(retained) is dict and {"assets", "review", "manifest", "manifest_ref"} <= set(retained),
+                     "Native private source reader lacks original bytes and manifest")
+            _require(offer["evidence_lane"] == "SYNTHETIC_TEST"
+                     or retained.get("durable_remote_archive_verified") is True,
+                     "Actual native source requires authenticated durable remote recovery")
+            validate_manifest(retained["manifest"], reference=pointer)
+            _require(retained["manifest_ref"] == pointer["manifest_ref"]
+                     and pointer["review_id"] == offer["original_review_id"]
+                     and retained["review"]["review_id"] == pointer["review_id"], "Native source archive identity differs")
+            replay_native_offer(offer, retained["assets"], now=datetime.now(timezone.utc), allow_synthetic=self.allow_synthetic)
+            return
         validate_offer(offer, admission, now=datetime.now(timezone.utc), allow_synthetic=self.allow_synthetic)
         refs = {ref.record_id: ref for ref in references}
         _require(set(refs) == {item["raw_record_id"] for item in offer["source_evidence"]}, "Exact raw source references required")
@@ -467,8 +516,19 @@ class OfferStore:
 
     @staticmethod
     def _identity(offer):
+        if offer.get("schema_version") == "nba-native-player-offer-v2":
+            return {"league": offer["league"], "source": offer["source"], "event": offer["event"],
+                    "canonical_player": offer["canonical_player"], "selection": offer["selection"],
+                    "observed_at": offer["observed_at"]}
         return {**{key: offer[key] for key in ("league", "id_namespace", "event_id", "event_version", "player_id", "venue", "product", "observed_at")},
                 "provider": offer["provider"]}
+
+    def retain_native_archive(self, reference):
+        """Retain metadata only. Private originals never enter the public ledger."""
+        from .moviodds_archive import validate_reference
+        validate_reference(reference)
+        with self.store.single_writer():
+            return self._append("native-offer-archive-v1:" + digest(reference), {"native_offer_archive": reference})
 
     def persist(self, offer, admission, *, raw_references):
         references = tuple(raw_references)
@@ -559,8 +619,9 @@ class OfferStore:
 def make_asset(root, *, now, raw_reader=None):
     captures = OfferStore(root, raw_reader=raw_reader).active()
     offers = [item["offer"] for _, item in captures]
-    admissions = [item["admission"] for _, item in captures]
-    asset = seal({"schema_version": ASSET_SCHEMA, "league": "NBA", "generated_at": stamp(utc(now)),
+    admissions = [item["admission"] for _, item in captures if item["admission"] is not None]
+    schema = NATIVE_ASSET_SCHEMA if any(item.get("schema_version") == "nba-native-player-offer-v2" for item in offers) else ASSET_SCHEMA
+    asset = seal({"schema_version": schema, "league": "NBA", "generated_at": stamp(utc(now)),
                   "status": "OFFER_ONLY_RESEARCH", "category_inventory": list(CATEGORIES),
                   "admissions": admissions, "offers": offers,
                   "unavailable_reasons": [] if offers else [
@@ -568,8 +629,120 @@ def make_asset(root, *, now, raw_reader=None):
     return validate_asset(asset, now=now)
 
 
+_ADMITTED_MATCH_VIEWS = WeakKeyDictionary()
+
+
+class _AdmittedForecastView:
+    """A read-only view of validated originals, never a new evidence lane.
+
+    Copies of the displayed dictionaries cannot mutate the validated matching
+    fields. A caller-supplied dictionary/eligible flag cannot create this view.
+    """
+    __slots__ = ("_raw", "__weakref__")
+
+    def __init__(self, payload):
+        object.__setattr__(self, "_raw", canonical(payload))
+
+    def __setattr__(self, key, value):
+        raise AttributeError("An admitted forecast matching view is immutable")
+
+    def __getitem__(self, key):
+        return json.loads(self._raw)[key]
+
+
+def _production_match_records(collection, *, at):
+    from . import sdv_production_publication as production
+    _require(type(collection) is dict and type(collection.get("pages")) is list,
+             "Offer matching requires the original production index and pages")
+    index, pages = collection["index"], collection["pages"]
+    production.validate_index(index, now=at)
+    _require(len(pages) == len(index["pages"]), "Offer matching omitted a declared production page")
+    records, total = [], len(canonical(index))
+    for descriptor, page in zip(index["pages"], pages):
+        production.validate_page(page, generated_at=index["generated_at"], game_date=descriptor["game_date"])
+        raw = canonical(page)
+        _require(hashlib.sha256(raw).hexdigest() == descriptor["sha256"]
+                 and len(page["records"]) == descriptor["record_count"],
+                 "Offer matching production page hash/count differs")
+        total += len(raw)
+        _require(total <= production.MAX_TOTAL_BYTES, "Offer matching production byte budget exceeded")
+        records.extend(page["records"])
+    production.validate_records(records, generated_at=index["generated_at"], allow_development=True)
+    production._coverage(index, records)
+    _require(production.counts(records) == index["counts"], "Offer matching production counts differ")
+    for day in index["dates"]:
+        rows = [row for page in pages if page["game_date"] == day["game_date"] for row in page["records"]]
+        _require(production.counts(rows) == day["counts"], "Offer matching production date counts differ")
+    originals = [(row, production.original_record(row)) for row in records]
+    inputs = {body["input_id"]: body for _, body in originals
+              if body["schema_version"] == "nba-sdv-production-input-v1"}
+    # Shared authority/input rows may appear on multiple date pages; matching
+    # never displays a repeated original as another model.
+    forecasts = {body["forecast_id"]: {"reference": row["reference"], "body": body,
+                                       "admission": row["admission"]}
+                 for row, body in originals if body["schema_version"] == "nba-sdv-production-forecast-v1"}
+    return list(forecasts.values()), inputs
+
+
+@_strict
+def offer_research_forecasts(*, legacy=(), paired=(), daily=None, production=None, at):
+    """Adapt fully validated admitted originals for exact, price-free matching.
+
+    This does not admit offers, issue forecasts or replace their schema/lane.
+    Daily authorization and production authority, input and remote-completion
+    relationships are checked before a forecast can enter this private view.
+    """
+    _require(isinstance(legacy, (list, tuple)) and isinstance(paired, (list, tuple)),
+             "Invalid offer research forecast collections")
+    result = [*legacy, *paired]
+
+    def append(rows, inputs, kind, lane, published_at):
+        for row in rows:
+            body = row["body"]
+            if not (row["admission"]["eligible"] and body["mode"] == "PROSPECTIVE_RESEARCH"
+                    and body["evidence_lane"] == lane):
+                continue
+            input_body = inputs.get(body["input_id"])
+            _require(input_body is not None and body["event_snapshot_id"] == input_body["event"]["event_snapshot_id"],
+                     "Offer matching lost the exact admitted forecast input")
+            view = _AdmittedForecastView({"kind": kind, "reference": row["reference"], "original": body,
+                                           "admission": row["admission"], "input": input_body})
+            admission = row["admission"]
+            completed = ([admission["local_persistence_completed_at"], admission["remote_recovery_completed_at"]]
+                         if kind == "SDV_DAILY" else [admission["local_completed_at"], admission["remote_recovered_at"]])
+            _ADMITTED_MATCH_VIEWS[view] = canonical({"forecast": {**body,
+                "league": input_body["event"]["league"], "id_namespace": input_body["event"]["id_namespace"],
+                "event_version": body["event_snapshot_id"]},
+                "available_at": max([published_at, *completed], key=_clock)})
+            result.append(view)
+
+    if daily is not None:
+        from . import sdv_daily_publication
+        sdv_daily_publication.validate_asset(daily, now=at)
+        append(daily["forecasts"], {body["input_id"]: body for body in daily["inputs"]},
+               "SDV_DAILY", "DAILY_SNAPSHOT_PROSPECTIVE", daily["generated_at"])
+    if production is not None:
+        rows, inputs = _production_match_records(production, at=at)
+        append(rows, inputs, "SDV_PRODUCTION", "SDV_PRODUCTION_PROSPECTIVE", production["index"]["generated_at"])
+    return result
+
+
 def match_research_forecast(offer, forecast, *, at):
     """Exact semantic/time match only. Does not compute EV or confer eligibility."""
+    if offer.get("schema_version") == "nba-native-player-offer-v2":
+        from .native_offer import validate_native_offer
+        validate_native_offer(offer, now=at)
+        # Source-native identity is enough to describe the offer. It is not a
+        # reviewed cross-provider event/version join, even when times coincide.
+        return {"status": "UNMATCHED", "reasons": [
+            "Native event requires a reviewed canonical event/version crosswalk; "
+            + offer["event"]["forecast_match_status"]], "qualification": "UNAVAILABLE",
+            "ticket_eligible": False, "ev": None}
+    admitted = _ADMITTED_MATCH_VIEWS.get(forecast) if isinstance(forecast, _AdmittedForecastView) else None
+    admitted = json.loads(admitted) if admitted is not None else None
+    forecast = admitted["forecast"] if admitted is not None else forecast
+    if not isinstance(forecast, dict):
+        forecast = {}
     reasons = []
     for field in ("league", "id_namespace", "event_id", "player_id", "team_id", "opponent_id",
                   "event_starts_at", "period", "extra_time_policy"):
@@ -582,12 +755,14 @@ def match_research_forecast(offer, forecast, *, at):
         reasons.append("Forecast does not support the exact offered category and units")
     try:
         when = utc(at)
+        if admitted is not None and when < _clock(admitted["available_at"]):
+            reasons.append("Required forecast persistence, remote recovery and publication were not yet available")
         if not (_clock(offer["observed_at"]) <= _clock(offer["imported_at"]) <= when < _clock(offer["event_starts_at"])
                 and _clock(forecast["cutoff_at"]) <= _clock(forecast["issued_at"]) <= when):
             reasons.append("Forecast/offer were not both available at this pregame decision time")
     except (KeyError, IntegrityError, ValueError, TypeError):
         reasons.append("Missing or invalid forecast decision clocks")
-    if (offer["evidence_lane"] != "REAL_TIME_CAPTURED" or forecast.get("evidence_lane") != "REAL_TIME_CAPTURED"
+    if (offer["evidence_lane"] != "REAL_TIME_CAPTURED" or (admitted is None and forecast.get("evidence_lane") != "REAL_TIME_CAPTURED")
             or offer["market_status"] != "PRE_GAME" or forecast.get("conditioning") != "CONDITIONAL_ON_APPEARANCE"):
         reasons.append("A genuinely captured pregame research forecast and offer are required")
     return {"status": "UNMATCHED" if reasons else "MATCHED_RESEARCH_ONLY", "reasons": reasons,
