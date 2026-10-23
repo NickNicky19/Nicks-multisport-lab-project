@@ -2,6 +2,19 @@
 
 Updated: October 23, 2026.
 
+## Current player-line work — actual source replay and private display
+
+One bounded, unauthenticated Sleeper board GET at October 23 **11:12:31 UTC**
+returned 1,272 NBA player rows. Exact original bytes independently replay into
+**2,544 over/under observations**, zero diagnostics, 188 unmapped quarter options,
+and the full 14-category inventory. The private desktop/mobile preview preserves
+thresholds, native IDs, source clocks and literal side multipliers without
+requiring odds. Prices remain unavailable. Names/event crosswalks, start, period,
+overtime and settlement rules remain unverified; no full contract, forecast match
+or qualified ticket is fabricated. Evidence is retained locally, not remotely
+archived or publicly admitted. See `docs/PLAYER_LINE_REVIEW.md` and latest handoff.
+Existing statistical forecast operation is independent and unchanged.
+
 ## Latest execution — automatic startup and registry recovery verified
 
 Scheduled run **39902534915** succeeded on deployed main `ef9e270` at
@@ -23,8 +36,8 @@ gates. All 23 protected producer files, 19 original records and both model laws
 remain unchanged. Pages run 39892839314 deployed the exact merge successfully;
 public manifest/assets and independent desktop/mobile checks passed. The site
 retains six historical bundles/grades and zero genuine forecasts/offers. A
-successful native run of the repaired main remains a separate unverified step;
-see the newest handoff for actual as-of run inventory and next operating windows.
+successful native startup/readback is now verified above; genuine source capture,
+issuance, publication and final grading remain separate outstanding evidence.
 
 The recurring coordinator is installed and its documented scope is approved.
 Three native runs on the previous main failed before capture/generation. The

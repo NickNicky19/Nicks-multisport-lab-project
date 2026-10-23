@@ -2,6 +2,121 @@
 
 Updated: October 23, 2026 (UTC).
 
+## October 23 — actual keyless NBA lines replayed into private desktop/mobile review
+
+Work continues on **`implementation/nba-player-line-review`**, based normally on
+`dd47cbcfb84fcb2fb9475f11dec31d4f0fedd498`; deployed main was preserved at
+`ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`. No branch reset, source substitution,
+producer change, collector installation or statistical experiment rerun occurred. The post-release
+native-operation evidence on this branch remains intact.
+Implementation source is **`ecfdc29f82268e1fd9bb9cd4c269abf8bf67ba22`**;
+the following checkpoint changes only handoff/context/evidence/checksums.
+
+**Actual source result:** one ordinary unauthenticated GET of
+`https://api.sleeper.com/lines/available`, no redirects/retries, completed
+**11:12:31.699799 UTC**. HTTP 200 JSON, **7,008,196 bytes** under the unchanged
+8-MiB import ceiling; SHA256
+`3cc836b9efac5a5e7eb7b9ba098a837f9094d685cabd9a8fc46142b1069aa8aa`.
+Of 4,015 returned rows, **1,272 NBA player rows / 2,544 side observations** passed
+the existing strict importer, with zero diagnostics. **188 quarter options remain
+unmapped**. All 13 requested categories plus PA stay in the inventory; current
+parsed TOV/TD counts are zero, not permanently unsupported. Full per-category
+counts and request metadata are recorded in
+`evidence/offers/2026-10-23-sleeper-private-line-inspection.json`.
+
+**Implemented:** separately versioned `multisport_lab/player_line_review.py`
+replays exact retained bytes, preserving numeric line lexemes, native IDs, literal
+source team/status/multiplier facts and separate source/observation/import/review
+clocks. Missing odds never suppress valid threshold observations; literal pick'em
+multipliers are not standalone sportsbook odds. `web/player-line-review.mjs` and
+the existing `scripts/render_local_offer_review.mjs` render validated private
+cards with `PRICE_UNAVAILABLE`, full-input category counts and an explicit display
+window. Original public research records and the existing Gamma path are unchanged.
+
+The first create-only intent binds exact input/metadata hashes, clocks and window.
+Interrupted retries recover that binding; changed bytes/window fail. Read-only
+`--verify` independently replays the source, normalized receipt and sealed view
+without writes or HTTP. All accepted observations are semantically checked,
+including rows outside the display window. The local package remains bounded at
+512 files / 32 MiB, without changing protected/production limits. Actual package:
+**7 files / 9,971,504 bytes**, including a 57,225-byte HTML review. Independent
+optimized-Python replay preserved every file hash.
+
+**Actual preview:** ignored
+`.local-data/sleeper-lines-20261023/review/player-lines-preview.html`; 32 explicitly
+selected cards out of 2,544 accepted observations. Chromium verified desktop
+1440 and mobile 390/320, all 14 category rows, IDs/thresholds/provenance, explicit
+missing fields/prices, zero page errors, zero external requests and no horizontal
+overflow. These are actual-source local display checks, not a public deployment.
+The original body/metadata are retained in `.local-data/sleeper-lines-20261023/`.
+They have **independent local recovery only**, not verified durable remote archival.
+No original body or individual actual offer row is committed or published.
+
+The old October 20 derived import also replays without changing its bytes or
+observation/import clocks: 2,720 side observations, 248 unmapped quarter options.
+Its missing original HTTP response is explicitly **not** reconstructed; the
+review labels it `DERIVED_RECEIPT_ONLY`, with no asserted raw hash/precision.
+
+**Independent review:** coordinated frontend/audit work plus a separate verifier
+found two concrete issues before finalization: invalid undisplayed observations
+could inflate valid parsed counts, and nonempty input could be labeled empty or
+failed. Both were fixed with resealed negative regressions in Python and JS.
+Reverification under `python -O` rejected all ten reviewed corruption cases and
+recovered the exact actual 2,544-observation view without writes. Duplicate native
+selection IDs remain partial observations with importer diagnostics; repeated
+source row positions are rejected.
+
+**Software checks:** focused Python 18/18 normally and under `python -O`; frontend
+12/12 focused and **150/150 full**; **1,034/1,034 full Python tests passed in
+643.638 seconds**; demo, bounded public-artifact build and static smoke passed.
+An earlier local full
+attempt was deliberately interrupted after review found concrete missing guards;
+it is not claimed as passing evidence. Local HTTP browser verification first
+required explicit loopback network permission; the permitted rerun passed without
+external/source requests. The Node subprocess test harness initially hit `EPERM`;
+the existing renderer now exposes the same guarded operation for direct tests,
+and its actual CLI also passed. No automatic-review denial was bypassed.
+
+Commands: one consumed capture `python3 /tmp/nml_sleeper_one_read.py` (do not
+repeat it); `python3 -m unittest discover -s tests -p test_player_line_review.py -v`;
+the same with `python3 -O`; `python3 -m unittest discover -s tests -v`;
+`python3 -m multisport_lab.demo`;
+`node --test --test-isolation=none web/tests/*.test.mjs`;
+`python3 -m multisport_lab.publication --build-commit ecfdc29f82268e1fd9bb9cd4c269abf8bf67ba22`;
+`node web/tests/site-smoke.mjs output`; the exact replay/render/readback commands
+in `docs/PLAYER_LINE_REVIEW.md`; `/tmp/nml_player_line_browser.py` for the three
+actual private browser viewports. No frozen statistical experiment, full-history
+measurement or extra provider request was run.
+
+**Remaining field gaps:** the board does not establish player names/canonical
+crosswalks, canonical event/start, period, overtime or applicable settlement rules.
+Native Sleeper IDs are never treated as ESPN IDs. No intact original player-name
+lookup remains locally; the existing ESPN names cannot fill that gap. The private
+view does not certify provider permission or admit a recurring/public feed. The
+next concrete matching inputs are a verified native-player/name/event crosswalk
+and period/OT evidence; rules/product economics remain separate ticket work.
+No more Polymarket investigation, provider keys, signups, login or paid service
+was added. The offline parser does not require an encryption key or bookmaker odds.
+
+**Operation/publication remain separate:** read-only project queries at
+**11:33:46–11:33:47 UTC** reverified served main `ef9e270` and unchanged snapshot
+`83436918a4e6e4a8467829f41f24daf924048deda832922e44f283171b1c93b9`.
+Native scheduled run **39934330055**, **09:46:44–09:47:10 UTC**, also reports
+success on that main, after independently recovered run 39902534915 below.
+These startup completions are not genuine forecasts. The next authorized complete
+planning window remains **today 13:00–14:00 UTC / 08:00–09:00 CDT**, for UTC game
+date October 24; actual event/cohort issuance windows must follow its admitted
+plan. Cron installation and observed prior success do not guarantee its next
+start time. This private parser package does not block or change that independent
+licensed statistical-forecast path and does not redeploy unchanged public data.
+
+Counts as of this checkpoint: **six historical bundles/six historical grades;
+zero genuine forecasts, published offers, prospective outcomes/grades, qualified
+tickets or financial settlements**. All 23 protected files and 19 original records
+were checked byte-for-byte unchanged; existing model laws, frozen experiments,
+inactive studies, expired pilots and separate NFL/MLB projects remain untouched.
+The builder preserves its existing 2–6 legs/directions/scopes and `NO_ACTION`.
+
 ## October 23 — repaired native scheduler succeeded; durable registry independently recovered
 
 An actual **scheduled** run now supersedes only the earlier unobserved-run status:
