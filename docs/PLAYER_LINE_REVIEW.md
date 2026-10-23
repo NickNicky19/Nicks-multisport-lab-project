@@ -1,5 +1,9 @@
 # Private NBA player-line observations
 
+The latest [official game/period and feed-allowance document review](SLEEPER_NBA_FEED_DOCUMENTS.md)
+records newly retrieved rules, their limited applicability, and a prepared API-team
+request. It changes no original observation, parser contract or public admission.
+
 This package adds a separately versioned local view of actual parsed player
 thresholds. A line observation can retain an exact source player ID, statistic,
 threshold and side while event, period, overtime or settlement fields remain

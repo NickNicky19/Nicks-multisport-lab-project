@@ -2,6 +2,89 @@
 
 Updated: October 23, 2026 (UTC).
 
+## October 23, 17:47 UTC onward — official period documents obtained; public Picks allowance still unestablished
+
+Branch **`implementation/nba-player-line-review`**, unchanged implementation/source
+**`610d46bfaff02ce566bc0db74454081e1c83ce41`**; main fetched normally at
+**`ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`**. The worktree was clean at entry.
+PR #20 remains draft. This checkpoint changes documentation/evidence only, not
+models, runtime, forecasts, protected files, records, workflows or public admission.
+
+**Actual new result:** three controlled official-document GETs, zero redirects,
+retries or data captures, with the existing 2-MiB document/32-MiB local-package
+ceilings. The legacy rules link returned 404 at **17:47:12.334102 UTC**; no retry.
+The official In-Game Contests article returned 200, **84,581 bytes**, SHA-256
+`b4dba4f94b677ffbcc5d7ea235eff6d905ba9c0bc8f30e4defb58c15e1a22ccc`,
+at **17:47:37.975310 UTC**. It documents in-game full-game totals, quarter overtime
+exclusion and second-half overtime inclusion. Its special participation treatment
+does not replace pregame rules, and it supplies no native pregame field mapping.
+The official Contest Rules index returned 200 and lists 27 articles. Three web
+discovery calls used nine queries; their underlying service-managed HTTP count is
+unknown and is reported separately from the controlled GETs. Agents made no
+provider requests. No automatic approval rejection occurred.
+
+**Still missing:** official native NBA game-to-matchup/start/version documentation,
+the period binding for unprefixed pregame markets, and an applicable Picks
+collection/public derived-display allowance. The documented fantasy API allowance
+and trending embed permission do not establish those broader scopes. A published
+applicable allowance would suffice; bespoke consent is not universally required.
+No further board/price capture can establish these documentary facts. The earlier
+173 verified names and 188 explicit Q1 selections remain useful private evidence;
+later rule capture does not refresh their original clocks. No full contract is
+newly admitted.
+
+`docs/SLEEPER_NBA_FEED_DOCUMENTS.md` contains the official links and applicability
+table. `docs/SLEEPER_NBA_FEED_REQUEST.txt` is a ready-to-send request to the official
+API contact **api@sleeper.app**, verified from its retained encoded email link. It
+asks for existing documentation or a scoped free credentialless allowance and
+the game/period schema, with private original caching, attributed derived display
+and raw redistribution distinguished. **No provider message was sent.** The parser
+still requires no provider key/signup; operational encryption custody is separate.
+Exact receipts/hashes are in
+`evidence/offers/2026-10-23-sleeper-feed-document-review.json`. Originals/discovery
+results remain under ignored `.local-data/nba-feed-document-review-20261023/` with
+verified local readback; durable remote raw archival is not established.
+
+**Checks and next source action:** the bounded GET helper retained all three bodies,
+claims and receipts. Offline optimized-Python verification checks source/receipt
+hashes, sizes, clocks, official contact, scope and preserved originals; manifest,
+JSON and whitespace checks cover this documentation-only change. Existing exact
+implementation CI **39955407112** passed at **12:59:13 UTC**; no frozen experiment,
+full-history diagnostic or local full suite was repeated solely for documents.
+Actual focused command: **`python3 -O /tmp/nml_verify_sleeper_documents.py`**, PASS
+at **17:57:36.245364 UTC**; three new receipt/body/claim matches, four retained
+originals, official email decode, 27 directory links and independent local ZIP
+readback verified. The new-source document package is **82,151 bytes**, SHA-256
+`4e504e6ff5280697e9be86c30a962d9cceb21be55c917bc2c4ef456f4ce6e76f`.
+An independent read-only source agent reviewed the actual documents and candidate
+diff: **PASS, no material corrections**, zero agent HTTP/messages/edits.
+Next: send the prepared request through an existing mail arrangement, then retain
+the actual provider reply or newly identified applicable documentation. Do not
+invent game mappings or promote the private review while that evidence is absent.
+
+**Separate native-operation observation:** a read-only verifier used three GitHub
+metadata GETs. Actual scheduled run **39969989665**, main `ef9e270…`, attempt 1,
+ran **14:28:56–14:29:28 UTC**. Production `prepare`/`finish` succeeded and
+`work`/`grade`/`diagnostic` were skipped. The overall failure is localized to the
+separate `first-cycle-postgame` job, step “Existing first-cycle outcomes only,”
+exit **2**; its report-preservation step succeeded. No traceback/log body was
+recovered, so the specific cause is unknown and no coordinator defect is inferred.
+This observed run began after the registered 13:00–14:00 UTC planning window;
+that fact does not explain why an in-window run was missed/unobserved. The current
+index tip is **`d0d9d4795d79d8ded5bafb7a3da9693ae2a70be6`**; its referenced registry
+body has not been independently recovered, so current registry contents/counts
+remain unverified. No dispatch, late capture, records write or schedule change
+was made. This observation supplements, rather than rewrites, the earlier successful
+native runs. Independent statistical-operation recovery remains the next operating
+task; missing Picks documents do not gate its admitted price-independent path.
+
+**Publication/counts:** no website deployment or private-observation publication.
+This package created **zero** genuine forecasts, offers, prospective outcomes,
+grades, qualified tickets or settlements. Earlier six historical bundles/grades
+remain preserved; earlier zero prospective totals are dated observations, not a
+new claim about the unrecovered registry. NFL/MLB, all 14 NBA category goals,
+frozen research, expired pilots and `NO_ACTION` behavior remain unchanged.
+
 ## October 23 — names and quarter rules verified; strict daily/production line matching connected
 
 Implementation: **`dd6784bf59e7acdac0e5426552835f65f1a9a716`** on
