@@ -120,6 +120,7 @@
   },
   "branch": "implementation/nba-player-line-review",
   "decision": "ACTUAL_SOURCE_PRIVATE_PARSER_PROOF_NOT_PUBLIC_ADMISSION",
+  "implementation_source_commit": "10e6f7a06260b96c19fc1eb05eabb640d9e74a11",
   "new_counts": {
     "financial_settlements": 0,
     "genuine_forecasts": 0,
@@ -176,6 +177,7 @@
   },
   "schema_version": "nba-keyless-alternative-result-v1",
   "source": "MoviOdds",
+  "updated_at": "2026-10-23T20:33:34.811284+00:00",
   "venue_as_declared_by_source": "bet365",
   "verification": {
     "browser": {
@@ -226,6 +228,11 @@
       "web/tests/moviodds-review.test.mjs": "9be64765ef61c9f907f9188dd7deee7604c679f499d07e855184ff5aadcc241a"
     },
     "demo": "PASS",
+    "final_source_full_python": {
+      "local_log": "/tmp/nml-moviodds-exact-source-python.log",
+      "source_commit": "10e6f7a06260b96c19fc1eb05eabb640d9e74a11",
+      "status": "RUNNING_NOT_YET_CLAIMED"
+    },
     "focused_python_optimized": {
       "failures": 0,
       "tests": 16
@@ -234,8 +241,15 @@
       "failures": 0,
       "tests": 176
     },
-    "full_python": "RUNNING_NOT_YET_CLAIMED",
+    "full_python": {
+      "failures": 0,
+      "scope": "Completed during integration before final identity parity checks; final exact-source suite running separately.",
+      "seconds": 626.879,
+      "tests": 1064
+    },
     "independent_review": {
+      "final_candidate_report_sha256": "ec0b248c475de44945795270bd2bb005f738e6d4f3704e6aa9e5baf5ad609bb9",
+      "final_focused_optimized_tests": 16,
       "final_parity_report_sha256": "e202415ed7d775fdfd73f74d301907ef3f40529d9c967e173670209310d92175",
       "initial_findings_preserved": true,
       "report_sha256": "85b2a84eab544a57268b7b904887e3b3383fdb54842470a8ef9449248e37f9af",
@@ -248,6 +262,14 @@
         "plain_decimal_lexeme_parity",
         "strict_native_and_used_canonical_identity_fields"
       ]
+    },
+    "local_exact_source_recovery": {
+      "all_manifest_entries_passed": true,
+      "durable_remote_raw_archive_verified": false,
+      "manifest_entries": 569,
+      "optimized_seven_original_replay": true,
+      "remote_code_recovery": false,
+      "source_commit": "10e6f7a06260b96c19fc1eb05eabb640d9e74a11"
     },
     "protected": {
       "original_records": {

@@ -2,6 +2,143 @@
 
 Updated: October 23, 2026 (UTC).
 
+## October 23, 19:33 UTC onward — actual free MoviOdds NBA source and private replay
+
+Implementation/source commit **`10e6f7a06260b96c19fc1eb05eabb640d9e74a11`**, branch
+**`implementation/nba-player-line-review`**, parent
+**`ee6a00537faa3fbb03c487711ce93fc8a7f66c22`**. Entry tree was clean. Normal fetch
+confirmed remote PR #20 still draft at that parent and main
+**`ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`**; no reset, force-push, new repository
+or overwrite of newer work. This following checkpoint changes documentation and
+evidence only; source pins identify the exact implementation independently of it.
+
+**Actual result:** a free, credentialless MoviOdds NBA fixture response contains
+**2,097 selections**, including **1,229 full-game player selections**, six game
+selections, 175 quarter-player selections and 687 other selections. All 1,229
+player selections map by exact name/season/team to the retained roster, covering
+**19 distinct player labels**. **34 DD/TD Yes/No source-semantic contracts** are
+complete locally (28 DD, six TD). Their actual prices remain linked to their own
+selections. The other **1,195 numeric player selections remain incomplete** because
+the numeric label does not establish its comparison operator. Thirteen of our
+fourteen categories were observed; TOV was unobserved, with no reviewed native
+mapping yet. This is not a claim of permanent source absence or full-league
+coverage. Complete local semantic contracts are separate from usable quotes,
+forecast matches, public admissions, ticket qualification and financial settlement.
+
+The publisher explicitly invites keyless REST use and keeping copied matches,
+names and prices. Its declared venue is **bet365**, with MoviOdds independent and
+not affiliated; this is neither DraftKings nor Sleeper data. The scoped finding
+supports the bounded private read/cache/replay performed here. It does not imply
+raw public redistribution, account/jurisdiction eligibility or an installed
+collector. No signup, provider key, wallet, trade, trial or payment was used.
+Other bounded alternatives yielded specific empty/partial/keyed-production or
+HTTP-error results; they were not generalized into universal source absence.
+
+**Exact evidence:** complete snapshot 543,939 bytes, SHA256
+`32d073114b74f8d3bc743a4f783cddccbbc393cee9073a16d0e47fd3cad3ab9b`, observed
+**20:00:14.986063 UTC**. Event catalog **20:01:21.535885 UTC**, official basketball
+rules **20:01:31.153166 UTC**. Corrected private normalization was actually
+**20:13:01.190345 UTC**, review
+`a054afaa586a4a7a04e8c3c1c40e092ba930e36d99761eef492aa7ac59036ac0`.
+Later rules do not backdate completion or refresh capture. The original source
+bodies/request ledger remain under `.local-data/nba-alt-lines-20261023/`.
+The corrected seven-original package and readable preview are under
+`.local-data/moviodds-review-20261023-v2/`; the earlier prototype remains intact.
+All seven bodies and seven metadata inventories are identical across versions.
+Recovery succeeded in a fresh directory and separate optimized-Python process.
+**Durable remote archival of these private originals remains unverified.**
+
+**Source gaps remain visible:** the provider start and canonical schedule candidate
+are **600 seconds apart**, blocking forecast matching. Full-game/OT for ordinary
+DD/TD is a reviewed derivation from the unqualified pregame market and official
+basketball default rules; it is not an explicit period field in the response.
+The official rules establish dressed/court-time participation and game-day
+competition statistics, with later amendments excluded from financial settlement.
+There is no invented numeric DD line, native permanent player ID, time offset,
+quarter-rule substitution or assumed correction cutoff. The old roster/schedule
+are identity evidence only, with original October 21 clocks, ESPN-derived
+SportsDataverse/hoopR attribution and CC BY4.0 modification notice. Membership is
+not confirmed participation, health, starting status or estimated minutes.
+
+**Implemented files:** `multisport_lab/moviodds_offer.py` is an offline versioned
+source adapter, exact replay and create-only recovery path. It reuses existing
+integrity/private-storage helpers and leaves offer-v1/semantic-v2/public admission
+unchanged. `web/moviodds-review.mjs` and `scripts/render_local_offer_review.mjs`
+add strict private rendering with mandatory seven-original `python -O` recovery
+before HTML output. `tests/test_moviodds_offer.py`, fictional
+`tests/fixtures/moviodds_review_v1.json` and `web/tests/moviodds-review.test.mjs`
+cover identity, timing, price, scope and recovery risks. Source/result details:
+[private source delivery](docs/MOVIODDS_NBA_PRIVATE_REVIEW.md),
+[aggregate evidence](evidence/offers/2026-10-23-moviodds-keyless-result.json),
+plus the dated offer-readiness update and regenerated `MANIFEST.sha256`.
+
+**Actual checks and commands:**
+
+- `python3 -m unittest discover -s tests -v`: completed integration pass,
+  **1,064 tests / 626.879 seconds / zero failures**. That run started during
+  integration; the last identity/lexical guards additionally passed the final
+  focused suite. A fresh full run on the committed source is separately running
+  in `/tmp/nml-moviodds-exact-source-python.log`; do not count it as passed yet.
+- `python3 -O -m unittest discover -s tests -p test_moviodds_offer.py -v`:
+  **16 passed** on final source; independently repeated with actual-source replay.
+  Independent review found and verified fixes for nanosecond truncation, redirect
+  chronology, Boolean count acceptance, integral-float cross-runtime hashing,
+  plain-decimal parity and used identity fields. Final independent report SHA256
+  `ec0b248c475de44945795270bd2bb005f738e6d4f3704e6aa9e5baf5ad609bb9`.
+  Earlier findings/prototype receipts were retained. One preliminary broad run
+  was interrupted while fixes were being integrated; it is not a successful run.
+- `python3 -m multisport_lab.demo`: **PASS**, synthetic joint-law demonstration.
+- `node --test --test-isolation=none web/tests/*.test.mjs`: **176 passed**,
+  including nine fictional MoviOdds cases. Missing decimal prices keep
+  `PRICE_UNAVAILABLE` without invalidating otherwise complete Boolean semantics.
+  Unsupported numeric price lexemes are rejected consistently across runtimes.
+- `python3 -O -m multisport_lab.moviodds_offer --verify
+  .local-data/moviodds-review-20261023-v2`: **seven originals replayed**, no HTTP,
+  preserved original intent/clocks; public admission and durable remote raw
+  archive flags false. Interrupted-copy retry and conflicting input tests pass.
+- `node scripts/render_local_offer_review.mjs
+  .local-data/moviodds-review-20261023-v2/review.json
+  .local-data/moviodds-review-20261023-v2/private-preview-final.html`: **PASS**,
+  static private HTML 20,628 bytes, SHA256
+  `60c4271b4d63298140529066f0d69b9a97c1c0eefd208ae61d5751de0578da21`.
+  Chromium **1440/390/320**: eight readable cards, fourteen category rows,
+  accessible IDs, source clocks, conflict and NO_ACTION; no viewport overflow,
+  browser errors or page HTTP requests. Initial restricted-browser socket setup
+  failed; the permitted local browser execution then passed without source reads.
+- Exact source `git archive` recovery: **569 manifest entries passed**,
+  followed by actual seven-original optimized replay. This verifies local Git
+  code recovery, not remote raw storage. All **23 protected producer files and
+  19 original records** match their retained SHA256 inventory. Existing CI
+  **39999560020** at parent `ee6a005` was verified successful; it does not certify
+  the new head. New draft-PR CI/remote readback follows the push.
+
+**Request accounting:** sole root writer, **26 direct GET attempts** (15 documents,
+11 data-route requests), zero redirects/retries/provider contacts/agent direct
+GETs and no automatic approval rejection. The initial self-registered 24-request
+budget was explicitly extended by the two named catalog/rules reads before they
+ran. A full-board response exceeded 8 MiB and was retained incomplete, never
+truncated into a valid import; the bounded complete fixture fits. Documents and
+admitted originals retain the 2-MiB limit, private review 256 KiB, private package
+512 files/32 MiB. Ledger limits remain unchanged. Service-managed discovery HTTP
+counts are unknown and separate. No new Sleeper/ESPN/Covers/Polymarket data read.
+
+**New operation/publication counts for this package:** genuine forecasts **0**,
+published offers **0**, prospective outcomes **0**, statistical grades **0**,
+qualified tickets **0**, financial settlements **0**. No new statistical comparison
+or full-history model diagnostic. Six historical bundles/grades and original
+records are preserved. No merge, deployment, scheduler, capture activation or
+production change; PROS004/S0 and the expired pilots remain unchanged, NFL/MLB
+untouched. PR #20 remains draft. The live website is unchanged; the new source
+cards are a **local private snapshot preview**.
+
+**Next concrete task:** review the provider/canonical start crosswalk and obtain
+specific numeric-selection operator evidence before forecast matching those
+families. Establish separately scoped public-derived offer display and durable
+private-original recovery before public offer delivery. The free private parser
+already works and needs no provider key or operational encryption-key setup.
+Price-independent forecasting remains independently usable under its existing
+admitted operating/publication path.
+
 ## October 23, 17:47 UTC onward — official period documents obtained; public Picks allowance still unestablished
 
 Branch **`implementation/nba-player-line-review`**, unchanged implementation/source
