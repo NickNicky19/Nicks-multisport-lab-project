@@ -4,7 +4,9 @@ import {constants} from 'node:fs';
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {webcrypto} from 'node:crypto';
 import {renderLocalOfferReview} from '../web/local-offer-review.mjs';
+import {PLAYER_LINE_REVIEW_SCHEMA,renderPlayerLineReview,verifyPlayerLineReviewHash} from '../web/player-line-review.mjs';
 
 const MAX_REVIEW_BYTES = 256 * 1024;
 const MAX_HTML_BYTES = 2 * 1024 * 1024;
@@ -62,20 +64,18 @@ async function createIdenticalOnly(filename,content) {
   } finally {await fs.rm(temporaryDirectory,{recursive:true,force:true});}
 }
 
-async function main() {
-  const args = process.argv.slice(2);
-  if (args.length === 1 && ['--help','-h'].includes(args[0])) {
-    process.stdout.write('Usage: node scripts/render_local_offer_review.mjs REVIEW.json .local-data/PREVIEW.html\nRenders validated local research observations only; no network or public publication.\n');
-    return;
-  }
-  require(args.length === 2,'Expected REVIEW.json and output HTML path. Use --help for usage.');
-  const cwd = await fs.realpath(process.cwd());
-  const input = path.resolve(cwd,args[0]), output = path.resolve(cwd,args[1]);
+export async function renderPreparedLocalReview(inputFilename,outputFilename,{cwd:requestedCwd=process.cwd()}={}) {
+  const cwd = await fs.realpath(requestedCwd);
+  const input = path.resolve(cwd,inputFilename), output = path.resolve(cwd,outputFilename);
   const raw = await boundedRegularFile(input,MAX_REVIEW_BYTES);
   let review;
   try {review = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));}
   catch {throw new Error('Review input is not valid UTF-8 JSON.');}
-  const rendered = renderLocalOfferReview(review);
+  let rendered;
+  if (review?.schema_version === PLAYER_LINE_REVIEW_SCHEMA) {
+    await verifyPlayerLineReviewHash(review,webcrypto);
+    rendered = renderPlayerLineReview(review);
+  } else rendered = renderLocalOfferReview(review);
   const cssFile = fileURLToPath(new URL('../web/local-offer-review.css',import.meta.url));
   const css = new TextDecoder('utf-8',{fatal:true}).decode(await boundedRegularFile(cssFile,MAX_REVIEW_BYTES))
     .replace(/<\/style/gi,'<\\/style');
@@ -83,7 +83,18 @@ async function main() {
   require(html.length <= MAX_HTML_BYTES,'Rendered HTML exceeds its byte limit.');
   await privateOutputParent(cwd,output);
   const created = await createIdenticalOnly(output,html);
-  process.stdout.write(JSON.stringify({output,created,bytes:html.length,scope:'LOCAL_REVIEW_ONLY',public_admission:false,ticket_eligibility:false})+'\n');
+  return {output,created,bytes:html.length,scope:'LOCAL_REVIEW_ONLY',public_admission:false,ticket_eligibility:false};
 }
 
-main().catch(error => {process.stderr.write('Local preview render failed: '+error.message+'\n');process.exitCode=1;});
+async function main() {
+  const args = process.argv.slice(2);
+  if (args.length === 1 && ['--help','-h'].includes(args[0])) {
+    process.stdout.write('Usage: node scripts/render_local_offer_review.mjs REVIEW.json .local-data/PREVIEW.html\nRenders validated local research observations only; no network or public publication.\n');
+    return;
+  }
+  require(args.length === 2,'Expected REVIEW.json and output HTML path. Use --help for usage.');
+  process.stdout.write(JSON.stringify(await renderPreparedLocalReview(args[0],args[1]))+'\n');
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url))
+  main().catch(error => {process.stderr.write('Local preview render failed: '+error.message+'\n');process.exitCode=1;});
