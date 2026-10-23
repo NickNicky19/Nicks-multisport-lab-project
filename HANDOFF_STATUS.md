@@ -2,6 +2,50 @@
 
 Updated: October 23, 2026 (UTC).
 
+## October 23, 04:29 UTC — category delivery verified; native execution still pending
+
+This continuation preserved clean branch `implementation/sdv-operations-followthrough`
+at source `a9952ea47773d810e5ce76f2b9e327002efdc50b`. Normal fetch still found
+deployed main `ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`; no newer main or
+operating code was replaced. Fresh read-only GitHub observations at
+**04:29:04 UTC** confirm workflow 392458906 is active, but its scheduled inventory
+still has only the three previously recorded failed old-main runs. No SDV records
+branch is present. Absence of a new run does not establish its cause. The Actions
+permissions inventory returned HTTP 403 `Resource not accessible by integration`;
+that unavailable setting does not establish that scheduling is disabled.
+
+Two bounded independent reviews found no new blocking defect in the reviewed
+authority, retention, restart, publication, category or grading paths. All **13
+requested categories plus PA** already derive from each unchanged R0/K0 joint law
+and reach the typed renderer and separate statistical grades. Participation stays
+conditional on appearance. Focused synthetic coverage passed **4 Python tests /
+0.057 s**, **2 frontend tests / 284.365149 ms**, and **3 further frontend tests /
+672.937984 ms**; exact commands are in the companion evidence receipt. No frozen
+comparison, full-history diagnostic, genuine generation or sports-source GET ran.
+The prior full required suite and actual merged-main CI remain valid for unchanged
+code. These focused tests are not prospective results or accuracy qualification.
+
+The actual public manifest still serves the independently verified merge/snapshot
+from the checkpoint below. There was no unchanged-site rebuild or deployment.
+Counts remain **six historical bundles/six historical grades; zero genuine
+forecasts, prospective outcomes/grades, offers, qualified tickets or settlements**.
+The next permitted complete planning window is **today, October 23, 08:00–09:00
+CDT / 13:00–14:00 UTC**, for UTC game date October 24. Exact event/cohort times
+remain unknown until that complete admitted plan. Registered pregame capture,
+T90–T75 issuance and later verified final grading cannot be replaced by an early
+diagnostic. The existing coordinator remains installed; the repaired native run,
+genuine public forecast-to-final acceptance cycle and subsequent scheduled success
+are **not yet verified**. No daily owner click or competing scheduler was added.
+
+Retained exact API/manifest originals, their later retrieval clocks and hashes:
+`evidence/operational/sdv-production-category-execution-checkpoint-20261023.json`.
+Commands were ordinary `git fetch --prune origin`, read-only `gh api` workflow/
+run/ref queries, and one TLS-verified public manifest GET. New code changes,
+workflow dispatches, genuine forecasts and evaluations: **zero**. Next concrete
+task is to recover the next actual repaired-version native execution, then the
+timely plan/inputs/originals and served forecasts. Preserve the missed pilot;
+OPS002/PROS004/S0, frozen research, original records and NFL/MLB stay untouched.
+
 ## October 23 — PR #18 merged and publicly verified; new native execution pending
 
 The owner's **"I approve"** confirmed the immediately preceding exact-head
