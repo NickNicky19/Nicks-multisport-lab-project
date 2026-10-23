@@ -1,15 +1,20 @@
 """Synthetic hosted authority and independent registry persistence, no sources."""
 from copy import deepcopy
+from contextlib import redirect_stdout
 from datetime import timedelta
+import io
 import os
 from pathlib import Path
+import runpy
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 from types import SimpleNamespace
 import hashlib
 import re
+import warnings
 
 from multisport_lab import sdv_production_common as common
 from multisport_lab import sdv_production_runner as runner
@@ -112,6 +117,95 @@ class ProductionRunnerTests(unittest.TestCase):
         with patch.dict(os.environ,{},clear=True),patch.object(runner,"_read_run") as request:
             with self.assertRaises(IntegrityError):runner.authorize_current_run()
             request.assert_not_called()
+
+    def hosted_environment(self,event_path):
+        return {"GITHUB_ACTIONS":"true","GITHUB_REPOSITORY":common.REPOSITORY,
+            "GITHUB_REF":"refs/heads/main","GITHUB_WORKFLOW_REF":common.REPOSITORY+"/"+common.WORKFLOW+"@refs/heads/main",
+            "GITHUB_EVENT_NAME":"schedule","GITHUB_ACTOR":"github-actions[bot]","GITHUB_TRIGGERING_ACTOR":"github-actions[bot]",
+            "GITHUB_RUN_ID":"123","GITHUB_RUN_ATTEMPT":"1","GITHUB_SHA":"1"*40,"GITHUB_EVENT_PATH":str(event_path)}
+
+    def test_module_entrypoint_shares_current_authority_with_real_coordinator(self):
+        # Exercise the deployed -m entrypoint, not only imported functions. All
+        # hosted bytes are invented; archive, Git and provider access are mocked.
+        from multisport_lab.sdv_production_coordinator import Coordinator
+        from multisport_lab import sdv_production_forecasts as forecasts
+        auth=self.authority();event_raw=canonical(runner._original(auth["event_original"],32768))
+        run_raw=canonical(runner._original(auth["run_original"],384*1024))
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);event_path=root/"invented-event.json";event_path.write_bytes(event_raw)
+            with patch.dict(os.environ,self.hosted_environment(event_path),clear=True),patch.dict(runner._CAPABILITIES,{},clear=True),\
+                    patch.object(runner,"_read_run",return_value=run_raw) as request,\
+                    patch.object(runner,"_git",return_value=SimpleNamespace(stdout=b"1"*40+b"\n")),\
+                    patch.object(forecasts,"make_source_binding",return_value=self.binding),\
+                    patch.object(archives,"GitHubReleaseArchive"),patch.object(runner,"RegistryWriter") as writer,\
+                    patch.object(subprocess,"run",side_effect=AssertionError("No subprocess or live request in this synthetic entrypoint test")),\
+                    patch.object(Coordinator,"prepare_tasks",return_value=[]) as tasks,\
+                    patch.object(runner,"require_current_authority",wraps=runner.require_current_authority) as gate,\
+                    patch.object(runner,"failure_alert") as alert,\
+                    patch.object(sys,"argv",["multisport_lab.sdv_production_runner","prepare","--work-root",str(root/"work")]),\
+                    redirect_stdout(io.StringIO()),warnings.catch_warnings():
+                writer.return_value.prepare.return_value=runner.empty_registry(self.now)
+                # runpy warns because this test imported the canonical module;
+                # the real interpreter starts without that test import.
+                warnings.filterwarnings("ignore",category=RuntimeWarning,module="runpy")
+                with self.assertRaises(SystemExit) as exited:
+                    runpy.run_module("multisport_lab.sdv_production_runner",run_name="__main__",alter_sys=True)
+                self.assertEqual(exited.exception.code,0)
+                self.assertEqual(request.call_count,1);tasks.assert_called_once();alert.assert_not_called()
+                self.assertGreaterEqual(gate.call_count,1)
+                report=runner._decode((root/"work/execution-report.json").read_bytes())
+                self.assertEqual(report["status"],"NO_DUE_PHASE");self.assertEqual(report["genuine_issued"],0)
+                observation=report["hosted_run_observation"]
+                self.assertEqual(observation["status"],"VERIFIED_CURRENT_RUN")
+                self.assertIn(observation["authorization_id"],runner._CAPABILITIES)
+                self.assertEqual(observation["run_original"],runner._encoded(run_raw))
+
+    def test_rejected_hosted_metadata_retains_originals_without_granting_capability(self):
+        from multisport_lab import sdv_production_forecasts as forecasts
+        auth=self.authority();event_raw=canonical(runner._original(auth["event_original"],32768))
+        for field,value in (("status","queued"),("status","completed"),("head_branch","other"),
+                ("id",124),("id",True),("conclusion","failure")):
+            with self.subTest(field=field,value=value),tempfile.TemporaryDirectory() as directory:
+                root=Path(directory);event_path=root/"invented-event.json";event_path.write_bytes(event_raw)
+                bad=runner._original(auth["run_original"],384*1024);bad[field]=value;run_raw=canonical(bad)
+                with patch.dict(os.environ,self.hosted_environment(event_path),clear=True),patch.dict(runner._CAPABILITIES,{},clear=True),\
+                        patch.object(runner,"_read_run",return_value=run_raw),\
+                        patch.object(runner,"_git",return_value=SimpleNamespace(stdout=b"1"*40+b"\n")),\
+                        patch.object(forecasts,"make_source_binding",return_value=self.binding),\
+                        patch.object(archives,"GitHubReleaseArchive") as archive:
+                    report=runner.execute("prepare",work_root=root/"work")
+                    self.assertEqual(report["status"],"PARTIAL_OR_FAILED")
+                    self.assertIn("Actual production run metadata differs: "+field,report["error"])
+                    self.assertEqual(report["genuine_issued"],0);self.assertEqual(runner._CAPABILITIES,{})
+                    archive.assert_not_called()
+                    observation=report["hosted_run_observation"]
+                    self.assertEqual(observation["status"],"UNVERIFIED_OR_REJECTED")
+                    self.assertIsNone(observation["authorization_id"])
+                    self.assertEqual(observation["event_original"],runner._encoded(event_raw))
+                    self.assertEqual(observation["run_original"],runner._encoded(run_raw))
+                    recovered=runner._decode((root/"work/execution-report.json").read_bytes())
+                    self.assertEqual(recovered,report)
+                    with self.assertRaisesRegex(IntegrityError,"not a new issuance capability"):
+                        runner.require_current_authority(auth)
+
+    def test_hosted_run_observation_retains_full_bounded_originals(self):
+        from multisport_lab import sdv_production_forecasts as forecasts
+        auth=self.authority()
+        event=runner._original(auth["event_original"],32768);event["invented_padding"]=""
+        event["invented_padding"]="x"*(32768-len(canonical(event)));event_raw=canonical(event)
+        run=runner._original(auth["run_original"],384*1024);run["invented_padding"]=""
+        run["invented_padding"]="x"*(384*1024-len(canonical(run)));run_raw=canonical(run)
+        self.assertEqual(len(event_raw),32768);self.assertEqual(len(run_raw),384*1024)
+        with tempfile.TemporaryDirectory() as directory:
+            event_path=Path(directory)/"invented-event.json";event_path.write_bytes(event_raw);observation={}
+            with patch.dict(os.environ,self.hosted_environment(event_path),clear=True),patch.dict(runner._CAPABILITIES,{},clear=True),\
+                    patch.object(runner,"_read_run",return_value=run_raw),\
+                    patch.object(runner,"_git",return_value=SimpleNamespace(stdout=b"1"*40+b"\n")),\
+                    patch.object(forecasts,"make_source_binding",return_value=self.binding):
+                runner.authorize_current_run(observation=observation)
+            self.assertLessEqual(len(canonical(observation)),640*1024)
+            self.assertEqual(observation["event_original"],runner._encoded(event_raw))
+            self.assertEqual(observation["run_original"],runner._encoded(run_raw))
 
     def test_recovered_auth_is_not_execution_capability_and_each_phase_uses_its_window(self):
         auth=self.authority();body={"mode":"PROSPECTIVE_RESEARCH","producer_binding":self.binding,

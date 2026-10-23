@@ -425,6 +425,25 @@ class ProductionCoordinatorTests(unittest.TestCase):
             self.assertEqual(self.current.prepare_tasks(),[])
         self.assertEqual(self.calls,[]);self.assertEqual(self.current.registry["attempts"],[])
 
+    def test_runtime_reserves_retained_and_atomic_staging_observation_at_boundary(self):
+        maximum=common.make_policy()["runtime_disk_bytes"];caller_reserve=17
+        observation_reserve=runner.HOSTED_RUN_OBSERVATION_DISK_RESERVE
+        self.assertEqual(observation_reserve,2*640*1024)
+        retained=self.current.root/"retained-worker-original";original=b"Preserve original worker bytes."
+        retained.write_bytes(original)
+        for extra in (-1,0,1):
+            actual=maximum-observation_reserve-caller_reserve+extra
+            def measured(path):return actual if path == self.current.root else 0
+            with self.subTest(extra=extra),patch.object(self.current,"_directory_bytes",side_effect=measured):
+                if extra > 0:
+                    with self.assertRaisesRegex(IntegrityError,"disk budget"):
+                        self.current._runtime_guard(reserve=caller_reserve)
+                else:
+                    state=self.current._runtime_guard(reserve=caller_reserve)
+                    self.assertEqual(state["actual_bytes"],actual)
+                    self.assertEqual(state["hosted_run_observation_reserved_bytes"],observation_reserve)
+        self.assertEqual(retained.read_bytes(),original)
+
     def test_captured_input_pack_is_recovered_after_registration_interruption_without_get(self):
         self.planned();self.fixture.now=self.case.start-timedelta(minutes=140)
         day=self.current.registry["days"][0];plan=self.archive.get_json(day["plan_ref"]);event=plan["events"][0]

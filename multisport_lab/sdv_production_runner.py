@@ -36,6 +36,10 @@ INDEX_PATH = "registry.json"
 MAX_INDEX_BYTES = 2 * 1024 * 1024
 MAX_ACTIVE_DAYS = 10
 MAX_ARCHIVED_DAYS = 4096
+MAX_HOSTED_RUN_OBSERVATION_BYTES = 640 * 1024
+# The report is outside the phase directory. Reserve the retained observation
+# and the atomic staging copy without increasing the two-GiB runtime limit.
+HOSTED_RUN_OBSERVATION_DISK_RESERVE = 2 * MAX_HOSTED_RUN_OBSERVATION_BYTES
 _CAPABILITIES = {}
 
 
@@ -99,10 +103,15 @@ def validate_authorization(body):
             and event.get("inputs",{}).get("mode","operate") == "operate","Owner production catch-up required")
     expected={"id":body["run_id"],"run_attempt":body["run_attempt"],"event":body["event"],
         "head_sha":body["head_sha"],"head_branch":"main","path":common.WORKFLOW,"status":"in_progress","conclusion":None}
-    common.require(type(run) is dict and all(run.get(k) == v and type(run.get(k)) is type(v) for k,v in expected.items())
-        and run.get("repository",{}).get("full_name") == common.REPOSITORY
-        and run.get("actor",{}).get("login") == body["actor"]
-        and stamp(utc(run.get("run_started_at"))) == body["run_started_at"],"Actual production run metadata differs")
+    common.require(type(run) is dict,"Actual production run metadata differs: response_type")
+    mismatches=[key for key,value in expected.items()
+        if run.get(key) != value or type(run.get(key)) is not type(value)]
+    for key,field,value in (("repository","full_name",common.REPOSITORY),("actor","login",body["actor"])):
+        if type(run.get(key)) is not dict or run[key].get(field) != value:
+            mismatches.append(key+"."+field)
+    if stamp(utc(run.get("run_started_at"))) != body["run_started_at"]:
+        mismatches.append("run_started_at")
+    common.require(not mismatches,"Actual production run metadata differs: "+", ".join(mismatches))
     triggering=run.get("triggering_actor",{}).get("login")
     common.require(type(triggering) is str and triggering and (triggering == body["actor"]
         or body["run_attempt"] > 1 and triggering == common.OWNER),"Production rerun authority differs")
@@ -117,8 +126,10 @@ def validate_authorization(body):
     return body
 
 
-def authorize_current_run():
+def authorize_current_run(*, observation=None):
     """One current-run metadata GET; the returned object is also process-bound."""
+    common.require(observation is None or type(observation) is dict and not observation,
+        "Hosted run observation must be an empty report object")
     env=os.environ
     common.require(env.get("GITHUB_ACTIONS") == "true" and env.get("GITHUB_REPOSITORY") == common.REPOSITORY
         and env.get("GITHUB_REF") == "refs/heads/main"
@@ -130,7 +141,16 @@ def authorize_current_run():
     run_id,attempt=env.get("GITHUB_RUN_ID",""),env.get("GITHUB_RUN_ATTEMPT","")
     common.require(re.fullmatch(r"[1-9][0-9]*",run_id) and re.fullmatch(r"[1-9][0-9]*",attempt),"Missing hosted run/attempt")
     event_raw=_bounded_bytes(Path(env.get("GITHUB_EVENT_PATH","")),32*1024)
-    run_raw=_read_run(int(run_id));run=_decode(run_raw)
+    run_raw=_read_run(int(run_id))
+    if observation is not None:
+        # This is bounded factual report evidence, never an authorization receipt
+        # or a capability. Preserve the exact response even when validation fails.
+        observation.update(schema_version="nba-sdv-production-run-observation-v1",
+            status="UNVERIFIED_OR_REJECTED",captured_at=stamp(common.now()),
+            event_original=_encoded(event_raw),run_original=_encoded(run_raw),authorization_id=None)
+        common.require(len(canonical(observation)) <= MAX_HOSTED_RUN_OBSERVATION_BYTES,
+            "Hosted run observation exceeds its explicit report budget")
+    run=_decode(run_raw)
     common.require(type(run) is dict and type(run.get("triggering_actor")) is dict
         and run["triggering_actor"].get("login") == env.get("GITHUB_TRIGGERING_ACTOR",actor),"Actual triggering actor differs")
     head=_git(ROOT,"rev-parse","HEAD").stdout.decode().strip()
@@ -144,6 +164,8 @@ def authorize_current_run():
         "event_original":_encoded(event_raw),"run_original":_encoded(run_raw),"executed_files":binding["files"]},"authorization_id")
     validate_authorization(body)
     _CAPABILITIES[body["authorization_id"]]=head
+    if observation is not None:
+        observation.update(status="VERIFIED_CURRENT_RUN",authorization_id=body["authorization_id"])
     return body
 
 
@@ -824,7 +846,8 @@ def execute(action,*,work_root,task=None):
     with retained_lock(work_root) as work:
         writer=archive=authority=registry=None
         try:
-            authority=authorize_current_run();archive=GitHubReleaseArchive(write_budget_bytes=REGISTRY_METADATA_RUN_BYTES,write_budget_objects=512)
+            authority=authorize_current_run(observation=report.setdefault("hosted_run_observation",{}))
+            archive=GitHubReleaseArchive(write_budget_bytes=REGISTRY_METADATA_RUN_BYTES,write_budget_objects=512)
             writer=RegistryWriter(work/"registry",archive=archive);registry=writer.prepare()
             coordinator=Coordinator(registry,writer,archive,authority,work/"phases")
             if action == "prepare":
@@ -887,4 +910,8 @@ def main(argv=None):
     return 1 if report["status"] in {"PARTIAL_OR_FAILED","FAILED_OR_PARTIAL"} or report.get("durability_error") or report.get("status_retention_error") else 0
 
 
-if __name__ == "__main__":raise SystemExit(main())
+if __name__ == "__main__":
+    # -m runs this file as __main__. Coordinator imports the canonical module;
+    # mint and check the private process capability in that same module.
+    from . import sdv_production_runner as _entrypoint
+    raise SystemExit(_entrypoint.main())

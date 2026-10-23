@@ -1,0 +1,58 @@
+{
+  "schema_version": "nba-sdv-calendar-fixture-independent-review-v1",
+  "recorded_at": "2026-10-22T23:25:34.701269+00:00",
+  "reviewer": "/root/diagnostic_fix_verify",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "worktree": "/workspace/nml-sdv-live-operations",
+  "observed_head": "731ea67541ec4963377e743039693ccc9766443d",
+  "reviewed_file": "tests/test_pros004_transfer.py",
+  "reviewed_file_sha256": "ca26afb996188c6034c5d6802ef2d508aed37ad39be0a97f5e08d17e6d4494d4",
+  "reviewed_test": "Pros004TransferTests.test_retained_admission_cannot_omit_unreferenced_original_snapshot_member",
+  "change": {
+    "before": "datetime.now(timezone.utc)-timedelta(days=1)",
+    "after": "min(NOW,datetime.now(timezone.utc))-timedelta(days=1)",
+    "scope": "Only the mocked received_at of an invented non-PROS004 auxiliary ledger receipt plus an explanatory comment."
+  },
+  "material_findings_remaining": [],
+  "test_meaning": [
+    "The test intentionally includes an unreferenced original receipt in the durable input checkpoint prefix, deletes that receipt from the writer copy, and requires strict transfer validation to reject the incomplete prefix.",
+    "Using real now minus one day alone eventually places that auxiliary receipt after the fixed synthetic NOW. The incidental future-clock rejection can prevent the test from reaching its intended omitted-prefix assertion.",
+    "Both datetimes are timezone-aware UTC. The minimum minus one day is before both the fixed synthetic checkpoint and actual transport clocks, including as the real calendar advances.",
+    "The final assertion still requires SnapshotError containing snapshot prefix is incomplete. No validator, production timing gate, PROS004 protocol, activation state or original record is changed."
+  ],
+  "root_targeted_check_inspected": {
+    "path": "/tmp/nml-recurring-entrypoint-calendar-fixture-check.log",
+    "sha256": "50ed8c6da504e3fc04e411f72484aa3d2883b037fa5b03cd87f047d6e1a4acd5",
+    "tests": 1,
+    "seconds": 0.161,
+    "result": "PASS",
+    "evidence_owner": "/root; this reviewer inspected its retained log and did not execute tests"
+  },
+  "prior_review_preserved": {
+    "path": "/tmp/nml-recurring-entrypoint-independent-review-final-20261022.json",
+    "sha256": "29332fb42046070f48d15dad8dd73eaba64d31932066cd424bcec604a999d8c4",
+    "unchanged": true,
+    "previous_runtime_and_runner_coordinator_test_hashes_still_match": true
+  },
+  "review_commands_and_method": [
+    "git diff -- tests/test_pros004_transfer.py",
+    "Read the changed test, imported NOW fixture, surrounding strict transfer assertions and root targeted-check log.",
+    "Compute local SHA-256 for the fixture, retained check log, previous independent receipt and previously reviewed runtime/test files; no software test was executed."
+  ],
+  "reviewer_actions": {
+    "tests_executed": 0,
+    "network_requests": 0,
+    "source_captures": 0,
+    "model_generation": 0,
+    "model_evaluation": 0,
+    "repository_edits": 0,
+    "original_record_edits": 0,
+    "workflow_dispatches": 0,
+    "temporary_review_receipts_created": 1
+  },
+  "limitations": [
+    "The previously failed full suite result remains a failed run; the targeted fixture check does not relabel it as a full-suite pass.",
+    "This is a test-fixture/static-integrity review, not PROS004 operation, a frozen experiment rerun, native scheduled execution or genuine forecast evidence.",
+    "The prior runtime review remains separate and unchanged. Subsequent required integration checks and release approval are the integration owner's responsibility."
+  ]
+}
