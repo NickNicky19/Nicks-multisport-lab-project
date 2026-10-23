@@ -7,15 +7,15 @@ import {loadSnapshot,loadProductionDate} from './snapshot.mjs';
 import {filterResearchForecasts, summarizePmf, isHistoryForecast, groupForecastGrades, forecastGradeState, upcomingEmptyReasons} from './research.mjs';
 
 let originalPairedRecord = null, activePairedGrades = null;
-let renderOffers = null;
+let renderOffers = null, offerResearchForecasts = null;
 try {({originalPairedRecord,activePairedGrades} = await import('./paired-research.mjs'));} catch {}
-try {({renderOffers} = await import('./offers.mjs'));} catch {}
+try {({renderOffers,offerResearchForecasts} = await import('./offers.mjs'));} catch {}
 
 const routes = [
   ['overview', 'Overview', '◫'], ['props', 'Props', '≡'], ['value', 'Value Research', '⇄'],
   ['builder', 'Paper Builder', '⊞'], ['performance', 'Performance', '▥'], ['sources', 'Source Health', '◉'], ['specials', 'Specials', '✧'],
 ];
-const state = {snapshot: null, error: null, scope: {mode: 'SINGLE', sports: ['NBA']}, filters: {view: location.hash === '#/props/history' ? 'history' : 'upcoming', category: 'ALL', side: 'ALL', period: 'full_game', window: 'upcoming', venue: 'ALL', evidence: 'ALL', dailyModel: 'ALL', dailyDateFrom: '', dailyDateTo: '', dailyLead: 'ALL',productionModel:'ALL',productionDateFrom:'',productionDateTo:'',productionLead:'ALL'}, visibleForecasts: 28, visiblePros004: 28, visiblePaired: 28, visibleDaily: 28, visibleProduction:28, builder: {legs: 6, mode: 'MIXED', checked: false}};
+const state = {snapshot: null, error: null, offerForecastViews:[], offerForecastErrors:[], scope: {mode: 'SINGLE', sports: ['NBA']}, filters: {view: location.hash === '#/props/history' ? 'history' : 'upcoming', category: 'ALL', side: 'ALL', period: 'full_game', window: 'upcoming', venue: 'ALL', evidence: 'ALL', dailyModel: 'ALL', dailyDateFrom: '', dailyDateTo: '', dailyLead: 'ALL',productionModel:'ALL',productionDateFrom:'',productionDateTo:'',productionLead:'ALL'}, visibleForecasts: 28, visiblePros004: 28, visiblePaired: 28, visibleDaily: 28, visibleProduction:28, builder: {legs: 6, mode: 'MIXED', checked: false}};
 const main = document.querySelector('#main');
 let productionLoading=false;
 const escape = value => String(value).replace(/[&<>"']/g, char => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[char]));
@@ -167,6 +167,7 @@ function props() {
   const markets = scopedSports().flatMap(sport => sport.markets);
   const categories = [...new Map(markets.map(market => [market.code, market])).values()];
   const now = Date.now();
+  const decisionAt = new Date(now).toISOString().replace(/\.(\d{3})Z$/,'.$1000Z');
   const rows = scopedOffers().filter(offer => {
     const start = Date.parse(offer.event_starts_at), upcoming = start > now;
     const viewMatch = state.filters.view === 'history' ? !upcoming : upcoming;
@@ -178,9 +179,11 @@ function props() {
       && offer.period === state.filters.period && ['ALL','OFFER_ONLY'].includes(state.filters.evidence);
   });
   const venues = [...new Set(scopedOffers().map(offer=>offer.venue))].sort();
+  const offeredResearch = [...scopedRows('forecasts'),...pairedForecasts().filter(({row})=>row.admission.eligible).map(({forecast})=>forecast),...(nbaSelected()?state.offerForecastViews:[])];
+  const offerMatchNotice = nbaSelected() && state.offerForecastErrors.length ? `<div class="notice" role="status"><strong>Some research line matches could not be verified</strong><p>${state.offerForecastErrors.map(escape).join(' ')} Offers and other research remain available; unverified forecasts are not matched.</p></div>` : '';
   let forecasts = filterResearchForecasts(scopedRows('forecasts'), state.filters);
   if (!['ALL', 'RESEARCH'].includes(state.filters.evidence)) forecasts = [];
-  return pageHeading('THE RESEARCH BOARD', 'Props', 'Inspect price-independent research distributions and exact offers within your selected sport scope.', pill('Research · qualification unavailable', 'neutral')) + researchStatus() + `<section class="panel filter-panel">${scopeControl()}<div class="filter-grid">${selectControl('Research view', 'view', [['upcoming', 'Upcoming · captured research'], ['history', 'History · past events & reconstructions']], state.filters.view)}${selectControl('Category', 'category', [['ALL', 'All categories'], ...categories.map(market => [market.code, `${market.code} · ${market.name.replace(' indicator', '')}`])], state.filters.category)}${selectControl('Event window', 'window', [['upcoming', 'All events in this view'], ['24h', 'Next 24 hours · upcoming only'], ['7d', 'Next 7 days · upcoming only']], state.filters.window)}${selectControl('Period', 'period', [['full_game', 'Full game · includes overtime']], state.filters.period)}${selectControl('Offer side', 'side', [['ALL', 'All sides'], ['OVER', 'Over'], ['UNDER', 'Under']], state.filters.side)}${selectControl('Offer venue', 'venue', [['ALL', 'All observed venues'], ...venues.map(venue=>[venue,venue])], state.filters.venue)}${selectControl('Evidence', 'evidence', [['ALL', 'All evidence states'], ['OFFER_ONLY', 'Offer only'], ['RESEARCH', 'Research forecast'], ['EVALUATED', 'Evaluated forecast'], ['PRICED', 'Priced paper candidate']], state.filters.evidence)}</div><p class="control-help">Side and venue apply to offers. Forecast distributions remain price-independent and have no over/under side until matched to an exact line.</p></section>` + panel('Research forecasts', forecastBoard(forecasts), `${escape(scopeLabel())} · ${forecasts.length} category distributions in this view · ${Math.min(state.visibleForecasts, forecasts.length)} shown`, pill(state.filters.view === 'history' ? 'History' : 'Upcoming only', 'research-pill')) + productionPanel() + dailyPanel() + pairedPanel() + reservedPanel() + panel('Published offers', rows.length && typeof renderOffers === 'function' ? renderOffers(state.snapshot.offers,{offers:rows,forecasts:[...scopedRows('forecasts'),...pairedForecasts().filter(({row})=>row.admission.eligible).map(({forecast})=>forecast)],now:new Date().toISOString()}) : empty('No offers published in this scope', 'No complete player contract with reviewed source permission matches this selection. Retained source observations are not admitted published offers. An admitted offer can display “price unavailable”; quotes, value estimates and tickets have separate checks.'), `${escape(scopeLabel())} · ${rows.length} published offers`, pill('Research only', 'research-pill')) + panel('Category evidence inventory', `<div class="table-wrap"><table class="inventory-table"><caption class="sr-only">Category-specific forecast, quote and settlement admission</caption><thead><tr><th scope="col">Category</th><th scope="col">Forecast</th><th scope="col">Quotes</th><th scope="col">Settlement</th></tr></thead><tbody>${categories.map(market => `<tr><th scope="row"><strong>${escape(market.code)}</strong><span class="cell-sub">${escape(market.name)}${market.requested ? '' : ' · optional'}</span></th><td>${pill('Unvalidated', 'neutral')}</td><td>${pill('Unverified', 'neutral')}</td><td>${pill('Unverified', 'neutral')}</td></tr>`).join('') || '<tr><td colspan="4">No inventory is available for this selection.</td></tr>'}</tbody></table></div>`, 'Each category retains its own status. Registry membership is not qualification.') + `<div class="notice"><strong>Independent evidence dimensions</strong><p>An observed offer, a research forecast, an evaluated model, a priced candidate and a settlement rule are separate states. No single badge substitutes for all five.</p></div>`;
+  return pageHeading('THE RESEARCH BOARD', 'Props', 'Inspect price-independent research distributions and exact offers within your selected sport scope.', pill('Research · qualification unavailable', 'neutral')) + researchStatus() + `<section class="panel filter-panel">${scopeControl()}<div class="filter-grid">${selectControl('Research view', 'view', [['upcoming', 'Upcoming · captured research'], ['history', 'History · past events & reconstructions']], state.filters.view)}${selectControl('Category', 'category', [['ALL', 'All categories'], ...categories.map(market => [market.code, `${market.code} · ${market.name.replace(' indicator', '')}`])], state.filters.category)}${selectControl('Event window', 'window', [['upcoming', 'All events in this view'], ['24h', 'Next 24 hours · upcoming only'], ['7d', 'Next 7 days · upcoming only']], state.filters.window)}${selectControl('Period', 'period', [['full_game', 'Full game · includes overtime']], state.filters.period)}${selectControl('Offer side', 'side', [['ALL', 'All sides'], ['OVER', 'Over'], ['UNDER', 'Under']], state.filters.side)}${selectControl('Offer venue', 'venue', [['ALL', 'All observed venues'], ...venues.map(venue=>[venue,venue])], state.filters.venue)}${selectControl('Evidence', 'evidence', [['ALL', 'All evidence states'], ['OFFER_ONLY', 'Offer only'], ['RESEARCH', 'Research forecast'], ['EVALUATED', 'Evaluated forecast'], ['PRICED', 'Priced paper candidate']], state.filters.evidence)}</div><p class="control-help">Side and venue apply to offers. Forecast distributions remain price-independent and have no over/under side until matched to an exact line.</p></section>` + panel('Research forecasts', forecastBoard(forecasts), `${escape(scopeLabel())} · ${forecasts.length} category distributions in this view · ${Math.min(state.visibleForecasts, forecasts.length)} shown`, pill(state.filters.view === 'history' ? 'History' : 'Upcoming only', 'research-pill')) + productionPanel() + dailyPanel() + pairedPanel() + reservedPanel() + panel('Published offers', offerMatchNotice + (rows.length && typeof renderOffers === 'function' ? renderOffers(state.snapshot.offers,{offers:rows,forecasts:offeredResearch,now:decisionAt}) : empty('No offers published in this scope', 'No complete player contract with reviewed source permission matches this selection. Retained source observations are not admitted published offers. An admitted offer can display “price unavailable”; quotes, value estimates and tickets have separate checks.')), `${escape(scopeLabel())} · ${rows.length} published offers`, pill('Research only', 'research-pill')) + panel('Category evidence inventory', `<div class="table-wrap"><table class="inventory-table"><caption class="sr-only">Category-specific forecast, quote and settlement admission</caption><thead><tr><th scope="col">Category</th><th scope="col">Forecast</th><th scope="col">Quotes</th><th scope="col">Settlement</th></tr></thead><tbody>${categories.map(market => `<tr><th scope="row"><strong>${escape(market.code)}</strong><span class="cell-sub">${escape(market.name)}${market.requested ? '' : ' · optional'}</span></th><td>${pill('Unvalidated', 'neutral')}</td><td>${pill('Unverified', 'neutral')}</td><td>${pill('Unverified', 'neutral')}</td></tr>`).join('') || '<tr><td colspan="4">No inventory is available for this selection.</td></tr>'}</tbody></table></div>`, 'Each category retains its own status. Registry membership is not qualification.') + `<div class="notice"><strong>Independent evidence dimensions</strong><p>An observed offer, a research forecast, an evaluated model, a priced candidate and a settlement rule are separate states. No single badge substitutes for all five.</p></div>`;
 }
 
 function valueResearch() {
@@ -227,9 +230,19 @@ async function changeProductionDate(gameDate) {
     state.snapshot.productionResearch=recovered;
     state.snapshot.productionResearchError=null;
     state.visibleProduction=28;
+    await prepareOfferResearch();
   } catch (error) {
     state.snapshot.productionResearchError=(error.message||'The selected research date could not be verified.')+' The previously verified date remains visible with its original clocks.';
   } finally {productionLoading=false;render();}
+}
+
+async function prepareOfferResearch() {
+  state.offerForecastViews=[];state.offerForecastErrors=[];
+  if(typeof offerResearchForecasts!=='function')return;
+  const at=new Date().toISOString().replace(/\.(\d{3})Z$/,'.$1000Z');
+  const channels=[['Daily-snapshot',state.snapshot?.dailyResearch,{daily:state.snapshot?.dailyResearch}],['Recurring',state.snapshot?.productionResearch,{production:state.snapshot?.productionResearch}]].filter(([,asset])=>asset);
+  const results=await Promise.allSettled(channels.map(([, ,source])=>offerResearchForecasts(source,at,globalThis.crypto)));
+  results.forEach((result,index)=>{if(result.status==='fulfilled')state.offerForecastViews.push(...result.value);else state.offerForecastErrors.push(`${channels[index][0]} matches unavailable: ${result.reason?.message||'Original forecast integrity could not be verified.'}`);});
 }
 
 function bindControls() {
@@ -275,5 +288,5 @@ window.addEventListener('hashchange', () => {
   render(); main.focus(); window.scrollTo(0, 0);
 });
 
-try {state.snapshot = await loadSnapshot(fetch,globalThis.crypto,{productionView:state.filters.view});} catch (error) {state.error = error.message || 'The publication could not be verified.';}
+try {state.snapshot = await loadSnapshot(fetch,globalThis.crypto,{productionView:state.filters.view});await prepareOfferResearch();} catch (error) {state.error = error.message || 'The publication could not be verified.';}
 render();

@@ -1,5 +1,7 @@
 // Complete, separately reviewed offer-only facts. Never an executable quote.
 import {ALL_NBA_CATEGORIES, NBA_UNITS, utcMicros} from './research.mjs';
+import {validateDailyAsset, verifyDailyHashes} from './sdv-daily.mjs';
+import {validateProductionCollection, validateProductionIndex, verifyProductionHashes} from './production.mjs';
 
 // Add only after exact source/contract/rights review, with the Python pin.
 export const APPROVED_PUBLIC_ADMISSION_IDS = Object.freeze([]);
@@ -166,14 +168,59 @@ export async function verifyOfferAssetHashes(asset,cryptoProvider=globalThis.cry
   return asset;
 }
 
+// These are immutable, local matching views of already published originals, not
+// a new forecast lane. Only a complete validated source graph can create one.
+const admittedMatchViews=new WeakMap();
+function immutableCopy(value){
+  const freeze=v=>{if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
+  return freeze(structuredClone(value));
+}
+export async function offerResearchForecasts({legacy=[],paired=[],daily=null,production=null}={},at,cryptoProvider=globalThis.crypto){
+  require(Array.isArray(legacy)&&Array.isArray(paired),'Invalid offer research forecast collections');
+  // Snapshot both graphs before yielding to hashing. Caller mutation during an
+  // await must never change the bytes whose semantics are admitted afterwards.
+  daily=daily===null?null:structuredClone(daily);
+  production=production===null?null:structuredClone({index:production.index,pages:production.pages,loaded_game_date:production.loaded_game_date??null});
+  const result=[...legacy,...paired];
+  const append=(rows,inputs,kind,lane,publishedAt)=>{
+    const byId=new Map(inputs.map(input=>[input.input_id,input]));
+    for(const row of rows){
+      const body=row.body;
+      if(!row.admission.eligible||body.mode!=='PROSPECTIVE_RESEARCH'||body.evidence_lane!==lane)continue;
+      const input=byId.get(body.input_id);
+      require(input&&body.event_snapshot_id===input.event.event_snapshot_id,'Offer matching lost the exact admitted forecast input');
+      const view=immutableCopy({kind,reference:row.reference,original:body,admission:row.admission,input});
+      const availability=[publishedAt,row.admission.local_persistence_completed_at??row.admission.local_completed_at,row.admission.remote_recovery_completed_at??row.admission.remote_recovered_at].map(utcMicros).reduce((latest,value)=>value>latest?value:latest);
+      admittedMatchViews.set(view,{forecast:Object.freeze({...view.original,league:view.input.event.league,id_namespace:view.input.event.id_namespace,event_version:view.original.event_snapshot_id}),availability});
+      result.push(view);
+    }
+  };
+  if(daily!==null){
+    await verifyDailyHashes(daily,cryptoProvider);
+    validateDailyAsset(daily,at);
+    append(daily.forecasts,daily.inputs,'SDV_DAILY','DAILY_SNAPSHOT_PROSPECTIVE',daily.generated_at);
+  }
+  if(production!==null){
+    await verifyProductionHashes(production.index,production.pages,cryptoProvider,{gameDate:production.loaded_game_date});
+    validateProductionIndex(production.index,at);
+    // Preserve original page/receipt bytes. A flattened forecast projection alone
+    // cannot establish the source, hosted authority or durable admission graph.
+    const verified=validateProductionCollection(production.index,production.pages,{gameDate:production.loaded_game_date??null});
+    append(verified.forecasts,verified.inputs,'SDV_PRODUCTION','SDV_PRODUCTION_PROSPECTIVE',production.index.generated_at);
+  }
+  return result;
+}
+
 export function matchResearchForecast(offer,forecast,at){
+  const admitted=admittedMatchViews.get(forecast);
+  forecast=admitted?.forecast??forecast??{};
   const reasons=[];
   for(const key of ['league','id_namespace','event_id','player_id','team_id','opponent_id','event_starts_at','period','extra_time_policy'])if(forecast[key]!==offer[key])reasons.push(`Forecast and offer differ: ${key}`);
   if((forecast.event_version??forecast.prospective?.event_version)!==offer.event_version)reasons.push('Forecast and offer have different or absent event versions');
   if(!forecast.categories?.some(c=>c.code===offer.stat&&c.units===offer.units))reasons.push('Forecast does not support the exact offered category and units');
-  try{const when=utcMicros(at);if(!(utcMicros(offer.observed_at)<=utcMicros(offer.imported_at)&&utcMicros(offer.imported_at)<=when&&when<utcMicros(offer.event_starts_at)&&utcMicros(forecast.cutoff_at)<=utcMicros(forecast.issued_at)&&utcMicros(forecast.issued_at)<=when))reasons.push('Forecast/offer were not both available at this pregame decision time');}
+  try{const when=utcMicros(at);if(!(utcMicros(offer.observed_at)<=utcMicros(offer.imported_at)&&utcMicros(offer.imported_at)<=when&&when<utcMicros(offer.event_starts_at)&&utcMicros(forecast.cutoff_at)<=utcMicros(forecast.issued_at)&&utcMicros(forecast.issued_at)<=when))reasons.push('Forecast/offer were not both available at this pregame decision time');if(admitted&&when<admitted.availability)reasons.push('Research forecast publication or required durable recovery was not complete at this decision time');}
   catch{reasons.push('Missing or invalid forecast decision clocks');}
-  if(offer.evidence_lane!=='REAL_TIME_CAPTURED'||forecast.evidence_lane!=='REAL_TIME_CAPTURED'||offer.market_status!=='PRE_GAME'||forecast.conditioning!=='CONDITIONAL_ON_APPEARANCE')reasons.push('A genuinely captured pregame research forecast and offer are required');
+  if(offer.evidence_lane!=='REAL_TIME_CAPTURED'||(!admitted&&forecast.evidence_lane!=='REAL_TIME_CAPTURED')||offer.market_status!=='PRE_GAME'||forecast.conditioning!=='CONDITIONAL_ON_APPEARANCE')reasons.push('A genuinely captured pregame research forecast and offer are required');
   return {status:reasons.length?'UNMATCHED':'MATCHED_RESEARCH_ONLY',reasons,qualification:'UNAVAILABLE',ticket_eligible:false,ev:null};
 }
 

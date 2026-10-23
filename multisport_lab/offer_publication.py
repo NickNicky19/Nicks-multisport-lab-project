@@ -12,10 +12,12 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from functools import wraps
 import hashlib
+import json
 from pathlib import Path
 import re
 from urllib.parse import urlparse
 import zlib
+from weakref import WeakKeyDictionary
 
 from .integrity import (HASH_FORMAT, RECEIPT_SCHEMA, IntegrityError, canonical,
                         digest, load_json, read_receipt, stamp, utc)
@@ -568,8 +570,111 @@ def make_asset(root, *, now, raw_reader=None):
     return validate_asset(asset, now=now)
 
 
+_ADMITTED_MATCH_VIEWS = WeakKeyDictionary()
+
+
+class _AdmittedForecastView:
+    """A read-only view of validated originals, never a new evidence lane.
+
+    Copies of the displayed dictionaries cannot mutate the validated matching
+    fields. A caller-supplied dictionary/eligible flag cannot create this view.
+    """
+    __slots__ = ("_raw", "__weakref__")
+
+    def __init__(self, payload):
+        object.__setattr__(self, "_raw", canonical(payload))
+
+    def __setattr__(self, key, value):
+        raise AttributeError("An admitted forecast matching view is immutable")
+
+    def __getitem__(self, key):
+        return json.loads(self._raw)[key]
+
+
+def _production_match_records(collection, *, at):
+    from . import sdv_production_publication as production
+    _require(type(collection) is dict and type(collection.get("pages")) is list,
+             "Offer matching requires the original production index and pages")
+    index, pages = collection["index"], collection["pages"]
+    production.validate_index(index, now=at)
+    _require(len(pages) == len(index["pages"]), "Offer matching omitted a declared production page")
+    records, total = [], len(canonical(index))
+    for descriptor, page in zip(index["pages"], pages):
+        production.validate_page(page, generated_at=index["generated_at"], game_date=descriptor["game_date"])
+        raw = canonical(page)
+        _require(hashlib.sha256(raw).hexdigest() == descriptor["sha256"]
+                 and len(page["records"]) == descriptor["record_count"],
+                 "Offer matching production page hash/count differs")
+        total += len(raw)
+        _require(total <= production.MAX_TOTAL_BYTES, "Offer matching production byte budget exceeded")
+        records.extend(page["records"])
+    production.validate_records(records, generated_at=index["generated_at"], allow_development=True)
+    production._coverage(index, records)
+    _require(production.counts(records) == index["counts"], "Offer matching production counts differ")
+    for day in index["dates"]:
+        rows = [row for page in pages if page["game_date"] == day["game_date"] for row in page["records"]]
+        _require(production.counts(rows) == day["counts"], "Offer matching production date counts differ")
+    originals = [(row, production.original_record(row)) for row in records]
+    inputs = {body["input_id"]: body for _, body in originals
+              if body["schema_version"] == "nba-sdv-production-input-v1"}
+    # Shared authority/input rows may appear on multiple date pages; matching
+    # never displays a repeated original as another model.
+    forecasts = {body["forecast_id"]: {"reference": row["reference"], "body": body,
+                                       "admission": row["admission"]}
+                 for row, body in originals if body["schema_version"] == "nba-sdv-production-forecast-v1"}
+    return list(forecasts.values()), inputs
+
+
+@_strict
+def offer_research_forecasts(*, legacy=(), paired=(), daily=None, production=None, at):
+    """Adapt fully validated admitted originals for exact, price-free matching.
+
+    This does not admit offers, issue forecasts or replace their schema/lane.
+    Daily authorization and production authority, input and remote-completion
+    relationships are checked before a forecast can enter this private view.
+    """
+    _require(isinstance(legacy, (list, tuple)) and isinstance(paired, (list, tuple)),
+             "Invalid offer research forecast collections")
+    result = [*legacy, *paired]
+
+    def append(rows, inputs, kind, lane, published_at):
+        for row in rows:
+            body = row["body"]
+            if not (row["admission"]["eligible"] and body["mode"] == "PROSPECTIVE_RESEARCH"
+                    and body["evidence_lane"] == lane):
+                continue
+            input_body = inputs.get(body["input_id"])
+            _require(input_body is not None and body["event_snapshot_id"] == input_body["event"]["event_snapshot_id"],
+                     "Offer matching lost the exact admitted forecast input")
+            view = _AdmittedForecastView({"kind": kind, "reference": row["reference"], "original": body,
+                                           "admission": row["admission"], "input": input_body})
+            admission = row["admission"]
+            completed = ([admission["local_persistence_completed_at"], admission["remote_recovery_completed_at"]]
+                         if kind == "SDV_DAILY" else [admission["local_completed_at"], admission["remote_recovered_at"]])
+            _ADMITTED_MATCH_VIEWS[view] = canonical({"forecast": {**body,
+                "league": input_body["event"]["league"], "id_namespace": input_body["event"]["id_namespace"],
+                "event_version": body["event_snapshot_id"]},
+                "available_at": max([published_at, *completed], key=_clock)})
+            result.append(view)
+
+    if daily is not None:
+        from . import sdv_daily_publication
+        sdv_daily_publication.validate_asset(daily, now=at)
+        append(daily["forecasts"], {body["input_id"]: body for body in daily["inputs"]},
+               "SDV_DAILY", "DAILY_SNAPSHOT_PROSPECTIVE", daily["generated_at"])
+    if production is not None:
+        rows, inputs = _production_match_records(production, at=at)
+        append(rows, inputs, "SDV_PRODUCTION", "SDV_PRODUCTION_PROSPECTIVE", production["index"]["generated_at"])
+    return result
+
+
 def match_research_forecast(offer, forecast, *, at):
     """Exact semantic/time match only. Does not compute EV or confer eligibility."""
+    admitted = _ADMITTED_MATCH_VIEWS.get(forecast) if isinstance(forecast, _AdmittedForecastView) else None
+    admitted = json.loads(admitted) if admitted is not None else None
+    forecast = admitted["forecast"] if admitted is not None else forecast
+    if not isinstance(forecast, dict):
+        forecast = {}
     reasons = []
     for field in ("league", "id_namespace", "event_id", "player_id", "team_id", "opponent_id",
                   "event_starts_at", "period", "extra_time_policy"):
@@ -582,12 +687,14 @@ def match_research_forecast(offer, forecast, *, at):
         reasons.append("Forecast does not support the exact offered category and units")
     try:
         when = utc(at)
+        if admitted is not None and when < _clock(admitted["available_at"]):
+            reasons.append("Required forecast persistence, remote recovery and publication were not yet available")
         if not (_clock(offer["observed_at"]) <= _clock(offer["imported_at"]) <= when < _clock(offer["event_starts_at"])
                 and _clock(forecast["cutoff_at"]) <= _clock(forecast["issued_at"]) <= when):
             reasons.append("Forecast/offer were not both available at this pregame decision time")
     except (KeyError, IntegrityError, ValueError, TypeError):
         reasons.append("Missing or invalid forecast decision clocks")
-    if (offer["evidence_lane"] != "REAL_TIME_CAPTURED" or forecast.get("evidence_lane") != "REAL_TIME_CAPTURED"
+    if (offer["evidence_lane"] != "REAL_TIME_CAPTURED" or (admitted is None and forecast.get("evidence_lane") != "REAL_TIME_CAPTURED")
             or offer["market_status"] != "PRE_GAME" or forecast.get("conditioning") != "CONDITIONAL_ON_APPEARANCE"):
         reasons.append("A genuinely captured pregame research forecast and offer are required")
     return {"status": "UNMATCHED" if reasons else "MATCHED_RESEARCH_ONLY", "reasons": reasons,

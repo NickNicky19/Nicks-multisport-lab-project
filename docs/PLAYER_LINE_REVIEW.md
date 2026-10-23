@@ -115,6 +115,98 @@ or included in public site data. Desktop 1440 and mobile 390/320 Chromium checks
 verified all 14 inventory rows, explicit gaps, exact threshold/IDs, missing prices,
 source provenance and no horizontal overflow or external requests.
 
+## October 23 follow-up: verified names and scoped period rules
+
+A separate bounded follow-up used **six GETs**, with zero redirects/retries and
+one shared integration-owner counter. Agents made no source requests. The new
+inspection reused the original board; it did not fetch another board or prices.
+Exact response bytes, metadata and pre-request claims remain in ignored
+`.local-data/nba-live-lines-20261023/`. These originals have local recovery only.
+The six requests were the official API documentation, documented NBA player
+catalogue, Player Picks Rules, Stats Explained, the retained NBA schedule route,
+and General Terms of Use. Response ceilings stayed at 8 MiB for provider JSON,
+2 MiB for documentation and 32 MiB for the inspection package.
+
+The documented `https://api.sleeper.app/v1/players/nba` response contains 2,176
+objects: 2,146 player entries and 30 explicitly recognized team entries. It
+resolves **all 173 native player IDs** in the board. Catalogue key, `player_id`,
+sport, first/last/full name are cross-checked; team entries cannot supply player
+identities. All source board/catalogue team literals agree in this sample. That
+agreement does not independently verify a game or a player's game participation.
+No ESPN player ID is supplied for these 173 catalogue entries.
+
+Name lookup was observed at **12:11:50.061540 UTC**, later than the original
+**11:12:31.699799 UTC** board. Enrichment retains both clocks. It does not refresh
+the line, change an original forecast, or become a historical model input.
+
+Official Player Picks Rules state that overtime counts toward statistics and
+that corrections within 30 minutes of game end trigger regrading, while later
+corrections do not affect contest results. Official Stats Explained gives the
+specific first-quarter/end-of-quarter and quarter-overtime-exclusion rules.
+The **94 explicit `first_qtr_points` rows / 188 selections** can therefore carry
+Q1 / `OT_EXCLUDED` display metadata. They remain outside this full-game forecast
+matcher. Every NBA row, including those Q1 rows, has `line_type=normal`; that
+field demonstrably cannot mean full game. Unprefixed markets retain unknown
+period/overtime bindings until a native contract or applicable official UI label
+establishes them. Generic overtime rules alone do not fill this gap.
+
+The exact retained schedule route `/schedule/nba/2026/regular` returned `[]`.
+The board contains **12 opaque native game IDs**, each with two source-declared
+team labels, but no verified scheduled starts or canonical event links. These
+are a raw team-label inventory, not admitted matchup mappings. Empty output from
+this one route does not prove permanent game/source absence. Neither a native
+ID's encoded creation time, a recent-performance date nor the nearest game
+between two teams may substitute for event evidence.
+
+The API documentation expressly allows noncommercial read-only API use and
+own-server caching of the player-ID map, at most once per day. This is a
+published allowance for that documented operation. General Terms 11.1/11.3
+restrict automated extraction and distinguish provider approval from user
+authorization. No retained allowance covers recurring undocumented Picks board
+collection or public derived Picks offers. The catalogue allowance does not
+grant that separate scope. No further Picks data requests were made after this
+restriction was revalidated; the remaining request ceiling was not spent.
+
+The new sealed companion `nba-private-player-line-enrichment-v1` binds the exact
+original review/board and retained catalogue/rules bytes. It never rewrites the
+v1 review. Its selected cards show verified names, native IDs, later name-lookup
+clocks, raw team labels and verified Q1 rules or an explicit unknown-period
+fallback. Missing event/start, product-variant and complete-contract fields
+remain explicit. Recovery independently replays all retained originals with
+explicit integrity exceptions, including under optimized Python.
+
+```bash
+python3 -m multisport_lab.player_line_enrichment \
+  --base .local-data/sleeper-lines-20261023/review \
+  --output .local-data/sleeper-lines-20261023/enrichment \
+  --catalogue-body .local-data/nba-live-lines-20261023/02-sleeper-players.body \
+  --catalogue-metadata .local-data/nba-live-lines-20261023/02-sleeper-players.metadata.json \
+  --picks-rules-body .local-data/nba-live-lines-20261023/03-sleeper-picks-rules.body \
+  --picks-rules-metadata .local-data/nba-live-lines-20261023/03-sleeper-picks-rules.metadata.json \
+  --stats-rules-body .local-data/nba-live-lines-20261023/04-sleeper-stats-rules.body \
+  --stats-rules-metadata .local-data/nba-live-lines-20261023/04-sleeper-stats-rules.metadata.json
+python3 -O -m multisport_lab.player_line_enrichment \
+  --base .local-data/sleeper-lines-20261023/review \
+  --verify .local-data/sleeper-lines-20261023/enrichment
+node scripts/render_local_offer_review.mjs \
+  .local-data/sleeper-lines-20261023/review/review.json \
+  .local-data/sleeper-lines-20261023/enriched-preview.html \
+  --enrichment .local-data/sleeper-lines-20261023/enrichment/enrichment.json
+```
+
+The existing complete-offer matcher now also accepts original admitted
+daily-snapshot and recurring R0/K0 publication graphs. Both Python and browser
+paths require their strict typed validators and hashes, exact input/event/player/
+team/period/overtime identities, genuine modes, and required remote completion.
+The matcher keeps their original evidence lanes and rejects decisions predating
+local persistence, independent recovery or publication. Development previews,
+late/unacknowledged originals and Q1/full-game mismatches cannot match. The Props
+renderer uses the same microsecond decision clock and preserves valid independent
+channels if another channel's matching proof fails. No price is required.
+This software path does not grant public source admission or make the incomplete
+actual board observations into contracts. Synthetic graph tests are explicitly
+separate from actual-source verification.
+
 This package installs no collector or public offer route. Existing licensed
 SportsDataverse forecast delivery stays independent; absent player lines or odds
 do not block its authorized statistical forecast path. The paper builder remains

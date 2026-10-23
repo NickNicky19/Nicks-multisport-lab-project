@@ -7,6 +7,7 @@ import {fileURLToPath} from 'node:url';
 import {webcrypto} from 'node:crypto';
 import {renderLocalOfferReview} from '../web/local-offer-review.mjs';
 import {PLAYER_LINE_REVIEW_SCHEMA,renderPlayerLineReview,verifyPlayerLineReviewHash} from '../web/player-line-review.mjs';
+import {ENRICHMENT_SOURCE_URLS,renderEnrichedPlayerLineReview,verifyPlayerLineEnrichmentSources} from '../web/player-line-enrichment.mjs';
 
 const MAX_REVIEW_BYTES = 256 * 1024;
 const MAX_HTML_BYTES = 2 * 1024 * 1024;
@@ -64,7 +65,7 @@ async function createIdenticalOnly(filename,content) {
   } finally {await fs.rm(temporaryDirectory,{recursive:true,force:true});}
 }
 
-export async function renderPreparedLocalReview(inputFilename,outputFilename,{cwd:requestedCwd=process.cwd()}={}) {
+export async function renderPreparedLocalReview(inputFilename,outputFilename,{cwd:requestedCwd=process.cwd(),enrichmentFilename=null}={}) {
   const cwd = await fs.realpath(requestedCwd);
   const input = path.resolve(cwd,inputFilename), output = path.resolve(cwd,outputFilename);
   const raw = await boundedRegularFile(input,MAX_REVIEW_BYTES);
@@ -74,8 +75,21 @@ export async function renderPreparedLocalReview(inputFilename,outputFilename,{cw
   let rendered;
   if (review?.schema_version === PLAYER_LINE_REVIEW_SCHEMA) {
     await verifyPlayerLineReviewHash(review,webcrypto);
-    rendered = renderPlayerLineReview(review);
-  } else rendered = renderLocalOfferReview(review);
+    if (enrichmentFilename !== null) {
+      const filename=path.resolve(cwd,enrichmentFilename),directory=path.dirname(filename);
+      const enrichment=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(await boundedRegularFile(filename,MAX_REVIEW_BYTES)));
+      const assets={};
+      for(const key of Object.keys(ENRICHMENT_SOURCE_URLS))assets[key]={
+        raw:await boundedRegularFile(path.join(directory,key+'.body'),8*1024*1024),
+        metadataRaw:await boundedRegularFile(path.join(directory,key+'.metadata.json'),MAX_REVIEW_BYTES)};
+      const board=await boundedRegularFile(path.join(path.dirname(input),'source.body'),8*1024*1024);
+      await verifyPlayerLineEnrichmentSources(enrichment,review,assets,board,webcrypto);
+      rendered=renderEnrichedPlayerLineReview(review,enrichment);
+    } else rendered = renderPlayerLineReview(review);
+  } else {
+    require(enrichmentFilename===null,'Enrichment requires an original private player-line review.');
+    rendered = renderLocalOfferReview(review);
+  }
   const cssFile = fileURLToPath(new URL('../web/local-offer-review.css',import.meta.url));
   const css = new TextDecoder('utf-8',{fatal:true}).decode(await boundedRegularFile(cssFile,MAX_REVIEW_BYTES))
     .replace(/<\/style/gi,'<\\/style');
@@ -89,11 +103,11 @@ export async function renderPreparedLocalReview(inputFilename,outputFilename,{cw
 async function main() {
   const args = process.argv.slice(2);
   if (args.length === 1 && ['--help','-h'].includes(args[0])) {
-    process.stdout.write('Usage: node scripts/render_local_offer_review.mjs REVIEW.json .local-data/PREVIEW.html\nRenders validated local research observations only; no network or public publication.\n');
+    process.stdout.write('Usage: node scripts/render_local_offer_review.mjs REVIEW.json .local-data/PREVIEW.html [--enrichment COMPANION/enrichment.json]\nRenders validated local research observations only; optional enrichment replays retained originals. No network or public publication.\n');
     return;
   }
-  require(args.length === 2,'Expected REVIEW.json and output HTML path. Use --help for usage.');
-  process.stdout.write(JSON.stringify(await renderPreparedLocalReview(args[0],args[1]))+'\n');
+  require(args.length===2||(args.length===4&&args[2]==='--enrichment'),'Expected REVIEW.json, output HTML path and optional --enrichment file. Use --help for usage.');
+  process.stdout.write(JSON.stringify(await renderPreparedLocalReview(args[0],args[1],{enrichmentFilename:args.length===4?args[3]:null}))+'\n');
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url))
