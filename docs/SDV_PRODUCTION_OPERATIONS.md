@@ -1,5 +1,24 @@
 # Recurring NBA daily-snapshot operation
 
+### October 23 release checkpoint
+
+PR #18's exact approved head `37c2720a29c5b8f66ab528e4d9bf4d74e5c719db`
+has merged at `ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`. The canonical
+CLI now mints and checks authority in one module; all strict run/identity/status
+and timing gates remain. The complete merge tree, 23 protected files, 19 original
+records and both model laws were independently verified. Pages run 39892839314
+deployed at 03:18:58 UTC; the exact public build, hashes and independent desktop/
+mobile interface passed verification. The new native run remains unobserved as
+of 03:23:34 UTC; installation and successful deployment do not prove execution.
+Actual dated evidence and next operating windows are in the newest handoff.
+
+The protected first daily launch was missed and stays closed. Read-only inspection
+also observed native run 39875892658 at October 23 00:04:52 UTC, failed on the old
+main before capture. It supplements the October 22 observations below. The next
+production planning window remains October 23 13:00–14:00 UTC / 08:00–09:00 CDT for
+UTC game date October 24. No new scheduler, owner-only daily action or provider key
+is required by this release. Genuine forecast-to-final acceptance is still pending.
+
 The **NBA-SDV-PRODUCTION-001 release and documented recurring scope are approved**.
 PR #16 merged at `fd1b9f413e2e2fa92f598ac704539a4998932115`; Pages workflow
 39781672740 deployed that exact build, with public byte/hash and desktop/mobile

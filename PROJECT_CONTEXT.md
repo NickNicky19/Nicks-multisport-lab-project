@@ -1,6 +1,27 @@
 # Nick's Multisport Lab — project context
 
-Updated: October 22, 2026.
+Updated: October 23, 2026.
+
+## Current release — scheduled runner repair merged
+
+PR #18 merged the approved head `37c2720a29c5b8f66ab528e4d9bf4d74e5c719db`
+at actual main `ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`. It fixes the
+`python -m` capability-registry split without relaxing source/authority/timing
+gates. All 23 protected producer files, 19 original records and both model laws
+remain unchanged. Pages run 39892839314 deployed the exact merge successfully;
+public manifest/assets and independent desktop/mobile checks passed. The site
+retains six historical bundles/grades and zero genuine forecasts/offers. A
+successful native run of the repaired main remains a separate unverified step;
+see the newest handoff for actual as-of run inventory and next operating windows.
+
+The recurring coordinator is installed and its documented scope is approved.
+Three native runs on the previous main failed before capture/generation. The
+protected first daily cycle missed its owner-start window after an early rejected
+attempt and must not be rerun or backfilled. Next production planning is October
+23, 13:00–14:00 UTC for UTC game date October 24; no daily manual launch is the
+production design. Genuine forecasts and verified final statistical grades remain
+pending. Older sections below are dated prior checkpoints, not current activation
+or deployment statements. Missing offers/prices remain independent of forecasting.
 
 ## Current public release and recurring implementation
 

@@ -1,6 +1,126 @@
 # Implementation handoff status
 
-Updated: October 22, 2026 (UTC).
+Updated: October 23, 2026 (UTC).
+
+## October 23 — PR #18 merged and publicly verified; new native execution pending
+
+The owner's **"I approve"** confirmed the immediately preceding exact-head
+release question for PR #18, head
+`37c2720a29c5b8f66ab528e4d9bf4d74e5c719db`. PR Completion revalidated that
+head, checks, reviews, merge policy and the unchanged readiness-policy digest,
+then requested the normal protected merge-commit path. Its watcher observed
+**MERGED**. Actual main is
+**`ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`**, merged
+**03:02:23 UTC**. Its complete tree equals the approved head. Implementation
+source remains `90c0098a569c5a7e4615fbb1b3db6921d22c5508`; a future executing
+run must bind its actual main revision, not reuse another commit's identity.
+
+Independent source verification confirms all **23 protected producer files**, all
+**19 original ledger records**, and both frozen R0/K0 laws are byte-identical.
+The earlier pilot remains **MISSED_START_WINDOW_WITH_ONE_EARLY_REJECTED_ATTEMPT**:
+one run `39825208340` at October 22 17:43:39 UTC was rejected before the permitted
+22:00–strictly-before-22:30 UTC start. No valid start or records branch was found.
+No late launch, replacement input, forecast or grade is authorized or created.
+
+A separately dated October 23 read-only checkpoint observed a third actual native
+run, **39875892658 at 00:04:52 UTC**, on the prior main `fd1b9f4`. It failed with
+the same module-capability error that PR #18 fixes, before source capture or
+generation. The two earlier native failures and the second run's unknown exact
+metadata-mismatch cause remain unchanged evidence. The complete API/log originals,
+actual later retrieval clocks, public hashes and fresh readiness are retained in
+PR #18 comment **6354174042**; independent comment readback reproduced its packed
+checkpoint SHA256
+`029c1dc498b5f4391d726f6822f111cd53642dc4dd1bea3a62b2994b86fbe181`.
+The comment is editable GitHub project evidence, not an immutable issuance receipt.
+
+The unchanged-code integration check in PR comment **6356227190** used temporary
+invented inputs and joint laws: four DEVELOPMENT_ONLY forecasts survived a fresh
+worker and projected through the actual publication validator before and after
+two shared outcomes/four separate grades. Default public admission rejected them.
+It passed **1 test / 9.959 s**; two optimized entry-point/served-hash regressions
+passed **0.021 s**. An initial temporary harness import-path error was corrected
+before running that check; no product-code defect or real model result is inferred.
+Reuse the candidate's 1,016-test Python suite, demo, 138 frontend tests and existing
+focused/optimized results. No frozen comparison or full-history diagnostic reran.
+
+Pages push workflow **39892839314 completed successfully at 03:18:58 UTC**.
+Actual `github-pages` deployment **7269314134** has a matching successful status
+and public URL https://nicknicky19.github.io/Nicks-multisport-lab-project/ .
+The served manifest declares the exact merge and snapshot
+**`83436918a4e6e4a8467829f41f24daf924048deda832922e44f283171b1c93b9`**.
+Site publication **03:18:29.510034 UTC** is separate from deployment, source
+capture and issuance. Root verified all seven data assets plus the manifest and
+seventeen static files against the exact merged Git blobs, then strict typed
+recovery and unchanged original historical records. Actual main CI passed
+**1,016 Python tests / 944.615 s**, demo, **138 frontend tests / 10.730245205 s**,
+static build and smoke checks. Both prospective record imports returned NO_RECORDS;
+the optional hosted diagnostic was skipped. Do not confuse synthetic test output
+with a new hosted operating diagnostic or genuine issuance.
+
+Independent browser verification at **03:21:29–03:21:51 UTC**, widths **1440,
+390 and 320 px**, passed six verified player names, three historical matchups and
+dates, source IDs/model/issue details, all fourteen categories and six historical
+grades, History direct route/refresh, separate clocks, honest empty/development
+states, Performance filters and the full scope/direction/2–6-leg NO_ACTION matrix.
+There were zero JavaScript errors, overflow or external-site requests. The existing
+TLS-verifying public-byte bridge rendered the independently hash-verified served
+bytes; no TLS verification was disabled. Native Chromium/proxy CA compatibility
+was not retested or claimed. Screenshots/local captured bodies remain temporary;
+the independent receipt and public byte/hash/build proof are retained in Git.
+
+The existing cron remains **`2,17,32,47 * * * *`**, workflow **392458906**, active
+on the verified default-branch YAML. At **03:23:34 UTC**, read-only inventory
+still contained only the three failed old-main native runs; no repaired-version
+run or SDV records branch was observed. This is an as-of observation, not proof
+of a specific scheduler failure cause. The three old runs prove prior triggering,
+not successful startup of the repaired main. No manual early execution is used
+to manufacture automatic-run evidence. No competing scheduler, recurring owner
+click, provider credential or unapproved source request is introduced.
+
+A separate repository-wide scheduled-run GET with `Cache-Control: no-cache` and
+server Date **03:27:13 UTC** returned four runs: those same three production
+failures plus the separate expired October 20 run `39493005199`. It contained no
+post-release run. That legacy run is not new production evidence and its workflow,
+records and result remain untouched. Current response bodies, selected cache/date
+headers and exact later retrieval clocks are retained in
+`evidence/operational/sdv-production-pr18-release-checkpoint-20261023.json`.
+A further workflow-specific no-cache read at **03:33:06 UTC** again returned
+only the same three old-main failures, with no repaired-version execution.
+
+The next registered production planning window is **October 23, 13:00–14:00 UTC /
+8:00–9:00 a.m. CDT**, first nominal check 13:02 UTC, for **UTC game date October
+24**. Actual event/cohort inventory comes from that complete admitted plan.
+Capture is T150–T90; new GETs stop at T105; issuance/original readback is T90–T75
+with each original's separate 300-second latency limit. First possible production
+final-source collection is October 24, 13:00–14:00 UTC / 8:00–9:00 a.m. CDT, only
+when actual eligible originals and verified final source evidence exist.
+GitHub scheduling delays can miss these gates. Pending, DNP, unresolved states and
+append-only corrections remain separate; statistical grades are not settlements.
+
+Post-release evidence is carried on **`implementation/sdv-operations-followthrough`**
+based on actual merged main, preserving the approved PR #18 head and older dated
+checkpoints. Evidence: `evidence/deployment/2026-10-23-pr18-pages.json`, the
+companion independent browser receipt, and
+`evidence/operational/sdv-production-pr18-merge-independent-review-20261023.json`.
+The October 23 read-only checkpoint's original bodies and clocks are retained in
+`evidence/operational/sdv-production-read-only-checkpoint-20261023.json`.
+Exact canonical landing/watcher, actual CI and public readback commands are in
+the deployment receipt. No full local suite was repeated for these metadata-only
+post-release updates; actual merged-main CI is separate passing evidence.
+All **543 manifest members**, five new JSON evidence files and **48 retained
+original encodings** passed byte/hash verification, and `git diff --check` passed.
+The separate factual review found no material inconsistency; code, tests, UI and
+configuration are unchanged by this checkpoint.
+
+**Public counts:** six historical bundles / six historical grades; **zero genuine
+forecasts, prospective outcomes/grades, published offers, qualified tickets,
+financial settlements or published development forecasts**. **Next concrete task:**
+recover the next actual native run of the repaired main and its factual report,
+then verify the registered complete plan, timely shared inputs/paired originals,
+independent recovery and actual public delivery. Later append outcomes/statistical
+grades only after played events and verified final evidence. The actual pregame to
+final acceptance cycle and a subsequent successful scheduled run remain pending.
+NFL/MLB, OPS002, PROS004, S0, DEV005 and all frozen experiments remain untouched.
 
 ## October 22, late UTC — first-cycle start missed; scheduled-run repair prepared
 

@@ -1,0 +1,1004 @@
+{
+  "verification_started_at": "2026-10-23T03:20:21.261732+00:00",
+  "verification_completed_at": "2026-10-23T03:20:28.220234+00:00",
+  "base_url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/",
+  "merge_commit": "ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+  "manifest_snapshot_id": "83436918a4e6e4a8467829f41f24daf924048deda832922e44f283171b1c93b9",
+  "published_at": "2026-10-23T03:18:29.510034Z",
+  "schema_version": 7,
+  "requests": [
+    {
+      "path": "data/manifest.json",
+      "status": 200,
+      "bytes": 2451,
+      "sha256": "aa86cc07cc6f46625cb5bb769136c5fc083df5b7f5571f65f30798bdb5bb394d"
+    },
+    {
+      "path": "data/nba.b515de1d9a9e679f1519fc217c46d32a5fd0086333eeabd97d1ecb71ac389877.json",
+      "status": 200,
+      "bytes": 151194,
+      "sha256": "b515de1d9a9e679f1519fc217c46d32a5fd0086333eeabd97d1ecb71ac389877"
+    },
+    {
+      "path": "data/pros004.index.8dbdae8683fb98bed7dde1194b026d22fb42e4fa102b011191c8e802836c960f.json",
+      "status": 200,
+      "bytes": 1102,
+      "sha256": "8dbdae8683fb98bed7dde1194b026d22fb42e4fa102b011191c8e802836c960f"
+    },
+    {
+      "path": "data/display.c15d52ab61c93950f6db160adbfa2f1ee4d884730ea774d11de08b62c28e8a8c.json",
+      "status": 200,
+      "bytes": 6565,
+      "sha256": "c15d52ab61c93950f6db160adbfa2f1ee4d884730ea774d11de08b62c28e8a8c"
+    },
+    {
+      "path": "data/nba-offers.415efaae90521955dca2cec0f8768d1f3958e330121f0541ebd38eb106d38e0a.json",
+      "status": 200,
+      "bytes": 525,
+      "sha256": "415efaae90521955dca2cec0f8768d1f3958e330121f0541ebd38eb106d38e0a"
+    },
+    {
+      "path": "data/paired-research.905d1271a2702b2ff38761ee72055de2fc2c261bba6ca4a79bbef1e0495f58d4.json",
+      "status": 200,
+      "bytes": 712,
+      "sha256": "905d1271a2702b2ff38761ee72055de2fc2c261bba6ca4a79bbef1e0495f58d4"
+    },
+    {
+      "path": "data/sdv-daily.f360d6577748c3c65d56414606645d0ad2b475347179047424fe1c5eae218cdb.json",
+      "status": 200,
+      "bytes": 1490,
+      "sha256": "f360d6577748c3c65d56414606645d0ad2b475347179047424fe1c5eae218cdb"
+    },
+    {
+      "path": "data/sdv-production.b099ae49d7ec31972d8c6f8ee00510df2dfdbb4ab34d9cce62daead16ad73c50.json",
+      "status": 200,
+      "bytes": 3674,
+      "sha256": "b099ae49d7ec31972d8c6f8ee00510df2dfdbb4ab34d9cce62daead16ad73c50"
+    },
+    {
+      "path": "app.mjs",
+      "status": 200,
+      "bytes": 62171,
+      "sha256": "9a9b16c7e6a276a120e8163a2308e569b73c7677076d5c007ab610d9cdc62f0b"
+    },
+    {
+      "path": "daily-performance.mjs",
+      "status": 200,
+      "bytes": 17743,
+      "sha256": "fd66747cde5aa1863ee203fefd2f2aeaefe7531e9da90ada532f401522daa1d0"
+    },
+    {
+      "path": "display.mjs",
+      "status": 200,
+      "bytes": 10998,
+      "sha256": "406b0d1167e6b5d0247ba88bed9b4970e8cb78b16eb0838ccf6a4770979b19f3"
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 2327,
+      "sha256": "37391a53ea37095583dee4ad54a3dca8faee6928a90f2c0adf64f552a5a1a447"
+    },
+    {
+      "path": "local-offer-review.css",
+      "status": 200,
+      "bytes": 1621,
+      "sha256": "c4d6531373191fe1daadf7214ed7d1097101264ca7b14fa685b29f48b8bd5074"
+    },
+    {
+      "path": "local-offer-review.mjs",
+      "status": 200,
+      "bytes": 14348,
+      "sha256": "6ce7c0d96434c7f4c9d858be8276b90f8e83093311ade2e9ad17142a4c87bb74"
+    },
+    {
+      "path": "mark.svg",
+      "status": 200,
+      "bytes": 265,
+      "sha256": "b2ac3b2cee0ea515f8d09831defc655076fa7bedeb0324da33b1534ea6383891"
+    },
+    {
+      "path": "offers.mjs",
+      "status": 200,
+      "bytes": 20133,
+      "sha256": "6a6b5b138e6e1a2500805879753fdfa4a417874174f477bc118b4f992b250afd"
+    },
+    {
+      "path": "paired-research.mjs",
+      "status": 200,
+      "bytes": 33624,
+      "sha256": "c2f6057e7967f36f956d67f1d5ba3ee8b00721d10191a833422b02c753ca070f"
+    },
+    {
+      "path": "production.mjs",
+      "status": 200,
+      "bytes": 95800,
+      "sha256": "caf2eaf4fc18b09634d2186651fc65dcf6f46456aa4a4a66a692bd9b58832abc"
+    },
+    {
+      "path": "pros004.mjs",
+      "status": 200,
+      "bytes": 26988,
+      "sha256": "af5e8a9bd0ea6d5a027c9e8602d309a4aa08bcebff9e68dfd78e8a6bd89022fc"
+    },
+    {
+      "path": "research.mjs",
+      "status": 200,
+      "bytes": 19974,
+      "sha256": "b61f25fd04fae269a54c7f359fef15f5f4d25ea90b0572ebb48fefee71afb2c7"
+    },
+    {
+      "path": "scope.mjs",
+      "status": 200,
+      "bytes": 1793,
+      "sha256": "79ef949736b0a440a7ca104e220385177e9e8c16a3d3267a13533b146cc8bafe"
+    },
+    {
+      "path": "sdv-daily.mjs",
+      "status": 200,
+      "bytes": 46567,
+      "sha256": "735b698a503596c46f8891145033727230cc213ff5122e27aa1a96b601908360"
+    },
+    {
+      "path": "semantic-offer-review.mjs",
+      "status": 200,
+      "bytes": 28348,
+      "sha256": "84c78f71cd52b23feee6b5bdf21fb80e237f9eb877cb979bf009a9644d870376"
+    },
+    {
+      "path": "snapshot.mjs",
+      "status": 200,
+      "bytes": 22452,
+      "sha256": "eef7db39a1d4fce251bf735042123eed790922a73c1d864f7ae5d75aafc0831e"
+    },
+    {
+      "path": "styles.css",
+      "status": 200,
+      "bytes": 29510,
+      "sha256": "f2e5b666db75d90481c37cc61d4060483bf0c511aca8fe31b25a2af87d0adba2"
+    }
+  ],
+  "static_files_equal_merge": [
+    "app.mjs",
+    "daily-performance.mjs",
+    "display.mjs",
+    "index.html",
+    "local-offer-review.css",
+    "local-offer-review.mjs",
+    "mark.svg",
+    "offers.mjs",
+    "paired-research.mjs",
+    "production.mjs",
+    "pros004.mjs",
+    "research.mjs",
+    "scope.mjs",
+    "sdv-daily.mjs",
+    "semantic-offer-review.mjs",
+    "snapshot.mjs",
+    "styles.css"
+  ],
+  "verified_player_names": {
+    "2991070": "Jerami Grant",
+    "2991350": "Alex Caruso",
+    "2489663": "Kelly Olynyk",
+    "2583632": "Royce O'Neale",
+    "1966": "LeBron James",
+    "2960236": "Maxi Kleber"
+  },
+  "historical_matchups": [
+    {
+      "event_id": "401810135",
+      "label": "Portland Trail Blazers @ Oklahoma City Thunder",
+      "event_starts_at": "2025-11-24T00:00:00.000000Z"
+    },
+    {
+      "event_id": "401810136",
+      "label": "San Antonio Spurs @ Phoenix Suns",
+      "event_starts_at": "2025-11-24T01:00:00.000000Z"
+    },
+    {
+      "event_id": "401810137",
+      "label": "Los Angeles Lakers @ Utah Jazz",
+      "event_starts_at": "2025-11-24T01:00:00.000000Z"
+    }
+  ],
+  "counts": {
+    "historical_forecasts": 6,
+    "historical_grades": 6,
+    "genuine_forecasts": 0,
+    "published_offers": 0,
+    "prospective_outcomes": 0,
+    "prospective_grades": 0,
+    "qualified_tickets": 0,
+    "financial_settlements": 0,
+    "published_development_forecasts": 0
+  },
+  "clocks": {
+    "site_publication": "2026-10-23T03:18:29.510034Z",
+    "last_retained_preparation": {
+      "imported_at": "2026-10-20T02:10:36.352647Z",
+      "meaning": "RETAINED_INPUT_PREPARATION_TIMELINESS_NOT_ESTABLISHED",
+      "observed_at": "2026-10-20T01:51:55.889290Z",
+      "record_ref": {
+        "kind": "research_inputs",
+        "payload_sha256": "be1cf24531a241f1d2752cde3429414b9c6fc64491e99a8bffaf4695d8fa3659",
+        "record_id": "dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc"
+      }
+    },
+    "last_genuine_issued_at": null,
+    "daily_status": "INACTIVE",
+    "daily_reason": "No daily-snapshot research forecast has been issued. A reviewed operating cycle and timely admitted daily assets are required.",
+    "production_operations": {
+      "last_issued_at": null,
+      "last_run_at": null,
+      "last_run_id": null,
+      "last_run_status": "NOT_STARTED",
+      "last_source_capture_at": null,
+      "next_check_basis": "CONFIGURED_CRON_NOT_GUARANTEED",
+      "next_configured_check_at": "2026-10-23T03:32:00.000000Z",
+      "publication_verified_at": null,
+      "reason": "Configured hosted checks do not guarantee execution. No run evidence is available.",
+      "registry_id": null,
+      "registry_updated_at": null
+    }
+  },
+  "browser": {
+    "mode": "TLS_VERIFIED_SERVED_BYTES_AT_PUBLIC_URL",
+    "tls_verification": true,
+    "transport": "urllib HTTPS proxy verification plus immutable captured asset bodies; fresh public manifest on each reload",
+    "direct_chromium_transport_limitation": "Prior native Chromium attempt established environment proxy CA is not trusted (net::ERR_CERT_AUTHORITY_INVALID). This verification uses the existing TLS-verified public-byte bridge; no TLS verification was disabled and native Chromium TLS was not retested.",
+    "started_at": "2026-10-23T03:21:29.616850+00:00",
+    "completed_at": "2026-10-23T03:21:51.615070+00:00",
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 1000,
+        "upcoming": true,
+        "six_historical_names": true,
+        "three_matchups_and_dates": true,
+        "original_ids_issue_model_accessible": true,
+        "all14_categories": true,
+        "six_historical_grades": true,
+        "daily_performance_filters_empty_state": true,
+        "direct_history_refresh": true,
+        "separate_clocks": true,
+        "daily_inactive_honesty": true,
+        "production_empty_state_honesty": true,
+        "production_performance_empty_filters": true,
+        "no_published_development_or_minutes_forecast_cards": true,
+        "props_scope_filters_and_empty_selection": true,
+        "builder_2_to_6_all_directions_scopes_no_action": true,
+        "no_overflow": true
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "upcoming": true,
+        "six_historical_names": true,
+        "three_matchups_and_dates": true,
+        "original_ids_issue_model_accessible": true,
+        "all14_categories": true,
+        "six_historical_grades": true,
+        "daily_performance_filters_empty_state": true,
+        "direct_history_refresh": true,
+        "separate_clocks": true,
+        "daily_inactive_honesty": true,
+        "production_empty_state_honesty": true,
+        "production_performance_empty_filters": true,
+        "no_published_development_or_minutes_forecast_cards": true,
+        "props_scope_filters_and_empty_selection": true,
+        "builder_2_to_6_all_directions_scopes_no_action": true,
+        "no_overflow": true
+      },
+      {
+        "width": 320,
+        "height": 760,
+        "upcoming": true,
+        "six_historical_names": true,
+        "three_matchups_and_dates": true,
+        "original_ids_issue_model_accessible": true,
+        "all14_categories": true,
+        "six_historical_grades": true,
+        "daily_performance_filters_empty_state": true,
+        "direct_history_refresh": true,
+        "separate_clocks": true,
+        "daily_inactive_honesty": true,
+        "production_empty_state_honesty": true,
+        "production_performance_empty_filters": true,
+        "no_published_development_or_minutes_forecast_cards": true,
+        "props_scope_filters_and_empty_selection": true,
+        "builder_2_to_6_all_directions_scopes_no_action": true,
+        "no_overflow": true
+      }
+    ],
+    "javascript_errors": [],
+    "request_count": 103,
+    "external_site_requests": []
+  },
+  "approved_pr": 18,
+  "approved_head": "37c2720a29c5b8f66ab528e4d9bf4d74e5c719db",
+  "implementation_source_commit": "90c0098a569c5a7e4615fbb1b3db6921d22c5508",
+  "schema_version_of_receipt": "nml-pr18-pages-public-verification-v1",
+  "workflow_run": {
+    "conclusion": "success",
+    "createdAt": "2026-10-23T03:02:26Z",
+    "databaseId": 39892839314,
+    "event": "push",
+    "headSha": "ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+    "jobs": [
+      {
+        "completedAt": "2026-10-23T03:18:43Z",
+        "conclusion": "success",
+        "databaseId": 120216351981,
+        "name": "build",
+        "startedAt": "2026-10-23T03:02:28Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-23T03:02:30Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-23T03:02:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:02:31Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 2,
+            "startedAt": "2026-10-23T03:02:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:02:31Z",
+            "conclusion": "success",
+            "name": "Fetch frozen manual-cycle provenance for source-byte checks",
+            "number": 3,
+            "startedAt": "2026-10-23T03:02:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:02:31Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+            "number": 4,
+            "startedAt": "2026-10-23T03:02:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:02:32Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+            "number": 5,
+            "startedAt": "2026-10-23T03:02:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:28Z",
+            "conclusion": "success",
+            "name": "Verify software contracts",
+            "number": 6,
+            "startedAt": "2026-10-23T03:02:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:29Z",
+            "conclusion": "success",
+            "name": "Independently recover admitted daily research originals for main publication",
+            "number": 7,
+            "startedAt": "2026-10-23T03:18:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:29Z",
+            "conclusion": "success",
+            "name": "Independently recover the admitted production registry for main publication",
+            "number": 8,
+            "startedAt": "2026-10-23T03:18:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:40Z",
+            "conclusion": "success",
+            "name": "Build bounded static research artifact",
+            "number": 9,
+            "startedAt": "2026-10-23T03:18:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:40Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9",
+            "number": 10,
+            "startedAt": "2026-10-23T03:18:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:41Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+            "number": 18,
+            "startedAt": "2026-10-23T03:18:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:41Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97",
+            "number": 19,
+            "startedAt": "2026-10-23T03:18:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:41Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "number": 20,
+            "startedAt": "2026-10-23T03:18:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:41Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 21,
+            "startedAt": "2026-10-23T03:18:41Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314/job/120216351981"
+      },
+      {
+        "completedAt": "2026-10-23T03:02:26Z",
+        "conclusion": "skipped",
+        "databaseId": 120216353087,
+        "name": "operating-diagnostic",
+        "startedAt": "2026-10-23T03:02:26Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314/job/120216353087"
+      },
+      {
+        "completedAt": "2026-10-23T03:18:58Z",
+        "conclusion": "success",
+        "databaseId": 120221105366,
+        "name": "deploy",
+        "startedAt": "2026-10-23T03:18:47Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-23T03:18:49Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-23T03:18:48Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:49Z",
+            "conclusion": "success",
+            "name": "Run actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d",
+            "number": 2,
+            "startedAt": "2026-10-23T03:18:49Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:56Z",
+            "conclusion": "success",
+            "name": "Deploy checked artifact",
+            "number": 3,
+            "startedAt": "2026-10-23T03:18:49Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-23T03:18:56Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 4,
+            "startedAt": "2026-10-23T03:18:56Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314/job/120221105366"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-23T03:18:58Z",
+    "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314"
+  },
+  "deployment_api": {
+    "deployments": [
+      {
+        "url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/deployments/7269314134",
+        "id": 7269314134,
+        "node_id": "DE_kwDOVQJa788AAAABsUjuVg",
+        "task": "deploy",
+        "original_environment": "github-pages",
+        "environment": "github-pages",
+        "description": null,
+        "created_at": "2026-10-23T03:18:43Z",
+        "updated_at": "2026-10-23T03:18:58Z",
+        "statuses_url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/deployments/7269314134/statuses",
+        "repository_url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project",
+        "creator": {
+          "login": "NickNicky19",
+          "id": 208912933,
+          "node_id": "U_kgDODHPCJQ",
+          "avatar_url": "https://avatars.githubusercontent.com/u/208912933?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/NickNicky19",
+          "html_url": "https://github.com/NickNicky19",
+          "followers_url": "https://api.github.com/users/NickNicky19/followers",
+          "following_url": "https://api.github.com/users/NickNicky19/following{/other_user}",
+          "gists_url": "https://api.github.com/users/NickNicky19/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/NickNicky19/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/NickNicky19/subscriptions",
+          "organizations_url": "https://api.github.com/users/NickNicky19/orgs",
+          "repos_url": "https://api.github.com/users/NickNicky19/repos",
+          "events_url": "https://api.github.com/users/NickNicky19/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/NickNicky19/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "sha": "ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+        "ref": "main",
+        "payload": {},
+        "transient_environment": false,
+        "production_environment": false,
+        "performed_via_github_app": {
+          "id": 15368,
+          "client_id": "Iv1.05c79e9ad1f6bdfa",
+          "slug": "github-actions",
+          "node_id": "MDM6QXBwMTUzNjg=",
+          "owner": {
+            "login": "github",
+            "id": 9919,
+            "node_id": "MDEyOk9yZ2FuaXphdGlvbjk5MTk=",
+            "avatar_url": "https://avatars.githubusercontent.com/u/9919?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/github",
+            "html_url": "https://github.com/github",
+            "followers_url": "https://api.github.com/users/github/followers",
+            "following_url": "https://api.github.com/users/github/following{/other_user}",
+            "gists_url": "https://api.github.com/users/github/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/github/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/github/subscriptions",
+            "organizations_url": "https://api.github.com/users/github/orgs",
+            "repos_url": "https://api.github.com/users/github/repos",
+            "events_url": "https://api.github.com/users/github/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/github/received_events",
+            "type": "Organization",
+            "user_view_type": "public",
+            "site_admin": false
+          },
+          "name": "GitHub Actions",
+          "description": "Automate your workflow from idea to production",
+          "external_url": "https://help.github.com/en/actions",
+          "html_url": "https://github.com/apps/github-actions",
+          "created_at": "2018-07-30T09:30:17Z",
+          "updated_at": "2026-06-18T16:17:48Z",
+          "permissions": {
+            "actions": "write",
+            "administration": "read",
+            "artifact_metadata": "write",
+            "attestations": "write",
+            "checks": "write",
+            "code_quality": "write",
+            "contents": "write",
+            "copilot_requests": "write",
+            "deployments": "write",
+            "discussions": "write",
+            "drives": "write",
+            "issues": "write",
+            "merge_queues": "write",
+            "metadata": "read",
+            "models": "read",
+            "packages": "write",
+            "pages": "write",
+            "pull_requests": "write",
+            "repository_hooks": "write",
+            "repository_projects": "write",
+            "security_events": "write",
+            "statuses": "write",
+            "vulnerability_alerts": "read"
+          },
+          "events": [
+            "branch_protection_rule",
+            "check_run",
+            "check_suite",
+            "create",
+            "delete",
+            "deployment",
+            "deployment_status",
+            "discussion",
+            "discussion_comment",
+            "fork",
+            "gollum",
+            "issues",
+            "issue_comment",
+            "label",
+            "merge_group",
+            "milestone",
+            "page_build",
+            "public",
+            "pull_request",
+            "pull_request_review",
+            "pull_request_review_comment",
+            "push",
+            "registry_package",
+            "release",
+            "repository",
+            "repository_dispatch",
+            "status",
+            "watch",
+            "workflow_dispatch",
+            "workflow_run"
+          ]
+        }
+      }
+    ],
+    "statuses": [
+      {
+        "url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/deployments/7269314134/statuses/20342089021",
+        "id": 20342089021,
+        "node_id": "DES_kwDOVQJa788AAAAEvHulPQ",
+        "state": "success",
+        "creator": {
+          "login": "NickNicky19",
+          "id": 208912933,
+          "node_id": "U_kgDODHPCJQ",
+          "avatar_url": "https://avatars.githubusercontent.com/u/208912933?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/NickNicky19",
+          "html_url": "https://github.com/NickNicky19",
+          "followers_url": "https://api.github.com/users/NickNicky19/followers",
+          "following_url": "https://api.github.com/users/NickNicky19/following{/other_user}",
+          "gists_url": "https://api.github.com/users/NickNicky19/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/NickNicky19/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/NickNicky19/subscriptions",
+          "organizations_url": "https://api.github.com/users/NickNicky19/orgs",
+          "repos_url": "https://api.github.com/users/NickNicky19/repos",
+          "events_url": "https://api.github.com/users/NickNicky19/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/NickNicky19/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "description": "",
+        "environment": "github-pages",
+        "target_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314/job/120221105366",
+        "created_at": "2026-10-23T03:18:58Z",
+        "updated_at": "2026-10-23T03:18:58Z",
+        "deployment_url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/deployments/7269314134",
+        "repository_url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project",
+        "environment_url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/",
+        "log_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314/job/120221105366",
+        "performed_via_github_app": null
+      },
+      {
+        "url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/deployments/7269314134/statuses/20342076892",
+        "id": 20342076892,
+        "node_id": "DES_kwDOVQJa788AAAAEvHt13A",
+        "state": "in_progress",
+        "creator": {
+          "login": "NickNicky19",
+          "id": 208912933,
+          "node_id": "U_kgDODHPCJQ",
+          "avatar_url": "https://avatars.githubusercontent.com/u/208912933?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/NickNicky19",
+          "html_url": "https://github.com/NickNicky19",
+          "followers_url": "https://api.github.com/users/NickNicky19/followers",
+          "following_url": "https://api.github.com/users/NickNicky19/following{/other_user}",
+          "gists_url": "https://api.github.com/users/NickNicky19/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/NickNicky19/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/NickNicky19/subscriptions",
+          "organizations_url": "https://api.github.com/users/NickNicky19/orgs",
+          "repos_url": "https://api.github.com/users/NickNicky19/repos",
+          "events_url": "https://api.github.com/users/NickNicky19/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/NickNicky19/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "description": "",
+        "environment": "github-pages",
+        "target_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314/job/120221105366",
+        "created_at": "2026-10-23T03:18:47Z",
+        "updated_at": "2026-10-23T03:18:47Z",
+        "deployment_url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/deployments/7269314134",
+        "repository_url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project",
+        "environment_url": "",
+        "log_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314/job/120221105366",
+        "performed_via_github_app": null
+      },
+      {
+        "url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/deployments/7269314134/statuses/20342074431",
+        "id": 20342074431,
+        "node_id": "DES_kwDOVQJa788AAAAEvHtsPw",
+        "state": "queued",
+        "creator": {
+          "login": "NickNicky19",
+          "id": 208912933,
+          "node_id": "U_kgDODHPCJQ",
+          "avatar_url": "https://avatars.githubusercontent.com/u/208912933?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/NickNicky19",
+          "html_url": "https://github.com/NickNicky19",
+          "followers_url": "https://api.github.com/users/NickNicky19/followers",
+          "following_url": "https://api.github.com/users/NickNicky19/following{/other_user}",
+          "gists_url": "https://api.github.com/users/NickNicky19/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/NickNicky19/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/NickNicky19/subscriptions",
+          "organizations_url": "https://api.github.com/users/NickNicky19/orgs",
+          "repos_url": "https://api.github.com/users/NickNicky19/repos",
+          "events_url": "https://api.github.com/users/NickNicky19/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/NickNicky19/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "description": "",
+        "environment": "github-pages",
+        "target_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314/job/120221105366",
+        "created_at": "2026-10-23T03:18:45Z",
+        "updated_at": "2026-10-23T03:18:45Z",
+        "deployment_url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/deployments/7269314134",
+        "repository_url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project",
+        "environment_url": "",
+        "log_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314/job/120221105366",
+        "performed_via_github_app": null
+      },
+      {
+        "url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/deployments/7269314134/statuses/20342073563",
+        "id": 20342073563,
+        "node_id": "DES_kwDOVQJa788AAAAEvHto2w",
+        "state": "waiting",
+        "creator": {
+          "login": "NickNicky19",
+          "id": 208912933,
+          "node_id": "U_kgDODHPCJQ",
+          "avatar_url": "https://avatars.githubusercontent.com/u/208912933?v=4",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/NickNicky19",
+          "html_url": "https://github.com/NickNicky19",
+          "followers_url": "https://api.github.com/users/NickNicky19/followers",
+          "following_url": "https://api.github.com/users/NickNicky19/following{/other_user}",
+          "gists_url": "https://api.github.com/users/NickNicky19/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/NickNicky19/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/NickNicky19/subscriptions",
+          "organizations_url": "https://api.github.com/users/NickNicky19/orgs",
+          "repos_url": "https://api.github.com/users/NickNicky19/repos",
+          "events_url": "https://api.github.com/users/NickNicky19/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/NickNicky19/received_events",
+          "type": "User",
+          "user_view_type": "public",
+          "site_admin": false
+        },
+        "description": "",
+        "environment": "github-pages",
+        "target_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314/job/120221105366",
+        "created_at": "2026-10-23T03:18:44Z",
+        "updated_at": "2026-10-23T03:18:44Z",
+        "deployment_url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/deployments/7269314134",
+        "repository_url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project",
+        "environment_url": "",
+        "log_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/39892839314/job/120221105366",
+        "performed_via_github_app": null
+      }
+    ]
+  },
+  "approval": {
+    "schema_version": "nml-exact-head-release-approval-v1",
+    "repository": "NickNicky19/Nicks-multisport-lab-project",
+    "pr": 18,
+    "head": "37c2720a29c5b8f66ab528e4d9bf4d74e5c719db",
+    "user_reply": "I approve",
+    "scope": "Immediately preceding exact-head question: merge PR18 by merge commit through PR Completion and deploy resulting release. Existing recurring operating authority unchanged. No missed-pilot restart or other protocol activation.",
+    "recorded_at": "2026-10-23T03:02:17.502100+00:00",
+    "policy_digest": "7691ab6501095b993156211c102a3520b590d3d54cb446f2df572c8e7c3f5219"
+  },
+  "landing_result": {
+    "command": [
+      "gh",
+      "pr",
+      "merge",
+      "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/18",
+      "--match-head-commit",
+      "37c2720a29c5b8f66ab528e4d9bf4d74e5c719db",
+      "--auto",
+      "--merge"
+    ],
+    "headSha": "37c2720a29c5b8f66ab528e4d9bf4d74e5c719db",
+    "method": "merge",
+    "mode": "auto",
+    "pr": {
+      "number": 18,
+      "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/18"
+    },
+    "readinessPolicy": {
+      "checkPolicy": "all",
+      "configPath": null,
+      "requiredReviewers": [],
+      "source": "no-config",
+      "strictChangesRequested": false
+    },
+    "readinessPolicyDigest": "7691ab6501095b993156211c102a3520b590d3d54cb446f2df572c8e7c3f5219",
+    "repository": "NickNicky19/Nicks-multisport-lab-project",
+    "requestedAt": "2026-10-23T03:02:24.643945Z",
+    "requiresConfirmation": false,
+    "schemaVersion": 1,
+    "state": "landing_requested",
+    "stdout": null,
+    "warning": "This landing request may merge the pull request immediately."
+  },
+  "guarded_merge": {
+    "actions": [],
+    "errors": [],
+    "observedAt": "2026-10-23T03:02:56.309438Z",
+    "policy": {
+      "checkPolicy": "all",
+      "configPath": null,
+      "requiredReviewers": [],
+      "source": "no-config",
+      "strictChangesRequested": false
+    },
+    "schemaVersion": 1,
+    "state": "merged",
+    "targets": [
+      {
+        "actions": [],
+        "checks": {
+          "fail": [],
+          "malformed": [],
+          "pass": [],
+          "pending": [],
+          "skipping": [],
+          "total": 0,
+          "unknown": []
+        },
+        "kind": "explicit",
+        "landingAuthorization": {
+          "current": true,
+          "currentHead": "37c2720a29c5b8f66ab528e4d9bf4d74e5c719db",
+          "expectedHead": "37c2720a29c5b8f66ab528e4d9bf4d74e5c719db",
+          "mode": "auto"
+        },
+        "path": "/workspace/nml-sdv-live-operations",
+        "pending": [],
+        "pr": {
+          "autoMerge": null,
+          "autoMergeEnabled": false,
+          "baseRefName": "main",
+          "baseSha": "fd1b9f413e2e2fa92f598ac704539a4998932115",
+          "headRefName": "implementation/sdv-live-operations",
+          "headSha": "37c2720a29c5b8f66ab528e4d9bf4d74e5c719db",
+          "isMergeQueueEnabled": null,
+          "mergeQueueEntry": null,
+          "mergeStateStatus": "UNKNOWN",
+          "mergeable": "UNKNOWN",
+          "number": 18,
+          "reviewDecision": null,
+          "state": "MERGED",
+          "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/18"
+        },
+        "repository": "NickNicky19/Nicks-multisport-lab-project",
+        "repositoryPolicy": {
+          "mergeCommitAllowed": true,
+          "rebaseMergeAllowed": true,
+          "squashMergeAllowed": true
+        },
+        "reviews": {
+          "missingRequiredReviewers": [],
+          "requiredReviewers": [],
+          "unresolvedThreadCount": 0
+        },
+        "state": "merged"
+      }
+    ]
+  },
+  "merged_source_binding": {
+    "binding_id": "4d35233bbe7431514e514569fbd450f901f37ae58617c4c1c72f64e0e9f14d4a",
+    "commit": "ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+    "files": {
+      ".github/workflows/nba-operations.yml": "017536d67acc3b7d598b3ba7288e59fa5ad2494e33e72e95e9536676df4548a5",
+      ".github/workflows/sdv-daily.yml": "fb39ce1e9bf0b32632d314b11e391043a89806a446bfee453f92468e790c0b47",
+      "config/sdv_daily_cycle_v1.json": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688",
+      "config/sdv_production_policy_v1.json": "f1ff3563c172c6989a74d75249c9d26bac3c44c1912acd1a4e62485ad0808711",
+      "multisport_lab/baseline.py": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689",
+      "multisport_lab/basketball.py": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75",
+      "multisport_lab/development_002.py": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022",
+      "multisport_lab/development_003.py": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+      "multisport_lab/forecast_contract.py": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd",
+      "multisport_lab/integrity.py": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2",
+      "multisport_lab/ledger.py": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e",
+      "multisport_lab/nba_data.py": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b",
+      "multisport_lab/pregame_sources.py": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485",
+      "multisport_lab/pros004_inputs.py": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e",
+      "multisport_lab/pros004_producer.py": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b",
+      "multisport_lab/pros004_remote.py": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b",
+      "multisport_lab/research_pilot.py": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6",
+      "multisport_lab/sdv_daily_cycle.py": "5a40fd1bc6cdf6ebf75af52a6171641ee79d0d4bfbf9581c9e5b14dc8b3daef0",
+      "multisport_lab/sdv_daily_inputs.py": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9",
+      "multisport_lab/sdv_daily_outcomes.py": "d84a9c2dd6cd7097e6f12d3170b7b914aa17a0876f32054c03d40036510adac6",
+      "multisport_lab/sdv_daily_producer.py": "eb793c94a2473f7210158b60aaf98fd8e215bc7f62ecf260bb11b301e72a334b",
+      "multisport_lab/sdv_daily_publication.py": "ce2bd99c7b1193af328d39cf33fd36b7400626becde4c656e658bb763fd7e425",
+      "multisport_lab/sdv_daily_remote.py": "c3e70fea9d4da6434703706b4f51bf4edf7320834dcc6a10c9456f3ddbc3b763",
+      "multisport_lab/sdv_daily_runner.py": "cf8d7ba3d65bc354029ee9fc1c54b8d9f110c3036204a4bd690fcc7943fd50ef",
+      "multisport_lab/sdv_daily_store.py": "fd508c0459519f54f0faf9009438632755c64b31227105794109d326c8ecf045",
+      "multisport_lab/sdv_production_archive.py": "2830b7fd9f862e2d089a2bc4f9f446a3ec1fa2ff6cea9ebf996ffa6b9d6bd60c",
+      "multisport_lab/sdv_production_common.py": "e0641b9c46e423510b9cda6a5423da0c54cf38e7e55a35a7ed7248c428a12709",
+      "multisport_lab/sdv_production_coordinator.py": "b7cad8bb9c7d92d4dcab8ba71fe5b05a488e5d2366b27929104ccbc85a9153b0",
+      "multisport_lab/sdv_production_forecasts.py": "a1ea04c33b5ff714f99aaf2f2dd1a52bc9a7039b3dae4e0e0e8dfc92c776c2aa",
+      "multisport_lab/sdv_production_inputs.py": "bb79d3eb4643cf419a677db09393aed3d682395aa5dc685644cc90519ded8511",
+      "multisport_lab/sdv_production_publication.py": "436bf40ac7797fb61fa5185141582e10c1c455529c4f3717079e59e9c849f494",
+      "multisport_lab/sdv_production_remote.py": "d779dbce00f14081c6347fa887de289bd0ce8dedb0d3a692e241e634f5adfbc9",
+      "multisport_lab/sdv_production_runner.py": "8f398c98b7caba57065e80192064cb963d3db114d449f7fdf949dfc2d4e14a86",
+      "multisport_lab/sdv_production_store.py": "ed478f947eec607e6e7baa0b5d7255d197c2cc26347dc99562e56ce2ca460d5e"
+    },
+    "law_sha256": {
+      "K0": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7",
+      "R0": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689"
+    },
+    "schema_version": "nba-sdv-production-producer-binding-v1"
+  },
+  "main_software": {
+    "python_tests": 1016,
+    "python_seconds": 944.615,
+    "python_status": "PASS",
+    "demo": "PASS_SYNTHETIC_TEST",
+    "frontend_tests": 138,
+    "frontend_pass": 138,
+    "frontend_fail": 0,
+    "frontend_skipped": 0,
+    "frontend_milliseconds": 10730.245205,
+    "static_artifact_build_and_smoke": "PASS",
+    "daily_import": "NO_RECORDS",
+    "production_import": "NO_RECORDS",
+    "hosted_diagnostic": "SKIPPED"
+  },
+  "verification_commands": [
+    "env PATH=/tmp/nml-gh-2.102.1/bin:$PATH python3 /tmp/nml-pr-completion/scripts/pr_land.py --repo /workspace/nml-sdv-live-operations --pr 18 --head 37c2720a29c5b8f66ab528e4d9bf4d74e5c719db --mode auto --method merge --no-config --check-policy all --policy-digest 7691ab6501095b993156211c102a3520b590d3d54cb446f2df572c8e7c3f5219 --confirm --pretty",
+    "env PATH=/tmp/nml-gh-2.102.1/bin:$PATH python3 /tmp/nml-pr-completion/scripts/pr_watch.py --target /workspace/nml-sdv-live-operations=18 --no-config --check-policy all --await-merge 37c2720a29c5b8f66ab528e4d9bf4d74e5c719db --await-merge-mode auto --await-merge-since 2026-10-23T03:02:24.643945Z --mode until-actionable --timeout 120 --cursor /tmp/nml-pr18-merge-cursor.json --observations-file /tmp/nml-pr18-merge-observations.ndjson --pretty",
+    "gh run view 39892839314 --repo NickNicky19/Nicks-multisport-lab-project --json databaseId,event,headSha,status,conclusion,createdAt,updatedAt,jobs,url",
+    "gh api repos/NickNicky19/Nicks-multisport-lab-project/deployments/7269314134/statuses",
+    "gh run view 39892839314 --repo NickNicky19/Nicks-multisport-lab-project --job 120216351981 --log",
+    "python3 /tmp/verify_nml_public_pr18.py ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+    "python3 /tmp/verify_nml_public_browser_pr16.py ef9e270f36bb3b4ee8bbd92d34b12493d759cc45 /tmp/nml-pr18-independent-browser-ef9e270"
+  ],
+  "ci_commands": [
+    "python3 -m unittest discover -s tests -v",
+    "python3 -m multisport_lab.demo",
+    "node --test --test-isolation=none web/tests/*.test.mjs",
+    "python3 -m multisport_lab.sdv_daily_publication",
+    "python3 -m multisport_lab.sdv_production_publication",
+    "python3 -m multisport_lab.publication --build-commit ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+    "node web/tests/site-smoke.mjs output"
+  ],
+  "build_log": {
+    "local_path": "/tmp/nml-pr18-deployment/build.log",
+    "bytes": 341934,
+    "sha256": "6d6701010b6d39d81d7559c76c23592603a009eeb674ea06cf50aa70253bddaa",
+    "retention": "Full local log temporary; exact run/job and selected result facts retained in this receipt. Software test output is not genuine operational issuance."
+  },
+  "retention": {
+    "served_data": "Seven manifest-linked public data assets hash verified, original historical record bodies still in unchanged Git ledger",
+    "static_source": "Seventeen served static files equal immutable merge blobs",
+    "screenshots_and_local_readback": "TEMPORARY_LOCAL",
+    "browser_receipt": "Independent receipt retained in Git; screenshots and captured public bodies remain temporary local readbacks.",
+    "old_first_cycle": "MISSED;no rerun or replacement;23protected files and19original records unchanged"
+  },
+  "operational_scope": {
+    "scheduler": "Installed existing coordinator, separate from successful actual execution",
+    "other_protocol_activation": false,
+    "new_source_gets_by_release_owner": 0,
+    "manual_dispatches": 0,
+    "genuine_forecasts_by_release_owner": 0,
+    "new_statistical_evaluation": false,
+    "financial_settlement": false
+  },
+  "independent_browser_receipt": "evidence/deployment/2026-10-23-pr18-browser-independent-review.json",
+  "client_observation_note": "A long-lived local gh watch and one early list request returned401; fresh authenticated read-only calls succeeded. The cloud job independently passed. One in-progress log probe returned BlobNotFound before job completion; final job logs were subsequently available. These client observations are not workflow failures or source-admission findings. No artifactZIP fallback or diagnostic rerun occurred."
+}
