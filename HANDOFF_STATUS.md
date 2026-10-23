@@ -2,6 +2,39 @@
 
 Updated: October 23, 2026 (UTC).
 
+## October 23, postflight — final source tests, GitHub readback and CI complete
+
+Exact implementation source remains **`10e6f7a06260b96c19fc1eb05eabb640d9e74a11`**.
+The pushed implementation/documentation head
+**`d836dafa6bb1c9fcde5bbb5f318416b164cdb644`** was independently cloned from GitHub:
+**569 manifest entries passed**, code SHA256
+`f835db2b1887e379170897fcd09351f2bfeba8712b6ac74be912f0d815081800`, then the
+same seven **local** originals replayed under optimized Python with unchanged
+review `a054afaa586a4a7a04e8c3c1c40e092ba930e36d99761eef492aa7ac59036ac0`.
+Remote code recovery does not establish remote raw-source archival.
+
+The final committed-source full suite **passed 1,067 tests in 617.816 seconds**
+(completion observed at 20:40:32 UTC); final frontend **176 passed**, focused
+optimized-Python **16 passed**, demo and three private browser viewports passed.
+The earlier 1,064-test integration receipt below remains its own observation.
+[GitHub run 40020183869](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40020183869)
+**succeeded on exact head `d836dafa` at 20:51:03 UTC**: software contracts and
+bounded static artifact passed; **operating diagnostic and deployment skipped**.
+This is software/artifact verification, not a live website deployment or new
+forecast/offer publication. PR #20 remains draft; no merge or activation.
+
+This following commit only appends the completed results and updates the aggregate
+evidence/manifest. Executable file pins, original records, source bodies and
+preview are unchanged; reuse the completed verification. Any automatically queued
+check on this documentation revision is separate from the successful source run.
+Working branch remains `implementation/nba-player-line-review`. Actual-source
+result and remaining delivery gaps are unchanged: 1,229 parsed full-game player
+selections, 19 labels, 34 complete local binary semantics; numeric operators,
+600-second canonical start discrepancy, public-derived admission and durable
+private-original recovery remain separate next tasks. New genuine forecasts,
+published offers, prospective outcomes/grades, qualified tickets and financial
+settlements from this package are all **zero**.
+
 ## October 23, 19:33 UTC onward — actual free MoviOdds NBA source and private replay
 
 Implementation/source commit **`10e6f7a06260b96c19fc1eb05eabb640d9e74a11`**, branch
