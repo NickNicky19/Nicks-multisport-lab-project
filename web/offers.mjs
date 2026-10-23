@@ -2,6 +2,7 @@
 import {ALL_NBA_CATEGORIES, NBA_UNITS, utcMicros} from './research.mjs';
 import {validateDailyAsset, verifyDailyHashes} from './sdv-daily.mjs';
 import {validateProductionCollection, validateProductionIndex, verifyProductionHashes} from './production.mjs';
+import {validateNativeOffer,verifyNativeOfferHash,renderNativeOffer,nativeOfferPubliclyAdmitted} from './native-offer.mjs';
 
 // Add only after exact source/contract/rights review, with the Python pin.
 export const APPROVED_PUBLIC_ADMISSION_IDS = Object.freeze([]);
@@ -133,7 +134,7 @@ export function validateOffer(offer,admission,now,{allowSynthetic=false}={}) {
 
 export function validateOfferAsset(asset,now,{allowSynthetic=false}={}){
   require(fields(asset,['schema_version','asset_id','league','generated_at','status','category_inventory','admissions','offers','unavailable_reasons'])
-    &&asset.schema_version==='nba-player-offers-v1'&&SHA.test(asset.asset_id)&&asset.league==='NBA'
+    &&['nba-player-offers-v1','nba-player-offers-v2'].includes(asset.schema_version)&&SHA.test(asset.asset_id)&&asset.league==='NBA'
     &&asset.status==='OFFER_ONLY_RESEARCH'&&same(asset.category_inventory,ALL_NBA_CATEGORIES),'Invalid offer asset/category inventory.');
   require(utcMicros(asset.generated_at)<=utcMicros(now)&&Array.isArray(asset.offers)&&asset.offers.length<=32
     &&Array.isArray(asset.admissions)&&asset.admissions.length<=32,'Offer asset clock/count limit exceeded.');
@@ -141,11 +142,21 @@ export function validateOfferAsset(asset,now,{allowSynthetic=false}={}){
   for(const a of asset.admissions){require(a&&typeof a==='object'&&!admissions.has(a.admission_id),'Duplicate offer review.');admissions.set(a.admission_id,a);}
   const ids=new Set(),used=new Set(),selections=new Set();
   for(const o of asset.offers){
-    require(o&&admissions.has(o.admission_id),'Offer missing publication review.');
-    validateOffer(o,admissions.get(o.admission_id),asset.generated_at,{allowSynthetic});
-    const selection=JSON.stringify([o.venue,o.product,o.provider.id_namespace,o.provider.selection_id,o.observed_at]);
+    require(o&&typeof o==='object','Invalid typed offer.');
+    let selection;
+    if(o.schema_version==='nba-native-player-offer-v2'){
+      require(asset.schema_version==='nba-player-offers-v2','Native offers require the versioned v2 asset.');
+      validateNativeOffer(o,asset.generated_at);
+      require((allowSynthetic&&o.evidence_lane==='SYNTHETIC_TEST')||nativeOfferPubliclyAdmitted(o),'Native offer has no reviewed public admission.');
+      selection=JSON.stringify([o.venue,o.product,o.event.id_namespace,o.event.id,o.selection.group_id,o.selection.market_id,o.selection.selection_id,o.observed_at]);
+    }else{
+      require(admissions.has(o.admission_id),'Offer missing publication review.');
+      validateOffer(o,admissions.get(o.admission_id),asset.generated_at,{allowSynthetic});
+      selection=JSON.stringify([o.venue,o.product,o.provider.id_namespace,o.provider.selection_id,o.observed_at]);
+      used.add(o.admission_id);
+    }
     require(!ids.has(o.offer_id)&&!selections.has(selection),'Duplicate offer/provider selection.');
-    ids.add(o.offer_id);selections.add(selection);used.add(o.admission_id);
+    ids.add(o.offer_id);selections.add(selection);
   }
   require(used.size===admissions.size,'Unreferenced offer review.');
   require(Array.isArray(asset.unavailable_reasons)&&asset.unavailable_reasons.length<=16&&asset.unavailable_reasons.every(v=>text(v,1000))
@@ -161,6 +172,10 @@ export async function verifyOfferAssetHashes(asset,cryptoProvider=globalThis.cry
   require(await hash(unsigned(asset,'asset_id'))===asset.asset_id,'Offer asset seal mismatch.');
   for(const a of asset.admissions)require(await hash(unsigned(a,'admission_id'))===a.admission_id,'Offer admission seal mismatch.');
   for(const o of asset.offers){
+    if(o.schema_version==='nba-native-player-offer-v2'){
+      await verifyNativeOfferHash(o,cryptoProvider);
+      continue;
+    }
     require(await hash(unsigned(o,'offer_id'))===o.offer_id,'Offer record seal mismatch.');
     const admission=asset.admissions.find(a=>a.admission_id===o.admission_id);
     require(admission&&await hash(Object.fromEntries(Object.entries(o).filter(([k])=>!['offer_id','admission_id'].includes(k))))===admission.subject_sha256,'Review does not bind exact offer.');
@@ -212,6 +227,10 @@ export async function offerResearchForecasts({legacy=[],paired=[],daily=null,pro
 }
 
 export function matchResearchForecast(offer,forecast,at){
+  if(offer.schema_version==='nba-native-player-offer-v2'){
+    validateNativeOffer(offer,at);
+    return {status:'UNMATCHED',reasons:['Native event requires a reviewed canonical event/version crosswalk; '+offer.event.forecast_match_status],qualification:'UNAVAILABLE',ticket_eligible:false,ev:null};
+  }
   const admitted=admittedMatchViews.get(forecast);
   forecast=admitted?.forecast??forecast??{};
   const reasons=[];
@@ -225,16 +244,43 @@ export function matchResearchForecast(offer,forecast,at){
 }
 
 export function offerDisplayState(offer,now){
+  if(offer.schema_version==='nba-native-player-offer-v2'){
+    validateNativeOffer(offer,now);
+    const eventStarted=Date.parse(now)>=Date.parse(offer.event.starts_at);
+    return {status:eventStarted?'HISTORICAL_CAPTURE':'RECORDED_OFFER',label:eventStarted?'Historical offer capture':'Recorded offer — research only',
+      price_label:offer.price.value===null?'Price unavailable':`Observed decimal price ${offer.price.value}`,
+      explanation:'Source-native Boolean contract. Canonical forecast matching and ticket qualification are unavailable.',ticket_eligible:false};
+  }
   const eventStarted=utcMicros(now)>=utcMicros(offer.event_starts_at);
   return {status:eventStarted?'HISTORICAL_CAPTURE':'RECORDED_OFFER',label:eventStarted?'Historical offer capture':'Recorded offer — research only',
     price_label:offer.price===null?'Price unavailable':offer.price.kind==='pickem_multiplier'?`Observed side multiplier ${offer.price.value}×; not sportsbook odds`:`Observed decimal price ${offer.price.value}`,
     explanation:'A displayed contract is not a recommendation or a qualified paper-ticket leg. No value or financial settlement is claimed.',ticket_eligible:false};
 }
 
+// Display/filter projection only. A Yes/No achievement keeps its literal side;
+// this projection never creates a numeric line or a forecast crosswalk.
+export function offerView(offer){
+  return offer.schema_version==='nba-native-player-offer-v2'
+    ? {starts_at:offer.event.starts_at,category:offer.category,side:offer.selection.label.toUpperCase(),venue:offer.venue,period:offer.period}
+    : {starts_at:offer.event_starts_at,category:offer.stat,side:offer.side.toUpperCase(),venue:offer.venue,period:offer.period};
+}
+
+export function filterOfferRows(offers,{view='upcoming',category='ALL',side='ALL',venue='ALL',period='full_game',window='upcoming',evidence='ALL'}={},now=Date.now()){
+  require(Array.isArray(offers)&&Number.isFinite(now),'Invalid offer filter inputs.');
+  const horizon=window==='24h'?86400000:window==='7d'?7*86400000:Infinity;
+  return offers.filter(offer=>{
+    const value=offerView(offer),start=Date.parse(value.starts_at),upcoming=start>now;
+    return (view==='history'?!upcoming:upcoming)&&(view==='history'||start<=now+horizon)
+      &&(category==='ALL'||value.category===category)&&(side==='ALL'||value.side===side)
+      &&(venue==='ALL'||value.venue===venue)&&value.period===period&&['ALL','OFFER_ONLY'].includes(evidence);
+  });
+}
+
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function renderOffers(asset,{offers=asset.offers,forecasts=[],now=asset.generated_at}={}){
   if(!offers.length)return `<p>${esc(asset.unavailable_reasons.join(' '))}</p>`;
   return offers.map(o=>{
+    if(o.schema_version==='nba-native-player-offer-v2')return renderNativeOffer(o,{now,published:nativeOfferPubliclyAdmitted(o)});
     const state=offerDisplayState(o,now),matches=forecasts.filter(f=>matchResearchForecast(o,f,now).status==='MATCHED_RESEARCH_ONLY');
     return `<article class="offer-card forecast-card">
       <p class="eyebrow">${esc(state.label)}</p>

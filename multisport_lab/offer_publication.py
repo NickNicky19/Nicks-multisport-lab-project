@@ -26,6 +26,7 @@ from .source_evidence import (replay_text_evidence, validate_text_binding,
                               validate_text_replay)
 
 ASSET_SCHEMA = "nba-player-offers-v1"
+NATIVE_ASSET_SCHEMA = "nba-player-offers-v2"
 OFFER_SCHEMA = "nba-player-offer-v1"
 ADMISSION_SCHEMA = "nba-offer-publication-admission-v1"
 RAW_SCHEMA = "nba-offer-raw-capture-v1"
@@ -269,7 +270,7 @@ def validate_offer(offer, admission, *, now, allow_synthetic=False):
 def validate_asset(asset, *, now, allow_synthetic=False):
     _fields(asset, {"schema_version", "asset_id", "league", "generated_at", "status", "category_inventory",
                     "admissions", "offers", "unavailable_reasons"}, "offer asset")
-    _require(asset["schema_version"] == ASSET_SCHEMA and asset["league"] == "NBA"
+    _require(asset["schema_version"] in {ASSET_SCHEMA, NATIVE_ASSET_SCHEMA} and asset["league"] == "NBA"
              and asset["status"] == "OFFER_ONLY_RESEARCH" and asset["category_inventory"] == list(CATEGORIES),
              "Unsupported offer asset or incomplete category inventory")
     _hash(asset["asset_id"], "asset ID")
@@ -287,12 +288,23 @@ def validate_asset(asset, *, now, allow_synthetic=False):
         admissions[admission["admission_id"]] = admission
     used, ids, selections = set(), set(), set()
     for offer in asset["offers"]:
-        _require(type(offer) is dict and offer.get("admission_id") in admissions, "Offer missing publication review")
-        validate_offer(offer, admissions[offer["admission_id"]], now=generated, allow_synthetic=allow_synthetic)
-        selection = (offer["venue"], offer["product"], offer["provider"]["id_namespace"],
-                     offer["provider"]["selection_id"], offer["observed_at"])
+        _require(type(offer) is dict, "Invalid typed offer")
+        if offer.get("schema_version") == "nba-native-player-offer-v2":
+            from .native_offer import validate_native_offer, native_offer_publicly_admitted
+            _require(asset["schema_version"] == NATIVE_ASSET_SCHEMA, "Native offers require the versioned v2 asset")
+            validate_native_offer(offer, now=generated)
+            _require((allow_synthetic and offer["evidence_lane"] == "SYNTHETIC_TEST")
+                     or native_offer_publicly_admitted(offer), "Native offer has no reviewed public admission")
+            selection = (offer["venue"], offer["product"], offer["event"]["id_namespace"], offer["event"]["id"],
+                         *(offer["selection"][key] for key in ("group_id", "market_id", "selection_id")), offer["observed_at"])
+        else:
+            _require(offer.get("admission_id") in admissions, "Offer missing publication review")
+            validate_offer(offer, admissions[offer["admission_id"]], now=generated, allow_synthetic=allow_synthetic)
+            selection = (offer["venue"], offer["product"], offer["provider"]["id_namespace"],
+                         offer["provider"]["selection_id"], offer["observed_at"])
+            used.add(offer["admission_id"])
         _require(offer["offer_id"] not in ids and selection not in selections, "Duplicate offer/provider selection")
-        ids.add(offer["offer_id"]); selections.add(selection); used.add(offer["admission_id"])
+        ids.add(offer["offer_id"]); selections.add(selection)
     _require(used == set(admissions), "Unreferenced admission review")
     _require(type(asset["unavailable_reasons"]) is list and len(asset["unavailable_reasons"]) <= 16,
              "Invalid offer availability reasons")
@@ -432,6 +444,26 @@ class OfferStore:
 
     @_strict
     def _validate_retained(self, offer, admission, references):
+        if offer.get("schema_version") == "nba-native-player-offer-v2":
+            from .native_offer import validate_native_offer, replay_native_offer, native_offer_publicly_admitted
+            from .moviodds_archive import validate_manifest, validate_reference
+            validate_native_offer(offer, now=datetime.now(timezone.utc))
+            _require(admission is None and ((self.allow_synthetic and offer["evidence_lane"] == "SYNTHETIC_TEST")
+                     or native_offer_publicly_admitted(offer)), "Native record requires a reviewed public admission")
+            _require(len(references) == 1 and references[0].kind == "input_captures" and self.raw_reader is not None,
+                     "Native contract requires one independently recoverable private source reference")
+            source = self.ledger.read(references[0])["data"]
+            _fields(source, {"native_offer_archive"}, "private native source pointer")
+            pointer = validate_reference(source["native_offer_archive"])
+            retained = self.raw_reader(references[0])
+            _require(type(retained) is dict and {"assets", "review", "manifest", "manifest_ref"} <= set(retained),
+                     "Native private source reader lacks original bytes and manifest")
+            validate_manifest(retained["manifest"], reference=pointer)
+            _require(retained["manifest_ref"] == pointer["manifest_ref"]
+                     and pointer["review_id"] == offer["original_review_id"]
+                     and retained["review"]["review_id"] == pointer["review_id"], "Native source archive identity differs")
+            replay_native_offer(offer, retained["assets"], now=datetime.now(timezone.utc), allow_synthetic=self.allow_synthetic)
+            return
         validate_offer(offer, admission, now=datetime.now(timezone.utc), allow_synthetic=self.allow_synthetic)
         refs = {ref.record_id: ref for ref in references}
         _require(set(refs) == {item["raw_record_id"] for item in offer["source_evidence"]}, "Exact raw source references required")
@@ -469,8 +501,19 @@ class OfferStore:
 
     @staticmethod
     def _identity(offer):
+        if offer.get("schema_version") == "nba-native-player-offer-v2":
+            return {"league": offer["league"], "source": offer["source"], "event": offer["event"],
+                    "canonical_player": offer["canonical_player"], "selection": offer["selection"],
+                    "observed_at": offer["observed_at"]}
         return {**{key: offer[key] for key in ("league", "id_namespace", "event_id", "event_version", "player_id", "venue", "product", "observed_at")},
                 "provider": offer["provider"]}
+
+    def retain_native_archive(self, reference):
+        """Retain metadata only. Private originals never enter the public ledger."""
+        from .moviodds_archive import validate_reference
+        validate_reference(reference)
+        with self.store.single_writer():
+            return self._append("native-offer-archive-v1:" + digest(reference), {"native_offer_archive": reference})
 
     def persist(self, offer, admission, *, raw_references):
         references = tuple(raw_references)
@@ -561,8 +604,9 @@ class OfferStore:
 def make_asset(root, *, now, raw_reader=None):
     captures = OfferStore(root, raw_reader=raw_reader).active()
     offers = [item["offer"] for _, item in captures]
-    admissions = [item["admission"] for _, item in captures]
-    asset = seal({"schema_version": ASSET_SCHEMA, "league": "NBA", "generated_at": stamp(utc(now)),
+    admissions = [item["admission"] for _, item in captures if item["admission"] is not None]
+    schema = NATIVE_ASSET_SCHEMA if any(item.get("schema_version") == "nba-native-player-offer-v2" for item in offers) else ASSET_SCHEMA
+    asset = seal({"schema_version": schema, "league": "NBA", "generated_at": stamp(utc(now)),
                   "status": "OFFER_ONLY_RESEARCH", "category_inventory": list(CATEGORIES),
                   "admissions": admissions, "offers": offers,
                   "unavailable_reasons": [] if offers else [
@@ -670,6 +714,15 @@ def offer_research_forecasts(*, legacy=(), paired=(), daily=None, production=Non
 
 def match_research_forecast(offer, forecast, *, at):
     """Exact semantic/time match only. Does not compute EV or confer eligibility."""
+    if offer.get("schema_version") == "nba-native-player-offer-v2":
+        from .native_offer import validate_native_offer
+        validate_native_offer(offer, now=at)
+        # Source-native identity is enough to describe the offer. It is not a
+        # reviewed cross-provider event/version join, even when times coincide.
+        return {"status": "UNMATCHED", "reasons": [
+            "Native event requires a reviewed canonical event/version crosswalk; "
+            + offer["event"]["forecast_match_status"]], "qualification": "UNAVAILABLE",
+            "ticket_eligible": False, "ev": None}
     admitted = _ADMITTED_MATCH_VIEWS.get(forecast) if isinstance(forecast, _AdmittedForecastView) else None
     admitted = json.loads(admitted) if admitted is not None else None
     forecast = admitted["forecast"] if admitted is not None else forecast

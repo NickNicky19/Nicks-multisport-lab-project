@@ -11,6 +11,7 @@ import {renderLocalOfferReview} from '../web/local-offer-review.mjs';
 import {PLAYER_LINE_REVIEW_SCHEMA,renderPlayerLineReview,verifyPlayerLineReviewHash} from '../web/player-line-review.mjs';
 import {ENRICHMENT_SOURCE_URLS,renderEnrichedPlayerLineReview,verifyPlayerLineEnrichmentSources} from '../web/player-line-enrichment.mjs';
 import {MOVIODDS_REVIEW_SCHEMA,renderMovioddsReview,verifyMovioddsReviewHash} from '../web/moviodds-review.mjs';
+import {NATIVE_OFFER_SCHEMA,renderNativeOffer,verifyNativeOfferHash} from '../web/native-offer.mjs';
 
 const MAX_REVIEW_BYTES = 256 * 1024;
 const MAX_HTML_BYTES = 2 * 1024 * 1024;
@@ -32,6 +33,32 @@ async function replayMovioddsOriginals(input,review) {
   require(replay.schema_version==='nba-moviodds-replay-v1'&&replay.review_id===review.review_id
     &&replay.originals_replayed===7&&replay.public_admission===false&&replay.durable_remote_archive_verified===false,
     'Independent replay does not acknowledge this exact private review.');
+}
+
+async function replayNativeOriginals(input,offer){
+  const verifier=`import sys,json
+from datetime import datetime,timezone
+from pathlib import Path
+from multisport_lab.integrity import _bounded_bytes,_decode,IntegrityError
+from multisport_lab.moviodds_offer import verify_package,load_assets
+from multisport_lab.native_offer import replay_native_offer
+p=Path(sys.argv[1]);now=datetime.now(timezone.utc)
+package=verify_package(p.parent,now=now)
+o=_decode(_bounded_bytes(p,32768))
+if package['review_id']!=o['original_review_id']:raise IntegrityError('Native offer does not reference the original package intent')
+print(json.dumps(replay_native_offer(o,load_assets(p.parent),now=now),sort_keys=True))`;
+  let result;
+  try{result=await execFileAsync('python3',['-O','-c',verifier,input],{
+    cwd:fileURLToPath(new URL('../',import.meta.url)),shell:false,timeout:30000,maxBuffer:128*1024,encoding:'utf8',
+    env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'}});
+  }catch(error){
+    const reason=typeof error.stderr==='string'?error.stderr.trim().split('\n').at(-1).slice(0,800):'offline verifier did not complete';
+    throw new Error('Native offer original-source replay failed: '+reason);
+  }
+  const replay=JSON.parse(result.stdout);
+  require(replay.schema_version==='nba-native-offer-replay-v1'&&replay.offer_id===offer.offer_id
+    &&replay.original_review_id===offer.original_review_id&&replay.originals_replayed===7
+    &&replay.public_admission===false&&replay.ticket_eligible===false,'Independent original replay does not acknowledge this native offer.');
 }
 
 async function boundedRegularFile(filename,limit) {
@@ -94,7 +121,12 @@ export async function renderPreparedLocalReview(inputFilename,outputFilename,{cw
   try {review = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(raw));}
   catch {throw new Error('Review input is not valid UTF-8 JSON.');}
   let rendered;
-  if (review?.schema_version === MOVIODDS_REVIEW_SCHEMA) {
+  if (review?.schema_version === NATIVE_OFFER_SCHEMA) {
+    require(enrichmentFilename===null,'Native Boolean offers retain their own original source bindings.');
+    await verifyNativeOfferHash(review,webcrypto);
+    await replayNativeOriginals(input,review);
+    rendered=renderNativeOffer(review);
+  } else if (review?.schema_version === MOVIODDS_REVIEW_SCHEMA) {
     require(enrichmentFilename===null,'MoviOdds has its own retained evidence; no Sleeper enrichment applies.');
     await verifyMovioddsReviewHash(review,webcrypto);
     await replayMovioddsOriginals(input,review);
