@@ -110,9 +110,9 @@ jobs:
                           for key in keys:
                               value=row.get(key)
                               if type(value) is not str or re.fullmatch(r"[1-9][0-9]*",value) is None:
-                                  bad.append({"csv_line":i,"field":key,"value":value,"uid":row.get("uid"),"season":row.get("season")})
+                                  bad.append({"csv_line":i,"field":key,"value":value,"uid":row.get("uid"),"season":row.get("season"),"event_date":row.get("date"),"home_label":row.get("home_display_name"),"away_label":row.get("away_display_name"),"status":row.get("status_type_name"),"season_type":row.get("season_type")})
                       if len(bad)>10000: raise RuntimeError("Noncanonical identity audit exceeds explicit output bound")
-                      audits.append({"path":rel,"role":role,"rows":len(rows),"bad_count":len(bad),"first_bad":bad[:20],"bad_values":sorted({str(v["value"]) for v in bad})[:40]})
+                      audits.append({"path":rel,"role":role,"rows":len(rows),"bad_count":len(bad),"first_bad":bad[:20],"bad_values":sorted({str(v["value"]) for v in bad})[:40],"next_game_date_rows":[{key:row.get(key) for key in ["id","date","home_id","away_id","home_display_name","away_display_name","status_type_name","status_type_state","status_type_completed","time_valid"]} for row in rows if role=="schedule" and str(row.get("date","")).startswith("2026-10-25")]})
               except (UnicodeError,csv.Error): pass
           chunk="object-ff81300f1dc70f6e23f502214a77c1b0113935632453c2700ed29890c44aebc2.z"
           chunk_dir=work/"registry-object"; chunk_dir.mkdir()
