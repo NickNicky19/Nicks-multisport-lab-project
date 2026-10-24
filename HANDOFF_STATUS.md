@@ -2,6 +2,72 @@
 
 Updated: October 24, 2026 (UTC).
 
+## October 24, 09:54 UTC — retained-source planning repair passes focused/recovery verification
+
+**Implementation source `18ec769acf2f237eeba09aaa4e03b6a0caa04a44`**,
+branch `implementation/sdv-publisher-identity-recovery`, parent current public
+main `f06735974a388fa9e1a39e0815341de889cc25ae`. This later evidence/documentation
+checkpoint changes no executing source bytes. The exact current review head and
+required full-CI result are recorded on its GitHub PR/checks; neither merge nor
+deployment of this repair is claimed.
+
+Actual healthy hosted diagnostic **40083437405** completed at
+**09:53:43.750960 UTC**; job **120841474497** succeeded at **09:53:46 UTC**.
+Commands:
+
+- `python3 -m unittest discover -s tests -p test_sdv_production_inputs.py -v`:
+  **17 passed / 0.410 s**.
+- `python3 -m unittest discover -s tests -p test_sdv_production_coordinator.py -v`:
+  **26 passed / 138.947 s**.
+- The same input command under actual `python3 -O`:
+  **17 passed / 0.438 s**.
+- The same coordinator command under actual `python3 -O`:
+  **26 passed / 138.908 s**.
+
+The same job independently recovered the exact original source pack from this
+repository's immutable public Releases archive, authenticated its captured
+authorization/request chain, publisher metadata, raw bytes and hashes, and
+reproduced `Invalid production identity` using deployed `f067359` on those
+same originals. Corrected-source DEVELOPMENT_ONLY plan **and all 11 input
+replays** passed, retaining **1,206 schedule rows / 516 roster rows**,
+**1,195 outside-date rows**, **11 games / 382 roster candidates / 32 shards**.
+Strict no-context import and a selected date containing a TBD event still
+rejected. All six future TBD originals remain unchanged. This made **18
+read-only own-repository archive HTTP requests**, **zero new sports-source
+GETs**, **zero real-history model fits/genuine forecasts** and **zero production record writes**.
+The unit suites deliberately construct synthetic forecast/outcome fixtures;
+these counters describe the actual-source diagnostic, not those invented tests.
+The original capture remains six source GETs at **09:08:56.422085 UTC**.
+
+Regressions cover selected/past/unknown/mixed/reversed IDs, label/UID/time
+conflicts, duplicates, strict normalized identities, full-row/plan/input replay,
+two consumed PLAN captures with earliest-original recovery, interrupted
+readback, no fallback to a later capture, stale originals, closed windows and
+role/request/reservation mismatches. Independent source review found an initial
+fresh-capture return-contract mistake in the uncommitted proposal; it was fixed
+before source `18ec769` and exercised by the successful hosted tests.
+Final independent static review found no remaining blocker.
+
+Exact bounded proof is
+`evidence/operational/sdv-retained-source-repair-verification-20261024.json`.
+This repair adds **no production record type or envelope field**: unchanged
+36-file producer inventory, **512 records / 32 MiB** shard limit, fixed history,
+original source/archive/action quotas, all 14 categories and mathematical laws.
+The 382 roster candidates do **not** establish fixed-history support for every
+player or confirmed participation. No frozen comparison or full-history
+diagnostic was repeated.
+
+**Next release gate:** required full `unittest discover`, offline demo,
+frontend tests and artifact/smoke on the completed review candidate, followed
+by a fresh exact-head guarded PR Completion plan. The final approval for PR #22
+was consumed by its actual merge/deployment; it does not land this separate
+repair. No scheduler, production state, source clocks, missed pilot or inactive
+study was changed by this test/evidence package. Real timely forecasts,
+publication and later statistical final grading remain pending, with zero
+genuine forecasts/offers/prospective outcomes/grades/tickets/settlements at this
+checkpoint.
+
+
 ## October 24 — PR #22 merged and publicly verified; actual planning failure isolated
 
 The approved head `4dab23d24f2b46fb49c9ae19ec04d2b5a52968a1` merged normally

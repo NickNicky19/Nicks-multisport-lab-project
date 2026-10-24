@@ -1,5 +1,22 @@
 # Recurring NBA daily-snapshot operation
 
+### October 24 retained-source repair verification (release pending)
+
+Source `18ec769acf2f237eeba09aaa4e03b6a0caa04a44` passed actual hosted
+**40083437405**: 17 input and 26 coordinator tests, each normally and under
+optimized Python, plus independent recovery of the original archived capture.
+The deployed parser's error reproduced; the repaired DEVELOPMENT_ONLY replay
+retained all 1,206 schedule and 516 roster rows and validated the complete
+11-game/382-candidate/32-shard target-date plan and all input replays. No
+forecast was generated, no production record was written and no new provider
+request occurred. All 18 archive reads were against this own repository.
+Current required full CI and exact-head release remain separate gates.
+
+No new production fields/records or budget increases accompany this repair.
+A runtime candidate without usable fixed history still needs its existing
+explicit exclusion; roster membership never establishes appearance or health.
+See the new focused proof and latest handoff before relying on the code.
+
 ### October 24 release and forward source/restart repair
 
 PR #22 is merged as `f06735974a388fa9e1a39e0815341de889cc25ae`, deployed by
