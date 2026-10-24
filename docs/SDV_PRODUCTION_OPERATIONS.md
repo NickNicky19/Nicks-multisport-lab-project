@@ -1,5 +1,34 @@
 # Recurring NBA daily-snapshot operation
 
+### October 24 release and forward source/restart repair
+
+PR #22 is merged as `f06735974a388fa9e1a39e0815341de889cc25ae`, deployed by
+Pages **40075629451** and independently publicly verified by **40080319441**.
+The dated candidate checkpoints below are retained as history, not current
+deployment claims. The first native new-main run **40080779828** actually
+failed during full-season team validation after a six-GET capture; it issued
+zero forecasts and kept its originals. See the latest handoff and linked
+structured deployment/source evidence for actual clocks and counts.
+
+The forward repair on `implementation/sdv-publisher-identity-recovery` is a
+review candidate. The retained schedule has six December TBD/TBD source rows
+with exact IDs `-1`/`-2`. Their team identities can be deferred only when all
+other source checks pass and their UTC game date is strictly later than the
+selected date. Every raw row is retained and included in outside-date counts;
+no sentinel may enter a normalized event, selected date or forecast. A raw
+import without selected-date context stays strict. Unknown/mixed/reversed
+IDs, changed labels, conflicting event UIDs/times and duplicate IDs reject.
+
+A planning restart first authenticates the earliest exact same-date
+`CAPTURED` PLAN source pack, preserving original clocks and request counts.
+It does not collect again, silently select a later revision or reset the
+two-attempt budget. Current actual planning clocks, planning/freshness gates,
+runtime checks, source roles, reservation/request linkage and subsequent
+archive/shard reservation remain required. A missing/corrupt/stale original
+or closed window stops without replacing it. An already admitted daily plan
+never changes. The new normalizer/coordinator bytes are included in the
+existing producer binding; R0/K0 laws, normalized schemas and limits stay fixed.
+
 ### October 23 delivery repair candidate (not deployed)
 
 The live application is rendering; Upcoming is empty because zero genuine

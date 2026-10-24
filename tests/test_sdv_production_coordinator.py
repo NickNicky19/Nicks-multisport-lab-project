@@ -92,7 +92,8 @@ class ProductionCoordinatorTests(unittest.TestCase):
         else:
             values=self.fixture.assets();refs=self.case.retain_assets(values);roles=("schedule","roster")
         body=common.seal({"schema_version":"synthetic-local-source-pack-v1","sources":[
-            {"role":role,"source_ref":ref} for role,ref in zip(roles,refs)],"requests":[{"synthetic_not_executed":True} for _ in range(4)],"captured_at":stamp(common.now())},"source_pack_id")
+            {"role":role,"source_ref":ref} for role,ref in zip(roles,refs)],"requests":[{"synthetic_not_executed":True,"retrieval_started_at":stamp(common.now()-timedelta(seconds=1)),
+                "retrieved_at":stamp(common.now())} for _ in range(4)],"captured_at":stamp(common.now())},"source_pack_id")
         ref=archive.put_json(body,tag=tag);self.packs[digest(ref)]=body;return ref,body
 
     def planned(self):
@@ -508,6 +509,85 @@ class ProductionCoordinatorTests(unittest.TestCase):
         self.prepared();self.fixture.now=self.case.cutoff+timedelta(seconds=1)
         task=self.current.prepare_tasks()[0];task["branch"]+="-changed"
         with self.assertRaisesRegex(IntegrityError,"immutable task"):self.current.work(task)
+
+
+    def test_completed_plan_capture_recovers_after_full_attempt_budget_without_get(self):
+        self.current=self.coordinator()
+        with patch.object(engine.inputs,"make_plan",side_effect=IntegrityError("Invented normalization interruption")):
+            self.assertEqual(self.current.prepare_tasks(),[])
+        original=deepcopy(self.current.registry["attempts"][0])
+        self.assertEqual(original["status"],"CAPTURED");self.assertEqual(self.current.registry["days"],[])
+        pack,sources=self.current._pack(original["source_pack_ref"])
+        opens,closes=engine.inputs._planning_window("2026-10-24")
+        self.current._capture("PLAN",["2026-10-24"],season=2027,opens=opens,closes=closes)
+        attempts=deepcopy(self.current.registry["attempts"])
+        self.assertEqual(len(attempts),2);self.assertEqual(len(self.calls),2)
+        self.fixture.now+=timedelta(seconds=5)
+        self.current=self.coordinator(deepcopy(self.current.registry))
+        with patch.object(self.current,"_pack",side_effect=IntegrityError("Invented earliest-pack readback interruption")) as readback:
+            self.assertEqual(self.current.prepare_tasks(),[])
+        readback.assert_called_once_with(original["source_pack_ref"])
+        self.assertEqual(self.current.registry["days"],[]);self.assertEqual(len(self.calls),2)
+        self.current=self.coordinator(deepcopy(self.current.registry))
+        self.assertEqual(self.current.prepare_tasks(),[])
+        day=self.current.registry["days"][0];plan=self.archive.get_json(day["plan_ref"])
+        self.assertEqual(day["source_pack_ref"],original["source_pack_ref"])
+        self.assertEqual(self.current.registry["attempts"],attempts)
+        self.assertEqual(plan["sources"],[sources[role][1] for role in ("schedule","roster")])
+        self.assertEqual(len(self.calls),2)
+        self.assertEqual(self.current.prepare_tasks(),[]);self.assertEqual(len(self.calls),2)
+
+    def test_target_tbd_failure_keeps_successful_capture_without_plan_or_forecasts(self):
+        row=self.fixture.schedule[0]
+        row.update(home_id="-1",away_id="-2",home_display_name="TBD",away_display_name="TBD")
+        self.current=self.coordinator();self.assertEqual(self.current.prepare_tasks(),[])
+        self.assertEqual(self.current.registry["days"],[]);self.assertEqual(len(self.calls),1)
+        original=deepcopy(self.current.registry["attempts"][0])
+        self.assertEqual(original["status"],"CAPTURED")
+        self.assertIsNotNone(original["source_pack_ref"])
+        self.assertTrue(any("team ID" in error["error"] for error in self.current.reports))
+        self.current=self.coordinator(deepcopy(self.current.registry))
+        self.assertEqual(self.current.prepare_tasks(),[]);self.assertEqual(len(self.calls),1)
+        self.assertEqual(self.current.registry["attempts"],[original])
+        self.assertEqual(self.current.registry["days"],[])
+        self.assertFalse(any(self.current.root.rglob("records/forecasts/*.json")))
+
+    def test_plan_recovery_revalidates_staleness_readback_and_closed_window(self):
+        assets=self.fixture.assets
+        with patch.object(self.fixture,"assets",side_effect=lambda:assets(age=timedelta(hours=36)-timedelta(seconds=30))):
+            self.current=self.coordinator()
+            with patch.object(engine.inputs,"make_plan",side_effect=IntegrityError("Invented post-capture interruption")):
+                self.assertEqual(self.current.prepare_tasks(),[])
+        original=deepcopy(self.current.registry["attempts"][0])
+        self.fixture.now+=timedelta(minutes=1)
+        self.current=self.coordinator(deepcopy(self.current.registry))
+        self.assertEqual(self.current.prepare_tasks(),[])
+        self.assertTrue(any("stale" in error["error"] for error in self.current.reports))
+        with patch.object(self.current,"_pack",side_effect=IntegrityError("Invented independent readback failure")):
+            self.assertEqual(self.current.prepare_tasks(),[])
+        self.assertTrue(any("readback" in error["error"] for error in self.current.reports))
+        self.fixture.now=utc("2026-10-23T14:00:01.000000Z")
+        self.assertEqual(self.current.prepare_tasks(),[])
+        self.assertEqual(self.current.registry["days"],[]);self.assertEqual(len(self.calls),1)
+        self.assertEqual(self.current.registry["attempts"],[original])
+
+
+    def test_retained_plan_capture_roles_accounting_and_reservation_must_agree(self):
+        self.current=self.coordinator()
+        with patch.object(engine.inputs,"make_plan",side_effect=IntegrityError("Invented post-capture interruption")):
+            self.assertEqual(self.current.prepare_tasks(),[])
+        registry=deepcopy(self.current.registry);original=registry["attempts"][0]
+        pack,sources=self.current._pack(original["source_pack_ref"])
+        short=deepcopy(pack);short["requests"].pop()
+        early=deepcopy(pack);early["requests"][0]["retrieval_started_at"]=stamp(common.clock(original["started_at"])-timedelta(seconds=1))
+        cases=[("roles",pack,{"schedule":sources["schedule"],"boxscore":sources["roster"]}),
+            ("accounting",short,sources),("reservation",early,sources)]
+        for name,bad_pack,bad_sources in cases:
+            self.current=self.coordinator(deepcopy(registry))
+            with self.subTest(case=name),patch.object(self.current,"_pack",return_value=(bad_pack,bad_sources)):
+                self.assertEqual(self.current.prepare_tasks(),[])
+            self.assertEqual(self.current.registry["days"],[]);self.assertEqual(len(self.calls),1)
+            self.assertTrue(any("Retained plan capture" in error["error"] for error in self.current.reports))
 
 
 if __name__ == "__main__":unittest.main()

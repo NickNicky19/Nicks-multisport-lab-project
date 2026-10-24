@@ -158,8 +158,8 @@ def _table(raw, fields, label, policy=None):
     return rows
 
 
-def _tables(schedule_raw,roster_raw,policy=None):
-    policy=_policy(policy)
+def _tables(schedule_raw,roster_raw,policy=None,game_date=None):
+    policy=_policy(policy);selected_day=None if game_date is None else _date(game_date)
     schedule=_table(schedule_raw,SCHEDULE_FIELDS,"schedule",policy); roster=_table(roster_raw,ROSTER_FIELDS,"roster",policy)
     seen,seasons=set(),set()
     for row in schedule:
@@ -167,12 +167,20 @@ def _tables(schedule_raw,roster_raw,policy=None):
         common.require(eid not in seen and row["game_id"] == eid and row["uid"] == "s:40~l:46~e:"+eid+"~c:"+eid,"Duplicate/conflicting production event identity")
         seen.add(eid);seasons.add(row["season"])
         common.require(re.fullmatch(r"20[0-9]{2}",row["season"]) and row["season_type"] in {"1","2","3"},"Invalid production event season")
-        home,away=_id(row["home_id"]),_id(row["away_id"])
-        common.require(home != away,"Production event teams conflict")
         for key in ("home_display_name","away_display_name","status_type_name","status_type_state"):common.text(row[key])
         common.require(row["status_type_completed"] in {"true","false"} and row["time_valid"] in {"true","false"},"Missing/invalid production event state")
         starts=[_source_clock(row[key]) for key in ("date","start_date","game_date_time")]
         common.require(starts[0] == starts[1] == starts[2],"Production event starts conflict; complete UTC inventory unavailable")
+        # The retained full-season release contains future TBD/TBD fixtures
+        # with these exact source sentinels. Keep every original row; only
+        # a strictly later UTC date may defer its unresolved team identities.
+        # These values can never enter this date's normalized inventory.
+        unresolved_later=(selected_day is not None and starts[0].date() > selected_day
+            and (row["home_id"],row["away_id"]) == ("-1","-2")
+            and (row["home_display_name"],row["away_display_name"]) == ("TBD","TBD"))
+        if not unresolved_later:
+            _id(row["home_id"],"schedule home team ID");_id(row["away_id"],"schedule away team ID")
+        common.require(row["home_id"] != row["away_id"],"Production event teams conflict")
     common.require(len(seasons) == 1,"Production schedule mixes seasons")
     seen,names=set(),{}
     for row in roster:
@@ -251,7 +259,7 @@ def _seed(game_date,sources,binding,events,policy=None):
 def _build_plan(schedule_raw,roster_raw,schedule_meta,roster_meta,*,source_originals,game_date,producer_binding,started,completed,mode,policy=None):
     common.require(type(mode) is str and mode in MODES,"Unknown production input mode"); validate_binding(producer_binding,prospective=mode == "PROSPECTIVE_RESEARCH"); day=_date(game_date)
     policy=deepcopy(_policy(policy)); sources=_sources((schedule_raw,roster_raw),(schedule_meta,roster_meta),source_originals,at=completed,mode=mode,policy=policy)
-    schedule,roster=_tables(schedule_raw,roster_raw,policy);season=schedule[0]["season"]
+    schedule,roster=_tables(schedule_raw,roster_raw,policy,game_date);season=schedule[0]["season"]
     common.require(all(source["asset_name"] == ("nba_schedule_" if source["role"] == "schedule" else "rosters_")+season+".csv" for source in sources),"Production asset year differs from complete CSV season")
     inventory=[];provisional=[];excluded=[]
     for row in sorted(schedule,key=lambda value:(_source_clock(value["date"]),int(value["id"]))):
@@ -416,7 +424,7 @@ def make_input(plan,event_id,schedule_raw,roster_raw,schedule_meta,roster_meta,*
     original=selected[0]; started=_source_clock(at) if at is not None else common.now()
     policy=plan["policy"]
     _sources((schedule_raw,roster_raw),(schedule_meta,roster_meta),source_originals,at=started,mode=mode,policy=policy)
-    schedule,roster=_tables(schedule_raw,roster_raw,policy); season=schedule[0]["season"]
+    schedule,roster=_tables(schedule_raw,roster_raw,policy,plan["game_date"]); season=schedule[0]["season"]
     common.require(schedule_meta["asset_name"] == "nba_schedule_"+season+".csv" and roster_meta["asset_name"] == "rosters_"+season+".csv","Fresh production asset/table season conflicts")
     rows=[row for row in schedule if row["id"] == event_id];common.require(len(rows) == 1,"Fresh selected event is absent")
     row=rows[0];common.require((row["status_type_name"],row["status_type_state"],row["status_type_completed"],row["time_valid"]) == ("STATUS_SCHEDULED","pre","false","true"),"Fresh production event is not scheduled")
@@ -490,7 +498,7 @@ def verify_input_sources(body,schedule_raw,roster_raw,schedule_meta,roster_meta,
     validate_input(body,plan)
     _sources((schedule_raw,roster_raw),(schedule_meta,roster_meta),source_originals,at=common.clock(body["normalized_at"]),mode=body["mode"],policy=body["policy"])
     common.require(body["sources"] == [schedule_meta,roster_meta],"Production input original source metadata changed")
-    schedule,roster=_tables(schedule_raw,roster_raw,body["policy"])
+    schedule,roster=_tables(schedule_raw,roster_raw,body["policy"],common.clock(body["event"]["event_starts_at"]).date().isoformat())
     selected=[row for row in schedule if row["id"] == body["event"]["event_id"]]
     common.require(len(selected) == 1 and _event(selected[0]) == body["event"] and _cohort(selected[0],roster)[0] == body["candidates"],"Production input semantics differ from original source replay")
     row=selected[0]

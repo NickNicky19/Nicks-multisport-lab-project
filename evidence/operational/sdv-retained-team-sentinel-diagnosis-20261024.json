@@ -1,0 +1,427 @@
+{
+  "diagnostic_run": "40082515698",
+  "execution_sha": "d00ed46a7f927d3b124d82b6519c9d61b533df7e",
+  "files": [
+    {
+      "bytes": 28847,
+      "path": "execution-report.json",
+      "sha256": "634ab572799c461aff678449cfa3ee7522a8ace23e864481c0cf2bdd4b27ff01"
+    },
+    {
+      "bytes": 183837,
+      "path": "phases/originals/bd465d17b3a128b93943b057404aa16fea6c237eff9f5dc50b18fa17668e9cd4/request-01.body",
+      "sha256": "45dca4e77890a9841c972c6e0171b413e2d4b963c0effc63945377b4d16cbd4f"
+    },
+    {
+      "bytes": 0,
+      "path": "phases/originals/bd465d17b3a128b93943b057404aa16fea6c237eff9f5dc50b18fa17668e9cd4/request-02.body",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 2156179,
+      "path": "phases/originals/bd465d17b3a128b93943b057404aa16fea6c237eff9f5dc50b18fa17668e9cd4/request-03.body",
+      "sha256": "e927b966d1fa0e3129386aac201f115d6b1ce7c5ea1cbe429a0177f1d23dcdde"
+    },
+    {
+      "bytes": 30610,
+      "path": "phases/originals/bd465d17b3a128b93943b057404aa16fea6c237eff9f5dc50b18fa17668e9cd4/request-04.body",
+      "sha256": "135d85de6fb9645f441cd606fea186245ebcba5640ef5ad24baedb2d22750bc7"
+    },
+    {
+      "bytes": 0,
+      "path": "phases/originals/bd465d17b3a128b93943b057404aa16fea6c237eff9f5dc50b18fa17668e9cd4/request-05.body",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 222200,
+      "path": "phases/originals/bd465d17b3a128b93943b057404aa16fea6c237eff9f5dc50b18fa17668e9cd4/request-06.body",
+      "sha256": "02b684f0075da0b4d00f9d2c4f4d03a8b5badf395824f30ca233e1df7f8c5ac5"
+    },
+    {
+      "bytes": 3359,
+      "path": "phases/originals/bd465d17b3a128b93943b057404aa16fea6c237eff9f5dc50b18fa17668e9cd4/requests.json",
+      "sha256": "699cfb7080f33fdf81415d0d36364d1565c81183ea3bb4f00d3957c97b9cbec8"
+    }
+  ],
+  "forecasts_generated": 0,
+  "identity_audits": [
+    {
+      "bad_count": 12,
+      "bad_values": [
+        "-1",
+        "-2"
+      ],
+      "first_bad": [
+        {
+          "away_label": "TBD",
+          "csv_line": 877,
+          "event_date": "2026-12-11T05:00Z",
+          "field": "home_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909456~c:401909456",
+          "value": "-1"
+        },
+        {
+          "away_label": "TBD",
+          "csv_line": 877,
+          "event_date": "2026-12-11T05:00Z",
+          "field": "away_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909456~c:401909456",
+          "value": "-2"
+        },
+        {
+          "away_label": "TBD",
+          "csv_line": 878,
+          "event_date": "2026-12-08T05:00Z",
+          "field": "home_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909454~c:401909454",
+          "value": "-1"
+        },
+        {
+          "away_label": "TBD",
+          "csv_line": 878,
+          "event_date": "2026-12-08T05:00Z",
+          "field": "away_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909454~c:401909454",
+          "value": "-2"
+        },
+        {
+          "away_label": "TBD",
+          "csv_line": 879,
+          "event_date": "2026-12-05T05:00Z",
+          "field": "home_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909452~c:401909452",
+          "value": "-1"
+        },
+        {
+          "away_label": "TBD",
+          "csv_line": 879,
+          "event_date": "2026-12-05T05:00Z",
+          "field": "away_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909452~c:401909452",
+          "value": "-2"
+        },
+        {
+          "away_label": "TBD",
+          "csv_line": 880,
+          "event_date": "2026-12-05T05:00Z",
+          "field": "home_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909453~c:401909453",
+          "value": "-1"
+        },
+        {
+          "away_label": "TBD",
+          "csv_line": 880,
+          "event_date": "2026-12-05T05:00Z",
+          "field": "away_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909453~c:401909453",
+          "value": "-2"
+        },
+        {
+          "away_label": "TBD",
+          "csv_line": 881,
+          "event_date": "2026-12-04T05:00Z",
+          "field": "home_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909450~c:401909450",
+          "value": "-1"
+        },
+        {
+          "away_label": "TBD",
+          "csv_line": 881,
+          "event_date": "2026-12-04T05:00Z",
+          "field": "away_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909450~c:401909450",
+          "value": "-2"
+        },
+        {
+          "away_label": "TBD",
+          "csv_line": 882,
+          "event_date": "2026-12-04T05:00Z",
+          "field": "home_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909451~c:401909451",
+          "value": "-1"
+        },
+        {
+          "away_label": "TBD",
+          "csv_line": 882,
+          "event_date": "2026-12-04T05:00Z",
+          "field": "away_id",
+          "home_label": "TBD",
+          "season": "2027",
+          "season_type": "2",
+          "status": "STATUS_SCHEDULED",
+          "uid": "s:40~l:46~e:401909451~c:401909451",
+          "value": "-2"
+        }
+      ],
+      "next_game_date_rows": [
+        {
+          "away_display_name": "Detroit Pistons",
+          "away_id": "8",
+          "date": "2026-10-25T23:30Z",
+          "home_display_name": "Philadelphia 76ers",
+          "home_id": "20",
+          "id": "401909866",
+          "status_type_completed": "false",
+          "status_type_name": "STATUS_SCHEDULED",
+          "status_type_state": "pre",
+          "time_valid": "true"
+        },
+        {
+          "away_display_name": "Orlando Magic",
+          "away_id": "19",
+          "date": "2026-10-25T23:00Z",
+          "home_display_name": "New York Knicks",
+          "home_id": "18",
+          "id": "401909863",
+          "status_type_completed": "false",
+          "status_type_name": "STATUS_SCHEDULED",
+          "status_type_state": "pre",
+          "time_valid": "true"
+        },
+        {
+          "away_display_name": "Toronto Raptors",
+          "away_id": "28",
+          "date": "2026-10-25T23:00Z",
+          "home_display_name": "Minnesota Timberwolves",
+          "home_id": "16",
+          "id": "401909864",
+          "status_type_completed": "false",
+          "status_type_name": "STATUS_SCHEDULED",
+          "status_type_state": "pre",
+          "time_valid": "true"
+        },
+        {
+          "away_display_name": "LA Clippers",
+          "away_id": "12",
+          "date": "2026-10-25T23:00Z",
+          "home_display_name": "Oklahoma City Thunder",
+          "home_id": "25",
+          "id": "401909865",
+          "status_type_completed": "false",
+          "status_type_name": "STATUS_SCHEDULED",
+          "status_type_state": "pre",
+          "time_valid": "true"
+        },
+        {
+          "away_display_name": "Indiana Pacers",
+          "away_id": "11",
+          "date": "2026-10-25T22:00Z",
+          "home_display_name": "Brooklyn Nets",
+          "home_id": "17",
+          "id": "401909862",
+          "status_type_completed": "false",
+          "status_type_name": "STATUS_SCHEDULED",
+          "status_type_state": "pre",
+          "time_valid": "true"
+        },
+        {
+          "away_display_name": "Los Angeles Lakers",
+          "away_id": "13",
+          "date": "2026-10-25T21:00Z",
+          "home_display_name": "Utah Jazz",
+          "home_id": "26",
+          "id": "401909861",
+          "status_type_completed": "false",
+          "status_type_name": "STATUS_SCHEDULED",
+          "status_type_state": "pre",
+          "time_valid": "true"
+        },
+        {
+          "away_display_name": "Golden State Warriors",
+          "away_id": "9",
+          "date": "2026-10-25T02:00Z",
+          "home_display_name": "Phoenix Suns",
+          "home_id": "21",
+          "id": "401909860",
+          "status_type_completed": "false",
+          "status_type_name": "STATUS_SCHEDULED",
+          "status_type_state": "pre",
+          "time_valid": "true"
+        },
+        {
+          "away_display_name": "New Orleans Pelicans",
+          "away_id": "3",
+          "date": "2026-10-25T01:00Z",
+          "home_display_name": "Denver Nuggets",
+          "home_id": "7",
+          "id": "401909859",
+          "status_type_completed": "false",
+          "status_type_name": "STATUS_SCHEDULED",
+          "status_type_state": "pre",
+          "time_valid": "true"
+        },
+        {
+          "away_display_name": "Houston Rockets",
+          "away_id": "10",
+          "date": "2026-10-25T00:30Z",
+          "home_display_name": "Atlanta Hawks",
+          "home_id": "1",
+          "id": "401909856",
+          "status_type_completed": "false",
+          "status_type_name": "STATUS_SCHEDULED",
+          "status_type_state": "pre",
+          "time_valid": "true"
+        },
+        {
+          "away_display_name": "Washington Wizards",
+          "away_id": "27",
+          "date": "2026-10-25T00:00Z",
+          "home_display_name": "Chicago Bulls",
+          "home_id": "4",
+          "id": "401909857",
+          "status_type_completed": "false",
+          "status_type_name": "STATUS_SCHEDULED",
+          "status_type_state": "pre",
+          "time_valid": "true"
+        },
+        {
+          "away_display_name": "San Antonio Spurs",
+          "away_id": "24",
+          "date": "2026-10-25T00:00Z",
+          "home_display_name": "Dallas Mavericks",
+          "home_id": "6",
+          "id": "401909858",
+          "status_type_completed": "false",
+          "status_type_name": "STATUS_SCHEDULED",
+          "status_type_state": "pre",
+          "time_valid": "true"
+        }
+      ],
+      "path": "phases/originals/bd465d17b3a128b93943b057404aa16fea6c237eff9f5dc50b18fa17668e9cd4/request-03.body",
+      "role": "schedule",
+      "rows": 1206
+    },
+    {
+      "bad_count": 0,
+      "bad_values": [],
+      "first_bad": [],
+      "next_game_date_rows": [],
+      "path": "phases/originals/bd465d17b3a128b93943b057404aa16fea6c237eff9f5dc50b18fa17668e9cd4/request-06.body",
+      "role": "roster",
+      "rows": 516
+    }
+  ],
+  "native_artifact": 12555221476,
+  "native_run": 40080779828,
+  "native_source": "f06735974a388fa9e1a39e0815341de889cc25ae",
+  "readback_at": "2026-10-24T09:34:58.119605+00:00",
+  "records_written": 0,
+  "registry": {
+    "archive_budget": {
+      "budget_id": "13d83a369461b210903bd6408019786162ab4fee1ff04fd35f49bacd3eab594d",
+      "observed_at": "2026-10-23T04:51:20.370723Z",
+      "parallel_headroom_bytes": 0,
+      "parallel_headroom_objects": 0,
+      "policy_id": "2a2543c981c23c6c09b0af8eb598fc5eaeae4a6278233acef1c59e265acedf43",
+      "protocol_id": "NBA-SDV-PRODUCTION-001",
+      "reserved_bytes": 536870912,
+      "reserved_objects": 4096,
+      "schema_version": "nba-sdv-production-global-archive-budget-v1",
+      "shards": [],
+      "shared_metadata_bytes": 536870912,
+      "shared_metadata_objects": 4096,
+      "shared_source_bytes": 0,
+      "shared_source_objects": 0
+    },
+    "archived_attempts": [],
+    "archived_days": [],
+    "attempts": [
+      {
+        "attempt_id": "bd465d17b3a128b93943b057404aa16fea6c237eff9f5dc50b18fa17668e9cd4",
+        "phase": "PLAN",
+        "reserved_gets": 6,
+        "scope": [
+          "2026-10-25"
+        ],
+        "source_pack_ref": {
+          "bytes": 8797,
+          "name": "object-226339d041081220d9cfa777494a35440ade35bd307dac36e846bca63e73ce77.z",
+          "sha256": "226339d041081220d9cfa777494a35440ade35bd307dac36e846bca63e73ce77",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "started_at": "2026-10-24T09:08:43.732302Z",
+        "status": "CAPTURED",
+        "used_gets": 6
+      }
+    ],
+    "days": [],
+    "last_run": {
+      "details": {
+        "PRODUCTION_CAPTURE_RESULT": "skipped",
+        "PRODUCTION_GRADE_PREPARE_RESULT": "success",
+        "PRODUCTION_GRADE_RESULT": "skipped",
+        "PRODUCTION_PREGAME_RESULT": "skipped",
+        "PRODUCTION_PREPARE_HAS_FAILURES": "true"
+      },
+      "observed_at": "2026-10-24T09:09:38.490936Z",
+      "run_attempt": 1,
+      "run_id": 40080779828,
+      "status": "HOSTED_PHASES_PARTIAL_OR_FAILED"
+    },
+    "policy_id": "2a2543c981c23c6c09b0af8eb598fc5eaeae4a6278233acef1c59e265acedf43",
+    "protocol_id": "NBA-SDV-PRODUCTION-001",
+    "publication": {
+      "content_id": "f7a005b4cc03416e6bfb8d482dce5aa425b6ed71da381d02687ca2a71d5f5ba5",
+      "dispatch_attempts": 1,
+      "error": null,
+      "proof_ref": null,
+      "registry_id": "bcbadc875dd1c760847f02dd642fd3bdf40d4cfce53673b2c70985516eaf0455",
+      "requested_at": "2026-10-24T09:09:41.070209Z",
+      "served_build_commit": null,
+      "state": "DISPATCH_REQUESTED",
+      "state_commit": "d84417935c594d1cde755926d1fe250cfa98fe05",
+      "verified_at": null,
+      "workflow_run_id": null
+    },
+    "registry_id": "ced27de6ee7f5ed46db01439f3922af48721bee898af7e8b62b608133e27cb20",
+    "schema_version": "nba-sdv-production-registry-v1",
+    "status": "HOSTED_PHASES_PARTIAL_OR_FAILED",
+    "updated_at": "2026-10-24T09:09:42.255198Z"
+  },
+  "schema_version": "nml-native-identity-diagnosis-v1",
+  "sports_source_requests": 0
+}

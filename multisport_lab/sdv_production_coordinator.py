@@ -336,8 +336,26 @@ class Coordinator:
         within=opens <= now < closes if policy.get("planning_close_exclusive") else opens <= now <= closes
         if not within or inputs._date(game_date) < common.clock(policy["enabled_after"]).date():return
         season=now.year+1 if now.month >= 7 else now.year
-        ref,_=self._capture("PLAN",[game_date],season=season,opens=opens,closes=closes)
-        _,sources=self._pack(ref);s,r=sources["schedule"],sources["roster"]
+        # A completed capture survives a later normalization/plan checkpoint
+        # failure. Recover those exact originals before spending another GET;
+        # current plan admission still checks its own window and source age.
+        retained=[row for row in self.registry["attempts"] if row["phase"] == "PLAN"
+            and row["scope"] == [game_date] and row["status"] == "CAPTURED" and row["source_pack_ref"] is not None]
+        if retained:
+            attempt=min(retained,key=lambda row:(common.clock(row["started_at"]),row["attempt_id"]))
+            ref=attempt["source_pack_ref"];self._runtime_guard()
+        else:
+            ref,_=self._capture("PLAN",[game_date],season=season,opens=opens,closes=closes)
+            completed=[row for row in self.registry["attempts"] if row["phase"] == "PLAN" and row["scope"] == [game_date]
+                and row["status"] == "CAPTURED" and row["source_pack_ref"] == ref]
+            common.require(len(completed) == 1,"Fresh plan capture lacks its unique durable attempt")
+            attempt=completed[0]
+        pack,sources=self._pack(ref)
+        common.require(set(sources) == {"schedule","roster"} and attempt["used_gets"] == len(pack["requests"]),
+            "Retained plan capture roles/request accounting differ")
+        common.require(common.clock(attempt["started_at"]) <= common.clock(pack["requests"][0]["retrieval_started_at"])
+            <= common.clock(pack["captured_at"]),"Retained plan capture precedes its durable reservation")
+        s,r=sources["schedule"],sources["roster"]
         plan=inputs.make_plan(s[0],r[0],s[1],r[1],source_originals={"schedule":s[2],"roster":r[2]},game_date=game_date,
             producer_binding=self._binding(),mode=self.mode,policy=policy)
         self._reserve_archive(additional_shards=sum(len(event["shards"]) for event in plan["events"]))

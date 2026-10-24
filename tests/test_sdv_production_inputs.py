@@ -212,4 +212,47 @@ class ProductionInputTests(unittest.TestCase):
         with self.assertRaisesRegex(IntegrityError,"semantics differ"):source.verify_input_sources(body,*assets[:4],source_originals=assets[4])
 
 
+    def later_placeholder(self):
+        row=deepcopy(self.schedule[0]);eid="99999"
+        row.update(id=eid,game_id=eid,uid="s:40~l:46~e:"+eid+"~c:"+eid,
+            home_id="-1",away_id="-2",home_display_name="TBD",away_display_name="TBD")
+        for key in ("date","start_date","game_date_time"):row[key]="2026-12-04T05:00Z"
+        return row
+
+    def test_later_tbd_fixtures_preserve_full_source_and_exact_input_replay(self):
+        baseline=self.build();placeholder=self.later_placeholder();self.schedule.append(placeholder)
+        assets=self.assets();plan=self.build(assets)
+        keys=("event","candidates","shards","cutoff_at","capture_opens_at","issuance_closes_at")
+        self.assertEqual([{key:row[key] for key in keys} for row in plan["events"]],
+            [{key:row[key] for key in keys} for row in baseline["events"]])
+        self.assertEqual(plan["source_schedule_rows"],baseline["source_schedule_rows"]+1)
+        self.assertEqual(plan["outside_game_date_rows"],baseline["outside_game_date_rows"]+1)
+        rows,_=source._tables(*assets[:2],plan["policy"],plan["game_date"])
+        self.assertEqual(rows,self.schedule)  # No deletion or invented team ID.
+        self.assertIs(source.verify_plan_sources(plan,*assets[:4],source_originals=assets[4]),plan)
+        with self.assertRaises(IntegrityError):source._tables(*assets[:2],plan["policy"])
+        self.now=common.clock(plan["events"][0]["cutoff_at"])-timedelta(minutes=20)
+        fresh_assets=self.assets();body=self.fresh(plan,fresh_assets)
+        self.assertIs(source.verify_input_sources(body,*fresh_assets[:4],source_originals=fresh_assets[4],plan=plan),body)
+
+    def test_tbd_exception_rejects_target_date_other_sentinels_and_conflicts(self):
+        original=deepcopy(self.schedule)
+        cases=[("target_date",{key:"2026-10-24T05:00Z" for key in ("date","start_date","game_date_time")}),
+            ("past_date",{key:"2026-10-23T05:00Z" for key in ("date","start_date","game_date_time")}),
+            ("reversed",{"home_id":"-2","away_id":"-1"}),("mixed",{"home_id":"100"}),
+            ("other_negative",{"home_id":"-3"}),("unknown",{"home_id":"UNKNOWN"}),
+            ("label",{"home_display_name":"Unverified"}),("uid",{"uid":"s:40~l:46~e:888~c:888"}),
+            ("clock",{"start_date":"2026-12-04T05:01Z"}),
+            ("duplicate",{"id":"900","game_id":"900","uid":"s:40~l:46~e:900~c:900"})]
+        for name,changes in cases:
+            row=self.later_placeholder();row.update(changes);self.schedule=deepcopy(original)+[row]
+            with self.subTest(case=name),self.assertRaises(IntegrityError):self.build()
+
+    def test_source_sentinels_remain_invalid_in_normalized_events_and_candidates(self):
+        plan=self.build();event=deepcopy(plan["events"][0]["event"]);event["home_team_id"]="-1"
+        with self.assertRaises(IntegrityError):source._validate_event(event)
+        candidates=deepcopy(plan["events"][0]["candidates"]);candidates[0]["team_id"]="-1"
+        with self.assertRaises(IntegrityError):source._validate_candidates(candidates,plan["events"][0]["event"])
+
+
 if __name__ == "__main__":unittest.main()
