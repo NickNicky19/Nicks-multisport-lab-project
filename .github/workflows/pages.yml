@@ -20,6 +20,29 @@ on:
         type: boolean
         default: false
 
+      release_action:
+        description: Guarded release only; none preserves ordinary site checks/publication
+        required: false
+        type: choice
+        options: [none, plan, land]
+        default: none
+      release_pr:
+        description: Exact pull request number for guarded release
+        required: false
+        type: string
+      release_head:
+        description: Exact reviewed 40-character pull request head
+        required: false
+        type: string
+      release_policy_digest:
+        description: Canonical readiness-policy digest; required only for confirmed landing
+        required: false
+        type: string
+      release_confirmation:
+        description: Exact owner confirmation; required only for confirmed landing
+        required: false
+        type: string
+
 permissions:
   contents: read
 
@@ -29,7 +52,9 @@ concurrency:
 
 jobs:
   build:
-    if: github.event_name != 'workflow_dispatch' || !inputs.operating_diagnostic
+    if: >-
+      (github.event_name != 'workflow_dispatch' || !inputs.operating_diagnostic) &&
+      (github.event_name != 'workflow_dispatch' || !inputs.release_action || inputs.release_action == 'none')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -88,7 +113,8 @@ jobs:
   operating-diagnostic:
     if: >-
       github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
-      github.event_name == 'workflow_dispatch' && inputs.operating_diagnostic
+      github.event_name == 'workflow_dispatch' && inputs.operating_diagnostic &&
+      (!inputs.release_action || inputs.release_action == 'none')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -130,7 +156,9 @@ jobs:
             ${{ runner.temp }}/nml-ops002-diagnostic-store/evidence/operational002/
 
   deploy:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: >-
+      github.ref == 'refs/heads/main' && github.event_name != 'pull_request' &&
+      (!inputs.release_action || inputs.release_action == 'none')
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -144,3 +172,83 @@ jobs:
       - name: Deploy checked artifact
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
+
+  release-plan:
+    if: >-
+      github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
+      github.event_name == 'workflow_dispatch' && github.actor == 'NickNicky19' &&
+      inputs.release_action == 'plan'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: guarded-release-${{ inputs.release_pr }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: read
+      checks: read
+      statuses: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - name: Observe installed GitHub CLI version
+        run: gh --version
+      - name: Run the exact-head guarded release plan
+        run: python3 scripts/github_release.py
+      - name: Retain bounded release receipts (no source capture or CI log export)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: guarded-release-plan-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/nml-guarded-release/
+
+  release-land:
+    if: >-
+      github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
+      github.event_name == 'workflow_dispatch' && github.actor == 'NickNicky19' &&
+      inputs.release_action == 'land'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: guarded-release-${{ inputs.release_pr }}
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+      checks: read
+      statuses: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - name: Observe installed GitHub CLI version
+        run: gh --version
+      - name: Run the exact-head guarded release land
+        run: python3 scripts/github_release.py
+      - name: Retain bounded release receipts (no source capture or CI log export)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: guarded-release-land-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/nml-guarded-release/

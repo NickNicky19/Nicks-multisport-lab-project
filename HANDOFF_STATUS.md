@@ -2,6 +2,81 @@
 
 Updated: October 24, 2026 (UTC).
 
+## October 24 — GitHub-hosted guarded release implementation
+
+This forward package extends PR #22 on `implementation/sdv-delivery-repair`
+from `7cf07fa88440e55801729b30b5223c714c1c51b7`; main was independently rechecked
+at `ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`. It preserves the pending delivery
+repair, original records and all protected producers. The final candidate SHA,
+hosted CI and actual release-plan results are recorded on PR #22 and its exact
+GitHub Actions runs after this checkpoint; no approval is inferred here.
+
+**Actual environment findings:** normal injected GitHub account access returned
+`NickNicky19` and the unchanged prescribed watcher returned JSON `ready` at
+03:30:10.971131 UTC. The immediately following dry-run landing helper returned
+`blocked` at 03:30:56.274495 UTC because its nested CLI could not create an OS
+thread. The development workspace had 32,258 defunct processes parented to
+PID 1; normal process creation remains unreliable. No infrastructure restart,
+process kill, credential replacement or release bypass occurred. A separate
+single-process, TLS-verified, proxy-preserving authenticated REST check returned
+HTTP 200 for the owner identity and existing active Pages workflow **389957636**.
+This verifies the normal bootstrap access, not an actual hosted release run.
+
+**Implemented:** `scripts/github_release.py` wraps the shipped PR Completion
+helpers, copied unchanged with verified SHA-256/provenance under
+`tools/pr_completion/`. The existing `pages.yml` gains owner-only `plan` and
+separately confirmed `land` dispatch modes. Planning has read-only permissions;
+only landing has scoped merge/dispatch permissions. Both modes exclude ordinary
+site build, operating diagnostic and deployment, and run no project producer or
+sports-source request. Candidate CI remains unchanged and must pass all checks.
+
+The runner uses an execution commit with the exact candidate as its sole parent
+and an identical tree. Strict owner/repository/workflow/ref/parent/tree/current
+PR head/main-base checks keep the runner's own pending check off the candidate
+without excluding it from the check policy. Missing or malformed identities,
+changed policy/digest, missing exact-head confirmation and rerun landing attempts
+fail closed using explicit integrity exceptions, including optimized Python.
+
+Only the unchanged `pr_land.py --confirm` can request merging after a fresh
+canonical plan and explicit owner approval. The wrapper retains that original
+request time and observes exact-head merging with the unchanged watcher. It then
+retains actual main identity and dispatch intent before requesting existing main
+Pages publication, because GitHub-token merges do not trigger push workflows.
+An acknowledged dispatch is still not a verified deployment. A proven merge
+survives later readback/dispatch failure; an interrupted acknowledgment remains
+unresolved. Newer legitimate main work is preserved and must contain the merge.
+
+**Verification at this pre-push checkpoint:** independent read-only design/source
+review found no landing bypass and identified the dispatch-intent recovery gap,
+now addressed. The first focused synthetic run actually ran 19 tests in 0.019 s
+and found eight failing subcases plus one error: two fixture adaptations for the
+new main readback and strict malformed-input/number/nullable-merge-identity gaps.
+Those wrapper defects were corrected forward. Final focused verification passed
+**21 tests normally / 0.017 s and 21 under actual `python3 -O` / 0.017 s**:
+`python3 -m unittest discover -s tests -p test_github_release.py -v` and the same
+command with `-O`. All release actions were mocked; actual helper-file byte hashes
+were read and verified. The regression suite covers newer-main ancestry and
+preserved merge/dispatch intent after acknowledgment failure. Hosted CI/plan
+results remain pending observations here. Earlier final CI **40047276053**
+passed 1,054 Python tests, demo, 150 frontend tests and artifact checks on unchanged
+predecessor `7cf07fa`; it is not claimed as testing the new hosted wrapper.
+No frozen comparison or full-history diagnostic was rerun.
+
+**Next:** run ordinary exact-head GitHub CI,
+then dispatch and independently read the actual read-only hosted canonical plan.
+Only after that request one consolidated exact-head confirmation for merge,
+deployment and the already documented future-only delivery policy. Verify the
+actual merge, Pages run, served bytes and subsequent native prospective cycle;
+do not call a test/plan a deployment or genuine forecast.
+
+The six historical bundles/six historical grades and zero genuine forecasts,
+published offers, prospective outcomes/grades, qualified tickets or financial
+settlements are unchanged. No scheduler, capture, issuance, merge or deployment
+was created by preparing this code. R0/K0 laws, all 13 categories plus PA,
+conditioning, frozen evidence, inactive OPS002/PROS004/S0, missed pilots,
+23 protected files, 19 original records and independent NFL/MLB are preserved.
+No provider key, new service, signup or operational secret is required.
+
 ## October 24, 00:48 UTC — fresh-CI calendar regression repaired; release still pending
 
 Fresh GitHub CI **40044544834** on PR #22 head
