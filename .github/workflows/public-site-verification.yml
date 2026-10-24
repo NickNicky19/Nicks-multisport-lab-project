@@ -59,97 +59,60 @@ jobs:
           if-no-files-found: warn
           path: ${{ runner.temp }}/nml-public-site-proof/
 
-  evidence-readback:
+  release-prepare:
     if: >-
       github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
       github.actor == 'NickNicky19' && github.event_name == 'push' &&
       github.ref == 'refs/heads/verification/pr22-public-f067-20261024' &&
       startsWith(github.event.head_commit.message, 'Read PR22 public evidence')
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 8
+    permissions:
+      contents: read
+      pull-requests: write
+      actions: write
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.12'
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: 18ec769acf2f237eeba09aaa4e03b6a0caa04a44
-          path: candidate
-          fetch-depth: 1
-          persist-credentials: false
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          ref: f06735974a388fa9e1a39e0815341de889cc25ae
-          path: deployed
-          fetch-depth: 1
-          persist-credentials: false
-      - name: Verify source repair and restart regressions without source collection or forecasting
+      - name: Open the verified repair PR and request its ordinary feature-branch CI
         run: |
           python3 - <<'PY'
-          import hashlib, json, os, re, subprocess, sys, time
+          import json, os, subprocess
           from datetime import datetime, timezone
           from pathlib import Path
-          repo="NickNicky19/Nicks-multisport-lab-project"
-          workspace=Path(os.environ["GITHUB_WORKSPACE"])
-          candidate=workspace/"candidate"; deployed=workspace/"deployed"
+          repo="NickNicky19/Nicks-multisport-lab-project"; branch="implementation/sdv-publisher-identity-recovery"
+          expected="cddc8be9798a4912c6893ff9dd9ee3702791a7f0"
+          if os.environ.get("GITHUB_EVENT_NAME")!="push" or os.environ.get("GITHUB_ACTOR")!="NickNicky19" or os.environ.get("GITHUB_REF")!="refs/heads/verification/pr22-public-f067-20261024" or os.environ.get("GITHUB_RUN_ATTEMPT")!="1": raise RuntimeError("Unexpected release-preparation authority or retry")
           work=Path(os.environ["RUNNER_TEMP"])/"nml-public-evidence-readback";work.mkdir(parents=True,exist_ok=True)
-          report={"schema_version":"nml-native-source-repair-verification-v1","started_at":datetime.now(timezone.utc).isoformat(),"source_commit":"18ec769acf2f237eeba09aaa4e03b6a0caa04a44","execution_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"status":"RUNNING","sports_source_requests":0,"forecasts_generated":0,"records_written":0,"checks":[]}
-          def save():
-              encoded=json.dumps(report,sort_keys=True,separators=(",",":")).encode()
-              if len(encoded)>65536: raise RuntimeError("Bounded verification receipt exceeds 64 KiB")
-              (work/"evidence.json").write_bytes(encoded+b"\n")
-              print(encoded.decode(),flush=True)
-          try:
-              for optimized in (False,True):
-                  for filename in ("test_sdv_production_inputs.py","test_sdv_production_coordinator.py"):
-                      args=[sys.executable]+(["-O"] if optimized else [])+["-m","unittest","discover","-s","tests","-p",filename,"-v"]
-                      before=time.monotonic()
-                      p=subprocess.run(args,cwd=candidate,capture_output=True,text=True,timeout=300)
-                      output=p.stdout+p.stderr
-                      if len(output.encode())>2*1024*1024: raise RuntimeError("Focused test output exceeds 2 MiB")
-                      match=re.search(r"Ran (\d+) tests? in ([0-9.]+)s",output)
-                      item={"command":" ".join(args),"returncode":p.returncode,"wall_seconds":round(time.monotonic()-before,6),"tests":None if not match else int(match.group(1)),"suite_seconds":None if not match else float(match.group(2))}
-                      report["checks"].append(item)
-                      if p.returncode or not match:
-                          item["failure_tail"]=output.splitlines()[-30:];save();raise RuntimeError("Focused regression failed: "+filename)
-              os.chdir(candidate);sys.path.insert(0,str(candidate))
-              from multisport_lab import sdv_production_archive as archives, sdv_production_runner as runner, sdv_production_inputs as inputs, sdv_production_forecasts as forecasts, sdv_production_common as common
-              from multisport_lab.integrity import IntegrityError,canonical
-              ref={"bytes":8797,"name":"object-226339d041081220d9cfa777494a35440ade35bd307dac36e846bca63e73ce77.z","sha256":"226339d041081220d9cfa777494a35440ade35bd307dac36e846bca63e73ce77","tag":"nml-nba-records-v1-202610"}
-              archive=archives.GitHubReleaseArchive(write_budget_bytes=0,write_budget_objects=0)
-              pack,sources=runner.recover_source_pack(ref,archive)
-              if set(sources)!={"schedule","roster"} or len(pack["requests"])!=6: raise RuntimeError("Retained native source roles/request count differ")
-              s,r=sources["schedule"],sources["roster"]
-              expected={"schedule":"e927b966d1fa0e3129386aac201f115d6b1ce7c5ea1cbe429a0177f1d23dcdde","roster":"02b684f0075da0b4d00f9d2c4f4d03a8b5badf395824f30ca233e1df7f8c5ac5"}
-              for role,value in sources.items():
-                  if hashlib.sha256(value[0]).hexdigest()!=expected[role]: raise RuntimeError("Retained original SHA differs")
-                  (work/(role+".csv")).write_bytes(value[0])
-              policy=json.loads((candidate/"config/sdv_production_policy_v2.json").read_text())
-              strict="from pathlib import Path; from multisport_lab.sdv_production_inputs import _tables; import sys; _tables(Path(sys.argv[1]).read_bytes(),Path(sys.argv[2]).read_bytes())"
-              p=subprocess.run([sys.executable,"-c",strict,str(work/"schedule.csv"),str(work/"roster.csv")],cwd=deployed,capture_output=True,text=True,timeout=30,env=dict(os.environ,PYTHONPATH=str(deployed)))
-              if p.returncode==0 or "Invalid production identity" not in p.stderr: raise RuntimeError("Original deployed failure did not reproduce on retained bytes")
-              report["original_failure_reproduced"]="Invalid production identity"
-              binding=forecasts.make_source_binding("18ec769acf2f237eeba09aaa4e03b6a0caa04a44",root=candidate)
-              plan=inputs.make_plan(s[0],r[0],s[1],r[1],source_originals={"schedule":s[2],"roster":r[2]},game_date="2026-10-25",producer_binding=binding,mode="DEVELOPMENT_ONLY",policy=policy)
-              inputs.verify_plan_sources(plan,s[0],r[0],s[1],r[1],source_originals={"schedule":s[2],"roster":r[2]})
-              if len(plan["events"])!=11 or plan["source_schedule_rows"]!=1206: raise RuntimeError("Complete retained target inventory differs")
-              for event in plan["events"]:
-                  body=inputs.make_input(plan,event["event"]["event_id"],s[0],r[0],s[1],r[1],source_originals={"schedule":s[2],"roster":r[2]},mode="DEVELOPMENT_ONLY")
-                  inputs.verify_input_sources(body,s[0],r[0],s[1],r[1],source_originals={"schedule":s[2],"roster":r[2]},plan=plan)
-              try: inputs._tables(s[0],r[0],policy)
-              except IntegrityError: report["no_context_import_rejected"]=True
-              else: raise RuntimeError("No-context source import was weakened")
-              try: inputs._tables(s[0],r[0],policy,"2026-12-04")
-              except IntegrityError: report["target_date_tbd_rejected"]=True
-              else: raise RuntimeError("Target-date TBD identity was admitted")
-              source_rows,_=inputs._tables(s[0],r[0],policy,"2026-10-25")
-              deferred=[{key:row[key] for key in ("id","date","home_id","away_id","home_display_name","away_display_name")} for row in source_rows if row["home_id"]=="-1"]
-              report["retained_replay"]={"mode":"DEVELOPMENT_ONLY","source_pack_ref":ref,"original_capture_at":pack["captured_at"],"original_source_run":pack["authorization"]["run_id"],"original_source_head":pack["authorization"]["head_sha"],"original_provider_gets":len(pack["requests"]),"sources":[sources[role][1] for role in ("schedule","roster")],"schedule_rows":len(source_rows),"roster_rows":len(inputs._tables(s[0],r[0],policy,"2026-10-25")[1]),"outside_game_date_rows":plan["outside_game_date_rows"],"events":len(plan["events"]),"players":sum(len(event["candidates"]) for event in plan["events"]),"shards":sum(len(event["shards"]) for event in plan["events"]),"exclusions":len(plan["exclusions"]),"plan_id":plan["plan_id"],"deferred_future_placeholders":deferred,"archive_read_metrics":archive.request_metrics(),"first_windows":[{key:plan["events"][0][key] for key in ("cycle_id","cutoff_at","capture_opens_at","issuance_closes_at")}]}
-              report.update(status="PASS",completed_at=datetime.now(timezone.utc).isoformat());save()
-          except Exception as error:
-              report.update(status="FAIL",error=str(error)[:800],completed_at=datetime.now(timezone.utc).isoformat());save();raise
+          def run(args):
+              p=subprocess.run(["gh",*args],capture_output=True,text=True,timeout=60)
+              if len(p.stdout.encode())+len(p.stderr.encode())>2*1024*1024: raise RuntimeError("Release metadata exceeds 2 MiB")
+              if p.returncode: raise RuntimeError("GitHub CLI release preparation failed: "+p.stderr[-1200:])
+              return p.stdout
+          def api(path): return json.loads(run(["api","repos/"+repo+"/"+path]))
+          main=api("git/ref/heads/main")["object"]["sha"]
+          head=api("git/ref/heads/"+branch)["object"]["sha"]
+          if main!="f06735974a388fa9e1a39e0815341de889cc25ae" or head!=expected: raise RuntimeError("New main/head work observed; preserve it and re-review")
+          commit=api("git/commits/"+head)
+          if commit["tree"]["sha"]!="6d4ba723cc3cb183db7136565d58fdcf7141784a" or [row["sha"] for row in commit["parents"]]!=["18ec769acf2f237eeba09aaa4e03b6a0caa04a44"]: raise RuntimeError("Final candidate tree/ancestry differs")
+          body="The native coordinator stopped after a successful six-request source capture because six later December TBD games use unresolved team IDs. This repair keeps those complete original rows while allowing only the verified future-date placeholder signature outside the selected UTC date. Target-date and normalized identities remain strict.\n\nPlanning restarts now recover the earliest completed same-date capture before any new provider request. They preserve original clocks and attempt limits, authenticate reservation/request linkage, and retain current freshness, runtime and planning-window gates. Missing, corrupt or stale originals do not trigger replacement captures.\n\nVerified source: `18ec769acf2f237eeba09aaa4e03b6a0caa04a44`. Hosted focused checks passed 17 input and 26 coordinator tests, both normally and under optimized Python. Independent durable archive recovery reproduced the original deployed error and passed the corrected DEVELOPMENT_ONLY plan plus all input replays: 1,206 schedule rows, 516 roster rows, 11 games, 382 candidates and 32 shards. No new provider request or genuine forecast was produced. Full candidate CI is a separate required gate.\n\nThis also retains PR #22's actual merge/Pages/public-browser evidence. R0/K0 laws, all 14 categories, fixed history, protected pilots, original records, policies, workflows, source/archive/ledger limits and NO_ACTION are unchanged. No future issuance, final grade, model qualification, odds or financial settlement is claimed.\n\nSee HANDOFF_STATUS.md and the three new structured deployment/source receipts for exact run IDs, clocks, commands, results and remaining operating verification."
+          bodyfile=work/"pr-body.txt";bodyfile.write_text(body)
+          existing=json.loads(run(["pr","list","--repo",repo,"--head",branch,"--base","main","--state","open","--json","number,headRefOid,url"]))
+          if len(existing)>1 or existing and existing[0]["headRefOid"]!=expected: raise RuntimeError("Existing PR/head differs")
+          if existing: pr=existing[0]
+          else:
+              url=run(["pr","create","--repo",repo,"--base","main","--head",branch,"--title","Recover NBA planning from future TBD fixtures and interrupted captures","--body-file",str(bodyfile)]).strip()
+              pr=json.loads(run(["pr","view",url,"--repo",repo,"--json","number,headRefOid,url"]))
+          if pr["headRefOid"]!=expected: raise RuntimeError("Created PR does not reference the tested source")
+          receipt={"schema_version":"nml-source-repair-pr-preparation-v1","repository":repo,"branch":branch,"head":expected,"source_commit":"18ec769acf2f237eeba09aaa4e03b6a0caa04a44","pr":pr,"started_at":datetime.now(timezone.utc).isoformat(),"dispatch_state":"INTENT_RETAINED","merge_mutations":0,"deployments_requested":0,"sports_source_requests":0,"production_record_writes":0}
+          (work/"evidence.json").write_text(json.dumps(receipt,sort_keys=True)+"\n")
+          run(["workflow","run","pages.yml","--repo",repo,"--ref",branch])
+          receipt.update(dispatch_state="ACKNOWLEDGED_EXECUTION_UNVERIFIED",completed_at=datetime.now(timezone.utc).isoformat())
+          (work/"evidence.json").write_text(json.dumps(receipt,sort_keys=True)+"\n")
+          print(json.dumps(receipt,sort_keys=True))
           
           PY
       - name: Retain bounded evidence readback only
