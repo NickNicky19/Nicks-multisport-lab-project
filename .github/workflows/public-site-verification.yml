@@ -1,0 +1,59 @@
+name: Verify the approved public PR22 website once
+
+on:
+  push:
+    branches: [verification/pr22-public-f067-20261024]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: public-site-verification-pr22-f067
+  cancel-in-progress: false
+
+jobs:
+  public-browser:
+    if: >-
+      github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
+      github.actor == 'NickNicky19' && github.event_name == 'push' &&
+      github.ref == 'refs/heads/verification/pr22-public-f067-20261024'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          path: verification
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: f06735974a388fa9e1a39e0815341de889cc25ae
+          path: deployed
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - name: Check one-off verifier syntax without executing project code
+        run: python3 -m py_compile verification/scripts/verify_public_site.py
+      - name: Install the pinned free browser verifier and matching Chromium
+        run: |
+          python3 -m pip install playwright==1.58.0
+          python3 -m playwright install --with-deps chromium
+      - name: Verify successful Pages identity and actual public desktop/mobile views
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          python3 verification/scripts/verify_public_site.py
+          --source-root "$GITHUB_WORKSPACE/deployed"
+          --output "$RUNNER_TEMP/nml-public-site-proof"
+      - name: Retain bounded public proof and screenshots only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: public-pr22-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/nml-public-site-proof/
