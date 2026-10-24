@@ -1,0 +1,59 @@
+{
+  "environment_restart_performed": false,
+  "errors": 19,
+  "failures": 44,
+  "fixture_cascade": {
+    "cause": "Manually nested TestCase fixtures registered child.doCleanups after child.setUp. A setup failure leaked synthetic common.HISTORY_ID into later publication tests.",
+    "fix": "Register nested cleanup before invoking child setup; publication helper setup is inside its existing try/finally. Production validators and original records remain unchanged.",
+    "reproduction_before_fix": {
+      "command": "PYTHONPATH=tests:. python3 -m unittest test_sdv_fixture_cleanup -v",
+      "failures": 3,
+      "tests": 3
+    },
+    "verification_after_fix": [
+      {
+        "command": "PYTHONPATH=tests:. python3 -m unittest test_sdv_fixture_cleanup test_sdv_delivery_publication -v",
+        "result": "PASS",
+        "seconds": 0.092,
+        "tests": 6
+      },
+      {
+        "command": "PYTHONPATH=tests:. python3 -O -m unittest test_sdv_fixture_cleanup test_sdv_delivery_publication -v",
+        "result": "PASS",
+        "seconds": 0.093,
+        "tests": 6
+      }
+    ]
+  },
+  "fresh_ci_status": "PENDING_AT_THIS_CHECKPOINT",
+  "genuine_issuance": 0,
+  "new_source_requests": 0,
+  "original_log": "evidence/operational/sdv-delivery-local-failed-suite-20261024.txt",
+  "original_log_bytes": 264511,
+  "original_log_sha256": "301f09c262cc2423a62f9a22b2afbdec716b63b70a73b5cff54b1331895caa52",
+  "private_local_originals_preserved": true,
+  "qualification": "UNAVAILABLE",
+  "recorded_at": "2026-10-24T00:01:30.620317Z",
+  "required_command": "python3 -m unittest discover -s tests -v",
+  "result": "FAILED_ENVIRONMENT_PROCESS_EXHAUSTION_WITH_CONFIRMED_FIXTURE_CASCADE",
+  "runtime_observation": {
+    "actual_observation_clock": "UNKNOWN_NOT_CAPTURED_IN_COMMAND",
+    "cgroup_pids_current": 32294,
+    "cgroup_pids_max": "max",
+    "cpu_count": 5,
+    "exec_errors": [
+      "failed to fork for bubblewrap: Resource temporarily unavailable (os error 11)",
+      "exec-server rejected request (-32603): Resource temporarily unavailable (os error 11)"
+    ],
+    "git_processes": 32026,
+    "parent_name": "tail",
+    "parent_uid": 1000,
+    "process_rlimit_hard": 71955,
+    "process_rlimit_soft": 71955,
+    "zombie_parent_pid": 1,
+    "zombie_processes": 32255
+  },
+  "schema_version": "nba-delivery-local-validation-v1",
+  "seconds": 438.007,
+  "tests": 1045
+}

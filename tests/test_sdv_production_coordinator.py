@@ -35,7 +35,7 @@ class LocalRegistryWriter:
 class ProductionCoordinatorTests(unittest.TestCase):
     def setUp(self):
         self.case=store_fixture.ProductionStoreTests("test_independent_archive_restart_keeps_exact_originals_and_all14_categories")
-        self.case.setUp();self.addCleanup(self.case.doCleanups)
+        self.addCleanup(self.case.doCleanups);self.case.setUp()
         self.fixture=self.case.fixture;self.folder=self.case.folder;self.archive=self.case.archive
         self.fixture.schedule=self.fixture.schedule[:1]
         self.fixture.roster=[row for row in self.fixture.roster if row["athlete_id"] in {"1000","1020"}]

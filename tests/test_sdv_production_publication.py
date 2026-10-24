@@ -21,19 +21,26 @@ def synthetic_ref(kind, seed):
     return LedgerRef(kind, digest({"invented_record": seed}), digest({"invented_payload": seed}))
 
 
-def synthetic_publication(*, at=None):
+def synthetic_publication(*, at=None, policy=None, game_date="2026-10-24"):
     """Actual source normalizer plus static invented PMFs, never law fitting."""
     source = input_fixtures.ProductionInputTests()
-    source.setUp()
     try:
+        source.setUp()
         if at is not None:
             source.now = utc(at)
+        if game_date != "2026-10-24":
+            for event in source.schedule:
+                for field in ("date", "start_date", "game_date_time"):
+                    event[field] = event[field].replace("2026-10-24", game_date)
         source.binding = common.seal({"schema_version": forecasts.BINDING_SCHEMA, "commit": None,
             "files": {name: common.LAW_SHA256["R0"] if name == "multisport_lab/baseline.py"
                       else common.LAW_SHA256["K0"] if name == "multisport_lab/development_003.py"
                       else digest({"synthetic_source_name": name}) for name in forecasts.SOURCE_FILES},
             "law_sha256": deepcopy(common.LAW_SHA256)}, "binding_id")
-        plan = source.build()
+        assets = source.assets()
+        from multisport_lab import sdv_production_inputs
+        plan = sdv_production_inputs.make_plan(*assets[:4], source_originals=assets[4],
+            game_date=game_date, producer_binding=source.binding, policy=policy)
         input_body = source.fresh(plan)
         template = load_json(ROOT / "tests/fixtures/sdv-daily-synthetic.json")["forecasts"][0]["body"]
         plan_ref, input_ref = synthetic_ref("input_captures", "production plan"), synthetic_ref("input_captures", "production input")

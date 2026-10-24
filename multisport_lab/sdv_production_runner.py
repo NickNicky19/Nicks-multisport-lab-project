@@ -31,6 +31,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REGISTRY_SCHEMA = "nba-sdv-production-registry-v1"
 SOURCE_PACK_SCHEMA = "nba-sdv-production-source-pack-v1"
 DAY_SCHEMA = "nba-sdv-production-day-v1"
+HELD_DAY_SCHEMA = "nba-sdv-production-day-v2"
 INDEX_BRANCH = "records/sdv-production-index"
 INDEX_PATH = "registry.json"
 MAX_INDEX_BYTES = 2 * 1024 * 1024
@@ -321,7 +322,7 @@ def empty_registry(at=None):
 def validate_registry(body):
     common.exact(body,{"schema_version","protocol_id","policy_id","updated_at","last_run","status","days","archived_days","attempts","archived_attempts","publication","archive_budget","registry_id"},"registry")
     common.require(body["schema_version"] == REGISTRY_SCHEMA and body["protocol_id"] == common.PROTOCOL_ID
-        and body["policy_id"] == common.make_policy()["policy_id"],"Wrong production registry policy")
+        and common.policy_for_id(body["policy_id"]) is not None,"Wrong production registry policy")
     updated=common.clock(body["updated_at"])
     common.require(updated <= common.now(),"Production registry is future-dated")
     common.text(body["status"])
@@ -362,8 +363,10 @@ def validate_registry(body):
 
 @_integrity_validation
 def validate_day(day):
-    common.exact(day,{"schema_version","game_date","plan_ref","source_pack_ref","plan_id","shards","attempts","pending_inputs","status"},"registry day")
-    common.require(day["schema_version"] == DAY_SCHEMA and type(day["game_date"]) is str
+    fields={"schema_version","game_date","plan_ref","source_pack_ref","plan_id","shards","attempts","pending_inputs","status"}
+    if day.get("schema_version") == HELD_DAY_SCHEMA:fields.add("held_tasks")
+    common.exact(day,fields,"registry day")
+    common.require(day["schema_version"] in {DAY_SCHEMA,HELD_DAY_SCHEMA} and type(day["game_date"]) is str
         and re.fullmatch(r"20[0-9]{2}-[0-9]{2}-[0-9]{2}",day["game_date"]),"Invalid registry game date")
     common.sha(day["plan_id"]);common.archive_ref(day["plan_ref"]);common.archive_ref(day["source_pack_ref"])
     common.require(type(day["shards"]) is list and len(day["shards"]) <= 128 and type(day["attempts"]) is list
@@ -382,6 +385,13 @@ def validate_day(day):
             if row[key] is not None:common.archive_ref(row[key])
         for key in ("prepared_input_task_ref","issued_input_task_ref"):
             common.require(row[key] is None or row[key] == row["input_task_ref"],"Shard acknowledgment changed its immutable input task")
+    if day["schema_version"] == HELD_DAY_SCHEMA:
+        common.require(type(day["held_tasks"]) is list and len(day["held_tasks"]) <= 128,"Unbounded held task inventory")
+        held=set()
+        for row in day["held_tasks"]:
+            common.exact(row,{"branch","hold_ref"},"retained held task")
+            common.require(row["branch"] in seen and row["branch"] not in held,"Held task changed or duplicated its original shard")
+            common.archive_ref(row["hold_ref"]);held.add(row["branch"])
     for attempt in day["attempts"]:validate_attempt(attempt)
     common.require(type(day["pending_inputs"]) is list and len(day["pending_inputs"]) <= 32,"Unbounded pending shared-input binding")
     pending=set()
@@ -533,6 +543,8 @@ class RegistryWriter:
                     common.require(all(current[key] == original[key] for key in ("plan_id","plan_ref","source_pack_ref"))
                         and [row["branch"] for row in current["shards"]] == [row["branch"] for row in original["shards"]],
                         "Cannot replace a frozen daily plan or cohort")
+                    for hold in original.get("held_tasks",[]):
+                        common.require(hold in current.get("held_tasks",[]),"Cannot replace or erase an original held task")
         if self.commit is not None and self._last_registry is not None and _registry_content(body) == _registry_content(self._last_registry):
             # Return the actual retained original; do not claim a fresh durable
             # check clock without a new operational record.
@@ -835,7 +847,7 @@ def failure_alert(report,work):
     return {"status":"CREATED","url":created.stdout.decode().strip()}
 
 
-def execute(action,*,work_root,task=None):
+def execute(action,*,work_root,task=None,held_tasks=None,policy_version=None):
     from .sdv_production_archive import GitHubReleaseArchive
     from .sdv_production_coordinator import Coordinator
     from .sdv_daily_runner import _write_json
@@ -849,42 +861,79 @@ def execute(action,*,work_root,task=None):
             authority=authorize_current_run(observation=report.setdefault("hosted_run_observation",{}))
             archive=GitHubReleaseArchive(write_budget_bytes=REGISTRY_METADATA_RUN_BYTES,write_budget_objects=512)
             writer=RegistryWriter(work/"registry",archive=archive);registry=writer.prepare()
-            coordinator=Coordinator(registry,writer,archive,authority,work/"phases")
+            policy=common.make_policy(policy_version or "v1")
+            coordinator=Coordinator(registry,writer,archive,authority,work/"phases",policy=policy)
+            report["policy_id"]=policy["policy_id"]
             if action == "prepare":
                 tasks=coordinator.prepare_tasks()
+                coverage=[]
+                if policy.get("held_runtime_maximum_seconds"):
+                    from .sdv_production_held import prepare_holds
+                    tasks,coverage=prepare_holds(coordinator,tasks)
                 common.require(type(tasks) is list,"Invalid production task inventory")
                 urgent=[row for row in tasks if row["action"] != "GRADE"]
                 grades=[row for row in tasks if row["action"] == "GRADE"]
                 common.require(len(urgent) <= 128,"Complete due pregame inventory exceeds the registered 128-shard date budget")
                 selected_grades=grades[:128]
                 report.update(status="DUE_PHASES_PREPARED" if tasks else "NO_DUE_PHASE",tasks=urgent+selected_grades,
-                    grading_tasks_deferred=len(grades)-len(selected_grades),phase_errors=coordinator.reports)
+                    grading_tasks_deferred=len(grades)-len(selected_grades),phase_errors=coordinator.reports,held_coverage_exclusions=coverage)
+                held=[row for row in urgent if row["action"] == "HOLD"]
                 output=os.environ.get("GITHUB_OUTPUT")
                 if output:
                     with Path(output).open("a",encoding="utf-8") as handle:
                         handle.write("has_tasks="+("true" if urgent else "false")+"\n")
                         handle.write("has_grade_tasks="+("true" if selected_grades else "false")+"\n")
+                        handle.write("has_held_tasks="+("true" if held else "false")+"\n")
+                        handle.write("held_tasks="+canonical(held).decode()+"\n")
                         handle.write("has_failures="+("true" if coordinator.reports else "false")+"\n")
                         handle.write("matrix="+canonical({"include":[{"task":row} for row in urgent]}).decode()+"\n")
                         handle.write("grade_matrix="+canonical({"include":[{"task":row} for row in selected_grades]}).decode()+"\n")
             elif action == "work":
                 common.require(type(task) is dict,"A production worker requires its exact archived task")
-                report.update(coordinator.work(task))
+                if task.get("action") == "HOLD":
+                    from .sdv_production_held import run_worker,RegistryReader
+                    reader=RegistryReader(ROOT,work/"held-registry-reader",archive,policy)
+                    report.update(run_worker(coordinator,task,read_registry=reader))
+                else:report.update(coordinator.work(task))
+            elif action == "capture-held":
+                from .sdv_production_held import run_capturer
+                report.update(run_capturer(coordinator,held_tasks))
+            elif action == "grade-tasks":
+                recovered=coordinator.refresh()
+                unavailable={row["branch"] for row in recovered if row.get("status") == "RECOVERY_FAILED"}
+                grades=[row for row in coordinator.grading_tasks() if row["branch"] not in unavailable]
+                selected=grades[:128]
+                report.update(status="GRADING_TASKS_PREPARED",tasks=selected,grading_tasks_deferred=len(grades)-len(selected),
+                    unrecovered_shards=sorted(unavailable),source_captures=0,genuine_issued=0)
+                output=os.environ.get("GITHUB_OUTPUT")
+                if output:
+                    with Path(output).open("a",encoding="utf-8") as handle:
+                        handle.write("has_grade_tasks="+("true" if selected else "false")+"\n")
+                        handle.write("grade_matrix="+canonical({"include":[{"task":row} for row in selected]}).decode()+"\n")
             elif action == "finish":
+                recovery=[]
                 if hasattr(coordinator,"refresh"):
-                    coordinator.refresh()
+                    recovery=coordinator.refresh()
                 registry=coordinator.registry
-                registry=reconcile_publication(registry,writer,archive)
-                report.update(status="REGISTRY_RECOVERED",publication=registry.get("publication"))
+                report.update(status="REGISTRY_RECOVERED")
                 failed=os.environ.get("PRODUCTION_PREPARE_HAS_FAILURES") == "true" or any(
-                    os.environ.get(key) in {"failure","cancelled"} for key in ("PRODUCTION_PREGAME_RESULT","PRODUCTION_GRADE_RESULT"))
+                    os.environ.get(key) in {"failure","cancelled"} for key in ("PRODUCTION_PREGAME_RESULT","PRODUCTION_GRADE_RESULT","PRODUCTION_CAPTURE_RESULT","PRODUCTION_GRADE_PREPARE_RESULT"))
+                failed=failed or bool(policy.get("held_runtime_maximum_seconds") and any(row.get("status") == "RECOVERY_FAILED" for row in recovery))
                 if failed:
                     report.update(status="PARTIAL_OR_FAILED",error="One or more actual hosted phases failed; see exact run jobs and retained originals.")
                     registry["status"]="HOSTED_PHASES_PARTIAL_OR_FAILED"
                     registry["last_run"]={"run_id":authority["run_id"],"run_attempt":authority["run_attempt"],
                         "observed_at":stamp(common.now()),"status":registry["status"],"details":{
-                            key:os.environ.get(key,"UNKNOWN") for key in ("PRODUCTION_PREPARE_HAS_FAILURES","PRODUCTION_PREGAME_RESULT","PRODUCTION_GRADE_RESULT")}}
-                    writer.write(registry)
+                            key:os.environ.get(key,"UNKNOWN") for key in ("PRODUCTION_PREPARE_HAS_FAILURES","PRODUCTION_PREGAME_RESULT","PRODUCTION_GRADE_RESULT","PRODUCTION_CAPTURE_RESULT","PRODUCTION_GRADE_PREPARE_RESULT")}}
+                    # Publish the exact retained failure state. Reconciling an
+                    # earlier healthy projection first can hide a job-only
+                    # failure when the next coordinator overwrites its status.
+                    registry=writer.write(registry)
+                    coordinator.registry=registry
+                registry=reconcile_publication(registry,writer,archive)
+                coordinator.registry=registry
+                report["publication"]=registry.get("publication")
+                if failed:
                     report["alert"]=failure_alert(report,work)
             else:raise IntegrityError("Unknown production action")
         except (IntegrityError,OSError,ValueError,subprocess.SubprocessError) as exc:
@@ -902,10 +951,12 @@ def execute(action,*,work_root,task=None):
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action",choices=("prepare","work","finish"));parser.add_argument("--work-root",required=True)
+    parser.add_argument("action",choices=("prepare","work","capture-held","grade-tasks","finish"));parser.add_argument("--work-root",required=True)
+    parser.add_argument("--policy-version",choices=("v1","v2"),default=None)
     args=parser.parse_args(argv)
     task=_decode(os.environ.get("PRODUCTION_TASK_JSON","null").encode()) if args.action == "work" else None
-    report=execute(args.action,work_root=args.work_root,task=task)
+    held_tasks=_decode(os.environ.get("PRODUCTION_HELD_TASKS_JSON","null").encode()) if args.action == "capture-held" else None
+    report=execute(args.action,work_root=args.work_root,task=task,held_tasks=held_tasks,policy_version=args.policy_version)
     print(canonical(report).decode())
     return 1 if report["status"] in {"PARTIAL_OR_FAILED","FAILED_OR_PARTIAL"} or report.get("durability_error") or report.get("status_retention_error") else 0
 

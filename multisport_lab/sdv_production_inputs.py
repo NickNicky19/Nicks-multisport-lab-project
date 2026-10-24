@@ -19,6 +19,7 @@ from .sdv_recurring_plan import SCHEDULE_FIELDS, ROSTER_FIELDS
 
 SOURCE_FIELDS = LEGACY_SOURCE_FIELDS | {"metadata_retrieval_started_at", "metadata_retrieved_at", "metadata_observation_status"}
 BINDING_SCHEMA = "nba-sdv-production-producer-binding-v1"
+BINDING_SCHEMA_V2 = "nba-sdv-production-producer-binding-v2"
 BINDING_FIELDS = {"schema_version", "commit", "files", "law_sha256", "binding_id"}
 PLAN_FIELDS = {"schema_version", "protocol_id", "mode", "policy", "game_date", "planning_started_at", "planned_at", "plan_seed",
     "sources", "inventory", "events", "exclusions", "source_schedule_rows", "outside_game_date_rows", "producer_binding",
@@ -32,6 +33,10 @@ INVENTORY_FIELDS = {"event_id", "event_starts_at", "home_team_id", "away_team_id
     "time_valid", "eligible", "exclusion_reasons"}
 MODES = {"DEVELOPMENT_ONLY", "PROSPECTIVE_RESEARCH"}
 EXCLUSION_REASONS = {"NOT_SCHEDULED", "INVALID_START_FLAG", "NOT_FUTURE", "NO_ACTIVE_TEAM_ROSTER"}
+
+
+def _policy(policy=None):
+    return common.make_policy() if policy is None else common.validate_policy(policy)
 
 
 def _id(value, label="identity"):
@@ -52,7 +57,8 @@ def _source_clock(value):
 
 def validate_binding(body, *, prospective=False):
     common.exact(body, BINDING_FIELDS, "input producer binding")
-    common.require(body["schema_version"] == BINDING_SCHEMA and body["law_sha256"] == common.LAW_SHA256, "Production producer changed frozen model laws")
+    common.require(type(body["schema_version"]) is str and body["schema_version"] in {BINDING_SCHEMA,BINDING_SCHEMA_V2}
+        and body["law_sha256"] == common.LAW_SHA256, "Production producer changed frozen model laws")
     if body["commit"] is not None:common.sha(body["commit"],40)
     common.require(not prospective or body["commit"] is not None,"Prospective production input requires a frozen producer commit")
     common.require(type(body["files"]) is dict and 1 <= len(body["files"]) <= 128, "Invalid production source-file inventory")
@@ -67,10 +73,10 @@ def validate_binding(body, *, prospective=False):
 
 
 def source_metadata(raw, metadata_raw, source, *, retrieval_started_at, retrieved_at,
-                    metadata_retrieval_started_at=None, metadata_retrieved_at=None):
+                    metadata_retrieval_started_at=None, metadata_retrieved_at=None, policy=None):
     """Bind bounded exact bytes to the actual publisher release, without GETs."""
     common.require(type(source) is dict,"Invalid production source descriptor")
-    policy=common.make_policy(); role=source.get("role")
+    policy=_policy(policy); role=source.get("role")
     common.require(type(role) is str and role in {"schedule","roster","boxscore"}, "Unsupported production source role")
     common.require(type(raw) is bytes and 0 < len(raw) <= policy["maximum_csv_bytes"]
         and type(metadata_raw) is bytes and 0 < len(metadata_raw) <= policy["maximum_metadata_bytes"], "Production source exceeds its explicit byte ceiling")
@@ -90,11 +96,11 @@ def source_metadata(raw, metadata_raw, source, *, retrieval_started_at, retrieve
         "retrieved_at":stamp(_source_clock(retrieved_at)),"metadata_sha256":hashlib.sha256(metadata_raw).hexdigest(),"metadata_bytes":len(metadata_raw),
         "metadata_retrieval_started_at":None if not known else stamp(_source_clock(metadata_retrieval_started_at)),
         "metadata_retrieved_at":None if not known else stamp(_source_clock(metadata_retrieved_at)),"metadata_observation_status":"OBSERVED" if known else "UNKNOWN"}
-    return validate_source_metadata(body,raw=raw)
+    return validate_source_metadata(body,raw=raw,policy=policy)
 
 
-def validate_source_metadata(body, *, raw=None, role=None, at=None, prospective=False):
-    common.exact(body,SOURCE_FIELDS,"source metadata"); policy=common.make_policy()
+def validate_source_metadata(body, *, raw=None, role=None, at=None, prospective=False, policy=None):
+    common.exact(body,SOURCE_FIELDS,"source metadata"); policy=_policy(policy)
     actual_role=body["role"]
     common.require(type(actual_role) is str and actual_role in {"schedule","roster","boxscore"} and (role is None or role == actual_role) and body["publisher"] == "SportsDataverse", "Production source role/publisher differs")
     tag={"schedule":"espn_nba_schedules","roster":"espn_nba_rosters","boxscore":"espn_nba_player_boxscores"}[actual_role]
@@ -124,19 +130,19 @@ def validate_source_metadata(body, *, raw=None, role=None, at=None, prospective=
     return body
 
 
-def validate_source(raw,metadata,metadata_raw,role,season):
+def validate_source(raw,metadata,metadata_raw,role,season,*,policy=None):
     """Authenticate exact release originals; final-state admission remains separate."""
-    validate_source_metadata(metadata,raw=raw,role=role)
+    policy=_policy(policy);validate_source_metadata(metadata,raw=raw,role=role,policy=policy)
     prefix={"schedule":"nba_schedule_","roster":"rosters_","boxscore":"player_box_"}[role]
     common.require(type(season) is int and 2000 <= season <= 2099 and metadata["asset_name"] == prefix+str(season)+".csv", "Production source asset/table season conflicts")
     expected=source_metadata(raw,metadata_raw,metadata,retrieval_started_at=metadata["retrieval_started_at"],retrieved_at=metadata["retrieved_at"],
-        metadata_retrieval_started_at=metadata["metadata_retrieval_started_at"],metadata_retrieved_at=metadata["metadata_retrieved_at"])
+        metadata_retrieval_started_at=metadata["metadata_retrieval_started_at"],metadata_retrieved_at=metadata["metadata_retrieved_at"],policy=policy)
     common.require(expected == metadata,"Exact original publisher source metadata differs")
     return metadata
 
 
-def _table(raw, fields, label):
-    policy=common.make_policy()
+def _table(raw, fields, label, policy=None):
+    policy=_policy(policy)
     common.require(type(raw) is bytes and 0 < len(raw) <= policy["maximum_csv_bytes"],"Production CSV exceeds explicit size limit")
     try:
         reader=csv.DictReader(io.StringIO(raw.decode("utf-8-sig"),newline="")); names=reader.fieldnames
@@ -152,8 +158,9 @@ def _table(raw, fields, label):
     return rows
 
 
-def _tables(schedule_raw,roster_raw):
-    schedule=_table(schedule_raw,SCHEDULE_FIELDS,"schedule"); roster=_table(roster_raw,ROSTER_FIELDS,"roster")
+def _tables(schedule_raw,roster_raw,policy=None):
+    policy=_policy(policy)
+    schedule=_table(schedule_raw,SCHEDULE_FIELDS,"schedule",policy); roster=_table(roster_raw,ROSTER_FIELDS,"roster",policy)
     seen,seasons=set(),set()
     for row in schedule:
         eid=_id(row["id"],"schedule event ID")
@@ -179,13 +186,14 @@ def _tables(schedule_raw,roster_raw):
     return schedule,roster
 
 
-def _sources(raws,metas,originals,*,at,mode):
+def _sources(raws,metas,originals,*,at,mode,policy=None):
+    policy=_policy(policy)
     common.require(type(originals) is dict and set(originals) == {"schedule","roster"},"Both exact release metadata originals are required")
     result=[]
     for role,raw,meta in zip(("schedule","roster"),raws,metas):
-        validate_source_metadata(meta,raw=raw,role=role,at=at,prospective=mode == "PROSPECTIVE_RESEARCH")
+        validate_source_metadata(meta,raw=raw,role=role,at=at,prospective=mode == "PROSPECTIVE_RESEARCH",policy=policy)
         expected=source_metadata(raw,originals[role],meta,retrieval_started_at=meta["retrieval_started_at"],retrieved_at=meta["retrieved_at"],
-            metadata_retrieval_started_at=meta["metadata_retrieval_started_at"],metadata_retrieved_at=meta["metadata_retrieved_at"])
+            metadata_retrieval_started_at=meta["metadata_retrieval_started_at"],metadata_retrieved_at=meta["metadata_retrieved_at"],policy=policy)
         common.require(expected == meta,"Original publisher metadata differs from supplied source binding")
         result.append(deepcopy(meta))
     return result
@@ -219,29 +227,31 @@ def _history():
     return {"history_record_id":common.HISTORY_ID,"history_rows":common.HISTORY_ROWS,"history_panel_sha256":common.HISTORY_SHA256}
 
 
-def _planning_window(game_date):
-    policy=common.make_policy();day=_date(game_date)+timedelta(days=policy["planning_day_offset"])
+def _planning_window(game_date,policy=None):
+    policy=_policy(policy);day=_date(game_date)+timedelta(days=policy["planning_day_offset"])
     opens=datetime.combine(day,datetime.min.time(),timezone.utc).replace(hour=policy["planning_hour_utc"])
     return opens,opens+timedelta(seconds=policy["planning_window_seconds"])
 
 
-def _event_plan(row,candidates,seed):
+def _event_plan(row,candidates,seed,policy=None):
+    policy=_policy(policy)
     event=_event(row);start=common.clock(event["event_starts_at"]); cutoff=start-timedelta(minutes=90)
-    size=common.make_policy()["players_per_shard"]
+    size=policy["players_per_shard"]
     return {"event":event,"candidates":candidates,"shards":[[player["player_id"] for player in candidates[index:index+size]] for index in range(0,len(candidates),size)],
-        "cycle_id":common.cycle_id(start.date().isoformat(),event["event_id"],seed),"cutoff_at":stamp(cutoff),"capture_opens_at":stamp(cutoff-timedelta(hours=1)),
-        "issuance_closes_at":stamp(cutoff+timedelta(seconds=common.make_policy()["generation_window_seconds"]))}
+        "cycle_id":common.cycle_id(start.date().isoformat(),event["event_id"],seed),"cutoff_at":stamp(cutoff),"capture_opens_at":stamp(cutoff-timedelta(seconds=policy["capture_lookback_seconds"])),
+        "issuance_closes_at":stamp(cutoff+timedelta(seconds=policy["generation_window_seconds"]))}
 
 
-def _seed(game_date,sources,binding,events):
-    return digest({"protocol_id":common.PROTOCOL_ID,"policy_id":common.make_policy()["policy_id"],"game_date":game_date,"sources":sources,
+def _seed(game_date,sources,binding,events,policy=None):
+    policy=_policy(policy)
+    return digest({"protocol_id":common.PROTOCOL_ID,"policy_id":policy["policy_id"],"game_date":game_date,"sources":sources,
         "producer_binding":binding,"events":[{key:row[key] for key in ("event","candidates","shards")} for row in events]})
 
 
-def _build_plan(schedule_raw,roster_raw,schedule_meta,roster_meta,*,source_originals,game_date,producer_binding,started,completed,mode):
+def _build_plan(schedule_raw,roster_raw,schedule_meta,roster_meta,*,source_originals,game_date,producer_binding,started,completed,mode,policy=None):
     common.require(type(mode) is str and mode in MODES,"Unknown production input mode"); validate_binding(producer_binding,prospective=mode == "PROSPECTIVE_RESEARCH"); day=_date(game_date)
-    policy=common.make_policy(); sources=_sources((schedule_raw,roster_raw),(schedule_meta,roster_meta),source_originals,at=completed,mode=mode)
-    schedule,roster=_tables(schedule_raw,roster_raw);season=schedule[0]["season"]
+    policy=deepcopy(_policy(policy)); sources=_sources((schedule_raw,roster_raw),(schedule_meta,roster_meta),source_originals,at=completed,mode=mode,policy=policy)
+    schedule,roster=_tables(schedule_raw,roster_raw,policy);season=schedule[0]["season"]
     common.require(all(source["asset_name"] == ("nba_schedule_" if source["role"] == "schedule" else "rosters_")+season+".csv" for source in sources),"Production asset year differs from complete CSV season")
     inventory=[];provisional=[];excluded=[]
     for row in sorted(schedule,key=lambda value:(_source_clock(value["date"]),int(value["id"]))):
@@ -259,9 +269,9 @@ def _build_plan(schedule_raw,roster_raw,schedule_meta,roster_meta,*,source_origi
         if reasons:
             excluded.append({"event_id":row["id"],"reason":"EVENT_EXCLUDED","reasons":reasons});continue
         common.require(len(candidates) <= policy["maximum_players_per_event"],"Complete event roster exceeds registered production ceiling; no player truncation")
-        provisional.append(_event_plan(row,candidates,"0"*64))
+        provisional.append(_event_plan(row,candidates,"0"*64,policy))
     common.require(len(provisional) <= policy["maximum_events_per_game_date"],"Complete daily event inventory exceeds production ceiling; no event truncation")
-    seed=_seed(game_date,sources,producer_binding,provisional)
+    seed=_seed(game_date,sources,producer_binding,provisional,policy)
     for event in provisional:event["cycle_id"]=common.cycle_id(game_date,event["event"]["event_id"],seed)
     body={"schema_version":common.PLAN_SCHEMA,"protocol_id":common.PROTOCOL_ID,"mode":mode,"policy":policy,"game_date":game_date,
         "planning_started_at":stamp(started),"planned_at":stamp(completed),"plan_seed":seed,"sources":sources,"inventory":inventory,"events":provisional,
@@ -270,15 +280,18 @@ def _build_plan(schedule_raw,roster_raw,schedule_meta,roster_meta,*,source_origi
     return validate_plan(common.seal(body,"plan_id"))
 
 
-def make_plan(schedule_raw,roster_raw,schedule_meta,roster_meta,*,source_originals,game_date,producer_binding,at=None,mode="DEVELOPMENT_ONLY"):
+def make_plan(schedule_raw,roster_raw,schedule_meta,roster_meta,*,source_originals,game_date,producer_binding,at=None,mode="DEVELOPMENT_ONLY",policy=None):
     common.require(at is None or mode == "DEVELOPMENT_ONLY","Prospective planning cannot accept a supplied clock")
-    started=_source_clock(at) if at is not None else common.now()
+    policy=deepcopy(_policy(policy));started=_source_clock(at) if at is not None else common.now()
     result=_build_plan(schedule_raw,roster_raw,schedule_meta,roster_meta,source_originals=source_originals,game_date=game_date,producer_binding=producer_binding,
-        started=started,completed=started,mode=mode)
+        started=started,completed=started,mode=mode,policy=policy)
     completed=started if at is not None else common.now()
     result["planned_at"]=stamp(completed); result=common.seal({key:value for key,value in result.items() if key != "plan_id"},"plan_id")
     validate_plan(result)
-    if mode == "PROSPECTIVE_RESEARCH":common.require(common.now() <= _planning_window(game_date)[1],"Production plan admission missed its planning window")
+    if mode == "PROSPECTIVE_RESEARCH":
+        actual=common.now();opens,closes=_planning_window(game_date,policy)
+        common.require(opens <= actual and (actual < closes if policy.get("planning_close_exclusive",False) else actual <= closes),
+            "Production plan admission missed its planning window")
     return result
 
 
@@ -292,8 +305,8 @@ def _validate_event(event):
     common.clock(event["event_starts_at"]);common.check_seal(event,"event_snapshot_id")
 
 
-def _validate_candidates(candidates,event):
-    policy=common.make_policy();common.require(type(candidates) is list and 1 <= len(candidates) <= policy["maximum_players_per_event"],"Invalid complete production cohort")
+def _validate_candidates(candidates,event,policy=None):
+    policy=_policy(policy);common.require(type(candidates) is list and 1 <= len(candidates) <= policy["maximum_players_per_event"],"Invalid complete production cohort")
     seen=set();ordering=[]
     for candidate in candidates:
         common.exact(candidate,CANDIDATE_FIELDS,"candidate");pid=_id(candidate["player_id"]);common.text(candidate["player_label"])
@@ -303,8 +316,8 @@ def _validate_candidates(candidates,event):
     common.require(ordering == sorted(ordering) and all(any(player["team_id"] == team for player in candidates) for team in (event["home_team_id"],event["away_team_id"])),"Production full cohort order/team coverage differs")
 
 
-def _validate_shards(shards,candidates):
-    size=common.make_policy()["players_per_shard"];ids=[row["player_id"] for row in candidates]
+def _validate_shards(shards,candidates,policy=None):
+    size=_policy(policy)["players_per_shard"];ids=[row["player_id"] for row in candidates]
     common.require(type(shards) is list and shards == [ids[index:index+size] for index in range(0,len(ids),size)],"Production shards must cover every candidate exactly once in deterministic order")
 
 
@@ -313,7 +326,7 @@ def _common(body):
     common.validate_policy(body["policy"]);validate_binding(body["producer_binding"],prospective=body["mode"] == "PROSPECTIVE_RESEARCH")
     common.require(all(body[key] == value and type(body[key]) is type(value) for key,value in _history().items()),"Production fixed history changed")
     common.require(type(body["sources"]) is list and len(body["sources"]) == 2,"Production source inventory differs")
-    for role,source in zip(("schedule","roster"),body["sources"]):validate_source_metadata(source,role=role,prospective=body["mode"] == "PROSPECTIVE_RESEARCH")
+    for role,source in zip(("schedule","roster"),body["sources"]):validate_source_metadata(source,role=role,prospective=body["mode"] == "PROSPECTIVE_RESEARCH",policy=body["policy"])
     common.require(body["missing_information"] == _missing(body["sources"]),"Production missing information was hidden")
 
 
@@ -322,10 +335,20 @@ def validate_plan(body):
     common.require(body["schema_version"] == common.PLAN_SCHEMA,"Wrong production plan type")
     started,completed=(common.clock(body[key]) for key in ("planning_started_at","planned_at"))
     common.require(started <= completed <= common.now(),"Production planning completion clocks conflict")
+    policy=body["policy"]
+    if policy["schema_version"] == common.POLICY_SCHEMA_V2:
+        common.require(day >= common.clock(policy["enabled_after"]).date(),"Production v2 game date precedes its future-only effective date")
     if body["mode"] == "PROSPECTIVE_RESEARCH":
-        opens,closes=_planning_window(body["game_date"])
-        common.require(opens <= started <= completed <= closes and day >= common.clock(body["policy"]["enabled_after"]).date(),"Production plan missed its declared daily window/effective date")
-    for source in body["sources"]:validate_source_metadata(source,at=completed,prospective=body["mode"] == "PROSPECTIVE_RESEARCH")
+        opens,closes=_planning_window(body["game_date"],policy)
+        closing_ok=completed < closes if policy.get("planning_close_exclusive",False) else completed <= closes
+        common.require(opens <= started <= completed and closing_ok and day >= common.clock(policy["enabled_after"]).date(),"Production plan missed its declared daily window/effective date")
+        if policy.get("planning_close_exclusive",False):
+            for source in body["sources"]:
+                common.require(opens <= common.clock(source["metadata_retrieval_started_at"])
+                    <= common.clock(source["metadata_retrieved_at"]) <= common.clock(source["retrieval_started_at"])
+                    <= common.clock(source["retrieved_at"]) <= started,
+                    "Production v2 planning sources missed the actual planning capture window")
+    for source in body["sources"]:validate_source_metadata(source,at=completed,prospective=body["mode"] == "PROSPECTIVE_RESEARCH",policy=policy)
     inventory=body["inventory"]
     common.require(type(inventory) is list and len(inventory) <= body["policy"]["maximum_source_rows"]
         and type(body["source_schedule_rows"]) is int and 0 < body["source_schedule_rows"] <= body["policy"]["maximum_source_rows"]
@@ -354,14 +377,14 @@ def validate_plan(body):
     for event in events:common.exact(event,PLAN_EVENT_FIELDS,"planned event");_validate_event(event["event"])
     common.require([row["event"]["event_id"] for row in events] == eligible,"Production plan omitted a valid eligible event")
     for selected in events:
-        event=selected["event"];_validate_candidates(selected["candidates"],event);_validate_shards(selected["shards"],selected["candidates"])
+        event=selected["event"];_validate_candidates(selected["candidates"],event,policy);_validate_shards(selected["shards"],selected["candidates"],policy)
         row=next(item for item in inventory if item["event_id"] == event["event_id"])
         common.require(all(event[key] == row[key] for key in ("event_id","event_starts_at","home_team_id","away_team_id")),"Planned event differs from complete inventory")
         cutoff=common.clock(event["event_starts_at"])-timedelta(minutes=90)
-        common.require(selected["cutoff_at"] == stamp(cutoff) and selected["capture_opens_at"] == stamp(cutoff-timedelta(hours=1))
+        common.require(selected["cutoff_at"] == stamp(cutoff) and selected["capture_opens_at"] == stamp(cutoff-timedelta(seconds=policy["capture_lookback_seconds"]))
             and selected["issuance_closes_at"] == stamp(cutoff+timedelta(seconds=body["policy"]["generation_window_seconds"]))
             and selected["cycle_id"] == common.cycle_id(body["game_date"],event["event_id"],body["plan_seed"]),"Production event windows/cycle identity changed")
-    common.require(body["plan_seed"] == _seed(body["game_date"],body["sources"],body["producer_binding"],events),"Production immutable plan seed changed")
+    common.require(body["plan_seed"] == _seed(body["game_date"],body["sources"],body["producer_binding"],events,policy),"Production immutable plan seed changed")
     common.require(type(body["exclusions"]) is list and all(type(row) is dict for row in body["exclusions"]),"Invalid production exclusions inventory")
     excluded_events=[];excluded_players=set()
     for exclusion in body["exclusions"]:
@@ -391,8 +414,9 @@ def make_input(plan,event_id,schedule_raw,roster_raw,schedule_meta,roster_meta,*
     selected=[row for row in plan["events"] if row["event"]["event_id"] == event_id]
     common.require(len(selected) == 1,"Event is outside the fixed full daily plan; no replacements")
     original=selected[0]; started=_source_clock(at) if at is not None else common.now()
-    _sources((schedule_raw,roster_raw),(schedule_meta,roster_meta),source_originals,at=started,mode=mode)
-    schedule,roster=_tables(schedule_raw,roster_raw); season=schedule[0]["season"]
+    policy=plan["policy"]
+    _sources((schedule_raw,roster_raw),(schedule_meta,roster_meta),source_originals,at=started,mode=mode,policy=policy)
+    schedule,roster=_tables(schedule_raw,roster_raw,policy); season=schedule[0]["season"]
     common.require(schedule_meta["asset_name"] == "nba_schedule_"+season+".csv" and roster_meta["asset_name"] == "rosters_"+season+".csv","Fresh production asset/table season conflicts")
     rows=[row for row in schedule if row["id"] == event_id];common.require(len(rows) == 1,"Fresh selected event is absent")
     row=rows[0];common.require((row["status_type_name"],row["status_type_state"],row["status_type_completed"],row["time_valid"]) == ("STATUS_SCHEDULED","pre","false","true"),"Fresh production event is not scheduled")
@@ -412,13 +436,17 @@ def validate_input(body,plan=None):
     common.exact(body,INPUT_FIELDS,"input");_common(body)
     common.require(body["schema_version"] == common.INPUT_SCHEMA,"Wrong production input type")
     for key in ("plan_id","plan_seed"):common.sha(body[key])
-    _validate_event(body["event"]);_validate_candidates(body["candidates"],body["event"]);_validate_shards(body["shards"],body["candidates"])
+    policy=body["policy"]
+    _validate_event(body["event"]);_validate_candidates(body["candidates"],body["event"],policy);_validate_shards(body["shards"],body["candidates"],policy)
     event=body["event"];start=common.clock(event["event_starts_at"]);cutoff=start-timedelta(minutes=90)
+    if policy["schema_version"] == common.POLICY_SCHEMA_V2:
+        common.require(start.date() >= common.clock(policy["enabled_after"]).date(),
+            "Production v2 input precedes its future-only effective date")
     begun,completed=(common.clock(body[key]) for key in ("normalization_started_at","normalized_at"))
     common.require(begun <= completed <= common.now() and completed < start,"Production actual normalization clocks conflict or are post-start")
     common.require(body["cycle_id"] == common.cycle_id(start.date().isoformat(),event["event_id"],body["plan_seed"]),"Production event cycle identity differs")
     for source in body["sources"]:
-        validate_source_metadata(source,at=completed,prospective=body["mode"] == "PROSPECTIVE_RESEARCH")
+        validate_source_metadata(source,at=completed,prospective=body["mode"] == "PROSPECTIVE_RESEARCH",policy=policy)
         common.require(source["asset_name"] == ("nba_schedule_" if source["role"] == "schedule" else "rosters_")+str(event["season_ending_year"])+".csv","Production input asset season differs")
         if body["mode"] == "PROSPECTIVE_RESEARCH":
             lower=cutoff-timedelta(seconds=body["policy"]["capture_lookback_seconds"])
@@ -429,7 +457,7 @@ def validate_input(body,plan=None):
         validate_plan(plan)
         selected=[row for row in plan["events"] if row["cycle_id"] == body["cycle_id"]]
         common.require(len(selected) == 1 and body["plan_id"] == plan["plan_id"] and body["plan_seed"] == plan["plan_seed"]
-            and body["mode"] == plan["mode"] and body["producer_binding"] == plan["producer_binding"]
+            and body["mode"] == plan["mode"] and body["policy"] == plan["policy"] and body["producer_binding"] == plan["producer_binding"]
             and all(body[key] == selected[0][key] for key in ("event","candidates","shards")),"Production input differs from its frozen plan/cohort/producer")
     common.check_seal(body,"input_id");return body
 
@@ -440,7 +468,7 @@ def freshness(body,*,at,require_retrieval_window=False):
     common.require(common.clock(body["normalized_at"]) <= actual < start,"Production source input is future-dated or game has started")
     ages={}
     for source in body["sources"]:
-        validate_source_metadata(source,at=actual,prospective=body["mode"] == "PROSPECTIVE_RESEARCH")
+        validate_source_metadata(source,at=actual,prospective=body["mode"] == "PROSPECTIVE_RESEARCH",policy=body["policy"])
         ages[source["role"]]={"publisher_age_seconds":(actual-common.clock(source["publisher_updated_at"])).total_seconds(),
             "retrieval_age_seconds":(actual-common.clock(source["retrieved_at"])).total_seconds(),"upstream_observation_status":source["upstream_observation_status"],
             "upstream_age_seconds":None if source["upstream_observed_at"] is None else (actual-common.clock(source["upstream_observed_at"])).total_seconds()}
@@ -453,16 +481,16 @@ def verify_plan_sources(body,schedule_raw,roster_raw,schedule_meta,roster_meta,*
     """Read-only complete-byte replay; original completion clocks never change."""
     validate_plan(body)
     replay=_build_plan(schedule_raw,roster_raw,schedule_meta,roster_meta,source_originals=source_originals,game_date=body["game_date"],producer_binding=body["producer_binding"],
-        started=common.clock(body["planning_started_at"]),completed=common.clock(body["planned_at"]),mode=body["mode"])
+        started=common.clock(body["planning_started_at"]),completed=common.clock(body["planned_at"]),mode=body["mode"],policy=body["policy"])
     common.require(replay == body,"Production plan differs from exact source replay")
     return body
 
 
 def verify_input_sources(body,schedule_raw,roster_raw,schedule_meta,roster_meta,*,source_originals,plan=None):
     validate_input(body,plan)
-    _sources((schedule_raw,roster_raw),(schedule_meta,roster_meta),source_originals,at=common.clock(body["normalized_at"]),mode=body["mode"])
+    _sources((schedule_raw,roster_raw),(schedule_meta,roster_meta),source_originals,at=common.clock(body["normalized_at"]),mode=body["mode"],policy=body["policy"])
     common.require(body["sources"] == [schedule_meta,roster_meta],"Production input original source metadata changed")
-    schedule,roster=_tables(schedule_raw,roster_raw)
+    schedule,roster=_tables(schedule_raw,roster_raw,body["policy"])
     selected=[row for row in schedule if row["id"] == body["event"]["event_id"]]
     common.require(len(selected) == 1 and _event(selected[0]) == body["event"] and _cohort(selected[0],roster)[0] == body["candidates"],"Production input semantics differ from original source replay")
     row=selected[0]

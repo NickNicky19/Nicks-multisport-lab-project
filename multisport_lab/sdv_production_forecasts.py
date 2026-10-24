@@ -31,7 +31,8 @@ from . import sdv_production_common as common
 PROTOCOL_ID = common.PROTOCOL_ID
 FORECAST_SCHEMA, INTENT_SCHEMA = common.FORECAST_SCHEMA, common.INTENT_SCHEMA
 OUTCOME_SCHEMA, GRADE_SCHEMA = common.OUTCOME_SCHEMA, common.GRADE_SCHEMA
-BINDING_SCHEMA = "nba-sdv-production-producer-binding-v1"
+LEGACY_BINDING_SCHEMA = "nba-sdv-production-producer-binding-v1"
+BINDING_SCHEMA = "nba-sdv-production-producer-binding-v2"
 PRODUCERS = {key:"production-"+key.lower()+"-v1" for key in common.MODEL_VERSIONS}
 MODES = {"DEVELOPMENT_ONLY", "PROSPECTIVE_RESEARCH"}
 EVIDENCE_LANE = "SDV_PRODUCTION_PROSPECTIVE"
@@ -42,7 +43,12 @@ PRODUCTION_SOURCE_FILES = ("multisport_lab/sdv_production_common.py", "multispor
     "multisport_lab/sdv_production_publication.py", "multisport_lab/sdv_production_remote.py",
     "multisport_lab/sdv_production_coordinator.py",
     "config/sdv_production_policy_v1.json", ".github/workflows/nba-operations.yml")
-SOURCE_FILES = tuple(dict.fromkeys((*FROZEN_SOURCE_FILES, *PRODUCTION_SOURCE_FILES)))
+LEGACY_SOURCE_FILES = tuple(dict.fromkeys((*FROZEN_SOURCE_FILES, *PRODUCTION_SOURCE_FILES)))
+# Operating repairs are explicitly pinned too. Legacy originals retain their
+# original inventory and can be recovered without claiming those bytes execute
+# the new held coordinator.
+SOURCE_FILES = (*LEGACY_SOURCE_FILES, "multisport_lab/sdv_production_held.py",
+                "config/sdv_production_policy_v2.json")
 FORECAST_FIELDS = {"schema_version", "protocol_id", "plan_id", "cycle_id", "mode", "evidence_lane", "model_key",
     "model_version", "producer_version", "producer_binding", "history_ref", "history_rows", "history_panel_sha256",
     "history_panel_cutoff", "history_availability", "input_ref", "input_id", "event_snapshot_id", "event_id",
@@ -89,8 +95,9 @@ def make_source_binding(commit=None, *, root=None):
 
 def validate_binding(body, *, current=False, root=None):
     exact(body, {"schema_version", "commit", "files", "law_sha256", "binding_id"}, "producer binding")
-    require(body["schema_version"] == BINDING_SCHEMA and type(body["files"]) is dict
-        and set(body["files"]) == set(SOURCE_FILES) and body["law_sha256"] == common.LAW_SHA256,
+    inventory = {LEGACY_BINDING_SCHEMA: LEGACY_SOURCE_FILES, BINDING_SCHEMA: SOURCE_FILES}.get(body["schema_version"])
+    require(inventory is not None and type(body["files"]) is dict
+        and set(body["files"]) == set(inventory) and body["law_sha256"] == common.LAW_SHA256,
         "Production producer source inventory/law differs")
     for value in body["files"].values():sha(value)
     require(body["files"]["multisport_lab/baseline.py"] == common.LAW_SHA256["R0"]

@@ -1,5 +1,96 @@
 # Recurring NBA daily-snapshot operation
 
+### October 23 delivery repair candidate (not deployed)
+
+The live application is rendering; Upcoming is empty because zero genuine
+production forecasts have been delivered. A fresh public verification retained
+all six readable historical bundles and six grades, direct History refresh,
+source IDs and desktop/390-/320-pixel layouts. Current main remains `ef9e270`.
+Actual native starts include 09:46:44, 14:28:56, 18:38:52 and 21:42:01 UTC on
+October 23; no start was observed in the 13:00–14:00 planning window. These
+observations do not establish the cause of an absent cron execution. Exact
+responses and the public asset/browser proof are retained in
+`evidence/operational/sdv-delivery-diagnosis-20261023.json`.
+
+The proposed registered v2 policy is
+`3ea45e39dddee1222a04d2998003ec90f7241f59f2e0a721b2fba128ad97f4ed`.
+It applies only to UTC game dates from **October 25, 2026**. V1 and the missed
+October 24 planning result remain unchanged. V2 planning is the previous UTC
+calendar date, **00:00 to strictly before 21:30**; its first possible window is
+October 24 00:00–21:30 UTC (October 23 19:00–October 24 16:30 CDT). This is a
+future operating registration, not a change to either frozen study or pilot.
+No actual event/cohort or capture/issuance time exists until permitted complete
+schedule/roster originals have been captured, normalized and independently
+recovered into the immutable plan.
+
+The same `nba-operations.yml` coordinator retains its global writer lock. Its
+short preparation step can retain a bounded HOLD inventory for entire event
+cohorts. One capture job owns the registry and provider requests; waiting shard
+jobs only read the independently recovered registry, prepare their exact fresh
+input and generation intent, wait on their actual clock, then call the existing
+T90 issuance path. No future input reference is invented when a HOLD is made.
+The new producer-binding v2 pins all 36 executing files; legacy 34-file bindings
+remain recoverable but cannot impersonate the new executing source.
+
+The capture window T150–T90, automatic new-capture stop at T105, generation and
+readback T90–T75, 300-second original latency, 36-hour publisher age, all source
+budgets, exact history, mathematical laws and participation conditioning remain
+unchanged. A new download does not refresh old content. Workers use one retained
+working state and original input binding. An unresolved OPEN attempt cannot be
+silently regenerated. Missing, late, failed or partial originals remain factual
+evidence. No late execution, subject substitution or backfill is admitted.
+
+Each held process has a hard 350-minute horizon and 30-second local wakes.
+There are at most 16 held shards, each at most 16 players, admitted by complete
+event cohort; larger whole-event batches are explicitly excluded from that hold,
+not truncated from the plan. Each worker has at most 96 remote head probes and
+16 cold registry readbacks; unchanged heads do not fetch archive objects. The
+capture process has at most 72 five-minute refreshes, 24 fifteen-minute
+publication checks and 16 retained-input recovery attempts per cycle. Provider
+failures do not become automatic HTTP retries. Recovery/publication failures
+must remain visible while unrelated timely captures continue.
+
+A 16-worker batch plus its capture job can consume up to **5,950 runner-minutes**
+before preparation/grading/finish overhead. These are existing standard public
+GitHub Actions runners, with no new service or account. This is a finite upper
+bound, not measured hosted throughput or a guarantee of future cron delivery.
+A delay longer than the available hold coverage, runner queue, concurrency,
+source failure, stale release, quota or required readback can still exclude an
+event. Actual starts and forecasts must be verified after release.
+
+Final-source checking for v2 is independent of the old 13:00 UTC hour: admitted
+original games must be at least four hours old; at most two source captures per
+UTC day and at least ten hours between attempts are permitted. Actual finality
+and complete verified player results remain mandatory. DNP remains unscored,
+unresolved/nonfinal remains pending, and corrections append. V1 retains its
+original final-source hour. Statistical grading never implies ticket settlement.
+
+HOLD originals are at most 4 KiB each, at most 128 per complete daily plan:
+512 KiB/day and 128 metadata objects, within the existing shared 512-MiB /
+4,096-object reservation. They do not add shard ledger records. All actual
+archive objects remain charged. Each shard still has 512 records / 32 MiB and
+its unchanged complete role reservation; no probabilities or inputs are dropped.
+The new source inventory adds 213 canonical bytes to each binding. Applying
+that exact metadata delta to the retained hosted maximum forecast envelope of
+32,201 bytes gives **32,414 bytes**, below its unchanged 65,536-byte ceiling.
+This is a metadata-size projection using the frozen receipt, not another model
+run. The 40-player synthetic v2 plan/input bodies measure 25,035 / 14,569 bytes.
+The old hosted timing measurement is preserved and does not measure this new
+waiting/connected operating path.
+
+After exact-head release and separate approval of this future policy, the
+reviewed workflow invokes `prepare`, `capture-held`, `work` and `finish` with
+`--policy-version v2` on trusted main. There is no repository-variable switch,
+new scheduler or daily owner click. Publication independently recovers the exact
+records; active forecasts appear on Upcoming, completed ones move to History,
+and actual statistical grades feed Performance. A pure metadata-only grading
+selection step runs after capture and pregame workers finish, so grading binds
+the current exact retained final source rather than a stale earlier matrix.
+A failed hosted phase is durably recorded before its publication reconciliation. The website additionally shows
+publication, last forecast-input capture and genuine issuance as separate clocks.
+The website release alone cannot invent a missing forecast. Offers, private
+prop-file storage, prices, EV and paper qualification are independent channels.
+
 The **NBA-SDV-PRODUCTION-001 release and documented recurring scope are approved**.
 PR #16 merged at `fd1b9f413e2e2fa92f598ac704539a4998932115`; Pages workflow
 39781672740 deployed that exact build, with public byte/hash and desktop/mobile

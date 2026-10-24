@@ -140,11 +140,12 @@ def close_issuance_attempt(store,handle,*,checkpoint,error=None):
 
 class Coordinator:
     def __init__(self,registry,writer,archive,authorization,work_root,*,mode="PROSPECTIVE_RESEARCH",source_root=None,
-                 binding=None,collector=None,remote_factory=None,store_factory=None):
+                 binding=None,collector=None,remote_factory=None,store_factory=None,policy=None):
         common.require(mode in inputs.MODES,"Unknown coordinator mode")
         common.require(mode == "DEVELOPMENT_ONLY" or collector is None and remote_factory is None and store_factory is None,
             "Genuine operation cannot replace its collector, records transport or store")
         self.registry=runner.validate_registry(deepcopy(registry));self.writer=writer;self.archive=archive
+        self.policy=deepcopy(common.validate_policy(policy or common.make_policy()))
         self.authorization=authorization;self.mode=mode;self.root=Path(work_root).absolute()
         common.require(not any(path.is_symlink() for path in (self.root,*self.root.parents)),"Coordinator work root traverses symlink")
         self.root.mkdir(parents=True,exist_ok=True)
@@ -329,15 +330,16 @@ class Coordinator:
             self.archive.write_budget_objects=(None if old_objects is None else self.archive.new_objects_reserved+max(0,old_objects))
 
     def _new_plan(self):
-        now=common.now();policy=common.make_policy();game_date=(now.date()+timedelta(days=1)).isoformat()
+        now=common.now();policy=self.policy;game_date=(now.date()+timedelta(days=1)).isoformat()
         if any(day["game_date"] == game_date for day in self.registry["days"]):return
-        opens,closes=inputs._planning_window(game_date)
-        if not opens <= now <= closes or inputs._date(game_date) < common.clock(policy["enabled_after"]).date():return
+        opens,closes=inputs._planning_window(game_date,policy=policy)
+        within=opens <= now < closes if policy.get("planning_close_exclusive") else opens <= now <= closes
+        if not within or inputs._date(game_date) < common.clock(policy["enabled_after"]).date():return
         season=now.year+1 if now.month >= 7 else now.year
         ref,_=self._capture("PLAN",[game_date],season=season,opens=opens,closes=closes)
         _,sources=self._pack(ref);s,r=sources["schedule"],sources["roster"]
         plan=inputs.make_plan(s[0],r[0],s[1],r[1],source_originals={"schedule":s[2],"roster":r[2]},game_date=game_date,
-            producer_binding=self._binding(),mode=self.mode)
+            producer_binding=self._binding(),mode=self.mode,policy=policy)
         self._reserve_archive(additional_shards=sum(len(event["shards"]) for event in plan["events"]))
         plan_ref=self.archive.put_json(plan,tag=self.tag)
         common.require(self.archive.fresh_reader().get_json(plan_ref) == plan,"Independent archived daily plan readback differs")
@@ -347,15 +349,20 @@ class Coordinator:
                 shards.append({"branch":common.shard_branch(event["cycle_id"],index),"cycle_id":event["cycle_id"],"event_id":event["event"]["event_id"],
                     "shard_index":index,"plan_id":plan["plan_id"],"latest_commit":None,"snapshot_ref":None,"input_task_ref":None,"final_source_pack_ref":None,
                     "prepared_input_task_ref":None,"issued_input_task_ref":None,"graded_source_pack_ref":None})
-        self.registry["days"].append({"schema_version":runner.DAY_SCHEMA,"game_date":game_date,"plan_ref":plan_ref,"source_pack_ref":ref,
-            "plan_id":plan["plan_id"],"shards":shards,"attempts":[],"pending_inputs":[],"status":"PLANNED" if shards else "NO_ELIGIBLE_EVENTS"})
+        day={"schema_version":runner.DAY_SCHEMA,"game_date":game_date,"plan_ref":plan_ref,"source_pack_ref":ref,
+            "plan_id":plan["plan_id"],"shards":shards,"attempts":[],"pending_inputs":[],"status":"PLANNED" if shards else "NO_ELIGIBLE_EVENTS"}
+        if policy.get("held_runtime_maximum_seconds"):
+            day.update(schema_version=runner.HELD_DAY_SCHEMA,held_tasks=[])
+            self.registry["policy_id"]=policy["policy_id"]
+        self.registry["days"].append(day)
         self._save("DAILY_PLAN_RETAINED",{"game_date":game_date,"events":len(plan["events"]),"subjects":sum(len(event["candidates"]) for event in plan["events"])})
 
-    def _new_inputs(self):
+    def _new_inputs(self,*,cycle_ids=None):
         due=[];retained={};now=common.now()
         for day in self.registry["days"]:
             plan=self.archive.get_json(day["plan_ref"]);inputs.validate_plan(plan)
             for event in plan["events"]:
+                if cycle_ids is not None and event["cycle_id"] not in cycle_ids:continue
                 shards=[row for row in day["shards"] if row["cycle_id"] == event["cycle_id"]]
                 existing=[row["input_task_ref"] for row in shards if row["input_task_ref"] is not None]
                 common.require(not existing or len(existing) == len(shards),"Partial shared-input registry cannot silently replace missing shards")
@@ -448,20 +455,23 @@ class Coordinator:
         return store,remote
 
     def _eligible_final_shards(self):
-        result=[];now=common.now();limit=timedelta(days=common.make_policy()["correction_capture_days"])
+        result=[];now=common.now();limit=timedelta(days=self.policy["correction_capture_days"])
         for day in self.registry["days"]:
             plan=self.archive.get_json(day["plan_ref"])
             events={event["cycle_id"]:event for event in plan["events"]}
             for shard in day["shards"]:
                 if shard["input_task_ref"] is None:continue
                 start=common.clock(events[shard["cycle_id"]]["event"]["event_starts_at"])
-                if start <= now <= start+limit:result.append((day,shard,events[shard["cycle_id"]]))
+                age=timedelta(seconds=self.policy.get("final_capture_minimum_game_age_seconds",0))
+                if start+age <= now <= start+limit:result.append((day,shard,events[shard["cycle_id"]]))
         return result
 
     def _final_sources(self):
-        now=common.now();policy=common.make_policy()
-        if now.hour != policy["planning_hour_utc"]:return
+        now=common.now();policy=self.policy
+        if not policy.get("held_runtime_maximum_seconds") and now.hour != policy["planning_hour_utc"]:return
         if sum(row["phase"] == "FINAL" and common.clock(row["started_at"]).date() == now.date() for row in self.registry["attempts"]) >= policy["maximum_final_captures_per_day"]:return
+        previous=[common.clock(row["started_at"]) for row in self.registry["attempts"] if row["phase"] == "FINAL"]
+        if previous and now-max(previous) < timedelta(seconds=policy.get("final_capture_minimum_interval_seconds",0)):return
         due=self._eligible_final_shards()
         if not due:return
         # Confirm at least one actually retained original before a final-data
@@ -477,8 +487,8 @@ class Coordinator:
         if not has_original:return
         scopes=sorted({row[1]["cycle_id"] for row in due});season={row[2]["event"]["season_ending_year"] for row in due}
         common.require(len(season) == 1,"Final capture cannot mix source seasons")
-        opens=now.replace(hour=policy["planning_hour_utc"],minute=0,second=0,microsecond=0)
-        closes=min(opens+timedelta(hours=1),min(common.clock(event["event"]["event_starts_at"])+timedelta(days=policy["correction_capture_days"]) for _,_,event in due))
+        opens=now.replace(hour=0 if policy.get("held_runtime_maximum_seconds") else policy["planning_hour_utc"],minute=0,second=0,microsecond=0)
+        closes=min(opens+timedelta(seconds=policy.get("final_capture_window_seconds",3600)),min(common.clock(event["event"]["event_starts_at"])+timedelta(days=policy["correction_capture_days"]) for _,_,event in due))
         ref,_=self._capture("FINAL",scopes,season=season.pop(),opens=opens,closes=closes,final=True)
         for day,shard,_ in due:
             current=next(row for row in self.registry["days"] if row["game_date"] == day["game_date"])
@@ -507,13 +517,15 @@ class Coordinator:
 
     def _window_status(self):
         """Describe closed windows from retained inventory, without backfill."""
-        now=common.now();first=common.clock(common.make_policy()["enabled_after"]).date()
+        now=common.now();first=common.clock(self.policy["enabled_after"]).date()
         known={day["game_date"] for day in self.registry["days"]+self.registry["archived_days"]}
         target=now.date()+timedelta(days=1);start=max(first,now.date()-timedelta(days=9));missing=[]
         cursor=start
         while cursor <= target:
             date=cursor.isoformat()
-            if date not in known and inputs._planning_window(date)[1] < now:missing.append(date)
+            closes=inputs._planning_window(date,policy=self.policy)[1]
+            closed=closes <= now if self.policy.get("planning_close_exclusive") else closes < now
+            if date not in known and closed:missing.append(date)
             cursor+=timedelta(days=1)
         branches=[]
         for day in self.registry["days"]:
@@ -607,6 +619,25 @@ class Coordinator:
                     store.correct(before,grade_ref,reason="Statistical grade follows appended production outcome correction")
                 result["grades"]+=1
         return result
+
+    def grading_tasks(self):
+        """Read current exact final bindings after held capture/work have ended.
+
+        This selection never captures a source, creates a plan or issues a
+        forecast. A previously queued descriptor cannot silently change inputs.
+        """
+        self._authority();tasks=[];now=common.now()
+        for day in self.registry["days"]:
+            plan=self.archive.get_json(day["plan_ref"]);inputs.validate_plan(plan)
+            events={event["cycle_id"]:event for event in plan["events"]}
+            for shard in day["shards"]:
+                if (shard["input_task_ref"] is None or shard["final_source_pack_ref"] is None
+                    or shard["graded_source_pack_ref"] == shard["final_source_pack_ref"]):continue
+                event=events[shard["cycle_id"]]
+                if common.clock(event["event"]["event_starts_at"]) > now:continue
+                tasks.append({"action":"GRADE","task_ref":shard["input_task_ref"],"final_source_pack_ref":shard["final_source_pack_ref"],
+                    "branch":shard["branch"],"cycle_id":shard["cycle_id"],"shard_index":shard["shard_index"]})
+        return sorted(tasks,key=lambda row:(row["cycle_id"],row["branch"]))
 
     def work(self,descriptor):
         self._authority();common.require(type(descriptor) is dict and descriptor.get("action") in ACTIONS,"Unknown production worker action")
