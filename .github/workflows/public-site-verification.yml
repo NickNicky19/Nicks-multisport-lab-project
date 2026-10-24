@@ -73,40 +73,58 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.12'
-      - name: Recover the existing public proof and inspect registered operation state
+      - name: Diagnose the actual retained native source identities without provider requests
         run: |
           python3 - <<'PY'
-          import hashlib, json, os, subprocess
+          import csv, hashlib, io, json, os, re, subprocess, zlib
           from datetime import datetime, timezone
           from pathlib import Path
           repo="NickNicky19/Nicks-multisport-lab-project"
+          work=Path(os.environ["RUNNER_TEMP"])/"nml-public-evidence-readback"
+          work.mkdir(parents=True,exist_ok=True)
           def api(path):
               p=subprocess.run(["gh","api","repos/"+repo+"/"+path],capture_output=True,text=True,timeout=40,check=True)
               if len(p.stdout.encode())>2*1024*1024: raise RuntimeError("Metadata exceeds 2 MiB")
               return json.loads(p.stdout)
-          work=Path(os.environ["RUNNER_TEMP"])/"nml-public-evidence-readback"
-          work.mkdir(parents=True,exist_ok=True)
-          artifact=api("actions/artifacts/12554484552")
-          if artifact.get("expired") or artifact.get("name")!="public-pr22-40080319441-1" or artifact.get("size_in_bytes",10**9)>40*1024*1024:
-              raise RuntimeError("Expected bounded public verification artifact is not available")
-          proof_run=api("actions/runs/40080319441")
-          if proof_run.get("conclusion")!="success" or proof_run.get("head_sha")!="c643cd9386542c632f012a635bd025787a98c5b7":
-              raise RuntimeError("Original public verification run identity differs")
-          download=work/"original"
-          subprocess.run(["gh","run","download","40080319441","--repo",repo,"--name","public-pr22-40080319441-1","--dir",str(download)],check=True,timeout=120,capture_output=True)
-          raw=(download/"public-verification.json").read_bytes()
-          if len(raw)>1024*1024: raise RuntimeError("Public proof exceeds 1 MiB")
-          proof=json.loads(raw)
-          if proof.get("status")!="PASS" or proof.get("public_verified") is not True or proof.get("expected_build")!="f06735974a388fa9e1a39e0815341de889cc25ae" or proof.get("verifier_sha256")!="802196ac1b18b1b6527ab0c3f5adc53385cbe099b431c139feeaf78d779164de":
-              raise RuntimeError("Original public proof is not the verified deployed build")
-          workflow=api("actions/workflows/392458906")
-          runs=api("actions/runs?event=schedule&per_page=5")
-          registry=api("git/ref/heads/records/sdv-production-index")
-          main=api("git/ref/heads/main")
-          selected_runs=[{k:v.get(k) for k in ["id","head_sha","status","conclusion","created_at","run_started_at","updated_at","event","path"]} for v in runs.get("workflow_runs",[]) if v.get("workflow_id")==392458906]
-          report={"schema_version":"nml-pr22-postdeployment-readback-v1","readback_at":datetime.now(timezone.utc).isoformat(),"execution_sha":os.environ["GITHUB_SHA"],"readback_run_id":os.environ["GITHUB_RUN_ID"],"source_public_report_sha256":hashlib.sha256(raw).hexdigest(),"source_artifact_id":12554484552,"public_verification":proof,"operations":{"workflow":{k:workflow.get(k) for k in ["id","name","path","state","created_at","updated_at"]},"latest_scheduled_runs":selected_runs,"registry_commit":registry["object"]["sha"],"main_commit":main["object"]["sha"]},"sports_source_requests":0,"forecasts_generated":0,"merge_mutations":0}
+          artifact=api("actions/artifacts/12555221476")
+          if artifact.get("expired") or artifact.get("name")!="nba-production-prepare-40080779828-1" or artifact.get("size_in_bytes",10**9)>2*1024*1024: raise RuntimeError("Expected retained native preparation artifact unavailable")
+          run=api("actions/runs/40080779828")
+          if run.get("head_sha")!="f06735974a388fa9e1a39e0815341de889cc25ae" or run.get("event")!="schedule": raise RuntimeError("Native run identity differs")
+          download=work/"native-original"
+          subprocess.run(["gh","run","download","40080779828","--repo",repo,"--name","nba-production-prepare-40080779828-1","--dir",str(download)],check=True,timeout=120,capture_output=True)
+          files=[]; audits=[]; total=0
+          for path in sorted(download.rglob("*")):
+              if not path.is_file(): continue
+              raw=path.read_bytes(); total+=len(raw)
+              if total>4*1024*1024: raise RuntimeError("Recovered native artifact exceeds diagnostic bound")
+              rel=str(path.relative_to(download))
+              files.append({"path":rel,"bytes":len(raw),"sha256":hashlib.sha256(raw).hexdigest()})
+              try:
+                  reader=csv.DictReader(io.StringIO(raw.decode("utf-8-sig"),newline=""))
+                  fields=reader.fieldnames or []
+                  roles={"schedule":["id","game_id","home_id","away_id"],"roster":["athlete_id","team_id"]}
+                  for role,keys in roles.items():
+                      if not set(keys)<=set(fields): continue
+                      rows=list(reader); bad=[]
+                      for i,row in enumerate(rows,2):
+                          for key in keys:
+                              value=row.get(key)
+                              if type(value) is not str or re.fullmatch(r"[1-9][0-9]*",value) is None:
+                                  bad.append({"csv_line":i,"field":key,"value":value,"uid":row.get("uid"),"season":row.get("season")})
+                      if len(bad)>10000: raise RuntimeError("Noncanonical identity audit exceeds explicit output bound")
+                      audits.append({"path":rel,"role":role,"rows":len(rows),"bad_count":len(bad),"first_bad":bad[:20],"bad_values":sorted({str(v["value"]) for v in bad})[:40]})
+              except (UnicodeError,csv.Error): pass
+          chunk="object-ff81300f1dc70f6e23f502214a77c1b0113935632453c2700ed29890c44aebc2.z"
+          chunk_dir=work/"registry-object"; chunk_dir.mkdir()
+          subprocess.run(["gh","release","download","nml-nba-records-v1-202610","--repo",repo,"--pattern",chunk,"--dir",str(chunk_dir)],check=True,capture_output=True,timeout=80)
+          packed=(chunk_dir/chunk).read_bytes()
+          if len(packed)!=1036 or hashlib.sha256(packed).hexdigest()!="ff81300f1dc70f6e23f502214a77c1b0113935632453c2700ed29890c44aebc2": raise RuntimeError("Retained registry object differs")
+          decoder=zlib.decompressobj(); registry_raw=decoder.decompress(packed,2178)
+          if len(registry_raw)!=2177 or not decoder.eof or decoder.unused_data or decoder.unconsumed_tail or hashlib.sha256(registry_raw).hexdigest()!="5a5f50c9f33615065b888b93c9f284b932ba59e7b96e701c734dfc73e1230919": raise RuntimeError("Retained registry bytes differ")
+          registry=json.loads(registry_raw)
+          report={"schema_version":"nml-native-identity-diagnosis-v1","readback_at":datetime.now(timezone.utc).isoformat(),"execution_sha":os.environ["GITHUB_SHA"],"diagnostic_run":os.environ["GITHUB_RUN_ID"],"native_run":40080779828,"native_artifact":12555221476,"native_source":run["head_sha"],"files":files,"identity_audits":audits,"registry":registry,"sports_source_requests":0,"forecasts_generated":0,"records_written":0}
           encoded=json.dumps(report,sort_keys=True,separators=(",",":")).encode()
-          if len(encoded)>65536: raise RuntimeError("Compact durable evidence exceeds 64 KiB; no truncation")
+          if len(encoded)>65536: raise RuntimeError("Forensic summary exceeds 64 KiB; no truncation")
           (work/"evidence.json").write_bytes(encoded+b"\n")
           print(encoded.decode())
           PY
