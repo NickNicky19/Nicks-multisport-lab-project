@@ -59,60 +59,65 @@ jobs:
           if-no-files-found: warn
           path: ${{ runner.temp }}/nml-public-site-proof/
 
-  release-prepare:
+  readiness-plan:
     if: >-
       github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
       github.actor == 'NickNicky19' && github.event_name == 'push' &&
       github.ref == 'refs/heads/verification/pr22-public-f067-20261024' &&
       startsWith(github.event.head_commit.message, 'Read PR22 public evidence')
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 25
     permissions:
       contents: read
-      pull-requests: write
-      actions: write
+      pull-requests: read
+      actions: read
+      checks: read
+      statuses: read
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.12'
-      - name: Open the verified repair PR and request its ordinary feature-branch CI
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: cddc8be9798a4912c6893ff9dd9ee3702791a7f0
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Observe ordinary PR CI with the unchanged watcher and obtain a read-only exact-head landing plan
         run: |
           python3 - <<'PY'
-          import json, os, subprocess
+          import hashlib, json, os, subprocess
           from datetime import datetime, timezone
           from pathlib import Path
-          repo="NickNicky19/Nicks-multisport-lab-project"; branch="implementation/sdv-publisher-identity-recovery"
-          expected="cddc8be9798a4912c6893ff9dd9ee3702791a7f0"
-          if os.environ.get("GITHUB_EVENT_NAME")!="push" or os.environ.get("GITHUB_ACTOR")!="NickNicky19" or os.environ.get("GITHUB_REF")!="refs/heads/verification/pr22-public-f067-20261024" or os.environ.get("GITHUB_RUN_ATTEMPT")!="1": raise RuntimeError("Unexpected release-preparation authority or retry")
-          work=Path(os.environ["RUNNER_TEMP"])/"nml-public-evidence-readback";work.mkdir(parents=True,exist_ok=True)
-          def run(args):
-              p=subprocess.run(["gh",*args],capture_output=True,text=True,timeout=60)
-              if len(p.stdout.encode())+len(p.stderr.encode())>2*1024*1024: raise RuntimeError("Release metadata exceeds 2 MiB")
-              if p.returncode: raise RuntimeError("GitHub CLI release preparation failed: "+p.stderr[-1200:])
-              return p.stdout
-          def api(path): return json.loads(run(["api","repos/"+repo+"/"+path]))
-          main=api("git/ref/heads/main")["object"]["sha"]
-          head=api("git/ref/heads/"+branch)["object"]["sha"]
-          if main!="f06735974a388fa9e1a39e0815341de889cc25ae" or head!=expected: raise RuntimeError("New main/head work observed; preserve it and re-review")
-          commit=api("git/commits/"+head)
-          if commit["tree"]["sha"]!="6d4ba723cc3cb183db7136565d58fdcf7141784a" or [row["sha"] for row in commit["parents"]]!=["18ec769acf2f237eeba09aaa4e03b6a0caa04a44"]: raise RuntimeError("Final candidate tree/ancestry differs")
-          body="The native coordinator stopped after a successful six-request source capture because six later December TBD games use unresolved team IDs. This repair keeps those complete original rows while allowing only the verified future-date placeholder signature outside the selected UTC date. Target-date and normalized identities remain strict.\n\nPlanning restarts now recover the earliest completed same-date capture before any new provider request. They preserve original clocks and attempt limits, authenticate reservation/request linkage, and retain current freshness, runtime and planning-window gates. Missing, corrupt or stale originals do not trigger replacement captures.\n\nVerified source: `18ec769acf2f237eeba09aaa4e03b6a0caa04a44`. Hosted focused checks passed 17 input and 26 coordinator tests, both normally and under optimized Python. Independent durable archive recovery reproduced the original deployed error and passed the corrected DEVELOPMENT_ONLY plan plus all input replays: 1,206 schedule rows, 516 roster rows, 11 games, 382 candidates and 32 shards. No new provider request or genuine forecast was produced. Full candidate CI is a separate required gate.\n\nThis also retains PR #22's actual merge/Pages/public-browser evidence. R0/K0 laws, all 14 categories, fixed history, protected pilots, original records, policies, workflows, source/archive/ledger limits and NO_ACTION are unchanged. No future issuance, final grade, model qualification, odds or financial settlement is claimed.\n\nSee HANDOFF_STATUS.md and the three new structured deployment/source receipts for exact run IDs, clocks, commands, results and remaining operating verification."
-          bodyfile=work/"pr-body.txt";bodyfile.write_text(body)
-          existing=json.loads(run(["pr","list","--repo",repo,"--head",branch,"--base","main","--state","open","--json","number,headRefOid,url"]))
-          if len(existing)>1 or existing and existing[0]["headRefOid"]!=expected: raise RuntimeError("Existing PR/head differs")
-          if existing: pr=existing[0]
-          else:
-              url=run(["pr","create","--repo",repo,"--base","main","--head",branch,"--title","Recover NBA planning from future TBD fixtures and interrupted captures","--body-file",str(bodyfile)]).strip()
-              pr=json.loads(run(["pr","view",url,"--repo",repo,"--json","number,headRefOid,url"]))
-          if pr["headRefOid"]!=expected: raise RuntimeError("Created PR does not reference the tested source")
-          receipt={"schema_version":"nml-source-repair-pr-preparation-v1","repository":repo,"branch":branch,"head":expected,"source_commit":"18ec769acf2f237eeba09aaa4e03b6a0caa04a44","pr":pr,"started_at":datetime.now(timezone.utc).isoformat(),"dispatch_state":"INTENT_RETAINED","merge_mutations":0,"deployments_requested":0,"sports_source_requests":0,"production_record_writes":0}
-          (work/"evidence.json").write_text(json.dumps(receipt,sort_keys=True)+"\n")
-          run(["workflow","run","pages.yml","--repo",repo,"--ref",branch])
-          receipt.update(dispatch_state="ACKNOWLEDGED_EXECUTION_UNVERIFIED",completed_at=datetime.now(timezone.utc).isoformat())
-          (work/"evidence.json").write_text(json.dumps(receipt,sort_keys=True)+"\n")
-          print(json.dumps(receipt,sort_keys=True))
+          repo="NickNicky19/Nicks-multisport-lab-project";expected="cddc8be9798a4912c6893ff9dd9ee3702791a7f0"
+          root=Path(os.environ["GITHUB_WORKSPACE"])/"candidate"
+          out=Path(os.environ["RUNNER_TEMP"])/"nml-public-evidence-readback";out.mkdir(parents=True,exist_ok=True)
+          def invoke(args,timeout):
+              p=subprocess.run(args,cwd=root,capture_output=True,text=True,timeout=timeout)
+              if len(p.stdout.encode())+len(p.stderr.encode())>2*1024*1024: raise RuntimeError("Readiness receipt exceeds 2 MiB")
+              return p
+          sha=subprocess.run(["git","rev-parse","HEAD"],cwd=root,capture_output=True,text=True,check=True).stdout.strip()
+          if sha!=expected: raise RuntimeError("Readiness checkout differs")
+          watch=invoke(["python3","tools/pr_completion/pr_watch.py","--target",str(root)+"=https://github.com/"+repo+"/pull/24","--mode","until-actionable","--interval","15","--max-interval","60","--timeout","1200","--cursor",str(out/"cursor.json"),"--observations-file",str(out/"observations.ndjson")],1250)
+          (out/"watcher.json").write_text(watch.stdout)
+          try: observation=json.loads(watch.stdout)
+          except ValueError: raise RuntimeError("Watcher did not emit its original JSON")
+          if observation.get("state")!="ready":
+              print(json.dumps({"schema_version":"nml-pr24-readiness-summary-v1","state":observation.get("state"),"head":expected,"run_id":os.environ["GITHUB_RUN_ID"],"watcher_exit":watch.returncode,"merge_mutations":0,"provider_requests":0},sort_keys=True))
+              raise RuntimeError("Current exact-head readiness is not ready; inspect original watcher receipt")
+          check=invoke(["gh","pr","view","24","--repo",repo,"--json","headRefOid"],60)
+          if check.returncode or json.loads(check.stdout).get("headRefOid")!=expected: raise RuntimeError("PR changed before read-only landing plan")
+          plan=invoke(["python3","tools/pr_completion/pr_land.py","--repo",str(root),"--pr","https://github.com/"+repo+"/pull/24","--head",expected,"--mode","auto","--method","merge"],180)
+          (out/"canonical-plan.json").write_text(plan.stdout)
+          try: canonical=json.loads(plan.stdout)
+          except ValueError: raise RuntimeError("Landing helper did not emit canonical JSON")
+          receipt={"schema_version":"nml-pr24-readiness-summary-v1","head":expected,"source_commit":"18ec769acf2f237eeba09aaa4e03b6a0caa04a44","run_id":os.environ["GITHUB_RUN_ID"],"execution_sha":os.environ["GITHUB_SHA"],"observed_at":datetime.now(timezone.utc).isoformat(),"watcher":observation,"canonical_plan":canonical,"plan_exit":plan.returncode,"merge_mutations":0,"deployments_requested":0,"provider_requests":0,"forecasts_generated":0}
+          encoded=json.dumps(receipt,sort_keys=True,separators=(",",":")).encode()
+          if len(encoded)>262144: raise RuntimeError("Readiness summary exceeds 256 KiB")
+          (out/"evidence.json").write_bytes(encoded+b"\n");print(encoded.decode())
+          if plan.returncode: raise RuntimeError("Canonical plan was not ready; preserve original helper result")
           
           PY
       - name: Retain bounded evidence readback only
@@ -122,4 +127,9 @@ jobs:
           name: public-evidence-readback-${{ github.run_id }}-${{ github.run_attempt }}
           retention-days: 14
           if-no-files-found: warn
-          path: ${{ runner.temp }}/nml-public-evidence-readback/evidence.json
+          path: |
+            ${{ runner.temp }}/nml-public-evidence-readback/evidence.json
+            ${{ runner.temp }}/nml-public-evidence-readback/watcher.json
+            ${{ runner.temp }}/nml-public-evidence-readback/canonical-plan.json
+            ${{ runner.temp }}/nml-public-evidence-readback/cursor.json
+            ${{ runner.temp }}/nml-public-evidence-readback/observations.ndjson
