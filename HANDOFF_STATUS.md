@@ -2,6 +2,122 @@
 
 Updated: October 24, 2026 (UTC).
 
+## October 24 — PR #24 merged, deployed and independently verified
+
+Nick explicitly approved PR #24 at exact head
+`cddc8be9798a4912c6893ff9dd9ee3702791a7f0`, by merge commit and deployment.
+The existing guarded PR Completion workflow rechecked head, all checks,
+reviews and the unchanged canonical policy digest, used the unchanged
+`pr_land.py --confirm`, then verified exact-head merging.
+Actual guarded run **40086031019 / job 120849047996** succeeded.
+Main merge **`ceacbef7e4b8ac3b6da19eaa946b83af74887aee`** was created at
+**10:28:26 UTC**, with parents `f067359` and approved `cddc8be`.
+Its tree `6d4ba723cc3cb183db7136565d58fdcf7141784a` exactly equals the
+approved tree. No administrator override, protection bypass, force push,
+approved-head change or direct merge API substitution occurred.
+
+**Implementation source:** `18ec769acf2f237eeba09aaa4e03b6a0caa04a44`.
+PR branch was `implementation/sdv-publisher-identity-recovery`.
+The existing local workspace was left untouched; verification and landing
+used normal GitHub access and isolated GitHub-hosted execution.
+This post-deployment checkpoint is retained on **`docs/pr24-deployment`**,
+based on deployed main. Its documentation/evidence is not claimed as merged
+or deployed; carry it into the next working branch and eventual coherent PR.
+Older pending checkpoints below remain dated historical observations.
+
+**Software and actual publication:** candidate CI **40084441084** passed
+**1,088 Python tests / 786.761 s**, demo, **150 frontend passes / zero failures**,
+artifact/smoke and upload. Actual main Pages run **40086049201** independently
+passed **1,088 Python tests / 1,045.672 s**, demo `OFFLINE_EXAMPLES_ONLY`,
+**150 frontend passes / zero failures / 11,195.90652 ms**, admitted daily/production
+recovery and the bounded artifact/smoke (**eight validated data files**).
+Build **120849103628** and deployment **120852573539** both succeeded;
+the actual deploy completed **10:46:42 UTC**. Dispatch acceptance was not
+used as deployment proof. These are software checks, not forecast accuracy.
+
+Commands actually executed in their existing hosted workflows included:
+
+- `python3 scripts/github_release.py`, invoking the unchanged watcher,
+  canonical plan, explicitly confirmed landing helper and exact-head merge observer.
+- `python3 -m unittest discover -s tests -v`.
+- `python3 -m multisport_lab.demo`.
+- `node --test --test-isolation=none web/tests/*.test.mjs`.
+- `python3 -m multisport_lab.sdv_daily_publication` and
+  `python3 -m multisport_lab.sdv_production_publication`.
+- `python3 -m multisport_lab.publication --build-commit ceacbef7e4b8ac3b6da19eaa946b83af74887aee`.
+- `node web/tests/site-smoke.mjs output`.
+- The bounded `verify_public_site.py` against the real HTTPS site and exact
+  detached deployed checkout, using pinned Playwright/Chromium.
+
+**Actual public verification:** hosted **40086486296 / job 120850377586**
+passed at **10:47:34.488580 UTC**, then independent readback
+**40087386682 / job 120852989604** recovered its original proof at
+**10:48:52.599699 UTC**. The browser received build `ceacbef`, schema **7**,
+snapshot `67890d2e04e283ab000d42dca51b07d6516ab4e181af762ef62da5883d8f7db0`, with manifest export/publication clock
+**2026-10-24T10:46:16.988933Z** and actual raw manifest SHA-256
+`3254fe72cfe2e644af7f638757be48b0f8ee488d7084453d747ebb740bf8ead9`. Actual deployment completion is recorded separately
+above. The verifier checked **23 actual served manifest/data/static byte hashes**,
+**18 desktop/390-/320-pixel views**, six verified historical player names,
+historical matchups/dates, accessible source IDs, separate publication/input/
+issuance clocks, direct History navigation/refresh, all **14 categories**,
+and **135** direction/scope/2–6-leg **NO_ACTION** cases. There were no
+published-channel errors, browser runtime errors or horizontal overflow.
+Full structured proof and exact asset hashes are in
+`evidence/deployment/pr24-release-public-verification-20261024.json`.
+Screenshot artifact **12558070726** is **1,565,440 bytes**, with its actual
+14-day retention; this checkpoint does not claim permanent screenshot archival.
+
+**Preservation:** independent read-only tree comparison against prior main
+`f06735974a388fa9e1a39e0815341de889cc25ae` verified identical blob SHA,
+mode and type for all **23 protected source files / 19 original ledger records**;
+the entire `records` subtree is unchanged. Exactly ten intended paths changed:
+seven modifications, three additions, zero deletions or mode changes.
+Policy/workflow/law files and prior protection/source-recovery receipts are
+unchanged. This is Git object preservation proof, not a new raw-byte audit
+or rerun of frozen experiments.
+
+**Operating status at the readback:** coordinator **392458906** remains
+**active**, with its existing `2,17,32,47 * * * *` cron. No post-merge native
+execution was yet observed. The latest actual run is the preserved **40080779828**
+old-head planning failure at **09:08:34 UTC**; records index remains
+`af17d90c0894ddc5082ee8f13f1d90e4d3cf3e60`. No cause is inferred from an
+absent later run. The six-GET source capture, original clocks and actual failure
+are retained. This release neither retriggered an expired pilot nor created
+another scheduler. Installed scheduling and a successful website release are
+not a completed prospective forecast cycle.
+
+The repair's earlier normal/optimized input/restart checks and independent
+retained-source DEVELOPMENT_ONLY replay remain valid: **1,206 schedule rows /
+516 roster rows**, complete **11-game / 382-candidate / 32-shard** target-date
+plan and all input replays, with **zero new provider GETs**. Candidates are not
+a claim of usable fixed history for every player or confirmed participation.
+No actual operating capture or genuine forecast issuance occurred during this
+release verification. Software tests construct explicit test forecasts; no real
+retrospective comparison or frozen experiment was rerun.
+
+**Current actual counts:** **six historical bundles / six historical statistical
+grades; zero genuine upcoming forecasts, published offers, prospective outcomes/
+grades, qualified tickets and financial settlements**. New final outcomes remain
+pending until verified actual evidence exists; DNP is not zero production and
+corrections append. Research laws, all 13 NBA categories plus PA, conditioning,
+full fixed history, limits, inactive studies, missed pilots and separate NFL/MLB
+are preserved. No provider key, signup, paid service or new private-key dependency
+was introduced.
+
+**Next concrete task:** observe the next actual native run on `ceacbef`,
+confirm earliest retained PLAN capture recovery and an admitted immutable daily
+plan, then verify real fresh-input capture, timely R0/K0 originals, independent
+readback and public delivery. Planning for the retained October 25 UTC inventory
+closes **strictly before October 24 21:30 UTC / 4:30 p.m. CDT**. Its first eligible
+capture window is **21:30–22:30 UTC / 4:30–5:30 p.m. CDT**, with automatic new
+capture stopping at **22:15 UTC / 5:15 p.m. CDT**. First eligible issuance/readback
+is **22:30–22:45 UTC / 5:30–5:45 p.m. CDT**, retaining 300-second original
+latency and the required remote acknowledgment gates. These are retained-source,
+policy-derived windows, not promised or already issued forecasts. Do not shift
+them or backfill failures. Later verified final statistical grading and another
+successful scheduled run remain acceptance evidence still to be obtained.
+
+
 ## October 24, 09:54 UTC — retained-source planning repair passes focused/recovery verification
 
 **Implementation source `18ec769acf2f237eeba09aaa4e03b6a0caa04a44`**,
