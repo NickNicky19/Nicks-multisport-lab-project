@@ -66,67 +66,91 @@ jobs:
       github.ref == 'refs/heads/verification/pr22-public-f067-20261024' &&
       startsWith(github.event.head_commit.message, 'Read PR22 public evidence')
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 15
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: '3.12'
-      - name: Diagnose the actual retained native source identities without provider requests
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: 18ec769acf2f237eeba09aaa4e03b6a0caa04a44
+          path: candidate
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: f06735974a388fa9e1a39e0815341de889cc25ae
+          path: deployed
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Verify source repair and restart regressions without source collection or forecasting
         run: |
           python3 - <<'PY'
-          import csv, hashlib, io, json, os, re, subprocess, zlib
+          import hashlib, json, os, re, subprocess, sys, time
           from datetime import datetime, timezone
           from pathlib import Path
           repo="NickNicky19/Nicks-multisport-lab-project"
-          work=Path(os.environ["RUNNER_TEMP"])/"nml-public-evidence-readback"
-          work.mkdir(parents=True,exist_ok=True)
-          def api(path):
-              p=subprocess.run(["gh","api","repos/"+repo+"/"+path],capture_output=True,text=True,timeout=40,check=True)
-              if len(p.stdout.encode())>2*1024*1024: raise RuntimeError("Metadata exceeds 2 MiB")
-              return json.loads(p.stdout)
-          artifact=api("actions/artifacts/12555221476")
-          if artifact.get("expired") or artifact.get("name")!="nba-production-prepare-40080779828-1" or artifact.get("size_in_bytes",10**9)>2*1024*1024: raise RuntimeError("Expected retained native preparation artifact unavailable")
-          run=api("actions/runs/40080779828")
-          if run.get("head_sha")!="f06735974a388fa9e1a39e0815341de889cc25ae" or run.get("event")!="schedule": raise RuntimeError("Native run identity differs")
-          download=work/"native-original"
-          subprocess.run(["gh","run","download","40080779828","--repo",repo,"--name","nba-production-prepare-40080779828-1","--dir",str(download)],check=True,timeout=120,capture_output=True)
-          files=[]; audits=[]; total=0
-          for path in sorted(download.rglob("*")):
-              if not path.is_file(): continue
-              raw=path.read_bytes(); total+=len(raw)
-              if total>4*1024*1024: raise RuntimeError("Recovered native artifact exceeds diagnostic bound")
-              rel=str(path.relative_to(download))
-              files.append({"path":rel,"bytes":len(raw),"sha256":hashlib.sha256(raw).hexdigest()})
-              try:
-                  reader=csv.DictReader(io.StringIO(raw.decode("utf-8-sig"),newline=""))
-                  fields=reader.fieldnames or []
-                  roles={"schedule":["id","game_id","home_id","away_id"],"roster":["athlete_id","team_id"]}
-                  for role,keys in roles.items():
-                      if not set(keys)<=set(fields): continue
-                      rows=list(reader); bad=[]
-                      for i,row in enumerate(rows,2):
-                          for key in keys:
-                              value=row.get(key)
-                              if type(value) is not str or re.fullmatch(r"[1-9][0-9]*",value) is None:
-                                  bad.append({"csv_line":i,"field":key,"value":value,"uid":row.get("uid"),"season":row.get("season"),"event_date":row.get("date"),"home_label":row.get("home_display_name"),"away_label":row.get("away_display_name"),"status":row.get("status_type_name"),"season_type":row.get("season_type")})
-                      if len(bad)>10000: raise RuntimeError("Noncanonical identity audit exceeds explicit output bound")
-                      audits.append({"path":rel,"role":role,"rows":len(rows),"bad_count":len(bad),"first_bad":bad[:20],"bad_values":sorted({str(v["value"]) for v in bad})[:40],"next_game_date_rows":[{key:row.get(key) for key in ["id","date","home_id","away_id","home_display_name","away_display_name","status_type_name","status_type_state","status_type_completed","time_valid"]} for row in rows if role=="schedule" and str(row.get("date","")).startswith("2026-10-25")]})
-              except (UnicodeError,csv.Error): pass
-          chunk="object-ff81300f1dc70f6e23f502214a77c1b0113935632453c2700ed29890c44aebc2.z"
-          chunk_dir=work/"registry-object"; chunk_dir.mkdir()
-          subprocess.run(["gh","release","download","nml-nba-records-v1-202610","--repo",repo,"--pattern",chunk,"--dir",str(chunk_dir)],check=True,capture_output=True,timeout=80)
-          packed=(chunk_dir/chunk).read_bytes()
-          if len(packed)!=1036 or hashlib.sha256(packed).hexdigest()!="ff81300f1dc70f6e23f502214a77c1b0113935632453c2700ed29890c44aebc2": raise RuntimeError("Retained registry object differs")
-          decoder=zlib.decompressobj(); registry_raw=decoder.decompress(packed,2178)
-          if len(registry_raw)!=2177 or not decoder.eof or decoder.unused_data or decoder.unconsumed_tail or hashlib.sha256(registry_raw).hexdigest()!="5a5f50c9f33615065b888b93c9f284b932ba59e7b96e701c734dfc73e1230919": raise RuntimeError("Retained registry bytes differ")
-          registry=json.loads(registry_raw)
-          report={"schema_version":"nml-native-identity-diagnosis-v1","readback_at":datetime.now(timezone.utc).isoformat(),"execution_sha":os.environ["GITHUB_SHA"],"diagnostic_run":os.environ["GITHUB_RUN_ID"],"native_run":40080779828,"native_artifact":12555221476,"native_source":run["head_sha"],"files":files,"identity_audits":audits,"registry":registry,"sports_source_requests":0,"forecasts_generated":0,"records_written":0}
-          encoded=json.dumps(report,sort_keys=True,separators=(",",":")).encode()
-          if len(encoded)>65536: raise RuntimeError("Forensic summary exceeds 64 KiB; no truncation")
-          (work/"evidence.json").write_bytes(encoded+b"\n")
-          print(encoded.decode())
+          workspace=Path(os.environ["GITHUB_WORKSPACE"])
+          candidate=workspace/"candidate"; deployed=workspace/"deployed"
+          work=Path(os.environ["RUNNER_TEMP"])/"nml-public-evidence-readback";work.mkdir(parents=True,exist_ok=True)
+          report={"schema_version":"nml-native-source-repair-verification-v1","started_at":datetime.now(timezone.utc).isoformat(),"source_commit":"18ec769acf2f237eeba09aaa4e03b6a0caa04a44","execution_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"status":"RUNNING","sports_source_requests":0,"forecasts_generated":0,"records_written":0,"checks":[]}
+          def save():
+              encoded=json.dumps(report,sort_keys=True,separators=(",",":")).encode()
+              if len(encoded)>65536: raise RuntimeError("Bounded verification receipt exceeds 64 KiB")
+              (work/"evidence.json").write_bytes(encoded+b"\n")
+              print(encoded.decode(),flush=True)
+          try:
+              for optimized in (False,True):
+                  for filename in ("test_sdv_production_inputs.py","test_sdv_production_coordinator.py"):
+                      args=[sys.executable]+(["-O"] if optimized else [])+["-m","unittest","discover","-s","tests","-p",filename,"-v"]
+                      before=time.monotonic()
+                      p=subprocess.run(args,cwd=candidate,capture_output=True,text=True,timeout=300)
+                      output=p.stdout+p.stderr
+                      if len(output.encode())>2*1024*1024: raise RuntimeError("Focused test output exceeds 2 MiB")
+                      match=re.search(r"Ran (\d+) tests? in ([0-9.]+)s",output)
+                      item={"command":" ".join(args),"returncode":p.returncode,"wall_seconds":round(time.monotonic()-before,6),"tests":None if not match else int(match.group(1)),"suite_seconds":None if not match else float(match.group(2))}
+                      report["checks"].append(item)
+                      if p.returncode or not match:
+                          item["failure_tail"]=output.splitlines()[-30:];save();raise RuntimeError("Focused regression failed: "+filename)
+              os.chdir(candidate);sys.path.insert(0,str(candidate))
+              from multisport_lab import sdv_production_archive as archives, sdv_production_runner as runner, sdv_production_inputs as inputs, sdv_production_forecasts as forecasts, sdv_production_common as common
+              from multisport_lab.integrity import IntegrityError,canonical
+              ref={"bytes":8797,"name":"object-226339d041081220d9cfa777494a35440ade35bd307dac36e846bca63e73ce77.z","sha256":"226339d041081220d9cfa777494a35440ade35bd307dac36e846bca63e73ce77","tag":"nml-nba-records-v1-202610"}
+              archive=archives.GitHubReleaseArchive(write_budget_bytes=0,write_budget_objects=0)
+              pack,sources=runner.recover_source_pack(ref,archive)
+              if set(sources)!={"schedule","roster"} or len(pack["requests"])!=6: raise RuntimeError("Retained native source roles/request count differ")
+              s,r=sources["schedule"],sources["roster"]
+              expected={"schedule":"e927b966d1fa0e3129386aac201f115d6b1ce7c5ea1cbe429a0177f1d23dcdde","roster":"02b684f0075da0b4d00f9d2c4f4d03a8b5badf395824f30ca233e1df7f8c5ac5"}
+              for role,value in sources.items():
+                  if hashlib.sha256(value[0]).hexdigest()!=expected[role]: raise RuntimeError("Retained original SHA differs")
+                  (work/(role+".csv")).write_bytes(value[0])
+              policy=json.loads((candidate/"config/sdv_production_policy_v2.json").read_text())
+              strict="from pathlib import Path; from multisport_lab.sdv_production_inputs import _tables; import sys; _tables(Path(sys.argv[1]).read_bytes(),Path(sys.argv[2]).read_bytes())"
+              p=subprocess.run([sys.executable,"-c",strict,str(work/"schedule.csv"),str(work/"roster.csv")],cwd=deployed,capture_output=True,text=True,timeout=30,env=dict(os.environ,PYTHONPATH=str(deployed)))
+              if p.returncode==0 or "Invalid production identity" not in p.stderr: raise RuntimeError("Original deployed failure did not reproduce on retained bytes")
+              report["original_failure_reproduced"]="Invalid production identity"
+              binding=forecasts.make_source_binding("18ec769acf2f237eeba09aaa4e03b6a0caa04a44",root=candidate)
+              plan=inputs.make_plan(s[0],r[0],s[1],r[1],source_originals={"schedule":s[2],"roster":r[2]},game_date="2026-10-25",producer_binding=binding,mode="DEVELOPMENT_ONLY",policy=policy)
+              inputs.verify_plan_sources(plan,s[0],r[0],s[1],r[1],source_originals={"schedule":s[2],"roster":r[2]})
+              if len(plan["events"])!=11 or plan["source_schedule_rows"]!=1206: raise RuntimeError("Complete retained target inventory differs")
+              for event in plan["events"]:
+                  body=inputs.make_input(plan,event["event"]["event_id"],s[0],r[0],s[1],r[1],source_originals={"schedule":s[2],"roster":r[2]},mode="DEVELOPMENT_ONLY")
+                  inputs.verify_input_sources(body,s[0],r[0],s[1],r[1],source_originals={"schedule":s[2],"roster":r[2]},plan=plan)
+              try: inputs._tables(s[0],r[0],policy)
+              except IntegrityError: report["no_context_import_rejected"]=True
+              else: raise RuntimeError("No-context source import was weakened")
+              try: inputs._tables(s[0],r[0],policy,"2026-12-04")
+              except IntegrityError: report["target_date_tbd_rejected"]=True
+              else: raise RuntimeError("Target-date TBD identity was admitted")
+              source_rows,_=inputs._tables(s[0],r[0],policy,"2026-10-25")
+              deferred=[{key:row[key] for key in ("id","date","home_id","away_id","home_display_name","away_display_name")} for row in source_rows if row["home_id"]=="-1"]
+              report["retained_replay"]={"mode":"DEVELOPMENT_ONLY","source_pack_ref":ref,"original_capture_at":pack["captured_at"],"original_source_run":pack["authorization"]["run_id"],"original_source_head":pack["authorization"]["head_sha"],"original_provider_gets":len(pack["requests"]),"sources":[sources[role][1] for role in ("schedule","roster")],"schedule_rows":len(source_rows),"roster_rows":len(inputs._tables(s[0],r[0],policy,"2026-10-25")[1]),"outside_game_date_rows":plan["outside_game_date_rows"],"events":len(plan["events"]),"players":sum(len(event["candidates"]) for event in plan["events"]),"shards":sum(len(event["shards"]) for event in plan["events"]),"exclusions":len(plan["exclusions"]),"plan_id":plan["plan_id"],"deferred_future_placeholders":deferred,"archive_read_metrics":archive.request_metrics(),"first_windows":[{key:plan["events"][0][key] for key in ("cycle_id","cutoff_at","capture_opens_at","issuance_closes_at")}]}
+              report.update(status="PASS",completed_at=datetime.now(timezone.utc).isoformat());save()
+          except Exception as error:
+              report.update(status="FAIL",error=str(error)[:800],completed_at=datetime.now(timezone.utc).isoformat());save();raise
+          
           PY
       - name: Retain bounded evidence readback only
         if: always()
