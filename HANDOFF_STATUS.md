@@ -1,6 +1,141 @@
 # Implementation handoff status
 
-Updated: October 22, 2026 (UTC).
+Updated: October 24, 2026 (UTC).
+
+## October 24, 00:24 UTC — automatic-delivery repair implemented; release pending
+
+**Implementation source:** `00a3018bad6ec4b5f23df54a19546b21a3fc4e77`,
+branch `implementation/sdv-delivery-repair`, based on current public main
+`ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`. This is a review candidate,
+not a deployment or genuine issuance. The original local assembly commit
+`d67d5a45937cbf64bdc3d36fe37ca67b56c66365` remains on local branch
+`preserved/sdv-delivery-source-d67d5a4`; its complete tree exactly equals the
+GitHub implementation tree `56509fbf62c6a4d60e9fb1381dfe1cabc99d104d`.
+No reset, force push or earlier-record rewrite was used. PR #20 and its separate
+private player-line work remain at `209d12456f6bba752392f69ed1f2773ef0dc14c5`.
+
+**Actual diagnosis:** the public application renders six readable historical
+bundles and six historical grades; the empty Upcoming view reflects zero
+delivered genuine forecasts. Actual October 23 native starts included 09:46:44,
+14:28:56, 18:38:52 and 21:42:01 UTC. No execution was observed inside the original
+13:00–14:00 planning window; the absent run's cause is not established. The
+14:28 run failed, while the later two runs completed successfully without
+producing a timely plan or forecasts. A configured cron or a successful
+no-action run is not evidence of delivery. Public byte/hash, desktop/mobile,
+direct History-refresh and source-ID evidence is retained in
+`evidence/operational/sdv-delivery-diagnosis-20261023.json`.
+The missed protected first cycle, its early-rejected attempt, 23 protected
+files and 19 original records remain unchanged.
+
+**Implemented operating change:** the separately registered future v2 policy
+`3ea45e39dddee1222a04d2998003ec90f7241f59f2e0a721b2fba128ad97f4ed`
+first permits UTC game dates from October 25. Prior-day planning opens at 00:00
+and closes strictly before 21:30 UTC. Its first possible planning window is
+October 24 00:00–21:30 UTC / October 23 7 p.m.–October 24 4:30 p.m. CDT.
+Actual event/cohort and event-specific times require an admitted immutable plan;
+none is invented here. The existing coordinator/lock/cron remains the only
+scheduler. One held capture writer and at most sixteen read-only waiting shard
+workers recover exact inputs and intents, then call the existing T90 producer
+only while timely. Local wakes do not authorize late or replacement forecasts.
+Generation and required remote recovery retain their T90–T75 window and
+300-second original latency; capture T150–T90, automatic new-capture stop T105,
+36-hour publisher age, source quotas, participation conditioning, the 26,645-row
+panel and unchanged R0/K0 laws are preserved. Old v1 policy/bindings/originals
+remain readable under their own identities.
+
+Final-source checks under v2 can occur throughout a UTC day, require at least
+four hours of game age, ten hours between captures and the unchanged maximum of
+two captures/day. A metadata-only grade selection after capture/work binds the
+current exact retained final source. Nonfinal/missing remain pending; DNP is not
+zero; corrections append. Failed phases are recorded before publication
+reconciliation. Refresh recovery failures now remain visible partial states
+while independent eligible captures continue. No comparative study was scored.
+
+**Publication/UI:** Python and JavaScript validate the new 36-file binding and
+v2 policy, while preserving the legacy 34-file inventory and exact original
+policy associations. A concrete first-date frontend defect was fixed: an
+October 25 UTC game may legitimately have its T90 issuance on October 24.
+Overview and empty Upcoming now explain the unmet delivery step, link to
+readable historical examples, and separate publication, last forecast-input
+capture and genuine issuance clocks. An actual eligible future record removes
+the empty-delivery banner. Development and ineligible records do not count.
+Offers, private prop archives, odds, EV and ticket admission remain separate.
+
+**Capacity and limitations:** unchanged shard limits are 512 records / 32 MiB;
+complete reserved roles plus forensic headroom remain 327 records /
+13,803,520 bytes. HOLD originals consume no shard ledger records; their
+registered worst case is 128 objects / 512 KiB per day within the existing
+shared 4,096-object / 512-MiB metadata reservation, with actual archive charges.
+The 213-byte source-binding delta projects the frozen maximum forecast envelope
+from 32,201 to 32,414 bytes, below the unchanged 65,536 ceiling. This is metadata
+arithmetic, not a new full-history run. Synthetic 40-player plan/input bodies
+measure 25,035 / 14,569 bytes. Maximum 16 workers plus one capture job can consume
+5,950 runner-minutes before short-job overhead. Native cron and queues remain
+best effort; maximum-capacity API throughput and the connected held path have
+not been measured on a hosted runner. Existing archive/action/source guards
+can stop with explicit partial evidence; no unlimited throughput is claimed.
+See `evidence/operational/sdv-delivery-capacity-20261023.json`.
+
+**Actual checks:** `node --test --test-isolation=none web/tests/*.test.mjs`
+passed 150 frontend tests (13.499 s); `python3 -m multisport_lab.demo` passed.
+Focused held runtime tests passed 20 normally / 36.662 s and 20 under
+`python3 -O` / 25.717 s; runner tests passed 20 normally / 0.607 s and
+20 optimized / 0.616 s. New policy (10) and legacy input (14) focused tests
+passed normally and optimized. The cleanup/publication six-test regression
+passed normally / 0.092 s and optimized / 0.093 s. Independent review found
+no remaining material defect in the final runtime/policy/pins/publication/
+grading order. No frozen experiment or new full-history diagnostic was run.
+
+Required local `python3 -m unittest discover -s tests -v` did **not** pass:
+1,045 tests / 438.007 s, 44 failures and 19 errors during process exhaustion.
+The exact failed log is retained, not replaced by a green claim. The workspace
+had 32,255 unreaped processes, 32,026 named git, parented to PID 1 (tail);
+forking Git/bubblewrap failed with EAGAIN. A real secondary test-fixture defect
+was reproduced: nested setup failed before cleanup registration and leaked a
+synthetic history ID. Cleanup now registers before setup; all three new
+regressions failed before that fix and pass afterward normally and optimized.
+Production history validators were not relaxed and original records are
+unchanged. Fresh canonical GitHub CI is the final integration gate, still
+pending at this committed checkpoint. See
+`evidence/operational/sdv-delivery-local-validation-20261024.json`.
+
+The isolated candidate browser passed 18 desktop/mobile views at 1440, 390 and
+320 px, all six verified historical names, all fourteen categories, History
+refresh/source IDs/Performance, twelve scope checks and 135 builder NO_ACTION
+combinations. No JavaScript error, missing asset or overflow was observed.
+Its build marker identifies a development preview; it is not public deployment.
+See `evidence/operational/sdv-delivery-local-browser-20261023.json`.
+
+**GitHub upload/recovery:** native push could not fork its HTTPS helper.
+Using the existing authenticated GitHub connector, the complete candidate tree
+was retained as a normal new branch commit. The local assembly was preserved;
+no protected branch was changed. An independent public GitHub ZIP recovery
+downloaded 3,471,114 bytes and verified all 555 manifest entries and all 34
+changed files against the implementation. A mutable URL/hash alone was not
+treated as recovery. See
+`evidence/operational/sdv-delivery-source-recovery-20261024.json`.
+The separate private MoviOdds draft-asset upload remains unverified after its
+earlier HTTP 401; its local original ZIP is preserved. That private archive
+problem does not block the licensed SDV statistical-forecast channel.
+
+**Evidence counts:** six historical bundles / six historical statistical grades;
+zero genuine prospective forecasts, zero published offers, zero prospective
+outcomes/grades, zero qualified tickets and zero financial settlements. This
+package made zero sports-provider requests, zero dispatches and zero genuine
+generations. Public main/Pages remain `ef9e270`; this candidate has not merged
+or deployed. OPS002, PROS004, S0, DEV005, the expired pilot and NFL/MLB remain
+unchanged.
+
+**Next concrete action:** finish the final-head standard GitHub checks and
+readiness review, then request one consolidated exact-head approval for
+merge/deployment and this separately identified future-only operating policy.
+Before landing, recover the current production registry and preserve any
+already-admitted v1 cycle. After an approved release, verify the actual
+default-branch workflow, native run, complete fresh plan/input recovery, timely
+original paired forecasts, public served bytes and later verified final grades.
+Do not dispatch or backfill a missed window, and do not call code/tests alone
+a completed operating acceptance cycle.
+
 
 ## October 22, late UTC — first-cycle start missed; scheduled-run repair prepared
 
