@@ -17,7 +17,8 @@ jobs:
     if: >-
       github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
       github.actor == 'NickNicky19' && github.event_name == 'push' &&
-      github.ref == 'refs/heads/verification/pr24-public-ceac-20261024'
+      github.ref == 'refs/heads/verification/pr24-public-ceac-20261024' &&
+      !startsWith(github.event.head_commit.message, 'Read PR24 public evidence')
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -81,3 +82,61 @@ jobs:
           retention-days: 14
           if-no-files-found: warn
           path: ${{ runner.temp }}/nml-public-site-proof/
+
+  evidence-readback:
+    if: >-
+      github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
+      github.actor == 'NickNicky19' && github.event_name == 'push' &&
+      github.ref == 'refs/heads/verification/pr24-public-ceac-20261024' &&
+      startsWith(github.event.head_commit.message, 'Read PR24 public evidence')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - name: Independently recover the completed public proof and inspect installed operation state
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, subprocess
+          from datetime import datetime, timezone
+          from pathlib import Path
+          repo="NickNicky19/Nicks-multisport-lab-project"
+          def api(path):
+              p=subprocess.run(["gh","api","repos/"+repo+"/"+path],capture_output=True,text=True,timeout=40,check=True)
+              if len(p.stdout.encode())>2*1024*1024: raise RuntimeError("Metadata exceeds 2 MiB")
+              return json.loads(p.stdout)
+          work=Path(os.environ["RUNNER_TEMP"])/"nml-pr24-evidence-readback";work.mkdir(parents=True,exist_ok=True)
+          run=api("actions/runs/40086486296")
+          if run.get("conclusion")!="success" or run.get("head_sha")!="4b8513d738a2529e84e3202ff4927b43ff65a72a": raise RuntimeError("Exact public verification run did not succeed")
+          inventory=api("actions/runs/40086486296/artifacts?per_page=100")
+          matches=[row for row in inventory.get("artifacts",[]) if row.get("name")=="public-pr24-40086486296-1"]
+          if len(matches)!=1 or matches[0].get("expired") or matches[0].get("size_in_bytes",10**9)>40*1024*1024: raise RuntimeError("Expected bounded public proof is unavailable")
+          artifact=matches[0]
+          download=work/"original"
+          subprocess.run(["gh","run","download","40086486296","--repo",repo,"--name","public-pr24-40086486296-1","--dir",str(download)],check=True,timeout=120,capture_output=True)
+          raw=(download/"public-verification.json").read_bytes()
+          if len(raw)>1024*1024: raise RuntimeError("Public proof exceeds 1 MiB")
+          proof=json.loads(raw)
+          if proof.get("status")!="PASS" or proof.get("public_verified") is not True or proof.get("expected_build")!="ceacbef7e4b8ac3b6da19eaa946b83af74887aee" or proof.get("verifier_sha256")!="e48abb7eba3b1dec5d986e569ab1d585e4917fbddda42936cf4562c65f0d3539": raise RuntimeError("Recovered public proof identity differs")
+          workflow=api("actions/workflows/392458906")
+          runs=api("actions/runs?event=schedule&per_page=5")
+          registry=api("git/ref/heads/records/sdv-production-index")
+          main=api("git/ref/heads/main")
+          selected=[{k:v.get(k) for k in ["id","head_sha","status","conclusion","created_at","run_started_at","updated_at","event","path"]} for v in runs.get("workflow_runs",[]) if v.get("workflow_id")==392458906]
+          report={"schema_version":"nml-pr24-postdeployment-readback-v1","readback_at":datetime.now(timezone.utc).isoformat(),"execution_sha":os.environ["GITHUB_SHA"],"run_id":os.environ["GITHUB_RUN_ID"],"source_artifact_id":artifact["id"],"source_artifact_bytes":artifact["size_in_bytes"],"source_public_report_sha256":hashlib.sha256(raw).hexdigest(),"public_verification":proof,"operations":{"workflow":{k:workflow.get(k) for k in ["id","name","path","state","created_at","updated_at"]},"latest_scheduled_runs":selected,"registry_commit":registry["object"]["sha"],"main_commit":main["object"]["sha"]},"new_sports_source_requests":0,"forecasts_generated":0,"merge_mutations":0,"deployments_requested":0}
+          encoded=json.dumps(report,sort_keys=True,separators=(",",":")).encode()
+          if len(encoded)>65536: raise RuntimeError("Durable compact proof exceeds 64 KiB; no truncation")
+          (work/"evidence.json").write_bytes(encoded+b"\n");print(encoded.decode())
+          
+          PY
+      - name: Retain bounded proof readback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: public-pr24-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/nml-pr24-evidence-readback/evidence.json
