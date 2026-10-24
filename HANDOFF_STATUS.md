@@ -2,6 +2,162 @@
 
 Updated: October 24, 2026 (UTC).
 
+## October 24, 09:54 UTC — retained-source planning repair passes focused/recovery verification
+
+**Implementation source `18ec769acf2f237eeba09aaa4e03b6a0caa04a44`**,
+branch `implementation/sdv-publisher-identity-recovery`, parent current public
+main `f06735974a388fa9e1a39e0815341de889cc25ae`. This later evidence/documentation
+checkpoint changes no executing source bytes. The exact current review head and
+required full-CI result are recorded on its GitHub PR/checks; neither merge nor
+deployment of this repair is claimed.
+
+Actual healthy hosted diagnostic **40083437405** completed at
+**09:53:43.750960 UTC**; job **120841474497** succeeded at **09:53:46 UTC**.
+Commands:
+
+- `python3 -m unittest discover -s tests -p test_sdv_production_inputs.py -v`:
+  **17 passed / 0.410 s**.
+- `python3 -m unittest discover -s tests -p test_sdv_production_coordinator.py -v`:
+  **26 passed / 138.947 s**.
+- The same input command under actual `python3 -O`:
+  **17 passed / 0.438 s**.
+- The same coordinator command under actual `python3 -O`:
+  **26 passed / 138.908 s**.
+
+The same job independently recovered the exact original source pack from this
+repository's immutable public Releases archive, authenticated its captured
+authorization/request chain, publisher metadata, raw bytes and hashes, and
+reproduced `Invalid production identity` using deployed `f067359` on those
+same originals. Corrected-source DEVELOPMENT_ONLY plan **and all 11 input
+replays** passed, retaining **1,206 schedule rows / 516 roster rows**,
+**1,195 outside-date rows**, **11 games / 382 roster candidates / 32 shards**.
+Strict no-context import and a selected date containing a TBD event still
+rejected. All six future TBD originals remain unchanged. This made **18
+read-only own-repository archive HTTP requests**, **zero new sports-source
+GETs**, **zero real-history model fits/genuine forecasts** and **zero production record writes**.
+The unit suites deliberately construct synthetic forecast/outcome fixtures;
+these counters describe the actual-source diagnostic, not those invented tests.
+The original capture remains six source GETs at **09:08:56.422085 UTC**.
+
+Regressions cover selected/past/unknown/mixed/reversed IDs, label/UID/time
+conflicts, duplicates, strict normalized identities, full-row/plan/input replay,
+two consumed PLAN captures with earliest-original recovery, interrupted
+readback, no fallback to a later capture, stale originals, closed windows and
+role/request/reservation mismatches. Independent source review found an initial
+fresh-capture return-contract mistake in the uncommitted proposal; it was fixed
+before source `18ec769` and exercised by the successful hosted tests.
+Final independent static review found no remaining blocker.
+
+Exact bounded proof is
+`evidence/operational/sdv-retained-source-repair-verification-20261024.json`.
+This repair adds **no production record type or envelope field**: unchanged
+36-file producer inventory, **512 records / 32 MiB** shard limit, fixed history,
+original source/archive/action quotas, all 14 categories and mathematical laws.
+The 382 roster candidates do **not** establish fixed-history support for every
+player or confirmed participation. No frozen comparison or full-history
+diagnostic was repeated.
+
+**Next release gate:** required full `unittest discover`, offline demo,
+frontend tests and artifact/smoke on the completed review candidate, followed
+by a fresh exact-head guarded PR Completion plan. The final approval for PR #22
+was consumed by its actual merge/deployment; it does not land this separate
+repair. No scheduler, production state, source clocks, missed pilot or inactive
+study was changed by this test/evidence package. Real timely forecasts,
+publication and later statistical final grading remain pending, with zero
+genuine forecasts/offers/prospective outcomes/grades/tickets/settlements at this
+checkpoint.
+
+
+## October 24 — PR #22 merged and publicly verified; actual planning failure isolated
+
+The approved head `4dab23d24f2b46fb49c9ae19ec04d2b5a52968a1` merged normally
+as main **`f06735974a388fa9e1a39e0815341de889cc25ae`** at **07:49:06 UTC**.
+The merge tree exactly equals the approved tree. Guarded helper run
+**40075608129** succeeded without protection bypass, administrator override or
+approved-head changes. Actual Pages run **40075629451** completed successfully
+at **07:59:40 UTC**; build **120818230698** and deployment **120820182283**
+both succeeded.
+
+Independent real HTTPS Chromium verification **40080319441** passed at
+**09:02:42 UTC**, against the actual public URL and build `f067359`.
+It verified all **23 served manifest/data/static asset byte hashes**, six
+historical names/matchups/dates/source IDs, separate clocks, direct History
+refresh, all **14 categories**, **18 views** at 1440/390/320 pixels and
+**135 scoped/directed 2–6-leg NO_ACTION cases**. Original browser proof was
+recovered independently by **40081128541**. Structured proof, exact hashes and
+run identities are retained in
+`evidence/deployment/pr22-release-public-verification-20261024.json`.
+The first verifier run **40077145560** failed because Chromium response bodies
+were read after navigation; its failure artifact remains intact. The verification
+harness was corrected on its separate verification branch, with no website or
+model change. Screenshots remain in artifact **12554484552** for its actual
+14-day retention; permanent screenshot archival is not claimed.
+
+The existing installed native coordinator **392458906**, still active with
+cron `2,17,32,47 * * * *`, actually started **40080779828** at **09:08:34 UTC**.
+It stopped with `_new_plan: Invalid production identity`, issued **zero**
+forecasts, retained its successful **six-GET** PLAN capture and recorded the
+failure. Issue **#23** and the publication reconciliation preserve that actual
+partial state. A cron definition or successful website release is not a
+successful forecast cycle.
+
+Read-only original-byte recovery **40082303518 / 40082515698**, with **zero new
+sports-source GETs**, identified the specific cause: the 1,206-row season
+schedule contains six December 4/5/8/11 TBD/TBD games with exact source home/away
+sentinels `-1`/`-2`; all 516 roster identities are canonical. The authenticated
+schedule SHA-256 is
+`e927b966d1fa0e3129386aac201f115d6b1ce7c5ea1cbe429a0177f1d23dcdde`.
+Exact retained references, request counts, bad row identities and source dates
+are in `evidence/operational/sdv-retained-team-sentinel-diagnosis-20261024.json`.
+The first capture remains `CAPTURED` under attempt
+`bd465d17b3a128b93943b057404aa16fea6c237eff9f5dc50b18fa17668e9cd4`;
+no source observations or failed results are relabeled.
+
+**Forward repair candidate, not yet merged:** branch
+`implementation/sdv-publisher-identity-recovery` is based on current main
+`f067359`. Only exact TBD/TBD `-1`/`-2` rows on a strictly later UTC date
+may defer team identity validation at the raw full-season boundary. Every row,
+original hash and outside-date count is preserved. No-context import,
+target-date unknown teams, other negative/mixed identities, conflicting dates,
+UIDs and duplicates still fail; normalized plan/input/forecast identities
+remain strictly positive. All three normalization/replay call sites use the
+immutable selected UTC date. No normalized schema, model law or cohort policy
+is relaxed.
+
+PLAN recovery now selects the earliest same-date completed capture before any
+new GET. Independent pack authentication, request/reservation accounting,
+runtime guard, current source age and current planning window remain mandatory.
+Missing/corrupt/stale originals stop; later captures are retained rather than
+substituted. Actual new planning clocks remain distinct from original capture
+clocks. Interrupted planning can therefore recover even when its two-capture
+budget is already consumed, without resetting attempts or creating forecasts.
+
+This candidate's focused normal/optimized tests, retained-byte replay,
+independent source review and required full CI are **pending execution** at
+this source checkpoint. The completed PR #22 source checks were **1,081 Python
+tests / 783.965 s**, demo and **150 frontend passes**, plus 27 optimized guarded
+release tests. Those results do not test this forward repair.
+
+The retained October 25 UTC inventory has 11 scheduled games. Its first starts
+are October 25 **00:00 UTC** (October 24 **19:00 CDT**); corresponding first
+capture/issuance windows, if a valid plan is admitted and later fresh revalidation
+passes, are October 24 **21:30–22:30 UTC / 16:30–17:30 CDT** and
+**22:30–22:45 UTC / 17:30–17:45 CDT**. Planning closes strictly before
+**21:30 UTC / 16:30 CDT**. These are retained schedule facts and policy-derived
+windows, not an admitted live plan, a promised execution or issued forecasts.
+
+Counts at the verified public snapshot remain **six historical bundles/six
+historical statistical grades; zero genuine forecasts, published offers,
+prospective outcomes/grades, qualified tickets and financial settlements**.
+The 23 protected first-cycle files, 19 original records, frozen laws/research,
+all 13 NBA categories plus PA, conditioning, ledger/source/archive budgets,
+missed pilots, inactive scopes and separate NFL/MLB projects are unchanged.
+Next: verify this narrow parser/restart repair against the retained bytes and
+required checks, open its review PR, then obtain a separate exact-head release
+decision. Existing automatic operation needs no daily owner click, but genuine
+delivery and later final grading still require actual timely successful runs.
+
+
 ## October 24 — remove the final development-executor launch dependency
 
 Exact predecessor `0a1487a0ef089047acf541028776a5fd2bbe7133` passed real

@@ -1,0 +1,204 @@
+{
+  "checks": [
+    {
+      "command": "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 -m unittest discover -s tests -p test_sdv_production_inputs.py -v",
+      "returncode": 0,
+      "suite_seconds": 0.41,
+      "tests": 17,
+      "wall_seconds": 1.211186
+    },
+    {
+      "command": "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 -m unittest discover -s tests -p test_sdv_production_coordinator.py -v",
+      "returncode": 0,
+      "suite_seconds": 138.947,
+      "tests": 26,
+      "wall_seconds": 139.366717
+    },
+    {
+      "command": "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 -O -m unittest discover -s tests -p test_sdv_production_inputs.py -v",
+      "returncode": 0,
+      "suite_seconds": 0.438,
+      "tests": 17,
+      "wall_seconds": 2.49806
+    },
+    {
+      "command": "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3 -O -m unittest discover -s tests -p test_sdv_production_coordinator.py -v",
+      "returncode": 0,
+      "suite_seconds": 138.908,
+      "tests": 26,
+      "wall_seconds": 139.182767
+    }
+  ],
+  "completed_at": "2026-10-24T09:53:43.750960+00:00",
+  "execution_sha": "6c257519321a821fcc00d8e2b803f6606df80c46",
+  "forecasts_generated": 0,
+  "no_context_import_rejected": true,
+  "original_failure_reproduced": "Invalid production identity",
+  "records_written": 0,
+  "retained_replay": {
+    "archive_read_metrics": {
+      "automatic_write_retries": 0,
+      "gh_api_actions": 0,
+      "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+      "known_inventory_objects": null,
+      "maximum_actions_per_client": 1000,
+      "maximum_global_objects": 100000,
+      "new_bytes_reserved": 0,
+      "new_objects_reserved": 0,
+      "public_http_requests": 18,
+      "reserved_objects": 0,
+      "write_budget_bytes": 0,
+      "write_budget_objects": 0
+    },
+    "deferred_future_placeholders": [
+      {
+        "away_display_name": "TBD",
+        "away_id": "-2",
+        "date": "2026-12-11T05:00Z",
+        "home_display_name": "TBD",
+        "home_id": "-1",
+        "id": "401909456"
+      },
+      {
+        "away_display_name": "TBD",
+        "away_id": "-2",
+        "date": "2026-12-08T05:00Z",
+        "home_display_name": "TBD",
+        "home_id": "-1",
+        "id": "401909454"
+      },
+      {
+        "away_display_name": "TBD",
+        "away_id": "-2",
+        "date": "2026-12-05T05:00Z",
+        "home_display_name": "TBD",
+        "home_id": "-1",
+        "id": "401909452"
+      },
+      {
+        "away_display_name": "TBD",
+        "away_id": "-2",
+        "date": "2026-12-05T05:00Z",
+        "home_display_name": "TBD",
+        "home_id": "-1",
+        "id": "401909453"
+      },
+      {
+        "away_display_name": "TBD",
+        "away_id": "-2",
+        "date": "2026-12-04T05:00Z",
+        "home_display_name": "TBD",
+        "home_id": "-1",
+        "id": "401909450"
+      },
+      {
+        "away_display_name": "TBD",
+        "away_id": "-2",
+        "date": "2026-12-04T05:00Z",
+        "home_display_name": "TBD",
+        "home_id": "-1",
+        "id": "401909451"
+      }
+    ],
+    "events": 11,
+    "exclusions": 0,
+    "first_windows": [
+      {
+        "capture_opens_at": "2026-10-24T21:30:00.000000Z",
+        "cutoff_at": "2026-10-24T22:30:00.000000Z",
+        "cycle_id": "prod-20261025-401909857-919a521c95c5",
+        "issuance_closes_at": "2026-10-24T22:45:00.000000Z"
+      }
+    ],
+    "mode": "DEVELOPMENT_ONLY",
+    "original_capture_at": "2026-10-24T09:08:56.422085Z",
+    "original_provider_gets": 6,
+    "original_source_head": "f06735974a388fa9e1a39e0815341de889cc25ae",
+    "original_source_run": 40080779828,
+    "outside_game_date_rows": 1195,
+    "plan_id": "4d8db20cbfc8cae08e3813d588a706eafdf43d2c45d9c0d0332a438c073e5a4b",
+    "players": 382,
+    "roster_rows": 516,
+    "schedule_rows": 1206,
+    "shards": 32,
+    "source_pack_ref": {
+      "bytes": 8797,
+      "name": "object-226339d041081220d9cfa777494a35440ade35bd307dac36e846bca63e73ce77.z",
+      "sha256": "226339d041081220d9cfa777494a35440ade35bd307dac36e846bca63e73ce77",
+      "tag": "nml-nba-records-v1-202610"
+    },
+    "sources": [
+      {
+        "asset_bytes": 2156179,
+        "asset_id": 668920740,
+        "asset_name": "nba_schedule_2027.csv",
+        "asset_sha256": "e927b966d1fa0e3129386aac201f115d6b1ce7c5ea1cbe429a0177f1d23dcdde",
+        "asset_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_schedules/nba_schedule_2027.csv",
+        "metadata_bytes": 183837,
+        "metadata_observation_status": "OBSERVED",
+        "metadata_retrieval_started_at": "2026-10-24T09:08:47.010935Z",
+        "metadata_retrieved_at": "2026-10-24T09:08:47.368311Z",
+        "metadata_sha256": "45dca4e77890a9841c972c6e0171b413e2d4b963c0effc63945377b4d16cbd4f",
+        "publisher": "SportsDataverse",
+        "publisher_updated_at": "2026-10-23T11:30:05.000000Z",
+        "release_tag": "espn_nba_schedules",
+        "retrieval_started_at": "2026-10-24T09:08:47.383431Z",
+        "retrieved_at": "2026-10-24T09:08:47.677041Z",
+        "role": "schedule",
+        "upstream_observation_status": "UNKNOWN",
+        "upstream_observed_at": null
+      },
+      {
+        "asset_bytes": 222200,
+        "asset_id": 668923097,
+        "asset_name": "rosters_2027.csv",
+        "asset_sha256": "02b684f0075da0b4d00f9d2c4f4d03a8b5badf395824f30ca233e1df7f8c5ac5",
+        "asset_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_rosters/rosters_2027.csv",
+        "metadata_bytes": 30610,
+        "metadata_observation_status": "OBSERVED",
+        "metadata_retrieval_started_at": "2026-10-24T09:08:52.979008Z",
+        "metadata_retrieved_at": "2026-10-24T09:08:53.227938Z",
+        "metadata_sha256": "135d85de6fb9645f441cd606fea186245ebcba5640ef5ad24baedb2d22750bc7",
+        "publisher": "SportsDataverse",
+        "publisher_updated_at": "2026-10-23T11:30:56.000000Z",
+        "release_tag": "espn_nba_rosters",
+        "retrieval_started_at": "2026-10-24T09:08:53.232302Z",
+        "retrieved_at": "2026-10-24T09:08:53.476871Z",
+        "role": "roster",
+        "upstream_observation_status": "UNKNOWN",
+        "upstream_observed_at": null
+      }
+    ]
+  },
+  "run_id": "40083437405",
+  "schema_version": "nml-native-source-repair-verification-v1",
+  "source_commit": "18ec769acf2f237eeba09aaa4e03b6a0caa04a44",
+  "sports_source_requests": 0,
+  "started_at": "2026-10-24T09:48:57.779599+00:00",
+  "status": "PASS",
+  "target_date_tbd_rejected": true,
+  "independent_review": {
+    "reviewed_tree": "58b4516b40c2d239043bd91436294f7ad3ed892b",
+    "source_commit": "18ec769acf2f237eeba09aaa4e03b6a0caa04a44",
+    "result": "NO_REMAINING_STATIC_BLOCKERS",
+    "initial_finding": "Fresh _capture returns (ref, pack), not a registry attempt; corrected before the implementation commit by resolving its unique durable attempt.",
+    "limits": "Static review is separate from the actual focused/replay job. Full integration CI is still a required release gate."
+  },
+  "resource_change": {
+    "new_production_record_types": 0,
+    "new_envelope_fields": 0,
+    "producer_file_inventory": 36,
+    "ledger_record_limit": 512,
+    "ledger_byte_limit": 33554432,
+    "full_history_rerun": false,
+    "model_laws_changed": false
+  },
+  "limitations": [
+    "The 382 selected roster candidates are not a claim that all have usable fixed history or confirmed participation.",
+    "The replay plan and inputs are DEVELOPMENT_ONLY and were not written to the operating registry or forecasts ledger.",
+    "The original source pack was independently recovered from the public durable own-repository GitHub Releases archive; no new provider GET was made.",
+    "A real admitted plan, later fresh revalidation, timely issuance/readback, public forecast delivery and verified final grading remain to be observed.",
+    "The unit suites deliberately exercise invented forecasts and outcomes; zero generated forecasts here denotes actual-source diagnostic issuance, not an assertion that tests made no synthetic fixtures."
+  ],
+  "counter_scope": "Actual-source diagnostic/replay only; focused unit tests deliberately construct synthetic forecast/outcome fixtures that are never genuine operating records."
+}
