@@ -1,0 +1,83 @@
+name: Verify the approved PR24 public deployment
+
+on:
+  push:
+    branches: [verification/pr24-public-ceac-20261024]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: public-site-verification-pr24-ceac
+  cancel-in-progress: false
+
+jobs:
+  public-browser:
+    if: >-
+      github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
+      github.actor == 'NickNicky19' && github.event_name == 'push' &&
+      github.ref == 'refs/heads/verification/pr24-public-ceac-20261024'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          path: verification
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ceacbef7e4b8ac3b6da19eaa946b83af74887aee
+          path: deployed
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - name: Check the bounded verifier syntax
+        run: python3 -m py_compile verification/scripts/verify_public_site.py
+      - name: Install the pinned browser verifier and matching Chromium
+        run: |
+          python3 -m pip install playwright==1.58.0
+          python3 -m playwright install --with-deps chromium
+      - name: Await only the exact Pages run before public verification
+        timeout-minutes: 20
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import importlib.util, json, os, time
+          from pathlib import Path
+          path=Path(os.environ["GITHUB_WORKSPACE"])/"verification/scripts/verify_public_site.py"
+          spec=importlib.util.spec_from_file_location("public_proof",path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+          out=Path(os.environ["RUNNER_TEMP"])/"nml-public-site-proof";out.mkdir(parents=True,exist_ok=True)
+          observations=[]
+          for attempt in range(41):
+              run,receipt=module.github_json("actions/runs/40086049201")
+              module.require(run.get("id")==40086049201 and run.get("workflow_id")==389957636 and run.get("head_sha")=="ceacbef7e4b8ac3b6da19eaa946b83af74887aee" and run.get("head_branch")=="main","Pages run identity changed")
+              observations.append({"status":run.get("status"),"conclusion":run.get("conclusion"),"receipt":receipt})
+              (out/"pages-wait.json").write_text(json.dumps({"pages_run":40086049201,"build":"ceacbef7e4b8ac3b6da19eaa946b83af74887aee","observations":observations},sort_keys=True)+"\n")
+              if run.get("status")=="completed":
+                  module.require(run.get("conclusion")=="success","Actual Pages run did not succeed")
+                  break
+              module.require(attempt<40,"Pages did not complete within the bounded verification wait")
+              time.sleep(30)
+          
+          PY
+      - name: Verify actual served bytes and desktop/mobile research routes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          python3 verification/scripts/verify_public_site.py
+          --source-root "$GITHUB_WORKSPACE/deployed"
+          --output "$RUNNER_TEMP/nml-public-site-proof"
+      - name: Retain bounded public proof and screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: public-pr24-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/nml-public-site-proof/
