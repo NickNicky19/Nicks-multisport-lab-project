@@ -88,7 +88,10 @@ class ProductionRunnerTests(unittest.TestCase):
                     self.assertEqual(paths,[prefix+"/execution-report.json",prefix+"/phases/originals/",prefix+"/phases/shards/*/records/"])
                     self.assertIn("include-hidden-files: true",upload)
                 self.assertNotIn("/writers/",upload);self.assertNotIn("/.git",upload);self.assertNotIn("/archive/",upload)
-        self.assertIn("if: always() && needs.prepare.result == 'success' && needs.prepare.outputs.has_grade_tasks == 'true'",job("grade"))
+        self.assertIn("needs: [prepare, work, capture-held]",job("grade-prepare"))
+        self.assertIn("if: always() && needs.prepare.result == 'success'",job("grade-prepare"))
+        self.assertIn("if: always() && needs.grade-prepare.result == 'success' && needs.grade-prepare.outputs.has_grade_tasks == 'true'",job("grade"))
+        self.assertIn("fromJSON(needs.grade-prepare.outputs.grade_matrix)",job("grade"))
         self.assertIn("if: always() && needs.prepare.result == 'success'",job("finish"))
         diagnostic=job("diagnostic");self.assertIn("retention-days: 1\n",diagnostic)
         self.assertIn("DEVELOPMENT_ONLY",diagnostic);self.assertIn("include-hidden-files: true",diagnostic)
@@ -226,6 +229,37 @@ class ProductionRunnerTests(unittest.TestCase):
                 with self.assertRaisesRegex(IntegrityError,"ISSUE window"):
                     runner.require_execution_context(auth,body,self.binding)
         self.assertEqual(os.environ.get("GITHUB_RUN_ID"),original_run_id)
+
+    def test_failed_hosted_phase_is_durably_written_before_publication_reconciliation(self):
+        from multisport_lab import sdv_production_coordinator as engine
+        from multisport_lab import sdv_production_archive as archive_module
+        events=[];initial=runner.empty_registry()
+        coordinator=SimpleNamespace(registry=deepcopy(initial),refresh=lambda:[])
+        def write(body):
+            events.append(("write",body["status"]))
+            return common.seal({key:deepcopy(value) for key,value in body.items() if key != "registry_id"},"registry_id")
+        writer=SimpleNamespace(prepare=lambda:deepcopy(initial),write=write)
+        def reconcile(body,actual_writer,archive):
+            self.assertIs(actual_writer,writer)
+            self.assertEqual(body["status"],"HOSTED_PHASES_PARTIAL_OR_FAILED")
+            self.assertEqual(body["last_run"]["details"]["PRODUCTION_PREGAME_RESULT"],"failure")
+            self.assertIs(coordinator.registry,body)
+            self.assertEqual(events,[("write","HOSTED_PHASES_PARTIAL_OR_FAILED")])
+            events.append(("publish",body["registry_id"]))
+            return body
+        with tempfile.TemporaryDirectory(prefix="nml-finish-order-") as directory, \
+                patch.object(runner,"authorize_current_run",return_value={"run_id":123,"run_attempt":1}), \
+                patch.object(runner,"RegistryWriter",return_value=writer), \
+                patch.object(archive_module,"GitHubReleaseArchive"), \
+                patch.object(engine,"Coordinator",return_value=coordinator), \
+                patch.object(runner,"reconcile_publication",side_effect=reconcile), \
+                patch.object(runner,"failure_alert",return_value={"status":"EXISTING_DAILY_ALERT"}), \
+                patch.dict(os.environ,{"PRODUCTION_PREPARE_HAS_FAILURES":"false","PRODUCTION_PREGAME_RESULT":"failure", \
+                    "PRODUCTION_GRADE_RESULT":"skipped","PRODUCTION_CAPTURE_RESULT":"success","PRODUCTION_GRADE_PREPARE_RESULT":"success"}):
+            report=runner.execute("finish",work_root=directory,policy_version="v2")
+        self.assertEqual(report["status"],"PARTIAL_OR_FAILED")
+        self.assertEqual(len(events),2)
+        self.assertEqual(coordinator.registry["status"],"HOSTED_PHASES_PARTIAL_OR_FAILED")
 
     def test_index_survives_new_object_database_and_refuses_conflicting_writers(self):
         with tempfile.TemporaryDirectory(prefix="nml-prod-registry-test-") as directory:

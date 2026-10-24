@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createHash,webcrypto} from 'node:crypto';
-import {originalProduction,validateProductionDescriptor,validateProductionIndex,validateProductionPage,validateProductionCollection,verifyProductionHashes,productionViewCounts,activeProductionGrades,summarizeProductionPerformance,renderProductionResearch,selectProductionDate,PRODUCTION_MAX_TOTAL_BYTES,PRODUCTION_CLIENT_MAX_BYTES} from '../production.mjs';
+import {originalProduction,validateProductionDescriptor,validateProductionIndex,validateProductionPage,validateProductionCollection,verifyProductionHashes,productionViewCounts,activeProductionGrades,summarizeProductionPerformance,renderProductionResearch,selectProductionDate,productionPolicy,PRODUCTION_MAX_TOTAL_BYTES,PRODUCTION_CLIENT_MAX_BYTES} from '../production.mjs';
 import {loadSnapshot,loadProductionDate} from '../snapshot.mjs';
 import {typedFixture} from './fixtures.mjs';
 
@@ -38,10 +38,12 @@ function repack(bundle,records=all(bundle),generated=bundle.index.generated_at) 
   return {index:seal(index,'index_id'),pages};
 }
 
-function prospective(days=1) {
+function prospective(days=1,operatingPolicy=null) {
   const bundle=copy();for(const row of all(bundle))row.reference=ref(row.reference.kind,'synthetic cycle '+days+' '+row.reference.record_id);
   const planRow=of(bundle,'plan')[0],inputRow=of(bundle,'input')[0],p=originalProduction(planRow),i=originalProduction(inputRow),oldForecasts=of(bundle,'forecast');
-  const shift=value=>stamp(Date.parse(value)+days*86400000),binding=seal({...i.producer_binding,commit:'a'.repeat(40)},'binding_id');
+  if(operatingPolicy){p.policy=structuredClone(operatingPolicy);i.policy=structuredClone(operatingPolicy);}
+  const files={...i.producer_binding.files};if(operatingPolicy){files['multisport_lab/sdv_production_held.py']='e'.repeat(64);files['config/sdv_production_policy_v2.json']='f'.repeat(64);}
+  const shift=value=>stamp(Date.parse(value)+days*86400000),binding=seal({...i.producer_binding,schema_version:operatingPolicy?'nba-sdv-production-producer-binding-v2':i.producer_binding.schema_version,files,commit:'a'.repeat(40)},'binding_id');
   p.mode='PROSPECTIVE_RESEARCH';p.game_date=shift(p.game_date+'T00:00:00.000000Z').slice(0,10);p.planning_started_at=shift(p.planning_started_at);p.planned_at=shift(p.planned_at);p.producer_binding=binding;
   const planTime=Date.parse(p.planning_started_at),sourceAt=(source,at)=>({...source,publisher_updated_at:stamp(planTime-12*3600000),retrieval_started_at:stamp(at-60000),retrieved_at:stamp(at-59000),metadata_retrieval_started_at:stamp(at-120000),metadata_retrieved_at:stamp(at-119000),metadata_observation_status:'OBSERVED'});
   p.sources=p.sources.map(s=>sourceAt(s,planTime));p.missing_information=p.missing_information.filter(s=>s!=='PUBLISHER_METADATA_OBSERVATION_CLOCK');
@@ -263,4 +265,19 @@ test('checksum-consistent issuance status meaning and exact OPEN closure relatio
 
 test('issuance attempt hash is independently verified even when outer status and page checksums agree',async()=>{
   const b=prospective(),[opened]=issuanceStatuses(b,{closedOffset:null}),body=originalProduction(opened);body.details.issuance_attempt.attempt_id='f'.repeat(64);const result=repack(b,[...all(b),projection(body,'input_captures','SYNTHETIC INCORRECT ATTEMPT HASH')]);validate(result);await assert.rejects(verifyProductionHashes(result.index,result.pages,webcrypto),/issuance attempt identity checksum/);
+});
+
+
+test('v2 first UTC game date admits its actual prior-evening T90 issuance while v1 remains unchanged',async()=>{
+  const b=prospective(1,productionPolicy('v2')),c=validate(b);
+  await verifyProductionHashes(b.index,b.pages,webcrypto);
+  assert.equal(c.forecasts.length,2);
+  for(const {body:f,admission:a} of c.forecasts){
+    assert.equal(f.event_starts_at.slice(0,10),'2026-10-25');
+    assert.ok(Date.parse(f.issued_at)<Date.parse(productionPolicy('v2').enabled_after));
+    assert.equal(a.eligible,true);
+    assert.equal(f.categories.length,14);
+  }
+  assert.equal(productionViewCounts(c,{now:Date.parse(b.index.generated_at)}).upcoming,2);
+  assert.match(renderProductionResearch(c,{now:Date.parse(b.index.generated_at)}),/Synthetic Player/);
 });

@@ -397,6 +397,8 @@ def _operational_facts(registry):
                  for key in sorted(allowed & set(item))}
                 for item in value if type(item) is dict]
     facts = {"reason": details.get("reason"),
+             "failed_run_status": run.get("status") if run.get("status") in
+                 {"HOSTED_PHASES_PARTIAL_OR_FAILED", "HELD_CAPTURE_PARTIAL", "PARTIAL_OR_FAILED"} else None,
              "missed_planning_dates": details.get("missed_planning_dates", 0),
              "unacknowledged_issuance_shards": details.get("unacknowledged_issuance_shards", 0),
              "affected_game_dates": details.get("affected_game_dates", []),
@@ -404,14 +406,16 @@ def _operational_facts(registry):
              "failures": errors(details.get("failures", [])),
              "recent_errors": errors(details.get("recent_errors", [])), "captures": captures}
     failed = any(row["status"] == "FAILED" for row in captures)
-    failed = failed or facts["reason"] == "INCOMPLETE_OR_UNOBSERVED_WINDOW" or bool(facts["failures"] or facts["recent_errors"])
+    failed = failed or facts["reason"] == "INCOMPLETE_OR_UNOBSERVED_WINDOW" or bool(
+        facts["failed_run_status"] or facts["failures"] or facts["recent_errors"])
     return facts, failed
 
 
 def publication_content_identity(registry):
     """Fingerprint actual delivery/failure facts independently of run clocks."""
     facts, failed = _operational_facts(registry)
-    content = {"days": [{"game_date": day["game_date"], "plan_id": day["plan_id"],
+    content = {"policy_id": registry.get("policy_id", common.make_policy()["policy_id"]),
+        "days": [{"game_date": day["game_date"], "plan_id": day["plan_id"],
         "plan_ref": day["plan_ref"], "source_pack_ref": day["source_pack_ref"],
         "shards": [{key: shard.get(key) for key in ("branch", "snapshot_ref", "input_task_ref",
             "prepared_input_task_ref", "issued_input_task_ref", "final_source_pack_ref", "graded_source_pack_ref")}
@@ -445,7 +449,7 @@ def make_operations(registry, records, *, now):
             phase = {"PLAN": "schedule and roster planning", "INPUT": "pregame inputs", "FINAL": "final statistics"}[failed[-1]["phase"]]
             reason = ("A source capture for "+phase+" failed. No new input or forecast is admitted from that failed capture; "
                       "retained records remain available.")
-        elif facts["failures"] or facts["recent_errors"]:
+        elif facts["failed_run_status"] or facts["failures"] or facts["recent_errors"]:
             reason = ("A hosted preparation, issuance or recovery step failed or remains incomplete. Retained records remain "
                       "available; successful execution and timely durable recovery are still required.")
     return {"registry_id": registry["registry_id"] if registry else None,
@@ -609,8 +613,16 @@ def make_publication(records, *, now, registry=None, archived_days=(), allow_dev
     future_dates = [_date(original_record(row)["game_date"]) for row in records
                     if original_record(row)["schema_version"] == common.PLAN_SCHEMA]
     future_dates += [_date(day["game_date"]) for day in registry["days"]] if registry else []
+    # The current registry selects the operating policy. Mixed retained dates
+    # still validate against each original's own policy, never this index's
+    # summary. Without a registry, use the latest explicitly registered version
+    # present in the exact records (the offline development/replay path).
+    record_policies = {original_record(row)["policy"]["policy_id"] for row in records
+                       if original_record(row)["schema_version"] in {common.PLAN_SCHEMA, common.INPUT_SCHEMA}}
+    policy = (common.policy_for_id(registry["policy_id"]) if registry else
+              common.make_policy("v2") if common.make_policy("v2")["policy_id"] in record_policies else common.make_policy())
     index = common.seal({"schema_version": INDEX_SCHEMA, "protocol_id": common.PROTOCOL_ID,
-        "generated_at": generated, "policy": common.make_policy(), "operations": make_operations(registry, records, now=now),
+        "generated_at": generated, "policy": policy, "operations": make_operations(registry, records, now=now),
         "coverage": {"from_game_date": (utc(now).date()-timedelta(days=ROLLING_DAYS-1)).isoformat(),
                      "to_game_date": max([utc(now).date(), *future_dates]).isoformat(), "rolling_days": ROLLING_DAYS,
                      "archived_days": list(archived_days)}, "counts": counts(records), "dates": dates, "pages": descriptors,

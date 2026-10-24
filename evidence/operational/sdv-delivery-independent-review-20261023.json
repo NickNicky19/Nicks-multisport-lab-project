@@ -1,0 +1,95 @@
+{
+  "schema_version": "nba-sdv-delivery-independent-review-v1",
+  "checked_at": "2026-10-23T23:44:36.139509+00:00",
+  "base": "ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+  "state": "UNCOMMITTED_CANDIDATE_NO_REMOTE_ACTION",
+  "files": {
+    "multisport_lab/sdv_production_common.py": "5efa77ba435b1ad1f9b88a84137e0e3947d826e826582e8ca778aeb971ac2e2b",
+    "multisport_lab/sdv_production_inputs.py": "acc4a13776b713e88b0c553f47ba0121d8c40a4fdef133ce0f428826765eb49a",
+    "multisport_lab/sdv_production_forecasts.py": "21867f3b8d17b9f5b75c34a27bb039cc0cb628cad3091af497de27b065007cdc",
+    "multisport_lab/sdv_production_coordinator.py": "9af4f7cc607a854f8417689e6f621af40b1bb04ff13f83e40e57f56f3affa50d",
+    "multisport_lab/sdv_production_runner.py": "f92c2ddb224a48111e3c6e3a9bc5dc7f5b5f12edfcf7c8345a000638f2d80d1f",
+    "multisport_lab/sdv_production_held.py": "8fac8ef0ceb9fa03cc56ef223cffbe28c942bbb6d82e649726a568a88879c7d6",
+    ".github/workflows/nba-operations.yml": "e2f65f76985a8848a613c2d97bcb201cc682a747a71fab4010a9583c3570e5b7",
+    "config/sdv_production_policy_v2.json": "75c1d3934f49caa649d3533ce48730c219e236ad972da9a806a229e6b3315246",
+    "web/production.mjs": "0fd26a69e63b5d79886edf548859f33be87816d55ce137579d9919bc0e787b4c"
+  },
+  "source_inventory": {
+    "python_legacy": 34,
+    "python_current": 36,
+    "js_legacy": 34,
+    "js_current": 36,
+    "legacy_equal": true,
+    "current_equal": true
+  },
+  "preservation": {
+    "protected_producer_files": 23,
+    "original_records": 19,
+    "changed": []
+  },
+  "findings": [
+    {
+      "status": "FIXED_AND_RECHECKED",
+      "finding": "JS v2 first effective UTC game date rejected legitimate prior-evening T90 originals accepted by Python.",
+      "verification": "Focused frontend28PASS includes new first-date prior-evening synthetic case; v1 gate preserved."
+    },
+    {
+      "status": "FIXED_AND_RECHECKED",
+      "finding": "Held capturer ignored RECOVERY_FAILED refresh rows and returned HELD_CAPTURE_COMPLETE.",
+      "before": {
+        "status": "HELD_CAPTURE_COMPLETE",
+        "phase_errors": [],
+        "missing_input_cycles": []
+      },
+      "after": {
+        "status": "PARTIAL_OR_FAILED",
+        "phase_error_kinds": [
+          "REFRESH"
+        ],
+        "missing_input_cycles": []
+      },
+      "verification": "Same small synthetic FileArchive/bareGit fixture under python-O;0providerrequests/0genuineforecasts; captured inputs retained."
+    }
+  ],
+  "checks": [
+    {
+      "command": "python3 -O -m unittest discover -s tests -p test_sdv_production_policy.py -v",
+      "tests": 10,
+      "result": "PASS"
+    },
+    {
+      "command": "python3 -O -m unittest discover -s tests -p test_sdv_production_held.py -v",
+      "tests": 13,
+      "result": "PASS",
+      "limitation": "Runtime agent subsequently added focused cases; this is the independently executed snapshot, not final full suite."
+    },
+    {
+      "command": "node --test --test-isolation=none web/tests/production.test.mjs",
+      "tests": 28,
+      "result": "PASS"
+    }
+  ],
+  "capacity": {
+    "max_held_batch": 16,
+    "max_holds_per_day": 128,
+    "raw_10day_HOLD_TASK_INPUT_PLAN_objects_ignoring_other_quotas": 2890,
+    "shared_metadata_objects": 4096,
+    "shared_metadata_bytes": 536870912,
+    "metadata_objects_after_that_projection": 1206,
+    "empty_shard_object_liability": 655,
+    "empty_shard_byte_liability": 71647232,
+    "shared_object_liability": 6228,
+    "max_entirely_unopened_shards_before_actual_objects": 143,
+    "archived_hold_refs": "Retained in immutable serialized day objects; original archive objects remain charged after active-day eviction.",
+    "transport_limit": "1000 actions per archive client; exhaustion raises before transport. No demonstrated full-envelope completion guarantee.",
+    "conservative_registry_only_actions": "2chunks*(72refreshes+24*2dispatchwrites)*3actions=720; excludes source/bootstrap/changed-shard reads and uses no new hosted diagnostic."
+  },
+  "scope": {
+    "provider_http_requests": 0,
+    "own_github_requests": 0,
+    "edits": 0,
+    "full_models_or_frozen_comparisons": 0,
+    "activation_or_deployment": false
+  },
+  "remaining": "Root final integration checks and exact-head review; actual hosted scheduling/source/issuance/publication remain separate evidence."
+}

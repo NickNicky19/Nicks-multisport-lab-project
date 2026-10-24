@@ -27,4 +27,16 @@
 
 .hero-actions {flex-wrap:wrap}
 
+.delivery-status {border-left:4px solid var(--forest)}
+.delivery-status .panel-heading {margin-bottom:.8rem;align-items:flex-start}
+.delivery-status .delivery-counts {font-size:.9rem;margin-bottom:.8rem}
+.delivery-status .delivery-history-link {white-space:normal;margin:.15rem 0 .9rem}
+.delivery-status .delivery-example {padding:.8rem;background:#f5f7ef;border-radius:7px;margin-bottom:.9rem}
+.delivery-status .delivery-example strong {color:var(--ink)}
+.delivery-status .delivery-reason {margin-bottom:.55rem;overflow-wrap:anywhere}
+.delivery-clocks {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;border-top:1px solid var(--line);padding-top:1rem;margin:1rem 0 .5rem}
+.delivery-clocks dt {font-size:.75rem;color:var(--muted);margin-bottom:.35rem}
+.delivery-clocks dd {font-size:.85rem;margin:0;overflow-wrap:anywhere}
+@media(max-width:700px) {.delivery-clocks {grid-template-columns:1fr;gap:.7rem}.delivery-status .panel-heading {display:block}.delivery-status .panel-heading .pill {margin-top:.6rem}}
+
 .availability-details {margin-bottom:1rem}.availability-details summary {cursor:pointer;font-size:.85rem;color:var(--forest);font-weight:600}

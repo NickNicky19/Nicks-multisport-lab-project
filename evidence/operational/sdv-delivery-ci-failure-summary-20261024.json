@@ -1,0 +1,27 @@
+{
+  "schema_version": "nba-delivery-ci-failure-summary-v1",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "head": "6c1d5bc897c2354facff3c139dbdaab5c8b1025d",
+  "run_id": 40044544834,
+  "run_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40044544834",
+  "job_id": 120723127313,
+  "command": "python3 -m unittest discover -s tests -v",
+  "tests": 1053,
+  "seconds": 1001.235,
+  "errors": [
+    "test_correction_appends_new_evidence_and_preserves_original (test_sdv_daily_outcomes.DailyOutcomesTests.test_correction_appends_new_evidence_and_preserves_original)",
+    "test_exact_final_primitives_replay_and_statistical_grade (test_sdv_daily_outcomes.DailyOutcomesTests.test_exact_final_primitives_replay_and_statistical_grade)",
+    "test_explicit_dnp_is_not_zero_and_absence_stays_missing (test_sdv_daily_outcomes.DailyOutcomesTests.test_explicit_dnp_is_not_zero_and_absence_stays_missing)",
+    "test_nonfinal_and_changed_event_are_not_final_results (test_sdv_daily_outcomes.DailyOutcomesTests.test_nonfinal_and_changed_event_are_not_final_results)"
+  ],
+  "result": "FAILED_ERRORS_4",
+  "distinct_error": "multisport_lab.integrity.IntegrityError: future daily receipt",
+  "affected_fixture": "tests/test_sdv_daily_outcomes.py",
+  "observed_finished_at": "2026-10-24T00:38:05Z",
+  "root_cause": "Fixture froze only outcome/producer/store clocks at 2026-10-24T00:00:00Z; base ledger receipt clock remained real and advanced beyond that instant.",
+  "runtime_validation_relaxed": false,
+  "full_log_publication": "AUTOMATIC_APPROVAL_REJECTED_RUNNER_AND_PROJECT_METADATA; sanitized summary retained instead",
+  "original_log_retention": "GitHub Actions job logs and tool response; no claim of permanent full-log archival",
+  "new_source_requests": 0,
+  "forecast_issuance": 0
+}

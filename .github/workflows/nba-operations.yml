@@ -45,6 +45,8 @@ jobs:
       grade_matrix: ${{ steps.prepare.outputs.grade_matrix }}
       has_grade_tasks: ${{ steps.prepare.outputs.has_grade_tasks }}
       has_failures: ${{ steps.prepare.outputs.has_failures }}
+      has_held_tasks: ${{ steps.prepare.outputs.has_held_tasks }}
+      held_tasks: ${{ steps.prepare.outputs.held_tasks }}
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -58,7 +60,7 @@ jobs:
       - run: gh auth setup-git
       - name: Recover registry, reserve bounded requests and prepare due phases
         id: prepare
-        run: python3 -m multisport_lab.sdv_production_runner prepare --work-root "$RUNNER_TEMP/nml-production-prepare"
+        run: python3 -m multisport_lab.sdv_production_runner prepare --policy-version v2 --work-root "$RUNNER_TEMP/nml-production-prepare"
       - name: Preserve factual partial source evidence and report
         if: failure() || steps.prepare.outputs.has_failures == 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -74,11 +76,46 @@ jobs:
             ${{ runner.temp }}/nml-production-prepare/phases/originals/
             ${{ runner.temp }}/nml-production-prepare/phases/shards/*/records/
 
+  capture-held:
+    needs: prepare
+    if: needs.prepare.outputs.has_held_tasks == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: write
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PRODUCTION_HELD_TASKS_JSON: ${{ needs.prepare.outputs.held_tasks }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - run: gh auth setup-git
+      - name: One retained capture writer while original shard workers wait
+        run: python3 -m multisport_lab.sdv_production_runner capture-held --policy-version v2 --work-root "$RUNNER_TEMP/nml-production-held-capture"
+      - name: Preserve factual held capture report and partial source originals
+        if: failure() || cancelled()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nba-production-held-capture-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 1
+          if-no-files-found: warn
+          include-hidden-files: true
+          path: |
+            ${{ runner.temp }}/nml-production-held-capture/execution-report.json
+            ${{ runner.temp }}/nml-production-held-capture/phases/originals/
+
   work:
     needs: prepare
     if: needs.prepare.outputs.has_tasks == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 360
     strategy:
       fail-fast: false
       max-parallel: 16
@@ -99,9 +136,9 @@ jobs:
           python-version: '3.12'
       - run: gh auth setup-git
       - name: Recover originals and execute only the still-timely phase
-        run: python3 -m multisport_lab.sdv_production_runner work --work-root "$RUNNER_TEMP/nml-production-work"
+        run: python3 -m multisport_lab.sdv_production_runner work --policy-version v2 --work-root "$RUNNER_TEMP/nml-production-work"
       - name: Preserve actual partial state
-        if: failure()
+        if: failure() || cancelled()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: nba-production-work-${{ strategy.job-index }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -115,15 +152,50 @@ jobs:
             ${{ runner.temp }}/nml-production-work/phases/originals/
             ${{ runner.temp }}/nml-production-work/phases/shards/*/records/
 
+  grade-prepare:
+    needs: [prepare, work, capture-held]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+      issues: write
+    outputs:
+      grade_matrix: ${{ steps.grades.outputs.grade_matrix }}
+      has_grade_tasks: ${{ steps.grades.outputs.has_grade_tasks }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12'
+      - run: gh auth setup-git
+      - name: Recover current immutable final bindings after held workers finish
+        id: grades
+        run: python3 -m multisport_lab.sdv_production_runner grade-tasks --policy-version v2 --work-root "$RUNNER_TEMP/nml-production-grade-prepare"
+      - name: Preserve factual grade selection report
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nba-production-grade-prepare-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 1
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/nml-production-grade-prepare/execution-report.json
+
   grade:
-    needs: [prepare, work]
-    if: always() && needs.prepare.result == 'success' && needs.prepare.outputs.has_grade_tasks == 'true'
+    needs: [prepare, work, capture-held, grade-prepare]
+    if: always() && needs.grade-prepare.result == 'success' && needs.grade-prepare.outputs.has_grade_tasks == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
       fail-fast: false
       max-parallel: 16
-      matrix: ${{ fromJSON(needs.prepare.outputs.grade_matrix) }}
+      matrix: ${{ fromJSON(needs.grade-prepare.outputs.grade_matrix) }}
     permissions:
       contents: write
       actions: read
@@ -140,7 +212,7 @@ jobs:
           python-version: '3.12'
       - run: gh auth setup-git
       - name: Recover originals and execute only the still-timely phase
-        run: python3 -m multisport_lab.sdv_production_runner work --work-root "$RUNNER_TEMP/nml-production-grade"
+        run: python3 -m multisport_lab.sdv_production_runner work --policy-version v2 --work-root "$RUNNER_TEMP/nml-production-grade"
       - name: Preserve actual partial state
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -157,7 +229,7 @@ jobs:
             ${{ runner.temp }}/nml-production-grade/phases/shards/*/records/
 
   finish:
-    needs: [prepare, work, grade]
+    needs: [prepare, work, capture-held, grade-prepare, grade]
     if: always() && needs.prepare.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -170,6 +242,8 @@ jobs:
       PRODUCTION_PREPARE_HAS_FAILURES: ${{ needs.prepare.outputs.has_failures }}
       PRODUCTION_PREGAME_RESULT: ${{ needs.work.result }}
       PRODUCTION_GRADE_RESULT: ${{ needs.grade.result }}
+      PRODUCTION_CAPTURE_RESULT: ${{ needs.capture-held.result }}
+      PRODUCTION_GRADE_PREPARE_RESULT: ${{ needs.grade-prepare.result }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -180,7 +254,7 @@ jobs:
           python-version: '3.12'
       - run: gh auth setup-git
       - name: Recover shard heads and reconcile actual website publication
-        run: python3 -m multisport_lab.sdv_production_runner finish --work-root "$RUNNER_TEMP/nml-production-finish"
+        run: python3 -m multisport_lab.sdv_production_runner finish --policy-version v2 --work-root "$RUNNER_TEMP/nml-production-finish"
       - name: Preserve factual finish report
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

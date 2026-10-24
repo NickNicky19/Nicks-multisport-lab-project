@@ -1,6 +1,314 @@
 # Implementation handoff status
 
-Updated: October 22, 2026 (UTC).
+Updated: October 24, 2026 (UTC).
+
+## October 24 — remove the final development-executor launch dependency
+
+Exact predecessor `0a1487a0ef089047acf541028776a5fd2bbe7133` passed real
+GitHub CI **40070730240** at **06:51:44 UTC**: **1,075 Python tests / 1,011.075 s**,
+demo `OFFLINE_EXAMPLES_ONLY`, **150 frontend passes / 0 failures**,
+artifact/smoke and upload passed. Deployment, diagnostic and both release jobs
+correctly skipped. This is software/artifact evidence for that predecessor,
+not testing of this subsequent push-bootstrap change and not public deployment.
+
+The actual attempt to dispatch its read-only plan failed at process creation:
+`exec-server transport disconnected`. It was an execution-environment failure,
+not an automatic approval rejection. No command process or confirmed HTTP POST
+was produced. Independent GitHub observation at **06:57:00.737 UTC** found zero
+matching workflow-dispatch runs. The original identical-tree execution ref and
+all earlier observations remain intact; no failed observation is relabeled.
+
+This forward fix moves the launch itself into GitHub's control plane. A normal
+owner-authorized connector fast-forward of a uniquely named execution ref starts
+the existing workflow's read-only plan. A versioned JSON commit-message envelope
+binds action, exact PR/head, policy digest and confirmation. Owner/sender,
+nonforced/nondeleted event, ref/after/commit, hosted runner, parent/tree and all
+existing readiness gates are explicit. Planning and landing use DIFFERENT refs;
+only a later explicitly approved `-land` ref may reach the unchanged guarded
+helper's `--confirm`. No plan automatically transitions to landing.
+
+Ordinary build/diagnostic/deploy jobs exclude these execution refs. Existing
+candidate CI remains intact, and a separate execution SHA preserves the all-check
+policy. Six new synthetic regressions cover owner push, strict versioned intent,
+event tampering, missing/duplicate fields, separate action refs and approval.
+Their actual normal/full/optimized hosted results are pending on the new exact
+candidate; no local executor pass is invented. The hosted plan job now runs the
+focused optimized guards before readiness. No sports-source request, model
+execution, new collector/scheduler, genuine issuance or frozen evaluation occurs.
+
+The independent source review at predecessor 0a verified all 565 manifest paths,
+all ten changed/new bodies, 556 unchanged object/hash references and the protected
+23 files/19 records against both predecessor and main. Its temporary receipt is
+`/tmp/nml-pr22-independent-api-0a1487a0.json`, SHA-256
+`56573f3c0a2790b38ce1e85c8be360d4fddb5ec7943325a6d8f178654c1effd4`.
+This is incremental API recovery, not a cold ZIP claim. A fresh final-head
+hosted check and actual source/ref/run verification remain required.
+
+Next: run the changed candidate CI, trigger and observe the actual GitHub-only
+read-only plan, then obtain the one exact-head release/future-policy approval.
+The underlying R0/K0 delivery repair, bounds, all 14 categories, original records,
+six historical bundles/grades, zero genuine forecasts and other inactive scopes
+are unchanged. Do not backfill a missed window or infer activation from this
+bootstrap preparation.
+
+
+## October 24 — GitHub-hosted guarded release implementation
+
+This forward package extends PR #22 on `implementation/sdv-delivery-repair`
+from `7cf07fa88440e55801729b30b5223c714c1c51b7`; main was independently rechecked
+at `ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`. It preserves the pending delivery
+repair, original records and all protected producers. The final candidate SHA,
+hosted CI and actual release-plan results are recorded on PR #22 and its exact
+GitHub Actions runs after this checkpoint; no approval is inferred here.
+
+**Actual environment findings:** normal injected GitHub account access returned
+`NickNicky19` and the unchanged prescribed watcher returned JSON `ready` at
+03:30:10.971131 UTC. The immediately following dry-run landing helper returned
+`blocked` at 03:30:56.274495 UTC because its nested CLI could not create an OS
+thread. The development workspace had 32,258 defunct processes parented to
+PID 1; normal process creation remains unreliable. No infrastructure restart,
+process kill, credential replacement or release bypass occurred. A separate
+single-process, TLS-verified, proxy-preserving authenticated REST check returned
+HTTP 200 for the owner identity and existing active Pages workflow **389957636**.
+This verifies the normal bootstrap access, not an actual hosted release run.
+
+**Implemented:** `scripts/github_release.py` wraps the shipped PR Completion
+helpers, copied unchanged with verified SHA-256/provenance under
+`tools/pr_completion/`. The existing `pages.yml` gains owner-only `plan` and
+separately confirmed `land` dispatch modes. Planning has read-only permissions;
+only landing has scoped merge/dispatch permissions. Both modes exclude ordinary
+site build, operating diagnostic and deployment, and run no project producer or
+sports-source request. Candidate CI remains unchanged and must pass all checks.
+
+The runner uses an execution commit with the exact candidate as its sole parent
+and an identical tree. Strict owner/repository/workflow/ref/parent/tree/current
+PR head/main-base checks keep the runner's own pending check off the candidate
+without excluding it from the check policy. Missing or malformed identities,
+changed policy/digest, missing exact-head confirmation and rerun landing attempts
+fail closed using explicit integrity exceptions, including optimized Python.
+
+Only the unchanged `pr_land.py --confirm` can request merging after a fresh
+canonical plan and explicit owner approval. The wrapper retains that original
+request time and observes exact-head merging with the unchanged watcher. It then
+retains actual main identity and dispatch intent before requesting existing main
+Pages publication, because GitHub-token merges do not trigger push workflows.
+An acknowledged dispatch is still not a verified deployment. A proven merge
+survives later readback/dispatch failure; an interrupted acknowledgment remains
+unresolved. Newer legitimate main work is preserved and must contain the merge.
+
+**Verification at this pre-push checkpoint:** independent read-only design/source
+review found no landing bypass and identified the dispatch-intent recovery gap,
+now addressed. The first focused synthetic run actually ran 19 tests in 0.019 s
+and found eight failing subcases plus one error: two fixture adaptations for the
+new main readback and strict malformed-input/number/nullable-merge-identity gaps.
+Those wrapper defects were corrected forward. Final focused verification passed
+**21 tests normally / 0.017 s and 21 under actual `python3 -O` / 0.017 s**:
+`python3 -m unittest discover -s tests -p test_github_release.py -v` and the same
+command with `-O`. All release actions were mocked; actual helper-file byte hashes
+were read and verified. The regression suite covers newer-main ancestry and
+preserved merge/dispatch intent after acknowledgment failure. Hosted CI/plan
+results remain pending observations here. Earlier final CI **40047276053**
+passed 1,054 Python tests, demo, 150 frontend tests and artifact checks on unchanged
+predecessor `7cf07fa`; it is not claimed as testing the new hosted wrapper.
+No frozen comparison or full-history diagnostic was rerun.
+
+**Next:** run ordinary exact-head GitHub CI,
+then dispatch and independently read the actual read-only hosted canonical plan.
+Only after that request one consolidated exact-head confirmation for merge,
+deployment and the already documented future-only delivery policy. Verify the
+actual merge, Pages run, served bytes and subsequent native prospective cycle;
+do not call a test/plan a deployment or genuine forecast.
+
+The six historical bundles/six historical grades and zero genuine forecasts,
+published offers, prospective outcomes/grades, qualified tickets or financial
+settlements are unchanged. No scheduler, capture, issuance, merge or deployment
+was created by preparing this code. R0/K0 laws, all 13 categories plus PA,
+conditioning, frozen evidence, inactive OPS002/PROS004/S0, missed pilots,
+23 protected files, 19 original records and independent NFL/MLB are preserved.
+No provider key, new service, signup or operational secret is required.
+
+## October 24, 00:48 UTC — fresh-CI calendar regression repaired; release still pending
+
+Fresh GitHub CI **40044544834** on PR #22 head
+`6c1d5bc897c2354facff3c139dbdaab5c8b1025d` finished at 00:38:05 UTC:
+**1,053 tests / 1,001.235 seconds, four errors**. The daily-outcome fixture
+froze three clocks at October 24 00:00 while base-ledger receipts used the later
+real clock. This is an actual failed integration result, not a passing claim.
+
+The fixture now shares one synthetic clock across outcomes, producer, daily
+store and base ledger. Before the fix, four original tests produced four
+future-receipt errors; the new regression also failed across simulated earlier/
+later wall dates. Afterward five focused tests passed normally (0.104 s) and
+under actual `python3 -O -m unittest discover -s tests -p test_sdv_daily_outcomes.py -v`
+(0.115 s). Deliberately future-dated receipts still reject. Independent fixture
+review passed. Runtime validators, all 23 protected producer files and the
+19 original records remain unchanged. Source implementation is still
+`00a3018bad6ec4b5f23df54a19546b21a3fc4e77`; the forward change is test/evidence
+only. Final-head standard CI remains required.
+
+Strict independent archive recovery verified registry
+`d522c56179d0f997a4fd586c566651b8b7f690db8982e1bfa22262546b6c07f6`
+from records commit `e35c090cdf728da48dac1bd2ac48da17bfd08855`,
+including compressed/raw hashes and budget meaning: zero days, zero attempts.
+Native run **40042990869**, 00:03:02–00:03:26 UTC, succeeded without forecasts.
+There are no hidden issued originals waiting to upload.
+
+The prescribed read-only PR Completion watcher failed with **HTTP 401:
+Bad credentials** from its GitHub CLI GraphQL request before environment
+reconfiguration. The authenticated connector uploaded/recovered the branch.
+After configuration revision 353, code, the test fix and private originals
+remain present; network enforcement is reported UNKNOWN, so CLI readiness
+must be revalidated after setup. Process exhaustion also remains observed.
+No merge or deployment was attempted. No provider credential is requested.
+
+Automatic approval review rejected publishing the full CI log because of
+extensive runner/project metadata. That action stopped. The repository retains
+only `evidence/operational/sdv-delivery-ci-failure-summary-20261024.json`.
+Original GitHub job logs/tool evidence are not claimed as permanent full-log
+archival, and no alternate public upload was attempted.
+
+Counts remain six historical bundles/six historical grades and zero genuine
+forecasts, published offers, prospective outcomes/grades, qualified tickets or
+financial settlements. No source GET, genuine generation, frozen comparison or
+deployment occurred. PR #22 remains draft. Next: final-head CI, fresh guarded
+readiness, exact-head release/future-policy confirmation, then actual native
+capture, timely public forecasts and later verified statistical grades.
+
+
+## October 24, 00:24 UTC — automatic-delivery repair implemented; release pending
+
+**Implementation source:** `00a3018bad6ec4b5f23df54a19546b21a3fc4e77`,
+branch `implementation/sdv-delivery-repair`, based on current public main
+`ef9e270f36bb3b4ee8bbd92d34b12493d759cc45`. This is a review candidate,
+not a deployment or genuine issuance. The original local assembly commit
+`d67d5a45937cbf64bdc3d36fe37ca67b56c66365` remains on local branch
+`preserved/sdv-delivery-source-d67d5a4`; its complete tree exactly equals the
+GitHub implementation tree `56509fbf62c6a4d60e9fb1381dfe1cabc99d104d`.
+No reset, force push or earlier-record rewrite was used. PR #20 and its separate
+private player-line work remain at `209d12456f6bba752392f69ed1f2773ef0dc14c5`.
+
+**Actual diagnosis:** the public application renders six readable historical
+bundles and six historical grades; the empty Upcoming view reflects zero
+delivered genuine forecasts. Actual October 23 native starts included 09:46:44,
+14:28:56, 18:38:52 and 21:42:01 UTC. No execution was observed inside the original
+13:00–14:00 planning window; the absent run's cause is not established. The
+14:28 run failed, while the later two runs completed successfully without
+producing a timely plan or forecasts. A configured cron or a successful
+no-action run is not evidence of delivery. Public byte/hash, desktop/mobile,
+direct History-refresh and source-ID evidence is retained in
+`evidence/operational/sdv-delivery-diagnosis-20261023.json`.
+The missed protected first cycle, its early-rejected attempt, 23 protected
+files and 19 original records remain unchanged.
+
+**Implemented operating change:** the separately registered future v2 policy
+`3ea45e39dddee1222a04d2998003ec90f7241f59f2e0a721b2fba128ad97f4ed`
+first permits UTC game dates from October 25. Prior-day planning opens at 00:00
+and closes strictly before 21:30 UTC. Its first possible planning window is
+October 24 00:00–21:30 UTC / October 23 7 p.m.–October 24 4:30 p.m. CDT.
+Actual event/cohort and event-specific times require an admitted immutable plan;
+none is invented here. The existing coordinator/lock/cron remains the only
+scheduler. One held capture writer and at most sixteen read-only waiting shard
+workers recover exact inputs and intents, then call the existing T90 producer
+only while timely. Local wakes do not authorize late or replacement forecasts.
+Generation and required remote recovery retain their T90–T75 window and
+300-second original latency; capture T150–T90, automatic new-capture stop T105,
+36-hour publisher age, source quotas, participation conditioning, the 26,645-row
+panel and unchanged R0/K0 laws are preserved. Old v1 policy/bindings/originals
+remain readable under their own identities.
+
+Final-source checks under v2 can occur throughout a UTC day, require at least
+four hours of game age, ten hours between captures and the unchanged maximum of
+two captures/day. A metadata-only grade selection after capture/work binds the
+current exact retained final source. Nonfinal/missing remain pending; DNP is not
+zero; corrections append. Failed phases are recorded before publication
+reconciliation. Refresh recovery failures now remain visible partial states
+while independent eligible captures continue. No comparative study was scored.
+
+**Publication/UI:** Python and JavaScript validate the new 36-file binding and
+v2 policy, while preserving the legacy 34-file inventory and exact original
+policy associations. A concrete first-date frontend defect was fixed: an
+October 25 UTC game may legitimately have its T90 issuance on October 24.
+Overview and empty Upcoming now explain the unmet delivery step, link to
+readable historical examples, and separate publication, last forecast-input
+capture and genuine issuance clocks. An actual eligible future record removes
+the empty-delivery banner. Development and ineligible records do not count.
+Offers, private prop archives, odds, EV and ticket admission remain separate.
+
+**Capacity and limitations:** unchanged shard limits are 512 records / 32 MiB;
+complete reserved roles plus forensic headroom remain 327 records /
+13,803,520 bytes. HOLD originals consume no shard ledger records; their
+registered worst case is 128 objects / 512 KiB per day within the existing
+shared 4,096-object / 512-MiB metadata reservation, with actual archive charges.
+The 213-byte source-binding delta projects the frozen maximum forecast envelope
+from 32,201 to 32,414 bytes, below the unchanged 65,536 ceiling. This is metadata
+arithmetic, not a new full-history run. Synthetic 40-player plan/input bodies
+measure 25,035 / 14,569 bytes. Maximum 16 workers plus one capture job can consume
+5,950 runner-minutes before short-job overhead. Native cron and queues remain
+best effort; maximum-capacity API throughput and the connected held path have
+not been measured on a hosted runner. Existing archive/action/source guards
+can stop with explicit partial evidence; no unlimited throughput is claimed.
+See `evidence/operational/sdv-delivery-capacity-20261023.json`.
+
+**Actual checks:** `node --test --test-isolation=none web/tests/*.test.mjs`
+passed 150 frontend tests (13.499 s); `python3 -m multisport_lab.demo` passed.
+Focused held runtime tests passed 20 normally / 36.662 s and 20 under
+`python3 -O` / 25.717 s; runner tests passed 20 normally / 0.607 s and
+20 optimized / 0.616 s. New policy (10) and legacy input (14) focused tests
+passed normally and optimized. The cleanup/publication six-test regression
+passed normally / 0.092 s and optimized / 0.093 s. Independent review found
+no remaining material defect in the final runtime/policy/pins/publication/
+grading order. No frozen experiment or new full-history diagnostic was run.
+
+Required local `python3 -m unittest discover -s tests -v` did **not** pass:
+1,045 tests / 438.007 s, 44 failures and 19 errors during process exhaustion.
+The exact failed log is retained, not replaced by a green claim. The workspace
+had 32,255 unreaped processes, 32,026 named git, parented to PID 1 (tail);
+forking Git/bubblewrap failed with EAGAIN. A real secondary test-fixture defect
+was reproduced: nested setup failed before cleanup registration and leaked a
+synthetic history ID. Cleanup now registers before setup; all three new
+regressions failed before that fix and pass afterward normally and optimized.
+Production history validators were not relaxed and original records are
+unchanged. Fresh canonical GitHub CI is the final integration gate, still
+pending at this committed checkpoint. See
+`evidence/operational/sdv-delivery-local-validation-20261024.json`.
+
+The isolated candidate browser passed 18 desktop/mobile views at 1440, 390 and
+320 px, all six verified historical names, all fourteen categories, History
+refresh/source IDs/Performance, twelve scope checks and 135 builder NO_ACTION
+combinations. No JavaScript error, missing asset or overflow was observed.
+Its build marker identifies a development preview; it is not public deployment.
+See `evidence/operational/sdv-delivery-local-browser-20261023.json`.
+
+**GitHub upload/recovery:** native push could not fork its HTTPS helper.
+Using the existing authenticated GitHub connector, the complete candidate tree
+was retained as a normal new branch commit. The local assembly was preserved;
+no protected branch was changed. An independent public GitHub ZIP recovery
+downloaded 3,471,114 bytes and verified all 555 manifest entries and all 34
+changed files against the implementation. A mutable URL/hash alone was not
+treated as recovery. See
+`evidence/operational/sdv-delivery-source-recovery-20261024.json`.
+The separate private MoviOdds draft-asset upload remains unverified after its
+earlier HTTP 401; its local original ZIP is preserved. That private archive
+problem does not block the licensed SDV statistical-forecast channel.
+
+**Evidence counts:** six historical bundles / six historical statistical grades;
+zero genuine prospective forecasts, zero published offers, zero prospective
+outcomes/grades, zero qualified tickets and zero financial settlements. This
+package made zero sports-provider requests, zero dispatches and zero genuine
+generations. Public main/Pages remain `ef9e270`; this candidate has not merged
+or deployed. OPS002, PROS004, S0, DEV005, the expired pilot and NFL/MLB remain
+unchanged.
+
+**Next concrete action:** finish the final-head standard GitHub checks and
+readiness review, then request one consolidated exact-head approval for
+merge/deployment and this separately identified future-only operating policy.
+Before landing, recover the current production registry and preserve any
+already-admitted v1 cycle. After an approved release, verify the actual
+default-branch workflow, native run, complete fresh plan/input recovery, timely
+original paired forecasts, public served bytes and later verified final grades.
+Do not dispatch or backfill a missed window, and do not call code/tests alone
+a completed operating acceptance cycle.
+
 
 ## October 22, late UTC — first-cycle start missed; scheduled-run repair prepared
 

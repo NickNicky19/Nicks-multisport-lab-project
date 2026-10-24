@@ -29,7 +29,7 @@ class ProductionStoreTests(unittest.TestCase):
     def setUp(self):
         self.fixture = input_fixture.ProductionInputTests(
             "test_all_events_all_active_players_and_exact_shards_are_native_production_records")
-        self.fixture.setUp(); self.addCleanup(self.fixture.doCleanups)
+        self.addCleanup(self.fixture.doCleanups); self.fixture.setUp()
         self.fixture.binding = forecast_fixture.binding()
         # Explicit invented executable trust fixture. Structural source binding
         # and all graph/source/clock validators remain active; no reviewed code

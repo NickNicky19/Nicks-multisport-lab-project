@@ -1,0 +1,104 @@
+{
+  "schema_version": "nba-sdv-delivery-independent-review-final-delta-v2",
+  "checked_at": "2026-10-23T23:49:27.157963+00:00",
+  "base": "ef9e270f36bb3b4ee8bbd92d34b12493d759cc45",
+  "previous_report": "/tmp/nml-sdv-delivery-independent-review-20261023.json",
+  "scope": "Read-only frozen source delta review; no source or GitHub HTTP; no model evaluation or full-suite repeat",
+  "verdict": "PASS_BOUNDED_INDEPENDENT_REVIEW",
+  "reviewed_file_sha256": {
+    "multisport_lab/sdv_production_common.py": "5efa77ba435b1ad1f9b88a84137e0e3947d826e826582e8ca778aeb971ac2e2b",
+    "multisport_lab/sdv_production_inputs.py": "acc4a13776b713e88b0c553f47ba0121d8c40a4fdef133ce0f428826765eb49a",
+    "multisport_lab/sdv_production_forecasts.py": "21867f3b8d17b9f5b75c34a27bb039cc0cb628cad3091af497de27b065007cdc",
+    "multisport_lab/sdv_production_coordinator.py": "124015c54da4a18f4c9e23dbd28a1f53317d04485da745ee5f754f885d4a5a8d",
+    "multisport_lab/sdv_production_runner.py": "d44fb4a4efed750eaac05a6bf926ee04e52d67ed9acf4c329298ffa6d89d29bb",
+    "multisport_lab/sdv_production_held.py": "8fac8ef0ceb9fa03cc56ef223cffbe28c942bbb6d82e649726a568a88879c7d6",
+    "multisport_lab/sdv_production_publication.py": "3b886afbf469a7dd2728a62914d602ad9f4440c79588de011fa4b2bdf40daf5a",
+    ".github/workflows/nba-operations.yml": "e81698c94e8d946ee8dd42f471d42e409f54f05a98770df0794b178b4d8519df",
+    "config/sdv_production_policy_v2.json": "75c1d3934f49caa649d3533ce48730c219e236ad972da9a806a229e6b3315246",
+    "web/production.mjs": "0fd26a69e63b5d79886edf548859f33be87816d55ce137579d9919bc0e787b4c"
+  },
+  "policy_v2_id": "3ea45e39dddee1222a04d2998003ec90f7241f59f2e0a721b2fba128ad97f4ed",
+  "source_inventory": {
+    "legacy_python": 34,
+    "current_python": 36,
+    "legacy_js_equal": true,
+    "current_js_equal": true
+  },
+  "preservation": {
+    "protected_producer_files": 23,
+    "original_records": 19,
+    "changed_against_base": []
+  },
+  "final_deltas": [
+    {
+      "area": "grading ordering",
+      "verdict": "PASS",
+      "finding": "grade-prepare waits for both held capture and worker jobs, independently refreshes exact current bindings, then pure grading_tasks emits immutable GRADE descriptors; no fresh source capture, plan creation or issuance path."
+    },
+    {
+      "area": "held recovery failure visibility",
+      "verdict": "PASS",
+      "finding": "Returned RECOVERY_FAILED rows now produce a bounded REFRESH error summary while later captures continue; final status remains partial."
+    },
+    {
+      "area": "finish publication ordering",
+      "verdict": "FIXED_AND_INDEPENDENTLY_REPRODUCED",
+      "before_trace": [
+        [
+          "reconcile",
+          "NOT_STARTED",
+          null
+        ],
+        [
+          "write",
+          "HOSTED_PHASES_PARTIAL_OR_FAILED",
+          "HOSTED_PHASES_PARTIAL_OR_FAILED"
+        ]
+      ],
+      "after_trace": [
+        [
+          "write",
+          "HOSTED_PHASES_PARTIAL_OR_FAILED",
+          "HOSTED_PHASES_PARTIAL_OR_FAILED"
+        ],
+        [
+          "reconcile",
+          "HOSTED_PHASES_PARTIAL_OR_FAILED",
+          "HOSTED_PHASES_PARTIAL_OR_FAILED"
+        ]
+      ],
+      "final_status": "PARTIAL_OR_FAILED",
+      "coordinator_registry_status": "HOSTED_PHASES_PARTIAL_OR_FAILED",
+      "method": "Actual runner.execute finish under python-O, in-memory official-boundary doubles,0HTTP,0genuineforecasts."
+    },
+    {
+      "area": "publication policy semantics",
+      "verdict": "PASS",
+      "finding": "Index summary policy comes from current registry, or newest registered policy represented in exact offline records; individual plan/input/forecast graphs retain their own registered policy. No summary-policy substitution into retained records."
+    },
+    {
+      "area": "failure publication meaning",
+      "verdict": "PASS",
+      "finding": "Actual hosted partial/failure run statuses enter stable content identity and ordinary-language operating reason; routine observation clocks do not alone trigger a new content identity."
+    }
+  ],
+  "operating_bounds": {
+    "unbound_hold_admission": "T425 through T155 yields270-minute start band, bounded350-minute process endingT75.",
+    "already_bound_path": "prepare_tasks can capture within actual T150..T105 new-capture gate before HOLD selection; successful exact input persistence can then permit input_already_bound HOLD later thanT155, conditionally extending the potential start band toward320minutes. Source persistence, PREPARE intent and independent readback must still finish beforeT90.",
+    "scheduler_limitation": "Observed295m31s start gap is not a mathematical permanent coverage block once immediate capture is considered. Timely runner start, queueing, complete cohort capacity and actual acknowledgments remain unguaranteed.",
+    "transport_capacity": "1000 archive actions per client remains failclosed, not a measured guarantee that every maximal workload completes; original limits and metadata/object accounting are unchanged."
+  },
+  "test_evidence": {
+    "independently_executed_earlier": "policy10optimizedPASS; held13optimizedPASS before agent-added cases; productionfrontend28PASS; two tiny optimized failure/recovery reproductions",
+    "reported_by_runtime_agent": "Finalrunner20normal+20optimizedPASS includes actualexecute finish ordering regression.",
+    "required_full_suite": "Owned by root and running separately on the final frozen source; this report does not claim its completion."
+  },
+  "requests_or_mutations": {
+    "provider_http": 0,
+    "github_http": 0,
+    "repository_edits": 0,
+    "scheduling_or_activation": 0,
+    "genuine_issuance": 0,
+    "model_comparisons": 0
+  }
+}
