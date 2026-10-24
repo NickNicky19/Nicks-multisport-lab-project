@@ -230,6 +230,9 @@ def verify_browser(root, output):
                             "url": page.url, "viewport": width, "captured_at": now()})
         require(page.evaluate("document.documentElement.scrollWidth<=innerWidth"), "Viewport overflows")
         views.append({"route": page.url, "width": width, "checked_at": now()})
+        # Chromium may discard prior-document bodies on the next navigation.
+        # Verify actual received bytes while their document is still live.
+        proof.consume()
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
@@ -278,6 +281,7 @@ def verify_browser(root, output):
             capture(page, "upcoming", width)
             page.goto(BASE + "#/props/history")
             page.wait_for_function("document.querySelector('[data-filter=\"view\"]')?.value==='history'")
+            proof.consume()
             page.reload(wait_until="networkidle")
             page.wait_for_function("document.querySelector('[data-filter=\"view\"]')?.value==='history'")
             page.locator('[data-filter="category"]').select_option("REB")
