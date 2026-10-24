@@ -1,6 +1,6 @@
 """Synthetic final CSV replay only; no source collection or model evaluation."""
 from copy import deepcopy
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import tempfile
 import unittest
@@ -10,14 +10,15 @@ from multisport_lab.integrity import IntegrityError, load_json, stamp
 from multisport_lab import sdv_daily_outcomes as outcomes
 from multisport_lab import sdv_daily_producer as producer
 from multisport_lab import sdv_daily_store as storage
+from multisport_lab import ledger as ledger_clock
 from test_sdv_daily_inputs import csv_bytes
 
 
 class DailyOutcomesTests(unittest.TestCase):
     def setUp(self):
         self.now=datetime(2026,10,24,tzinfo=timezone.utc)
-        for module in (outcomes,producer,storage):
-            p=patch.object(module,"_now",return_value=self.now);p.start();self.addCleanup(p.stop)
+        for module in (outcomes,producer,storage,ledger_clock):
+            p=patch.object(module,"_now",side_effect=lambda:self.now);p.start();self.addCleanup(p.stop)
         self.folder=tempfile.TemporaryDirectory();self.addCleanup(self.folder.cleanup)
         self.store=storage.DailyStore(self.folder.name)
         fixture=load_json(Path(__file__).parent/"fixtures/sdv-daily-synthetic.json")
@@ -78,6 +79,22 @@ class DailyOutcomesTests(unittest.TestCase):
         self.assertEqual(self.store.ledger._path(first.kind,first.record_id).read_bytes(),original)
         self.assertEqual(self.store.corrections()[0]["reference"],link.to_record())
         self.assertEqual(len([b for _,b in self.store.records() if b["schema_version"]==producer.OUTCOME_SCHEMA]),2)
+
+
+    def test_fixture_receipt_clock_is_independent_of_wall_date_and_future_receipts_reject(self):
+        initial = self.now
+        for index, wall_at in enumerate((initial - timedelta(days=1), initial + timedelta(days=1))):
+            self.now = initial + timedelta(seconds=index)
+            with self.subTest(wall_at=wall_at), patch.object(ledger_clock, "datetime") as wall:
+                wall.now.return_value = wall_at
+                reference, _ = self.normalize()
+                payload = self.store.ledger.read(reference)
+                self.assertEqual(payload["received_at"], stamp(self.now))
+                wall.now.assert_not_called()
+                invalid = deepcopy(payload)
+                invalid["received_at"] = stamp(self.now + timedelta(seconds=1))
+                with self.assertRaisesRegex(IntegrityError, "future daily receipt"):
+                    self.store.ledger._validate_payload(invalid, kind=reference.kind, record_id=reference.record_id)
 
 
 if __name__ == "__main__":unittest.main()

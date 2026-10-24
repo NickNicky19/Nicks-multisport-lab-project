@@ -1,0 +1,35 @@
+{
+  "schema_version": "nba-delivery-verification-checkpoint-v1",
+  "recorded_at": "2026-10-24T00:48:26.834275+00:00",
+  "source_commit": "00a3018bad6ec4b5f23df54a19546b21a3fc4e77",
+  "previous_head": "6c1d5bc897c2354facff3c139dbdaab5c8b1025d",
+  "failed_ci_run": 40044544834,
+  "failed_ci_tests": 1053,
+  "failed_ci_errors": 4,
+  "fixture": "tests/test_sdv_daily_outcomes.py",
+  "before_fix_original_errors": 4,
+  "before_fix_new_regression_errors": 1,
+  "before_fix_new_regression_failures": 1,
+  "focused_normal": {
+    "tests": 5,
+    "result": "PASS",
+    "seconds": 0.104,
+    "command": "python3 -m unittest discover -s tests -p test_sdv_daily_outcomes.py -v"
+  },
+  "focused_optimized": {
+    "tests": 5,
+    "result": "PASS",
+    "seconds": 0.115,
+    "command": "python3 -O -m unittest discover -s tests -p test_sdv_daily_outcomes.py -v"
+  },
+  "independent_fixture_review": "PASS",
+  "runtime_code_changed": false,
+  "protected_source_files_verified": 23,
+  "original_json_records_verified": 19,
+  "prior_watcher_result": "BLOCKED_HTTP_401_GRAPHQL",
+  "current_environment_network_enforcement": "UNKNOWN",
+  "provider_requests": 0,
+  "genuine_forecasts": 0,
+  "deployment": false,
+  "next": "Fresh final-head CI and guarded readiness before exact-head landing confirmation."
+}

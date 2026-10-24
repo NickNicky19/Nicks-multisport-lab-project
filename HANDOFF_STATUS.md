@@ -2,6 +2,54 @@
 
 Updated: October 24, 2026 (UTC).
 
+## October 24, 00:48 UTC — fresh-CI calendar regression repaired; release still pending
+
+Fresh GitHub CI **40044544834** on PR #22 head
+`6c1d5bc897c2354facff3c139dbdaab5c8b1025d` finished at 00:38:05 UTC:
+**1,053 tests / 1,001.235 seconds, four errors**. The daily-outcome fixture
+froze three clocks at October 24 00:00 while base-ledger receipts used the later
+real clock. This is an actual failed integration result, not a passing claim.
+
+The fixture now shares one synthetic clock across outcomes, producer, daily
+store and base ledger. Before the fix, four original tests produced four
+future-receipt errors; the new regression also failed across simulated earlier/
+later wall dates. Afterward five focused tests passed normally (0.104 s) and
+under actual `python3 -O -m unittest discover -s tests -p test_sdv_daily_outcomes.py -v`
+(0.115 s). Deliberately future-dated receipts still reject. Independent fixture
+review passed. Runtime validators, all 23 protected producer files and the
+19 original records remain unchanged. Source implementation is still
+`00a3018bad6ec4b5f23df54a19546b21a3fc4e77`; the forward change is test/evidence
+only. Final-head standard CI remains required.
+
+Strict independent archive recovery verified registry
+`d522c56179d0f997a4fd586c566651b8b7f690db8982e1bfa22262546b6c07f6`
+from records commit `e35c090cdf728da48dac1bd2ac48da17bfd08855`,
+including compressed/raw hashes and budget meaning: zero days, zero attempts.
+Native run **40042990869**, 00:03:02–00:03:26 UTC, succeeded without forecasts.
+There are no hidden issued originals waiting to upload.
+
+The prescribed read-only PR Completion watcher failed with **HTTP 401:
+Bad credentials** from its GitHub CLI GraphQL request before environment
+reconfiguration. The authenticated connector uploaded/recovered the branch.
+After configuration revision 353, code, the test fix and private originals
+remain present; network enforcement is reported UNKNOWN, so CLI readiness
+must be revalidated after setup. Process exhaustion also remains observed.
+No merge or deployment was attempted. No provider credential is requested.
+
+Automatic approval review rejected publishing the full CI log because of
+extensive runner/project metadata. That action stopped. The repository retains
+only `evidence/operational/sdv-delivery-ci-failure-summary-20261024.json`.
+Original GitHub job logs/tool evidence are not claimed as permanent full-log
+archival, and no alternate public upload was attempted.
+
+Counts remain six historical bundles/six historical grades and zero genuine
+forecasts, published offers, prospective outcomes/grades, qualified tickets or
+financial settlements. No source GET, genuine generation, frozen comparison or
+deployment occurred. PR #22 remains draft. Next: final-head CI, fresh guarded
+readiness, exact-head release/future-policy confirmation, then actual native
+capture, timely public forecasts and later verified statistical grades.
+
+
 ## October 24, 00:24 UTC — automatic-delivery repair implemented; release pending
 
 **Implementation source:** `00a3018bad6ec4b5f23df54a19546b21a3fc4e77`,
