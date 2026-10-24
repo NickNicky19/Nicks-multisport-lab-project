@@ -26,7 +26,7 @@ PR = 22
 
 
 def request_data(action="plan"):
-    ref = f"refs/heads/execution/guarded-pr-{PR}-{HEAD}"
+    ref = f"refs/heads/execution/guarded-pr-{PR}-{HEAD}" + ("-land" if action == "land" else "")
     event = {"sender": {"login": release.OWNER},
              "repository": {"full_name": release.REPOSITORY},
              "inputs": {"release_action": action, "release_pr": str(PR),
@@ -389,6 +389,77 @@ class BoundedCommandReceiptTests(unittest.TestCase):
              self.assertRaisesRegex(release.ReleaseError, "non-object"):
             release._json(["synthetic-command"], ROOT)
 
+
+
+def push_data(action="plan"):
+    event, env = request_data(action)
+    inputs = event.pop("inputs")
+    env["GITHUB_EVENT_NAME"] = "push"
+    event.update(ref=env["GITHUB_REF"], after=EXECUTION, forced=False, deleted=False,
+                 head_commit={"id": EXECUTION,
+                              "message": release.PUSH_ENVELOPE + json.dumps(inputs)})
+    return event, env
+
+
+class ReleasePushBootstrapTests(unittest.TestCase):
+    def test_owner_push_can_start_only_a_bound_read_only_plan(self):
+        event, env = push_data()
+        self.assertEqual(release.parse_request(event, env), release.Request("plan", PR, HEAD, ""))
+
+    def test_land_push_requires_separate_ref_exact_confirmation_and_digest(self):
+        event, env = push_data("land")
+        self.assertTrue(env["GITHUB_REF"].endswith("-land"))
+        self.assertEqual(release.parse_request(event, env), release.Request("land", PR, HEAD, DIGEST))
+        for field, value in (("release_confirmation", ""), ("release_policy_digest", ""), ("release_head", EXECUTION)):
+            changed = deepcopy(event)
+            body = json.loads(changed["head_commit"]["message"][len(release.PUSH_ENVELOPE):])
+            body[field] = value
+            changed["head_commit"]["message"] = release.PUSH_ENVELOPE + json.dumps(body)
+            with self.subTest(field=field), self.assertRaises(release.ReleaseError):
+                release.parse_request(changed, env)
+        with self.assertRaises(release.ReleaseError):
+            release.parse_request(event, {**env, "GITHUB_RUN_ATTEMPT": "2"})
+
+    def test_push_event_must_match_actual_ref_and_commit_without_force_or_deletion(self):
+        event, env = push_data()
+        for key, value in (("forced", True), ("deleted", True), ("ref", "refs/heads/main"), ("after", HEAD),
+                           ("head_commit", {"id": HEAD, "message": event["head_commit"]["message"]})):
+            changed = deepcopy(event); changed[key] = value
+            with self.subTest(key=key), self.assertRaises(release.ReleaseError):
+                release.parse_request(changed, env)
+
+    def test_push_envelope_rejects_missing_unknown_duplicate_and_malformed_fields(self):
+        event, env = push_data()
+        body = json.loads(event["head_commit"]["message"][len(release.PUSH_ENVELOPE):])
+        missing = dict(body); del missing["release_confirmation"]
+        unknown = {**body, "admin": True}
+        duplicate = json.dumps(body)[:-1] + ', "release_action": "land"}'
+        for message in ("unstructured approval", release.PUSH_ENVELOPE + "null",
+                        release.PUSH_ENVELOPE + "{", release.PUSH_ENVELOPE + json.dumps(missing),
+                        release.PUSH_ENVELOPE + json.dumps(unknown), release.PUSH_ENVELOPE + duplicate):
+            changed = deepcopy(event); changed["head_commit"]["message"] = message
+            with self.subTest(message=message), self.assertRaises(release.ReleaseError):
+                release.parse_request(changed, env)
+
+    def test_push_does_not_admit_other_actor_sender_repository_or_self_hosted_runner(self):
+        event, env = push_data()
+        for key, value in (("GITHUB_ACTOR", "other-user"), ("GITHUB_REPOSITORY", "other/repo"),
+                           ("RUNNER_ENVIRONMENT", "self-hosted")):
+            with self.subTest(key=key), self.assertRaises(release.ReleaseError):
+                release.parse_request(event, {**env, key: value})
+        changed = deepcopy(event); changed["sender"]["login"] = "other-user"
+        with self.assertRaises(release.ReleaseError):
+            release.parse_request(changed, env)
+
+    def test_read_only_plan_and_landing_refs_cannot_be_cross_used(self):
+        for action in ("plan", "land"):
+            event, env = push_data(action)
+            wrong = env["GITHUB_REF"][:-5] if action == "land" else env["GITHUB_REF"] + "-land"
+            env.update(GITHUB_REF=wrong,
+                       GITHUB_WORKFLOW_REF=f"{release.REPOSITORY}/.github/workflows/pages.yml@{wrong}")
+            event["ref"] = wrong
+            with self.subTest(action=action), self.assertRaises(release.ReleaseError):
+                release.parse_request(event, env)
 
 if __name__ == "__main__":
     unittest.main()

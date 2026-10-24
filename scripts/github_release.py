@@ -26,6 +26,7 @@ HELPERS = {
     "pr_watch.py": "e6052992fb8d7b853e2401cc11ffec9a9052975e672fc5174629e415dec3f415",
 }
 MAX_RECEIPT_BYTES = 2 * 1024 * 1024
+PUSH_ENVELOPE = "NML_GUARDED_RELEASE_V1\n"
 
 
 class ReleaseError(RuntimeError):
@@ -52,13 +53,39 @@ def parse_request(event: dict, env: dict[str, str]) -> Request:
     event = _object(event)
     if (env.get("GITHUB_ACTIONS") != "true"
             or env.get("RUNNER_ENVIRONMENT") != "github-hosted"
-            or env.get("GITHUB_EVENT_NAME") != "workflow_dispatch"
+            or env.get("GITHUB_EVENT_NAME") not in {"workflow_dispatch", "push"}
             or env.get("GITHUB_REPOSITORY") != REPOSITORY
             or env.get("GITHUB_ACTOR") != OWNER
             or _object(event.get("sender")).get("login") != OWNER
             or _object(event.get("repository")).get("full_name") != REPOSITORY):
-        raise ReleaseError("Requires an owner-dispatched run in this repository on a GitHub-hosted runner")
-    inputs = event.get("inputs", {})
+        raise ReleaseError("Requires an owner-authorized run in this repository on a GitHub-hosted runner")
+    if env["GITHUB_EVENT_NAME"] == "push":
+        commit = _object(event.get("head_commit"))
+        if (event.get("forced") is not False or event.get("deleted") is not False
+                or event.get("ref") != env.get("GITHUB_REF")
+                or event.get("after") != env.get("GITHUB_SHA")
+                or commit.get("id") != env.get("GITHUB_SHA")):
+            raise ReleaseError("Push event is not an ordinary exact-ref/exact-commit owner update")
+        message = commit.get("message")
+        if not isinstance(message, str) or not message.startswith(PUSH_ENVELOPE):
+            raise ReleaseError("Missing versioned release-intent commit envelope")
+        def unique_fields(pairs: list[tuple[str, object]]) -> dict:
+            result = {}
+            for key, value in pairs:
+                if key in result:
+                    raise ReleaseError("Duplicate release-intent field")
+                result[key] = value
+            return result
+        try:
+            inputs = json.loads(message[len(PUSH_ENVELOPE):], object_pairs_hook=unique_fields)
+        except (ValueError, TypeError) as error:
+            raise ReleaseError("Invalid release-intent JSON") from error
+        expected = {"release_action", "release_pr", "release_head",
+                    "release_policy_digest", "release_confirmation"}
+        if not isinstance(inputs, dict) or set(inputs) != expected:
+            raise ReleaseError("Release-intent envelope has missing or unknown fields")
+    else:
+        inputs = event.get("inputs", {})
     if not isinstance(inputs, dict):
         raise ReleaseError("Missing workflow-dispatch inputs")
     action = inputs.get("release_action")
@@ -73,7 +100,7 @@ def parse_request(event: dict, env: dict[str, str]) -> Request:
     if not isinstance(digest, str) or not isinstance(approved, str):
         raise ReleaseError("Readiness digest and confirmation must be explicit strings")
     pr = int(pr_text)
-    expected_ref = f"refs/heads/execution/guarded-pr-{pr}-{head}"
+    expected_ref = f"refs/heads/execution/guarded-pr-{pr}-{head}" + ("-land" if action == "land" else "")
     if (env.get("GITHUB_REF") != expected_ref
             or env.get("GITHUB_WORKFLOW_REF") != f"{REPOSITORY}/.github/workflows/pages.yml@{expected_ref}"):
         raise ReleaseError("Execution ref or workflow identity differs from the candidate-bound release ref")

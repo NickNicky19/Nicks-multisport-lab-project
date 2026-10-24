@@ -3,7 +3,7 @@ name: Check and publish research site
 on:
   pull_request:
   push:
-    branches: [main, implementation/nba-foundation]
+    branches: [main, implementation/nba-foundation, 'execution/guarded-pr-*']
   workflow_dispatch:
     inputs:
       daily_records_commit:
@@ -54,7 +54,8 @@ jobs:
   build:
     if: >-
       (github.event_name != 'workflow_dispatch' || !inputs.operating_diagnostic) &&
-      (github.event_name != 'workflow_dispatch' || !inputs.release_action || inputs.release_action == 'none')
+      (github.event_name != 'workflow_dispatch' || !inputs.release_action || inputs.release_action == 'none') &&
+      !(github.event_name == 'push' && startsWith(github.ref, 'refs/heads/execution/guarded-pr-'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -176,12 +177,14 @@ jobs:
   release-plan:
     if: >-
       github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
-      github.event_name == 'workflow_dispatch' && github.actor == 'NickNicky19' &&
-      inputs.release_action == 'plan'
+      github.actor == 'NickNicky19' &&
+      ((github.event_name == 'workflow_dispatch' && inputs.release_action == 'plan') ||
+       (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/execution/guarded-pr-') &&
+        !endsWith(github.ref, '-land')))
     runs-on: ubuntu-latest
     timeout-minutes: 25
     concurrency:
-      group: guarded-release-${{ inputs.release_pr }}
+      group: guarded-release-${{ github.repository }}
       cancel-in-progress: false
     permissions:
       contents: read
@@ -202,6 +205,8 @@ jobs:
           python-version: '3.12'
       - name: Observe installed GitHub CLI version
         run: gh --version
+      - name: Verify release gates under optimized Python (synthetic only)
+        run: python3 -O -m unittest discover -s tests -p test_github_release.py -v
       - name: Run the exact-head guarded release plan
         run: python3 scripts/github_release.py
       - name: Retain bounded release receipts (no source capture or CI log export)
@@ -216,12 +221,14 @@ jobs:
   release-land:
     if: >-
       github.repository == 'NickNicky19/Nicks-multisport-lab-project' &&
-      github.event_name == 'workflow_dispatch' && github.actor == 'NickNicky19' &&
-      inputs.release_action == 'land'
+      github.actor == 'NickNicky19' &&
+      ((github.event_name == 'workflow_dispatch' && inputs.release_action == 'land') ||
+       (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/execution/guarded-pr-') &&
+        endsWith(github.ref, '-land')))
     runs-on: ubuntu-latest
     timeout-minutes: 25
     concurrency:
-      group: guarded-release-${{ inputs.release_pr }}
+      group: guarded-release-${{ github.repository }}
       cancel-in-progress: false
     permissions:
       contents: write

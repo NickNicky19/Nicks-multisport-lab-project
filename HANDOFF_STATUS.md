@@ -2,6 +2,56 @@
 
 Updated: October 24, 2026 (UTC).
 
+## October 24 — remove the final development-executor launch dependency
+
+Exact predecessor `0a1487a0ef089047acf541028776a5fd2bbe7133` passed real
+GitHub CI **40070730240** at **06:51:44 UTC**: **1,075 Python tests / 1,011.075 s**,
+demo `OFFLINE_EXAMPLES_ONLY`, **150 frontend passes / 0 failures**,
+artifact/smoke and upload passed. Deployment, diagnostic and both release jobs
+correctly skipped. This is software/artifact evidence for that predecessor,
+not testing of this subsequent push-bootstrap change and not public deployment.
+
+The actual attempt to dispatch its read-only plan failed at process creation:
+`exec-server transport disconnected`. It was an execution-environment failure,
+not an automatic approval rejection. No command process or confirmed HTTP POST
+was produced. Independent GitHub observation at **06:57:00.737 UTC** found zero
+matching workflow-dispatch runs. The original identical-tree execution ref and
+all earlier observations remain intact; no failed observation is relabeled.
+
+This forward fix moves the launch itself into GitHub's control plane. A normal
+owner-authorized connector fast-forward of a uniquely named execution ref starts
+the existing workflow's read-only plan. A versioned JSON commit-message envelope
+binds action, exact PR/head, policy digest and confirmation. Owner/sender,
+nonforced/nondeleted event, ref/after/commit, hosted runner, parent/tree and all
+existing readiness gates are explicit. Planning and landing use DIFFERENT refs;
+only a later explicitly approved `-land` ref may reach the unchanged guarded
+helper's `--confirm`. No plan automatically transitions to landing.
+
+Ordinary build/diagnostic/deploy jobs exclude these execution refs. Existing
+candidate CI remains intact, and a separate execution SHA preserves the all-check
+policy. Six new synthetic regressions cover owner push, strict versioned intent,
+event tampering, missing/duplicate fields, separate action refs and approval.
+Their actual normal/full/optimized hosted results are pending on the new exact
+candidate; no local executor pass is invented. The hosted plan job now runs the
+focused optimized guards before readiness. No sports-source request, model
+execution, new collector/scheduler, genuine issuance or frozen evaluation occurs.
+
+The independent source review at predecessor 0a verified all 565 manifest paths,
+all ten changed/new bodies, 556 unchanged object/hash references and the protected
+23 files/19 records against both predecessor and main. Its temporary receipt is
+`/tmp/nml-pr22-independent-api-0a1487a0.json`, SHA-256
+`56573f3c0a2790b38ce1e85c8be360d4fddb5ec7943325a6d8f178654c1effd4`.
+This is incremental API recovery, not a cold ZIP claim. A fresh final-head
+hosted check and actual source/ref/run verification remain required.
+
+Next: run the changed candidate CI, trigger and observe the actual GitHub-only
+read-only plan, then obtain the one exact-head release/future-policy approval.
+The underlying R0/K0 delivery repair, bounds, all 14 categories, original records,
+six historical bundles/grades, zero genuine forecasts and other inactive scopes
+are unchanged. Do not backfill a missed window or infer activation from this
+bootstrap preparation.
+
+
 ## October 24 — GitHub-hosted guarded release implementation
 
 This forward package extends PR #22 on `implementation/sdv-delivery-repair`

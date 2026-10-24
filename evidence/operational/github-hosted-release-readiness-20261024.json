@@ -40,8 +40,16 @@
     "disposition": "Implemented; regression verifies intent and verified merge survive dispatch failure"
   },
   "actual_bootstrap_access": {
-    "authenticated_user_get": {"status": 200, "login": "NickNicky19"},
-    "existing_workflow_get": {"status": 200, "id": 389957636, "path": ".github/workflows/pages.yml", "state": "active"},
+    "authenticated_user_get": {
+      "status": 200,
+      "login": "NickNicky19"
+    },
+    "existing_workflow_get": {
+      "status": 200,
+      "id": 389957636,
+      "path": ".github/workflows/pages.yml",
+      "state": "active"
+    },
     "transport": "Single-process standard Python HTTPS; existing injected credential, inherited proxy and verified TLS",
     "meaning": "Existing dispatch access path verified read-only; no hosted plan claimed at this checkpoint"
   },
@@ -52,5 +60,28 @@
   "sports_source_requests": 0,
   "genuine_forecasts": 0,
   "prospective_grades": 0,
-  "qualification": "UNAVAILABLE"
+  "qualification": "UNAVAILABLE",
+  "forward_bootstrap": {
+    "reason": "Development exec-server transport disconnected before manual dispatch process started",
+    "predecessor_commit": "0a1487a0ef089047acf541028776a5fd2bbe7133",
+    "predecessor_ci": {
+      "run": 40070730240,
+      "result": "SUCCESS",
+      "python_tests": 1075,
+      "python_seconds": 1011.075,
+      "frontend_pass": 150,
+      "frontend_fail": 0,
+      "completed_at": "2026-10-24T06:51:44Z"
+    },
+    "actual_dispatch_runs_observed": {
+      "at": "2026-10-24T06:57:00.737Z",
+      "count": 0,
+      "meaning": "No matching run observed; no failure cause inferred from absent logs"
+    },
+    "change": "Owner-authenticated connector ref push triggers same pinned helpers with versioned exact-head intent; separate land ref requires later explicit approval",
+    "new_synthetic_tests_added": 6,
+    "new_exact_head_ci": "PENDING_AT_COMMIT",
+    "actual_hosted_plan": "PENDING_AT_COMMIT",
+    "software_tests_are_not_prospective_evidence": true
+  }
 }

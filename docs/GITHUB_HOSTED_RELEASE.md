@@ -6,7 +6,8 @@ development workspace is not a production dependency. This manual release
 entrypoint moves the existing required PR Completion process to a healthy
 GitHub-hosted runner too. It adds no scheduler or forecast producer.
 
-The existing `pages.yml` workflow has three `release_action` values:
+The existing `pages.yml` workflow supports manual inputs and owner-pushed,
+versioned release-intent envelopes. Both routes have three actions:
 
 - `none` (default): unchanged ordinary checks and main-only site publication.
 - `plan`: owner-dispatched, read-only permissions; actual readiness and canonical
@@ -61,7 +62,7 @@ release metadata, not an archive of issued forecasts or full CI logs.
 ## Approved landing and actual publication
 
 Only after explicit per-PR approval of the exact current head and applicable
-operating scope, dispatch the same execution ref with:
+operating scope, dispatch a separately created identical-tree `-land` execution ref with:
 
 ```text
 release_action: land
@@ -97,6 +98,53 @@ that retained timestamp. Pending/blocked state never permits a replacement head,
 late forecast, altered policy or emergency merge. A successful merge survives a
 later dispatch failure in the receipt; ordinary main publication can then be
 reconciled under the existing approved release scope.
+
+
+## Preferred bootstrap without a development executor
+
+The GitHub connector can create commits/refs even when the ChatGPT executor cannot
+start. A normal owner-authorized ref update under
+`execution/guarded-pr-*` triggers the same existing workflow. This is an on-demand
+release event, not another scheduler. No HTTP dispatch client, new token or
+running development workspace is required.
+
+1. Finish candidate CI; preserve its exact reviewed head.
+2. Create an execution commit with that candidate as its sole parent and exactly
+   the same tree. Its message is the following versioned JSON envelope (all five
+   fields are required, values are strings, duplicate/unknown fields reject).
+3. Create the unique execution branch at the existing main ancestor, whose older
+   workflow does not match execution refs; then fast-forward it to the execution
+   commit through the authenticated GitHub connector. Do not create a push-check
+   on the candidate itself, force-update, or reuse an execution branch.
+4. Verify an actual `push` workflow run at the execution SHA, then its completed
+   read-only plan/receipt. Missing runs remain unobserved, not a claimed success.
+
+Read-only plan branch: `execution/guarded-pr-<PR>-<HEAD>`.
+
+```text
+NML_GUARDED_RELEASE_V1
+{"release_action":"plan","release_pr":"<PR>","release_head":"<HEAD>","release_policy_digest":"","release_confirmation":""}
+```
+
+Only AFTER the required explicit exact-head approval, create a DIFFERENT
+`execution/guarded-pr-<PR>-<HEAD>-land` ref/identical-tree child with this message:
+
+```text
+NML_GUARDED_RELEASE_V1
+{"release_action":"land","release_pr":"<PR>","release_head":"<HEAD>","release_policy_digest":"<CANONICAL_DIGEST>","release_confirmation":"APPROVE PR <PR> HEAD <HEAD> MERGE AND DEPLOY"}
+```
+
+The wrapper checks GitHub's actual owner sender/actor, event ref/after/head
+commit, nonforced/nondeleted state, exact workflow ref and hosted runner, then
+the same parent/tree/PR/policy/approval gates. A plan envelope never becomes a
+landing approval. The landing helper is still the only merge mutation surface.
+All release jobs serialize repository-wide. Ordinary builds/diagnostics/deploys
+skip execution refs; the plan job additionally executes the focused synthetic
+guards under actual optimized Python. No producer or sports-source client runs.
+
+The manual dispatch route remains available with the same checks and distinct
+land ref. Publication dispatch happens on the healthy GitHub runner AFTER an
+actual verified merge, not through the development executor.
 
 ## Evidence boundaries
 
