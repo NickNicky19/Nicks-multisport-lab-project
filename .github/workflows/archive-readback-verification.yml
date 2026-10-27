@@ -1,0 +1,84 @@
+name: Bounded own-archive readback verification
+on:
+  push:
+    branches: [verification/archive-readback-20261027]
+permissions:
+  contents: read
+jobs:
+  readback:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - name: Observe exact immutable public readbacks without any writes
+        run: |
+          python3 - <<'PY'
+          import collections, datetime, json, urllib.error, urllib.parse
+          from multisport_lab import sdv_production_archive as archive
+          references = [
+              {"bytes":10807,"name":"object-cebecf130317054d46057ac3a4a830f0adbe694d0fb0fbb46ef433d6a5db34fa.z","sha256":"cebecf130317054d46057ac3a4a830f0adbe694d0fb0fbb46ef433d6a5db34fa","tag":"nml-nba-records-v1-202610"},
+              {"bytes":12665,"name":"object-d68869c87f24a92b2047bb677df311fa49b00c83518e3cccdbfe525210629e5c.z","sha256":"d68869c87f24a92b2047bb677df311fa49b00c83518e3cccdbfe525210629e5c","tag":"nml-nba-records-v1-202610"},
+              {"bytes":12656,"name":"object-e692661b4e6ba516df2cc3e63087f1976b3c6abc3cf729519aedaf563fdbe60e.z","sha256":"e692661b4e6ba516df2cc3e63087f1976b3c6abc3cf729519aedaf563fdbe60e","tag":"nml-nba-records-v1-202610"},
+          ]
+          opener_factory = archive.urllib.request.build_opener
+          observations, current, results = [], {}, []
+          class Observed:
+              def __init__(self, opener): self.opener = opener
+              def open(self, request, *args, **kwargs):
+                  row = {"object_name":current["name"],"host":urllib.parse.urlsplit(request.full_url).hostname,
+                         "observed_at":datetime.datetime.now(datetime.timezone.utc).isoformat()}
+                  try:
+                      response = self.opener.open(request, *args, **kwargs)
+                  except urllib.error.HTTPError as exc:
+                      row["status"] = exc.code
+                      observations.append(row)
+                      raise
+                  row["status"] = response.code
+                  observations.append(row)
+                  return response
+          def observed_factory(*args, **kwargs): return Observed(opener_factory(*args, **kwargs))
+          archive.urllib.request.build_opener = observed_factory
+          reader = archive.GitHubReleaseArchive()
+          queue, visited = collections.deque(references), set()
+          def child_references(value):
+              if type(value) is dict:
+                  if set(value) == {"bytes","name","sha256","tag"}:
+                      archive.common.archive_ref(value)
+                      yield value
+                  else:
+                      for item in value.values(): yield from child_references(item)
+              elif type(value) is list:
+                  for item in value: yield from child_references(item)
+          while queue and len(results) < 24:
+              current = queue.popleft()
+              key = (current["tag"], current["name"])
+              if key in visited: continue
+              visited.add(key)
+              try:
+                  raw = reader.get(current, max_raw_bytes=64*1024*1024)
+                  results.append({"ref":current,"status":"RECOVERED","raw_bytes":len(raw)})
+                  try:
+                      value = json.loads(raw)
+                      # Inspect the failed grading snapshots before expanding registry children.
+                      children = list(child_references(value))
+                      if value.get("schema_version") == archive.SNAPSHOT_SCHEMA:
+                          queue.extendleft(reversed(children))
+                  except (ValueError, UnicodeError): pass
+              except Exception as exc:
+                  results.append({"ref":current,"status":"FAILED","error_type":type(exc).__name__,
+                                  "error":str(exc)[:500]})
+                  break
+          report = {"schema_version":"nba-own-archive-read-diagnostic-v1",
+                    "completed_at":datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                    "maximum_objects":24,"observations":observations,"results":results,
+                    "sports_source_requests":0,"record_writes":0,"forecast_generation":0,
+                    "status":"FAILED" if any(row["status"] == "FAILED" for row in results) else "READBACK_VERIFIED"}
+          print("ARCHIVE_READ_DIAGNOSTIC " + json.dumps(report,sort_keys=True))
+          if report["status"] == "FAILED": raise SystemExit(1)
+          PY
