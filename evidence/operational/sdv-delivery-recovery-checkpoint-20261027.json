@@ -1,0 +1,1516 @@
+{
+  "actual_retained_record_recovery": {
+    "archive_transport": {
+      "maximum_actions_per_client": 1000,
+      "scopes": [
+        {
+          "branch": "records/sdv-prod-20261025-401909857-7a494d9fe3b1-s0",
+          "shard_index": 0,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 92,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909857-7a494d9fe3b1-s1",
+          "shard_index": 1,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 92,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909857-7a494d9fe3b1-s2",
+          "shard_index": 2,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 74,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909858-7a494d9fe3b1-s0",
+          "shard_index": 3,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 92,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909858-7a494d9fe3b1-s1",
+          "shard_index": 4,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 92,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909858-7a494d9fe3b1-s2",
+          "shard_index": 5,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 74,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909856-7a494d9fe3b1-s0",
+          "shard_index": 6,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 92,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909856-7a494d9fe3b1-s1",
+          "shard_index": 7,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 92,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909856-7a494d9fe3b1-s2",
+          "shard_index": 8,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 74,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909859-7a494d9fe3b1-s0",
+          "shard_index": 9,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 92,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909859-7a494d9fe3b1-s1",
+          "shard_index": 10,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 92,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909859-7a494d9fe3b1-s2",
+          "shard_index": 11,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 74,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909860-7a494d9fe3b1-s0",
+          "shard_index": 12,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 92,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909860-7a494d9fe3b1-s1",
+          "shard_index": 13,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 92,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909860-7a494d9fe3b1-s2",
+          "shard_index": 14,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 74,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909861-7a494d9fe3b1-s0",
+          "shard_index": 15,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 90,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909861-7a494d9fe3b1-s1",
+          "shard_index": 16,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 90,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909861-7a494d9fe3b1-s2",
+          "shard_index": 17,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 72,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909862-7a494d9fe3b1-s0",
+          "shard_index": 18,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 90,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909862-7a494d9fe3b1-s1",
+          "shard_index": 19,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 90,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909862-7a494d9fe3b1-s2",
+          "shard_index": 20,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 72,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909864-7a494d9fe3b1-s0",
+          "shard_index": 21,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 90,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        },
+        {
+          "branch": "records/sdv-prod-20261025-401909864-7a494d9fe3b1-s1",
+          "shard_index": 22,
+          "transport": {
+            "automatic_write_retries": 0,
+            "gh_api_actions": 0,
+            "gh_internal_redirect_requests": "UNKNOWN_NOT_INSTRUMENTED",
+            "known_inventory_objects": null,
+            "maximum_actions_per_client": 1000,
+            "maximum_global_objects": 100000,
+            "new_bytes_reserved": 0,
+            "new_objects_reserved": 0,
+            "public_http_requests": 90,
+            "reserved_objects": 0,
+            "write_budget_bytes": null,
+            "write_budget_objects": null
+          }
+        }
+      ],
+      "total_gh_api_actions": 0,
+      "total_public_http_requests": 1974
+    },
+    "completed_at": "2026-10-27T18:33:33.185383+00:00",
+    "counts": {
+      "active_grades": 0,
+      "development_forecasts": 0,
+      "dnp_grades": 0,
+      "eligible_forecasts": 492,
+      "events": 8,
+      "forecasts": 530,
+      "genuine_forecasts": 492,
+      "grades": 0,
+      "outcomes": 0,
+      "pending_grades": 492,
+      "players": 246,
+      "scored_grades": 0
+    },
+    "descriptor": {
+      "error": null,
+      "generated_at": "2026-10-27T18:25:34.533110Z",
+      "path": "sdv-production.381fdb653644c86aa9118fc028f94c412ee2076dee6ee5de278952c15137f81a.json",
+      "retained": false,
+      "sha256": "381fdb653644c86aa9118fc028f94c412ee2076dee6ee5de278952c15137f81a",
+      "status": "PRODUCTION_RESEARCH"
+    },
+    "genuine_new_issuance": 0,
+    "prepared_shards": 23,
+    "public_deployment": false,
+    "registry_commit": "6de0a33c5a16f8eed9ffd87b05f34e06b642c18b",
+    "remote_record_writes": 0,
+    "schema_version": "nba-independent-publication-recovery-check-v1",
+    "sports_source_requests": 0,
+    "verification_keys": [
+      "index",
+      "records"
+    ]
+  },
+  "bounded_hosted_readback": {
+    "completed_at": "2026-10-27T18:06:24.672861+00:00",
+    "forecast_generation": 0,
+    "maximum_objects": 24,
+    "observations": [
+      {
+        "host": "github.com",
+        "object_name": "object-cebecf130317054d46057ac3a4a830f0adbe694d0fb0fbb46ef433d6a5db34fa.z",
+        "observed_at": "2026-10-27T18:06:13.721715+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-cebecf130317054d46057ac3a4a830f0adbe694d0fb0fbb46ef433d6a5db34fa.z",
+        "observed_at": "2026-10-27T18:06:13.953002+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-d68869c87f24a92b2047bb677df311fa49b00c83518e3cccdbfe525210629e5c.z",
+        "observed_at": "2026-10-27T18:06:14.043608+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-d68869c87f24a92b2047bb677df311fa49b00c83518e3cccdbfe525210629e5c.z",
+        "observed_at": "2026-10-27T18:06:14.284133+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-975d75bfa509bcbf7bd29da678e983c86d0b9b888d0c673f182bb99acd1925f5.z",
+        "observed_at": "2026-10-27T18:06:14.393295+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-975d75bfa509bcbf7bd29da678e983c86d0b9b888d0c673f182bb99acd1925f5.z",
+        "observed_at": "2026-10-27T18:06:14.590195+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-252c4403ceb7d71a1a2562670145ed9ca0fcdf8ea392b206d3e516a472361532.z",
+        "observed_at": "2026-10-27T18:06:14.714675+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-252c4403ceb7d71a1a2562670145ed9ca0fcdf8ea392b206d3e516a472361532.z",
+        "observed_at": "2026-10-27T18:06:14.949505+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-e9094155944e0746b9698fe91130308dfd95669b97639e7e6faa62f43fad9f29.z",
+        "observed_at": "2026-10-27T18:06:15.048598+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-e9094155944e0746b9698fe91130308dfd95669b97639e7e6faa62f43fad9f29.z",
+        "observed_at": "2026-10-27T18:06:16.644136+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-e705b996ad6c1261f8a69ce798255b9f10bea2c9fd4232b119067b5e42ccc709.z",
+        "observed_at": "2026-10-27T18:06:16.739629+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-e705b996ad6c1261f8a69ce798255b9f10bea2c9fd4232b119067b5e42ccc709.z",
+        "observed_at": "2026-10-27T18:06:16.955336+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-25667fb2c35267e18cf6c047f54f943cfcd277804188905c4104dc3c3501347f.z",
+        "observed_at": "2026-10-27T18:06:17.052820+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-25667fb2c35267e18cf6c047f54f943cfcd277804188905c4104dc3c3501347f.z",
+        "observed_at": "2026-10-27T18:06:17.274007+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-6653dffcb05cdda3bfa303ec9c46f59af92baedd01669383a0e4bca1ada15634.z",
+        "observed_at": "2026-10-27T18:06:17.370148+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-6653dffcb05cdda3bfa303ec9c46f59af92baedd01669383a0e4bca1ada15634.z",
+        "observed_at": "2026-10-27T18:06:17.583499+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-1bc769da07fd597e43e5f32c1d48341e220484847b572002a4eb7616c9cd492e.z",
+        "observed_at": "2026-10-27T18:06:17.679304+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-1bc769da07fd597e43e5f32c1d48341e220484847b572002a4eb7616c9cd492e.z",
+        "observed_at": "2026-10-27T18:06:17.959800+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-f0ce24c194302e79f5999b28905871e106df60f33395f70ce1d3c1fb8e58a47a.z",
+        "observed_at": "2026-10-27T18:06:18.057073+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-f0ce24c194302e79f5999b28905871e106df60f33395f70ce1d3c1fb8e58a47a.z",
+        "observed_at": "2026-10-27T18:06:18.293756+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-ba7b65a98fd5f70d168cc76d10407e18ff0699908b375bf000dd1d95feb8dcdc.z",
+        "observed_at": "2026-10-27T18:06:18.409537+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-ba7b65a98fd5f70d168cc76d10407e18ff0699908b375bf000dd1d95feb8dcdc.z",
+        "observed_at": "2026-10-27T18:06:18.623256+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-4ca8cf69057ae5cb3e380e3f752133bd299b9dbbb0df7ec3bc8d47a5c3a76019.z",
+        "observed_at": "2026-10-27T18:06:18.722829+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-4ca8cf69057ae5cb3e380e3f752133bd299b9dbbb0df7ec3bc8d47a5c3a76019.z",
+        "observed_at": "2026-10-27T18:06:18.991547+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-5f0dc43e8f1b0e856abfccff0c82ea3ead22794f6b18c81a86dbb937070bb34f.z",
+        "observed_at": "2026-10-27T18:06:19.107422+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-5f0dc43e8f1b0e856abfccff0c82ea3ead22794f6b18c81a86dbb937070bb34f.z",
+        "observed_at": "2026-10-27T18:06:19.385558+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-b0773770b6be3c5e8b696004f65212b88316da5264e891f2a84e6c56daed3502.z",
+        "observed_at": "2026-10-27T18:06:19.605664+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-b0773770b6be3c5e8b696004f65212b88316da5264e891f2a84e6c56daed3502.z",
+        "observed_at": "2026-10-27T18:06:19.847589+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-fcf13ae4dbd35cf67de2d41c64b418df9623c97ce0ec351a44cde22f65d91c11.z",
+        "observed_at": "2026-10-27T18:06:19.965689+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-fcf13ae4dbd35cf67de2d41c64b418df9623c97ce0ec351a44cde22f65d91c11.z",
+        "observed_at": "2026-10-27T18:06:20.166419+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-50ac5d3426851bded8f12b7f38c482fd93ccb15a8cac2079aff03ff89f71e63a.z",
+        "observed_at": "2026-10-27T18:06:20.289711+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-50ac5d3426851bded8f12b7f38c482fd93ccb15a8cac2079aff03ff89f71e63a.z",
+        "observed_at": "2026-10-27T18:06:20.503244+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-ed7eb9720f608f8809e300e3d1dc18b76c6d890ec0531fa59fcb0e65352a64c3.z",
+        "observed_at": "2026-10-27T18:06:20.592909+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-ed7eb9720f608f8809e300e3d1dc18b76c6d890ec0531fa59fcb0e65352a64c3.z",
+        "observed_at": "2026-10-27T18:06:21.066159+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-5d1692173d45632a0427144a6d4c5493d30795fa3624d039dd5f4e014dd7ebc3.z",
+        "observed_at": "2026-10-27T18:06:21.186452+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-5d1692173d45632a0427144a6d4c5493d30795fa3624d039dd5f4e014dd7ebc3.z",
+        "observed_at": "2026-10-27T18:06:21.408522+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-3d0f9050a0e0ee959e334adf940fa9968398f6c215ca7004c75d584141ebdd19.z",
+        "observed_at": "2026-10-27T18:06:21.501643+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-3d0f9050a0e0ee959e334adf940fa9968398f6c215ca7004c75d584141ebdd19.z",
+        "observed_at": "2026-10-27T18:06:21.722227+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-e692661b4e6ba516df2cc3e63087f1976b3c6abc3cf729519aedaf563fdbe60e.z",
+        "observed_at": "2026-10-27T18:06:21.817842+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-e692661b4e6ba516df2cc3e63087f1976b3c6abc3cf729519aedaf563fdbe60e.z",
+        "observed_at": "2026-10-27T18:06:22.062281+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-49fc618b36f4ed3f9ef5f26de0700ed3bb487ad25556d394ec9690fc20bb8f70.z",
+        "observed_at": "2026-10-27T18:06:22.152069+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-49fc618b36f4ed3f9ef5f26de0700ed3bb487ad25556d394ec9690fc20bb8f70.z",
+        "observed_at": "2026-10-27T18:06:22.422748+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-c0d43a2c4c785d516df9216e5fd6711b46517dbe786ea7e3fe33225fcf144f1e.z",
+        "observed_at": "2026-10-27T18:06:22.522175+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-c0d43a2c4c785d516df9216e5fd6711b46517dbe786ea7e3fe33225fcf144f1e.z",
+        "observed_at": "2026-10-27T18:06:22.722174+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-00b2ad91d4bafc7bc15c014dedb56e76d50ef74cb099236454d8cf0ce62994a5.z",
+        "observed_at": "2026-10-27T18:06:22.923861+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-00b2ad91d4bafc7bc15c014dedb56e76d50ef74cb099236454d8cf0ce62994a5.z",
+        "observed_at": "2026-10-27T18:06:24.209746+00:00",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "object_name": "object-0fa85a648789a9831f24ac87d97d4cae41b7fc2176157244059619de60717b3b.z",
+        "observed_at": "2026-10-27T18:06:24.305016+00:00",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "object_name": "object-0fa85a648789a9831f24ac87d97d4cae41b7fc2176157244059619de60717b3b.z",
+        "observed_at": "2026-10-27T18:06:24.587689+00:00",
+        "status": 200
+      }
+    ],
+    "record_writes": 0,
+    "results": [
+      {
+        "raw_bytes": 118195,
+        "ref": {
+          "bytes": 10807,
+          "name": "object-cebecf130317054d46057ac3a4a830f0adbe694d0fb0fbb46ef433d6a5db34fa.z",
+          "sha256": "cebecf130317054d46057ac3a4a830f0adbe694d0fb0fbb46ef433d6a5db34fa",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 59056,
+        "ref": {
+          "bytes": 12665,
+          "name": "object-d68869c87f24a92b2047bb677df311fa49b00c83518e3cccdbfe525210629e5c.z",
+          "sha256": "d68869c87f24a92b2047bb677df311fa49b00c83518e3cccdbfe525210629e5c",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 360987,
+        "ref": {
+          "bytes": 109055,
+          "name": "object-975d75bfa509bcbf7bd29da678e983c86d0b9b888d0c673f182bb99acd1925f5.z",
+          "sha256": "975d75bfa509bcbf7bd29da678e983c86d0b9b888d0c673f182bb99acd1925f5",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 360735,
+        "ref": {
+          "bytes": 108605,
+          "name": "object-252c4403ceb7d71a1a2562670145ed9ca0fcdf8ea392b206d3e516a472361532.z",
+          "sha256": "252c4403ceb7d71a1a2562670145ed9ca0fcdf8ea392b206d3e516a472361532",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 361027,
+        "ref": {
+          "bytes": 108621,
+          "name": "object-e9094155944e0746b9698fe91130308dfd95669b97639e7e6faa62f43fad9f29.z",
+          "sha256": "e9094155944e0746b9698fe91130308dfd95669b97639e7e6faa62f43fad9f29",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 361051,
+        "ref": {
+          "bytes": 107993,
+          "name": "object-e705b996ad6c1261f8a69ce798255b9f10bea2c9fd4232b119067b5e42ccc709.z",
+          "sha256": "e705b996ad6c1261f8a69ce798255b9f10bea2c9fd4232b119067b5e42ccc709",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 19391,
+        "ref": {
+          "bytes": 5761,
+          "name": "object-25667fb2c35267e18cf6c047f54f943cfcd277804188905c4104dc3c3501347f.z",
+          "sha256": "25667fb2c35267e18cf6c047f54f943cfcd277804188905c4104dc3c3501347f",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 19423,
+        "ref": {
+          "bytes": 5808,
+          "name": "object-6653dffcb05cdda3bfa303ec9c46f59af92baedd01669383a0e4bca1ada15634.z",
+          "sha256": "6653dffcb05cdda3bfa303ec9c46f59af92baedd01669383a0e4bca1ada15634",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 2440,
+        "ref": {
+          "bytes": 1597,
+          "name": "object-1bc769da07fd597e43e5f32c1d48341e220484847b572002a4eb7616c9cd492e.z",
+          "sha256": "1bc769da07fd597e43e5f32c1d48341e220484847b572002a4eb7616c9cd492e",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 19391,
+        "ref": {
+          "bytes": 5763,
+          "name": "object-f0ce24c194302e79f5999b28905871e106df60f33395f70ce1d3c1fb8e58a47a.z",
+          "sha256": "f0ce24c194302e79f5999b28905871e106df60f33395f70ce1d3c1fb8e58a47a",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 145462,
+        "ref": {
+          "bytes": 41510,
+          "name": "object-ba7b65a98fd5f70d168cc76d10407e18ff0699908b375bf000dd1d95feb8dcdc.z",
+          "sha256": "ba7b65a98fd5f70d168cc76d10407e18ff0699908b375bf000dd1d95feb8dcdc",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 2844,
+        "ref": {
+          "bytes": 1826,
+          "name": "object-4ca8cf69057ae5cb3e380e3f752133bd299b9dbbb0df7ec3bc8d47a5c3a76019.z",
+          "sha256": "4ca8cf69057ae5cb3e380e3f752133bd299b9dbbb0df7ec3bc8d47a5c3a76019",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 3152,
+        "ref": {
+          "bytes": 1849,
+          "name": "object-5f0dc43e8f1b0e856abfccff0c82ea3ead22794f6b18c81a86dbb937070bb34f.z",
+          "sha256": "5f0dc43e8f1b0e856abfccff0c82ea3ead22794f6b18c81a86dbb937070bb34f",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 2592,
+        "ref": {
+          "bytes": 1631,
+          "name": "object-b0773770b6be3c5e8b696004f65212b88316da5264e891f2a84e6c56daed3502.z",
+          "sha256": "b0773770b6be3c5e8b696004f65212b88316da5264e891f2a84e6c56daed3502",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 19391,
+        "ref": {
+          "bytes": 5753,
+          "name": "object-fcf13ae4dbd35cf67de2d41c64b418df9623c97ce0ec351a44cde22f65d91c11.z",
+          "sha256": "fcf13ae4dbd35cf67de2d41c64b418df9623c97ce0ec351a44cde22f65d91c11",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 2592,
+        "ref": {
+          "bytes": 1631,
+          "name": "object-50ac5d3426851bded8f12b7f38c482fd93ccb15a8cac2079aff03ff89f71e63a.z",
+          "sha256": "50ac5d3426851bded8f12b7f38c482fd93ccb15a8cac2079aff03ff89f71e63a",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 5529,
+        "ref": {
+          "bytes": 2931,
+          "name": "object-ed7eb9720f608f8809e300e3d1dc18b76c6d890ec0531fa59fcb0e65352a64c3.z",
+          "sha256": "ed7eb9720f608f8809e300e3d1dc18b76c6d890ec0531fa59fcb0e65352a64c3",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 2460,
+        "ref": {
+          "bytes": 1613,
+          "name": "object-5d1692173d45632a0427144a6d4c5493d30795fa3624d039dd5f4e014dd7ebc3.z",
+          "sha256": "5d1692173d45632a0427144a6d4c5493d30795fa3624d039dd5f4e014dd7ebc3",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 3316,
+        "ref": {
+          "bytes": 1997,
+          "name": "object-3d0f9050a0e0ee959e334adf940fa9968398f6c215ca7004c75d584141ebdd19.z",
+          "sha256": "3d0f9050a0e0ee959e334adf940fa9968398f6c215ca7004c75d584141ebdd19",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 59056,
+        "ref": {
+          "bytes": 12656,
+          "name": "object-e692661b4e6ba516df2cc3e63087f1976b3c6abc3cf729519aedaf563fdbe60e.z",
+          "sha256": "e692661b4e6ba516df2cc3e63087f1976b3c6abc3cf729519aedaf563fdbe60e",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 360947,
+        "ref": {
+          "bytes": 108351,
+          "name": "object-49fc618b36f4ed3f9ef5f26de0700ed3bb487ad25556d394ec9690fc20bb8f70.z",
+          "sha256": "49fc618b36f4ed3f9ef5f26de0700ed3bb487ad25556d394ec9690fc20bb8f70",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 360651,
+        "ref": {
+          "bytes": 108566,
+          "name": "object-c0d43a2c4c785d516df9216e5fd6711b46517dbe786ea7e3fe33225fcf144f1e.z",
+          "sha256": "c0d43a2c4c785d516df9216e5fd6711b46517dbe786ea7e3fe33225fcf144f1e",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 360975,
+        "ref": {
+          "bytes": 109151,
+          "name": "object-00b2ad91d4bafc7bc15c014dedb56e76d50ef74cb099236454d8cf0ce62994a5.z",
+          "sha256": "00b2ad91d4bafc7bc15c014dedb56e76d50ef74cb099236454d8cf0ce62994a5",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      },
+      {
+        "raw_bytes": 360683,
+        "ref": {
+          "bytes": 108283,
+          "name": "object-0fa85a648789a9831f24ac87d97d4cae41b7fc2176157244059619de60717b3b.z",
+          "sha256": "0fa85a648789a9831f24ac87d97d4cae41b7fc2176157244059619de60717b3b",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "status": "RECOVERED"
+      }
+    ],
+    "schema_version": "nba-own-archive-read-diagnostic-v1",
+    "sports_source_requests": 0,
+    "status": "READBACK_VERIFIED"
+  },
+  "branch": "implementation/sdv-grading-recovery-20261027",
+  "checked_at": "2026-10-27T18:48:33.576409+00:00",
+  "evidence_limits": {
+    "browser_build_id": "All-zero Git null sentinel labels an uncommitted local preview; tested executable bytes were committed unchanged as implementation_source_commit.",
+    "maximum_scale_throughput": "Not established; 1024 shards x 1000 actions is an explicit bound, not a measured hosted throughput guarantee.",
+    "native_current_cause": "Older opaque HTTP failures remain unknown despite current observed 503.",
+    "new_genuine_issuance": 0,
+    "new_model_comparisons": 0,
+    "new_outcome_or_grade_records": 0,
+    "new_provider_requests": 0,
+    "new_remote_record_writes": 0,
+    "public_deployment_of_repair": false,
+    "remote_artifact_restore": "Not established; expired or absent artifacts cannot bootstrap the current missing public feed.",
+    "screenshots": "Local temporary files only; not a durable remote screenshot archive."
+  },
+  "failure_findings": [
+    {
+      "example_run_ids": [
+        40212901717,
+        40237578023,
+        40538950423
+      ],
+      "original_http_status": "UNKNOWN_NOT_RETAINED",
+      "reason": "Public archive response failed; no retry or alternate transport",
+      "scope": "historical_native_runs"
+    },
+    {
+      "corrected_with": "Isolated detached ceacbef Git worktree",
+      "reason": "Unversioned archive copy lacked Git commit objects needed for executed-source verification",
+      "scope": "invalid_first_local_harness",
+      "source_corruption_claim": false
+    },
+    {
+      "historical_native_cause_established": false,
+      "http_status": 503,
+      "object_name": "object-3bebc6e055ff94ad9b888f21b58114c04da629db675a07ffaaafc8d0eff36f37.z",
+      "redirect_hop": 0,
+      "scope": "actual_original_record_recovery"
+    },
+    {
+      "existing_action_ceiling": 1000,
+      "reason": "Archive action guard exhausted",
+      "resolution": "New cold bounded reader per immutable shard; no used counter reset",
+      "scope": "one_client_across_catalog"
+    }
+  ],
+  "implementation_source_commit": "1157e208d1e05256e2e3d080d332e25d15243acb",
+  "implementation_source_tree": "4ac6f0c859cb8f3c9c2c1c3ed08f2869428bfdb7",
+  "independent_review": {
+    "final_source_reviewed": true,
+    "original_records": 19,
+    "protected_inventory": [
+      {
+        "bytes": 21049,
+        "path": "multisport_lab/sdv_daily_inputs.py",
+        "sha256": "0bb524d4fb34aab6a03bc76c97c8ff8c05d4c81d5cf3e66d8dd9f68554b2eaa9"
+      },
+      {
+        "bytes": 40316,
+        "path": "multisport_lab/sdv_daily_store.py",
+        "sha256": "fd508c0459519f54f0faf9009438632755c64b31227105794109d326c8ecf045"
+      },
+      {
+        "bytes": 34082,
+        "path": "multisport_lab/sdv_daily_producer.py",
+        "sha256": "eb793c94a2473f7210158b60aaf98fd8e215bc7f62ecf260bb11b301e72a334b"
+      },
+      {
+        "bytes": 28426,
+        "path": "multisport_lab/sdv_daily_cycle.py",
+        "sha256": "5a40fd1bc6cdf6ebf75af52a6171641ee79d0d4bfbf9581c9e5b14dc8b3daef0"
+      },
+      {
+        "bytes": 34724,
+        "path": "multisport_lab/sdv_daily_runner.py",
+        "sha256": "cf8d7ba3d65bc354029ee9fc1c54b8d9f110c3036204a4bd690fcc7943fd50ef"
+      },
+      {
+        "bytes": 15075,
+        "path": "multisport_lab/sdv_daily_remote.py",
+        "sha256": "c3e70fea9d4da6434703706b4f51bf4edf7320834dcc6a10c9456f3ddbc3b763"
+      },
+      {
+        "bytes": 7183,
+        "path": "multisport_lab/sdv_daily_outcomes.py",
+        "sha256": "d84a9c2dd6cd7097e6f12d3170b7b914aa17a0876f32054c03d40036510adac6"
+      },
+      {
+        "bytes": 28418,
+        "path": "multisport_lab/sdv_daily_publication.py",
+        "sha256": "ce2bd99c7b1193af328d39cf33fd36b7400626becde4c656e658bb763fd7e425"
+      },
+      {
+        "bytes": 14562,
+        "path": "multisport_lab/pros004_remote.py",
+        "sha256": "8297578f72a1ca73f3a902696ef4a72297906305f0f775c6b16d40ad3c28ed0b"
+      },
+      {
+        "bytes": 2820,
+        "path": "config/sdv_daily_cycle_v1.json",
+        "sha256": "8b19bdf1abcfff3790f074eb7994a6ea6af0a3428fcd29b46ee0e39bf3694688"
+      },
+      {
+        "bytes": 2722,
+        "path": ".github/workflows/sdv-daily.yml",
+        "sha256": "fb39ce1e9bf0b32632d314b11e391043a89806a446bfee453f92468e790c0b47"
+      },
+      {
+        "bytes": 21422,
+        "path": "multisport_lab/baseline.py",
+        "sha256": "2a217b021ae25041920d14db6fbb1a14197ef4593b2b59965bbdef6f01304689"
+      },
+      {
+        "bytes": 27136,
+        "path": "multisport_lab/development_003.py",
+        "sha256": "282bb23a570bc6aaa217ab7f65ba223613c805801d8c479bc51aef0291b72be7"
+      },
+      {
+        "bytes": 20818,
+        "path": "multisport_lab/development_002.py",
+        "sha256": "8ba06b2e9db8b469c3d47304ccdb6525df8b4618adbb249841e725c98a53f022"
+      },
+      {
+        "bytes": 19681,
+        "path": "multisport_lab/research_pilot.py",
+        "sha256": "10a4bf3d1aabb3c0072282d124cf072246fc1be19541c8d62e0d99c2f072b0f6"
+      },
+      {
+        "bytes": 34376,
+        "path": "multisport_lab/pros004_producer.py",
+        "sha256": "034ddbd07a47129e6eba7022a9f4b6088babfa9a5a71071422e723e7240ee66b"
+      },
+      {
+        "bytes": 37189,
+        "path": "multisport_lab/pros004_inputs.py",
+        "sha256": "ad20d7dbb217aff48a21f05c1ceefcd13f011812bf0987011b24fd98c507be5e"
+      },
+      {
+        "bytes": 37339,
+        "path": "multisport_lab/pregame_sources.py",
+        "sha256": "d285c0f43d8bd6c7562d97102181a0299566650b74dd82ca49f352749c60b485"
+      },
+      {
+        "bytes": 19703,
+        "path": "multisport_lab/nba_data.py",
+        "sha256": "6fed983653f7a93f6427fa27b9ea0dbb574c595d2a35aa0b2040473d664b692b"
+      },
+      {
+        "bytes": 2119,
+        "path": "multisport_lab/basketball.py",
+        "sha256": "5dd01add55b37fc610fbf40a20750a6f35e89498f3b059eafa90e35d54f3ea75"
+      },
+      {
+        "bytes": 53362,
+        "path": "multisport_lab/ledger.py",
+        "sha256": "d463690ba20c5481ba45f4fb5f7da8196d0abd917dfc55d49f8d2ea4d5b4975e"
+      },
+      {
+        "bytes": 19991,
+        "path": "multisport_lab/forecast_contract.py",
+        "sha256": "bb1f3c31379cd3d68ae4015e8e2a8538f7d8d3e35baecbf0c1fd67d35bc51fdd"
+      },
+      {
+        "bytes": 6219,
+        "path": "multisport_lab/integrity.py",
+        "sha256": "10f9ee4f7fde032e08f4798638aa6abb95c31944ef0809dffd257b5be2e213b2"
+      },
+      {
+        "bytes": 22838,
+        "path": "records/forecasts/33f6890848f4d1a30a2edf7ee182a7108e5f985b72086ef9b87f4a6c97e3f118.json",
+        "sha256": "499b358129adde25134d5ba6243b372b1937915f7a0f2245750a057d40c4b8c6"
+      },
+      {
+        "bytes": 22747,
+        "path": "records/forecasts/3e9891dde411ebdfeaa38286b08e8fdecdde6d5730d95a2410274cc3a0f5bf3b.json",
+        "sha256": "507344a333f5218039e39b1201e1f203f6045bf8e04375a7a19740ddea337967"
+      },
+      {
+        "bytes": 22813,
+        "path": "records/forecasts/8d88666ab4d0326e7a06b4c8cb60ad108b273ef871e79bff5f3cbb846d714f88.json",
+        "sha256": "e35af6116e8151aacb23d21465c2744324501a92d0f83cf7e780066677df74fa"
+      },
+      {
+        "bytes": 22815,
+        "path": "records/forecasts/905309718d160968c1d9b2d83defe7bb67b5c09023d4701f8251c6c53ab7e2d8.json",
+        "sha256": "1748dce54d24cc583deb3e102d08680142307c3c784ddfc728abc02f78e82f0f"
+      },
+      {
+        "bytes": 22826,
+        "path": "records/forecasts/c2ef8d4031b0e3afabd0acb9568b359ca94ec8978fe4eb7e3ca4a91dc33d8bef.json",
+        "sha256": "d74070a12aa144b4bc917de930e6527f4bd5bdeb84db693a215bec1513562f7b"
+      },
+      {
+        "bytes": 22830,
+        "path": "records/forecasts/ca2276a6061cbea40256f466a249e56396e525265ed8adbb70e3fa9eaf4500c9.json",
+        "sha256": "bf3aa0b6fab62f64a03070fc6775db1bec8b0654e89ae93b3c42133e94649894"
+      },
+      {
+        "bytes": 4375,
+        "path": "records/grades/636c43437b0c26404c6daa0836e68ceae90bf4fc4bee64fe2e9dbec1e52f4fc7.json",
+        "sha256": "cf519c4238f641724d81040f8cdee82b693aa3f98e4ae8db772fbadc480fd6a0"
+      },
+      {
+        "bytes": 4357,
+        "path": "records/grades/6840ab9b02bdcc4da1a91345b76ad03ca297c4ea25c7f3dca7bd26894779cea4.json",
+        "sha256": "73b72a5ed145708157052c269d25c0dd72467a002e26efac41e1136839fa0f60"
+      },
+      {
+        "bytes": 4365,
+        "path": "records/grades/7fabba755c4afe206fef313e505d03c243d886085d144f931b7afbbb007e8dae.json",
+        "sha256": "c691398d641af291bcd3c2a9d7427ff59ab953606ee9388bc2c202642d80947c"
+      },
+      {
+        "bytes": 4370,
+        "path": "records/grades/a5e06bc74404fa0e3e25232222b038736a2786b1f200228521d77c8024b800b3.json",
+        "sha256": "41e3453b89b97c160d56e932f1389ac90b451142dcda3cff27629b1448bc77dd"
+      },
+      {
+        "bytes": 4369,
+        "path": "records/grades/c9d16434d9a12ce0d5b8cb37af562b92ef11040cef11a1da9d292937f32a9370.json",
+        "sha256": "1297f91dc9154d2b6111e60a1505f4a08e911dd3c99b919431833df76dbe40b5"
+      },
+      {
+        "bytes": 4368,
+        "path": "records/grades/f15784d409696faa947096e0f6db5cc0f4309659d2bf40305bf2399edb484907.json",
+        "sha256": "2a343e191af2f809baf91ab4d6f9de8d09f593c9f6b088d9740238982107237b"
+      },
+      {
+        "bytes": 2023,
+        "path": "records/outcomes/31a4b6d58002cf54fea99ca12a6019c2fc626debaf8cc8a7e1fee8d3d3997b60.json",
+        "sha256": "a9474a89403e3aa87f44adb014eee6e10b09761002e5a4deabc198022ea88ce3"
+      },
+      {
+        "bytes": 2018,
+        "path": "records/outcomes/3a46d876cacd83e18b219dc861fd9f1f1022ad4d96a8035c8db50aae3be69363.json",
+        "sha256": "c9938334da0fbfb3032558df23d5e69588fdf6ca7f0b9eb562fb271c090ef93e"
+      },
+      {
+        "bytes": 2019,
+        "path": "records/outcomes/635d32467f29870341af5b301b4ab36a9a42722e3f9bc57c77e8f667ea653cf5.json",
+        "sha256": "e94d071bf65e5f4815400a0e334b81529d6fd71147fb467584fc0aa1bb7e4f9c"
+      },
+      {
+        "bytes": 2018,
+        "path": "records/outcomes/6c947d9d5c8d567dc4069728d30eb917494bb6b08da0955b3fa66517e91b76f4.json",
+        "sha256": "74bd3778ce79875bb6f238cabda878ab88789df928b3b7804494c3e94f346b54"
+      },
+      {
+        "bytes": 2018,
+        "path": "records/outcomes/90896184ffb29ab9350adbdd4eb0c570eef3bb2b3d1d5667d5fc9ca8b8f0f87a.json",
+        "sha256": "f4787faceff42cc52a2c446b03fc6ee7b8b2103643dff937b411193c75994bc5"
+      },
+      {
+        "bytes": 2021,
+        "path": "records/outcomes/ce5e0a51f75d293f4ef7205efe3d20beba43614ecc5f145a7c861a4cd0637f3f.json",
+        "sha256": "1332e892946d072d1500bdd693a877cbefb1ee54b51c3eb657e3c7af6393ee63"
+      },
+      {
+        "bytes": 1642610,
+        "path": "records/research_inputs/dfa1c4345495eb3aa6b203f2e8309c89c112b6b78a36cd3d2c603d390776b6fc.json",
+        "sha256": "db9a682099e28ce087edf430e9aa52f9be8e060ebf4b4cf8deb53d1317c8b122"
+      }
+    ],
+    "protected_source_files": 23,
+    "result": "PASS"
+  },
+  "local_browser": {
+    "browser": "151.0.7922.34",
+    "checked_at": "2026-10-27T18:41:50.342277+00:00",
+    "new_issuance": 0,
+    "page_errors": [],
+    "preview_only": true,
+    "public_deployment": false,
+    "views": [
+      {
+        "horizontal_overflow": false,
+        "no_action": true,
+        "readable_originals": true,
+        "retained_warning": true,
+        "route": "#/props/history",
+        "screenshot": "preview-history-1440.png",
+        "width": 1440
+      },
+      {
+        "horizontal_overflow": false,
+        "no_action": false,
+        "readable_originals": true,
+        "retained_warning": true,
+        "route": "#/performance",
+        "screenshot": "preview-performance-1440.png",
+        "width": 1440
+      },
+      {
+        "horizontal_overflow": false,
+        "no_action": true,
+        "readable_originals": false,
+        "retained_warning": true,
+        "route": "#/builder",
+        "screenshot": "preview-builder-1440.png",
+        "width": 1440
+      },
+      {
+        "horizontal_overflow": false,
+        "no_action": true,
+        "readable_originals": true,
+        "retained_warning": true,
+        "route": "#/props/history",
+        "screenshot": "preview-history-390.png",
+        "width": 390
+      },
+      {
+        "horizontal_overflow": false,
+        "no_action": false,
+        "readable_originals": true,
+        "retained_warning": true,
+        "route": "#/performance",
+        "screenshot": "preview-performance-390.png",
+        "width": 390
+      },
+      {
+        "horizontal_overflow": false,
+        "no_action": true,
+        "readable_originals": false,
+        "retained_warning": true,
+        "route": "#/builder",
+        "screenshot": "preview-builder-390.png",
+        "width": 390
+      },
+      {
+        "horizontal_overflow": false,
+        "no_action": true,
+        "readable_originals": true,
+        "retained_warning": true,
+        "route": "#/props/history",
+        "screenshot": "preview-history-320.png",
+        "width": 320
+      },
+      {
+        "horizontal_overflow": false,
+        "no_action": false,
+        "readable_originals": true,
+        "retained_warning": true,
+        "route": "#/performance",
+        "screenshot": "preview-performance-320.png",
+        "width": 320
+      },
+      {
+        "horizontal_overflow": false,
+        "no_action": true,
+        "readable_originals": false,
+        "retained_warning": true,
+        "route": "#/builder",
+        "screenshot": "preview-builder-320.png",
+        "width": 320
+      }
+    ]
+  },
+  "local_preview": {
+    "actual_recovered_counts": {
+      "active_grades": 0,
+      "development_forecasts": 0,
+      "dnp_grades": 0,
+      "eligible_forecasts": 492,
+      "events": 8,
+      "forecasts": 530,
+      "genuine_forecasts": 492,
+      "grades": 0,
+      "outcomes": 0,
+      "pending_grades": 492,
+      "players": 246,
+      "scored_grades": 0
+    },
+    "current_preview_generated_at": "2026-10-27T18:39:29.888685Z",
+    "deployment": false,
+    "new_issuance": 0,
+    "original_export_generated_at": "2026-10-27T18:25:34.533110Z",
+    "preview_only": true,
+    "remote_writes": 0,
+    "retained": true,
+    "uncommitted_build_sentinel": "0000000000000000000000000000000000000000",
+    "update_error": "IntegrityError: production_research update unavailable"
+  },
+  "native_grade_evidence": {
+    "current_catalog_contains_these_grades": false,
+    "current_public_channel_contains_these_grades": false,
+    "path": "evidence/operational/sdv-native-grade-acknowledgments-20261027.json",
+    "sha256": "0cae0f56ed7fb34b9a32548005f938b6775c829b66076bc53d529a759ab204e7",
+    "summary": {
+      "acknowledged_grades": 194,
+      "acknowledged_outcomes": 97,
+      "computed_but_unacknowledged_grades": 54,
+      "computed_but_unacknowledged_outcomes": 27,
+      "excluded_untimely_original_model_records": 12,
+      "existing_genuine_forecasts_reported_in_successful_shards": 262,
+      "failed_durability_workers": 2,
+      "native_grade_workers": 15,
+      "pending_subject_entries": 45,
+      "reported_forecast_records_in_successful_shards": 274,
+      "reported_successful_independent_readbacks": 13
+    }
+  },
+  "observed_main_commit": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+  "preserved_post_deployment_commit": "aa897f1a7f232d18561e72d3561259b94e9e4e08",
+  "public_observation": {
+    "manifest": {
+      "build_commit": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+      "daily_research": {
+        "error": null,
+        "generated_at": "2026-10-25T21:02:56.437979Z",
+        "path": "sdv-daily.f372f3fbe7fd51b1f633cdc363519c4825c40800cecb209cdca2d51d4fc8968a.json",
+        "retained": false,
+        "sha256": "f372f3fbe7fd51b1f633cdc363519c4825c40800cecb209cdca2d51d4fc8968a",
+        "status": "DAILY_SNAPSHOT_RESEARCH"
+      },
+      "daily_research_error": null,
+      "display": {
+        "error": null,
+        "generated_at": "2026-10-25T21:02:56.437979Z",
+        "path": "display.6a41962e409564932518c1cdb9567aa03e6cfc5138714d7faa5873d130bdfb39.json",
+        "retained": false,
+        "sha256": "6a41962e409564932518c1cdb9567aa03e6cfc5138714d7faa5873d130bdfb39",
+        "status": "DISPLAY_METADATA_ONLY"
+      },
+      "display_error": null,
+      "errors": {},
+      "offers": {
+        "error": null,
+        "generated_at": "2026-10-25T21:02:56.437979Z",
+        "path": "nba-offers.4aecf480333fb3549fb23f8eb3935e0320a4e7638d071e1b45d86091d47b0e9a.json",
+        "retained": false,
+        "sha256": "4aecf480333fb3549fb23f8eb3935e0320a4e7638d071e1b45d86091d47b0e9a",
+        "status": "OFFER_ONLY_RESEARCH"
+      },
+      "offers_error": null,
+      "paired_research": {
+        "error": null,
+        "generated_at": "2026-10-25T21:02:56.437979Z",
+        "path": "paired-research.037f7184ec5d2de1d1cc597c4fd8d799ed9c149465dd9c4a9e21dffcf10b47a7.json",
+        "retained": false,
+        "sha256": "037f7184ec5d2de1d1cc597c4fd8d799ed9c149465dd9c4a9e21dffcf10b47a7",
+        "status": "RESEARCH_ONLY"
+      },
+      "paired_research_error": null,
+      "production_research": null,
+      "production_research_error": "IntegrityError: production_research update unavailable",
+      "pros004": {
+        "error": null,
+        "generated_at": "2026-10-25T21:02:56.437979Z",
+        "path": "pros004.index.a9ac696d4bdedbb2f64ecb0f7d0a0faa55cc9959083b85ea86c915b3cf335c8c.json",
+        "retained": false,
+        "sha256": "a9ac696d4bdedbb2f64ecb0f7d0a0faa55cc9959083b85ea86c915b3cf335c8c",
+        "status": "RESEARCH_ONLY"
+      },
+      "pros004_error": null,
+      "publication_status": "RESEARCH_ONLY",
+      "published_at": "2026-10-25T21:02:56.437979Z",
+      "schema_version": 7,
+      "snapshot_id": "a5aaf68542458e1a69483ce9cb13b2ce47b0cf45aff90256487520361b23edc3",
+      "sports": [
+        {
+          "error": null,
+          "generated_at": "2026-10-25T21:02:56.437979Z",
+          "league": "NBA",
+          "path": "nba.683d66653d5e9383dd3eadad13c488b89157f7251f4827cd5325ae62231bfd38.json",
+          "retained": false,
+          "sha256": "683d66653d5e9383dd3eadad13c488b89157f7251f4827cd5325ae62231bfd38",
+          "status": "RESEARCH_ONLY"
+        }
+      ],
+      "supported_sports": [
+        "NBA"
+      ]
+    },
+    "manifest_sha256": "ac86c19fa8864ce4cc71a2f32da374d18e395361ab6807a80eca95a1c3460f26",
+    "observed_at": "2026-10-27T17:55:24.257411Z"
+  },
+  "recovery_measurement_scope": "1974 public HTTP requests are the 23 shard readers only; separate registry/Git traffic is not included. No new provider requests or immutable writes.",
+  "remaining_steps": [
+    "Exact-head PR checks and landing approval",
+    "Merge/deploy through existing guarded workflow after approval",
+    "Actual native catalog refresh of latest grading branches; preserve late/unacknowledged originals",
+    "Verify live served production assets and completed statistical grades",
+    "Report descriptive category results separately by original model and evidence lane; no predictive or betting qualification"
+  ],
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "schema_version": "nba-delivery-recovery-checkpoint-v1",
+  "software_checks": {
+    "artifact_smoke": {
+      "command": "node web/tests/site-smoke.mjs /tmp/nml-oct27-delivery/website-preview",
+      "result": "PASS",
+      "validated_data_files": 29
+    },
+    "demo": {
+      "command": "python3 -m multisport_lab.demo",
+      "status": "OFFLINE_EXAMPLES_ONLY"
+    },
+    "focused_normal_and_optimized": {
+      "archive_tests": 32,
+      "artifact_restore_tests": 8,
+      "publication_tests": 11,
+      "result": "PASS"
+    },
+    "frontend": {
+      "command": "node --test --test-isolation=none web/tests/*.test.mjs",
+      "failed": 0,
+      "result": "PASS",
+      "seconds": 10.098238776,
+      "tests": 152
+    },
+    "python": {
+      "command": "python3 -m unittest discover -s tests -v",
+      "result": "PASS",
+      "seconds": 901.45,
+      "tests": 1101
+    }
+  }
+}
