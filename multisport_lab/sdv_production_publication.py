@@ -696,10 +696,13 @@ def _disk_guard(paths, *, additional=0):
     return total
 
 
-def emit_publication(data_dir, root, *, now, allow_development=False, archive=None, existing_artifact_bytes=0):
+def emit_publication(data_dir, root, *, now, allow_development=False, archive=None, existing_artifact_bytes=0,
+                     recovery_observer=None):
     """Export already recovered archive snapshots; no source-data HTTP here."""
     from .publication import _write_atomic, _emit_asset
     root, data_dir = Path(root), Path(data_dir)
+    common.require(recovery_observer is None or callable(recovery_observer),
+                   "Invalid publication recovery observer")
     common.require(not any(path.is_symlink() for path in (root, *root.parents, root/"production", root/STATE_PATH)),
                    "Production public source state traverses a symlink")
     state_path = root/STATE_PATH
@@ -724,12 +727,21 @@ def emit_publication(data_dir, root, *, now, allow_development=False, archive=No
                 # state, unacknowledged originals and remote archives are never
                 # touched. Each verified shard is removed before the next one.
                 with tempfile.TemporaryDirectory(prefix="shard-", dir=temporary) as shard_root:
-                    store = recover_snapshot(shard["snapshot_ref"], archive, Path(shard_root),
-                                             source_root=root, independent=False)
-                    recovered = store.recover()
-                    if not allow_development or any(body.get("mode") == "PROSPECTIVE_RESEARCH"
-                                                    for _, body in recovered["records"]):
-                        _validate_registered_snapshot(store, recovered, shard, registry, archive, root)
+                    # Each immutable ledger has its own cold bounded reader,
+                    # matching worker recovery. Never reset a used client's
+                    # 1,000-action counter to accommodate a larger catalog.
+                    reader = archive.fresh_reader()
+                    try:
+                        store = recover_snapshot(shard["snapshot_ref"], reader, Path(shard_root),
+                                                 source_root=root, independent=False)
+                        recovered = store.recover()
+                        if not allow_development or any(body.get("mode") == "PROSPECTIVE_RESEARCH"
+                                                        for _, body in recovered["records"]):
+                            _validate_registered_snapshot(store, recovered, shard, registry, reader, root)
+                    finally:
+                        if recovery_observer is not None:
+                            recovery_observer({"shard_index": index, "branch": shard["branch"],
+                                               "transport": reader.request_metrics()})
                     for ref, body in recovered["records"]:
                         if body["schema_version"] in PUBLIC_SCHEMAS:
                             admission = recovered["admissions"][ref.record_id] if body["schema_version"] == common.FORECAST_SCHEMA else None

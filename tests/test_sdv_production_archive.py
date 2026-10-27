@@ -5,7 +5,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 import zlib
 
 from multisport_lab.integrity import IntegrityError, canonical
@@ -85,6 +85,130 @@ class DraftTagMissingGitHub(MemoryGitHub):
 
 
 class ProductionArchiveTests(unittest.TestCase):
+    def test_public_response_failure_retains_safe_status_hop_and_original_identity(self):
+        class Response:
+            def __init__(self, status, raw=b"", location=None):
+                self.code, self.raw = status, raw
+                self.headers = {"Location": location} if location else {}
+            def read(self, limit): return self.raw[:limit]
+            def __enter__(self): return self
+            def __exit__(self, *_): pass
+
+        raw = b"exact immutable original"
+        packed, ref = archive._wire(raw, TAG, False)
+        signed = "https://release-assets.githubusercontent.com/retained-object?jwt=PRIVATE_SIGNATURE"
+        for status in (403, 404, 618, 302):
+            for hop in (0, 1):
+                with self.subTest(status=status, hop=hop):
+                    opener = Mock()
+                    rejected = Response(status, b"untrusted jwt=PRIVATE_SIGNATURE response")
+                    opener.open.side_effect = ([Response(302, location=signed)] if hop else []) + [rejected]
+                    client = archive.GitHubReleaseArchive()
+                    with patch.object(archive.urllib.request, "build_opener", return_value=opener):
+                        with self.assertRaises(archive.PublicArchiveHTTPError) as caught:
+                            client.get(ref, len(raw))
+                    error = caught.exception
+                    self.assertEqual(error.http_status, status)
+                    self.assertEqual(error.redirect_hop, hop)
+                    self.assertEqual(error.read_attempt, 1)
+                    self.assertEqual(error.archive_reference, ref)
+                    self.assertIn(ref["name"], str(error))
+                    self.assertIn("HTTP " + str(status), str(error))
+                    self.assertNotIn("PRIVATE_SIGNATURE", str(error))
+                    self.assertNotIn("https://", str(error))
+                    self.assertEqual(opener.open.call_count, hop + 1)
+                    self.assertEqual(client.request_metrics()["public_http_requests"], hop + 1)
+                    self.assertEqual(client.request_metrics()["gh_api_actions"], 0)
+
+    def test_transient_public_read_retries_the_same_immutable_route_once(self):
+        class Response:
+            def __init__(self, code, raw=b"", location=None):
+                self.code, self.raw = code, raw
+                self.headers = {"Location": location} if location else {}
+            def read(self, limit): return self.raw[:limit]
+            def __enter__(self): return self
+            def __exit__(self, *_): pass
+
+        raw = b"original probabilities are never regenerated"
+        packed, ref = archive._wire(raw, TAG, False)
+        location = "https://release-assets.githubusercontent.com/exact?jwt=PRIVATE"
+        for status in (429, 500, 502, 503, 504):
+            for hop in (0, 1):
+                with self.subTest(status=status, hop=hop):
+                    opener = Mock()
+                    opener.open.side_effect = ([Response(302, location=location)] if hop else []) + [
+                        Response(status), Response(302, location=location), Response(200, packed)]
+                    client = archive.GitHubReleaseArchive()
+                    with patch.object(archive.urllib.request, "build_opener", return_value=opener), \
+                         patch.object(archive.time, "sleep") as pause:
+                        self.assertEqual(client.get(ref, len(raw)), raw)
+                    requests = [call.args[0].full_url for call in opener.open.call_args_list]
+                    self.assertEqual(requests[hop+1], requests[0])
+                    self.assertEqual(opener.open.call_count, hop + 3)
+                    self.assertEqual(client.request_metrics()["public_http_requests"], hop + 3)
+                    self.assertEqual(client.request_metrics()["gh_api_actions"], 0)
+                    pause.assert_called_once_with(1)
+
+        opener = Mock()
+        opener.open.side_effect = [Response(503), Response(503)]
+        with patch.object(archive.urllib.request, "build_opener", return_value=opener), \
+             patch.object(archive.time, "sleep") as pause:
+            client = archive.GitHubReleaseArchive()
+            with self.assertRaises(archive.PublicArchiveHTTPError) as caught:
+                client.get(ref, len(raw))
+        self.assertEqual(caught.exception.read_attempt, 2)
+        self.assertEqual(opener.open.call_count, 2)
+        pause.assert_called_once_with(1)
+
+    def test_public_integrity_failure_and_exhausted_action_budget_never_retry(self):
+        class Response:
+            code = 200
+            headers = {}
+            def read(self, limit): return b"corrupt original bytes"
+            def __enter__(self): return self
+            def __exit__(self, *_): pass
+
+        _, ref = archive._wire(b"actual original", TAG, False)
+        opener = Mock()
+        opener.open.return_value = Response()
+        with patch.object(archive.urllib.request, "build_opener", return_value=opener), \
+             patch.object(archive.time, "sleep") as pause:
+            with self.assertRaises(IntegrityError):
+                archive.GitHubReleaseArchive().get(ref, 100)
+        self.assertEqual(opener.open.call_count, 1)
+        pause.assert_not_called()
+        client = archive.GitHubReleaseArchive()
+        client._public_requests = 1000
+        with patch.object(archive.urllib.request, "build_opener", return_value=opener), \
+             patch.object(archive.time, "sleep") as pause:
+            with self.assertRaisesRegex(IntegrityError, "action guard exhausted"):
+                client.get(ref, 100)
+        self.assertEqual(opener.open.call_count, 1)
+        pause.assert_not_called()
+
+    def test_public_exact_readback_still_uses_only_one_validated_redirect(self):
+        class Response:
+            def __init__(self, code, raw=b"", location=None):
+                self.code, self.raw = code, raw
+                self.headers = {"Location": location} if location else {}
+            def read(self, limit): return self.raw[:limit]
+            def __enter__(self): return self
+            def __exit__(self, *_): pass
+
+        raw = b"unchanged forecast and outcome bytes"
+        packed, ref = archive._wire(raw, TAG, False)
+        opener = Mock()
+        opener.open.side_effect = [
+            Response(302, location="https://release-assets.githubusercontent.com/immutable?jwt=PRIVATE"),
+            Response(200, packed),
+        ]
+        client = archive.GitHubReleaseArchive()
+        with patch.object(archive.urllib.request, "build_opener", return_value=opener):
+            self.assertEqual(client.get(ref, len(raw)), raw)
+            self.assertEqual(client.get(ref, len(raw)), raw)
+        self.assertEqual(opener.open.call_count, 2)
+        self.assertEqual(client.request_metrics()["gh_api_actions"], 0)
+
     def test_file_archive_restart_idempotence_and_exact_wire_reference(self):
         with tempfile.TemporaryDirectory() as folder:
             first = archive.FileArchive(folder)

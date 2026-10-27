@@ -8,6 +8,20 @@ const count=(n,word)=>`${n} ${word}${n===1?'':'s'}`;
 const date=value=>new Intl.DateTimeFormat('en-GB',{dateStyle:'medium',timeStyle:'short',timeZone:'UTC'}).format(new Date(value))+' UTC';
 const clock=(value,missing)=>value?`<time datetime="${esc(value)}" title="${esc(value)}">${esc(date(value))}</time>`:missing;
 
+export function retainedProductionWarning(snapshot){
+  const descriptor=snapshot?.manifest?.production_research;
+  return snapshot?.productionResearch&&descriptor?.retained
+    ?snapshot.manifest.production_research_error||descriptor.error||'The new recurring research update was not verified.'
+    :null;
+}
+
+export function renderProductionPublicationNotice(snapshot){
+  const error=snapshot?.productionResearchError||retainedProductionWarning(snapshot);
+  if(!error)return '';
+  const retained=Boolean(snapshot?.productionResearch&&snapshot.manifest?.production_research?.retained);
+  return `<div class="notice warning"><strong>${retained?'Earlier verified NBA forecasts retained':'Recurring NBA research unavailable'}</strong><p>${esc(error)} ${retained?`Earlier research export generated ${clock(snapshot.manifest.production_research.generated_at,'at an unknown time')}. The new website publication does not refresh their source, issuance or result clocks.`:'Other verified publication channels remain available; no missing record is counted as issued.'}</p></div>`;
+}
+
 /** Counts refer to the loaded view. The production index also prevents a
  * different published date from being mistaken for no delivery anywhere.
  * Inputs here have already passed the snapshot's typed/hash validation.

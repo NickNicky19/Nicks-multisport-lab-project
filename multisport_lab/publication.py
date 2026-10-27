@@ -482,7 +482,12 @@ def build_site(root: Path, output: Path, *, build_commit: str, now: datetime,
                     validate_stored_admissions(root)
                     descriptor = _emit_asset(staging / "data", make_asset(root, now=now), prefix="sdv-daily", status="DAILY_SNAPSHOT_RESEARCH")
                 else:
-                    from .sdv_production_publication import emit_publication
+                    from .sdv_production_publication import emit_publication, STATE_PATH
+                    previous = retained.get(channel)
+                    if previous is not None and not (root / STATE_PATH).exists():
+                        previous_index = load_json(staging / "data" / previous["path"], max_bytes=MAX_ASSET_BYTES)
+                        if previous_index["counts"]["genuine_forecasts"]:
+                            raise IntegrityError("Verified operating registry is unavailable; preserve earlier original forecasts")
                     descriptor = emit_publication(staging / "data", root, now=now,
                                                   allow_development=production_development_preview,
                                                   existing_artifact_bytes=sum(path.stat().st_size for path in output.rglob("*")
