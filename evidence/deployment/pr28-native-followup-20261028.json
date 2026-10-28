@@ -1,0 +1,212 @@
+{
+  "schema_version": "nba-native-operational-followup-v1",
+  "observed_at": "2026-10-28T19:17:33Z",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "merged_main_observed": "6609cea5bb55b2f85a0b4c2df2bf504ca7440c94",
+  "installed_cron": "2,17,32,47 * * * *",
+  "workflow_path": ".github/workflows/nba-operations.yml",
+  "current_workflow_state_api": "UNKNOWN: workflow metadata endpoint unsupported by current connector (400 INVALID_ARGUMENT; not a GitHub repository 403)",
+  "latest_three_native_failures": [
+    {
+      "run_id": 40735535405,
+      "job_id": 122982933313,
+      "head_sha": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+      "started_at": "2026-10-28T17:25:19.574829Z",
+      "completed_at": "2026-10-28T17:26:27.772737Z",
+      "status": "PARTIAL_OR_FAILED",
+      "error": "Public archive response failed; no retry or alternate transport",
+      "genuine_issued": 0,
+      "statistical_grades": null,
+      "source_requests": null,
+      "hosted_status": "VERIFIED_CURRENT_RUN",
+      "captured_at": "2026-10-28T17:25:19.835290Z",
+      "run_original_sha256": "572e13940894918f2736ad60fa3f157c004100503a1b7794bdb1397dbf710c19",
+      "run_original_bytes": 14167,
+      "authorization_id": "1f0e07cda08fbbc05330f89b1c9842b13ed32a6eff3048c16996c2168129d446",
+      "report_fields": [
+        "action",
+        "alert",
+        "completed_at",
+        "error",
+        "financial_settlements",
+        "genuine_issued",
+        "hosted_run_observation",
+        "policy_id",
+        "protocol_id",
+        "qualified_tickets",
+        "run_id",
+        "schema_version",
+        "started_at",
+        "status"
+      ],
+      "work_grade_finish": "SKIPPED"
+    },
+    {
+      "run_id": 40681766911,
+      "job_id": 122793978457,
+      "head_sha": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+      "started_at": "2026-10-28T11:40:29.355287Z",
+      "completed_at": "2026-10-28T11:41:46.209052Z",
+      "status": "PARTIAL_OR_FAILED",
+      "error": "Public archive response failed; no retry or alternate transport",
+      "genuine_issued": 0,
+      "statistical_grades": null,
+      "source_requests": null,
+      "hosted_status": "VERIFIED_CURRENT_RUN",
+      "captured_at": "2026-10-28T11:40:29.731086Z",
+      "run_original_sha256": "1d58a8934ed373dd1dcb2e10b7dd6e8eec8c289217757c68a0f5ddafd82de583",
+      "run_original_bytes": 14167,
+      "authorization_id": "c718d561ae26d0ae39a594184965bfa7b527773061ead373d313d19256503e42",
+      "report_fields": [
+        "action",
+        "alert",
+        "completed_at",
+        "error",
+        "financial_settlements",
+        "genuine_issued",
+        "hosted_run_observation",
+        "policy_id",
+        "protocol_id",
+        "qualified_tickets",
+        "run_id",
+        "schema_version",
+        "started_at",
+        "status"
+      ],
+      "work_grade_finish": "SKIPPED"
+    },
+    {
+      "run_id": 40639683067,
+      "job_id": 122654659627,
+      "head_sha": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+      "started_at": "2026-10-28T05:44:01.194965Z",
+      "completed_at": "2026-10-28T05:45:12.233647Z",
+      "status": "PARTIAL_OR_FAILED",
+      "error": "Public archive response failed; no retry or alternate transport",
+      "genuine_issued": 0,
+      "statistical_grades": null,
+      "source_requests": null,
+      "hosted_status": "VERIFIED_CURRENT_RUN",
+      "captured_at": "2026-10-28T05:44:01.541213Z",
+      "run_original_sha256": "ade6a86f2f8be2042a3f93551eaa8f6402af82e042c453a9d2d4df60390eb2ad",
+      "run_original_bytes": 14167,
+      "authorization_id": "c1810d75fd426f60efe52d7eb74287d460937e68e8cb9a5f4809366bcf3110e6",
+      "report_fields": [
+        "action",
+        "alert",
+        "completed_at",
+        "error",
+        "financial_settlements",
+        "genuine_issued",
+        "hosted_run_observation",
+        "policy_id",
+        "protocol_id",
+        "qualified_tickets",
+        "run_id",
+        "schema_version",
+        "started_at",
+        "status"
+      ],
+      "work_grade_finish": "SKIPPED"
+    }
+  ],
+  "registry_head": "6de0a33c5a16f8eed9ffd87b05f34e06b642c18b",
+  "registry_pointer": {
+    "registry_id": "6fe157b827b30afd5fca92a7a5ac33a0f73403fbbef59b3c9b17272683dc8fe1",
+    "raw_bytes": 118195,
+    "raw_sha256": "7dca1a725a03ac1265aad40cc8fced34f2e420c5dbc1400afe8c05758a3b0293"
+  },
+  "eligible_planning": {
+    "utc_game_date": "2026-10-29",
+    "open_at_utc": "2026-10-28T00:00:00Z",
+    "closes_exclusive_utc": "2026-10-28T21:30:00Z",
+    "open_at_chicago": "2026-10-27 19:00 CDT",
+    "closes_exclusive_chicago": "2026-10-28 16:30 CDT",
+    "eligibility_only": true,
+    "admitted_new_plan_observed": false
+  },
+  "postmerge_native_run_observed": false,
+  "limitations": [
+    "Absent runs do not establish the reason for scheduler delay.",
+    "No new source captures, forecasts, grades, dispatches or repository edits were performed.",
+    "Old generic archive errors do not retain the precise HTTP cause.",
+    "Installed cron ticks do not establish a future actual launch time."
+  ],
+  "workflow_metadata_observation": {
+    "provided_by": "integration owner /root",
+    "source_url": "https://api.github.com/repos/NickNicky19/Nicks-multisport-lab-project/actions/workflows/392458906",
+    "transport": "Public anonymous HTTPS GET through existing permitted proxy",
+    "http_status": 200,
+    "observed_at": "2026-10-28T19:22:54.731511Z",
+    "response_bytes": 607,
+    "response_sha256": "90cfc4191969e0c080b8d7381153d6bb671f7cbe714642b2368cce2eb841ed43",
+    "id": 392458906,
+    "name": "NBA research operations coordinator",
+    "path": ".github/workflows/nba-operations.yml",
+    "state": "active",
+    "created_at": "2026-10-21T23:09:31.000-05:00",
+    "updated_at": "2026-10-22T07:50:23.000-05:00",
+    "meaning": "Current active workflow metadata is established separately from the earlier connector capability limitation. Active state is not evidence of a successful post-merge execution."
+  },
+  "current_workflow_state": "active",
+  "current_workflow_state_evidence": "workflow_metadata_observation; initial connector limitation remains a separate historical tool observation",
+  "postmerge_schedule_observations": [
+    {
+      "observed_at": "2026-10-28T19:20:32Z",
+      "latest_run_id": 40735535405,
+      "latest_run_created_at": "2026-10-28T17:25:11Z",
+      "latest_run_head": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+      "postmerge_native_run_observed": false
+    },
+    {
+      "observed_at": "2026-10-28T19:25:18Z",
+      "latest_run_id": 40735535405,
+      "latest_run_created_at": "2026-10-28T17:25:11Z",
+      "latest_run_head": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+      "postmerge_native_run_observed": false
+    },
+    {
+      "observed_at": "2026-10-28T19:28:33Z",
+      "latest_run_id": 40735535405,
+      "latest_run_created_at": "2026-10-28T17:25:11Z",
+      "latest_run_head": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+      "postmerge_native_run_observed": false
+    },
+    {
+      "observed_at": "2026-10-28T19:32:29Z",
+      "latest_run_id": 40735535405,
+      "latest_run_created_at": "2026-10-28T17:25:11Z",
+      "latest_run_head": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+      "postmerge_native_run_observed": false
+    },
+    {
+      "observed_at": "2026-10-28T19:52:41Z",
+      "latest_run_id": 40735535405,
+      "latest_run_created_at": "2026-10-28T17:25:11Z",
+      "latest_run_head": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+      "postmerge_native_run_observed": false,
+      "postmerge_manual_run_observed": false,
+      "inventory_total_count": 207,
+      "recent_runs_returned": 30,
+      "native_runs_in_recent_inventory": 18
+    }
+  ],
+  "final_checkpoint_observed_at": "2026-10-28T19:53:15Z",
+  "final_ref_readback": {
+    "observed_at": "2026-10-28T19:53:15Z",
+    "method": "git ls-remote --heads",
+    "main": "6609cea5bb55b2f85a0b4c2df2bf504ca7440c94",
+    "records/sdv-production-index": "6de0a33c5a16f8eed9ffd87b05f34e06b642c18b",
+    "result": "PASS"
+  },
+  "final_checkpoint": {
+    "installed_scheduler_active": true,
+    "postmerge_native_run_observed": false,
+    "postmerge_manual_run_observed": false,
+    "new_genuine_forecasts_by_this_verification": 0,
+    "new_outcomes_or_grades_by_this_verification": 0,
+    "next_action": "Owner one-time Run workflow on main with mode operate, or wait for actual automatic event; do not rerun an old-head run. Planning closes strictly before 2026-10-28T21:30:00Z / 16:30 CDT.",
+    "future_launch_time": "UNKNOWN; installed cron is not a confirmed dispatch",
+    "unobserved_run_cause": "UNKNOWN; no execution log exists for an absent run"
+  }
+}

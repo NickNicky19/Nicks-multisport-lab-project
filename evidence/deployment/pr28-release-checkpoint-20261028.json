@@ -1,0 +1,135 @@
+{
+  "schema_version": "nba-pr28-release-checkpoint-v1",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "approved_head": "d787674c5f74b3c1b623b6a7df3ea0147644eda7",
+  "merge_commit": "6609cea5bb55b2f85a0b4c2df2bf504ca7440c94",
+  "merge_tree": "9200ed96ee83564db66e8cdb63e43b3de044ddd4",
+  "guarded_run_id": 40752591650,
+  "guarded_job_id": 123042949543,
+  "original_guarded_landing_receipt": {
+    "schema_version": "github-guarded-release-v1",
+    "action": "land",
+    "pr": 28,
+    "head": "d787674c5f74b3c1b623b6a7df3ea0147644eda7",
+    "execution_commit": "1b46257ea8395d8bf5209ee9f5def05b243c32c4",
+    "readiness_policy_digest": "70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df",
+    "canonical_plan": {
+      "headSha": "d787674c5f74b3c1b623b6a7df3ea0147644eda7",
+      "method": "merge",
+      "mode": "auto",
+      "pr": {
+        "number": 28,
+        "url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/pull/28"
+      },
+      "readinessPolicy": {
+        "checkPolicy": "all",
+        "configPath": null,
+        "requiredReviewers": [],
+        "source": "defaults",
+        "strictChangesRequested": false
+      },
+      "readinessPolicyDigest": "70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df",
+      "repository": "NickNicky19/Nicks-multisport-lab-project",
+      "requiresConfirmation": true,
+      "schemaVersion": 1,
+      "state": "confirmation_required",
+      "warning": "This landing request may merge the pull request immediately."
+    },
+    "helper_hashes": {
+      "pr_land.py": "b2f4b23b35689e4dd7e03286f643e9f5c307ac763b507382a9357c9a0fe12f5f",
+      "pr_watch.py": "e6052992fb8d7b853e2401cc11ffec9a9052975e672fc5174629e415dec3f415"
+    },
+    "state": "merged",
+    "merge_verified": true,
+    "deployment_requested": true,
+    "deployment_verified": false,
+    "merge_commit": "6609cea5bb55b2f85a0b4c2df2bf504ca7440c94",
+    "landing_requested_at": "2026-10-28T19:15:21.202003Z",
+    "publication_main_commit_observed": "6609cea5bb55b2f85a0b4c2df2bf504ca7440c94",
+    "deployment_request_started_at": "2026-10-28T19:15:22.775759+00:00",
+    "deployment_request_state": "REQUEST_ACKNOWLEDGED",
+    "observed_at": "2026-10-28T19:15:24.474855+00:00"
+  },
+  "pages_run_id": 40752646392,
+  "actual_deployment_status": "SUCCESS",
+  "public_verification_status": "HTTPS_HASHES_AND_TYPED_DATA_PASS_FOCUSED_LOCAL_MOBILE_PASS_BROAD_LOCAL_REPLAY_PARTIAL",
+  "source_captures_by_this_verification": 0,
+  "genuine_forecasts_issued_by_this_verification": 0,
+  "qualified_tickets": 0,
+  "financial_settlements": 0,
+  "pages_build_job_id": 123043144509,
+  "pages_deploy_job_id": 123055984358,
+  "pages_build_started_at": "2026-10-28T19:15:27Z",
+  "pages_build_completed_at": "2026-10-28T19:39:44Z",
+  "pages_deploy_started_at": "2026-10-28T19:39:48Z",
+  "pages_deploy_completed_at": "2026-10-28T19:40:01Z",
+  "main_software_checks": {
+    "python_tests_passed": 1114,
+    "python_seconds": 1066.623,
+    "frontend_passed": 152,
+    "frontend_failed": 0,
+    "demo": "OFFLINE_EXAMPLES_ONLY",
+    "artifact_data_files": 29,
+    "relative_assets": 4
+  },
+  "prepared_registry": {
+    "commit": "6de0a33c5a16f8eed9ffd87b05f34e06b642c18b",
+    "shards": 23,
+    "prior_artifact_restore": "NO_VALID_PRIOR_PAGES_ARTIFACT",
+    "artifacts_examined": 0
+  },
+  "root_public_observation": {
+    "observed_at": "2026-10-28T19:40:58.813014Z",
+    "manifest_bytes": 2451,
+    "manifest_sha256": "b1d0025a3b27a760ea6f741b5da77c7877ef46e70162251859859904c1acaca8",
+    "snapshot_id": "de2a6abd9beb1e32bf397c86c231eb2822b9da1fd03f3eac78ef112101a9b2db",
+    "build_commit": "6609cea5bb55b2f85a0b4c2df2bf504ca7440c94",
+    "published_at": "2026-10-28T19:33:37.290072Z",
+    "production_research_error": null,
+    "production_descriptor_sha256": "649852445f4746393c345e2d25a916bed05c548ee8dcef37dfae8f145c3cc343",
+    "production_retained": false
+  },
+  "native_followup": {
+    "observed_at": "2026-10-28T19:53:15Z",
+    "workflow_id": 392458906,
+    "state": "active",
+    "cron": "2,17,32,47 * * * *",
+    "postmerge_operations_run_observed": false,
+    "latest_run_id": 40735535405,
+    "latest_run_head": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+    "registry_commit": "6de0a33c5a16f8eed9ffd87b05f34e06b642c18b",
+    "next_eligible_planning_closes_exclusive_utc": "2026-10-28T21:30:00Z",
+    "next_eligible_planning_closes_exclusive_chicago": "2026-10-28 16:30 CDT",
+    "owner_catchup_action_requested": true,
+    "owner_catchup_launch_observed": false,
+    "scheduled_future_launch_confirmed": false
+  },
+  "preservation": {
+    "protected_source_files": 23,
+    "original_records": 19,
+    "unchanged": true,
+    "records_subtree": "c1d8bef3c6eddc098e5c668a7a6ac01d7c84ba37"
+  },
+  "browser_verification": {
+    "direct_public_https_browser": "BLOCKED_ENV_CA",
+    "focused_local_mobile": "PASS",
+    "focused_local_mobile_started_at": "2026-10-28T19:58:04.305311+00:00",
+    "focused_local_mobile_completed_at": "2026-10-28T19:58:41.960227+00:00",
+    "broader_local_replay": "PARTIAL_TIME_BUDGET",
+    "screenshots_captured": 16,
+    "builder_case_assertions_completed": 135,
+    "full_browser_suite_pass": false,
+    "final_response_flush_completed": false,
+    "tls_verification_disabled": false,
+    "shared_ca_trust_store_changed": false,
+    "automatic_review_rejected_action": "Persistent proxy CA import into shared Chromium NSS trust store",
+    "automatic_review_reason": "This persistently adds a proxy CA to the shared user Chromium NSS trust store, broadening future TLS trust beyond this verification; the user authorized site verification, not this persistent security-setting change. Do not bypass this rejection through a workaround or indirect execution."
+  },
+  "public_https_collection": {
+    "status": "PASS",
+    "requests": 47,
+    "bytes": 21971135,
+    "strict_python": "PASS",
+    "strict_frontend": "PASS"
+  }
+}

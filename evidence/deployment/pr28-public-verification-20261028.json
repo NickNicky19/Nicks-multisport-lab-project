@@ -1,0 +1,844 @@
+{
+  "schema_version": "nml-pr28-public-verification-checkpoint-v1",
+  "summarized_at": "2026-10-28T19:58:46.471980+00:00",
+  "expected_and_served_build": "6609cea5bb55b2f85a0b4c2df2bf504ca7440c94",
+  "actual_public_site": "https://nicknicky19.github.io/Nicks-multisport-lab-project/",
+  "public_https_data": {
+    "status": "PASS",
+    "requests": 47,
+    "bytes": 21971135,
+    "download_completed_at": "2026-10-28T19:41:04.809927+00:00",
+    "manifest_sha256": "b1d0025a3b27a760ea6f741b5da77c7877ef46e70162251859859904c1acaca8",
+    "manifest": {
+      "build_commit": "6609cea5bb55b2f85a0b4c2df2bf504ca7440c94",
+      "daily_research": {
+        "error": null,
+        "generated_at": "2026-10-28T19:33:37.290072Z",
+        "path": "sdv-daily.c7a36f3834b5fe4f44d260b728585dbef5dbe0cf679d72c5d3ba556fe8beef2b.json",
+        "retained": false,
+        "sha256": "c7a36f3834b5fe4f44d260b728585dbef5dbe0cf679d72c5d3ba556fe8beef2b",
+        "status": "DAILY_SNAPSHOT_RESEARCH"
+      },
+      "daily_research_error": null,
+      "display": {
+        "error": null,
+        "generated_at": "2026-10-28T19:33:37.290072Z",
+        "path": "display.8cd70bfed8a1db330053440c698761fe8396c081fa726508da0317117cae329f.json",
+        "retained": false,
+        "sha256": "8cd70bfed8a1db330053440c698761fe8396c081fa726508da0317117cae329f",
+        "status": "DISPLAY_METADATA_ONLY"
+      },
+      "display_error": null,
+      "errors": {},
+      "offers": {
+        "error": null,
+        "generated_at": "2026-10-28T19:33:37.290072Z",
+        "path": "nba-offers.dd32a87c0472c1bdadd1901b28b035e1636f624930449bff3ae0b33db5061655.json",
+        "retained": false,
+        "sha256": "dd32a87c0472c1bdadd1901b28b035e1636f624930449bff3ae0b33db5061655",
+        "status": "OFFER_ONLY_RESEARCH"
+      },
+      "offers_error": null,
+      "paired_research": {
+        "error": null,
+        "generated_at": "2026-10-28T19:33:37.290072Z",
+        "path": "paired-research.b57f805d29bfc4401b69f566de20d8a0483e1db64f7574143420104bb6000a59.json",
+        "retained": false,
+        "sha256": "b57f805d29bfc4401b69f566de20d8a0483e1db64f7574143420104bb6000a59",
+        "status": "RESEARCH_ONLY"
+      },
+      "paired_research_error": null,
+      "production_research": {
+        "error": null,
+        "generated_at": "2026-10-28T19:33:37.290072Z",
+        "path": "sdv-production.649852445f4746393c345e2d25a916bed05c548ee8dcef37dfae8f145c3cc343.json",
+        "retained": false,
+        "sha256": "649852445f4746393c345e2d25a916bed05c548ee8dcef37dfae8f145c3cc343",
+        "status": "PRODUCTION_RESEARCH"
+      },
+      "production_research_error": null,
+      "pros004": {
+        "error": null,
+        "generated_at": "2026-10-28T19:33:37.290072Z",
+        "path": "pros004.index.1d74f47286f3dfc14d7a9ccd950d8f079f0ad2f2441ecf9b8e23ae7f0b882a2b.json",
+        "retained": false,
+        "sha256": "1d74f47286f3dfc14d7a9ccd950d8f079f0ad2f2441ecf9b8e23ae7f0b882a2b",
+        "status": "RESEARCH_ONLY"
+      },
+      "pros004_error": null,
+      "publication_status": "RESEARCH_ONLY",
+      "published_at": "2026-10-28T19:33:37.290072Z",
+      "schema_version": 7,
+      "snapshot_id": "de2a6abd9beb1e32bf397c86c231eb2822b9da1fd03f3eac78ef112101a9b2db",
+      "sports": [
+        {
+          "error": null,
+          "generated_at": "2026-10-28T19:33:37.290072Z",
+          "league": "NBA",
+          "path": "nba.3b96c2e8ae716a7e95ad6676bece94e5c8370ee1377aa462874db7c3676ddcd4.json",
+          "retained": false,
+          "sha256": "3b96c2e8ae716a7e95ad6676bece94e5c8370ee1377aa462874db7c3676ddcd4",
+          "status": "RESEARCH_ONLY"
+        }
+      ],
+      "supported_sports": [
+        "NBA"
+      ]
+    },
+    "responses": [
+      {
+        "path": "data/manifest.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/manifest.json",
+        "bytes": 2451,
+        "sha256": "b1d0025a3b27a760ea6f741b5da77c7877ef46e70162251859859904c1acaca8",
+        "observed_at": "2026-10-28T19:40:43.974531+00:00"
+      },
+      {
+        "path": "data/sdv-daily.c7a36f3834b5fe4f44d260b728585dbef5dbe0cf679d72c5d3ba556fe8beef2b.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-daily.c7a36f3834b5fe4f44d260b728585dbef5dbe0cf679d72c5d3ba556fe8beef2b.json",
+        "bytes": 1490,
+        "sha256": "c7a36f3834b5fe4f44d260b728585dbef5dbe0cf679d72c5d3ba556fe8beef2b",
+        "observed_at": "2026-10-28T19:40:44.172959+00:00"
+      },
+      {
+        "path": "data/display.8cd70bfed8a1db330053440c698761fe8396c081fa726508da0317117cae329f.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/display.8cd70bfed8a1db330053440c698761fe8396c081fa726508da0317117cae329f.json",
+        "bytes": 6565,
+        "sha256": "8cd70bfed8a1db330053440c698761fe8396c081fa726508da0317117cae329f",
+        "observed_at": "2026-10-28T19:40:44.385128+00:00"
+      },
+      {
+        "path": "data/nba-offers.dd32a87c0472c1bdadd1901b28b035e1636f624930449bff3ae0b33db5061655.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/nba-offers.dd32a87c0472c1bdadd1901b28b035e1636f624930449bff3ae0b33db5061655.json",
+        "bytes": 525,
+        "sha256": "dd32a87c0472c1bdadd1901b28b035e1636f624930449bff3ae0b33db5061655",
+        "observed_at": "2026-10-28T19:40:44.779565+00:00"
+      },
+      {
+        "path": "data/paired-research.b57f805d29bfc4401b69f566de20d8a0483e1db64f7574143420104bb6000a59.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/paired-research.b57f805d29bfc4401b69f566de20d8a0483e1db64f7574143420104bb6000a59.json",
+        "bytes": 712,
+        "sha256": "b57f805d29bfc4401b69f566de20d8a0483e1db64f7574143420104bb6000a59",
+        "observed_at": "2026-10-28T19:40:44.897550+00:00"
+      },
+      {
+        "path": "data/sdv-production.649852445f4746393c345e2d25a916bed05c548ee8dcef37dfae8f145c3cc343.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production.649852445f4746393c345e2d25a916bed05c548ee8dcef37dfae8f145c3cc343.json",
+        "bytes": 10679,
+        "sha256": "649852445f4746393c345e2d25a916bed05c548ee8dcef37dfae8f145c3cc343",
+        "observed_at": "2026-10-28T19:40:45.078491+00:00"
+      },
+      {
+        "path": "data/pros004.index.1d74f47286f3dfc14d7a9ccd950d8f079f0ad2f2441ecf9b8e23ae7f0b882a2b.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/pros004.index.1d74f47286f3dfc14d7a9ccd950d8f079f0ad2f2441ecf9b8e23ae7f0b882a2b.json",
+        "bytes": 1102,
+        "sha256": "1d74f47286f3dfc14d7a9ccd950d8f079f0ad2f2441ecf9b8e23ae7f0b882a2b",
+        "observed_at": "2026-10-28T19:40:45.276299+00:00"
+      },
+      {
+        "path": "data/nba.3b96c2e8ae716a7e95ad6676bece94e5c8370ee1377aa462874db7c3676ddcd4.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/nba.3b96c2e8ae716a7e95ad6676bece94e5c8370ee1377aa462874db7c3676ddcd4.json",
+        "bytes": 151194,
+        "sha256": "3b96c2e8ae716a7e95ad6676bece94e5c8370ee1377aa462874db7c3676ddcd4",
+        "observed_at": "2026-10-28T19:40:45.463795+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.baf753cce8666e67ab9e4cd0b83da1b9c003df07cd65f8917f7a92ac1222a33f.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.baf753cce8666e67ab9e4cd0b83da1b9c003df07cd65f8917f7a92ac1222a33f.json",
+        "bytes": 1015073,
+        "sha256": "baf753cce8666e67ab9e4cd0b83da1b9c003df07cd65f8917f7a92ac1222a33f",
+        "observed_at": "2026-10-28T19:40:45.733308+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.530cf3ae314d9d5842682c248be9caa7bf638d48daa18b5b07178fcdb87d3e1a.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.530cf3ae314d9d5842682c248be9caa7bf638d48daa18b5b07178fcdb87d3e1a.json",
+        "bytes": 1015331,
+        "sha256": "530cf3ae314d9d5842682c248be9caa7bf638d48daa18b5b07178fcdb87d3e1a",
+        "observed_at": "2026-10-28T19:40:46.027516+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.acbb9f7dbcc86014f4c06a578cbd9519f138b6c846ced4faaaeeeded22cfacc8.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.acbb9f7dbcc86014f4c06a578cbd9519f138b6c846ced4faaaeeeded22cfacc8.json",
+        "bytes": 1015693,
+        "sha256": "acbb9f7dbcc86014f4c06a578cbd9519f138b6c846ced4faaaeeeded22cfacc8",
+        "observed_at": "2026-10-28T19:40:46.328012+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.476bea576ba578b3fdb34f52f2e4437ada877338044bd37d2f31984cf0ecbc4f.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.476bea576ba578b3fdb34f52f2e4437ada877338044bd37d2f31984cf0ecbc4f.json",
+        "bytes": 1014643,
+        "sha256": "476bea576ba578b3fdb34f52f2e4437ada877338044bd37d2f31984cf0ecbc4f",
+        "observed_at": "2026-10-28T19:40:46.534945+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.b58f2a3f93637699ce61a2c2fa35790ac839b80017a1e4a486a1cb91d30fb5ed.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.b58f2a3f93637699ce61a2c2fa35790ac839b80017a1e4a486a1cb91d30fb5ed.json",
+        "bytes": 1015118,
+        "sha256": "b58f2a3f93637699ce61a2c2fa35790ac839b80017a1e4a486a1cb91d30fb5ed",
+        "observed_at": "2026-10-28T19:40:46.858587+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.fd880d4f48b42f369fce0899b4496c7194fc6e6fdf68c8399a20e1808b474abe.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.fd880d4f48b42f369fce0899b4496c7194fc6e6fdf68c8399a20e1808b474abe.json",
+        "bytes": 1015540,
+        "sha256": "fd880d4f48b42f369fce0899b4496c7194fc6e6fdf68c8399a20e1808b474abe",
+        "observed_at": "2026-10-28T19:40:47.060505+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.b258bdeaacaf4d71c3c7afbd9b2b89e0392dfcbeaa21462d9f06a098bc6d1543.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.b258bdeaacaf4d71c3c7afbd9b2b89e0392dfcbeaa21462d9f06a098bc6d1543.json",
+        "bytes": 1015301,
+        "sha256": "b258bdeaacaf4d71c3c7afbd9b2b89e0392dfcbeaa21462d9f06a098bc6d1543",
+        "observed_at": "2026-10-28T19:40:47.387341+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.bb4162aed03e4889bc2cb0f12afa2c470361d10e88bce223ba6fdbb3d2a85294.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.bb4162aed03e4889bc2cb0f12afa2c470361d10e88bce223ba6fdbb3d2a85294.json",
+        "bytes": 1014799,
+        "sha256": "bb4162aed03e4889bc2cb0f12afa2c470361d10e88bce223ba6fdbb3d2a85294",
+        "observed_at": "2026-10-28T19:40:47.513062+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.a429bc07d019e61cffc48b68624503032be4fb1cb8642ccc944e2f589e63ee82.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.a429bc07d019e61cffc48b68624503032be4fb1cb8642ccc944e2f589e63ee82.json",
+        "bytes": 1015415,
+        "sha256": "a429bc07d019e61cffc48b68624503032be4fb1cb8642ccc944e2f589e63ee82",
+        "observed_at": "2026-10-28T19:40:47.697000+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.7159af441130b2db63b656db788df6fef68ec65437700b2397458377d2a85fd0.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.7159af441130b2db63b656db788df6fef68ec65437700b2397458377d2a85fd0.json",
+        "bytes": 1014987,
+        "sha256": "7159af441130b2db63b656db788df6fef68ec65437700b2397458377d2a85fd0",
+        "observed_at": "2026-10-28T19:40:47.884167+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.6957c8eab1ac5ff090fe8f65318f592aa51e018f9ba558725f1ea4bed48bd719.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.6957c8eab1ac5ff090fe8f65318f592aa51e018f9ba558725f1ea4bed48bd719.json",
+        "bytes": 1015254,
+        "sha256": "6957c8eab1ac5ff090fe8f65318f592aa51e018f9ba558725f1ea4bed48bd719",
+        "observed_at": "2026-10-28T19:40:48.083894+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.c6d2d70e537940b776990df670ef47d8a5844c37bcac8a60d946c2fff1a20148.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.c6d2d70e537940b776990df670ef47d8a5844c37bcac8a60d946c2fff1a20148.json",
+        "bytes": 1015128,
+        "sha256": "c6d2d70e537940b776990df670ef47d8a5844c37bcac8a60d946c2fff1a20148",
+        "observed_at": "2026-10-28T19:40:48.492182+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.9029844af20f6cb699495c9ccd0c09250dffb899be951f4fedeea2ff9e8165df.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.9029844af20f6cb699495c9ccd0c09250dffb899be951f4fedeea2ff9e8165df.json",
+        "bytes": 1015090,
+        "sha256": "9029844af20f6cb699495c9ccd0c09250dffb899be951f4fedeea2ff9e8165df",
+        "observed_at": "2026-10-28T19:40:48.740566+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.463e03208c2c8a343a1afb7c1c890d265c443f91b73059d44333ae3841b16471.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.463e03208c2c8a343a1afb7c1c890d265c443f91b73059d44333ae3841b16471.json",
+        "bytes": 1015645,
+        "sha256": "463e03208c2c8a343a1afb7c1c890d265c443f91b73059d44333ae3841b16471",
+        "observed_at": "2026-10-28T19:40:48.917388+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.5b511855f0d93ab9f908d89a50a241e79de08cf786bd1e2b4bcd267850dedf4d.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.5b511855f0d93ab9f908d89a50a241e79de08cf786bd1e2b4bcd267850dedf4d.json",
+        "bytes": 1015135,
+        "sha256": "5b511855f0d93ab9f908d89a50a241e79de08cf786bd1e2b4bcd267850dedf4d",
+        "observed_at": "2026-10-28T19:40:49.033568+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.4eaa0cda04d1352db54f101b75e113ccddf8cc34b1e6ef50610b4dd5c40c0cb1.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.4eaa0cda04d1352db54f101b75e113ccddf8cc34b1e6ef50610b4dd5c40c0cb1.json",
+        "bytes": 1014883,
+        "sha256": "4eaa0cda04d1352db54f101b75e113ccddf8cc34b1e6ef50610b4dd5c40c0cb1",
+        "observed_at": "2026-10-28T19:40:49.286622+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.268a9a7329d351ff00daec71ce5a0b1ca93f66327ce59049f7ea6c8aba6ced80.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.268a9a7329d351ff00daec71ce5a0b1ca93f66327ce59049f7ea6c8aba6ced80.json",
+        "bytes": 1015273,
+        "sha256": "268a9a7329d351ff00daec71ce5a0b1ca93f66327ce59049f7ea6c8aba6ced80",
+        "observed_at": "2026-10-28T19:40:49.498650+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.61fe131de6d1c89ba12247e70397b481c6e48b918e72c82d51745f618da94229.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.61fe131de6d1c89ba12247e70397b481c6e48b918e72c82d51745f618da94229.json",
+        "bytes": 1014998,
+        "sha256": "61fe131de6d1c89ba12247e70397b481c6e48b918e72c82d51745f618da94229",
+        "observed_at": "2026-10-28T19:40:49.727419+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.3cb16e62c8db0b8726fa70fc3df3ce5850ec1f7a0128829ff65f38f863e67140.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.3cb16e62c8db0b8726fa70fc3df3ce5850ec1f7a0128829ff65f38f863e67140.json",
+        "bytes": 1036600,
+        "sha256": "3cb16e62c8db0b8726fa70fc3df3ce5850ec1f7a0128829ff65f38f863e67140",
+        "observed_at": "2026-10-28T19:40:49.870364+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.2855927a011ad46a3d0ee53b6b5c1bd31506d164fcb4188692988c5d40d0c4a8.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.2855927a011ad46a3d0ee53b6b5c1bd31506d164fcb4188692988c5d40d0c4a8.json",
+        "bytes": 997992,
+        "sha256": "2855927a011ad46a3d0ee53b6b5c1bd31506d164fcb4188692988c5d40d0c4a8",
+        "observed_at": "2026-10-28T19:40:50.085514+00:00"
+      },
+      {
+        "path": "data/sdv-production-page.1452083ede0b5e492c980652faf5b8f479a6be534338fee8c9e854d8e0dea34d.json",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/data/sdv-production-page.1452083ede0b5e492c980652faf5b8f479a6be534338fee8c9e854d8e0dea34d.json",
+        "bytes": 1036337,
+        "sha256": "1452083ede0b5e492c980652faf5b8f479a6be534338fee8c9e854d8e0dea34d",
+        "observed_at": "2026-10-28T19:40:50.195592+00:00"
+      },
+      {
+        "path": "app.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/app.mjs",
+        "bytes": 62733,
+        "sha256": "2d2bd14b1c354c3c539b0a75c35896ba341ffeefdb2e1bba72e30b213bfce292",
+        "observed_at": "2026-10-28T19:40:50.291657+00:00"
+      },
+      {
+        "path": "daily-performance.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/daily-performance.mjs",
+        "bytes": 17743,
+        "sha256": "fd66747cde5aa1863ee203fefd2f2aeaefe7531e9da90ada532f401522daa1d0",
+        "observed_at": "2026-10-28T19:40:50.400733+00:00"
+      },
+      {
+        "path": "delivery-status.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/delivery-status.mjs",
+        "bytes": 8129,
+        "sha256": "df5de0176f805b625b18f9fc5abb6e622bdefe48c23a7e9a1e39f52e59568815",
+        "observed_at": "2026-10-28T19:40:50.540393+00:00"
+      },
+      {
+        "path": "display.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/display.mjs",
+        "bytes": 10998,
+        "sha256": "406b0d1167e6b5d0247ba88bed9b4970e8cb78b16eb0838ccf6a4770979b19f3",
+        "observed_at": "2026-10-28T19:40:50.684098+00:00"
+      },
+      {
+        "path": "index.html",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/index.html",
+        "bytes": 2327,
+        "sha256": "37391a53ea37095583dee4ad54a3dca8faee6928a90f2c0adf64f552a5a1a447",
+        "observed_at": "2026-10-28T19:40:50.825148+00:00"
+      },
+      {
+        "path": "local-offer-review.css",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/local-offer-review.css",
+        "bytes": 1621,
+        "sha256": "c4d6531373191fe1daadf7214ed7d1097101264ca7b14fa685b29f48b8bd5074",
+        "observed_at": "2026-10-28T19:40:50.951832+00:00"
+      },
+      {
+        "path": "local-offer-review.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/local-offer-review.mjs",
+        "bytes": 14348,
+        "sha256": "6ce7c0d96434c7f4c9d858be8276b90f8e83093311ade2e9ad17142a4c87bb74",
+        "observed_at": "2026-10-28T19:40:51.035939+00:00"
+      },
+      {
+        "path": "mark.svg",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/mark.svg",
+        "bytes": 265,
+        "sha256": "b2ac3b2cee0ea515f8d09831defc655076fa7bedeb0324da33b1534ea6383891",
+        "observed_at": "2026-10-28T19:40:51.111666+00:00"
+      },
+      {
+        "path": "offers.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/offers.mjs",
+        "bytes": 20133,
+        "sha256": "6a6b5b138e6e1a2500805879753fdfa4a417874174f477bc118b4f992b250afd",
+        "observed_at": "2026-10-28T19:40:51.189991+00:00"
+      },
+      {
+        "path": "paired-research.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/paired-research.mjs",
+        "bytes": 33624,
+        "sha256": "c2f6057e7967f36f956d67f1d5ba3ee8b00721d10191a833422b02c753ca070f",
+        "observed_at": "2026-10-28T19:40:51.287098+00:00"
+      },
+      {
+        "path": "production.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/production.mjs",
+        "bytes": 103601,
+        "sha256": "0fd26a69e63b5d79886edf548859f33be87816d55ce137579d9919bc0e787b4c",
+        "observed_at": "2026-10-28T19:40:51.384042+00:00"
+      },
+      {
+        "path": "pros004.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/pros004.mjs",
+        "bytes": 26988,
+        "sha256": "af5e8a9bd0ea6d5a027c9e8602d309a4aa08bcebff9e68dfd78e8a6bd89022fc",
+        "observed_at": "2026-10-28T19:40:51.468333+00:00"
+      },
+      {
+        "path": "research.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/research.mjs",
+        "bytes": 19974,
+        "sha256": "b61f25fd04fae269a54c7f359fef15f5f4d25ea90b0572ebb48fefee71afb2c7",
+        "observed_at": "2026-10-28T19:40:51.631914+00:00"
+      },
+      {
+        "path": "scope.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/scope.mjs",
+        "bytes": 1793,
+        "sha256": "79ef949736b0a440a7ca104e220385177e9e8c16a3d3267a13533b146cc8bafe",
+        "observed_at": "2026-10-28T19:40:51.712454+00:00"
+      },
+      {
+        "path": "sdv-daily.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/sdv-daily.mjs",
+        "bytes": 46567,
+        "sha256": "735b698a503596c46f8891145033727230cc213ff5122e27aa1a96b601908360",
+        "observed_at": "2026-10-28T19:40:51.867637+00:00"
+      },
+      {
+        "path": "semantic-offer-review.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/semantic-offer-review.mjs",
+        "bytes": 28348,
+        "sha256": "84c78f71cd52b23feee6b5bdf21fb80e237f9eb877cb979bf009a9644d870376",
+        "observed_at": "2026-10-28T19:40:52.009864+00:00"
+      },
+      {
+        "path": "snapshot.mjs",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/snapshot.mjs",
+        "bytes": 22452,
+        "sha256": "eef7db39a1d4fce251bf735042123eed790922a73c1d864f7ae5d75aafc0831e",
+        "observed_at": "2026-10-28T19:40:52.156213+00:00"
+      },
+      {
+        "path": "styles.css",
+        "url": "https://nicknicky19.github.io/Nicks-multisport-lab-project/styles.css",
+        "bytes": 30538,
+        "sha256": "0fdb90c4b1cbd223c501bddec0509a7144308dfd62f871a1a03a15a158abeb30",
+        "observed_at": "2026-10-28T19:40:52.251647+00:00"
+      }
+    ],
+    "python_strict_typed_readback": "PASS",
+    "frontend_strict_typed_readback": {
+      "status": "PASS",
+      "build_commit": "6609cea5bb55b2f85a0b4c2df2bf504ca7440c94",
+      "publication_at": "2026-10-28T19:33:37.290072Z",
+      "snapshot_id": "de2a6abd9beb1e32bf397c86c231eb2822b9da1fd03f3eac78ef112101a9b2db",
+      "core_forecasts": 6,
+      "core_grades": 6,
+      "historical_original_equality": "EXACT_CANONICAL_MATCH",
+      "first_historical_ids": {
+        "player_id": "2583632",
+        "event_id": "401810136"
+      },
+      "verified_players": [
+        "Royce O'Neale",
+        "LeBron James",
+        "Kelly Olynyk",
+        "Maxi Kleber",
+        "Jerami Grant",
+        "Alex Caruso"
+      ],
+      "verified_matchups": [
+        "San Antonio Spurs @ Phoenix Suns",
+        "Los Angeles Lakers @ Utah Jazz",
+        "Portland Trail Blazers @ Oklahoma City Thunder"
+      ],
+      "historical_event_starts": [
+        "2025-11-24T01:00:00.000000Z",
+        "2025-11-24T00:00:00.000000Z"
+      ],
+      "historical_issue_clocks": [
+        "2026-10-20T00:21:46.411304Z",
+        "2026-10-20T00:21:47.650558Z",
+        "2026-10-20T00:21:45.129342Z",
+        "2026-10-20T00:21:48.758578Z",
+        "2026-10-20T00:21:42.792328Z",
+        "2026-10-20T00:21:43.935231Z"
+      ],
+      "display_verification_clock": "2026-10-20T22:56:48.241924Z",
+      "categories": [
+        "PTS",
+        "PRA",
+        "REB",
+        "3PM",
+        "AST",
+        "RA",
+        "PR",
+        "TOV",
+        "TD",
+        "DD",
+        "BLK",
+        "STL",
+        "BLK+STL",
+        "PA"
+      ],
+      "offers": 0,
+      "candidates": 0,
+      "tickets": 0,
+      "production_counts": {
+        "active_grades": 0,
+        "development_forecasts": 0,
+        "dnp_grades": 0,
+        "eligible_forecasts": 492,
+        "events": 8,
+        "forecasts": 530,
+        "genuine_forecasts": 492,
+        "grades": 0,
+        "outcomes": 0,
+        "pending_grades": 492,
+        "players": 246,
+        "scored_grades": 0
+      },
+      "production_delivery_status": "HISTORICAL_FORECASTS_RECOVERED",
+      "genuine_upcoming_forecasts": 0,
+      "production_loaded_counts": {
+        "forecasts": 530,
+        "genuine_forecasts": 492,
+        "eligible_forecasts": 492,
+        "development_forecasts": 0,
+        "outcomes": 0,
+        "grades": 0,
+        "active_grades": 0,
+        "scored_grades": 0,
+        "dnp_grades": 0,
+        "pending_grades": 492,
+        "players": 246,
+        "events": 8
+      },
+      "production_dates": [
+        {
+          "counts": {
+            "active_grades": 0,
+            "development_forecasts": 0,
+            "dnp_grades": 0,
+            "eligible_forecasts": 492,
+            "events": 8,
+            "forecasts": 530,
+            "genuine_forecasts": 492,
+            "grades": 0,
+            "outcomes": 0,
+            "pending_grades": 492,
+            "players": 246,
+            "scored_grades": 0
+          },
+          "first_event_starts_at": "2026-10-25T00:00:00.000000Z",
+          "game_date": "2026-10-25",
+          "last_event_starts_at": "2026-10-25T23:00:00.000000Z"
+        }
+      ],
+      "production_operations": {
+        "last_issued_at": "2026-10-25T21:34:07.689890Z",
+        "last_run_at": "2026-10-25T21:45:30.945459Z",
+        "last_run_id": 40212901717,
+        "last_run_status": "CATALOG_RECOVERED",
+        "last_source_capture_at": "2026-10-25T20:30:31.219812Z",
+        "next_check_basis": "CONFIGURED_CRON_NOT_GUARANTEED",
+        "next_configured_check_at": "2026-10-28T19:47:00.000000Z",
+        "publication_verified_at": null,
+        "reason": "A preparation or issuance window passed without a complete admitted cycle. Retained partial records remain available; missed forecasts are not backfilled.",
+        "registry_id": "6fe157b827b30afd5fca92a7a5ac33a0f73403fbbef59b3c9b17272683dc8fe1",
+        "registry_updated_at": "2026-10-25T21:45:30.956091Z"
+      },
+      "channel_errors": {
+        "displayError": null,
+        "pros004Error": null,
+        "offersError": null,
+        "pairedResearchError": null,
+        "dailyResearchError": null,
+        "productionResearchError": null
+      }
+    }
+  },
+  "direct_public_https_browser": {
+    "status": "BLOCKED_ENV_CA",
+    "finding": {
+      "schema_version": "nml-browser-trust-environment-finding-v1",
+      "observed_at": "2026-10-28T19:45:41.329412+00:00",
+      "scope": "Direct public Chromium verification only",
+      "actual_https_data_readback": "PASS through existing verified OS TLS trust",
+      "direct_chromium": "ERR_CERT_AUTHORITY_INVALID with inherited required proxy",
+      "isolated_xdg_probe": "FAILED; retained separate later clocks in isolated-trust-probe.json",
+      "shared_nss_import": "AUTOMATIC_APPROVAL_REVIEW_REJECTED_BEFORE_EXECUTION",
+      "shared_nss_changed": false,
+      "review_reason": "This persistently adds a proxy CA to the shared user Chromium NSS trust store, broadening future TLS trust beyond this verification; the user authorized site verification, not this persistent security-setting change. Do not bypass this rejection through a workaround or indirect execution.",
+      "tls_verification_disabled": false,
+      "private_key_material_imported": false,
+      "retry_after_rejection": false,
+      "existing_system_public_ca_fingerprint": "C71B4D1E9D7775C538C688AB10CEA9CE417D7312E89838F9D15FF73256CD7FC3"
+    },
+    "original_attempt": {
+      "status": "FAILED",
+      "started_at": "2026-10-28T19:40:43.731868+00:00",
+      "completed_at": "2026-10-28T19:42:09.491859+00:00",
+      "error_type": "Error",
+      "error": "Page.goto: net::ERR_CERT_AUTHORITY_INVALID at https://nicknicky19.github.io/Nicks-multisport-lab-project/#/props/history\nCall log:\n  - navigating to \"https://nicknicky19.github.io/Nicks-multisport-lab-project/#/props/history\", waiting until \"networkidle\"\n"
+    }
+  },
+  "full_local_browser_replay": {
+    "status": "PARTIAL_TIME_BUDGET",
+    "original_attempt": {
+      "status": "LOCAL_UI_REPLAY_FAILED",
+      "started_at": "2026-10-28T19:46:29.020998+00:00",
+      "completed_at": "2026-10-28T19:56:34.391260+00:00",
+      "error_type": "VerificationIntegrityError",
+      "error": "Public verifier exceeded ten-minute budget"
+    },
+    "lane": "LOCAL_BROWSER_REPLAY_OF_VERIFIED_SERVED_BYTES",
+    "new_public_requests": 0,
+    "new_provider_requests": 0,
+    "observed_ui_screenshots": 16,
+    "viewports": [
+      1440,
+      390,
+      320
+    ],
+    "routes": [
+      "Props History",
+      "Performance",
+      "Source Health",
+      "Props Upcoming",
+      "Paper Builder"
+    ],
+    "direct_history_refresh_390": "ASSERTIONS_COMPLETED",
+    "all_14_category_filters_each_viewport": "ASSERTIONS_COMPLETED_BEFORE_FINAL_BUDGET_FAILURE",
+    "builder_case_assertions_completed": 135,
+    "count_evidence": "All16route screenshots exist including final320builder screenshot. Source takes the final screenshot only after135 guarded scope/direction/size cases and42 category-filter checks; retained traceback rejects final320builder response flush for the original ten-minute budget.",
+    "remaining_unverified": "Final response flush and terminal runtime/request-failure checks did not complete. This is not an end-to-end browser PASS. No broad-suite rerun performed.",
+    "manual_visual_review": [
+      "390 History refresh top: readable independent 0Upcoming/536History,0publishedcontracts,0qualifiedNO_ACTION status cards.",
+      "320 Builder: readable 2–6 controls,directions,selected all-supported NBA scope and0admittedcandidate/noqualifiedjoint/payout state."
+    ],
+    "screenshots": [
+      {
+        "file": "builder-1440.png",
+        "bytes": 131869,
+        "sha256": "baaeace73e9bb80011c6718dd00e07b2562bbc227cf93b17f657173d7d20b018",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "builder-320.png",
+        "bytes": 47236,
+        "sha256": "4e7e947ff29607b8baef22beeeaa5d1ecce4c7b5d3ac21d87212220071315a8c",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "builder-390.png",
+        "bytes": 49687,
+        "sha256": "21a18c5f66f47604b2931c8d782f87c607d08c10ac840961df16a081951ca0b8",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "performance-1440.png",
+        "bytes": 123482,
+        "sha256": "3dca1291b1b6d61846aaea28b227b8142738108986a2712852559f6c0c4ed84e",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "performance-320.png",
+        "bytes": 43557,
+        "sha256": "95a69ee7fa64a756d448503031c6995882c4c79c2507c4d3afbb9643d1068e79",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "performance-390.png",
+        "bytes": 53206,
+        "sha256": "36fe7c86d8010dd101f77511552c813b94e474143639718232acd20aed2be051",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "props-history-1440.png",
+        "bytes": 105224,
+        "sha256": "d7bf3f1d2c2a5882ef206831a142b2440475eead41c3e1cbab87d2ed2a001f8a",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "props-history-320.png",
+        "bytes": 43291,
+        "sha256": "7da349b4c49a7e12a78a50fba7c5440e77c8de86dbea17a8e01286b7e1c7648a",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "props-history-390.png",
+        "bytes": 49123,
+        "sha256": "dfea1cc24cc0beb19efe6fa8a7ea9cf3fa4afc323fc4181b070f6fac51bedbfc",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "props-history-refresh-390.png",
+        "bytes": 70492,
+        "sha256": "be3c0fbe6da0e12c28241933b7d2a76ccfa965b556074d2b758ee9ca4cbb4626",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "props-upcoming-1440.png",
+        "bytes": 166319,
+        "sha256": "b892db1ef18de8f25d397db573f55f231290a16c3aefcb97b314fef718adbbe4",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "props-upcoming-320.png",
+        "bytes": 56839,
+        "sha256": "7ce8190bde0e6b19de715305c730ae01ca318d92799ba696d0adf7dbb3f994a7",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "props-upcoming-390.png",
+        "bytes": 66458,
+        "sha256": "b6f11d2bb61e456b8efe76a2deeebad282458197b7abc07c9fad19a3c0763664",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "sources-1440.png",
+        "bytes": 171395,
+        "sha256": "a52aea95577dbbe3cb368de12d5d42817dbd04de09795b68e387b80f2b87120f",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "sources-320.png",
+        "bytes": 64244,
+        "sha256": "9b98c589ffe9f998b24f78e12d09f2839ba8ab4f2f84f6783a5d2753f83d1c90",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      },
+      {
+        "file": "sources-390.png",
+        "bytes": 71003,
+        "sha256": "276cbb62c9b9c738247db3812ccb58c571e917b910dc34d4eeffea4e2ff11ecd",
+        "retention": "TEMPORARY_LOCAL_ONLY"
+      }
+    ]
+  },
+  "focused_local_mobile_card": {
+    "schema_version": "nml-pr28-local-mobile-detail-v1",
+    "lane": "LOCAL_BROWSER_REPLAY_OF_VERIFIED_SERVED_BYTES",
+    "started_at": "2026-10-28T19:58:04.305311+00:00",
+    "new_public_requests": 0,
+    "new_provider_requests": 0,
+    "direct_https_browser_pass": false,
+    "first_production_card_text": "Recurring daily-snapshot research · K0\n\nYves Missi\n\nNew Orleans Pelicans @ Denver Nuggets · 2026-10-25 01:00:00 UTC\n\nResearch forecast\n\nConditional on the player appearing. An active source-roster entry does not confirm health, participation, a starting assignment or future minutes.\n\nHistory-based minutes estimate: 24.345 minutes; 80% interval 12–35 minutes. Conditional on appearance; this is not confirmed playing time.\n\nThese exact publisher assets are now older than the operating limit. A new download of unchanged bytes would not refresh their content. The original forecast remains unchanged.\n\nCATEGORY\tMEAN\t80% INTERVAL\nPTS\t11.696\t2–23\nPRA\t18.841\t5–34\nREB\t4.4254\t1–9\n3PM\t1.3375\t0–3\nAST\t2.7196\t0–6\nRA\t7.145\t2–13\nPR\t16.121\t4–29\nTOV\t1.3663\t0–3\nTD\t0.0060363\t0–0\nDD\t0.080942\t0–0\nBLK\t0.51113\t0–2\nSTL\t0.83704\t0–2\nBLK+STL\t1.3482\t0–3\nPA\t14.416\t3–27\n\nActual issue time: 2026-10-24 23:30:39.547763Z. Issued 89.3 minutes before scheduled start. This horizon is separate from input age. Final evidence is pending; earlier retained grades are excluded from current summaries.\n\nSource identities, clocks and limitations",
+    "expanded_production_card_text": "Recurring daily-snapshot research · K0\n\nYves Missi\n\nNew Orleans Pelicans @ Denver Nuggets · 2026-10-25 01:00:00 UTC\n\nResearch forecast\n\nConditional on the player appearing. An active source-roster entry does not confirm health, participation, a starting assignment or future minutes.\n\nHistory-based minutes estimate: 24.345 minutes; 80% interval 12–35 minutes. Conditional on appearance; this is not confirmed playing time.\n\nThese exact publisher assets are now older than the operating limit. A new download of unchanged bytes would not refresh their content. The original forecast remains unchanged.\n\nCATEGORY\tMEAN\t80% INTERVAL\nPTS\t11.696\t2–23\nPRA\t18.841\t5–34\nREB\t4.4254\t1–9\n3PM\t1.3375\t0–3\nAST\t2.7196\t0–6\nRA\t7.145\t2–13\nPR\t16.121\t4–29\nTOV\t1.3663\t0–3\nTD\t0.0060363\t0–0\nDD\t0.080942\t0–0\nBLK\t0.51113\t0–2\nSTL\t0.83704\t0–2\nBLK+STL\t1.3482\t0–3\nPA\t14.416\t3–27\n\nActual issue time: 2026-10-24 23:30:39.547763Z. Issued 89.3 minutes before scheduled start. This horizon is separate from input age. Final evidence is pending; earlier retained grades are excluded from current summaries.\n\nSource identities, clocks and limitations\n\nGenerated 2026-10-24 23:30:39.537195Z; verified 2026-10-24 23:30:39.547763Z; local persistence 2026-10-24 23:30:41.289457Z; independent remote recovery 2026-10-24 23:31:04.340876Z.\n\nSchedule: publisher updated 2026-10-24 11:27:27 UTC; metadata retrieved 2026-10-24 22:30:10.235635Z; CSV retrieved 2026-10-24 22:30:10.615644Z. Publisher asset age at verification 12.1 hours; now 104.5 hours — outside the operating age limit. Upstream observation: UNKNOWN. Exact release asset nba_schedule_2027.csv; SHA-256 e5d87360ed4345512d7105e5ecece9505ce40f6f1517c266565303ead0dd6a0d.\nRoster: publisher updated 2026-10-24 11:28:23 UTC; metadata retrieved 2026-10-24 22:30:13.042077Z; CSV retrieved 2026-10-24 22:30:13.357820Z. Publisher asset age at verification 12.0 hours; now 104.5 hours — outside the operating age limit. Upstream observation: UNKNOWN. Exact release asset rosters_2027.csv; SHA-256 b9ef461975bee397fe8cdbce407f1b8c322f32ae20168dff31f4031ee75b425f.\n\nInjury, starting-lineup and confirmed-participation information are unavailable. Publisher upload time is not an upstream observation time. This protocol is distinct from the frozen fresh-input T90 pilots.\n\nHistorical panel cutoff 2026-04-14 00:30:00 UTC; 26,645 retained rows, reconstructed completion-bound availability. Model nba_joint_lagged_workload_prior_k0_v1; producer production-k0-v1.\n\nProtocol NBA-SDV-PRODUCTION-001; cycle prod-20261025-401909859-7a494d9fe3b1; NBA / ESPN namespace; player 5061589; event 401909859; team / opponent 3 / 7. Forecast 0054c5ef1a7bfbedf6fca34ab37ca8c62a19b6e5921e0788d2b0331dd0680383; input 30707a62552e2d10c7698aaa693284be8cfc9aa6f323a68e63a79b70661a0f4d; plan 13f05ff322c57ebd22d15801ee71edf3a42f0d5ca57f4452751a3a5e783d577c; producer commit ceacbef7e4b8ac3b6da19eaa946b83af74887aee.\n\nQualification unavailable. Forecast grading is separate from offers, prices, EV, paper tickets and financial settlement.",
+    "browser_version": "154.0.8037.57",
+    "status": "PASS",
+    "completed_at": "2026-10-28T19:58:41.960227+00:00",
+    "screenshots": [
+      {
+        "path": "/tmp/nml-oct28-public/mobile-history-top-390.png",
+        "bytes": 70492,
+        "sha256": "be3c0fbe6da0e12c28241933b7d2a76ccfa965b556074d2b758ee9ca4cbb4626"
+      },
+      {
+        "path": "/tmp/nml-oct28-public/mobile-production-card-390.png",
+        "bytes": 85728,
+        "sha256": "1810c6209b95b9520a4ac3f265274f4fbc6c0733a1cef3d0b0321cefa28f3a79"
+      }
+    ]
+  },
+  "focused_target_first_attempt": {
+    "status": "FAILED_VERIFIER_SELECTION",
+    "source_report": {
+      "schema_version": "nml-pr28-local-mobile-detail-v1",
+      "lane": "LOCAL_BROWSER_REPLAY_OF_VERIFIED_SERVED_BYTES",
+      "started_at": "2026-10-28T19:56:48.768180+00:00",
+      "new_public_requests": 0,
+      "new_provider_requests": 0,
+      "direct_https_browser_pass": false,
+      "first_production_card_text": "Recurring daily-snapshot research · R0\n\nDanny Wolf\n\nIndiana Pacers @ Brooklyn Nets · 2026-10-25 22:00:00 UTC\n\nIneligible retained original\n\nConditional on the player appearing. An active source-roster entry does not confirm health, participation, a starting assignment or future minutes.\n\nHistory-based minutes estimate: 22.356 minutes; 80% interval 6–35 minutes. Conditional on appearance; this is not confirmed playing time.\n\nThese exact publisher assets are now older than the operating limit. A new download of unchanged bytes would not refresh their content. The original forecast remains unchanged.\n\nCATEGORY\tMEAN\t80% INTERVAL\nPTS\t10.734\t0–22\nPRA\t17.299\t3–33\nREB\t4.0548\t0–8\n3PM\t1.241\t0–3\nAST\t2.5102\t0–6\nRA\t6.565\t1–13\nPR\t14.789\t2–29\nTOV\t1.2667\t0–3\nTD\t0.0057705\t0–0\nDD\t0.071515\t0–0\nBLK\t0.44692\t0–1\nSTL\t0.77598\t0–2\nBLK+STL\t1.2229\t0–3\nPA\t13.245\t2–27\n\nActual issue time: 2026-10-25 20:35:16.596142Z. Issued 84.7 minutes before scheduled start. This horizon is separate from input age. Retained evidence only; this original is not admitted to prospective grading.\n\nSource identities, clocks and limitations",
+      "completed_at": "2026-10-28T19:57:25.804233+00:00",
+      "screenshots": [
+        {
+          "path": "/tmp/nml-oct28-public/mobile-history-top-390.png",
+          "bytes": 70492,
+          "sha256": "be3c0fbe6da0e12c28241933b7d2a76ccfa965b556074d2b758ee9ca4cbb4626"
+        }
+      ]
+    },
+    "cause": "Verifier selected the first retained original, which correctly carries an ineligible badge. The corrected focused selector requests an admitted Research forecast card; original failure remains unchanged."
+  },
+  "optimized_verifier": {
+    "schema_version": "nml-pr28-optimized-verifier-check-v1",
+    "observed_at": "2026-10-28T19:54:03.297844+00:00",
+    "python_optimized": true,
+    "status": "PASS",
+    "cases": [
+      {
+        "case": "wrong served build",
+        "status": "REJECTED",
+        "http_requests": 0
+      },
+      {
+        "case": "checksum-inconsistent asset",
+        "status": "REJECTED",
+        "http_requests": 0
+      }
+    ],
+    "ast_assert_nodes": {
+      "verify.py": 0,
+      "replay.py": 0,
+      "final_targeted.py": 0
+    },
+    "source_http_requests": 0,
+    "new_forecasts": 0
+  },
+  "evidence_files": [
+    {
+      "file": "attempt-1/report.json",
+      "bytes": 26987,
+      "sha256": "a2c3fb6d6719b3561aad6a3bc12edb38da78af3796528f7787dbb67b629ba6a0"
+    },
+    {
+      "file": "replay-report.json",
+      "bytes": 29529,
+      "sha256": "02994f1781cb82ebd6ad2016f37678b89f73cbfdaac98a10a5c2d02ab5dae383"
+    },
+    {
+      "file": "browser-trust-finding.json",
+      "bytes": 1076,
+      "sha256": "3b9d86e9310e6a4bc791956b962ec74ef302675cabed74bcc4b188bf2f1e864b"
+    },
+    {
+      "file": "optimized-verification.json",
+      "bytes": 541,
+      "sha256": "6ffb0952d59423c883dbdc8ca2cf56235c8c1ff385e04d6821bf2ed4df275804"
+    },
+    {
+      "file": "targeted-attempt-1-report.json",
+      "bytes": 1815,
+      "sha256": "aa69f95ea2628f0277cdad54e66ad45ac4f912aa927db6a635853a023b356bc8"
+    },
+    {
+      "file": "targeted-attempt-1.log",
+      "bytes": 435,
+      "sha256": "e22859921acc2af166f904fd6775853b14ec096222c335bb426439e5b13af18d"
+    },
+    {
+      "file": "verify.py",
+      "bytes": 17641,
+      "sha256": "f2a25629926c61ded0938ca426ed6575b848822d9c8ee282ec5cb22bb7153249"
+    },
+    {
+      "file": "typed.mjs",
+      "bytes": 5008,
+      "sha256": "fdd22032be6f424bf3b4bce8f4775e8ab30383579b0c1677994d429794449c75"
+    },
+    {
+      "file": "replay.py",
+      "bytes": 3698,
+      "sha256": "44ad3fbcdd80734e3844c20294c9c034c2fc23c8c7f799094dca8241084dcf2a"
+    },
+    {
+      "file": "final_targeted.py",
+      "bytes": 4180,
+      "sha256": "e0c4710bfe2f17cc8281f99fc59176bcef59840024c5d99d03056a98c49dd30a"
+    },
+    {
+      "file": "compact_report.py",
+      "bytes": 4337,
+      "sha256": "d80d24bc807281bff3c0a499ed3894dfdeed841913aa5832552fbbee198eb635"
+    }
+  ],
+  "new_issuance": 0,
+  "new_outcomes": 0,
+  "new_grades": 0,
+  "new_offers": 0,
+  "qualified_tickets": 0,
+  "financial_settlements": 0,
+  "recovery_scope": "Actual public source/static bytes verified over TLS and hashes; temporary local replay/screenshots are not a separate durable source archive."
+}

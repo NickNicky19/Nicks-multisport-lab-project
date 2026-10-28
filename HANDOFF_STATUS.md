@@ -2,6 +2,135 @@
 
 Updated: October 28, 2026 (UTC).
 
+## October 28 — PR #28 merged and actual public production channel recovered
+
+**Released main `6609cea5bb55b2f85a0b4c2df2bf504ca7440c94`**, merge parents
+`ceacbef7e4b8ac3b6da19eaa946b83af74887aee` and the exact owner-approved PR #28
+head `d787674c5f74b3c1b623b6a7df3ea0147644eda7`. Its tree
+`9200ed96ee83564db66e8cdb63e43b3de044ddd4` equals the approved tree. The
+prescribed guarded landing run **40752591650**, job **123042949543**, rechecked
+the current head, all checks, reviews and canonical policy digest
+`70b3b0605cddc6f2e6abe9331942e469e32758fbc1abb1474b3af09fdda825df`.
+GitHub reports the actual merge at **19:15:19 UTC**. No protection override,
+force push, source modification to record approval or substitute merge API
+was used. All **23 protected first-cycle files and 19 original records** remain
+unchanged; the records subtree is still
+`c1d8bef3c6eddc098e5c668a7a6ac01d7c84ba37`.
+
+**Actual deployment:** the guarded helper requested the existing Pages workflow
+after merging; this request was not treated as deployment. Pages run
+[40752646392](https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40752646392)
+actually built main `6609cea`, then deploy job **123055984358** succeeded at
+**19:40:01 UTC**. Main CI passed **1,114 Python tests / 1,066.623 seconds**, the
+**OFFLINE_EXAMPLES_ONLY** demo and **152 frontend tests / zero failures**.
+Artifact validation passed **29 data files / four relative assets**, all 13
+requested categories plus PA and research-only NO_ACTION. These are software
+and publication checks, not new model evaluation. The build independently
+prepared registry `6de0a33c5a16f8eed9ffd87b05f34e06b642c18b` and 23 shards;
+the prior-artifact check examined zero artifacts and restored none.
+
+**Served data:** an actual TLS-verified GET at **19:40:58.813014 UTC** returned
+the public manifest with build `6609cea`, snapshot
+`de2a6abd9beb1e32bf397c86c231eb2822b9da1fd03f3eac78ef112101a9b2db`,
+and manifest SHA-256
+`b1d0025a3b27a760ea6f741b5da77c7877ef46e70162251859859904c1acaca8`.
+Its **19:33:37.290072 UTC** export clock is separate from deployment and from
+the original input/issuance clocks. The production channel now has a non-null
+descriptor, no update error and `retained: false`; its content hash is
+`649852445f4746393c345e2d25a916bed05c548ee8dcef37dfae8f145c3cc343`.
+Independent Python and frontend typed validation of the served collection
+passed. The restored channel contains **530 original forecasts, 492 admitted
+genuine forecasts for 246 players/eight games, 38 ineligible originals retained
+as evidence, all 14 categories, zero upcoming forecasts, zero production
+outcomes/grades and 492 pending outcomes**. Six historical bundles/six grades
+remain separate and unchanged. The earlier native acknowledgments of **97
+outcomes/194 grade envelopes** remain valid separate evidence, including DNP;
+the stale public registry does not yet expose those later grades. They are not
+newly graded or newly public in this deployment. No offer, qualified ticket
+or financial settlement was created.
+
+**Accuracy disclosure:** only read and independently checked the original
+frozen DEV005 R0/K0 receipt; no experiment was rerun or retuned. The exact
+unchanged laws have historical development results on **350 appearances /
+16 games / January 19–March 15, 2026**. K0 predictive-mean absolute errors
+include **4.82 points, 1.87 rebounds and 1.37 assists**; the extraction records
+all categories. These are reconstructed, exposed development results,
+conditional on appearance, not a verified current prop-line hit percentage.
+DD/TD had only 22/five positives. Earlier finite-support failures and workload
+limitations remain. Counts of retained grade envelopes alone cannot establish
+category accuracy or betting qualification. S0 and all frozen receipts remain
+untouched.
+
+**Post-release checkpoint scope:** branch `docs/pr28-deployment`, based on
+the actual merge above, records only this handoff, four selected evidence
+JSON files and their manifest entries. The approved feature branch remains
+clean at `d787674`. The final checkpoint commit is identified by Git history
+and the release discussion; it is not merged or deployed merely by retaining
+this record. Current browser/rendering and native-operation observations,
+including their actual later clocks and limitations, follow below.
+
+**Operating status observed at 19:53:15 UTC:** main independently resolves to
+`6609cea`; the records registry still resolves to `6de0a33`. The existing NBA
+coordinator, workflow **392458906**, is **active**, with cron
+`2,17,32,47 * * * *`. Its latest actual run is still **40735535405**, an
+old-main scheduled run at **17:25:11 UTC** that failed before work/grading.
+No post-merge scheduled or manually dispatched operations run was observed.
+Installed scheduling is not a verified future launch or a successful cycle.
+Absent runs cannot establish a failure cause from nonexistent logs. Current
+planning for the **October 29 UTC** game date closes strictly before
+**October 28 21:30 UTC / 4:30 p.m. America/Chicago CDT**. Actual game/cohort
+capture and issuance windows require a successfully admitted fresh plan;
+none was inferred or invented. The old jobs must not be rerun.
+
+The connected GitHub App can read records and preserve commits, but this
+environment has no supported workflow-dispatch tool; its GitHub CLI is not
+authenticated. One precise owner catch-up action was requested: the existing
+NBA coordinator's **Run workflow → main → mode `operate`**, leaving the
+cycle ID unchanged. No launch is claimed without an actual run. This is a
+one-time catch-up; the permanent operating path remains the installed
+coordinator, with a subsequent actual scheduled success still required.
+
+**Next concrete action:** recover and inspect the next real operations run
+under `6609cea`, preserve its actual source/phase/readback evidence and
+publish the resulting admitted fresh forecasts and later verified outcomes.
+Do not delay or backfill a missed window. Recover the already acknowledged
+grade records into the public registry without treating DNP as zero. A real
+public pregame-to-final statistical cycle and a subsequent successful
+scheduled execution remain unverified acceptance requirements. This release
+does not activate OPS002, PROS004, S0 or either expired pilot, and makes no
+forecasting, ticket, profit or settlement qualification claim.
+
+**Independent rendering/verification limits:** actual public TLS/hash readback
+passed **47 own-site GETs / 21,971,135 bytes**, with strict Python and frontend
+typed validators passing. This made zero provider requests and generated no
+forecast. Commands used `python3 -O /tmp/nml-oct28-public/verify.py`, its strict
+`typed.mjs` frontend checker, the explicitly local `replay.py` and a narrowly
+corrected `final_targeted.py`; exact helper fingerprints and actual clocks are
+retained in the selected public-verification JSON. Optimized verifier negative
+checks rejected a wrong build and altered checksum; the helpers contain zero
+removable assertion statements.
+
+Direct Chromium HTTPS verification was blocked by this environment's proxy CA
+trust gap. Automatic approval review rejected a persistent shared Chromium NSS
+CA import because it would broaden future TLS trust beyond this verification.
+That action stopped: no shared trust change, TLS bypass or alternate-transport
+circumvention occurred. A separate **LOCAL_BROWSER_REPLAY_OF_VERIFIED_SERVED_BYTES**
+used the already TLS/hash-verified site bytes. It captured **16 desktop/mobile
+views**, including direct History refresh, and completed **135 scope/direction/
+2–6-leg NO_ACTION assertions**, but its final response flush exceeded the
+original ten-minute budget. Its overall status is **PARTIAL_TIME_BUDGET**,
+not a complete browser pass. A focused local 390-pixel check then **passed**,
+explicitly selecting an admitted **K0 Yves Missi** forecast (New Orleans at
+Denver, October 25 01:00 UTC; original issue October 24 23:30:39.547763 UTC),
+all 14 categories, participation semantics, exact issue/recovery clocks,
+source ages, historical cutoff and accessible IDs. A first targeted attempt
+incorrectly selected a correctly labeled ineligible original; its failed
+verifier observation is retained separately. Root visually inspected desktop
+and mobile screenshots. These rendering checks are not direct public HTTPS
+browser verification. Temporary screenshots/full replay bytes are not claimed
+as a durable archive; selected structured findings are retained on the
+checkpoint branch.
+
 ## October 28 — bounded current-run recovery added to PR #28
 
 **Implementation source `769ad585520b4e1a51acafe2cb724db59e7f3ac2`**, tree

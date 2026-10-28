@@ -1,0 +1,614 @@
+{
+  "scope": "Existing frozen DEV005 unchanged R0/K0 control-metric extraction ONLY. No S0 results admitted, no rerun/scoring/retuning/selection.",
+  "source_branch": "research/nba-count-support-dev005",
+  "source_head": "d68015778ab452c94db0385c471de663e830efec",
+  "source_path": "evidence/research/dev005-result.json",
+  "source_sha256": "b535f38e1d5604ee4ab59dae397344b76f18fc2871f9967cb56ccf961abd3ac2",
+  "payload_sha256": "1c5f9882fac2b0272d3244f0bacbb11516526d75bb66e4287d1441091a3193e3",
+  "evidence_lane": "RECONSTRUCTED_RESEARCH",
+  "stage": "EXPOSED_CHRONOLOGICAL_DEVELOPMENT_ONLY",
+  "inventory": {
+    "selected_appearances": 350,
+    "selected_games": 16,
+    "weekly_inventory": [
+      {
+        "eligible_games": 52,
+        "games": [
+          {
+            "appearances": 20,
+            "event_id": "401810474",
+            "event_start": "2026-01-21T03:00:00.000000Z",
+            "selection_sha256": "002f9f136e7ab9397b1122e23802b71a1b1a2302713990cda37f02b147811971"
+          },
+          {
+            "appearances": 25,
+            "event_id": "401810505",
+            "event_start": "2026-01-25T20:00:00.000000Z",
+            "selection_sha256": "0065a01b0d0ac425173e56d5d639c23d3567a318322319adefb39274fee74d99"
+          }
+        ],
+        "selected_appearances": 45,
+        "week_end": "2026-01-25",
+        "week_start": "2026-01-19"
+      },
+      {
+        "eligible_games": 55,
+        "games": [
+          {
+            "appearances": 20,
+            "event_id": "401810539",
+            "event_start": "2026-01-30T02:00:00.000000Z",
+            "selection_sha256": "02f04871be16858fcb50a6ed5f56671300cb46a9cc697cd0469d76949e6f67be"
+          },
+          {
+            "appearances": 21,
+            "event_id": "401810561",
+            "event_start": "2026-02-01T23:00:00.000000Z",
+            "selection_sha256": "0c906af1fa197f700885882d8325e7a9c8720ea00a0dedc72aab9ab3cc0a16e4"
+          }
+        ],
+        "selected_appearances": 41,
+        "week_end": "2026-02-01",
+        "week_start": "2026-01-26"
+      },
+      {
+        "eligible_games": 54,
+        "games": [
+          {
+            "appearances": 18,
+            "event_id": "401810602",
+            "event_start": "2026-02-07T20:00:00.000000Z",
+            "selection_sha256": "08de82cad729514e59ca21cbf5bb5c1267db187e2e21617cf39b003e131fcd8e"
+          },
+          {
+            "appearances": 24,
+            "event_id": "401810614",
+            "event_start": "2026-02-08T20:00:00.000000Z",
+            "selection_sha256": "0a1323ed694199173572981185c6a5ed0624ecdfe3fc0abd05d0d59220a8e85f"
+          }
+        ],
+        "selected_appearances": 42,
+        "week_end": "2026-02-08",
+        "week_start": "2026-02-02"
+      },
+      {
+        "eligible_games": 31,
+        "games": [
+          {
+            "appearances": 20,
+            "event_id": "401810626",
+            "event_start": "2026-02-11T00:30:00.000000Z",
+            "selection_sha256": "073fc3121b10135d81379f74efa192bbaabb2e22295468382e682d754da66198"
+          },
+          {
+            "appearances": 26,
+            "event_id": "401810629",
+            "event_start": "2026-02-11T03:30:00.000000Z",
+            "selection_sha256": "13002cb711d1a2b8eccf034fb580ad1278944ff6c2949baced41826f5256df9d"
+          }
+        ],
+        "selected_appearances": 46,
+        "week_end": "2026-02-15",
+        "week_start": "2026-02-09"
+      },
+      {
+        "eligible_games": 32,
+        "games": [
+          {
+            "appearances": 21,
+            "event_id": "401810654",
+            "event_start": "2026-02-20T03:00:00.000000Z",
+            "selection_sha256": "00a1d0f20bb9b8419c18ee54fd934044acbdb7bc63f60fb3cc42693d72db3ad7"
+          },
+          {
+            "appearances": 19,
+            "event_id": "401810656",
+            "event_start": "2026-02-20T03:30:00.000000Z",
+            "selection_sha256": "0076c906ffe9ac479d4cb39498f3e1c6256fc25aff4189b2aff95bebd8024778"
+          }
+        ],
+        "selected_appearances": 40,
+        "week_end": "2026-02-22",
+        "week_start": "2026-02-16"
+      },
+      {
+        "eligible_games": 51,
+        "games": [
+          {
+            "appearances": 22,
+            "event_id": "401810703",
+            "event_start": "2026-02-27T00:00:00.000000Z",
+            "selection_sha256": "104083f0c8948bdb3b6d410676ff2a6b5b772100e7672bc4b279442c231a377f"
+          },
+          {
+            "appearances": 23,
+            "event_id": "401810725",
+            "event_start": "2026-03-01T20:30:00.000000Z",
+            "selection_sha256": "0ade22c1356669499cafe46f8f3cfcb1aa81e87a0ef9bab13da52501d0a13232"
+          }
+        ],
+        "selected_appearances": 45,
+        "week_end": "2026-03-01",
+        "week_start": "2026-02-23"
+      },
+      {
+        "eligible_games": 51,
+        "games": [
+          {
+            "appearances": 22,
+            "event_id": "401810738",
+            "event_start": "2026-03-04T00:00:00.000000Z",
+            "selection_sha256": "0d5c33dd33f69ceb3814557747ca203908a50a936a0225c1350a979e8c660585"
+          },
+          {
+            "appearances": 27,
+            "event_id": "401810742",
+            "event_start": "2026-03-04T00:30:00.000000Z",
+            "selection_sha256": "0f220ed24f3a27d07baa1d71d5c54199a32606e8f84df41aa83bc1e6857b85eb"
+          }
+        ],
+        "selected_appearances": 49,
+        "week_end": "2026-03-08",
+        "week_start": "2026-03-02"
+      },
+      {
+        "eligible_games": 56,
+        "games": [
+          {
+            "appearances": 20,
+            "event_id": "401810813",
+            "event_start": "2026-03-13T01:00:00.000000Z",
+            "selection_sha256": "0bf41467c9f89f923a9b71f2b81c97ba7d1f098ebd7362dfba585e45f010c8ec"
+          },
+          {
+            "appearances": 22,
+            "event_id": "401810816",
+            "event_start": "2026-03-13T23:30:00.000000Z",
+            "selection_sha256": "0a4d5d50433a06fa02646884bc66278e340e5705a7d631050f65c79e4ec56fbf"
+          }
+        ],
+        "selected_appearances": 42,
+        "week_end": "2026-03-15",
+        "week_start": "2026-03-09"
+      }
+    ],
+    "window_end": "2026-03-15",
+    "window_start": "2026-01-19"
+  },
+  "model_versions": {
+    "R0": "nba_joint_empirical_r0_v1",
+    "K0": "nba_joint_lagged_workload_prior_k0_v1"
+  },
+  "categories": [
+    {
+      "category": "PTS",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 4.937761604751911,
+        "mean_crps_rps": 3.355517945043147,
+        "mean_brier": null,
+        "mean_log_loss": 3.20320422501873,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.10857142857142857,
+        "mean_predicted_zero_probability": 0.1047290220761581,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 4.820340376937963,
+        "mean_crps_rps": 3.293355148869992,
+        "mean_brier": null,
+        "mean_log_loss": 3.1691867612358022,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.10857142857142857,
+        "mean_predicted_zero_probability": 0.10440708139222427,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "PRA",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 6.481383906450764,
+        "mean_crps_rps": 4.515493683878251,
+        "mean_brier": null,
+        "mean_log_loss": 3.7776988173447417,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.05142857142857143,
+        "mean_predicted_zero_probability": 0.03746030171366847,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 6.224893810649404,
+        "mean_crps_rps": 4.394347726447595,
+        "mean_brier": null,
+        "mean_log_loss": 3.7136798192208165,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.05142857142857143,
+        "mean_predicted_zero_probability": 0.0369413615595394,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "REB",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 1.9111297809675352,
+        "mean_crps_rps": 1.3216932046578103,
+        "mean_brier": null,
+        "mean_log_loss": 2.31400480131695,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.08571428571428572,
+        "mean_predicted_zero_probability": 0.10680933500446772,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 1.8737459801227703,
+        "mean_crps_rps": 1.3057378297540008,
+        "mean_brier": null,
+        "mean_log_loss": 2.2987159748130446,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.08571428571428572,
+        "mean_predicted_zero_probability": 0.10653508581339624,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "3PM",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 0.9624031618632729,
+        "mean_crps_rps": 0.6101534517798693,
+        "mean_brier": null,
+        "mean_log_loss": 1.3507652394538479,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.43714285714285717,
+        "mean_predicted_zero_probability": 0.4301018538814544,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 0.9511164157242296,
+        "mean_crps_rps": 0.6059674720722005,
+        "mean_brier": null,
+        "mean_log_loss": 1.3430930399983745,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.43714285714285717,
+        "mean_predicted_zero_probability": 0.431772587566774,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "AST",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 1.420129820926766,
+        "mean_crps_rps": 0.9603799085714431,
+        "mean_brier": null,
+        "mean_log_loss": 1.908389442307268,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.22,
+        "mean_predicted_zero_probability": 0.23267385441282085,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 1.37483276029448,
+        "mean_crps_rps": 0.9401751763486993,
+        "mean_brier": null,
+        "mean_log_loss": 1.881703218165233,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.22,
+        "mean_predicted_zero_probability": 0.23375570585240776,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "RA",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 2.7528554091064485,
+        "mean_crps_rps": 1.9046020624144664,
+        "mean_brier": null,
+        "mean_log_loss": 2.747422806899684,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.07142857142857142,
+        "mean_predicted_zero_probability": 0.06211929668440415,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 2.6724887222631635,
+        "mean_crps_rps": 1.8619723024984989,
+        "mean_brier": null,
+        "mean_log_loss": 2.7131567503909606,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.07142857142857142,
+        "mean_predicted_zero_probability": 0.06157381540694905,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "PR",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 5.8097582618854755,
+        "mean_crps_rps": 4.0403645718212555,
+        "mean_brier": null,
+        "mean_log_loss": 3.5521832518790437,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.05714285714285714,
+        "mean_predicted_zero_probability": 0.04751527733053708,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 5.616733043185209,
+        "mean_crps_rps": 3.9474949193293587,
+        "mean_brier": null,
+        "mean_log_loss": 3.5050498684303646,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.05714285714285714,
+        "mean_predicted_zero_probability": 0.04695610953087125,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "TOV",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 0.9030162521702261,
+        "mean_crps_rps": 0.5981789241025337,
+        "mean_brier": null,
+        "mean_log_loss": 1.434221332475074,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.35428571428571426,
+        "mean_predicted_zero_probability": 0.364686488791356,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 0.894982987718359,
+        "mean_crps_rps": 0.5935523926001486,
+        "mean_brier": null,
+        "mean_log_loss": 1.4267515289628832,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.35428571428571426,
+        "mean_predicted_zero_probability": 0.3664621470746815,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "TD",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 0.01691018066487336,
+        "mean_crps_rps": 0.012457331290509204,
+        "mean_brier": 0.012457331290509206,
+        "mean_log_loss": 0.04991862097045767,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.9857142857142858,
+        "mean_predicted_zero_probability": 0.9947138703626461,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 0.01668211423792333,
+        "mean_crps_rps": 0.012451149572621686,
+        "mean_brier": 0.012451149572621686,
+        "mean_log_loss": 0.04952093637741752,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.9857142857142858,
+        "mean_predicted_zero_probability": 0.9949287669452147,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "DD",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 0.09673164653285557,
+        "mean_crps_rps": 0.039346899090637884,
+        "mean_brier": 0.039346899090637884,
+        "mean_log_loss": 0.15119856186988387,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.9371428571428572,
+        "mean_predicted_zero_probability": 0.9284564085289886,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 0.09450672566905037,
+        "mean_crps_rps": 0.03894857743875964,
+        "mean_brier": 0.03894857743875964,
+        "mean_log_loss": 0.14938414037622427,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.9371428571428572,
+        "mean_predicted_zero_probability": 0.9298407727236554,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "BLK",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 0.49128935561475934,
+        "mean_crps_rps": 0.2729386621346621,
+        "mean_brier": null,
+        "mean_log_loss": 0.7866970369340232,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.6885714285714286,
+        "mean_predicted_zero_probability": 0.6963146838713511,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 0.4877843640054262,
+        "mean_crps_rps": 0.2719435501493274,
+        "mean_brier": null,
+        "mean_log_loss": 0.7831262235956834,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.6885714285714286,
+        "mean_predicted_zero_probability": 0.6969853408245028,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "STL",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 0.7342419334581757,
+        "mean_crps_rps": 0.4653037926400925,
+        "mean_brier": null,
+        "mean_log_loss": 1.1850978664912337,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.4942857142857143,
+        "mean_predicted_zero_probability": 0.5174560115940725,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 0.727268420934859,
+        "mean_crps_rps": 0.4632928940752762,
+        "mean_brier": null,
+        "mean_log_loss": 1.1821112619332284,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.4942857142857143,
+        "mean_predicted_zero_probability": 0.5185147333240215,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "BLK+STL",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 0.8994576524037207,
+        "mean_crps_rps": 0.6084731792236625,
+        "mean_brier": null,
+        "mean_log_loss": 1.446740801370906,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.3657142857142857,
+        "mean_predicted_zero_probability": 0.38170304810563266,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 0.891038584849572,
+        "mean_crps_rps": 0.6047697392945575,
+        "mean_brier": null,
+        "mean_log_loss": 1.4419989500158623,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.3657142857142857,
+        "mean_predicted_zero_probability": 0.38243810481584345,
+        "scored_count": 350
+      }
+    },
+    {
+      "category": "PA",
+      "sample_per_model": 350,
+      "R0": {
+        "mean_absolute_error_of_mean": 5.555469850567808,
+        "mean_crps_rps": 3.797097901358108,
+        "mean_brier": null,
+        "mean_log_loss": 3.53093044482501,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.08,
+        "mean_predicted_zero_probability": 0.06545265616508535,
+        "scored_count": 350
+      },
+      "K0": {
+        "mean_absolute_error_of_mean": 5.39112622219462,
+        "mean_crps_rps": 3.7068812130799658,
+        "mean_brier": null,
+        "mean_log_loss": 3.479843934437333,
+        "log_loss_status": "FINITE",
+        "zero_support_log_loss_count": 0,
+        "observed_zero_rate": 0.08,
+        "mean_predicted_zero_probability": 0.0648022728036581,
+        "scored_count": 350
+      }
+    }
+  ],
+  "minutes": {
+    "R0": {
+      "interpretation": "reported_source_precision_not_exact_workload_calibration",
+      "intervals": {
+        "0.5": {
+          "mean_predicted_mass": 0.565053395430098,
+          "mean_width": 10.945714285714285,
+          "observed_coverage": 0.5771428571428572
+        },
+        "0.8": {
+          "mean_predicted_mass": 0.8392242614114288,
+          "mean_width": 21.065714285714286,
+          "observed_coverage": 0.8742857142857143
+        },
+        "0.95": {
+          "mean_predicted_mass": 0.964952613029163,
+          "mean_width": 32.902857142857144,
+          "observed_coverage": 0.9657142857142857
+        }
+      },
+      "mean_absolute_error_of_mean": 5.851395196738542,
+      "mean_crps": 4.014620653435115,
+      "rmse_of_mean": 7.358117492241251
+    },
+    "K0": {
+      "interpretation": "reported_source_precision_not_exact_workload_calibration",
+      "intervals": {
+        "0.5": {
+          "mean_predicted_mass": 0.5690171678893001,
+          "mean_width": 9.934285714285714,
+          "observed_coverage": 0.5571428571428572
+        },
+        "0.8": {
+          "mean_predicted_mass": 0.840620925987093,
+          "mean_width": 18.697142857142858,
+          "observed_coverage": 0.8514285714285714
+        },
+        "0.95": {
+          "mean_predicted_mass": 0.9647887224776652,
+          "mean_width": 29.17142857142857,
+          "observed_coverage": 0.9685714285714285
+        }
+      },
+      "mean_absolute_error_of_mean": 5.552653711208509,
+      "mean_crps": 3.86821329559607,
+      "rmse_of_mean": 7.041596709485257
+    }
+  },
+  "claims": {
+    "confirmation": false,
+    "live_activation": false,
+    "model_selection": false,
+    "product_qualification": "UNAVAILABLE",
+    "promotion": false,
+    "prospective_paper_evidence": false,
+    "workload_undercoverage_fixed": false
+  },
+  "limitations": [
+    "Exposed archive and previous development informed design; no confirmation or live issuance",
+    "Eight week clusters and extreme adjusted bootstrap tail are fragile descriptive uncertainty",
+    "K0 reported-minute marginal is unchanged; workload undercoverage is not fixed",
+    "NB lane assumes independent primitive counts and weakens empirical dependence",
+    "Conditional appearance excludes DNP; no participation or cross-player law",
+    "Finite likelihood alone does not establish calibration or qualification",
+    "No post-score exclusions, retuning, category splicing, tickets, settlement or activation"
+  ]
+}
