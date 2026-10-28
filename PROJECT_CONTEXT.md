@@ -2,6 +2,34 @@
 
 Updated: October 22, 2026.
 
+## October 27 delivery recovery candidate
+
+Deployed main is `ceacbef7e4b8ac3b6da19eaa946b83af74887aee` (PR #24).
+Genuine recurring forecasts were issued on October 24/25, and October 25 worker
+logs subsequently recorded successful independent recovery of 97 player
+outcomes / 194 model grades. Two other workers' 27 outcomes / 54 grades were
+not acknowledged by those failed readbacks. Do not substitute these counts for
+the mutable catalog or currently published counts.
+
+The public manifest observed October 27 at 17:55 UTC has a missing production
+channel after archive read failures; the last site export was October 25 at
+21:02:56 UTC. Scheduled runs since then failed in preparation. This is a delivery
+and recovery failure, not a forecasting-accuracy result. Native scheduling is
+installed, but unattended forecast-to-final publication is not yet verified.
+
+`implementation/sdv-grading-recovery-20261027` preserves the post-PR24 checkpoint
+`aa897f1` and prepares bounded transient archive read retries, safe failure
+diagnostics, cold per-ledger publication recovery, and validated prior-artifact
+fallback with honest original clocks. A local independent replay of registry
+`6de0a33c5a16f8eed9ffd87b05f34e06b642c18b` recovered 23 registered snapshots and
+492 admitted forecasts across eight games. That stale registry predates later
+grade checkpoints, so its replay contains no outcomes/grades; a successful native
+catalog refresh must independently recover the newer grading branch heads.
+Local recovery is not a new issuance, native execution, public deployment or
+accuracy qualification. See the latest handoff and operating notes for final
+source/check/release evidence. Source/law, capture, cutoff, issuance and ledger
+limits remain fixed. No expired pregame input or missing peer may be backfilled.
+
 ## Current public release and recurring implementation
 
 PR #15 is merged at `377a3e4e69749efeee912a75c51673144f9fc27f`. Pages run

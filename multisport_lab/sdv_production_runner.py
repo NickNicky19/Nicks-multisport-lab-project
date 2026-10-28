@@ -20,6 +20,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 import urllib.parse
 import urllib.request
 
@@ -82,7 +83,7 @@ def _original(body, maximum):
 
 
 @_integrity_validation
-def validate_authorization(body):
+def _validate_authorization(body, *, expected_status):
     common.exact(body,{"schema_version","protocol_id","repository","workflow_path","event","actor",
         "run_id","run_attempt","head_sha","run_started_at","verified_at","event_original","run_original",
         "executed_files","authorization_id"},"authorization")
@@ -103,7 +104,7 @@ def validate_authorization(body):
         common.require(body["actor"] == common.OWNER and event.get("sender",{}).get("login") == common.OWNER
             and event.get("inputs",{}).get("mode","operate") == "operate","Owner production catch-up required")
     expected={"id":body["run_id"],"run_attempt":body["run_attempt"],"event":body["event"],
-        "head_sha":body["head_sha"],"head_branch":"main","path":common.WORKFLOW,"status":"in_progress","conclusion":None}
+        "head_sha":body["head_sha"],"head_branch":"main","path":common.WORKFLOW,"status":expected_status,"conclusion":None}
     common.require(type(run) is dict,"Actual production run metadata differs: response_type")
     mismatches=[key for key,value in expected.items()
         if run.get(key) != value or type(run.get(key)) is not type(value)]
@@ -127,8 +128,32 @@ def validate_authorization(body):
     return body
 
 
+def validate_authorization(body):
+    """Only an actual in-progress original can be a stored authorization."""
+    return _validate_authorization(body, expected_status="in_progress")
+
+
+def _reserve_run_recheck(observation):
+    """Reserve both exact originals before another GET, without raising limits."""
+    projected=deepcopy(observation)
+    projected["prior_run_observations"]=[{
+        "captured_at":observation["captured_at"],"run_original":observation["run_original"]}]
+    projected.update(captured_at="9999-12-31T23:59:59.999999Z",run_read_attempts=2,
+        authorization_id="0"*64,run_original={"base64":"","bytes":384*1024,"sha256":"0"*64})
+    # The encoded maximum is charged even though the second body may be small.
+    maximum_base64_bytes=4*((384*1024+2)//3)
+    common.require(len(canonical(projected))+maximum_base64_bytes <= MAX_HOSTED_RUN_OBSERVATION_BYTES,
+        "Hosted run recheck cannot retain both originals within its explicit report budget")
+
+
 def authorize_current_run(*, observation=None):
-    """One current-run metadata GET; the returned object is also process-bound."""
+    """Authenticate one current run; recheck an exactly pinned queued view once.
+
+    A queued view grants no capability. Its only recovery is another GET of the
+    same run after one second, with both observations retained in the unchanged
+    report budget. Terminal states, identity conflicts and request failures are
+    not retried. The public/stored authorization contract stays in-progress-only.
+    """
     common.require(observation is None or type(observation) is dict and not observation,
         "Hosted run observation must be an empty report object")
     env=os.environ
@@ -147,26 +172,53 @@ def authorize_current_run(*, observation=None):
         # This is bounded factual report evidence, never an authorization receipt
         # or a capability. Preserve the exact response even when validation fails.
         observation.update(schema_version="nba-sdv-production-run-observation-v1",
-            status="UNVERIFIED_OR_REJECTED",captured_at=stamp(common.now()),
+            status="UNVERIFIED_OR_REJECTED",captured_at=stamp(common.now()),run_read_attempts=1,
             event_original=_encoded(event_raw),run_original=_encoded(run_raw),authorization_id=None)
         common.require(len(canonical(observation)) <= MAX_HOSTED_RUN_OBSERVATION_BYTES,
             "Hosted run observation exceeds its explicit report budget")
     run=_decode(run_raw)
-    common.require(type(run) is dict and type(run.get("triggering_actor")) is dict
-        and run["triggering_actor"].get("login") == env.get("GITHUB_TRIGGERING_ACTOR",actor),"Actual triggering actor differs")
+    def check_triggering_actor(candidate):
+        common.require(type(candidate) is dict and type(candidate.get("triggering_actor")) is dict
+            and candidate["triggering_actor"].get("login") == env.get("GITHUB_TRIGGERING_ACTOR",actor),"Actual triggering actor differs")
+    check_triggering_actor(run)
     head=_git(ROOT,"rev-parse","HEAD").stdout.decode().strip()
     common.require(env.get("GITHUB_SHA") == head,"Hosted checkout differs from executing revision")
     from .sdv_production_forecasts import make_source_binding
     binding=make_source_binding(head)
-    body=common.seal({"schema_version":common.AUTH_SCHEMA,"protocol_id":common.PROTOCOL_ID,
-        "repository":common.REPOSITORY,"workflow_path":common.WORKFLOW,"event":event_name,"actor":actor,
-        "run_id":int(run_id),"run_attempt":int(attempt),"head_sha":head,
-        "run_started_at":stamp(utc(run.get("run_started_at"))),"verified_at":stamp(common.now()),
-        "event_original":_encoded(event_raw),"run_original":_encoded(run_raw),"executed_files":binding["files"]},"authorization_id")
+    # Pin the first observed start as well as all environment-derived identities.
+    started=stamp(utc(run.get("run_started_at")))
+    def authorization(raw):
+        return common.seal({"schema_version":common.AUTH_SCHEMA,"protocol_id":common.PROTOCOL_ID,
+            "repository":common.REPOSITORY,"workflow_path":common.WORKFLOW,"event":event_name,"actor":actor,
+            "run_id":int(run_id),"run_attempt":int(attempt),"head_sha":head,
+            "run_started_at":started,"verified_at":stamp(common.now()),
+            "event_original":_encoded(event_raw),"run_original":_encoded(raw),"executed_files":binding["files"]},"authorization_id")
+    body=authorization(run_raw)
+    if run.get("status") == "queued":
+        # This private precheck changes no original bytes and creates no
+        # capability. Every other strict authorization condition must pass.
+        _validate_authorization(body,expected_status="queued")
+        common.require(observation is not None,"Queued run recheck requires retained observations")
+        common.require(common.make_policy()["github_transport_attempts"] >= 2,
+            "Registered GitHub transport budget does not permit a run recheck")
+        _reserve_run_recheck(observation)
+        previous={"captured_at":observation["captured_at"],"run_original":observation["run_original"]}
+        time.sleep(1)
+        observation["run_read_attempts"]=2
+        run_raw=_read_run(int(run_id))
+        # If this GET is interrupted, the original top-level observation survives.
+        observation.update(prior_run_observations=[previous],captured_at=stamp(common.now()),
+            run_original=_encoded(run_raw))
+        common.require(len(canonical(observation)) <= MAX_HOSTED_RUN_OBSERVATION_BYTES,
+            "Hosted run observation exceeds its explicit report budget")
+        run=_decode(run_raw);check_triggering_actor(run)
+        body=authorization(run_raw)
     validate_authorization(body)
-    _CAPABILITIES[body["authorization_id"]]=head
     if observation is not None:
         observation.update(status="VERIFIED_CURRENT_RUN",authorization_id=body["authorization_id"])
+        common.require(len(canonical(observation)) <= MAX_HOSTED_RUN_OBSERVATION_BYTES,
+            "Hosted run observation exceeds its explicit report budget")
+    _CAPABILITIES[body["authorization_id"]]=head
     return body
 
 

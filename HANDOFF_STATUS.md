@@ -1,6 +1,349 @@
 # Implementation handoff status
 
-Updated: October 24, 2026 (UTC).
+Updated: October 28, 2026 (UTC).
+
+## October 28 — bounded current-run recovery added to PR #28
+
+**Implementation source `769ad585520b4e1a51acafe2cb724db59e7f3ac2`**, tree
+`94092f58a59ba081f865235a70d217b68a725ad6`, sole parent the preserved PR #28
+head `abe185e82f505f4db7910763127b1f12ca21d199`. Branch remains
+`implementation/sdv-grading-recovery-20261027`. This metadata checkpoint
+records the exact tested source; the final review head and configured CI are
+recorded on PR #28. Its earlier landing request is superseded when the head
+advances; no approval is inferred from a general instruction to continue.
+Main remains `ceacbef7e4b8ac3b6da19eaa946b83af74887aee`. Current branch,
+working tree and remote were checked and normally fetched; legitimate prior
+work, the October 27 repair and post-PR24 checkpoint remain in ancestry.
+
+**Actual operational findings:** native run **40606294434**, prepare job
+**122546511049**, failed at **00:03:52.691932 UTC**. Its retained original
+API response actually says `queued`/null while that job was running, with
+the correct run, attempt, main revision and workflow. The response is 14,162
+bytes, SHA-256 `7a8223566a87ac7876886cb5902f7edef461952e87b302d5b14fe8fb11ad7a93`,
+captured at **00:03:52.610978 UTC**. One metadata read could not resolve that
+stale view. Previous run **40580788661 / 122459282351** failed on the generic
+archive error at **October 27 20:46:20.700019 UTC**; its precise HTTP cause
+remains unknown. Both runs issued **zero** forecasts and skipped downstream
+work/grading/finish. Neither was dispatched, rerun or relabeled by this package.
+See `evidence/operational/sdv-current-run-recovery-20261028.json` for safe
+selected original metadata, exact fingerprints, clocks and job references.
+
+**Repair:** only a fully identity-validated queued/null response may trigger
+one same-run recheck after one second. The public/stored authorization contract
+still demands actual `in_progress`/null metadata. Terminal or conflicting
+responses reject; no capability is granted early. Actual first/second response
+bytes and capture clocks are retained separately. Interruption during the pause
+counts one read; an interrupted second request counts two and preserves the
+first body. Required evidence must fit before another GET, inside the unchanged
+**640-KiB** observation budget and **1,310,720-byte** disk reserve. A synthetic
+maximum second response of **393,216 bytes**, following a 410-byte first body,
+produced **525,647 encoded observation bytes**, below the 655,360-byte limit.
+This is a software measurement, not a hosted operating latency result. One
+recheck does not guarantee GitHub status convergence. All real phase clocks,
+source bindings, freshness, ledger limits and current-run capabilities remain
+required. No scheduler, source-collection policy or model law changed.
+
+**Files:** source changes are `multisport_lab/sdv_production_runner.py`,
+`tests/test_sdv_production_runner.py`, `docs/SDV_PRODUCTION_OPERATIONS.md`,
+the new October 28 evidence JSON and `MANIFEST.sha256`. This subsequent
+checkpoint changes only this handoff and the manifest. The manifest covers
+574 files. Independent review verified all **23 protected source files and
+19 original records** by recorded byte lengths and SHA-256; all remain identical.
+
+**Commands/results:** `python3 -m unittest discover -s tests -v` passed
+**1,114 tests / 777.171 seconds**, observed complete at **03:04:55 UTC**.
+`python3 -m multisport_lab.demo` remained **OFFLINE_EXAMPLES_ONLY**.
+Focused runner tests passed **33 normally / 0.827 seconds** and **33 under
+`python3 -O` / 0.840 seconds**. Independent optimized verification passed
+**33 / 0.932 seconds**, with no authority/budget defect found. `git diff --check`
+and the complete manifest check passed. Unchanged website code retains the
+October 27 152 frontend passes, artifact smoke and nine Chromium views; no
+extra source replay or full-history/model comparison was run. New exact-head
+GitHub CI, watcher and canonical landing results are recorded on PR #28 rather
+than changing the head merely to copy CI results into documentation.
+
+**Public and research state:** the real public manifest observed at
+**02:47:21.549094 UTC** still serves main `ceacbef`, with publication clock
+**October 25 21:02:56.437979 UTC**, production channel null and its explicit
+update error. No new deployment is claimed. Six historical bundles/six grades
+remain separate. The earlier actual recovery of 492 admitted forecasts and
+the separate native 97 outcomes/194 acknowledged grade records remain valid
+dated evidence below; they are not new issuance or newly public grades today.
+No provider request, new genuine forecast, outcome, grade, published offer,
+qualified ticket or financial settlement was added in this package. R0/K0,
+all 13 requested categories plus PA, the complete fixed history, conditioning,
+frozen studies, missed pilots, inactive OPS002/PROS004/S0, NO_ACTION and the
+separate NFL/MLB projects remain unchanged.
+
+**Next action:** finish revised-head GitHub checks and guarded readiness, obtain
+one explicit exact-head PR #28 merge/deploy decision, then verify actual Pages
+deployment, served hashes and native catalog/grading catch-up. New forecasts
+must come from a still-valid future plan and fresh inputs, with original
+issuance/readback clocks. A real scheduled public forecast-to-final cycle and
+subsequent scheduled success remain required; local tests and old recovered
+records do not establish them. No new owner sign-in, provider key or service
+setup is required for this licensed-source release preparation.
+
+## October 27 — actual archive failure repaired; retained publication recovered locally
+
+**Implementation source `1157e208d1e05256e2e3d080d332e25d15243acb`**, tree
+`4ac6f0c859cb8f3c9c2c1c3ed08f2869428bfdb7`, branch
+`implementation/sdv-grading-recovery-20261027`. Its sole parent is the retained
+post-PR24 checkpoint `aa897f1a7f232d18561e72d3561259b94e9e4e08`, itself based
+on deployed main `ceacbef7e4b8ac3b6da19eaa946b83af74887aee`. This subsequent
+metadata checkpoint records that exact executing source. The final review head
+and configured GitHub checks are recorded on its PR; **no merge, deployment or
+new genuine issuance is claimed for this repair**. Local adoption was an ordinary
+fast-forward after authenticated GitHub commit creation, with a clean source
+working tree. Older worktrees, drafts, published branches and original records
+were preserved; there was no reset, force push or old-ZIP replacement.
+
+**What actually happened after October 24:** genuine forecasts were issued and
+published. Full pagination of native run **40212901717** finds 35 jobs, including
+15 grading workers. Thirteen reported successful independent readback of
+**97 outcome records / 194 statistical grade records**. Two other workers
+computed **27 outcomes / 54 grades** but failed their durable readback; those
+54 are not acknowledged completion. Forty-five subject entries remained pending
+and 12 original model records were excluded as untimely in those reports.
+This is not a forecasting-accuracy aggregate. Exact worker IDs, commits, immutable
+references and original/remote/proof clocks are in
+`evidence/operational/sdv-native-grade-acknowledgments-20261027.json`.
+Earlier dated observations of zero grades remain historical observations.
+
+Later native preparation failed with a generic archive-response error, including
+runs **40491291736 / 40538950423**. At **17:55:24 UTC** on October 27 the real
+public manifest still served `ceacbef`, but its export clock was
+**October 25 21:02:56.437979 UTC**, with `production_research: null` and
+`IntegrityError: production_research update unavailable`. The currently missing
+public channel is not evidence that prior forecasts or grades were deleted.
+Six historical bundles/six historical grades remain a separate channel.
+
+**Concrete defects and repair:**
+
+- Archive failures formerly discarded HTTP status and exact immutable object
+  context. Safe exceptions now retain status, redirect hop, attempt number and
+  content-addressed reference, without signed URLs or arbitrary response bodies.
+  Actual complete-record recovery reproduced **HTTP 503**, hop zero, for
+  `object-3bebc6e055ff94ad9b888f21b58114c04da629db675a07ffaaafc8d0eff36f37.z`.
+  Older hosted generic errors did not retain statuses, so their original causes
+  remain unknown. One same-route retry for 429/500/502/503/504 uses the existing
+  two-attempt GitHub bound and a one-second pause. Access denials, missing objects,
+  unsafe redirects, timeouts and integrity failures remain fatal. Source-provider
+  HTTP retries remain zero; no transport or authentication fallback was added.
+- The complete catalog exhausted the existing 1,000-action guard when one reader
+  replayed every ledger. The publisher now uses a fresh cold reader per exact
+  immutable shard, including registered-source validation. No used counter is
+  reset, and no ledger, probability atom or source row is dropped. Per-client
+  1,000 actions and per-shard 512 records / 32 MiB remain unchanged. The explicit
+  theoretical whole-publication ceiling is 1,024 shards × 1,000 actions;
+  maximum-scale throughput is unverified, not certified by this smaller replay.
+- Fresh Pages runners had no prior output to feed the existing strict fallback.
+  A main-only, GET-only helper now checks bounded prior successful own-repository
+  artifacts and restores a validated populated seed where one remains available.
+  Expired/missing artifacts cannot restore the current channel; no successful
+  actual remote artifact restore is claimed. It does not alter artifact retention
+  or durable original storage. A missing prepared registry also cannot overwrite
+  a verified populated prior snapshot with an empty success.
+- Retained website records carry an explicit earlier-data warning and their old
+  export clock. Changing the selected date no longer clears that warning. New
+  site publication never refreshes capture, issuance or grading clocks.
+
+Source files changed: `.github/workflows/pages.yml`, `PROJECT_CONTEXT.md`,
+`docs/SDV_PRODUCTION_OPERATIONS.md`, `multisport_lab/publication.py`,
+`multisport_lab/sdv_production_archive.py`,
+`multisport_lab/sdv_production_publication.py`,
+`scripts/restore_pages_artifact.py`, its test file,
+`tests/test_sdv_production_archive.py`,
+`tests/test_sdv_production_publication.py`, `web/app.mjs`,
+`web/delivery-status.mjs`, `web/tests/delivery-status.test.mjs`, and
+`MANIFEST.sha256`. This metadata checkpoint adds this handoff and the two compact
+operational evidence files. No original runtime records or protected producer
+files changed.
+
+**Actual validation, with evidence lanes kept separate:**
+
+- Final current-source local `python3 -m unittest discover -s tests -v`:
+  **1,101 passed / 901.450 s**. Earlier local suites passed 1,098 and 1,100 tests
+  before the later concrete retry/scope fixes; those superseded runs are not
+  presented as final-source coverage or additional model experiments.
+- `python3 -m multisport_lab.demo`: **OFFLINE_EXAMPLES_ONLY**.
+- `node --test --test-isolation=none web/tests/*.test.mjs`:
+  **152 passed / zero failures / 10,098.238776 ms**.
+- Focused normal and actual optimized-Python suites: archive **32**, production
+  publication **11**, artifact restore **8**, all passed. Independent review
+  separately passed the optimized archive/publication suites and verified all
+  **23 protected files / 19 original records** by exact SHA-256 and byte length.
+- One bounded hosted read-only diagnostic **40556780135 / 122374834295** succeeded
+  at **18:06:24 UTC**, recovering 24 own-archive objects through 48 measured HTTP
+  requests, with zero provider GETs, generation or record writes. That success
+  does not retroactively identify older failures.
+- Independent real original-record replay of exact registry commit
+  `6de0a33c5a16f8eed9ffd87b05f34e06b642c18b` passed at **18:33:33 UTC**:
+  **23 ledgers**, **1,974 shard-reader HTTP requests**, maximum **92 per reader**,
+  **22 export data files / 21,354,914 bytes**, with strict combined typed readback.
+  Separate registry/Git traffic is not included in that HTTP count. Export and
+  validation took about **478.65 s**, excluding initial registry preparation;
+  this is not producer-generation or maximum-scale hosted timing.
+  An initial local harness lacked Git objects for original-source verification;
+  that setup failed and was corrected using an isolated detached `ceacbef`
+  checkout. It was not evidence of corrupted source records.
+- The replay recovered **530 original forecast records, 492 admitted forecasts
+  for 246 players across eight games**, all 13 categories plus PA. Thirty-eight
+  ineligible originals remain distinct. The exact stale registry predates the
+  later grade checkpoints, so this replay contains **zero outcomes/grades and
+  492 pending grades**. Do not combine it with the separately acknowledged native
+  194 grades as if they were already cataloged or public.
+- Real-data private replay/fallback preview passed Chromium **151.0.7922.34** on
+  History, Performance and Builder at **1440 / 390 / 320 pixels**: **nine views**,
+  zero page errors or horizontal overflow, readable original research and retained
+  warning, NO_ACTION preserved. The preview used the explicit all-zero uncommitted
+  Git sentinel; its tested executing bytes were subsequently committed unchanged
+  as `1157e20`. It is not a public deployment or genuine new issuance. Screenshots
+  and preview files are temporary local artifacts, not a permanent remote archive.
+- `node web/tests/site-smoke.mjs /tmp/nml-oct27-delivery/website-preview`:
+  **29 validated data files**, all-13 inventory and research-only NO_ACTION passed.
+
+Compact immutable-reference, count, timing and software evidence is in
+`evidence/operational/sdv-delivery-recovery-checkpoint-20261027.json`; it includes
+no full CI logs, signed URLs, private key material or provider credentials.
+
+**Remaining release/operating evidence:** the candidate is not deployed. Public
+production forecasts/outcomes/grades are currently unavailable, while real
+retained originals and acknowledged native grading exist as described above.
+Published offers, qualified tickets and financial settlements remain zero.
+No new source capture, genuine forecast, outcome/grade original, scientific
+comparison, model retuning or scheduler was created in this package. R0/K0 laws,
+the full 26,645-row fixed history, participation conditioning, source/cutoff/
+issuance deadlines, all limits, missed pilots, inactive OPS002/PROS004/S0, frozen
+DEV005 and independent NFL/MLB projects remain intact. Local CLI authentication
+is unavailable; the existing connected GitHub App works, so no new owner sign-in,
+service, signup or provider key is required for release preparation.
+
+**Next concrete action:** complete the exact-head GitHub checks and guarded PR
+Completion review/landing decision, then deploy only after approval. Verify the
+actual live production assets; observe the next genuine native catalog refresh
+recovering the newer grading branch heads, publish/verify their statistical grades
+and keep pending/DNP/corrections separate. New forecasts require a future timely
+plan and actual fresh inputs; no missed date or late peer may be backfilled.
+Only then report descriptive results per original model and category. A reliable
+forecast-to-final public cycle and a later scheduled success remain acceptance
+evidence, not a conclusion supplied by tests or this recovery preview.
+
+## October 24 — PR #24 merged, deployed and independently verified
+
+Nick explicitly approved PR #24 at exact head
+`cddc8be9798a4912c6893ff9dd9ee3702791a7f0`, by merge commit and deployment.
+The existing guarded PR Completion workflow rechecked head, all checks,
+reviews and the unchanged canonical policy digest, used the unchanged
+`pr_land.py --confirm`, then verified exact-head merging.
+Actual guarded run **40086031019 / job 120849047996** succeeded.
+Main merge **`ceacbef7e4b8ac3b6da19eaa946b83af74887aee`** was created at
+**10:28:26 UTC**, with parents `f067359` and approved `cddc8be`.
+Its tree `6d4ba723cc3cb183db7136565d58fdcf7141784a` exactly equals the
+approved tree. No administrator override, protection bypass, force push,
+approved-head change or direct merge API substitution occurred.
+
+**Implementation source:** `18ec769acf2f237eeba09aaa4e03b6a0caa04a44`.
+PR branch was `implementation/sdv-publisher-identity-recovery`.
+The existing local workspace was left untouched; verification and landing
+used normal GitHub access and isolated GitHub-hosted execution.
+This post-deployment checkpoint is retained on **`docs/pr24-deployment`**,
+based on deployed main. Its documentation/evidence is not claimed as merged
+or deployed; carry it into the next working branch and eventual coherent PR.
+Older pending checkpoints below remain dated historical observations.
+
+**Software and actual publication:** candidate CI **40084441084** passed
+**1,088 Python tests / 786.761 s**, demo, **150 frontend passes / zero failures**,
+artifact/smoke and upload. Actual main Pages run **40086049201** independently
+passed **1,088 Python tests / 1,045.672 s**, demo `OFFLINE_EXAMPLES_ONLY`,
+**150 frontend passes / zero failures / 11,195.90652 ms**, admitted daily/production
+recovery and the bounded artifact/smoke (**eight validated data files**).
+Build **120849103628** and deployment **120852573539** both succeeded;
+the actual deploy completed **10:46:42 UTC**. Dispatch acceptance was not
+used as deployment proof. These are software checks, not forecast accuracy.
+
+Commands actually executed in their existing hosted workflows included:
+
+- `python3 scripts/github_release.py`, invoking the unchanged watcher,
+  canonical plan, explicitly confirmed landing helper and exact-head merge observer.
+- `python3 -m unittest discover -s tests -v`.
+- `python3 -m multisport_lab.demo`.
+- `node --test --test-isolation=none web/tests/*.test.mjs`.
+- `python3 -m multisport_lab.sdv_daily_publication` and
+  `python3 -m multisport_lab.sdv_production_publication`.
+- `python3 -m multisport_lab.publication --build-commit ceacbef7e4b8ac3b6da19eaa946b83af74887aee`.
+- `node web/tests/site-smoke.mjs output`.
+- The bounded `verify_public_site.py` against the real HTTPS site and exact
+  detached deployed checkout, using pinned Playwright/Chromium.
+
+**Actual public verification:** hosted **40086486296 / job 120850377586**
+passed at **10:47:34.488580 UTC**, then independent readback
+**40087386682 / job 120852989604** recovered its original proof at
+**10:48:52.599699 UTC**. The browser received build `ceacbef`, schema **7**,
+snapshot `67890d2e04e283ab000d42dca51b07d6516ab4e181af762ef62da5883d8f7db0`, with manifest export/publication clock
+**2026-10-24T10:46:16.988933Z** and actual raw manifest SHA-256
+`3254fe72cfe2e644af7f638757be48b0f8ee488d7084453d747ebb740bf8ead9`. Actual deployment completion is recorded separately
+above. The verifier checked **23 actual served manifest/data/static byte hashes**,
+**18 desktop/390-/320-pixel views**, six verified historical player names,
+historical matchups/dates, accessible source IDs, separate publication/input/
+issuance clocks, direct History navigation/refresh, all **14 categories**,
+and **135** direction/scope/2–6-leg **NO_ACTION** cases. There were no
+published-channel errors, browser runtime errors or horizontal overflow.
+Full structured proof and exact asset hashes are in
+`evidence/deployment/pr24-release-public-verification-20261024.json`.
+Screenshot artifact **12558070726** is **1,565,440 bytes**, with its actual
+14-day retention; this checkpoint does not claim permanent screenshot archival.
+
+**Preservation:** independent read-only tree comparison against prior main
+`f06735974a388fa9e1a39e0815341de889cc25ae` verified identical blob SHA,
+mode and type for all **23 protected source files / 19 original ledger records**;
+the entire `records` subtree is unchanged. Exactly ten intended paths changed:
+seven modifications, three additions, zero deletions or mode changes.
+Policy/workflow/law files and prior protection/source-recovery receipts are
+unchanged. This is Git object preservation proof, not a new raw-byte audit
+or rerun of frozen experiments.
+
+**Operating status at the readback:** coordinator **392458906** remains
+**active**, with its existing `2,17,32,47 * * * *` cron. No post-merge native
+execution was yet observed. The latest actual run is the preserved **40080779828**
+old-head planning failure at **09:08:34 UTC**; records index remains
+`af17d90c0894ddc5082ee8f13f1d90e4d3cf3e60`. No cause is inferred from an
+absent later run. The six-GET source capture, original clocks and actual failure
+are retained. This release neither retriggered an expired pilot nor created
+another scheduler. Installed scheduling and a successful website release are
+not a completed prospective forecast cycle.
+
+The repair's earlier normal/optimized input/restart checks and independent
+retained-source DEVELOPMENT_ONLY replay remain valid: **1,206 schedule rows /
+516 roster rows**, complete **11-game / 382-candidate / 32-shard** target-date
+plan and all input replays, with **zero new provider GETs**. Candidates are not
+a claim of usable fixed history for every player or confirmed participation.
+No actual operating capture or genuine forecast issuance occurred during this
+release verification. Software tests construct explicit test forecasts; no real
+retrospective comparison or frozen experiment was rerun.
+
+**Current actual counts:** **six historical bundles / six historical statistical
+grades; zero genuine upcoming forecasts, published offers, prospective outcomes/
+grades, qualified tickets and financial settlements**. New final outcomes remain
+pending until verified actual evidence exists; DNP is not zero production and
+corrections append. Research laws, all 13 NBA categories plus PA, conditioning,
+full fixed history, limits, inactive studies, missed pilots and separate NFL/MLB
+are preserved. No provider key, signup, paid service or new private-key dependency
+was introduced.
+
+**Next concrete task:** observe the next actual native run on `ceacbef`,
+confirm earliest retained PLAN capture recovery and an admitted immutable daily
+plan, then verify real fresh-input capture, timely R0/K0 originals, independent
+readback and public delivery. Planning for the retained October 25 UTC inventory
+closes **strictly before October 24 21:30 UTC / 4:30 p.m. CDT**. Its first eligible
+capture window is **21:30–22:30 UTC / 4:30–5:30 p.m. CDT**, with automatic new
+capture stopping at **22:15 UTC / 5:15 p.m. CDT**. First eligible issuance/readback
+is **22:30–22:45 UTC / 5:30–5:45 p.m. CDT**, retaining 300-second original
+latency and the required remote acknowledgment gates. These are retained-source,
+policy-derived windows, not promised or already issued forecasts. Do not shift
+them or backfill failures. Later verified final statistical grading and another
+successful scheduled run remain acceptance evidence still to be obtained.
+
 
 ## October 24, 09:54 UTC — retained-source planning repair passes focused/recovery verification
 

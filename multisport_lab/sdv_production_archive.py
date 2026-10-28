@@ -17,6 +17,7 @@ import re
 import stat
 import subprocess
 import tempfile
+import time
 import urllib.parse
 import urllib.request
 import urllib.error
@@ -42,6 +43,21 @@ class ArchiveHTTPError(IntegrityError):
         if message:
             detail += ": " + message
         super().__init__("GitHub archive API request failed (" + detail + "); retain state and do not change transports")
+
+
+class PublicArchiveHTTPError(IntegrityError):
+    """Keep the rejected immutable identity without leaking signed URLs."""
+    def __init__(self, status, hop, reference, read_attempt=1):
+        common.archive_ref(reference)
+        self.http_status = status
+        self.redirect_hop = hop
+        self.read_attempt = read_attempt
+        self.archive_reference = dict(reference)
+        super().__init__(
+            "Public archive response failed (HTTP " + str(status)
+            + "; hop " + str(hop) + "; read attempt " + str(read_attempt)
+            + "; " + reference["tag"] + "/" + reference["name"]
+            + "); retained state unchanged; no alternate transport")
 
 
 def _safe_api_error(raw):
@@ -515,6 +531,22 @@ class GitHubReleaseArchive(_Archive):
         return raw
 
     def _public_object(self, ref):
+        # Archive readbacks are separate from the zero-retry sports-source
+        # requests. One same-route retry uses the existing GitHub-attempt bound;
+        # all actual requests and elapsed time still count toward admission.
+        maximum = common.make_policy()["github_transport_attempts"]
+        for read_attempt in range(1, maximum + 1):
+            try:
+                return self._public_object_attempt(ref, read_attempt=read_attempt)
+            except PublicArchiveHTTPError as error:
+                if error.http_status not in {429, 500, 502, 503, 504} or read_attempt == maximum:
+                    raise
+                require(self._gh_actions + self._public_requests < 1000,
+                        "Archive action guard exhausted before a transient read retry")
+                time.sleep(1)
+        raise IntegrityError("Archive read attempt budget exhausted")
+
+    def _public_object_attempt(self, ref, *, read_attempt):
         class NoRedirect(urllib.request.HTTPRedirectHandler):
             def redirect_request(self, request, response, code, message, headers, new_url):
                 return None
@@ -537,8 +569,8 @@ class GitHubReleaseArchive(_Archive):
             require(len(raw) <= MAX_WIRE, "Public archive object exceeds wire budget")
             if status == 200:
                 return raw
-            require(attempt == 0 and status in {302, 303, 307, 308} and type(location) is str,
-                    "Public archive response failed; no retry or alternate transport")
+            if not (attempt == 0 and status in {302, 303, 307, 308} and type(location) is str):
+                raise PublicArchiveHTTPError(status, attempt, ref, read_attempt)
             target = urllib.parse.urlsplit(location)
             require(target.scheme == "https" and target.hostname == "release-assets.githubusercontent.com"
                     and not target.username and not target.password and target.port in {None, 443},

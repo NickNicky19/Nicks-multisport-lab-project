@@ -1,5 +1,99 @@
 # Recurring NBA daily-snapshot operation
 
+### October 28 current-run metadata recovery (review candidate)
+
+Native run **40606294434**, prepare job **122546511049**, rejected its actual
+current-run API response at **00:03:52.691932 UTC**. The retained original
+response really says `queued`, with a null conclusion and the correct run,
+attempt, main revision, workflow and actor; the job was already running.
+This is separate from the archive failure in run **40580788661**. Neither run
+issued forecasts or completed grading/publication. See the dated operational
+evidence; the old observations and records remain unchanged.
+
+The forward repair permits one same-run metadata recheck, after one second,
+only when the first response passes every existing authority check except
+for its `queued` status. The public authorization validator still requires
+an actual `in_progress` response and null conclusion. Conflicting identities,
+terminal states, malformed bodies and failed requests do not grant authority.
+Two reads that both say queued still stop. A recheck is an initial bounded
+handling policy, not proof that GitHub will update its status within one second.
+
+Both actual responses and their distinct capture clocks must fit inside the
+existing **640-KiB** report-observation budget. Before the second GET, reserve
+space for its maximum bounded response and the retained first response. An
+oversized observation stops rather than discarding evidence or raising limits.
+Interruption preserves the first observation; an omitted observation sink
+cannot request queued-response recovery. No recovered authorization alone
+becomes an issuance capability. The existing source binding, actual phase
+clock checks, cohort, freshness, ledger/storage limits and two-attempt GitHub
+ceiling remain unchanged. There is no new scheduler or provider request.
+
+The exact release head, checks and independent review are recorded on PR #28.
+This remains review software until separately approved and deployed. Successful
+synthetic recovery does not establish a subsequent real scheduled success,
+timely genuine issuance, public delivery, statistical accuracy or settlement.
+
+### October 27 archive and publication recovery repair (review candidate)
+
+The October 24 forecasts were genuinely issued and published. Later October 25
+workers reported independently recovered outcomes and grades, but subsequent
+archive-response failures stopped the native coordinator. The public manifest
+observed October 27 at 17:55 UTC has no production channel; its last export clock
+is October 25 at 21:02:56 UTC. This is a delivery failure, not evidence that the
+forecasts were accurate or inaccurate. Preserve the earlier dated checkpoints.
+
+The new transport error retains only HTTP status, redirect hop, read-attempt
+number and the exact public content-addressed reference. It never prints signed
+URLs or arbitrary server bodies. A full original-record recovery actually
+reproduced **HTTP 503** on the canonical own-repository archive route. Older
+generic hosted errors did not preserve their statuses; their causes remain
+unknown. One same-route retry is now permitted only for 429/500/502/503/504,
+with a one-second pause and the existing `github_transport_attempts = 2` ceiling.
+403/404, unknown status, unsafe redirects, timeouts and byte/hash failures do not
+retry or switch transports. Sports-provider requests still have **zero retries**.
+Every request and elapsed second remains charged; original and remote completion
+deadlines, prospective admission, source freshness and missed windows are unchanged.
+
+The same actual catalog also exhausted one reader's 1,000-action guard while
+replaying 23 ledgers. Publication now uses a new cold reader for **each immutable
+shard**, including its registered-source validation, as worker recovery already
+does. No used client's counter is reset. The 1,000-action client ceiling and
+512-record / 32-MiB shard ceilings remain unchanged. The whole-publication bound
+is now explicit: at most 1,024 shards, each with at most 1,000 transport actions.
+Cold scopes repeat some shared-source reads. Diagnostic observers report each
+scope and the aggregate, including failed scopes; the parent's empty counters
+are not a measurement of total recovery. This bounded distribution does **not**
+establish maximum-scale throughput within hosted time limits. All typed checks,
+original source bytes, probabilities and stored timestamps remain required.
+
+Before a main Pages build, `scripts/restore_pages_artifact.py` can seed the existing
+strict publisher fallback from this repository's previously successful main
+Pages artifacts. It checks at most 16 runs and downloads at most eight candidates,
+validates the original build identity, file hashes and typed production records,
+and extracts only allowlisted ordinary data files. ZIP, TAR and extracted data
+are each bounded by the existing 512-MiB public-artifact ceiling; individual data
+files remain at most 1 MiB. The absent-output precondition bounds restoration to
+1.5 GiB of artifact files; temporary ZIP/TAR copies are removed before building.
+This is temporary fallback, not durable original-record storage. Expired or absent
+artifacts produce `NO_VALID_PRIOR_PAGES_ARTIFACT`; no remote restoration is inferred.
+The source archive remains the durable record. Artifact retention is unchanged.
+
+A populated verified prior production snapshot cannot be replaced by an empty
+success when the prepared operating registry is missing. A rejected update keeps
+the old records and their exact data-generation clock, with an explicit retained
+warning across date changes. The website's new publication time does not refresh
+the retained capture, issuance, outcome or grading clocks. The six historical
+bundles/grades and the separate offer/builder channels remain independent.
+
+This candidate changes no model law, cohort or source-collection policy. It does
+not backfill missed forecasts or complete a failed peer outside its original
+window. OPS002, PROS004, S0, the missed pilots, their protected files and original
+records, frozen comparisons and separate NFL/MLB projects remain untouched.
+See the latest handoff for final checks, measured recovery cost, actual release
+head and deployment status. Existing exact-head landing approval is required
+for this separate repair; installing code and observing genuine delivery are
+different evidence.
+
 ### October 24 retained-source repair verification (release pending)
 
 Source `18ec769acf2f237eeba09aaa4e03b6a0caa04a44` passed actual hosted

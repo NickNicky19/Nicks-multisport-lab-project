@@ -91,6 +91,66 @@ class ProductionPublicationTests(unittest.TestCase):
         self.assertEqual({len(public.original_record(row)["categories"]) for row in self.records
                           if public.original_record(row)["schema_version"] == common.FORECAST_SCHEMA}, {14})
 
+    def test_catalog_recovery_uses_a_new_bounded_reader_for_every_shard(self):
+        from multisport_lab import sdv_production_archive as archive_module
+        from multisport_lab import sdv_production_runner as runner
+        readers, observations = [], []
+        class Reader:
+            def __init__(self): self.requests = 0
+            def request_metrics(self): return {"public_http_requests": self.requests, "gh_api_actions": 0}
+        class Archive:
+            def fresh_reader(self):
+                reader = Reader(); readers.append(reader); return reader
+        class Store:
+            def __init__(store):
+                store.rows = [(LedgerRef.from_record(row["reference"]), public.original_record(row))
+                              for row in self.records]
+            def recover(store):
+                return {"records": store.rows, "admissions": {
+                    LedgerRef.from_record(row["reference"]).record_id: row["admission"]
+                    for row in self.records}}
+        def recover(ref, reader, destination, **kwargs):
+            reader.requests += 1
+            if reader.requests > 1:
+                raise IntegrityError("Invented per-reader action guard exhausted")
+            return Store()
+        registry = runner.empty_registry(self.now)
+        shards = [{"snapshot_ref": {"bytes": 10, "name": "object-"+seed*64+".z",
+                    "sha256": seed*64, "tag": "nml-nba-records-v1-202610"},
+                   "branch": "invented-read-scope-"+seed} for seed in ("a", "b", "c")]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); (root/"production").mkdir()
+            (root/public.STATE_PATH).write_bytes(canonical({
+                "schema_version": "nba-sdv-production-prepared-publication-v1",
+                "registry": registry, "shards": shards, "archived_days": []}))
+            with patch.object(public, "_state_parts", return_value=(shards, [])), \
+                 patch.object(archive_module, "recover_snapshot", side_effect=recover):
+                descriptor = public.emit_publication(root/"site/data", root, now=self.now,
+                    allow_development=True, archive=Archive(), recovery_observer=observations.append)
+            verified = public.read_publication(root/"site/data", descriptor,
+                                               now=self.now, allow_development=True)
+            original = (root/"site/data"/descriptor["path"]).read_bytes()
+            failures = []
+            def over_budget(ref, reader, destination, **kwargs):
+                store = recover(ref, reader, destination, **kwargs)
+                if ref == shards[1]["snapshot_ref"]:
+                    reader.requests += 1
+                    raise IntegrityError("Invented per-reader action guard exhausted")
+                return store
+            with patch.object(public, "_state_parts", return_value=(shards, [])), \
+                 patch.object(archive_module, "recover_snapshot", side_effect=over_budget):
+                with self.assertRaisesRegex(IntegrityError, "per-reader action guard"):
+                    public.emit_publication(root/"site/data", root, now=self.now,
+                        allow_development=True, archive=Archive(), recovery_observer=failures.append)
+            self.assertEqual((root/"site/data"/descriptor["path"]).read_bytes(), original)
+        self.assertEqual(len(readers), 5)
+        self.assertEqual([reader.requests for reader in readers], [1, 1, 1, 1, 2])
+        self.assertEqual([row["branch"] for row in observations], [row["branch"] for row in shards])
+        self.assertEqual(sum(row["transport"]["public_http_requests"] for row in observations), 3)
+        self.assertEqual(sum(row["transport"]["public_http_requests"] for row in failures), 3)
+        self.assertEqual(verified["index"]["counts"]["development_forecasts"], 2)
+        self.assertEqual(verified["index"]["counts"]["genuine_forecasts"], 0)
+
     def test_complete_page_bytes_hash_readback_and_explicit_preview_gate(self):
         index, pages = self.emit()
         with tempfile.TemporaryDirectory() as folder:

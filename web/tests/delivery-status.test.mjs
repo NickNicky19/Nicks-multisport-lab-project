@@ -1,7 +1,7 @@
 // Invented publication shapes exercise display only; no generation or collection.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {forecastDeliveryStatus,renderForecastDelivery} from '../delivery-status.mjs';
+import {forecastDeliveryStatus,renderForecastDelivery,renderProductionPublicationNotice,retainedProductionWarning} from '../delivery-status.mjs';
 import {typedFixture} from './fixtures.mjs';
 
 const now=Date.parse('2000-01-02T00:00:00Z');
@@ -67,6 +67,37 @@ test('channel recovery errors are unknown delivery status and hidden sport scope
   assert.match(renderForecastDelivery(snapshot,{now}),/Forecast delivery status is incomplete/);
   assert.doesNotMatch(renderForecastDelivery(snapshot,{now}),/No live forecasts have been delivered/);
   assert.equal(renderForecastDelivery(snapshot,{sports:[],now}),'');assert.equal(renderForecastDelivery(null,{now}),'');
+});
+
+test('retained recurring records show their original clock and keep the failed-update warning across dates',()=>{
+  const snapshot=fixture();
+  snapshot.manifest.published_at='2000-01-02T00:00:00Z';
+  snapshot.manifest.production_research={retained:true,generated_at:'2000-01-01T00:00:00Z',error:'Archive <failure>'};
+  snapshot.manifest.production_research_error='Archive <failure>';
+  snapshot.productionResearchError=retainedProductionWarning(snapshot);
+  const before=JSON.stringify(snapshot);
+  let html=renderProductionPublicationNotice(snapshot);
+  assert.match(html,/Earlier verified NBA forecasts retained/);
+  assert.match(html,/datetime="2000-01-01T00:00:00Z"/);
+  assert.doesNotMatch(html,/datetime="2000-01-02T00:00:00Z"/);
+  assert.match(html,/Archive &lt;failure&gt;/);
+  assert.match(html,/does not refresh their source, issuance or result clocks/);
+  assert.equal(JSON.stringify(snapshot),before);
+  snapshot.productionResearch={...snapshot.productionResearch,selectedGameDate:'2000-01-01'};
+  snapshot.productionResearchError=retainedProductionWarning(snapshot);
+  assert.equal(snapshot.productionResearchError,'Archive <failure>');
+  assert.match(renderProductionPublicationNotice(snapshot),/Earlier verified NBA forecasts retained/);
+});
+
+test('a failed recurring channel never labels a missing collection as retained',()=>{
+  const snapshot=fixture();snapshot.productionResearch=null;
+  snapshot.manifest.production_research={retained:true,generated_at:'2000-01-01T00:00:00Z',error:'Failed recovery'};
+  snapshot.productionResearchError='Failed recovery';
+  assert.equal(retainedProductionWarning(snapshot),null);
+  assert.match(renderProductionPublicationNotice(snapshot),/Recurring NBA research unavailable/);
+  assert.doesNotMatch(renderProductionPublicationNotice(snapshot),/Earlier verified NBA forecasts retained/);
+  snapshot.productionResearchError=null;
+  assert.equal(renderProductionPublicationNotice(snapshot),'');
 });
 
 test('source capture, actual issue and website clocks remain distinct and exact in markup',()=>{

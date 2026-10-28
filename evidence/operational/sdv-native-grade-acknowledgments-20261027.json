@@ -1,0 +1,735 @@
+{
+  "schema_version": "nba-native-grade-acknowledgments-checkpoint-v1",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "protocol_id": "NBA-SDV-PRODUCTION-001",
+  "native_run_id": 40212901717,
+  "executed_source_commit": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+  "source": "Cached decoded own-repository GitHub job logs fetched during the October 27 read-only audit; no new workflow execution or forecast scoring.",
+  "evidence_limits": [
+    "These are exact native worker report acknowledgments, not a new independent raw-record recovery by this checkpoint writer.",
+    "The 13 successful workers reported independent original readbacks. The two failed workers' computed results are excluded from acknowledged totals.",
+    "No category performance averages, comparative forecast scores, model selection or frozen experiment evaluation was computed.",
+    "No new sports-provider request, source capture, forecast issuance, ledger write, workflow trigger, publication, deployment, financial settlement or ticket qualification resulted from this checkpoint."
+  ],
+  "aggregate": {
+    "native_grade_workers": 15,
+    "reported_successful_independent_readbacks": 13,
+    "failed_durability_workers": 2,
+    "acknowledged_outcomes": 97,
+    "acknowledged_grades": 194,
+    "computed_but_unacknowledged_outcomes": 27,
+    "computed_but_unacknowledged_grades": 54,
+    "pending_subject_entries": 45,
+    "excluded_untimely_original_model_records": 12,
+    "reported_forecast_records_in_successful_shards": 274,
+    "existing_genuine_forecasts_reported_in_successful_shards": 262
+  },
+  "publication_distinction": {
+    "current_public_state_observation_source": "Integration owner message: actual public manifest inspected October 27, 2026, about 17:55 UTC.",
+    "site_manifest_published_at_as_reported": "2026-10-25T21:02:56Z",
+    "production_research": null,
+    "production_research_error": "IntegrityError: production_research update unavailable",
+    "current_visible_production_forecasts": 0,
+    "current_visible_production_outcomes": 0,
+    "current_visible_production_grades": 0,
+    "meaning": "A stale public manifest has an unavailable production channel. Its visible zero counts do not erase previously issued originals or the native grade acknowledgments below. They are not lifetime issuance or grading totals.",
+    "historical_examples_are_separate": true
+  },
+  "successful_workers": [
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558055,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558055",
+      "branch": "records/sdv-prod-20261025-401909856-7a494d9fe3b1-s1",
+      "cycle_id": "prod-20261025-401909856-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:43.624572Z",
+      "completed_at": "2026-10-25T21:56:16.362418Z",
+      "error": null,
+      "pending_subjects": [
+        "2991230",
+        "2991235",
+        "4683860"
+      ],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 32,
+        "grades": 26,
+        "outcomes": 13
+      },
+      "existing_genuine_forecasts_reported": 32,
+      "checkpoint_commit": "37f23f45a7d4f9917708330779b8f20af34a2da1",
+      "snapshot_ref": {
+        "bytes": 19782,
+        "name": "object-aa0d59f3e97d37c8d09cd67d6d618594a90673b7c412ed764960362bcd6cfa52.z",
+        "sha256": "aa0d59f3e97d37c8d09cd67d6d618594a90673b7c412ed764960362bcd6cfa52",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:55:53.443196Z",
+      "original_records_recovered_at": "2026-10-25T21:55:53.443196Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:55:53.443196Z",
+      "original_recovery": {
+        "commit": "37f23f45a7d4f9917708330779b8f20af34a2da1",
+        "snapshot_ref": {
+          "bytes": 19782,
+          "name": "object-aa0d59f3e97d37c8d09cd67d6d618594a90673b7c412ed764960362bcd6cfa52.z",
+          "sha256": "aa0d59f3e97d37c8d09cd67d6d618594a90673b7c412ed764960362bcd6cfa52",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "bc75b5fdb2306396592f2c046f3e5977761a1d0c262125547fea5977cb62b5c3",
+        "remote_recovered_at": "2026-10-25T21:55:53.443196Z",
+        "recovered_records": 149,
+        "recovered_bytes": 1409144
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558056,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558056",
+      "branch": "records/sdv-prod-20261025-401909857-7a494d9fe3b1-s1",
+      "cycle_id": "prod-20261025-401909857-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:43.028969Z",
+      "completed_at": "2026-10-25T21:52:31.289261Z",
+      "error": null,
+      "pending_subjects": [
+        "5242496",
+        "4606840",
+        "4997537",
+        "5142718",
+        "5144126"
+      ],
+      "unscored_originals": [
+        "5104155:K0",
+        "5104155:R0",
+        "5105841:R0",
+        "5105841:K0"
+      ],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 28,
+        "grades": 18,
+        "outcomes": 9
+      },
+      "existing_genuine_forecasts_reported": 24,
+      "checkpoint_commit": "ec31d6b913bd3eaf6db6b3141f78514ad5517d99",
+      "snapshot_ref": {
+        "bytes": 15576,
+        "name": "object-b3268c66e59469a65874175edb4a6610a8c0b2ab1461827f329915f3cf61af30.z",
+        "sha256": "b3268c66e59469a65874175edb4a6610a8c0b2ab1461827f329915f3cf61af30",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:52:13.287516Z",
+      "original_records_recovered_at": "2026-10-25T21:52:13.287516Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:52:13.287516Z",
+      "original_recovery": {
+        "commit": "ec31d6b913bd3eaf6db6b3141f78514ad5517d99",
+        "snapshot_ref": {
+          "bytes": 15576,
+          "name": "object-b3268c66e59469a65874175edb4a6610a8c0b2ab1461827f329915f3cf61af30.z",
+          "sha256": "b3268c66e59469a65874175edb4a6610a8c0b2ab1461827f329915f3cf61af30",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "629e189942deab1c3f00403f1ceb475446dea3b745116779a254bb7f04b9fb0f",
+        "remote_recovered_at": "2026-10-25T21:52:13.287516Z",
+        "recovered_records": 125,
+        "recovered_bytes": 1208681
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558065,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558065",
+      "branch": "records/sdv-prod-20261025-401909856-7a494d9fe3b1-s0",
+      "cycle_id": "prod-20261025-401909856-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:44.178344Z",
+      "completed_at": "2026-10-25T21:55:02.498669Z",
+      "error": null,
+      "pending_subjects": [
+        "4431714",
+        "4431941",
+        "4585618",
+        "4712863",
+        "5105571"
+      ],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 32,
+        "grades": 22,
+        "outcomes": 11
+      },
+      "existing_genuine_forecasts_reported": 32,
+      "checkpoint_commit": "d5929f1fa1b46db7642ec9bc9a04b88897a6661d",
+      "snapshot_ref": {
+        "bytes": 18762,
+        "name": "object-327c27033b4e98f3fb7233ae2a851f5f5343571373ffd0c21d42a40b10cf4b7f.z",
+        "sha256": "327c27033b4e98f3fb7233ae2a851f5f5343571373ffd0c21d42a40b10cf4b7f",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:54:42.230357Z",
+      "original_records_recovered_at": "2026-10-25T21:54:42.230357Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:54:42.230357Z",
+      "original_recovery": {
+        "commit": "d5929f1fa1b46db7642ec9bc9a04b88897a6661d",
+        "snapshot_ref": {
+          "bytes": 18762,
+          "name": "object-327c27033b4e98f3fb7233ae2a851f5f5343571373ffd0c21d42a40b10cf4b7f.z",
+          "sha256": "327c27033b4e98f3fb7233ae2a851f5f5343571373ffd0c21d42a40b10cf4b7f",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "0f8b45b46d3dfd6d36e46a8f0c7aa3f7de956218b6069fb0432e601551194eac",
+        "remote_recovered_at": "2026-10-25T21:54:42.230357Z",
+        "recovered_records": 143,
+        "recovered_bytes": 1382420
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558092,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558092",
+      "branch": "records/sdv-prod-20261025-401909859-7a494d9fe3b1-s0",
+      "cycle_id": "prod-20261025-401909859-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:43.405548Z",
+      "completed_at": "2026-10-25T21:51:52.549673Z",
+      "error": null,
+      "pending_subjects": [
+        "3138196",
+        "4065813",
+        "4432181",
+        "4592427"
+      ],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 32,
+        "grades": 24,
+        "outcomes": 12
+      },
+      "existing_genuine_forecasts_reported": 32,
+      "checkpoint_commit": "2ae95b42de264b66923d5883a7dd19072682fa1b",
+      "snapshot_ref": {
+        "bytes": 19291,
+        "name": "object-69e584ed303e644485e974c1d9a63a297f7d041d124eca098493bf5920797999.z",
+        "sha256": "69e584ed303e644485e974c1d9a63a297f7d041d124eca098493bf5920797999",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:51:39.608958Z",
+      "original_records_recovered_at": "2026-10-25T21:51:39.608958Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:51:39.608958Z",
+      "original_recovery": {
+        "commit": "2ae95b42de264b66923d5883a7dd19072682fa1b",
+        "snapshot_ref": {
+          "bytes": 19291,
+          "name": "object-69e584ed303e644485e974c1d9a63a297f7d041d124eca098493bf5920797999.z",
+          "sha256": "69e584ed303e644485e974c1d9a63a297f7d041d124eca098493bf5920797999",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "7d663f1b552d4f3e28cd9bc4a363ed979ede5258e5a4c42f0285f0afd959290a",
+        "remote_recovered_at": "2026-10-25T21:51:39.608958Z",
+        "recovered_records": 146,
+        "recovered_bytes": 1395449
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558097,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558097",
+      "branch": "records/sdv-prod-20261025-401909858-7a494d9fe3b1-s1",
+      "cycle_id": "prod-20261025-401909858-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:43.737137Z",
+      "completed_at": "2026-10-25T21:54:15.291955Z",
+      "error": null,
+      "pending_subjects": [
+        "6440",
+        "4713010",
+        "5101845"
+      ],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 32,
+        "grades": 26,
+        "outcomes": 13
+      },
+      "existing_genuine_forecasts_reported": 32,
+      "checkpoint_commit": "59d65df6c5f93a49da7ed312cdebd5247762cf16",
+      "snapshot_ref": {
+        "bytes": 19795,
+        "name": "object-7cf4c6983f8cafe82e68c4c391459bf39f3a2660e9071a77a18860f73b72a21d.z",
+        "sha256": "7cf4c6983f8cafe82e68c4c391459bf39f3a2660e9071a77a18860f73b72a21d",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:53:57.347370Z",
+      "original_records_recovered_at": "2026-10-25T21:53:57.347370Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:53:57.347370Z",
+      "original_recovery": {
+        "commit": "59d65df6c5f93a49da7ed312cdebd5247762cf16",
+        "snapshot_ref": {
+          "bytes": 19795,
+          "name": "object-7cf4c6983f8cafe82e68c4c391459bf39f3a2660e9071a77a18860f73b72a21d.z",
+          "sha256": "7cf4c6983f8cafe82e68c4c391459bf39f3a2660e9071a77a18860f73b72a21d",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "0aa1bc111ceda42384f296f9d465a7ee1c197fedc0afe1a4ca97bc09a5159fe1",
+        "remote_recovered_at": "2026-10-25T21:53:57.347370Z",
+        "recovered_records": 149,
+        "recovered_bytes": 1427926
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558114,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558114",
+      "branch": "records/sdv-prod-20261025-401909858-7a494d9fe3b1-s2",
+      "cycle_id": "prod-20261025-401909858-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:42.878132Z",
+      "completed_at": "2026-10-25T21:47:00.134725Z",
+      "error": null,
+      "pending_subjects": [
+        "5105337"
+      ],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 6,
+        "grades": 4,
+        "outcomes": 2
+      },
+      "existing_genuine_forecasts_reported": 6,
+      "checkpoint_commit": "95911966e7d21e46b284266ad4325a21e1e8bd54",
+      "snapshot_ref": {
+        "bytes": 4767,
+        "name": "object-1a4879f6b90517b1a37c961b2842548882818d3c9cab6196c61c007597fd52cf.z",
+        "sha256": "1a4879f6b90517b1a37c961b2842548882818d3c9cab6196c61c007597fd52cf",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:46:53.808273Z",
+      "original_records_recovered_at": "2026-10-25T21:46:53.808273Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:46:53.808273Z",
+      "original_recovery": {
+        "commit": "95911966e7d21e46b284266ad4325a21e1e8bd54",
+        "snapshot_ref": {
+          "bytes": 4767,
+          "name": "object-1a4879f6b90517b1a37c961b2842548882818d3c9cab6196c61c007597fd52cf.z",
+          "sha256": "1a4879f6b90517b1a37c961b2842548882818d3c9cab6196c61c007597fd52cf",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "990eada0f7e1afa46920896d4db58d65dc2c5cb893a6b5c09765759943693d40",
+        "remote_recovered_at": "2026-10-25T21:46:53.808273Z",
+        "recovered_records": 38,
+        "recovered_bytes": 363329
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558122,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558122",
+      "branch": "records/sdv-prod-20261025-401909857-7a494d9fe3b1-s2",
+      "cycle_id": "prod-20261025-401909857-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:44.769097Z",
+      "completed_at": "2026-10-25T21:47:34.386439Z",
+      "error": null,
+      "pending_subjects": [],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 6,
+        "grades": 6,
+        "outcomes": 3
+      },
+      "existing_genuine_forecasts_reported": 6,
+      "checkpoint_commit": "aba6099bf426ffbf7c84edb918aeaef6ca24e0f1",
+      "snapshot_ref": {
+        "bytes": 5078,
+        "name": "object-5c6eb98bc0e829d490ca09cefc1541a1bb09702b3d4fac2e0f36cdf2409f9b9e.z",
+        "sha256": "5c6eb98bc0e829d490ca09cefc1541a1bb09702b3d4fac2e0f36cdf2409f9b9e",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:47:26.648844Z",
+      "original_records_recovered_at": "2026-10-25T21:47:26.648844Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:47:26.648844Z",
+      "original_recovery": {
+        "commit": "aba6099bf426ffbf7c84edb918aeaef6ca24e0f1",
+        "snapshot_ref": {
+          "bytes": 5078,
+          "name": "object-5c6eb98bc0e829d490ca09cefc1541a1bb09702b3d4fac2e0f36cdf2409f9b9e.z",
+          "sha256": "5c6eb98bc0e829d490ca09cefc1541a1bb09702b3d4fac2e0f36cdf2409f9b9e",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "3930d6329acd0c1d5299b83e7acab0803fdb595455b95dee39c924ed16f2999e",
+        "remote_recovered_at": "2026-10-25T21:47:26.648844Z",
+        "recovered_records": 41,
+        "recovered_bytes": 377038
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558127,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558127",
+      "branch": "records/sdv-prod-20261025-401909860-7a494d9fe3b1-s1",
+      "cycle_id": "prod-20261025-401909860-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:45.355623Z",
+      "completed_at": "2026-10-25T21:50:11.681211Z",
+      "error": null,
+      "pending_subjects": [
+        "3213",
+        "3975",
+        "6430",
+        "3102531",
+        "4432171",
+        "4709138",
+        "4897262"
+      ],
+      "unscored_originals": [
+        "4433149:R0",
+        "4433149:K0",
+        "4703396:K0",
+        "4703396:R0"
+      ],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 28,
+        "grades": 14,
+        "outcomes": 7
+      },
+      "existing_genuine_forecasts_reported": 24,
+      "checkpoint_commit": "bf665e718b1ebcaacbf9ead4e77e274939c1610a",
+      "snapshot_ref": {
+        "bytes": 14559,
+        "name": "object-522deffc95e9fd550dd55c65014f833cbba4decef08830b35cdc1f73583535f4.z",
+        "sha256": "522deffc95e9fd550dd55c65014f833cbba4decef08830b35cdc1f73583535f4",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:50:00.707549Z",
+      "original_records_recovered_at": "2026-10-25T21:50:00.707549Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:50:00.707549Z",
+      "original_recovery": {
+        "commit": "bf665e718b1ebcaacbf9ead4e77e274939c1610a",
+        "snapshot_ref": {
+          "bytes": 14559,
+          "name": "object-522deffc95e9fd550dd55c65014f833cbba4decef08830b35cdc1f73583535f4.z",
+          "sha256": "522deffc95e9fd550dd55c65014f833cbba4decef08830b35cdc1f73583535f4",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "fd238c669ff9589b473bfc16efba08a11961c0e8f43c9ff8e17ca6eb5fc303e6",
+        "remote_recovered_at": "2026-10-25T21:50:00.707549Z",
+        "recovered_records": 119,
+        "recovered_bytes": 1199760
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558131,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558131",
+      "branch": "records/sdv-prod-20261025-401909857-7a494d9fe3b1-s0",
+      "cycle_id": "prod-20261025-401909857-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:44.876658Z",
+      "completed_at": "2026-10-25T21:52:00.260454Z",
+      "error": null,
+      "pending_subjects": [
+        "4278067",
+        "4431687",
+        "5095151",
+        "5105555"
+      ],
+      "unscored_originals": [
+        "4898010:R0",
+        "4898010:K0",
+        "5044385:R0",
+        "5044385:K0"
+      ],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 28,
+        "grades": 20,
+        "outcomes": 10
+      },
+      "existing_genuine_forecasts_reported": 24,
+      "checkpoint_commit": "417831fcd94269e37e3cdf1b13d02307cc21e639",
+      "snapshot_ref": {
+        "bytes": 16090,
+        "name": "object-31d6d24aeec0a0a63d05d9993e85d91c3fe3a5c0dd0db77954512dc88777f2b5.z",
+        "sha256": "31d6d24aeec0a0a63d05d9993e85d91c3fe3a5c0dd0db77954512dc88777f2b5",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:51:45.011497Z",
+      "original_records_recovered_at": "2026-10-25T21:51:45.011497Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:51:45.011497Z",
+      "original_recovery": {
+        "commit": "417831fcd94269e37e3cdf1b13d02307cc21e639",
+        "snapshot_ref": {
+          "bytes": 16090,
+          "name": "object-31d6d24aeec0a0a63d05d9993e85d91c3fe3a5c0dd0db77954512dc88777f2b5.z",
+          "sha256": "31d6d24aeec0a0a63d05d9993e85d91c3fe3a5c0dd0db77954512dc88777f2b5",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "3b199e0704fb6b90a75709ebef2ac29572f087e8c5b577b1a942d0ec095b0b23",
+        "remote_recovered_at": "2026-10-25T21:51:45.011497Z",
+        "recovered_records": 128,
+        "recovered_bytes": 1234273
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558135,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558135",
+      "branch": "records/sdv-prod-20261025-401909856-7a494d9fe3b1-s2",
+      "cycle_id": "prod-20261025-401909856-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:43.221299Z",
+      "completed_at": "2026-10-25T21:47:01.851551Z",
+      "error": null,
+      "pending_subjects": [
+        "5105553"
+      ],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 6,
+        "grades": 4,
+        "outcomes": 2
+      },
+      "existing_genuine_forecasts_reported": 6,
+      "checkpoint_commit": "65cd191baf59f90e75b8eeb2fccb5bc70df2ac23",
+      "snapshot_ref": {
+        "bytes": 4779,
+        "name": "object-81d1987dd83df22bddec6b87312a2a6df4b2ad6cd2ab7a887e739e2fd6fd2783.z",
+        "sha256": "81d1987dd83df22bddec6b87312a2a6df4b2ad6cd2ab7a887e739e2fd6fd2783",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:46:55.495794Z",
+      "original_records_recovered_at": "2026-10-25T21:46:55.495794Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:46:55.495794Z",
+      "original_recovery": {
+        "commit": "65cd191baf59f90e75b8eeb2fccb5bc70df2ac23",
+        "snapshot_ref": {
+          "bytes": 4779,
+          "name": "object-81d1987dd83df22bddec6b87312a2a6df4b2ad6cd2ab7a887e739e2fd6fd2783.z",
+          "sha256": "81d1987dd83df22bddec6b87312a2a6df4b2ad6cd2ab7a887e739e2fd6fd2783",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "3277b14472f903e1a229e528734001be40b93011e3812361a9e937025dccf2f3",
+        "remote_recovered_at": "2026-10-25T21:46:55.495794Z",
+        "recovered_records": 38,
+        "recovered_bytes": 363444
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558150,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558150",
+      "branch": "records/sdv-prod-20261025-401909859-7a494d9fe3b1-s2",
+      "cycle_id": "prod-20261025-401909859-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:44.483210Z",
+      "completed_at": "2026-10-25T21:47:13.934523Z",
+      "error": null,
+      "pending_subjects": [
+        "5061589"
+      ],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 6,
+        "grades": 4,
+        "outcomes": 2
+      },
+      "existing_genuine_forecasts_reported": 6,
+      "checkpoint_commit": "30ee7c61a788f258acc2288b947879847e75fb69",
+      "snapshot_ref": {
+        "bytes": 4795,
+        "name": "object-6f859b794fa0259abe030e13a5f2568fbdaf0477baac55568df6ad5531e8b593.z",
+        "sha256": "6f859b794fa0259abe030e13a5f2568fbdaf0477baac55568df6ad5531e8b593",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:47:07.538475Z",
+      "original_records_recovered_at": "2026-10-25T21:47:07.538475Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:47:07.538475Z",
+      "original_recovery": {
+        "commit": "30ee7c61a788f258acc2288b947879847e75fb69",
+        "snapshot_ref": {
+          "bytes": 4795,
+          "name": "object-6f859b794fa0259abe030e13a5f2568fbdaf0477baac55568df6ad5531e8b593.z",
+          "sha256": "6f859b794fa0259abe030e13a5f2568fbdaf0477baac55568df6ad5531e8b593",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "28ceb24dcf34a44082160c9b8cc5521fd60cc29d869a53196ca6f56fcb2216b0",
+        "remote_recovered_at": "2026-10-25T21:47:07.538475Z",
+        "recovered_records": 38,
+        "recovered_bytes": 357236
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558166,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558166",
+      "branch": "records/sdv-prod-20261025-401909858-7a494d9fe3b1-s0",
+      "cycle_id": "prod-20261025-401909858-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:42.999287Z",
+      "completed_at": "2026-10-25T21:53:48.723745Z",
+      "error": null,
+      "pending_subjects": [
+        "6442",
+        "3138160",
+        "4593125",
+        "4683688",
+        "5041939",
+        "5148538"
+      ],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 32,
+        "grades": 20,
+        "outcomes": 10
+      },
+      "existing_genuine_forecasts_reported": 32,
+      "checkpoint_commit": "54b00108da5558e8557b9aadcb8e71bd1e17939f",
+      "snapshot_ref": {
+        "bytes": 18186,
+        "name": "object-e785d941f462b832b3d4afbad662609b0becc6fd3f75e7fedae3bf861044e55b.z",
+        "sha256": "e785d941f462b832b3d4afbad662609b0becc6fd3f75e7fedae3bf861044e55b",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:53:28.902346Z",
+      "original_records_recovered_at": "2026-10-25T21:53:28.902346Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:53:28.902346Z",
+      "original_recovery": {
+        "commit": "54b00108da5558e8557b9aadcb8e71bd1e17939f",
+        "snapshot_ref": {
+          "bytes": 18186,
+          "name": "object-e785d941f462b832b3d4afbad662609b0becc6fd3f75e7fedae3bf861044e55b.z",
+          "sha256": "e785d941f462b832b3d4afbad662609b0becc6fd3f75e7fedae3bf861044e55b",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "5cf1c805bef873769cee4e917d445c8ac20d5d7a8baa06549bba3983f4bb19b2",
+        "remote_recovered_at": "2026-10-25T21:53:28.902346Z",
+        "recovered_records": 140,
+        "recovered_bytes": 1387033
+      }
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558227,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558227",
+      "branch": "records/sdv-prod-20261025-401909860-7a494d9fe3b1-s2",
+      "cycle_id": "prod-20261025-401909860-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:44.394224Z",
+      "completed_at": "2026-10-25T21:47:35.132765Z",
+      "error": null,
+      "pending_subjects": [],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "SUCCESSFUL_INDEPENDENT_READBACK_REPORTED",
+      "counts": {
+        "forecasts": 6,
+        "grades": 6,
+        "outcomes": 3
+      },
+      "existing_genuine_forecasts_reported": 6,
+      "checkpoint_commit": "bcc2ceb01313daf88c7819730feae88bc6e033c9",
+      "snapshot_ref": {
+        "bytes": 5053,
+        "name": "object-d5aa83b803a5d8dcd0f4ba987c8cc57569ad1cf42056fc443e30cccd64990ac1.z",
+        "sha256": "d5aa83b803a5d8dcd0f4ba987c8cc57569ad1cf42056fc443e30cccd64990ac1",
+        "tag": "nml-nba-records-v1-202610"
+      },
+      "remote_recovered_at": "2026-10-25T21:47:27.527073Z",
+      "original_records_recovered_at": "2026-10-25T21:47:27.527073Z",
+      "proof_metadata_recovered_at": "2026-10-25T21:47:27.527073Z",
+      "original_recovery": {
+        "commit": "bcc2ceb01313daf88c7819730feae88bc6e033c9",
+        "snapshot_ref": {
+          "bytes": 5053,
+          "name": "object-d5aa83b803a5d8dcd0f4ba987c8cc57569ad1cf42056fc443e30cccd64990ac1.z",
+          "sha256": "d5aa83b803a5d8dcd0f4ba987c8cc57569ad1cf42056fc443e30cccd64990ac1",
+          "tag": "nml-nba-records-v1-202610"
+        },
+        "snapshot_id": "bbebd68d86f342aaf4d87cb7c3927c91e220310f7ab0b9705cf4e52457ba44c9",
+        "remote_recovered_at": "2026-10-25T21:47:27.527073Z",
+        "recovered_records": 41,
+        "recovered_bytes": 376959
+      }
+    }
+  ],
+  "failed_workers": [
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558077,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558077",
+      "branch": "records/sdv-prod-20261025-401909859-7a494d9fe3b1-s1",
+      "cycle_id": "prod-20261025-401909859-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:42.878527Z",
+      "completed_at": "2026-10-25T21:56:29.655296Z",
+      "error": null,
+      "pending_subjects": [
+        "4703115",
+        "4712862"
+      ],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "DURABILITY_FAILED_NOT_ACKNOWLEDGED",
+      "computed_counts": {
+        "outcomes": 14,
+        "grades": 28
+      },
+      "durability_error": "Public archive response failed; no retry or alternate transport",
+      "checkpoint_commit": null,
+      "snapshot_ref": null,
+      "remote_recovered_at": null,
+      "missing_metadata_reason": "The failed native worker report contains no successful checkpoint acknowledgment."
+    },
+    {
+      "run_id": 40212901717,
+      "job_id": 121300558118,
+      "job_url": "https://github.com/NickNicky19/Nicks-multisport-lab-project/actions/runs/40212901717/job/121300558118",
+      "branch": "records/sdv-prod-20261025-401909860-7a494d9fe3b1-s0",
+      "cycle_id": "prod-20261025-401909860-7a494d9fe3b1",
+      "reported_status": "STATISTICAL_GRADING_RETAINED",
+      "started_at": "2026-10-25T21:45:43.092954Z",
+      "completed_at": "2026-10-25T21:55:52.703842Z",
+      "error": null,
+      "pending_subjects": [
+        "4431695",
+        "4601023",
+        "4701232"
+      ],
+      "unscored_originals": [],
+      "unscored_reason": "ORIGINAL_NOT_TIMELY_ADMITTED",
+      "acknowledgment": "DURABILITY_FAILED_NOT_ACKNOWLEDGED",
+      "computed_counts": {
+        "outcomes": 13,
+        "grades": 26
+      },
+      "durability_error": "Public archive response failed; no retry or alternate transport",
+      "checkpoint_commit": null,
+      "snapshot_ref": null,
+      "remote_recovered_at": null,
+      "missing_metadata_reason": "The failed native worker report contains no successful checkpoint acknowledgment."
+    }
+  ]
+}

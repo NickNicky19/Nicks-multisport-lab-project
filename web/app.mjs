@@ -5,7 +5,7 @@ import {displayTarget,researchAvailability} from './display.mjs';
 import {filterRowsByScope, filterCandidateUniverse, resolveSportScope, validRequestedLegCount} from './scope.mjs';
 import {loadSnapshot,loadProductionDate} from './snapshot.mjs';
 import {filterResearchForecasts, summarizePmf, isHistoryForecast, groupForecastGrades, forecastGradeState, upcomingEmptyReasons} from './research.mjs';
-import {renderForecastDelivery} from './delivery-status.mjs';
+import {renderForecastDelivery,renderProductionPublicationNotice,retainedProductionWarning} from './delivery-status.mjs';
 
 let originalPairedRecord = null, activePairedGrades = null;
 let renderOffers = null;
@@ -54,7 +54,7 @@ function publicationStatus() {
   const missing = Object.entries(state.snapshot?.manifest.errors || {}).filter(([league]) => !state.snapshot.manifest.sports.some(reference => reference.league === league));
   const displayError = state.snapshot?.displayError;
   const displayNotice = displayError ? `<div class="notice warning"><strong>${state.snapshot?.display ? 'Earlier verified display metadata retained' : 'Readable names unavailable'}</strong><p>${escape(displayError)} ${state.snapshot?.display ? `Names verified ${datetime(state.snapshot.display.catalog.verified_at)}; metadata assembled ${datetime(state.snapshot.display.generated_at)}. The failed update did not refresh these clocks.` : 'Forecast records remain visible with their original source IDs.'}</p></div>` : '';
-  const channelNotice = [['pros004Error','Reserved study'],['pairedResearchError','Paired operational research'],['dailyResearchError','Daily-snapshot research'],['productionResearchError','Recurring NBA research'],['offersError','Offer publication']].map(([key,label])=>state.snapshot?.[key] ? `<div class="notice warning"><strong>${label} unavailable</strong><p>${escape(state.snapshot[key])} Other verified publication channels remain available; no missing record is counted as issued.</p></div>` : '').join('');
+  const channelNotice = renderProductionPublicationNotice(state.snapshot)+[['pros004Error','Reserved study'],['pairedResearchError','Paired operational research'],['dailyResearchError','Daily-snapshot research'],['offersError','Offer publication']].map(([key,label])=>state.snapshot?.[key] ? `<div class="notice warning"><strong>${label} unavailable</strong><p>${escape(state.snapshot[key])} Other verified publication channels remain available; no missing record is counted as issued.</p></div>` : '').join('');
   const catalogNotice = (state.snapshot?.manifest.sports || []).filter(reference=>reference.error && !reference.retained).map(reference=>`<div class="notice error" role="alert"><strong>${escape(reference.league)} research records unavailable</strong><p>${escape(reference.error)} The category catalog and independently verified offers can remain available.</p></div>`).join('');
   return (productionLoading?'<p class="notice" role="status">Loading and verifying the selected research date. Existing verified records remain visible.</p>':'') + displayNotice + channelNotice + catalogNotice + errors.map(error => `<div class="notice error" role="alert"><strong>${escape(error.league)} snapshot unavailable</strong><p>${escape(error.message)} Other valid sport snapshots remain visible.</p></div>`).join('') + missing.map(([league, message]) => `<div class="notice error" role="alert"><strong>${escape(league)} update unavailable</strong><p>${escape(message)} No valid prior snapshot is available for this sport.</p></div>`).join('') + (state.snapshot?.manifest.sports || []).filter(reference => reference.retained).map(reference => `<div class="notice warning"><strong>${escape(reference.league)} retains an earlier snapshot</strong><p>Generated ${datetime(reference.generated_at)}. ${escape(reference.error || 'The new observation was not published.')} This publication time does not refresh its inputs.</p></div>`).join('');
 }
@@ -228,7 +228,7 @@ async function changeProductionDate(gameDate) {
   try {
     const recovered=await loadProductionDate(state.snapshot.productionResearch,{gameDate,view:state.filters.view});
     state.snapshot.productionResearch=recovered;
-    state.snapshot.productionResearchError=null;
+    state.snapshot.productionResearchError=retainedProductionWarning(state.snapshot);
     state.visibleProduction=28;
   } catch (error) {
     state.snapshot.productionResearchError=(error.message||'The selected research date could not be verified.')+' The previously verified date remains visible with its original clocks.';

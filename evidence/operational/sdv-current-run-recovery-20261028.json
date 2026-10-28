@@ -1,0 +1,153 @@
+{
+  "schema_version": "nba-operational-read-only-finding-v1",
+  "evidence_date": "2026-10-28",
+  "repository": "NickNicky19/Nicks-multisport-lab-project",
+  "scope": "Read-only cached GitHub jobs and original execution-report log evidence; no operating dispatch or provider requests",
+  "branch_preserved": "implementation/sdv-grading-recovery-20261027",
+  "head_preserved": "abe185e82f505f4db7910763127b1f12ca21d199",
+  "latest_failure": {
+    "run_id": 40606294434,
+    "job_id": 122546511049,
+    "event": "schedule",
+    "head_sha": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+    "job_started_at": "2026-10-28T00:03:45Z",
+    "job_completed_at": "2026-10-28T00:03:57Z",
+    "execution_started_at": "2026-10-28T00:03:52.237244Z",
+    "execution_completed_at": "2026-10-28T00:03:52.691932Z",
+    "status": "PARTIAL_OR_FAILED",
+    "error": "Actual production run metadata differs: status",
+    "observed_at": "2026-10-28T00:03:52.610978Z",
+    "original_run_response": {
+      "bytes": 14162,
+      "sha256": "7a8223566a87ac7876886cb5902f7edef461952e87b302d5b14fe8fb11ad7a93",
+      "selected_fields": {
+        "id": 40606294434,
+        "run_attempt": 1,
+        "event": "schedule",
+        "head_sha": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+        "head_branch": "main",
+        "path": ".github/workflows/nba-operations.yml",
+        "status": "queued",
+        "conclusion": null,
+        "created_at": "2026-10-28T00:03:43Z",
+        "updated_at": "2026-10-28T00:03:43Z",
+        "run_started_at": "2026-10-28T00:03:43Z"
+      }
+    },
+    "event_original": {
+      "bytes": 6717,
+      "sha256": "d6b2cdffa5146cb42e6709ffa6a0fd85db0576b6a4783ca1020e9f8cf7d60d26"
+    },
+    "authorization_id": null,
+    "genuine_issued": 0,
+    "downstream_work_grade_finish": "SKIPPED",
+    "finding": "The exact retained original reports queued/null while the native job was running. One metadata read cannot resolve this transient state; strict current-run in_progress admission correctly refused authority.",
+    "addressed_by_pr28_at_head_preserved": false
+  },
+  "previous_failure": {
+    "run_id": 40580788661,
+    "job_id": 122459282351,
+    "event": "schedule",
+    "head_sha": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+    "job_started_at": "2026-10-27T20:44:59Z",
+    "job_completed_at": "2026-10-27T20:46:25Z",
+    "execution_started_at": "2026-10-27T20:45:06.652976Z",
+    "execution_completed_at": "2026-10-27T20:46:20.700019Z",
+    "status": "PARTIAL_OR_FAILED",
+    "error": "Public archive response failed; no retry or alternate transport",
+    "observed_at": "2026-10-27T20:45:07.026498Z",
+    "original_run_response": {
+      "bytes": 14167,
+      "sha256": "8cf227b8ae3946277693bc275b81359e5e8abca390742e54341c0fb1317edec3"
+    },
+    "genuine_issued": 0,
+    "downstream_work_grade_finish": "SKIPPED",
+    "cause": "UNKNOWN: generic archive error did not retain HTTP status or exact failed object"
+  },
+  "first_cycle_jobs": [
+    {
+      "job_id": 122546511226,
+      "run_id": 40606294434,
+      "recorded_at": "2026-10-28T00:03:50.214640Z",
+      "status": "OUTSIDE_DAILY_POSTGAME_WINDOW",
+      "source_requests": 0,
+      "genuine_issued": 0,
+      "forecast_ids": [],
+      "publication": "NOT_REQUESTED"
+    },
+    {
+      "job_id": 122459282749,
+      "run_id": 40580788661,
+      "recorded_at": "2026-10-27T20:45:04.361641Z",
+      "status": "OUTSIDE_DAILY_POSTGAME_WINDOW",
+      "source_requests": 0,
+      "genuine_issued": 0,
+      "forecast_ids": [],
+      "publication": "NOT_REQUESTED"
+    }
+  ],
+  "public_state": {
+    "verifier": "integration owner /root; supplied observation",
+    "observed_at": "2026-10-28T02:47:21.549094Z",
+    "build_commit": "ceacbef7e4b8ac3b6da19eaa946b83af74887aee",
+    "production_research": null,
+    "last_publication_at": "2026-10-25T21:02:56.437979Z",
+    "raw_manifest_sha256": "ac86c19fa8864ce4cc71a2f32da374d18e395361ab6807a80eca95a1c3460f26"
+  },
+  "recommended_bounded_repair": "For a correctly pinned current-run queued/null response only, permit a bounded same-run readback, retaining factual observations and budget accounting. Never grant authority until strict in_progress validation; terminal and identity conflicts remain rejected.",
+  "unchanged_claims": [
+    "No new forecasts, outcomes, statistical grades or publication established by these runs",
+    "No frozen comparisons rerun",
+    "No source capture, dispatch, rerun, record write or repository edit by this verifier"
+  ],
+  "implementation": {
+    "public_authorization_status": "in_progress only",
+    "maximum_same_run_metadata_reads": 2,
+    "queued_recheck_delay_seconds": 1,
+    "observation_limit_bytes": 655360,
+    "observation_disk_reserve_bytes": 1310720,
+    "provider_requests": 0,
+    "new_forecasts": 0,
+    "new_outcomes": 0,
+    "new_grades": 0,
+    "scheduler_changes": false,
+    "phase_deadlines_changed": false,
+    "runner_sha256": "1fcdd1ebee4f062bd0450061311945db1a2fa6a4c547f03d096797e3cee98b5f",
+    "test_sha256": "69920dbb3dafc9852b4502509175d5ce7e0ab9cc23126cf1b2ee2a56a88a939c",
+    "next_release_decision": "Revised PR #28 exact-head confirmation after final CI; earlier head is superseded when advanced."
+  },
+  "focused_verification": {
+    "normal": {
+      "command": "python3 -m unittest discover -s tests -p test_sdv_production_runner.py -v",
+      "passed": 33,
+      "seconds": 0.827
+    },
+    "optimized": {
+      "command": "python3 -O -m unittest discover -s tests -p test_sdv_production_runner.py -v",
+      "passed": 33,
+      "seconds": 0.84
+    },
+    "independent_optimized": {
+      "passed": 33,
+      "seconds": 0.932
+    },
+    "independent_review": "PASS; no authority bypass, budget increase or timestamp rewriting found",
+    "protected_source_files_unchanged": 23,
+    "original_records_unchanged": 19,
+    "integration_status": "Local full integration passed; exact-head GitHub CI and landing remain separate gates."
+  },
+  "limitations": [
+    "One recheck cannot guarantee GitHub status convergence or a future successful scheduled run.",
+    "The candidate is not merged or deployed at this evidence checkpoint.",
+    "No new model accuracy or predictive qualification is established."
+  ],
+  "integration_verification": {
+    "command": "python3 -m unittest discover -s tests -v",
+    "passed": 1114,
+    "seconds": 777.171,
+    "completed_observed_at": "2026-10-28T03:04:55Z",
+    "demo_command": "python3 -m multisport_lab.demo",
+    "demo_status": "OFFLINE_EXAMPLES_ONLY",
+    "diff_check": "PASS"
+  }
+}
