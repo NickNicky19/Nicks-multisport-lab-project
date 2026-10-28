@@ -1,5 +1,38 @@
 # Recurring NBA daily-snapshot operation
 
+### October 28 current-run metadata recovery (review candidate)
+
+Native run **40606294434**, prepare job **122546511049**, rejected its actual
+current-run API response at **00:03:52.691932 UTC**. The retained original
+response really says `queued`, with a null conclusion and the correct run,
+attempt, main revision, workflow and actor; the job was already running.
+This is separate from the archive failure in run **40580788661**. Neither run
+issued forecasts or completed grading/publication. See the dated operational
+evidence; the old observations and records remain unchanged.
+
+The forward repair permits one same-run metadata recheck, after one second,
+only when the first response passes every existing authority check except
+for its `queued` status. The public authorization validator still requires
+an actual `in_progress` response and null conclusion. Conflicting identities,
+terminal states, malformed bodies and failed requests do not grant authority.
+Two reads that both say queued still stop. A recheck is an initial bounded
+handling policy, not proof that GitHub will update its status within one second.
+
+Both actual responses and their distinct capture clocks must fit inside the
+existing **640-KiB** report-observation budget. Before the second GET, reserve
+space for its maximum bounded response and the retained first response. An
+oversized observation stops rather than discarding evidence or raising limits.
+Interruption preserves the first observation; an omitted observation sink
+cannot request queued-response recovery. No recovered authorization alone
+becomes an issuance capability. The existing source binding, actual phase
+clock checks, cohort, freshness, ledger/storage limits and two-attempt GitHub
+ceiling remain unchanged. There is no new scheduler or provider request.
+
+The exact release head, checks and independent review are recorded on PR #28.
+This remains review software until separately approved and deployed. Successful
+synthetic recovery does not establish a subsequent real scheduled success,
+timely genuine issuance, public delivery, statistical accuracy or settlement.
+
 ### October 27 archive and publication recovery repair (review candidate)
 
 The October 24 forecasts were genuinely issued and published. Later October 25

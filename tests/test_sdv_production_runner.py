@@ -1,6 +1,6 @@
 """Synthetic hosted authority and independent registry persistence, no sources."""
 from copy import deepcopy
-from contextlib import redirect_stdout
+from contextlib import contextmanager, redirect_stdout
 from datetime import timedelta
 import io
 import os
@@ -172,7 +172,7 @@ class ProductionRunnerTests(unittest.TestCase):
                 root=Path(directory);event_path=root/"invented-event.json";event_path.write_bytes(event_raw)
                 bad=runner._original(auth["run_original"],384*1024);bad[field]=value;run_raw=canonical(bad)
                 with patch.dict(os.environ,self.hosted_environment(event_path),clear=True),patch.dict(runner._CAPABILITIES,{},clear=True),\
-                        patch.object(runner,"_read_run",return_value=run_raw),\
+                        patch.object(runner,"_read_run",return_value=run_raw),patch.object(runner.time,"sleep"),\
                         patch.object(runner,"_git",return_value=SimpleNamespace(stdout=b"1"*40+b"\n")),\
                         patch.object(forecasts,"make_source_binding",return_value=self.binding),\
                         patch.object(archives,"GitHubReleaseArchive") as archive:
@@ -209,6 +209,177 @@ class ProductionRunnerTests(unittest.TestCase):
             self.assertLessEqual(len(canonical(observation)),640*1024)
             self.assertEqual(observation["event_original"],runner._encoded(event_raw))
             self.assertEqual(observation["run_original"],runner._encoded(run_raw))
+
+    @contextmanager
+    def synthetic_hosted_reads(self,responses):
+        from multisport_lab import sdv_production_forecasts as forecasts
+        event_raw=canonical(runner._original(self.authority()["event_original"],32768))
+        with tempfile.TemporaryDirectory() as directory:
+            event_path=Path(directory)/"invented-event.json";event_path.write_bytes(event_raw)
+            with patch.dict(os.environ,self.hosted_environment(event_path),clear=True),patch.dict(runner._CAPABILITIES,{},clear=True),\
+                    patch.object(runner,"_read_run",side_effect=responses) as request,\
+                    patch.object(runner,"_git",return_value=SimpleNamespace(stdout=b"1"*40+b"\n")),\
+                    patch.object(forecasts,"make_source_binding",return_value=self.binding),\
+                    patch.object(runner.time,"sleep") as delay:
+                yield {},request,delay
+
+    def run_bytes(self,**changes):
+        run=runner._original(self.authority()["run_original"],384*1024);run.update(changes)
+        return canonical(run)
+
+    def test_queued_current_run_rechecks_once_and_retains_distinct_actual_observations(self):
+        queued=self.run_bytes(status="queued");running=self.run_bytes()
+        actual=[self.now];calls=[]
+        def read(run_id):
+            self.assertEqual(run_id,123);self.assertEqual(runner._CAPABILITIES,{})
+            calls.append(run_id)
+            if len(calls) == 2:actual[0]+=timedelta(seconds=1)
+            return queued if len(calls) == 1 else running
+        with self.synthetic_hosted_reads(read) as (observation,request,delay),\
+                patch.object(common,"now",side_effect=lambda:actual[0]):
+            body=runner.authorize_current_run(observation=observation)
+            self.assertEqual(request.call_count,2);delay.assert_called_once_with(1)
+            self.assertEqual(observation["run_read_attempts"],2)
+            self.assertEqual(observation["prior_run_observations"],[{
+                "captured_at":stamp(self.now),"run_original":runner._encoded(queued)}])
+            self.assertEqual(observation["captured_at"],stamp(self.now+timedelta(seconds=1)))
+            self.assertEqual(observation["run_original"],runner._encoded(running))
+            self.assertEqual(body["run_original"],runner._encoded(running))
+            self.assertEqual(body["verified_at"],stamp(self.now+timedelta(seconds=1)))
+            self.assertEqual(observation["status"],"VERIFIED_CURRENT_RUN")
+            self.assertEqual(runner._CAPABILITIES,{body["authorization_id"]:"1"*40})
+            self.assertIs(runner.validate_authorization(body),body)
+            self.assertLessEqual(len(canonical(observation)),runner.MAX_HOSTED_RUN_OBSERVATION_BYTES)
+            bad=deepcopy(body);bad["run_original"]=runner._encoded(queued)
+            with self.assertRaises(IntegrityError):runner.validate_authorization(self.reseal(bad))
+
+    def test_queued_recheck_never_admits_still_queued_or_terminal_response(self):
+        for status,conclusion in (("queued",None),("completed","failure"),("cancelled","cancelled"),("waiting",None)):
+            queued=self.run_bytes(status="queued");final=self.run_bytes(status=status,conclusion=conclusion)
+            with self.subTest(status=status),self.synthetic_hosted_reads([queued,final]) as (observation,request,delay):
+                with self.assertRaises(IntegrityError):runner.authorize_current_run(observation=observation)
+                self.assertEqual(request.call_count,2);delay.assert_called_once_with(1)
+                self.assertEqual(runner._CAPABILITIES,{})
+                self.assertEqual(observation["status"],"UNVERIFIED_OR_REJECTED")
+                self.assertIsNone(observation["authorization_id"])
+                self.assertEqual(observation["run_original"],runner._encoded(final))
+                self.assertEqual(observation["prior_run_observations"][0]["run_original"],runner._encoded(queued))
+
+    def test_running_first_response_requires_no_recheck(self):
+        with self.synthetic_hosted_reads([self.run_bytes()]) as (observation,request,delay):
+            runner.authorize_current_run(observation=observation)
+            request.assert_called_once_with(123);delay.assert_not_called()
+            self.assertEqual(observation["run_read_attempts"],1)
+            self.assertNotIn("prior_run_observations",observation)
+
+    def test_terminal_first_response_is_not_rechecked(self):
+        for status,conclusion in (("completed",None),("completed","cancelled"),("in_progress","failure"),("waiting",None)):
+            raw=self.run_bytes(status=status,conclusion=conclusion)
+            with self.subTest(status=status,conclusion=conclusion),self.synthetic_hosted_reads([raw]) as (observation,request,delay):
+                with self.assertRaises(IntegrityError):runner.authorize_current_run(observation=observation)
+                request.assert_called_once_with(123);delay.assert_not_called()
+                self.assertEqual(runner._CAPABILITIES,{})
+                self.assertEqual(observation["run_original"],runner._encoded(raw))
+
+    def test_queued_identity_conflicts_and_clocks_do_not_trigger_recheck(self):
+        conflicts=({"id":124},{"id":True},{"run_attempt":2},{"event":"push"},
+            {"head_sha":"2"*40},{"head_branch":"other"},{"path":"another.yml"},
+            {"repository":{"full_name":"another/repo"}},{"actor":{"login":"another"}},
+            {"triggering_actor":{"login":"another"}},{"conclusion":"failure"},
+            {"run_started_at":stamp(self.now+timedelta(seconds=1))})
+        for conflict in conflicts:
+            raw=self.run_bytes(status="queued",**conflict)
+            with self.subTest(conflict=conflict),self.synthetic_hosted_reads([raw]) as (observation,request,delay):
+                with self.assertRaises(IntegrityError):runner.authorize_current_run(observation=observation)
+                request.assert_called_once_with(123);delay.assert_not_called()
+                self.assertEqual(runner._CAPABILITIES,{})
+                self.assertEqual(observation["run_original"],runner._encoded(raw))
+
+    def test_queued_recheck_cannot_change_pinned_identity_or_start(self):
+        queued=self.run_bytes(status="queued")
+        for conflict in ({"id":124},{"head_sha":"2"*40},{"run_attempt":2},
+                {"run_started_at":stamp(self.now-timedelta(seconds=1))},{"triggering_actor":{"login":"other"}}):
+            final=self.run_bytes(**conflict)
+            with self.subTest(conflict=conflict),self.synthetic_hosted_reads([queued,final]) as (observation,request,delay):
+                with self.assertRaises(IntegrityError):runner.authorize_current_run(observation=observation)
+                self.assertEqual(request.call_count,2);self.assertEqual(runner._CAPABILITIES,{})
+                self.assertEqual(observation["run_original"],runner._encoded(final))
+                self.assertEqual(observation["prior_run_observations"][0]["run_original"],runner._encoded(queued))
+
+    def test_queued_recheck_interruption_during_pause_does_not_claim_second_get(self):
+        queued=self.run_bytes(status="queued")
+        with self.synthetic_hosted_reads([queued]) as (observation,request,delay):
+            delay.side_effect=KeyboardInterrupt("invented interruption during pause")
+            with self.assertRaises(KeyboardInterrupt):runner.authorize_current_run(observation=observation)
+            request.assert_called_once_with(123);delay.assert_called_once_with(1)
+            self.assertEqual(runner._CAPABILITIES,{})
+            self.assertEqual(observation["run_read_attempts"],1)
+            self.assertEqual(observation["run_original"],runner._encoded(queued))
+            self.assertIsNone(observation["authorization_id"])
+            self.assertNotIn("prior_run_observations",observation)
+
+    def test_queued_recheck_request_interruption_preserves_first_original(self):
+        queued=self.run_bytes(status="queued")
+        for failure in (IntegrityError("invented GET failure"),KeyboardInterrupt("invented interruption")):
+            with self.subTest(failure=type(failure).__name__),self.synthetic_hosted_reads([queued,failure]) as (observation,request,delay):
+                with self.assertRaises(type(failure)):runner.authorize_current_run(observation=observation)
+                self.assertEqual(request.call_count,2);delay.assert_called_once_with(1)
+                self.assertEqual(runner._CAPABILITIES,{})
+                self.assertEqual(observation["status"],"UNVERIFIED_OR_REJECTED")
+                self.assertIsNone(observation["authorization_id"])
+                self.assertEqual(observation["run_read_attempts"],2)
+                self.assertEqual(observation["run_original"],runner._encoded(queued))
+                self.assertNotIn("prior_run_observations",observation)
+
+    def test_queued_recheck_requires_room_for_maximum_second_body_before_get(self):
+        run=runner._decode(self.run_bytes(status="queued"));run["invented_padding"]=""
+        run["invented_padding"]="x"*(384*1024-len(canonical(run)));queued=canonical(run)
+        self.assertEqual(len(queued),384*1024)
+        with self.synthetic_hosted_reads([queued]) as (observation,request,delay):
+            with self.assertRaisesRegex(IntegrityError,"cannot retain both originals"):
+                runner.authorize_current_run(observation=observation)
+            request.assert_called_once_with(123);delay.assert_not_called()
+            self.assertEqual(runner._CAPABILITIES,{})
+            self.assertEqual(observation["run_read_attempts"],1)
+            self.assertEqual(observation["run_original"],runner._encoded(queued))
+            self.assertLessEqual(len(canonical(observation)),runner.MAX_HOSTED_RUN_OBSERVATION_BYTES)
+
+    def test_queued_recheck_can_retain_maximum_second_body_within_unchanged_budget(self):
+        queued=self.run_bytes(status="queued");run=runner._decode(self.run_bytes());run["invented_padding"]=""
+        run["invented_padding"]="x"*(384*1024-len(canonical(run)));running=canonical(run)
+        self.assertEqual(len(running),384*1024)
+        with self.synthetic_hosted_reads([queued,running]) as (observation,request,delay):
+            body=runner.authorize_current_run(observation=observation)
+            self.assertEqual(request.call_count,2);delay.assert_called_once_with(1)
+            self.assertIn(body["authorization_id"],runner._CAPABILITIES)
+            self.assertEqual(observation["run_original"],runner._encoded(running))
+            self.assertEqual(observation["prior_run_observations"][0]["run_original"],runner._encoded(queued))
+            self.assertLessEqual(len(canonical(observation)),640*1024)
+            self.assertEqual(runner.HOSTED_RUN_OBSERVATION_DISK_RESERVE,2*640*1024)
+
+    def test_queued_recheck_without_observation_is_rejected_before_second_get(self):
+        queued=self.run_bytes(status="queued")
+        with self.synthetic_hosted_reads([queued]) as (observation,request,delay):
+            with self.assertRaisesRegex(IntegrityError,"requires retained observations"):
+                runner.authorize_current_run()
+            request.assert_called_once_with(123);delay.assert_not_called()
+            self.assertEqual(runner._CAPABILITIES,{})
+
+    def test_queued_recheck_malformed_second_body_retains_both_without_authority(self):
+        queued=self.run_bytes(status="queued");malformed=b"{invented malformed response"
+        with self.synthetic_hosted_reads([queued,malformed]) as (observation,request,delay):
+            with self.assertRaises(IntegrityError):runner.authorize_current_run(observation=observation)
+            self.assertEqual(request.call_count,2);self.assertEqual(runner._CAPABILITIES,{})
+            self.assertEqual(observation["run_original"],runner._encoded(malformed))
+            self.assertEqual(observation["prior_run_observations"][0]["run_original"],runner._encoded(queued))
+
+    def test_queued_recheck_respects_registered_transport_attempt_bound(self):
+        queued=self.run_bytes(status="queued");policy=common.make_policy();policy["github_transport_attempts"]=1
+        with self.synthetic_hosted_reads([queued]) as (observation,request,delay),patch.object(common,"make_policy",return_value=policy):
+            with self.assertRaisesRegex(IntegrityError,"transport budget"):
+                runner.authorize_current_run(observation=observation)
+            request.assert_called_once_with(123);delay.assert_not_called()
+            self.assertEqual(runner._CAPABILITIES,{})
 
     def test_recovered_auth_is_not_execution_capability_and_each_phase_uses_its_window(self):
         auth=self.authority();body={"mode":"PROSPECTIVE_RESEARCH","producer_binding":self.binding,
